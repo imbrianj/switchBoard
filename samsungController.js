@@ -47,10 +47,11 @@ var SamsungController = SamsungController || (function () {
      * should prompt you on your TV to allow the connection.
      * "May I come in?"
      */
-    // TODO: Figure out how to intelligently ignore this method if already authenticated
     chunkTwo : function () {
-      var message = String.fromCharCode(0xc8) + String.fromCharCode(0x00); // TODO: Something may be wrong here
-
+      var message = String.fromCharCode(0xc8) + String.fromCharCode(0x00);
+//                   TODO: ^^ Busted ^^
+// fromCharCode starts to return unexpected (to me) results after it hits 128.  Not sure how to properly encode something as high as 200 (0xc8).
+// Have been comparing base64 outputs from Perl (yA==) to base64 outputs from this (w5g=).  base64_decoding w56= seems to be 195 (0xc3).
       console.log('Authenticating');
 
       return String.fromCharCode(0x00) + String.fromCharCode(this.appstring.length) + String.fromCharCode(0x00) + this.appstring + String.fromCharCode(message.length) + String.fromCharCode(0x00) + message;
@@ -61,14 +62,25 @@ var SamsungController = SamsungController || (function () {
      * be inputted into fields.
      * "Will you please do this for me?"
      */
-    // TODO: Allow text input.
     chunkThree : function () {
       var command = 'KEY_' + this.command,
-          message = String.fromCharCode(0x00) + String.fromCharCode(0x00) + String.fromCharCode(0x00) + String.fromCharCode(this.base64_encode(command).length) + String.fromCharCode(0x00) + this.base64_encode(command);
+          message = '';
 
-      console.log('Executing: ' + this.command);
+      if(this.command) {
+        message = String.fromCharCode(0x00) + String.fromCharCode(0x00) + String.fromCharCode(0x00) + String.fromCharCode(this.base64_encode(command).length) + String.fromCharCode(0x00) + this.base64_encode(command);
 
-      return String.fromCharCode(0x00) + String.fromCharCode(this.tvappstring.length) + String.fromCharCode(0x00) + this.tvappstring + String.fromCharCode(message.length) + String.fromCharCode(0x00) + message;
+        console.log('Executing: ' + this.command);
+
+        return String.fromCharCode(0x00) + String.fromCharCode(this.tvappstring.length) + String.fromCharCode(0x00) + this.tvappstring + String.fromCharCode(message.length) + String.fromCharCode(0x00) + message;
+      }
+
+      if(this.text) {
+        message = String.fromCharCode(0x01) + String.fromCharCode(0x00) + String.fromCharCode(this.base64_encode(this.text).length) + String.fromCharCode(0x00) + this.base64_encode(this.text);
+
+        console.log('Text: ' + this.text);
+
+        return String.fromCharCode(0x01) + String.fromCharCode(this.appstring.length) + String.fromCharCode(0x00) + this.appstring + String.fromCharCode(message.length) + String.fromCharCode(0x00) + message;
+      }
     },
 
     send : function (config) {
@@ -90,7 +102,9 @@ var SamsungController = SamsungController || (function () {
         console.log('connected');
 
         socket.write(that.chunkOne());
-      //   socket.write(that.chunkTwo());
+// If you're already (somehow) authenticated, it'll work just commenting this line out.
+// If you are not already authenticated...well...this script isn't very helpful (yet).
+//        socket.write(that.chunkTwo());
         socket.write(that.chunkThree());
 
         socket.end();
@@ -104,4 +118,4 @@ var SamsungController = SamsungController || (function () {
 } ());
 
 // Example Usage (for now):
-SamsungController.send({ command: 'VOLDOWN', tvip: '192.168.1.100', myip: '192.168.1.101', mymac: "00-00-00-00-00-00" });
+//SamsungController.send({ command: 'VOLDOWN', tvip: '192.168.1.100', myip: '192.168.1.101', mymac: "00-00-00-00-00-00" });
