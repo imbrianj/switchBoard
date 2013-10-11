@@ -43,26 +43,11 @@ var SamsungController = SamsungController || (function () {
     },
 
     /**
-     * This chunk seems to ask for permission to be used.  Once executed, it
-     * should prompt you on your TV to allow the connection.
-     * "May I come in?"
-     */
-    chunkTwo : function () {
-      var message = String.fromCharCode(0xc8) + String.fromCharCode(0x00);
-//                   TODO: ^^ Busted ^^
-// fromCharCode starts to return unexpected (to me) results after it hits 128.  Not sure how to properly encode something as high as 200 (0xc8).
-// Have been comparing base64 outputs from Perl (yA==) to base64 outputs from this (w5g=).  base64_decoding w56= seems to be 195 (0xc3).
-      console.log('Authenticating');
-
-      return String.fromCharCode(0x00) + String.fromCharCode(this.appstring.length) + String.fromCharCode(0x00) + this.appstring + String.fromCharCode(message.length) + String.fromCharCode(0x00) + message;
-    },
-
-    /**
      * This chunk seems to tell the TV which command to execute - or, text to
      * be inputted into fields.
      * "Will you please do this for me?"
      */
-    chunkThree : function () {
+    chunkTwo : function () {
       var command = 'KEY_' + this.command,
           message = '';
 
@@ -102,10 +87,7 @@ var SamsungController = SamsungController || (function () {
         console.log('connected');
 
         socket.write(that.chunkOne());
-// If you're already (somehow) authenticated, it'll work just commenting this line out.
-// If you are not already authenticated...well...this script isn't very helpful (yet).
-//        socket.write(that.chunkTwo());
-        socket.write(that.chunkThree());
+        socket.write(that.chunkTwo());
 
         socket.end();
       });
