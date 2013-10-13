@@ -1,7 +1,7 @@
 /*jslint white: true */
-/*global SamsungController, String, Buffer, require, console */
+/*global exports, String, Buffer, require, console */
 
-var SamsungController = SamsungController || (function () {
+exports.SamsungController = exports.SamsungController || (function () {
   'use strict';
 
   /**
@@ -22,8 +22,7 @@ var SamsungController = SamsungController || (function () {
                'AD', 'PLAY', 'PAUSE', 'MUTE', 'PICTURE_SIZE', 'VOLUP', 'VOLDOWN', 'TOOLS',
                'POWEROFF', 'CHUP', 'CHDOWN', 'CONTENTS', 'W_LINK', 'RSS', 'MTS', 'CAPTION',
                'REWIND', 'FF', 'REC', 'STOP', 'TV', 'CONTENT', 'INTERNET', 'PC', 'HDMI1', 'OFF',
-               'POWER', 'STANDBY', 'DUAL', 'SUBT', 'CHANUP', 'CHAN_UP', 'PROGUP', 'PROG_UP'
-              ],
+               'POWER', 'STANDBY', 'DUAL', 'SUBT', 'CHANUP', 'CHAN_UP', 'PROGUP', 'PROG_UP'],
 
     base64_encode : function (string) {
       return new Buffer(string).toString('base64');
@@ -35,8 +34,8 @@ var SamsungController = SamsungController || (function () {
      * "This is who I am."
      */
     chunkOne : function () {
-      var ipencoded  = this.base64_encode(this.myip),
-          macencoded = this.base64_encode(this.mymac),
+      var ipencoded  = this.base64_encode(this.serverip),
+          macencoded = this.base64_encode(this.servermac),
           message    = String.fromCharCode(0x64) + String.fromCharCode(0x00) + String.fromCharCode(ipencoded.length) + String.fromCharCode(0x00) + ipencoded + String.fromCharCode(macencoded.length) + String.fromCharCode(0x00) + macencoded + String.fromCharCode(this.base64_encode(this.remotename).length) + String.fromCharCode(0x00) + this.base64_encode(this.remotename);
 
       return String.fromCharCode(0x00) + String.fromCharCode(this.appstring.length) + String.fromCharCode(0x00) + this.appstring + String.fromCharCode(message.length) + String.fromCharCode(0x00) + message;
@@ -70,14 +69,14 @@ var SamsungController = SamsungController || (function () {
 
     send : function (config) {
       this.tvip        = config.tvip;
-      this.myip        = config.myip;
-      this.mymac       = config.mymac;
+      this.serverip    = config.serverip;
+      this.servermac   = config.servermac;
       this.command     = config.command     || '';
       this.text        = config.text        || '';
       this.tvport      = config.tvport      || 55000;
       this.appstring   = config.appstring   || "iphone..iapp.samsung";
       this.tvappstring = config.tvappstring || "iphone.UN60ES8000.iapp.samsung";
-      this.remotename  = config.remotename  || "Raspberry Pi Samsung Remote";
+      this.remotename  = config.remotename  || "Node.js Samsung Remote";
 
       var that         = this,
           net          = require('net'),
@@ -98,6 +97,3 @@ var SamsungController = SamsungController || (function () {
     }
   };
 } ());
-
-// Example Usage (for now):
-//SamsungController.send({ command: 'VOLDOWN', tvip: '192.168.1.100', myip: '192.168.1.101', mymac: "00-00-00-00-00-00" });

@@ -1,0 +1,165 @@
+li {
+	list-style: none;
+}
+
+.header {
+	clear: both;
+	overflow: hidden;
+}
+
+.header .pure-form {
+	float: right;
+	margin: 5px 20px;
+}
+
+@media (max-width: 600px) {
+	.header .pure-form {
+		float: none;
+	}
+}
+
+.header .pure-form fieldset {
+	border: none;
+}
+
+.header .pure-form legend,
+.header .pure-form label {
+	display: none;
+}
+
+.header .pure-form button {
+	font-size: 85%;
+}
+
+.remote {
+	font-size: 300%;
+}
+
+@media (max-width: 400px) {
+	.remote {
+		font-size: 250%;
+	}
+}
+
+@media (min-width: 650px) {
+	#samsung-tv .control-block {
+		float: left;
+		width: 50%;
+	}
+}
+
+@media (min-width: 1000px) {
+	.remote {
+		font-size: 350%;
+	}
+
+	#samsung-tv .control-block {
+		float: left;
+		width: 33%;
+	}
+}
+
+.remote ol,
+.remote ul {
+	margin: 0;
+	padding-left: 0;
+}
+
+.remote a {
+	display: block;
+	margin: 0 auto;
+	text-align: center;
+	-moz-transition: all .1s ease-in-out;
+	-o-transition: all .1s ease-in-out;
+	-webkit-transition: all .1s ease-in-out;
+	transition: all .1s ease-in-out;
+	width: 1em;
+}
+
+.remote a span {
+	display: none;
+}
+
+.remote a:link,
+.remote a:visited {
+	color: #333;
+	text-decoration: none;
+}
+
+.remote a:hover,
+.remote a:active {
+	color: #0078E7;
+	text-shadow: 0 0 5px rgba(0,70,135,.5);
+}
+
+.remote a.icon-off {
+	color: #F00;
+}
+
+.remote .control-block {
+	margin: .5em 0;
+}
+
+.remote .channel {
+	padding-top: .65em;
+}
+
+.remote .volume a,
+.remote .channel a {
+	margin: .5em auto;
+}
+
+.remote .navigation a {
+	float: left;
+	margin: .2em auto;
+	width: 33%;
+}
+
+.remote .navigation .icon-arrow-up,
+.remote .navigation .icon-arrow-down {
+	clear: both;
+	float: none;
+}
+
+.remote .navigation .icon-arrow-left,
+.remote .navigation .icon-arrow-right {
+	line-height: 160%;
+}
+
+.remote .navigation .icon-check-empty {
+	font-size: 175%;
+}
+
+.remote .numbers li {
+	float: left;
+	width: 33%;
+}
+
+.remote .numbers li:last-child {
+	width: 100%;
+}
+
+.remote .numbers span {
+	display: block;
+}
+
+.remote .media {
+	padding-top: 1.3em;
+}
+
+.remote .media a {
+	float: left;
+	width: 20%;
+}
+
+.remote .shortcuts a {
+	float: left;
+	margin: .3em 0;
+	width: 20%;
+}
+
+.header .pure-menu ul,
+.header .pure-form,
+.remote .misc {
+	display: none;
+}
