@@ -92,7 +92,13 @@ exports.SamsungController = exports.SamsungController || (function () {
       });
 
       socket.on('error', function(error) {
-        console.log(error);
+        if(error.code === 'EHOSTUNREACH') {
+          console.log('TV is off or unreachable');
+        }
+
+        else {
+          console.log(error);
+        }
       });
     }
   };

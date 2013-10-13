@@ -160,6 +160,7 @@ li {
 
 .header .pure-menu ul,
 .header .pure-form,
-.remote .misc {
+.remote .misc,
+.remote .macros {
 	display: none;
 }
