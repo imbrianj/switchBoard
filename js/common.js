@@ -323,7 +323,8 @@ var Bevey = Bevey || (function () {
         ajaxRequest.onComplete = ajaxRequest.onComplete || function () {};
 
         var request,
-            ajaxProcess;
+            ajaxProcess,
+            divider = '?';
 
         ajaxProcess = function () {
           ajaxRequest.onStart();
@@ -358,7 +359,12 @@ var Bevey = Bevey || (function () {
         }
 
         if (ajaxRequest.method === 'GET') {
-          ajaxRequest.path  = ajaxRequest.path + '?' + ajaxRequest.param;
+          if (ajaxRequest.path.indexOf('?') !== -1 || ajaxRequest.param.indexOf('?') !== -1) {
+            divider = '&';
+          }
+
+          ajaxRequest.path  = ajaxRequest.path + divider + ajaxRequest.param;
+
           ajaxRequest.param = '';
         }
 
@@ -395,6 +401,25 @@ var Bevey = Bevey || (function () {
     init : function () {
       Bevey.addClass(document.body, 'rich');
 
+      Bevey.event.add(document.getElementById('search-form'), 'submit', function(e) {
+        var elm  = document.getElementById('text-input'),
+            ts   = new Date().getTime(),
+            ajaxRequest;
+
+        e.preventDefault();
+
+        ajaxRequest = {
+          path       : '/',
+          param      : 'text=' + elm.value + '&ts=' + ts,
+          method     : 'GET',
+          onComplete : function () {
+            console.log(ajaxRequest.response);
+          }
+        };
+
+        Bevey.ajax.request(ajaxRequest);
+      });
+
       Bevey.event.add(document.getElementById('samsung-tv'), 'click', function(e) {
         var elm     = Bevey.getTarget(e),
             tagName = elm.tagName.toLowerCase(),
@@ -405,20 +430,19 @@ var Bevey = Bevey || (function () {
         e.preventDefault();
 
         elm = tagName === 'i'    ? elm.parentNode : elm;
-        elm = tagName === 'span' ? elm : elm.getElementsByTagName('span')[0];
+        elm = tagName === 'span' ? elm.parentNode : elm;
 
-        if(elm.tagName.toLowerCase() === 'span') {
-          command = Bevey.getText(elm).toUpperCase();
+        if(elm.tagName.toLowerCase() === 'a') {
+          command = elm['href'];
 
           ajaxRequest = {
-            path   : 'http://' + exports.config.serverip + ':' + exports.config.serverport + '/',
-            param  : 'command=' + command + '&ts=' + ts,
+            path   : command,
+            param  : 'ts=' + ts,
             method : 'GET',
-            cache  : false,
             onComplete : function () {
               console.log(ajaxRequest.response);
             }
-          }
+          };
 
           Bevey.ajax.request(ajaxRequest);
         }

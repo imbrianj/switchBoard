@@ -130,16 +130,25 @@ li {
 	font-size: 175%;
 }
 
-.remote .numbers li {
+.remote .tv-controls li {
 	float: left;
 	width: 33%;
 }
 
-.remote .numbers li:last-child {
+.remote .tv-controls ol li:last-child {
 	width: 100%;
 }
 
-.remote .numbers span {
+.remote .tv-controls ul li {
+	margin-top: -1em;
+}
+
+.remote .tv-controls ul li:last-child {
+	float: right;
+}
+
+.remote .todo span,
+.remote .tv-controls ol span {
 	display: block;
 }
 
@@ -158,9 +167,27 @@ li {
 	width: 20%;
 }
 
+.remote .media a.red {
+	color: red;
+}
+
+.remote .media a.green {
+	color: green;
+}
+
+.remote .media a.yellow {
+	color: yellow;
+}
+
+.remote .media a.blue {
+	color: blue;
+}
+
 .header .pure-menu ul,
-.header .pure-form,
-.remote .misc,
+.remote .accessibility,
+.remote .information,
+.remote .todo,
+.remote .deprecated,
 .remote .macros {
 	display: none;
 }

@@ -10,7 +10,6 @@ http.createServer(function(request, response) {
     var runCommand,
         directory,
         output    = '',
-        cmdStatus = 'bad',
         _get      = url.parse(request.url, true).query,
         filename  = path.basename(request.url),
         extension = path.extname(filename),
@@ -59,29 +58,55 @@ http.createServer(function(request, response) {
 
     /* Or the remote controller */
     else {
-      runCommand = function () {
-        if(cmdStatus === 'ok') {
-          settings.config.command = _get['command'];
-          remote.SamsungController.send(settings.config);
+      runCommand = function (command, text) {
+        var value   = 'bad',
+            command = command || '',
+            text    = text    || '';
+
+        if(_get['text']) {
+          settings.config.cbConnect = function () {
+            response.end('{"text":"' + text + '","cmdStatus":"ok"}');
+          };
+
+          settings.config.cbError = function (errorMsg) {
+            response.end('{"text":"' + text + '","cmdStatus":"' + errorMsg + '"}');
+          };
+
+          console.log('Text inputted: ' + text);
+          settings.config.text = text;
+
+          value = remote.SamsungController.send(settings.config);
         }
-      }
 
-      if(remote.SamsungController.keymap.indexOf(_get['command']) >= 0) {
-        console.log('Good Command: ' + _get['command']);
-        cmdStatus = 'ok';
-      }
+        if(remote.SamsungController.keymap.indexOf(command) >= 0) {
+          settings.config.cbConnect = function () {
+            response.end('{"command":"' + command + '","cmdStatus":"ok"}');
+          };
 
-      else if(_get['command']) {
-        console.log('Bad Command');
+          settings.config.cbError = function (errorMsg) {
+            response.end('{"command":"' + command + '","cmdStatus":"' + errorMsg + '"}');
+          };
+
+          console.log('Good Command: ' + command);
+          settings.config.command = command;
+
+          value = remote.SamsungController.send(settings.config);
+        }
+
+        else if(command) {
+          console.log('Bad Command: ' + _get['command']);
+
+          value = 'invalid';
+        }
+
+        return value;
       }
 
       // If XHR, return JSON
       if(request.headers.ajax) {
         response.writeHead(200, {'Content-Type': mimeTypes['.js']});
 
-        runCommand();
-
-        response.end('{"command":"' + _get['command'] + '","cmdStatus":"' + cmdStatus + '"}');
+        runCommand(_get['command'], _get['text']);
       }
 
       else {

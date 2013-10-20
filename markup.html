@@ -13,7 +13,7 @@
         <ul>
           <li class="pure-menu-selected"><a href="/Samsung">Samsung SmartTV</a></li>
         </ul>
-        <form class="pure-form">
+        <form class="pure-form" id="search-form" action="#" method="get">
           <fieldset>
             <legend>Text Input</legend>
             <label for="text-input">Text Input:</label>
@@ -27,7 +27,7 @@
       <div class="pure-g-r control-block">
         <div class="pure-u-1-5 volume">
           <a href="/?command=VOLUP" class="icon-volume-up"><span>VolUp</span></a>
-          <a href="/?command=VOLDDOWN" class="icon-volume-down"><span>VolDown</span></a>
+          <a href="/?command=VOLDOWN" class="icon-volume-down"><span>VolDown</span></a>
           <a href="/?command=MUTE" class="icon-volume-off"><span>Mute</span></a>
         </div>
         <div class="pure-u-3-5 navigation">
@@ -47,7 +47,7 @@
         </div>
       </div>
       <div class="pure-u-1 control-block">
-        <div class="l-block numbers">
+        <div class="l-block tv-controls">
           <ol>
             <li><a href="/?command=1"><span>1</span></a></li>
             <li><a href="/?command=2"><span>2</span></a></li>
@@ -60,58 +60,289 @@
             <li><a href="/?command=9"><span>9</span></a></li>
             <li><a href="/?command=0"><span>0</span></a></li>
           </ol>
+          <ul>
+            <li><a href="/?command=PRECH" class="icon-reply"><span>PreCh</span></a></li>
+            <li><a href="/?command=CH_LIST" class="icon-list"><span>Ch_List</span></a></li>
+          </ul>
         </div>
       </div>
       <div class="pure-u-1 control-block">
         <div class="l-block media">
-          <a href="/?command=REWIND" class="icon-backward"><span>Rewind</span></a>
-          <a href="/?command=STOP" class="icon-stop"><span>Stop</span></a>
-          <a href="/?command=PAUSE" class="icon-pause"><span>Pause</span></a>
-          <a href="/?command=PLAY" class="icon-play"><span>Play</span></a>
-          <a href="/?command=FF" class="icon-forward"><span>FF</span></a>
+          <ul>
+            <li><a href="/?command=REWIND" class="icon-backward"><span>Rewind</span></a></li>
+            <li><a href="/?command=STOP" class="icon-stop"><span>Stop</span></a></li>
+            <li><a href="/?command=PAUSE" class="icon-pause"><span>Pause</span></a></li>
+            <li><a href="/?command=PLAY" class="icon-play"><span>Play</span></a></li>
+            <li><a href="/?command=FF" class="icon-forward"><span>FF</span></a></li>
+            <li><a href="/?command=REC" class="icon-circle"><span>Rec</span></a></li>
+            <li><a href="/?command=RED" class="icon-stop red"><span>Red</span></a></li>
+            <li><a href="/?command=GREEN" class="icon-stop green"><span>Green</span></a></li>
+            <li><a href="/?command=YELLOW" class="icon-stop yellow"><span>Yellow</span></a></li>
+            <li><a href="/?command=BLUE" class="icon-stop blue"><span>BLUE</span></a></li>
+          </ul>
         </div>
       </div>
       <div class="pure-u-1 control-block">
         <div class="l-block shortcuts">
-          <a href="/?command=POWEROFF" class="icon-off"><span>PowerOff</span></a>
-          <a href="/?command=INTERNET" class="icon-globe"><span>Internet</span></a>
-          <a href="/?command=HDMI1" class="icon-gamepad"><span>HDMI1</span></a>
-          <a href="/?command=SOURCE" class="icon-desktop"><span>Source</span></a>
-          <a href="/?command=TOOLS" class="icon-cog"><span>Tools</span></a>
-          <a href="/?command=MENU" class="icon-list-ul"><span>Menu</span></a>
-          <a href="/?command=EXIT" class="icon-signout"><span>Exit</span></a>
-          <a href="/?command=RETURN" class="icon-undo"><span>Return</span></a>
+          <ul>
+            <li><a href="/?command=POWEROFF" class="icon-off"><span>PowerOff</span></a></li>
+            <li><a href="/?command=CONTENTS" class="icon-th"><span>Contents</span></a></li>
+            <li><a href="/?command=SOURCE" class="icon-desktop"><span>Source</span></a></li>
+            <li><a href="/?command=CONVERGENCE" class="icon-globe"><span>Convergence</span></a></li>
+            <li><a href="/?command=HDMI4" class="icon-sitemap"><span>HDMI4</span></a></li>
+            <li><a href="/?command=TOOLS" class="icon-cog"><span>Tools</span></a></li>
+            <li><a href="/?command=MENU" class="icon-list-ul"><span>Menu</span></a></li>
+            <li><a href="/?command=EXIT" class="icon-signout"><span>Exit</span></a></li>
+            <li><a href="/?command=RETURN" class="icon-undo"><span>Return</span></a></li>
+          </ul>
         </div>
       </div>
       <div class="pure-u-1 control-block">
-        <div class="l-block misc">
-          <a href="/?command=PRECH" class="icon-question"><span>PreCh</span> PreCh</a>
-          <a href="/?command=GUIDE" class="icon-question"><span>Guide</span> Guide</a>
-          <a href="/?command=INFO" class="icon-question"><span>Info</span> Info</a>
-          <a href="/?command=CH_LIST" class="icon-question"><span>Ch_List</span> Ch_List</a>
-          <a href="/?command=AD" class="icon-question"><span>Ad</span> Ad</a>
-          <a href="/?command=PICTURE_SIZE" class="icon-question"><span>Picture_Size</span> Picture_Size</a>
-          <a href="/?command=CONTENTS" class="icon-question"><span>Contents</span> Contents</a>
-          <a href="/?command=W_LINK" class="icon-question"><span>W_Link</span> W_Link</a>
-          <a href="/?command=RSS" class="icon-rss"><span>RSS</span> RSS</a>
-          <a href="/?command=MTS" class="icon-question"><span>MTS</span> MTS</a>
-          <a href="/?command=CAPTION" class="icon-pencil"><span>Caption</span> Caption</a>
-          <a href="/?command=CONTENT" class="icon-question"><span>Content</span> Content</a>
-          <a href="/?command=DUAL" class="icon-question"><span>Dual</span> Dual</a>
-          <a href="/?command=SUBT" class="icon-question"><span>Subt</span> Subt</a>
-          <a href="/?command=PROGUP" class="icon-question"><span>ProgUp</span> ProgUp</a>
-          <a href="/?command=PROG_UP" class="icon-question"><span>Prog_Up</span> Prog_Up</a>
-          <a href="/?command=CONTENT" class="icon-question"><span>Content</span> Content</a>
-          <a href="/?command=TV" class="icon-question"><span>TV</span> TV</a>
-          <a href="/?command=OFF" class="icon-question"><span>Off</span> Off</a>
-          <a href="/?command=POWER" class="icon-question"><span>Power</span> Power</a>
-          <a href="/?command=STANDBY" class="icon-question"><span>Standby</span> Standby</a>
-          <a href="/?command=REC" class="icon-question"><span>Rec</span> Rec</a>
+        <div class="l-block information">
+            <li><a href="/?command=GUIDE" class="icon-question"><span>Guide</span> Guide</a></li>
+            <li><a href="/?command=INFO" class="icon-question"><span>Info</span> Info</a></li>
+            <li><a href="/?command=CONTENTS" class="icon-question"><span>Contents</span> Contents</a></li>
+            <li><a href="/?command=PICTURE_SIZE" class="icon-question"><span>Picture_Size</span> Picture_Size</a></li>
+            <li><a href="/?command=W_LINK" class="icon-question"><span>W_Link</span> W_Link</a></li>
+            <li><a href="/?command=CONTENT" class="icon-question"><span>Content</span> Content</a></li>
+        </div>
+      </div>
+      <div class="pure-u-1 control-block">
+        <div class="l-block todo">
+          <ul>
+            <li><a href="/?command=16_9" class="icon-question"><span>16_9</span></a></li>
+            <li><a href="/?command=3SPEED" class="icon-question"><span>3SPEED</span></a></li>
+            <li><a href="/?command=11" class="icon-question"><span>11</span></a></li>
+            <li><a href="/?command=12" class="icon-question"><span>12</span></a></li>
+            <li><a href="/?command=4_3" class="icon-question"><span>4_3</span></a></li>
+            <li><a href="/?command=AD" class="icon-question"><span>AD</span></a></li>
+            <li><a href="/?command=ADDDEL" class="icon-question"><span>ADDDEL</span></a></li>
+            <li><a href="/?command=ALT_MHP" class="icon-question"><span>ALT_MHP</span></a></li>
+            <li><a href="/?command=ANGLE" class="icon-question"><span>ANGLE</span></a></li>
+            <li><a href="/?command=ANTENA" class="icon-question"><span>ANTENA</span></a></li>
+            <li><a href="/?command=ANYNET" class="icon-question"><span>ANYNET</span></a></li>
+            <li><a href="/?command=ANYVIEW" class="icon-question"><span>ANYVIEW</span></a></li>
+            <li><a href="/?command=APP_LIST" class="icon-question"><span>APP_LIST</span></a></li>
+            <li><a href="/?command=ASPECT" class="icon-question"><span>ASPECT</span></a></li>
+            <li><a href="/?command=AUTO_ARC_ANTENNA_AIR" class="icon-question"><span>AUTO_ARC_ANTENNA_AIR</span></a></li>
+            <li><a href="/?command=AUTO_ARC_ANTENNA_CABLE" class="icon-question"><span>AUTO_ARC_ANTENNA_CABLE</span></a></li>
+            <li><a href="/?command=AUTO_ARC_ANTENNA_SATELLITE" class="icon-question"><span>AUTO_ARC_ANTENNA_SATELLITE</span></a></li>
+            <li><a href="/?command=AUTO_ARC_ANYNET_AUTO_START" class="icon-question"><span>AUTO_ARC_ANYNET_AUTO_START</span></a></li>
+            <li><a href="/?command=AUTO_ARC_ANYNET_MODE_OK" class="icon-question"><span>AUTO_ARC_ANYNET_MODE_OK</span></a></li>
+            <li><a href="/?command=AUTO_ARC_AUTOCOLOR_FAIL" class="icon-question"><span>AUTO_ARC_AUTOCOLOR_FAIL</span></a></li>
+            <li><a href="/?command=AUTO_ARC_AUTOCOLOR_SUCCESS" class="icon-question"><span>AUTO_ARC_AUTOCOLOR_SUCCESS</span></a></li>
+            <li><a href="/?command=AUTO_ARC_CAPTION_ENG" class="icon-question"><span>AUTO_ARC_CAPTION_ENG</span></a></li>
+            <li><a href="/?command=AUTO_ARC_CAPTION_KOR" class="icon-question"><span>AUTO_ARC_CAPTION_KOR</span></a></li>
+            <li><a href="/?command=AUTO_ARC_CAPTION_OFF" class="icon-question"><span>AUTO_ARC_CAPTION_OFF</span></a></li>
+            <li><a href="/?command=AUTO_ARC_CAPTION_ON" class="icon-question"><span>AUTO_ARC_CAPTION_ON</span></a></li>
+            <li><a href="/?command=AUTO_ARC_C_FORCE_AGING" class="icon-question"><span>AUTO_ARC_C_FORCE_AGING</span></a></li>
+            <li><a href="/?command=AUTO_ARC_JACK_IDENT" class="icon-question"><span>AUTO_ARC_JACK_IDENT</span></a></li>
+            <li><a href="/?command=AUTO_ARC_LNA_OFF" class="icon-question"><span>AUTO_ARC_LNA_OFF</span></a></li>
+            <li><a href="/?command=AUTO_ARC_LNA_ON" class="icon-question"><span>AUTO_ARC_LNA_ON</span></a></li>
+            <li><a href="/?command=AUTO_ARC_PIP_CH_CHANGE" class="icon-question"><span>AUTO_ARC_PIP_CH_CHANGE</span></a></li>
+            <li><a href="/?command=AUTO_ARC_PIP_DOUBLE" class="icon-question"><span>AUTO_ARC_PIP_DOUBLE</span></a></li>
+            <li><a href="/?command=AUTO_ARC_PIP_LARGE" class="icon-question"><span>AUTO_ARC_PIP_LARGE</span></a></li>
+            <li><a href="/?command=AUTO_ARC_PIP_LEFT_BOTTOM" class="icon-question"><span>AUTO_ARC_PIP_LEFT_BOTTOM</span></a></li>
+            <li><a href="/?command=AUTO_ARC_PIP_LEFT_TOP" class="icon-question"><span>AUTO_ARC_PIP_LEFT_TOP</span></a></li>
+            <li><a href="/?command=AUTO_ARC_PIP_RIGHT_BOTTOM" class="icon-question"><span>AUTO_ARC_PIP_RIGHT_BOTTOM</span></a></li>
+            <li><a href="/?command=AUTO_ARC_PIP_RIGHT_TOP" class="icon-question"><span>AUTO_ARC_PIP_RIGHT_TOP</span></a></li>
+            <li><a href="/?command=AUTO_ARC_PIP_SMALL" class="icon-question"><span>AUTO_ARC_PIP_SMALL</span></a></li>
+            <li><a href="/?command=AUTO_ARC_PIP_SOURCE_CHANGE" class="icon-question"><span>AUTO_ARC_PIP_SOURCE_CHANGE</span></a></li>
+            <li><a href="/?command=AUTO_ARC_PIP_WIDE" class="icon-question"><span>AUTO_ARC_PIP_WIDE</span></a></li>
+            <li><a href="/?command=AUTO_ARC_RESET" class="icon-question"><span>AUTO_ARC_RESET</span></a></li>
+            <li><a href="/?command=AUTO_ARC_USBJACK_INSPECT" class="icon-question"><span>AUTO_ARC_USBJACK_INSPECT</span></a></li>
+            <li><a href="/?command=AUTO_FORMAT" class="icon-question"><span>AUTO_FORMAT</span></a></li>
+            <li><a href="/?command=AUTO_PROGRAM" class="icon-question"><span>AUTO_PROGRAM</span></a></li>
+            <li><a href="/?command=AV1" class="icon-question"><span>AV1</span></a></li>
+            <li><a href="/?command=AV2" class="icon-question"><span>AV2</span></a></li>
+            <li><a href="/?command=AV3" class="icon-question"><span>AV3</span></a></li>
+            <li><a href="/?command=BACK_MHP" class="icon-question"><span>BACK_MHP</span></a></li>
+            <li><a href="/?command=BOOKMARK" class="icon-question"><span>BOOKMARK</span></a></li>
+            <li><a href="/?command=CALLER_ID" class="icon-question"><span>CALLER_ID</span></a></li>
+            <li><a href="/?command=CATV_MODE" class="icon-question"><span>CATV_MODE</span></a></li>
+            <li><a href="/?command=CLEAR" class="icon-question"><span>CLEAR</span></a></li>
+            <li><a href="/?command=CLOCK_DISPLAY" class="icon-question"><span>CLOCK_DISPLAY</span></a></li>
+            <li><a href="/?command=COMPONENT1" class="icon-question"><span>COMPONENT1</span></a></li>
+            <li><a href="/?command=COMPONENT2" class="icon-question"><span>COMPONENT2</span></a></li>
+            <li><a href="/?command=CONVERT_AUDIO_MAINSUB" class="icon-question"><span>CONVERT_AUDIO_MAINSUB</span></a></li>
+            <li><a href="/?command=CUSTOM" class="icon-question"><span>CUSTOM</span></a></li>
+            <li><a href="/?command=CYAN" class="icon-question"><span>CYAN</span></a></li>
+            <li><a href="/?command=DEVICE_CONNECT" class="icon-question"><span>DEVICE_CONNECT</span></a></li>
+            <li><a href="/?command=DISC_MENU" class="icon-question"><span>DISC_MENU</span></a></li>
+            <li><a href="/?command=DMA" class="icon-question"><span>DMA</span></a></li>
+            <li><a href="/?command=DNET" class="icon-question"><span>DNET</span></a></li>
+            <li><a href="/?command=DNIe" class="icon-question"><span>DNIe</span></a></li>
+            <li><a href="/?command=DNSe" class="icon-question"><span>DNSe</span></a></li>
+            <li><a href="/?command=DOOR" class="icon-question"><span>DOOR</span></a></li>
+            <li><a href="/?command=DSS_MODE" class="icon-question"><span>DSS_MODE</span></a></li>
+            <li><a href="/?command=DTV" class="icon-question"><span>DTV</span></a></li>
+            <li><a href="/?command=DTV_LINK" class="icon-question"><span>DTV_LINK</span></a></li>
+            <li><a href="/?command=DTV_SIGNAL" class="icon-question"><span>DTV_SIGNAL</span></a></li>
+            <li><a href="/?command=DVD_MODE" class="icon-question"><span>DVD_MODE</span></a></li>
+            <li><a href="/?command=DVI" class="icon-question"><span>DVI</span></a></li>
+            <li><a href="/?command=DVR" class="icon-question"><span>DVR</span></a></li>
+            <li><a href="/?command=DVR_MENU" class="icon-question"><span>DVR_MENU</span></a></li>
+            <li><a href="/?command=DYNAMIC" class="icon-question"><span>DYNAMIC</span></a></li>
+            <li><a href="/?command=ENTERTAINMENT" class="icon-question"><span>ENTERTAINMENT</span></a></li>
+            <li><a href="/?command=ESAVING" class="icon-question"><span>ESAVING</span></a></li>
+            <li><a href="/?command=EXT1" class="icon-question"><span>EXT1</span></a></li>
+            <li><a href="/?command=EXT10" class="icon-question"><span>EXT10</span></a></li>
+            <li><a href="/?command=EXT11" class="icon-question"><span>EXT11</span></a></li>
+            <li><a href="/?command=EXT12" class="icon-question"><span>EXT12</span></a></li>
+            <li><a href="/?command=EXT13" class="icon-question"><span>EXT13</span></a></li>
+            <li><a href="/?command=EXT14" class="icon-question"><span>EXT14</span></a></li>
+            <li><a href="/?command=EXT15" class="icon-question"><span>EXT15</span></a></li>
+            <li><a href="/?command=EXT16" class="icon-question"><span>EXT16</span></a></li>
+            <li><a href="/?command=EXT17" class="icon-question"><span>EXT17</span></a></li>
+            <li><a href="/?command=EXT18" class="icon-question"><span>EXT18</span></a></li>
+            <li><a href="/?command=EXT19" class="icon-question"><span>EXT19</span></a></li>
+            <li><a href="/?command=EXT2" class="icon-question"><span>EXT2</span></a></li>
+            <li><a href="/?command=EXT20" class="icon-question"><span>EXT20</span></a></li>
+            <li><a href="/?command=EXT21" class="icon-question"><span>EXT21</span></a></li>
+            <li><a href="/?command=EXT22" class="icon-question"><span>EXT22</span></a></li>
+            <li><a href="/?command=EXT23" class="icon-question"><span>EXT23</span></a></li>
+            <li><a href="/?command=EXT24" class="icon-question"><span>EXT24</span></a></li>
+            <li><a href="/?command=EXT25" class="icon-question"><span>EXT25</span></a></li>
+            <li><a href="/?command=EXT26" class="icon-question"><span>EXT26</span></a></li>
+            <li><a href="/?command=EXT27" class="icon-question"><span>EXT27</span></a></li>
+            <li><a href="/?command=EXT28" class="icon-question"><span>EXT28</span></a></li>
+            <li><a href="/?command=EXT29" class="icon-question"><span>EXT29</span></a></li>
+            <li><a href="/?command=EXT3" class="icon-question"><span>EXT3</span></a></li>
+            <li><a href="/?command=EXT30" class="icon-question"><span>EXT30</span></a></li>
+            <li><a href="/?command=EXT31" class="icon-question"><span>EXT31</span></a></li>
+            <li><a href="/?command=EXT32" class="icon-question"><span>EXT32</span></a></li>
+            <li><a href="/?command=EXT33" class="icon-question"><span>EXT33</span></a></li>
+            <li><a href="/?command=EXT34" class="icon-question"><span>EXT34</span></a></li>
+            <li><a href="/?command=EXT35" class="icon-question"><span>EXT35</span></a></li>
+            <li><a href="/?command=EXT36" class="icon-question"><span>EXT36</span></a></li>
+            <li><a href="/?command=EXT37" class="icon-question"><span>EXT37</span></a></li>
+            <li><a href="/?command=EXT38" class="icon-question"><span>EXT38</span></a></li>
+            <li><a href="/?command=EXT39" class="icon-question"><span>EXT39</span></a></li>
+            <li><a href="/?command=EXT4" class="icon-question"><span>EXT4</span></a></li>
+            <li><a href="/?command=EXT40" class="icon-question"><span>EXT40</span></a></li>
+            <li><a href="/?command=EXT41" class="icon-question"><span>EXT41</span></a></li>
+            <li><a href="/?command=EXT5" class="icon-question"><span>EXT5</span></a></li>
+            <li><a href="/?command=EXT6" class="icon-question"><span>EXT6</span></a></li>
+            <li><a href="/?command=EXT7" class="icon-question"><span>EXT7</span></a></li>
+            <li><a href="/?command=EXT8" class="icon-question"><span>EXT8</span></a></li>
+            <li><a href="/?command=EXT9" class="icon-question"><span>EXT9</span></a></li>
+            <li><a href="/?command=FACTORY" class="icon-question"><span>FACTORY</span></a></li>
+            <li><a href="/?command=FAVCH" class="icon-question"><span>FAVCH</span></a></li>
+            <li><a href="/?command=FF_" class="icon-question"><span>FF_</span></a></li>
+            <li><a href="/?command=FM_RADIO" class="icon-question"><span>FM_RADIO</span></a></li>
+            <li><a href="/?command=GAME" class="icon-question"><span>GAME</span></a></li>
+            <li><a href="/?command=HDMI" class="icon-question"><span>HDMI</span></a></li>
+            <li><a href="/?command=HDMI1" class="icon-question"><span>HDMI1</span></a></li>
+            <li><a href="/?command=HDMI2" class="icon-question"><span>HDMI2</span></a></li>
+            <li><a href="/?command=HDMI3" class="icon-question"><span>HDMI3</span></a></li>
+            <li><a href="/?command=HELP" class="icon-question"><span>HELP</span></a></li>
+            <li><a href="/?command=HOME" class="icon-question"><span>HOME</span></a></li>
+            <li><a href="/?command=ID_INPUT" class="icon-question"><span>ID_INPUT</span></a></li>
+            <li><a href="/?command=ID_SETUP" class="icon-question"><span>ID_SETUP</span></a></li>
+            <li><a href="/?command=INSTANT_REPLAY" class="icon-question"><span>INSTANT_REPLAY</span></a></li>
+            <li><a href="/?command=LINK" class="icon-question"><span>LINK</span></a></li>
+            <li><a href="/?command=LIVE" class="icon-question"><span>LIVE</span></a></li>
+            <li><a href="/?command=MAGIC_BRIGHT" class="icon-question"><span>MAGIC_BRIGHT</span></a></li>
+            <li><a href="/?command=MAGIC_CHANNEL" class="icon-question"><span>MAGIC_CHANNEL</span></a></li>
+            <li><a href="/?command=MDC" class="icon-question"><span>MDC</span></a></li>
+            <li><a href="/?command=MENU" class="icon-question"><span>MENU</span></a></li>
+            <li><a href="/?command=MIC" class="icon-question"><span>MIC</span></a></li>
+            <li><a href="/?command=MORE" class="icon-question"><span>MORE</span></a></li>
+            <li><a href="/?command=MOVIE1" class="icon-question"><span>MOVIE1</span></a></li>
+            <li><a href="/?command=MS" class="icon-question"><span>MS</span></a></li>
+            <li><a href="/?command=MTS" class="icon-question"><span>MTS</span></a></li>
+            <li><a href="/?command=NINE_SEPERATE" class="icon-question"><span>NINE_SEPERATE</span></a></li>
+            <li><a href="/?command=OPEN" class="icon-question"><span>OPEN</span></a></li>
+            <li><a href="/?command=PANNEL_CHDOWN" class="icon-question"><span>PANNEL_CHDOWN</span></a></li>
+            <li><a href="/?command=PANNEL_CHUP" class="icon-question"><span>PANNEL_CHUP</span></a></li>
+            <li><a href="/?command=PANNEL_ENTER" class="icon-question"><span>PANNEL_ENTER</span></a></li>
+            <li><a href="/?command=PANNEL_MENU" class="icon-question"><span>PANNEL_MENU</span></a></li>
+            <li><a href="/?command=PANNEL_POWER" class="icon-question"><span>PANNEL_POWER</span></a></li>
+            <li><a href="/?command=PANNEL_SOURCE" class="icon-question"><span>PANNEL_SOURCE</span></a></li>
+            <li><a href="/?command=PANNEL_VOLDOW" class="icon-question"><span>PANNEL_VOLDOW</span></a></li>
+            <li><a href="/?command=PANNEL_VOLUP" class="icon-question"><span>PANNEL_VOLUP</span></a></li>
+            <li><a href="/?command=PANORAMA" class="icon-question"><span>PANORAMA</span></a></li>
+            <li><a href="/?command=PCMODE" class="icon-question"><span>PCMODE</span></a></li>
+            <li><a href="/?command=PERPECT_FOCUS" class="icon-question"><span>PERPECT_FOCUS</span></a></li>
+            <li><a href="/?command=PICTURE_SIZE" class="icon-question"><span>PICTURE_SIZE</span></a></li>
+            <li><a href="/?command=PIP_CHDOWN" class="icon-question"><span>PIP_CHDOWN</span></a></li>
+            <li><a href="/?command=PIP_CHUP" class="icon-question"><span>PIP_CHUP</span></a></li>
+            <li><a href="/?command=PIP_ONOFF" class="icon-question"><span>PIP_ONOFF</span></a></li>
+            <li><a href="/?command=PIP_SCAN" class="icon-question"><span>PIP_SCAN</span></a></li>
+            <li><a href="/?command=PIP_SIZE" class="icon-question"><span>PIP_SIZE</span></a></li>
+            <li><a href="/?command=PIP_SWAP" class="icon-question"><span>PIP_SWAP</span></a></li>
+            <li><a href="/?command=PLUS100" class="icon-question"><span>PLUS100</span></a></li>
+            <li><a href="/?command=PMODE" class="icon-question"><span>PMODE</span></a></li>
+            <li><a href="/?command=POWERON" class="icon-question"><span>POWERON</span></a></li>
+            <li><a href="/?command=PRINT" class="icon-question"><span>PRINT</span></a></li>
+            <li><a href="/?command=PROGRAM" class="icon-question"><span>PROGRAM</span></a></li>
+            <li><a href="/?command=QUICK_REPLAY" class="icon-question"><span>QUICK_REPLAY</span></a></li>
+            <li><a href="/?command=REPEAT" class="icon-question"><span>REPEAT</span></a></li>
+            <li><a href="/?command=RESERVED1" class="icon-question"><span>RESERVED1</span></a></li>
+            <li><a href="/?command=REWIND_" class="icon-question"><span>REWIND_</span></a></li>
+            <li><a href="/?command=RSURF" class="icon-question"><span>RSURF</span></a></li>
+            <li><a href="/?command=SCALE" class="icon-question"><span>SCALE</span></a></li>
+            <li><a href="/?command=SEFFECT" class="icon-question"><span>SEFFECT</span></a></li>
+            <li><a href="/?command=SETUP_CLOCK_TIMER" class="icon-question"><span>SETUP_CLOCK_TIMER</span></a></li>
+            <li><a href="/?command=SLEEP" class="icon-question"><span>SLEEP</span></a></li>
+            <li><a href="/?command=SRS" class="icon-question"><span>SRS</span></a></li>
+            <li><a href="/?command=STANDARD" class="icon-question"><span>STANDARD</span></a></li>
+            <li><a href="/?command=STB_MODE" class="icon-question"><span>STB_MODE</span></a></li>
+            <li><a href="/?command=STILL_PICTURE" class="icon-question"><span>STILL_PICTURE</span></a></li>
+            <li><a href="/?command=SUB_TITLE" class="icon-question"><span>SUB_TITLE</span></a></li>
+            <li><a href="/?command=SVIDEO1" class="icon-question"><span>SVIDEO1</span></a></li>
+            <li><a href="/?command=SVIDEO2" class="icon-question"><span>SVIDEO2</span></a></li>
+            <li><a href="/?command=SVIDEO3" class="icon-question"><span>SVIDEO3</span></a></li>
+            <li><a href="/?command=TOPMENU" class="icon-question"><span>TOPMENU</span></a></li>
+            <li><a href="/?command=TTX_MIX" class="icon-question"><span>TTX_MIX</span></a></li>
+            <li><a href="/?command=TTX_SUBFACE" class="icon-question"><span>TTX_SUBFACE</span></a></li>
+            <li><a href="/?command=TURBO" class="icon-question"><span>TURBO</span></a></li>
+            <li><a href="/?command=TV_MODE" class="icon-question"><span>TV_MODE</span></a></li>
+            <li><a href="/?command=VCHIP" class="icon-question"><span>VCHIP</span></a></li>
+            <li><a href="/?command=VCR_MODE" class="icon-question"><span>VCR_MODE</span></a></li>
+            <li><a href="/?command=WHEEL_LEFT" class="icon-question"><span>WHEEL_LEFT</span></a></li>
+            <li><a href="/?command=WHEEL_RIGHT" class="icon-question"><span>WHEEL_RIGHT</span></a></li>
+            <li><a href="/?command=W_LINK" class="icon-question"><span>W_LINK</span></a></li>
+            <li><a href="/?command=ZOOM1" class="icon-question"><span>ZOOM1</span></a></li>
+            <li><a href="/?command=ZOOM2" class="icon-question"><span>ZOOM2</span></a></li>
+            <li><a href="/?command=ZOOM_IN" class="icon-question"><span>ZOOM_IN</span></a></li>
+            <li><a href="/?command=ZOOM_MOVE" class="icon-question"><span>ZOOM_MOVE</span></a></li>
+            <li><a href="/?command=ZOOM_OUT" class="icon-question"><span>ZOOM_OUT</span></a></li>
+            <li><a href="/?command=INTERNET" class="icon-globe"><span>Internet</span></a></li>
+            <li><a href="/?command=AD" class="icon-question"><span>Ad</span> Ad</a></li>
+            <li><a href="/?command=RSS" class="icon-rss"><span>RSS</span> RSS</a></li>
+            <li><a href="/?command=DUAL" class="icon-question"><span>Dual</span> Dual</a></li>
+            <li><a href="/?command=PROGUP" class="icon-question"><span>ProgUp</span> ProgUp</a></li>
+            <li><a href="/?command=PROG_UP" class="icon-question"><span>Prog_Up</span> Prog_Up</a></li>
+            <li><a href="/?command=TV" class="icon-question"><span>TV</span> TV</a></li>
+            <li><a href="/?command=OFF" class="icon-question"><span>Off</span> Off</a></li>
+            <li><a href="/?command=POWER" class="icon-question"><span>Power</span> Power</a></li>
+            <li><a href="/?command=STANDBY" class="icon-question"><span>Standby</span> Standby</a></li>
+            <li><a href="/?command=HDMI1" class="icon-gamepad"><span>HDMI1</span></a></li>
+            <li><a href="/?command=RW" class="icon-gamepad"><span>RW</span></a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="pure-u-1 control-block">
+        <div class="l-block accessibility">
+          <ul>
+            <li><a href="/?command=SUBT" class="icon-question"><span>Subt</span> Subt</a></li>
+            <li><a href="/?command=MTS" class="icon-question"><span>MTS</span> MTS</a></li>
+            <li><a href="/?command=CAPTION" class="icon-pencil"><span>Caption</span> Caption</a></li>
+          </ul>
+        </div>
+      </div>
+<!-- Below are commands that don't seem to do anything for me - or are redundant to those above. -->
+      <div class="pure-u-1 control-block">
+        <div class="l-block deprecated">
+          <ul>
+
+          </ul>
         </div>
       </div>
       <div class="pure-u-1 control-block">
         <div class="l-block macros">
-          <!-- Soon to support programmable macros.  This one turns on my CEC ARC receiver. -->
+          <!-- Soon to support programmable macros.  This one will turn on my CEC ARC receiver. -->
           <a href="/?commands=MENU,DOWN,ENTER" class="icon-question"><span>MENU,DOWN,ENTER</span> MENU,DOWN,ENTER</a>
         </div>
       </div>
