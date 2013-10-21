@@ -58,18 +58,80 @@ http.createServer(function(request, response) {
 
     /* Or the remote controller */
     else {
-      runCommand = function (command, text) {
-        var value   = 'bad',
-            command = command || '',
-            text    = text    || '';
+      runCommand = function (command, commands, text, endResponse) {
+        var value       = 'bad',
+            command     = command     || '',
+            commands    = commands    || '',
+            text        = text        || '',
+            endResponse = endResponse || false,
+            runCommand,
+            runCommands;
 
-        if(_get['text']) {
+        settings.config.text    = '';
+        settings.config.command = '';
+
+        runCommand = function(command) {
+          if(remote.SamsungController.keymap.indexOf(command) >= 0) {
+            settings.config.cbConnect = function () {
+              settings.status = 'connected';
+              if(endResponse) {
+                response.end('{"command":"' + command + '","cmdStatus":"ok"}');
+              }
+            };
+
+            settings.config.cbError = function (errorMsg) {
+              if(errorMsg === 'TV is off or unreachable') {
+                settings.status = 'disconnected';
+              }
+
+              if(endResponse) {
+                response.end('{"command":"' + command + '","cmdStatus":"' + errorMsg + '"}');
+              }
+            };
+
+            console.log('Good Command: ' + command);
+            settings.config.command = command;
+
+            value = remote.SamsungController.send(settings.config);
+          }
+
+          else if(command) {
+            console.log('Bad Command: ' + command);
+
+            value = 'invalid';
+          }
+
+          return value;
+        };
+
+        runCommands = function(i, commands) {
+          var command = commands[i];
+
+          if(command) {
+            value = value + runCommand(command);
+
+            setTimeout(function() {
+              runCommands(i + 1, commands);
+            }, 1000);
+          }
+        };
+
+        if(text) {
           settings.config.cbConnect = function () {
-            response.end('{"text":"' + text + '","cmdStatus":"ok"}');
+            settings.status = 'connected';
+            if(endResponse) {
+              response.end('{"text":"' + text + '","cmdStatus":"ok"}');
+            }
           };
 
           settings.config.cbError = function (errorMsg) {
-            response.end('{"text":"' + text + '","cmdStatus":"' + errorMsg + '"}');
+            if(errorMsg === 'TV is off or unreachable') {
+              settings.status = 'disconnected';
+            }
+
+            if(endResponse) {
+              response.end('{"text":"' + text + '","cmdStatus":"' + errorMsg + '"}');
+            }
           };
 
           console.log('Text inputted: ' + text);
@@ -78,25 +140,16 @@ http.createServer(function(request, response) {
           value = remote.SamsungController.send(settings.config);
         }
 
-        if(remote.SamsungController.keymap.indexOf(command) >= 0) {
-          settings.config.cbConnect = function () {
-            response.end('{"command":"' + command + '","cmdStatus":"ok"}');
-          };
+        if(commands) {
+          commands = commands.split(',');
 
-          settings.config.cbError = function (errorMsg) {
-            response.end('{"command":"' + command + '","cmdStatus":"' + errorMsg + '"}');
-          };
+          runCommands(0, commands);
 
-          console.log('Good Command: ' + command);
-          settings.config.command = command;
-
-          value = remote.SamsungController.send(settings.config);
+          value = '{"commands":' + value + '}';
         }
 
-        else if(command) {
-          console.log('Bad Command: ' + _get['command']);
-
-          value = 'invalid';
+        if(command) {
+          value = runCommand(command);
         }
 
         return value;
@@ -106,14 +159,15 @@ http.createServer(function(request, response) {
       if(request.headers.ajax) {
         response.writeHead(200, {'Content-Type': mimeTypes['.js']});
 
-        runCommand(_get['command'], _get['text']);
+        runCommand(_get['command'], _get['commands'], _get['text'], true);
       }
 
+      // Otherwise, show the markup
       else {
         fs.readFile('./markup.html', 'utf-8', function(error, data) {
           response.writeHead(200, {'Content-Type': mimeTypes['.html']});
 
-          runCommand();
+          runCommand(_get['command'], _get['commands'], _get['text'], false);
 
           response.end(data);
         });

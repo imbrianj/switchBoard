@@ -187,7 +187,6 @@ li {
 .remote .accessibility,
 .remote .information,
 .remote .todo,
-.remote .deprecated,
-.remote .macros {
+.remote .deprecated {
 	display: none;
 }
