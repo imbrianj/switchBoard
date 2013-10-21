@@ -45,7 +45,6 @@ exports.SamsungController = exports.SamsungController || (function () {
           message = '';
 
       if(this.command) {
-console.log('command sent: ' + this.command);
         message = String.fromCharCode(0x00) + String.fromCharCode(0x00) + String.fromCharCode(0x00) + String.fromCharCode(this.base64_encode(command).length) + String.fromCharCode(0x00) + this.base64_encode(command);
 
         console.log('Executing: ' + this.command);
@@ -54,7 +53,6 @@ console.log('command sent: ' + this.command);
       }
 
       if(this.text) {
-console.log('text sent');
         message = String.fromCharCode(0x01) + String.fromCharCode(0x00) + String.fromCharCode(this.base64_encode(this.text).length) + String.fromCharCode(0x00) + this.base64_encode(this.text);
 
         console.log('Text: ' + this.text);
