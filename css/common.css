@@ -1,71 +1,461 @@
-li {
+/* Reset */
+html,
+body,
+div,
+span,
+object,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+cite,
+code,
+em,
+img,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+thead,
+tfoot,
+tbody,
+tr,
+th,
+td {
+	border: 0;
+	font-family: inherit;
+	font-size: 100%;
+	font-style: inherit;
+	font-weight: inherit;
+	margin: 0;
+	outline: 0;
+	padding: 0;
+	vertical-align: baseline;
+}
+
+:focus {
+	outline: #000 dotted thin;
+}
+
+a,
+a:link,
+a:visited {
+	color: #286EA0;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+body {
+	background: #FFF;
+	color: #000;
+	font-family: helvetica;
+	line-height: 1;
+}
+
+ol,
+ul {
 	list-style: none;
 }
 
-.header {
-	clear: both;
-	overflow: hidden;
+table {
+	border-collapse: separate;
+	border-spacing: 0;
 }
 
-.header .pure-form {
-	float: right;
-	margin: 5px 20px;
+caption,
+th,
+td {
+	text-align: left;
+	font-weight: normal;
 }
 
-@media (max-width: 600px) {
-	.header .pure-form {
-		float: none;
-	}
+/* Copy button styling from purecss.io */
+button {
+	background-color: rgb(0, 120, 231);
+	border: 1px solid #999;  /*IE 6/7/8*/
+	border: none rgba(0, 0, 0, 0);  /*IE9 + everything else*/
+	border-radius: 2px;
+	color: #FFF;
+	cursor: pointer;
+	font-size: .5em;
+	*font-size: 90%; /*IE 6/7 - To reduce IE's oversized button text*/
+	*overflow: visible; /*IE 6/7 - Because of IE's overly large left/right padding on buttons */
+	padding: 0.5em 1.5em 0.5em;
+	text-decoration: none;
+	/* Transitions */
+	-webkit-transition: 0.1s linear -webkit-box-shadow;
+	-moz-transition: 0.1s linear -moz-box-shadow;
+	-ms-transition: 0.1s linear box-shadow;
+	-o-transition: 0.1s linear box-shadow;
+	transition: 0.1s linear box-shadow;
 }
 
-.header .pure-form fieldset {
-	border: none;
+button:hover,
+button:focus {
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#1a000000',GradientType=0);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(transparent), color-stop(40%, rgba(0,0,0, 0.05)), to(rgba(0,0,0, 0.10)));
+	background-image: -webkit-linear-gradient(transparent, rgba(0,0,0, 0.05) 40%, rgba(0,0,0, 0.10));
+	background-image: -moz-linear-gradient(top, rgba(0,0,0, 0.05) 0%, rgba(0,0,0, 0.10));
+	background-image: -o-linear-gradient(transparent, rgba(0,0,0, 0.05) 40%, rgba(0,0,0, 0.10));
+	background-image: linear-gradient(transparent, rgba(0,0,0, 0.05) 40%, rgba(0,0,0, 0.10));
 }
 
-.header .pure-form legend,
-.header .pure-form label {
+button:focus {
+	outline: 0;
+}
+
+button:active {
+	box-shadow: 0 0 0 1px rgba(0,0,0, 0.15) inset, 0 0 6px rgba(0,0,0, 0.20) inset;
+}
+
+/* Firefox: Get rid of the inner focus border */
+button::-moz-focus-inner{
+	padding: 0;
+	border: 0;
+}
+
+form fieldset label,
+form fieldset legend {
 	display: none;
 }
 
-.header .pure-form button {
-	font-size: 85%;
+/* Copy form styling from purecss.io */
+form input[type="text"],
+form input[type="password"],
+form input[type="email"],
+form input[type="url"],
+form input[type="date"],
+form input[type="month"],
+form input[type="time"],
+form input[type="datetime"],
+form input[type="datetime-local"],
+form input[type="week"],
+form input[type="number"],
+form input[type="search"],
+form input[type="tel"],
+form input[type="color"],
+form select,
+form textarea {
+	border: 1px solid #CCC;
+	border-radius: 4px;
+	box-shadow: inset 0 1px 3px #DDD;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	display: inline-block;
+	font-size: 0.5em;
+	padding: .5em .6em;
+	-webkit-transition: 0.3s linear border;
+	-moz-transition: 0.3s linear border;
+	-ms-transition: 0.3s linear border;
+	-o-transition: 0.3s linear border;
+	transition: 0.3s linear border;
 }
 
-.remote {
+form input[type="text"]:focus,
+form input[type="password"]:focus,
+form input[type="email"]:focus,
+form input[type="url"]:focus,
+form input[type="date"]:focus,
+form input[type="month"]:focus,
+form input[type="time"]:focus,
+form input[type="datetime"]:focus,
+form input[type="datetime-local"]:focus,
+form input[type="week"]:focus,
+form input[type="number"]:focus,
+form input[type="search"]:focus,
+form input[type="tel"]:focus,
+form input[type="color"]:focus,
+form select:focus,
+form textarea:focus {
+	border-color: #129FEA;
+	outline: 0;
+	outline: thin dotted \9; /* IE6-9 */
+}
+
+form input[type="file"]:focus,
+form input[type="radio"]:focus,
+form input[type="checkbox"]:focus {
+	outline: thin dotted #333;
+	outline: 1px auto #129FEA;
+}
+
+form .pure-checkbox,
+form .pure-radio {
+	display: block;
+	margin: .5em 0;
+}
+
+form input[type="text"][disabled],
+form input[type="password"][disabled],
+form input[type="email"][disabled],
+form input[type="url"][disabled],
+form input[type="date"][disabled],
+form input[type="month"][disabled],
+form input[type="time"][disabled],
+form input[type="datetime"][disabled],
+form input[type="datetime-local"][disabled],
+form input[type="week"][disabled],
+form input[type="number"][disabled],
+form input[type="search"][disabled],
+form input[type="tel"][disabled],
+form input[type="color"][disabled],
+form select[disabled],
+form textarea[disabled] {
+	background-color: #EAEDED;
+	color: #CAD2D3;
+	cursor: not-allowed;
+}
+
+form input[readonly],
+form select[readonly],
+form textarea[readonly] {
+	background: #EEE; /* menu hover bg color */
+	border-color: #CCC;
+	color: #777; /* menu text color */
+}
+
+form input:focus:invalid,
+form textarea:focus:invalid,
+form select:focus:invalid {
+	border: 1px solid #EE5F5B;
+	color: #B94A48;
+}
+
+form input:focus:invalid:focus,
+form textarea:focus:invalid:focus,
+form select:focus:invalid:focus {
+	border-color: #E9322D;
+}
+
+form input[type="file"]:focus:invalid:focus,
+form input[type="radio"]:focus:invalid:focus,
+form input[type="checkbox"]:focus:invalid:focus {
+	outline-color: #E9322D;
+}
+
+form select {
+	border: 1px solid #CCC;
+	background-color: #FFF;
+}
+
+form select[multiple] {
+	height: auto;
+}
+
+form label {
+	font-size: 90%;
+	margin: .5em 0 .2em;
+}
+
+form fieldset {
+	border: 0;
+	margin: 0;
+	padding: .35em 0 .75em;
+}
+
+form legend {
+	border-bottom: 1px solid #E5E5E5;
+	color: #333;
+	display: block;
+	font-size: 125%;
+	margin-bottom: .3em;
+	padding: .3em 0;
+	width: 100%;
+}
+
+@media only screen and (max-width : 480px) {
+	form button[type="submit"] {
+		margin: .7em 0 0;
+	}
+
+	form input[type="text"],
+	form input[type="password"],
+	form input[type="email"],
+	form input[type="url"],
+	form input[type="date"],
+	form input[type="month"],
+	form input[type="time"],
+	form input[type="datetime"],
+	form input[type="datetime-local"],
+	form input[type="week"],
+	form input[type="number"],
+	form input[type="search"],
+	form input[type="tel"],
+	form input[type="color"],
+	form label {
+		display: block;
+		margin-bottom: .3em;
+	}
+}
+
+.header {
+	border-bottom: 1px solid #DDD;
+	clear: both;
+	padding: 1em 1em .5em 1em;
+}
+
+.header h1 {
+	float: left;
+	padding-right: .5em;
+	text-transform: uppercase;
+}
+
+.header h1 a {
+	color: #000;
+	font-weight: bold;
+}
+
+.header ul,
+.header ul li {
+	float: left;
+}
+
+.header ul li {
+	margin: 0 .2em;
+}
+
+.header ul li a {
+	background-color: #DDD;
+	border: 1px solid #FFF;
+	border-width: 1px 1px 0 1px;
+	padding: .5em 1em;
+	position: relative;
+}
+
+.device {
 	font-size: 300%;
 }
 
-@media (max-width: 400px) {
-	.remote {
+.device > div {
+	float: left;
+	width: 33%;
+}
+
+.device .control-block .volume,
+.device .control-block .channel,
+.device .control-block .media,
+.device .control-block .shortcuts,
+.device .control-block .control,
+.device .control-block .buttons {
+	float: left;
+	width: 15%;
+}
+
+.device .control-block .navigation {
+	float: left;
+	width: 70%;
+}
+
+.device .text {
+	clear: both;
+	float: none;
+	margin: 0 auto;
+	text-align: center;
+	width: 100%;
+}
+
+.device .installed {
+	float: none;
+	margin: 0 auto;
+	width: 90%;
+}
+
+.device .installed li {
+	float: left;
+	margin: .1em .5%;
+}
+
+.device .installed li a {
+	width: auto;
+}
+
+.device .installed li img {
+	height: 150px;
+	width: 250px;
+}
+
+@media (max-width: 500px) {
+	.header h1 {
+		display: none;
+	}
+
+	.device .text input,
+	.device .text button {
+		margin: 0 auto;
+		width: 90%;
+	}
+}
+
+@media (max-width: 650px) {
+	.header ul {
+		clear: both;
+		float: none;
+	}
+
+	.header ul li {
+		margin-top: 1em;
+	}
+
+	.device {
 		font-size: 250%;
+	}
+
+	.device > div {
+		float: none;
+		width: 100%;
 	}
 }
 
 @media (min-width: 650px) {
-	#samsung-tv .control-block {
+	.device {
+		font-sie: 300%;
+	}
+
+	.device > div {
 		float: left;
 		width: 50%;
 	}
 }
 
 @media (min-width: 1000px) {
-	.remote {
+	.device {
 		font-size: 350%;
 	}
 
-	#samsung-tv .control-block {
+	.device > div {
 		float: left;
 		width: 33%;
 	}
 }
 
-.remote ol,
-.remote ul {
+.device ol,
+.device ul {
 	margin: 0;
 	padding-left: 0;
 }
 
-.remote a {
+.device a {
 	display: block;
 	margin: 0 auto;
 	text-align: center;
@@ -76,117 +466,188 @@ li {
 	width: 1em;
 }
 
-.remote a span {
+.device a span {
 	display: none;
 }
 
-.remote a:link,
-.remote a:visited {
+.device a:link,
+.device a:visited {
 	color: #333;
 	text-decoration: none;
 }
 
-.remote a:hover,
-.remote a:active {
+.device a:hover,
+.device a:active {
 	color: #0078E7;
 	text-shadow: 0 0 5px rgba(0,70,135,.5);
 }
 
-.remote a.icon-off {
+.device a.fa-power-off {
 	color: #F00;
 }
 
-.remote .control-block {
+.device .control-block {
 	margin: .5em 0;
 }
 
-.remote .channel {
+.device .channel {
 	padding-top: .65em;
 }
 
-.remote .volume a,
-.remote .channel a {
+.device .volume a,
+.device .channel a {
 	margin: .5em auto;
 }
 
-.remote .navigation a {
+.device .navigation a {
 	float: left;
 	margin: .2em auto;
 	width: 33%;
 }
 
-.remote .navigation .icon-arrow-up,
-.remote .navigation .icon-arrow-down {
+.device .navigation .fa-arrow-up,
+.device .navigation .fa-arrow-down {
 	clear: both;
 	float: none;
 }
 
-.remote .navigation .icon-arrow-left,
-.remote .navigation .icon-arrow-right {
+.device .navigation .fa-arrow-left,
+.device .navigation .fa-arrow-right {
 	line-height: 160%;
 }
 
-.remote .navigation .icon-check-empty {
+.device .navigation .fa-check-empty {
 	font-size: 175%;
 }
 
-.remote .tv-controls li {
+.device .tv-controls li {
 	float: left;
 	width: 33%;
 }
 
-.remote .tv-controls ol li:last-child {
+.device .tv-controls ol li:last-child {
 	width: 100%;
 }
 
-.remote .tv-controls ul li {
+.device .tv-controls ul li {
 	margin-top: -1em;
 }
 
-.remote .tv-controls ul li:last-child {
+.device .tv-controls ul li:last-child {
 	float: right;
 }
 
-.remote .todo span,
-.remote .tv-controls ol span {
+.device .todo span,
+.device .tv-controls ol span {
 	display: block;
 }
 
-.remote .media {
-	padding-top: 1.3em;
+.text .pure-form fieldset {
+	border: none;
 }
 
-.remote .media a {
+.text .pure-form legend,
+.text .pure-form label {
+	display: none;
+}
+
+.text .pure-form button {
+	font-size: 85%;
+}
+
+.device .media {
+	padding-top: 1.9em;
+}
+
+.device .shortcuts,
+.device .macros {
+	padding-top: 1.5em;
+}
+
+.device .media a {
 	float: left;
 	width: 20%;
 }
 
-.remote .shortcuts a {
+.device .shortcuts a {
 	float: left;
 	margin: .3em 0;
 	width: 20%;
 }
 
-.remote .media a.red {
+.device .control-block .media,
+.device .control-block .shortcuts {
+	padding-top: 0;
+}
+
+.device .control-block .media a,
+.device .control-block .shortcuts a,
+.device .control-block .control a,
+.device .control-block .buttons a {
+	float: none;
+	margin: .5em auto;
+	width: auto;
+}
+
+.device .media a.red {
 	color: red;
 }
 
-.remote .media a.green {
+.device .media a.green {
 	color: green;
 }
 
-.remote .media a.yellow {
+.device .media a.yellow {
 	color: yellow;
 }
 
-.remote .media a.blue {
+.device .media a.blue {
 	color: blue;
 }
 
-.header .pure-menu ul,
-.remote .accessibility,
-.remote .information,
-.remote .todo,
-.remote .deprecated {
+/* I personally don't use any of these, so I'll hide them */
+#samsung .tv-controls,
+#samsung .media,
+#samsung .information {
 	display: none;
+}
+
+.device {
+	display: none;
+}
+
+.samsung #samsung,
+.roku #roku,
+.ps3 #ps3,
+.macros #macros,
+.device:target {
+	display: block;
+}
+
+.samsung .header .samsung a,
+.roku .header .roku a,
+.ps3 .header .ps3 a,
+.macros .header .macros a {
+	background-color: #FFF;
+	border-color: #DDD;
+	color: #000;
+}
+
+/* This isn't done */
+#ps3 .powerState {
+	display: none;
+}
+
+li.macros {
+	display: none;
+}
+
+.header:after,
+.header ul:after {
+	clear: both;
+	content: '.';
+	display: block;
+	height: 0;
+	visibility: hidden;
+	width: 0;
 }

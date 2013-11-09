@@ -1,13 +1,14 @@
 /*jslint white: true */
 /*global exports, String, Buffer, require, console */
 
-exports.SamsungController = exports.SamsungController || (function () {
+exports.samsungController = exports.samsungController || (function () {
   'use strict';
 
   /**
    * @author brian@bevey.org
    * @fileoverview Basic control over Samsung SmartTVs from 2011 onward via TCP
    *               web sockets using Node.js.
+   * @requires net
    * @note This is a full-scale rip-off of the fine work done here:
    *       http://forum.samygo.tv/viewtopic.php?f=12&t=1792
    */
@@ -28,11 +29,11 @@ exports.SamsungController = exports.SamsungController || (function () {
      * "This is who I am."
      */
     chunkOne : function () {
-      var ipencoded  = this.base64_encode(this.serverip),
-          macencoded = this.base64_encode(this.servermac),
-          message    = String.fromCharCode(0x64) + String.fromCharCode(0x00) + String.fromCharCode(ipencoded.length) + String.fromCharCode(0x00) + ipencoded + String.fromCharCode(macencoded.length) + String.fromCharCode(0x00) + macencoded + String.fromCharCode(this.base64_encode(this.remotename).length) + String.fromCharCode(0x00) + this.base64_encode(this.remotename);
+      var ipencoded  = this.base64_encode(this.serverIp),
+          macencoded = this.base64_encode(this.serverMac),
+          message    = String.fromCharCode(0x64) + String.fromCharCode(0x00) + String.fromCharCode(ipencoded.length) + String.fromCharCode(0x00) + ipencoded + String.fromCharCode(macencoded.length) + String.fromCharCode(0x00) + macencoded + String.fromCharCode(this.base64_encode(this.remoteName).length) + String.fromCharCode(0x00) + this.base64_encode(this.remoteName);
 
-      return String.fromCharCode(0x00) + String.fromCharCode(this.appstring.length) + String.fromCharCode(0x00) + this.appstring + String.fromCharCode(message.length) + String.fromCharCode(0x00) + message;
+      return String.fromCharCode(0x00) + String.fromCharCode(this.appString.length) + String.fromCharCode(0x00) + this.appString + String.fromCharCode(message.length) + String.fromCharCode(0x00) + message;
     },
 
     /**
@@ -49,7 +50,7 @@ exports.SamsungController = exports.SamsungController || (function () {
 
         console.log('Executing: ' + this.command);
 
-        return String.fromCharCode(0x00) + String.fromCharCode(this.tvappstring.length) + String.fromCharCode(0x00) + this.tvappstring + String.fromCharCode(message.length) + String.fromCharCode(0x00) + message;
+        return String.fromCharCode(0x00) + String.fromCharCode(this.tvAppString.length) + String.fromCharCode(0x00) + this.tvAppString + String.fromCharCode(message.length) + String.fromCharCode(0x00) + message;
       }
 
       if(this.text) {
@@ -57,26 +58,26 @@ exports.SamsungController = exports.SamsungController || (function () {
 
         console.log('Text: ' + this.text);
 
-        return String.fromCharCode(0x01) + String.fromCharCode(this.appstring.length) + String.fromCharCode(0x00) + this.appstring + String.fromCharCode(message.length) + String.fromCharCode(0x00) + message;
+        return String.fromCharCode(0x01) + String.fromCharCode(this.appString.length) + String.fromCharCode(0x00) + this.appString + String.fromCharCode(message.length) + String.fromCharCode(0x00) + message;
       }
     },
 
     send : function (config) {
-      this.tvip        = config.tvip;
-      this.serverip    = config.serverip;
-      this.servermac   = config.servermac;
+      this.deviceIp    = config.deviceIp;
+      this.serverIp    = config.serverIp;
+      this.serverMac   = config.serverMac;
       this.command     = config.command     || '';
       this.text        = config.text        || '';
-      this.tvport      = config.tvport      || 55000;
-      this.appstring   = config.appstring   || "iphone..iapp.samsung";
-      this.tvappstring = config.tvappstring || "iphone.UN60ES8000.iapp.samsung";
-      this.remotename  = config.remotename  || "Node.js Samsung Remote";
+      this.devicePort  = config.devicePort  || 55000;
+      this.appString   = config.appString   || "iphone..iapp.samsung";
+      this.tvAppString = config.tvAppString || "iphone.UN60ES8000.iapp.samsung";
+      this.remoteName  = config.remoteName  || "Node.js Samsung Remote";
       this.cbConnect   = config.cbConnect   || function () {};
       this.cbError     = config.cbError     || function () {};
 
       var that         = this,
           net          = require('net'),
-          socket       = net.connect(this.tvport, this.tvip);
+          socket       = net.connect(this.devicePort, this.deviceIp);
 
       socket.on('connect', function() {
         console.log('connected');
@@ -93,7 +94,7 @@ exports.SamsungController = exports.SamsungController || (function () {
         var errorMsg = '';
 
         if(error.code === 'EHOSTUNREACH' || error.code === 'ECONNREFUSED') {
-          errorMsg = 'TV is off or unreachable';
+          errorMsg = 'Device is off or unreachable';
         }
 
         else {

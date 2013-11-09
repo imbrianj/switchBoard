@@ -1,5 +1,5 @@
-/*global window, ActiveXObject, init, console*/
-/*jslint white: true, browser: true, evil: true, undef: true, nomen: true, eqeqeq: true, plusplus: true, bitwise: true, regexp: true, strict: true, newcap: true, immed: true, indent: 2*/
+/*global document, window, ActiveXObject, init, console, XMLHttpRequest, Bevey*/
+/*jslint white: true */
 
 var Bevey = Bevey || (function () {
   'use strict';
@@ -237,7 +237,7 @@ var Bevey = Bevey || (function () {
       if (parent.getElementsByClassName) {
         children = parent.getElementsByClassName(className);
 
-        if ((tag) && (children.length)) {
+        if (tag && children.length) {
           for (i in children) {
             if ((children[i].tagName) && (children[i].tagName.toLowerCase() === tag)) {
               elementsWithClass[j] = children[i];
@@ -399,18 +399,29 @@ var Bevey = Bevey || (function () {
     *  global function of "init" is available, it will also be executed.
     */
     init : function () {
+      var header       = Bevey.getElementsByClassName('header', document.body, 'div')[0],
+          body         = Bevey.getElementsByClassName('body', document.body, 'div')[0],
+          searchInputs = Bevey.getElementsByClassName('text-form', body, 'form'),
+          runSearch,
+          i;
+
       Bevey.addClass(document.body, 'rich');
 
-      Bevey.event.add(document.getElementById('search-form'), 'submit', function(e) {
-        var elm  = document.getElementById('text-input'),
+      runSearch = function(e) {
+        var elm  = Bevey.getTarget(e),
             ts   = new Date().getTime(),
+            text = '',
+            device,
             ajaxRequest;
 
         e.preventDefault();
 
+        text   = Bevey.getElementsByClassName('text-input', elm, 'input')[0].value;
+        device = Bevey.getElementsByClassName('device-input', elm, 'input')[0].value;
+
         ajaxRequest = {
           path       : '/',
-          param      : 'text=' + elm.value + '&ts=' + ts,
+          param      : 'text=' + text + '&device=' + device + '&ts=' + ts,
           method     : 'GET',
           onComplete : function () {
             console.log(ajaxRequest.response);
@@ -418,22 +429,38 @@ var Bevey = Bevey || (function () {
         };
 
         Bevey.ajax.request(ajaxRequest);
+      };
+
+      for(i = 0; i < searchInputs.length; i++) {
+        Bevey.event.add(searchInputs[i], 'submit', runSearch);
+      }
+
+      Bevey.event.add(header, 'click', function(e) {
+        var elm     = Bevey.getTarget(e).parentNode,
+            tagName = elm.tagName.toLowerCase();
+
+        if(tagName === 'li') {
+          e.preventDefault();
+
+          document.body.className = elm.className;
+        }
       });
 
-      Bevey.event.add(document.getElementById('samsung-tv'), 'click', function(e) {
+      Bevey.event.add(body, 'click', function(e) {
         var elm     = Bevey.getTarget(e),
             tagName = elm.tagName.toLowerCase(),
             command = '',
             ts      = new Date().getTime(),
             ajaxRequest;
 
-        e.preventDefault();
-
+        elm = tagName === 'img'  ? elm.parentNode : elm;
         elm = tagName === 'i'    ? elm.parentNode : elm;
         elm = tagName === 'span' ? elm.parentNode : elm;
 
         if(elm.tagName.toLowerCase() === 'a') {
-          command = elm['href'];
+          e.preventDefault();
+
+          command = elm.href;
 
           ajaxRequest = {
             path   : command,
