@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global exports, String, Buffer, require, console */
+/*global exports, String, Buffer, require, console, setTimeout */
 
 exports.rokuController = exports.rokuController || (function () {
   'use strict';
@@ -67,7 +67,6 @@ exports.rokuController = exports.rokuController || (function () {
 
     dynamicContent : function (data, devices, index, dataResponse) {
       var config = devices[index],
-          rawApps,
           createList,
           parseApps;
 
@@ -97,8 +96,8 @@ exports.rokuController = exports.rokuController || (function () {
                 i;
 
             if(reply) {
-              for(i in reply['apps']['app']) {
-                app = reply['apps']['app'][i];
+              for(i in reply.apps.app) {
+                app = reply.apps.app[i];
                 apps[app['$']['id']] = { 'name' : app['_'],
                                          'id'   : app['$']['id'],
                                          'link' : 'http://' + config.config.deviceIp + ':8060/launch/11?contentID=' + app['$']['id'],

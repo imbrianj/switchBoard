@@ -1,16 +1,6 @@
 /*jslint white: true */
 /*global exports, String, Buffer, require, console */
 
-/**
- * TODO
- * Unsure if PowerOn value will fork process (blocking?)
- * Integrate into FE.
- * Play with magicNumber to find something that'll work.
- * Power On / Power Off toggle if lock file exists.
- * Switch to "up", "down", "left", "right" instead of lstick?
- * More testing.
- * Support for all buttons?
- */
 exports.ps3Controller = exports.ps3Controller || (function () {
   'use strict';
 

@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global require, console */
+/*global require, console, setTimeout */
 
 /**
  * @author brian@bevey.org
@@ -16,6 +16,8 @@ var http        = require('http'),
 
 // Only load controllers if they're configured.
 (function() {
+  'use strict';
+
   var deviceName;
 
   for(deviceName in settings.config) {
@@ -28,6 +30,8 @@ var http        = require('http'),
 // PS3 requires a lock file to determine if the daemon is running.
 // If the server is just started up, we should assume it is not.
 (function() {
+  'use strict';
+
   var exists = path.exists || fs.exists;
 
   exists('ps3.lock', function(exists) {
@@ -42,14 +46,14 @@ var http        = require('http'),
 }());
 
 http.createServer(function(request, response) {
+  'use strict';
+
   request.on('end', function () {
     var runCommand,
         directory,
         deviceController,
-        output    = '',
-        dynamic   = '',
         _get      = url.parse(request.url, true).query,
-        device    = _get['device'] || settings.config.default,
+        device    = _get.device || settings.config.default,
         filename  = path.basename(request.url),
         extension = path.extname(filename),
         exists    = path.exists || fs.exists,
@@ -100,7 +104,6 @@ http.createServer(function(request, response) {
             command        = config.command          || '',
             macro          = config.macro            || '',
             text           = config.text             || '',
-            list           = config.list             || '',
             launch         = config.launch           || '',
             endResponse    = config.endResponse      || false,
             singleCommand,
@@ -116,17 +119,17 @@ http.createServer(function(request, response) {
 
         singleCommand = function(command) {
           if(deviceController.keymap.indexOf(command) >= 0) {
-            deviceSettings['cbConnect'] = function () {
-              deviceSettings['status'] = 'connected';
+            deviceSettings.cbConnect = function () {
+              deviceSettings.status = 'connected';
 
               if(endResponse) {
                 response.end('{"command":"' + command + '","cmdStatus":"ok"}');
               }
             };
 
-            deviceSettings['cbError'] = function (errorMsg) {
+            deviceSettings.cbError = function (errorMsg) {
               if(errorMsg === 'Device is off or unreachable') {
-                deviceSettings['status'] = 'disconnected';
+                deviceSettings.status = 'disconnected';
               }
 
               if(endResponse) {
@@ -135,7 +138,7 @@ http.createServer(function(request, response) {
             };
 
             console.log('Good Command: ' + command);
-            deviceSettings['command'] = command;
+            deviceSettings.command = command;
 
             value = deviceController.send(deviceSettings);
           }
@@ -150,10 +153,10 @@ http.createServer(function(request, response) {
         };
 
         runMacro = function(i, macro) {
-          var command = macro[i];
+          var tempCommand = macro[i];
 
-          if(command) {
-            value = value + singleCommand(command);
+          if(tempCommand) {
+            value = value + singleCommand(tempCommand);
 
             setTimeout(function() {
               runMacro(i + 1, macro);
@@ -162,14 +165,14 @@ http.createServer(function(request, response) {
         };
 
         if(text) {
-          deviceSettings['cbConnect'] = function () {
+          deviceSettings.cbConnect = function () {
             settings.status = 'connected';
             if(endResponse) {
               response.end('{"text":"' + text + '","cmdStatus":"ok"}');
             }
           };
 
-          deviceSettings['cbError'] = function (errorMsg) {
+          deviceSettings.cbError = function (errorMsg) {
             if(errorMsg === 'Device is off or unreachable') {
               deviceSettings.status = 'disconnected';
             }
@@ -180,20 +183,20 @@ http.createServer(function(request, response) {
           };
 
           console.log('Text inputted: ' + text);
-          deviceSettings['text'] = text;
+          deviceSettings.text = text;
 
           value = deviceController.send(deviceSettings);
         }
 
         if(launch) {
-          deviceSettings['cbConnect'] = function () {
+          deviceSettings.cbConnect = function () {
             settings.status = 'connected';
             if(endResponse) {
               response.end('{"launch":"' + launch + '","cmdStatus":"ok"}');
             }
           };
 
-          deviceSettings['cbError'] = function (errorMsg) {
+          deviceSettings.cbError = function (errorMsg) {
             if(errorMsg === 'Device is off or unreachable') {
               deviceSettings.status = 'disconnected';
             }
@@ -204,7 +207,7 @@ http.createServer(function(request, response) {
           };
 
           console.log('Lauch: ' + launch);
-          deviceSettings['launch'] = launch;
+          deviceSettings.launch = launch;
 
           value = deviceController.send(deviceSettings);
         }
@@ -232,7 +235,7 @@ http.createServer(function(request, response) {
       if(request.headers.ajax) {
         response.writeHead(200, { 'Content-Type': mimeTypes['.js'] });
 
-        runCommand({ command: _get['command'], macro: _get['macro'], text: _get['text'], list: _get['list'], launch: _get['launch'], endResponse: true });
+        runCommand({ command: _get.command, macro: _get.macro, text: _get.text, list: _get.list, launch: _get.launch, endResponse: true });
       }
 
       // Otherwise, show the markup
@@ -240,7 +243,7 @@ http.createServer(function(request, response) {
         fs.readFile('./markup.html', 'utf-8', function(error, data) {
           response.writeHead(200, {'Content-Type': mimeTypes['.html']});
 
-          runCommand({ command: _get['command'], macro: _get['macro'], text: _get['text'], list: _get['list'], launch: _get['launch'], endResponse: false });
+          runCommand({ command: _get.command, macro: _get.macro, text: _get.text, list: _get.list, launch: _get.launch, endResponse: false });
 
           // I'm not using mustache, but I can pretend.
           data = data.replace('{{DEVICE}}', device);
@@ -256,15 +259,15 @@ http.createServer(function(request, response) {
               tempDevice = controllers[deviceName][deviceName + 'Controller'];
 
               if(typeof(tempDevice) === 'object') {
-                if(typeof(tempDevice.dynamicContent) !== 'undefined') {
+                if(tempDevice.dynamicContent !== undefined) {
                   devices[i] = { 'controller': tempDevice, 'config': settings.config[deviceName] };
-                  i++;
+                  i += 1;
                 }
               }
             }
 
             if(i) {
-              i--;
+              i -= 1;
 
               devices[i]['controller']['dynamicContent'](data, devices, i, response);
             }
