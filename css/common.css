@@ -349,7 +349,7 @@ form legend {
 
 .device > div {
 	float: left;
-	width: 33%;
+	width: 50%;
 }
 
 .device .control-block .volume,
@@ -631,6 +631,44 @@ form legend {
 	background-color: #FFF;
 	border-color: #DDD;
 	color: #000;
+}
+
+/* Dark theme */
+.theme-dark body {
+	background: #000;
+	color: #FFF;
+}
+
+.theme-dark .header h1 a,
+.theme-dark input,
+.theme-dark button {
+	color: #333;
+}
+
+.theme-dark input {
+	background-color: #000;
+}
+
+.theme-dark button {
+	background-color: rgba(0,25,50);
+}
+
+.theme-dark .header {
+	border-bottom: 1px solid #333;
+}
+
+.theme-dark .header ul li a {
+	background-color: #333;
+	border-color: #333;
+}
+
+.theme-dark .samsung .header .samsung a,
+.theme-dark .roku .header .roku a,
+.theme-dark .ps3 .header .ps3 a,
+.theme-dark .macros .header .macros a {
+	background-color: #333;
+	border-color: #333;
+	color: #FFF;
 }
 
 /* This isn't done */

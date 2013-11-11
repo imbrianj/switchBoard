@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns="http://www.w3.org/1999/html" class="theme-{{THEME}}">
   <head>
     <title>Universal Controller</title>
     <link rel="stylesheet" href="css/font-awesome.min.css">
@@ -52,11 +52,9 @@
             <li><a href="/?device=samsung&command=MENU" class="fa fa-list-ul"><span>Menu</span></a></li>
             <li><a href="/?device=samsung&command=EXIT" class="fa fa-sign-out"><span>Exit</span></a></li>
             <li><a href="/?device=samsung&command=RETURN" class="fa fa-undo"><span>Return</span></a></li>
+            <!-- Macros can be programmed to run a series of commands.  This one will turn on my CEC ARC receiver. -->
+            <li><a href="/?device=samsung&macro=HDMI4,DOWN,ENTER" class="fa fa-link"><span>HDMI4,DOWN,ENTER</span></a></li>
           </ul>
-        </div>
-        <div class="macros">
-          <!-- Macros can be programmed to run a series of commands.  This one will turn on my CEC ARC receiver. -->
-          <a href="/?device=samsung&macro=HDMI4,DOWN,ENTER" class="fa fa-link"><span>HDMI4,DOWN,ENTER</span></a>
         </div>
         <div class="text">
           <form class="text-form" id="tv-search-form" action="/" method="get">

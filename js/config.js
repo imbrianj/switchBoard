@@ -7,6 +7,7 @@ exports.config = {
   'serverPort' : '8080',
   'serverIp'   : '192.168.1.150',
   'serverMac'  : '00:00:00:00:00:00',
+  'theme'      : 'dark',
   'default'    : 'samsung',
 
   samsung : {

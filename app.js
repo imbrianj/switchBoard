@@ -248,6 +248,8 @@ http.createServer(function(request, response) {
           // I'm not using mustache, but I can pretend.
           data = data.replace('{{DEVICE}}', device);
 
+          data = data.replace('{{THEME}}', settings.config.theme || 'standard');
+
           // If you a device that is expecting dynamic content, let's find that.
           (function() {
             var deviceName,
