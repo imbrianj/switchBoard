@@ -21,33 +21,22 @@ exports.ps3Controller = exports.ps3Controller || (function () {
     translateCommand : function () {
       var value       = '',
           // Tweak the sensitivity of the button press
-          magicNumber = 250,
-          sleep       = '.1';
+          magicNumber = 75;
 
       switch(this.command) {
         case 'PowerOn' :
-          // Create a lock file so we can query if the device is still on.
-          value = 'echo Starting up PS3 && date > ./ps3.lock && emu ' + this.deviceMac + ' > /dev/null && rm ./ps3.lock && echo PS3 is shut down';
-        break;
-
-        case 'Left' :
-          value = 'emuclient --event "left(' + magicNumber + ')" && sleep ' + sleep + ' && emuclient --event "left(0)"';
-        break;
-
-        case 'Right' :
-          value = 'emuclient --event "right(' + magicNumber + ')" && sleep ' + sleep + ' && emuclient --event "right(0)"';
-        break;
-
-        case 'Up' :
-          value = 'emuclient --event "up(' + magicNumber + ')" && sleep ' + sleep + ' && emuclient --event "up(0)"';
-        break;
-
-        case 'Down' :
-          value = 'emuclient --event "down(' + magicNumber + ')" && sleep ' + sleep + ' && emuclient --event "down(0)"';
+          value = 'emu ' + this.deviceMac + ' > /dev/null';
         break;
 
         case 'PS' :
           value = 'emuclient --event "PS(255)"';
+        break;
+
+        case 'Left'  :
+        case 'Right' :
+        case 'Up'    :
+        case 'Down'  :
+          value = 'emuclient --event "' + this.command.toLowerCase() + '(' + magicNumber + ')" && emuclient --event "' + this.command.toLowerCase() + '(0)"';
         break;
 
         case 'Select'   :
@@ -86,10 +75,11 @@ exports.ps3Controller = exports.ps3Controller || (function () {
       var that       = this,
           exec       = require('child_process').exec;
 
-      exec(this.translateCommand(), function(error) {
-        console.log('Executing: ' + that.command);
+      exec(this.translateCommand(), function (error, stdout, stderr) {
+        that.cbConnect();
 
         if(error) {
+          that.cbError();
           console.log(error);
         }
       });
