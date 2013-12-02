@@ -143,6 +143,12 @@ http.createServer(function(request, response) {
             value = deviceController.send(deviceSettings);
           }
 
+          else if(command === 'sleep') {
+            console.log('Sleep command sent');
+
+            value = 'sleep';
+          }
+
           else if(command) {
             console.log('Bad Command: ' + command);
 

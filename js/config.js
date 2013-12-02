@@ -30,6 +30,12 @@ exports.config = {
     'deviceMac' : '00:00:00:00:00:00'
   },
 
+  panasonic : {
+    'title'    : 'Panasonic',
+    'prefix'   : 'panasonic',
+    'deviceIp' : '192.168.1.3'
+  },
+
   // Placeholder...for now
   macro : {
     'title'  : 'Macros',

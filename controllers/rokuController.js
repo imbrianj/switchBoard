@@ -8,7 +8,7 @@ exports.rokuController = exports.rokuController || (function () {
    * @author brian@bevey.org
    * @fileoverview Basic control over Roku devices via TCP POST requests using
    *               Node.js.
-   * @requires xml2js
+   * @requires xml2js, http
    */
   return {
     version : '0.0.0.0.1 alpha',

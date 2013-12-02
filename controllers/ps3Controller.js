@@ -21,11 +21,11 @@ exports.ps3Controller = exports.ps3Controller || (function () {
     translateCommand : function () {
       var value       = '',
           // Tweak the sensitivity of the button press
-          magicNumber = 75;
+          magicNumber = 255;
 
       switch(this.command) {
         case 'PowerOn' :
-          value = 'emu ' + this.deviceMac + ' > /dev/null';
+          value = 'date > ps3.lock && echo "Connecting to PS3" && emu ' + this.deviceMac + ' > /dev/null && echo "Disconnecting from PS3" && rm ps3.lock';
         break;
 
         case 'PS' :
@@ -36,7 +36,7 @@ exports.ps3Controller = exports.ps3Controller || (function () {
         case 'Right' :
         case 'Up'    :
         case 'Down'  :
-          value = 'emuclient --event "' + this.command.toLowerCase() + '(' + magicNumber + ')" && emuclient --event "' + this.command.toLowerCase() + '(0)"';
+          value = 'emuclient --event "' + this.command.toLowerCase() + '(' + magicNumber + ')" & sleep .01 && emuclient --event "' + this.command.toLowerCase() + '(0)"';
         break;
 
         case 'Select'   :
