@@ -36,16 +36,16 @@ exports.rokuController = exports.rokuController || (function () {
           };
 
       if(this.command) {
-        path += 'keypress/' + this.command;
+        path += 'keypress/' + that.command;
       }
 
-      if(this.letter) {
-        path += 'keypress/Lit_' + this.letter;
+      if(that.letter) {
+        path += 'keypress/Lit_' + that.letter;
       }
 
       if(this.text) {
         // Roku requires a string to be sent one char at a time.
-        runText(0, this.text, this.deviceIp);
+        runText(0, that.text, that.deviceIp);
       }
 
       if(this.list) {
@@ -54,12 +54,12 @@ exports.rokuController = exports.rokuController || (function () {
       }
 
       if(this.launch) {
-        path += 'launch/11?contentID=' + this.launch;
+        path += 'launch/11?contentID=' + that.launch;
       }
 
       return {
-        host    : this.deviceIp,
-        port    : this.devicePort,
+        host    : that.deviceIp,
+        port    : that.devicePort,
         path    : path,
         method  : method
       };

@@ -48,7 +48,7 @@ exports.panasonicController = exports.panasonicController || (function () {
       var response = '',
           action   = 'X_SendKey',
           urn      = 'panasonic-com:service:p00NetworkControl:1',
-          value    = '<X_KeyEvent>' + that.command + '</X_KeyEvent>';
+          value    = '<X_KeyEvent>NRC_' + that.command + '</X_KeyEvent>';
 
       if(that.text) {
         action = 'X_SendString';
