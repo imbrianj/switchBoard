@@ -25,19 +25,23 @@ If you have questions, comments or want to complain, email me at brian@bevey.org
 FAQ
 ---
 Q. Why aren't you using a seed-based JS library / referencing CSS from a CDN?
+
 A. I want to make sure this works without any Internet access.  You need local LAN access, but nothing should be over the Internet.
 
 Q. What devices are supported?
+
 A. Right now: Samsung Smart TVs (2011 onward), Roku and PS3 (with some manual configuration).
 
 Q. How can I configure my PS3?
+
 A.
  * You'll need a supported Bluetooth dongle: http://gimx.fr/wiki/index.php?title=Bluetooth_dongle
- * Install GIMX version 1.11+ (earlier versions won't work): https://code.google.com/p/diyps3controller/downloads/list
+ * Install GIMX version 1.12+ (earlier versions won't work): https://code.google.com/p/diyps3controller/downloads/list
  * Spoof an already paired PS3 controller: http://gimx.fr/wiki/index.php?title=Command_line#Linux_.2B_bluetooth
  * That's it!
 
 Q. What's next?
+
 A.
  * Bug fixes, polish.
  * Better reporting of device state (on, off).
@@ -48,4 +52,5 @@ A.
  * Bug fixes, polish.
 
 Q. How secure is this?
+
 A. Not very.  It's assumed that any device that's on your network is deemed white-listed.  This probably shouldn't be used on a large network with people you don't trust to screw with your TV.
