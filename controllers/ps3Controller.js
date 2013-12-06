@@ -45,7 +45,7 @@ exports.ps3Controller = exports.ps3Controller || (function () {
         case 'Circle'   :
         case 'Cross'    :
         case 'Square'   :
-          value = 'emuclient --event "' + this.command.toLowerCase() + '(255)"';
+          value = 'emuclient --event "' + this.command.toLowerCase() + '(255)" & sleep .01 && emuclient --event "' + this.command.toLowerCase() + '(0)"';
         break;
       }
 
