@@ -14,9 +14,16 @@ Download the source, edit js/config.js to reflect your node server IP, desired p
 Credit
 ---
 Thank you to the people that sorted out how to write to the Samsung TVs and paving the way for me to port this to node: http://forum.samygo.tv/viewtopic.php?f=12&t=1792
-Also thanks to purecss.io and fontawesome.io for their assets.
 
 Thank you to Matlo from GIMX for his huge help in getting the PS3 control working.  You should definitely check out his project and donate so he can get a PS4 and add support for that device as well. http://blog.gimx.fr/
+
+Thank you to the group that documented the Panasonic interface that I've ported to node:
+http://cocoontech.com/forums/topic/21266-panasonic-viera-plasma-ip-control/page-2
+
+Thank you to everyone that helped shed some light on LG develpment:
+http://forum.loxone.com/enen/software/4876-lg-tv-http-control.html#post32692
+
+Also thanks to purecss.io and fontawesome.io for their assets.
 
 Contact
 ---
@@ -30,7 +37,7 @@ A. I want to make sure this works without any Internet access.  You need local L
 
 Q. What devices are supported?
 
-A. Right now: Samsung Smart TVs (2011 onward), Roku and PS3 (with some manual configuration).
+A. Right now: Samsung Smart TVs (2011 onward), Roku and PS3 (with some manual configuration).  Panasonic Viera is ready to be tested.
 
 Q. How can I configure my PS3?
 
@@ -44,11 +51,16 @@ Q. What's next?
 
 A.
  * Bug fixes, polish.
- * Better reporting of device state (on, off).
- * Themes.
- * Get multi-device macros.
- * Integrate into SmartThings so I can program a macro to turn down the lights, turn on a movie.
+ * Panasonic Viera TVs.
+ * LG Smart TVs.
+ * Only load markup for devices that are configured instead of relying on CSS hacks to hide unwanted devices.
+ * Better reporting of device state (on, off) and give indication of a devices state to the user.
+ * Intelligently take action based on appropriate state.  If Samsung TV is on, we can leave a persistent web socket open.  If PS3 is on, we can connect to it via bluetooth.
+ * Web-based configurations.
+ * Support for multiple devices of the same type (if you have more than one Roku, for example).
+ * Multi-device macros (turn on PS3, turn on stereo, select HDMI1, hit X with one button press).
  * Add support for PS4 (?)
+ * Investigate other devices (Sony, Toshiba, Philips, Vizio TVs?  Dropcam, Foscam?  Smartthings?  Nest?).
  * Bug fixes, polish.
 
 Q. How secure is this?

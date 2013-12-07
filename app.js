@@ -21,7 +21,7 @@ var http        = require('http'),
   var deviceName;
 
   for(deviceName in settings.config) {
-    if(typeof(settings.config[deviceName]) === 'object') {
+    if((typeof(settings.config[deviceName]) === 'object') && (settings.config[deviceName]['disabled'] !== true)) {
       controllers[deviceName] = require('./controllers/' + deviceName + 'Controller');
     }
   }

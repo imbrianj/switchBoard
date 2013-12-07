@@ -19,9 +19,7 @@ exports.ps3Controller = exports.ps3Controller || (function () {
     keymap  : ['PowerOn', 'Left', 'Right', 'Up', 'Down', 'PS', 'Select', 'Start', 'Triangle', 'Circle', 'Cross', 'Square'],
 
     translateCommand : function () {
-      var value       = '',
-          // Tweak the sensitivity of the button press
-          magicNumber = 255;
+      var value = '';
 
       switch(this.command) {
         case 'PowerOn' :
@@ -32,13 +30,10 @@ exports.ps3Controller = exports.ps3Controller || (function () {
           value = 'emuclient --event "PS(255)"';
         break;
 
-        case 'Left'  :
-        case 'Right' :
-        case 'Up'    :
-        case 'Down'  :
-          value = 'emuclient --event "' + this.command.toLowerCase() + '(' + magicNumber + ')" & sleep .01 && emuclient --event "' + this.command.toLowerCase() + '(0)"';
-        break;
-
+        case 'Left'     :
+        case 'Right'    :
+        case 'Up'       :
+        case 'Down'     :
         case 'Select'   :
         case 'Start'    :
         case 'Triangle' :

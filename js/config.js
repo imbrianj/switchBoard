@@ -13,13 +13,15 @@ exports.config = {
   samsung : {
     'title'    : 'Samsung SmartTv',
     'prefix'   : 'samsung',
-    'deviceIp' : '192.168.1.1'
+    'deviceIp' : '192.168.1.1',
+    'disabed'  : false
   },
 
   roku : {
     'title'    : 'Roku',
     'prefix'   : 'roku',
-    'deviceIp' : '192.168.1.2'
+    'deviceIp' : '192.168.1.2',
+    'disabled' : false
   },
 
   ps3 : {
@@ -27,18 +29,29 @@ exports.config = {
     'prefix'    : 'ps3',
     // Bluetooth mac address of PS3
     // This is *NOT* the TCP network mac address
-    'deviceMac' : '00:00:00:00:00:00'
+    'deviceMac' : '00:00:00:00:00:00',
+    'deviceIp'  : '192.168.1.3',
+    'disabled'  : false
   },
 
   panasonic : {
     'title'    : 'Panasonic',
     'prefix'   : 'panasonic',
-    'deviceIp' : '192.168.1.3'
+    'deviceIp' : '192.168.1.4',
+    'disabled' : true
   },
+
+  lg : {
+    'title'    : 'LG TV',
+    'prefix'   : 'lg',
+    'deviceIp' : '192.168.1.5',
+    'disabled' : true
+  }
 
   // Placeholder...for now
   macro : {
-    'title'  : 'Macros',
-    'prefix' : 'macro'
+    'title'    : 'Macros',
+    'prefix'   : 'macro',
+    'disabled' : true
   }
 };
