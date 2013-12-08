@@ -47,10 +47,13 @@ exports.ps3Controller = exports.ps3Controller || (function () {
       return value;
     },
 
+    findState : function () {
+    },
+
     dynamicContent : function (data, devices, index, dataResponse) {
       var config = devices[index];
 
-      data = data.replace('{{' + config.config.prefix.toUpperCase() + '_DYNAMIC}}', 'TESTING');
+      data = data.replace('{{' + config.config.typeClass.toUpperCase() + '_DYNAMIC}}', 'TESTING');
 
       if(index > 0) {
         devices[index - 1]['controller']['dynamicContent'](data, devices, index - 1, dataResponse);

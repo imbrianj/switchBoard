@@ -89,6 +89,13 @@ exports.lgController = exports.lgController || (function () {
                   'PIP_UP'        : 414,
                   'PIP_DOWN'      : 415,
                   'VID_SWITCH'    : 416,
-                  'MY_APPS'       : 417 }
+                  'MY_APPS'       : 417 },
+
+    translateCommand : function () {
+      return this.hashTable[this.command];
+    },
+
+    findState : function () {
+    }
   };
 } ());

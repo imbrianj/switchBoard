@@ -65,6 +65,9 @@ exports.rokuController = exports.rokuController || (function () {
       };
     },
 
+    findState : function () {
+    },
+
     dynamicContent : function (data, devices, index, dataResponse) {
       var config = devices[index],
           createList,
@@ -107,7 +110,7 @@ exports.rokuController = exports.rokuController || (function () {
             }
           });
 
-          data = data.replace('{{' + config.config.prefix.toUpperCase() + '_DYNAMIC}}', createList(apps));
+          data = data.replace('{{' + config.config.typeClass.toUpperCase() + '_DYNAMIC}}', createList(apps));
 
           if(index > 0) {
             devices[index - 1]['controller']['dynamicContent'](data, devices, index - 1, dataResponse);

@@ -11,22 +11,22 @@ exports.config = {
   'default'    : 'samsung',
 
   samsung : {
-    'title'    : 'Samsung SmartTv',
-    'prefix'   : 'samsung',
-    'deviceIp' : '192.168.1.1',
-    'disabed'  : false
+    'typeClass' : 'samsung',
+    'title'     : 'Samsung SmartTv',
+    'deviceIp'  : '192.168.1.1',
+    'disabed'   : false
   },
 
   roku : {
-    'title'    : 'Roku',
-    'prefix'   : 'roku',
-    'deviceIp' : '192.168.1.2',
-    'disabled' : false
+    'typeClass' : 'roku',
+    'title'     : 'Roku',
+    'deviceIp'  : '192.168.1.2',
+    'disabled'  : false
   },
 
   ps3 : {
+    'typeClass' : 'ps3',
     'title'     : 'PS3',
-    'prefix'    : 'ps3',
     // Bluetooth mac address of PS3
     // This is *NOT* the TCP network mac address
     'deviceMac' : '00:00:00:00:00:00',
@@ -35,23 +35,23 @@ exports.config = {
   },
 
   panasonic : {
-    'title'    : 'Panasonic',
-    'prefix'   : 'panasonic',
-    'deviceIp' : '192.168.1.4',
-    'disabled' : true
+    'typeClass' : 'panasonic',
+    'title'     : 'Panasonic',
+    'deviceIp'  : '192.168.1.4',
+    'disabled'  : true
   },
 
   lg : {
-    'title'    : 'LG TV',
-    'prefix'   : 'lg',
-    'deviceIp' : '192.168.1.5',
-    'disabled' : true
+    'typeClass' : 'lg',
+    'title'     : 'LG TV',
+    'deviceIp'  : '192.168.1.5',
+    'disabled'  : true
   }
 
   // Placeholder...for now
   macro : {
-    'title'    : 'Macros',
-    'prefix'   : 'macro',
-    'disabled' : true
+    'typeClass' : 'macro',
+    'title'     : 'Macros',
+    'disabled'  : true
   }
 };
