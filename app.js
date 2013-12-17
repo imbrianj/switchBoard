@@ -256,33 +256,57 @@ http.createServer(function(request, response) {
 
           data = data.replace('{{THEME}}', settings.config.theme || 'standard');
 
-          // If you a device that is expecting dynamic content, let's find that.
+          // Load up content templates for each device type.
           (function() {
             var deviceName,
                 tempDevice,
-                devices = [],
-                i       = 0;
+                staticContent,
+                staticDevices  = [],
+                dynamicDevices = [],
+                i = 0,
+                j = 0;
+
+            staticContent = function (data, template, staticDevices, index, dataResponse) {
+              var config = staticDevices[index];
+
+              if(index >= 0) {
+                fs.readFile('templates/' + config.config.typeClass + '.tpl', function(error, contents) {
+                  staticContent(data, template + contents, staticDevices, index - 1, dataResponse);
+                });
+              }
+
+              else {
+                data = data.replace('{{DEVICE_INTERFACES}}', template);
+
+                // Once we load each static template, we can see if a device
+                // has any dynamic content it may need to load.
+                if(j) {
+                  j -= 1;
+                  dynamicDevices[j]['controller']['dynamicContent'](data, dynamicDevices, j, response);
+                }
+
+                else {
+                  response.end(data);
+                }
+              }
+            };
 
             for(deviceName in controllers) {
               tempDevice = controllers[deviceName][deviceName + 'Controller'];
 
               if(typeof(tempDevice) === 'object') {
+                staticDevices[i] = { 'controller': tempDevice, 'config': settings.config[deviceName] };
+                i += 1;
+
                 if(tempDevice.dynamicContent !== undefined) {
-                  devices[i] = { 'controller': tempDevice, 'config': settings.config[deviceName] };
-                  i += 1;
+                  dynamicDevices[j] = { 'controller': tempDevice, 'config': settings.config[deviceName] };
+                  j += 1;
                 }
               }
             }
 
-            if(i) {
-              i -= 1;
-
-              devices[i]['controller']['dynamicContent'](data, devices, i, response);
-            }
-
-            else {
-              response.end(data);
-            }
+            i -= 1;
+            staticContent(data, '', staticDevices.reverse(), i, response);
           }());
         });
       }

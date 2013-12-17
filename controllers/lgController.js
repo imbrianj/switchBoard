@@ -7,6 +7,7 @@ exports.lgController = exports.lgController || (function () {
   /**
    * @author brian@bevey.org
    * @fileoverview Basic control of LG Smart TV
+   * @requires http
    * @note Huge thanks for the unofficial documentation found here:
    *       http://forum.loxone.com/enen/software/4876-lg-tv-http-control.html#post32692
    */
