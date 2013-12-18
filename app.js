@@ -27,24 +27,6 @@ var http        = require('http'),
   }
 }());
 
-// PS3 requires a lock file to determine if the daemon is running.
-// If the server is just started up, we should assume it is not.
-(function() {
-  'use strict';
-
-  var exists = path.exists || fs.exists;
-
-  exists('ps3.lock', function(exists) {
-    if(exists) {
-      fs.unlink('ps3.lock', function(error) {
-        if(error) {
-          console.log(error);
-        }
-      });
-    }
-  });
-}());
-
 http.createServer(function(request, response) {
   'use strict';
 
@@ -86,7 +68,7 @@ http.createServer(function(request, response) {
     if(directory) {
       exists(directory + '/' + filename, function(exists) {
         if(exists) {
-          fs.readFile(directory + '/' + filename, function(error, contents) {
+          fs.readFile(directory + '/' + filename, 'utf-8', function(error, contents) {
             if(!error) {
               response.writeHead(200, {'Content-Type': mimeTypes[extension], 'Content-Length': contents.length});
               response.end(contents);
@@ -246,15 +228,15 @@ http.createServer(function(request, response) {
 
       // Otherwise, show the markup
       else {
-        fs.readFile('./markup.html', 'utf-8', function(error, data) {
+        fs.readFile('./markup.html', 'utf-8', function(error, markup) {
           response.writeHead(200, {'Content-Type': mimeTypes['.html']});
 
           runCommand({ command: _get.command, macro: _get.macro, text: _get.text, list: _get.list, launch: _get.launch, endResponse: false });
 
           // I'm not using mustache, but I can pretend.
-          data = data.replace('{{DEVICE}}', device);
+          markup = markup.replace('{{DEVICE}}', device);
 
-          data = data.replace('{{THEME}}', settings.config.theme || 'standard');
+          markup = markup.replace('{{THEME}}', settings.config.theme || 'standard');
 
           // Load up content templates for each device type.
           (function() {
@@ -266,27 +248,32 @@ http.createServer(function(request, response) {
                 i = 0,
                 j = 0;
 
-            staticContent = function (data, template, staticDevices, index, dataResponse) {
-              var config = staticDevices[index];
+            staticContent = function (template, data, navTemplate, navData, staticDevices, index, dataResponse) {
+              var config;
 
               if(index >= 0) {
-                fs.readFile('templates/' + config.config.typeClass + '.tpl', function(error, contents) {
-                  staticContent(data, template + contents, staticDevices, index - 1, dataResponse);
+                config  = staticDevices[index]['config'];
+                navData = navData + navTemplate.replace('{{DEVICE_ID}}', config.typeClass);
+                navData = navData.replace('{{DEVICE_TITLE}}', config.title);
+
+                fs.readFile('templates/' + config.typeClass + '.tpl', 'utf-8', function(error, deviceData) {
+                  staticContent(template, data + deviceData, navTemplate, navData, staticDevices, index - 1, dataResponse);
                 });
               }
 
               else {
-                data = data.replace('{{DEVICE_INTERFACES}}', template);
+                markup = markup.replace('{{NAVIGATION}}', navData);
+                markup = markup.replace('{{DEVICE_INTERFACES}}', data);
 
                 // Once we load each static template, we can see if a device
                 // has any dynamic content it may need to load.
                 if(j) {
                   j -= 1;
-                  dynamicDevices[j]['controller']['dynamicContent'](data, dynamicDevices, j, response);
+                  dynamicDevices[j]['controller']['dynamicContent'](markup, dynamicDevices, j, response);
                 }
 
                 else {
-                  response.end(data);
+                  response.end(markup);
                 }
               }
             };
@@ -306,7 +293,10 @@ http.createServer(function(request, response) {
             }
 
             i -= 1;
-            staticContent(data, '', staticDevices.reverse(), i, response);
+
+            fs.readFile('templates/fragments/navigation.tpl', 'utf-8', function(error, navTemplate) {
+              staticContent(markup, '', navTemplate, '', staticDevices.reverse(), i, response);
+            });
           }());
         });
       }

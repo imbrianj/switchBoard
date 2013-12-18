@@ -11,14 +11,9 @@ h4,
 h5,
 h6,
 p,
-blockquote,
-pre,
 a,
 abbr,
 acronym,
-address,
-cite,
-code,
 em,
 img,
 dl,
@@ -30,15 +25,7 @@ li,
 fieldset,
 form,
 label,
-legend,
-table,
-caption,
-thead,
-tfoot,
-tbody,
-tr,
-th,
-td {
+legend {
 	border: 0;
 	font-family: inherit;
 	font-size: 100%;
@@ -75,18 +62,6 @@ body {
 ol,
 ul {
 	list-style: none;
-}
-
-table {
-	border-collapse: separate;
-	border-spacing: 0;
-}
-
-caption,
-th,
-td {
-	text-align: left;
-	font-weight: normal;
 }
 
 /* Copy button styling from purecss.io */
@@ -144,15 +119,8 @@ form input[type="text"],
 form input[type="password"],
 form input[type="email"],
 form input[type="url"],
-form input[type="date"],
-form input[type="month"],
-form input[type="time"],
-form input[type="datetime"],
-form input[type="datetime-local"],
-form input[type="week"],
 form input[type="number"],
 form input[type="search"],
-form input[type="tel"],
 form input[type="color"],
 form select,
 form textarea {
@@ -176,15 +144,8 @@ form input[type="text"]:focus,
 form input[type="password"]:focus,
 form input[type="email"]:focus,
 form input[type="url"]:focus,
-form input[type="date"]:focus,
-form input[type="month"]:focus,
-form input[type="time"]:focus,
-form input[type="datetime"]:focus,
-form input[type="datetime-local"]:focus,
-form input[type="week"]:focus,
 form input[type="number"]:focus,
 form input[type="search"]:focus,
-form input[type="tel"]:focus,
 form input[type="color"]:focus,
 form select:focus,
 form textarea:focus {
@@ -210,15 +171,8 @@ form input[type="text"][disabled],
 form input[type="password"][disabled],
 form input[type="email"][disabled],
 form input[type="url"][disabled],
-form input[type="date"][disabled],
-form input[type="month"][disabled],
-form input[type="time"][disabled],
-form input[type="datetime"][disabled],
-form input[type="datetime-local"][disabled],
-form input[type="week"][disabled],
 form input[type="number"][disabled],
 form input[type="search"][disabled],
-form input[type="tel"][disabled],
 form input[type="color"][disabled],
 form select[disabled],
 form textarea[disabled] {
@@ -293,15 +247,8 @@ form legend {
 	form input[type="password"],
 	form input[type="email"],
 	form input[type="url"],
-	form input[type="date"],
-	form input[type="month"],
-	form input[type="time"],
-	form input[type="datetime"],
-	form input[type="datetime-local"],
-	form input[type="week"],
 	form input[type="number"],
 	form input[type="search"],
-	form input[type="tel"],
 	form input[type="color"],
 	form label {
 		display: block;
@@ -331,8 +278,9 @@ form legend {
 	float: left;
 }
 
+.header h1,
 .header ul li {
-	margin: 0 .2em;
+	margin: .4em .2em;
 }
 
 .header ul li a {
@@ -655,12 +603,14 @@ form legend {
 }
 
 .theme-dark .header {
-	border-bottom: 1px solid #333;
+	border: none;
 }
 
-.theme-dark .header ul li a {
+.theme-dark .header ul a {
 	background-color: #333;
-	border-color: #333;
+	border: none;
+	color: #666;
+	font-weight: bold;
 }
 
 .theme-dark .samsung .header .samsung a,
@@ -668,9 +618,40 @@ form legend {
 .theme-dark .roku .header .roku a,
 .theme-dark .ps3 .header .ps3 a,
 .theme-dark .macros .header .macros a {
-	background-color: #000;
-	border-color: #333;
-	color: #FFF;
+	background-color: rgb(0, 120, 231);
+	border: 1px solid #999;  /*IE 6/7/8*/
+	border: none rgba(0, 0, 0, 0);  /*IE9 + everything else*/
+	border-radius: 2px;
+	color: #333;
+	cursor: pointer;
+	*font-size: 90%; /*IE 6/7 - To reduce IE's oversized button text*/
+	*overflow: visible; /*IE 6/7 - Because of IE's overly large left/right padding on buttons */
+	padding: 0.5em 1.5em 0.5em;
+	text-decoration: none;
+	/* Transitions */
+	-webkit-transition: 0.1s linear -webkit-box-shadow;
+	-moz-transition: 0.1s linear -moz-box-shadow;
+	-ms-transition: 0.1s linear box-shadow;
+	-o-transition: 0.1s linear box-shadow;
+	transition: 0.1s linear box-shadow;
+}
+
+.theme-dark .samsung .header .samsung a:hover,
+.theme-dark .samsung .header .samsung a:focus,
+.theme-dark .panasonic .header .panasonic a:hover,
+.theme-dark .panasonic .header .panasonic a:focus,
+.theme-dark .roku .header .roku a:hover,
+.theme-dark .roku .header .roku a:focus,
+.theme-dark .ps3 .header .ps3 a:hover,
+.theme-dark .ps3 .header .ps3 a:focus,
+.theme-dark .macros .header .macros a:hover,
+.theme-dark .macros .header .macros a:focus {
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#1a000000',GradientType=0);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(transparent), color-stop(40%, rgba(0,0,0, 0.05)), to(rgba(0,0,0, 0.10)));
+	background-image: -webkit-linear-gradient(transparent, rgba(0,0,0, 0.05) 40%, rgba(0,0,0, 0.10));
+	background-image: -moz-linear-gradient(top, rgba(0,0,0, 0.05) 0%, rgba(0,0,0, 0.10));
+	background-image: -o-linear-gradient(transparent, rgba(0,0,0, 0.05) 40%, rgba(0,0,0, 0.10));
+	background-image: linear-gradient(transparent, rgba(0,0,0, 0.05) 40%, rgba(0,0,0, 0.10));
 }
 
 /* This isn't done */

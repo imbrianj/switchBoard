@@ -38,6 +38,8 @@
           </form>
         </div>
         <div class="installed">
-          {{ROKU_DYNAMIC}}
+          <ul class="roku-launch">
+            {{ROKU_DYNAMIC}}
+          </ul>
         </div>
       </div>

@@ -7,7 +7,7 @@ exports.ps3Controller = exports.ps3Controller || (function () {
   /**
    * @author brian@bevey.org
    * @fileoverview Basic control over PS3 pre-configured GIMX setup.
-   * @requires child_process
+   * @requires child_process, fs
    */
   return {
     version : '0.0.0.0.1 alpha',
@@ -51,9 +51,23 @@ exports.ps3Controller = exports.ps3Controller || (function () {
     },
 
     dynamicContent : function (data, devices, index, dataResponse) {
-      var config = devices[index];
+      var fs     = require('fs'),
+          config = devices[index],
+          exists = fs.exists;
 
-      data = data.replace('{{' + config.config.typeClass.toUpperCase() + '_DYNAMIC}}', 'TESTING');
+      // PS3 requires a lock file to determine if the daemon is running.
+      // If the server is just started up, we should assume it is not.
+      exists('ps3.lock', function(exists) {
+        if(exists) {
+          fs.unlink('ps3.lock', function(error) {
+            if(error) {
+              console.log(error);
+            }
+          });
+        }
+      });
+
+      data = data.replace('{{' + config.config.typeClass.toUpperCase() + '_DYNAMIC}}', '');
 
       if(index > 0) {
         devices[index - 1]['controller']['dynamicContent'](data, devices, index - 1, dataResponse);
