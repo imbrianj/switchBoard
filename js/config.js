@@ -46,7 +46,7 @@ exports.config = {
     'title'     : 'LG TV',
     'deviceIp'  : '192.168.1.5',
     'disabled'  : true
-  }
+  },
 
   // Placeholder...for now
   macro : {

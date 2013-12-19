@@ -53,7 +53,6 @@ A.
  * Bug fixes, polish.
  * Panasonic Viera TVs.
  * LG Smart TVs.
- * Only load markup for devices that are configured instead of relying on CSS hacks to hide unwanted devices.
  * Better reporting of device state (on, off) and give indication of a devices state to the user.
  * Intelligently take action based on appropriate state.  If Samsung TV is on, we can leave a persistent web socket open.  If PS3 is on, we can connect to it via bluetooth.
  * Web-based configurations.

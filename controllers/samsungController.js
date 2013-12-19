@@ -83,8 +83,6 @@ exports.samsungController = exports.samsungController || (function () {
           socket       = net.connect(this.devicePort, this.deviceIp);
 
       socket.on('connect', function() {
-        console.log('connected');
-
         socket.write(that.chunkOne());
         socket.write(that.chunkTwo());
 

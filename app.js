@@ -228,7 +228,7 @@ http.createServer(function(request, response) {
 
       // Otherwise, show the markup
       else {
-        fs.readFile('./markup.html', 'utf-8', function(error, markup) {
+        fs.readFile('templates/markup.html', 'utf-8', function(error, markup) {
           response.writeHead(200, {'Content-Type': mimeTypes['.html']});
 
           runCommand({ command: _get.command, macro: _get.macro, text: _get.text, list: _get.list, launch: _get.launch, endResponse: false });
@@ -251,10 +251,12 @@ http.createServer(function(request, response) {
             staticContent = function (template, data, navTemplate, navData, staticDevices, index, dataResponse) {
               var config;
 
+              // Continue loading static templates and appropriate nav
+              // elements.
               if(index >= 0) {
                 config  = staticDevices[index]['config'];
-                navData = navData + navTemplate.replace('{{DEVICE_ID}}', config.typeClass);
-                navData = navData.replace('{{DEVICE_TITLE}}', config.title);
+                navData = navData + navTemplate.split('{{DEVICE_ID}}').join(config.typeClass);
+                navData = navData.split('{{DEVICE_TITLE}}').join(config.title);
 
                 fs.readFile('templates/' + config.typeClass + '.tpl', 'utf-8', function(error, deviceData) {
                   staticContent(template, data + deviceData, navTemplate, navData, staticDevices, index - 1, dataResponse);
