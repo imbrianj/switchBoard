@@ -1,4 +1,4 @@
-      <div id="ps3" class="device">
+      <div id="{{DEVICE_ID}}" class="device">
         <div class="control-block">
           <div class="control">
             <ul>

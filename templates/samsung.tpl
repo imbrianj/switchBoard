@@ -1,4 +1,4 @@
-      <div id="samsung" class="device">
+      <div id="{{DEVICE_ID}}" class="device">
         <div class="control-block">
           <div class="volume">
             <a href="/?device=samsung&command=VOLUP" class="fa fa-volume-up"><span>VolUp</span></a>

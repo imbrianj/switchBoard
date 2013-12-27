@@ -51,15 +51,11 @@ exports.samsungController = exports.samsungController || (function () {
       if(this.command) {
         message = String.fromCharCode(0x00) + String.fromCharCode(0x00) + String.fromCharCode(0x00) + String.fromCharCode(this.base64_encode(command).length) + String.fromCharCode(0x00) + this.base64_encode(command);
 
-        console.log('Executing: ' + this.command);
-
         return String.fromCharCode(0x00) + String.fromCharCode(this.tvAppString.length) + String.fromCharCode(0x00) + this.tvAppString + String.fromCharCode(message.length) + String.fromCharCode(0x00) + message;
       }
 
       if(this.text) {
         message = String.fromCharCode(0x01) + String.fromCharCode(0x00) + String.fromCharCode(this.base64_encode(this.text).length) + String.fromCharCode(0x00) + this.base64_encode(this.text);
-
-        console.log('Text: ' + this.text);
 
         return String.fromCharCode(0x01) + String.fromCharCode(this.appString.length) + String.fromCharCode(0x00) + this.appString + String.fromCharCode(message.length) + String.fromCharCode(0x00) + message;
       }

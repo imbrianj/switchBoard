@@ -23,7 +23,7 @@ exports.ps3Controller = exports.ps3Controller || (function () {
 
       switch(this.command) {
         case 'PowerOn' :
-          value = 'date > ps3.lock && echo "Connecting to PS3" && emu ' + this.deviceMac + ' > /dev/null && echo "Disconnecting from PS3" && rm ps3.lock';
+          value = 'date > tmp/ps3.lock && echo "Connecting to PS3" && emu ' + this.deviceMac + ' > /dev/null && echo "Disconnecting from PS3" && rm tmp/ps3.lock';
         break;
 
         case 'PS' :
@@ -50,9 +50,8 @@ exports.ps3Controller = exports.ps3Controller || (function () {
     findState : function () {
     },
 
-    dynamicContent : function (data, devices, index, dataResponse) {
+    init : function () {
       var fs     = require('fs'),
-          config = devices[index],
           exists = fs.exists;
 
       // PS3 requires a lock file to determine if the daemon is running.
@@ -66,6 +65,10 @@ exports.ps3Controller = exports.ps3Controller || (function () {
           });
         }
       });
+    },
+
+    onload : function (data, devices, index, dataResponse) {
+      var config = devices[index];
 
       data = data.replace('{{' + config.config.typeClass.toUpperCase() + '_DYNAMIC}}', '');
 

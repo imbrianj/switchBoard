@@ -1,4 +1,4 @@
-/*jslint white: true */
+/*jslint white: true, nomen: true */
 /*global require, console, setTimeout */
 
 /**
@@ -12,7 +12,27 @@ var http        = require('http'),
     path        = require('path'),
     fs          = require('fs'),
     settings    = require('./js/config'),
-    controllers = {'device':'controller'};
+    controllers = {'device':'controller'},
+    sanitize;
+
+// Used to sanitize against illegal class and ID names in markup.
+function sanitize (string) {
+  'use strict';
+
+  string = string.toLowerCase();
+  string = string.split(' ').join('_');
+  string = string.split(',').join('_');
+  string = string.split('\'').join('_');
+  string = string.split('"').join('_');
+  string = string.split('@').join('_');
+  string = string.split('&').join('_');
+  string = string.split('$').join('_');
+  string = string.split('!').join('_');
+  string = string.split('(').join('_');
+  string = string.split(')').join('_');
+
+  return string;
+}
 
 // Only load controllers if they're configured.
 (function() {
@@ -21,8 +41,16 @@ var http        = require('http'),
   var deviceName;
 
   for(deviceName in settings.config) {
-    if((typeof(settings.config[deviceName]) === 'object') && (settings.config[deviceName]['disabled'] !== true)) {
+    if((typeof settings.config[deviceName] === 'object') && (settings.config[deviceName]['disabled'] !== true)) {
+      settings.config[deviceName]['deviceID'] = sanitize(settings.config[deviceName]['title']);
+
       controllers[deviceName] = require('./controllers/' + deviceName + 'Controller');
+
+      console.log('Loaded ' + deviceName + ' controller for ' + settings.config[deviceName]['title']);
+
+      if(controllers[deviceName]['init'] !== undefined) {
+        controllers[deviceName]['init']();
+      }
     }
   }
 }());
@@ -35,7 +63,7 @@ http.createServer(function(request, response) {
         directory,
         deviceController,
         _get      = url.parse(request.url, true).query,
-        device    = _get.device || settings.config.default,
+        device    = sanitize(_get.device || settings.config[settings.config.default]['deviceID']),
         filename  = path.basename(request.url),
         extension = path.extname(filename),
         exists    = path.exists || fs.exists,
@@ -105,7 +133,7 @@ http.createServer(function(request, response) {
               deviceSettings.status = 'connected';
 
               if(endResponse) {
-                response.end('{"command":"' + command + '","cmdStatus":"ok"}');
+                response.end('{"command":"' + command + '","device":"' + deviceSettings.title + '","cmdStatus":"ok"}');
               }
             };
 
@@ -115,11 +143,11 @@ http.createServer(function(request, response) {
               }
 
               if(endResponse) {
-                response.end('{"command":"' + command + '","cmdStatus":"' + errorMsg + '"}');
+                response.end('{"command":"' + command + '","device":"' + deviceSettings.title + '","cmdStatus":"' + errorMsg + '"}');
               }
             };
 
-            console.log('Good Command: ' + command);
+            console.log('Device: ' + deviceSettings.title + ', Good Command: ' + command);
             deviceSettings.command = command;
 
             value = deviceController.send(deviceSettings);
@@ -132,7 +160,7 @@ http.createServer(function(request, response) {
           }
 
           else if(command) {
-            console.log('Bad Command: ' + command);
+            console.log('Device: ' + deviceSettings.title + ', Bad Command: ' + command);
 
             value = 'invalid';
           }
@@ -156,7 +184,7 @@ http.createServer(function(request, response) {
           deviceSettings.cbConnect = function () {
             settings.status = 'connected';
             if(endResponse) {
-              response.end('{"text":"' + text + '","cmdStatus":"ok"}');
+              response.end('{"text":"' + text + '","device":"' + deviceSettings.title + '", "cmdStatus":"ok"}');
             }
           };
 
@@ -166,7 +194,7 @@ http.createServer(function(request, response) {
             }
 
             if(endResponse) {
-              response.end('{"text":"' + text + '","cmdStatus":"' + errorMsg + '"}');
+              response.end('{"text":"' + text + '","device":"' + deviceSettings.title + '","cmdStatus":"' + errorMsg + '"}');
             }
           };
 
@@ -180,7 +208,7 @@ http.createServer(function(request, response) {
           deviceSettings.cbConnect = function () {
             settings.status = 'connected';
             if(endResponse) {
-              response.end('{"launch":"' + launch + '","cmdStatus":"ok"}');
+              response.end('{"launch":"' + launch + '","device":"' + deviceSettings.title + '","cmdStatus":"ok"}');
             }
           };
 
@@ -190,11 +218,11 @@ http.createServer(function(request, response) {
             }
 
             if(endResponse) {
-              response.end('{"launch":"' + launch + '","cmdStatus":"' + errorMsg + '"}');
+              response.end('{"launch":"' + launch + '","device":"' + deviceSettings.title + '","cmdStatus":"' + errorMsg + '"}');
             }
           };
 
-          console.log('Lauch: ' + launch);
+          console.log('Device: ' + deviceSettings.title + ', Launch: ' + launch);
           deviceSettings.launch = launch;
 
           value = deviceController.send(deviceSettings);
@@ -215,7 +243,7 @@ http.createServer(function(request, response) {
         return value;
       };
 
-      if(typeof(controllers[device]) === 'object') {
+      if(typeof controllers[device] === 'object') {
         deviceController = controllers[device][device + 'Controller'];
       }
 
@@ -243,8 +271,8 @@ http.createServer(function(request, response) {
             var deviceName,
                 tempDevice,
                 staticContent,
-                staticDevices  = [],
-                dynamicDevices = [],
+                staticDevices = [],
+                onloadDevices = [],
                 i = 0,
                 j = 0;
 
@@ -255,10 +283,12 @@ http.createServer(function(request, response) {
               // elements.
               if(index >= 0) {
                 config  = staticDevices[index]['config'];
-                navData = navData + navTemplate.split('{{DEVICE_ID}}').join(config.typeClass);
+                navData = navData + navTemplate.split('{{DEVICE_ID}}').join(config.deviceID);
                 navData = navData.split('{{DEVICE_TITLE}}').join(config.title);
 
                 fs.readFile('templates/' + config.typeClass + '.tpl', 'utf-8', function(error, deviceData) {
+                  deviceData = deviceData.split('{{DEVICE_ID}}').join(config.deviceID);
+
                   staticContent(template, data + deviceData, navTemplate, navData, staticDevices, index - 1, dataResponse);
                 });
               }
@@ -268,10 +298,10 @@ http.createServer(function(request, response) {
                 markup = markup.replace('{{DEVICE_INTERFACES}}', data);
 
                 // Once we load each static template, we can see if a device
-                // has any dynamic content it may need to load.
+                // has anything we need to load onload
                 if(j) {
                   j -= 1;
-                  dynamicDevices[j]['controller']['dynamicContent'](markup, dynamicDevices, j, response);
+                  onloadDevices[j]['controller']['onload'](markup, onloadDevices, j, response);
                 }
 
                 else {
@@ -283,12 +313,12 @@ http.createServer(function(request, response) {
             for(deviceName in controllers) {
               tempDevice = controllers[deviceName][deviceName + 'Controller'];
 
-              if(typeof(tempDevice) === 'object') {
+              if(typeof tempDevice === 'object') {
                 staticDevices[i] = { 'controller': tempDevice, 'config': settings.config[deviceName] };
                 i += 1;
 
                 if(tempDevice.dynamicContent !== undefined) {
-                  dynamicDevices[j] = { 'controller': tempDevice, 'config': settings.config[deviceName] };
+                  onloadDevices[j] = { 'controller': tempDevice, 'config': settings.config[deviceName] };
                   j += 1;
                 }
               }

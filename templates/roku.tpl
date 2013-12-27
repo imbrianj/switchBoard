@@ -1,4 +1,4 @@
-      <div id="roku" class="device">
+      <div id="{{DEVICE_ID}}" class="device">
         <div class="control-block">
           <div class="media">
             <ul>

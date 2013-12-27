@@ -51,12 +51,10 @@ Q. What's next?
 
 A.
  * Bug fixes, polish.
- * Panasonic Viera TVs.
  * LG Smart TVs.
  * Better reporting of device state (on, off) and give indication of a devices state to the user.
- * Intelligently take action based on appropriate state.  If Samsung TV is on, we can leave a persistent web socket open.  If PS3 is on, we can connect to it via bluetooth.
+ * Intelligently take action based on appropriate state.  If PS3 is on, we can connect to it via bluetooth.
  * Web-based configurations.
- * Support for multiple devices of the same type (if you have more than one Roku, for example).
  * Multi-device macros (turn on PS3, turn on stereo, select HDMI1, hit X with one button press).
  * Add support for PS4 (?)
  * Investigate other devices (Sony, Toshiba, Philips, Vizio TVs?  Dropcam, Foscam?  Smartthings?  Nest?).

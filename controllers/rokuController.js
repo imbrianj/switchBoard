@@ -68,7 +68,7 @@ exports.rokuController = exports.rokuController || (function () {
     findState : function () {
     },
 
-    dynamicContent : function (data, devices, index, dataResponse) {
+    onload : function (data, devices, index, dataResponse) {
       var xml2js = require('xml2js'),
           fs     = require('fs'),
           parser = new xml2js.Parser(),
