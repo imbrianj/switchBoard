@@ -92,7 +92,8 @@ exports.rokuController = exports.rokuController || (function () {
                                          'image': 'http://' + config.config.deviceIp + ':8060/query/icon/' + app['$']['id']
                                        };
 
-                markup = markup + template.replace('{{APP_ID}}', apps[app['$']['id']]['id']);
+                markup = markup + template.replace('{{DEVICE_ID}}', config.config.deviceID);
+                markup = markup.replace('{{APP_ID}}', apps[app['$']['id']]['id']);
                 markup = markup.replace('{{APP_IMG}}', apps[app['$']['id']]['image']);
                 markup = markup.replace('{{APP_NAME}}', apps[app['$']['id']]['name']);
               }
