@@ -100,7 +100,7 @@ exports.rokuController = exports.rokuController || (function () {
               data = data.replace('{{ROKU_DYNAMIC}}', markup);
 
               if(index > 0) {
-                devices[index - 1]['controller']['dynamicContent'](data, devices, index - 1, dataResponse);
+                devices[index - 1]['controller']['onload'](data, devices, index - 1, dataResponse);
               }
 
               else {

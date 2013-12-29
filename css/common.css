@@ -554,9 +554,9 @@ form legend {
 }
 
 /* I personally don't use any of these, so I'll hide them */
-#samsung_smarttv .tv-controls,
-#samsung_smarttv .media,
-#samsung_smarttv .information {
+#samsung .tv-controls,
+#samsung .media,
+#samsung .information {
 	display: none;
 }
 
@@ -564,7 +564,7 @@ form legend {
 	display: none;
 }
 
-.samsung_smarttv #samsung_smarttv,
+.samsung #samsung,
 .panasonic #panasonic,
 .roku #roku,
 .ps3 #ps3,
@@ -573,7 +573,7 @@ form legend {
 	display: block;
 }
 
-.samsung_smarttv .header .samsung_smarttv a,
+.samsung .header .samsung a,
 .roku .header .roku a,
 .ps3 .header .ps3 a,
 .macros .header .macros a {
@@ -613,7 +613,7 @@ form legend {
 	font-weight: bold;
 }
 
-.theme-dark .samsung_smarttv .header .samsung_smarttv a,
+.theme-dark .samsung .header .samsung a,
 .theme-dark .panasonic .header .panasonic a,
 .theme-dark .roku .header .roku a,
 .theme-dark .ps3 .header .ps3 a,
@@ -636,8 +636,8 @@ form legend {
 	transition: 0.1s linear box-shadow;
 }
 
-.theme-dark .samsung_smarttv .header .samsung_smarttv a:hover,
-.theme-dark .samsung_smarttv .header .samsung_smarttv a:focus,
+.theme-dark .samsung .header .samsung a:hover,
+.theme-dark .samsung .header .samsung a:focus,
 .theme-dark .panasonic .header .panasonic a:hover,
 .theme-dark .panasonic .header .panasonic a:focus,
 .theme-dark .roku .header .roku a:hover,

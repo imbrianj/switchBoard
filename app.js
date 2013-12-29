@@ -12,27 +12,7 @@ var http        = require('http'),
     path        = require('path'),
     fs          = require('fs'),
     settings    = require('./js/config'),
-    controllers = {'device':'controller'},
-    sanitize;
-
-// Used to sanitize against illegal class and ID names in markup.
-function sanitize (string) {
-  'use strict';
-
-  string = string.toLowerCase();
-  string = string.split(' ').join('_');
-  string = string.split(',').join('_');
-  string = string.split('\'').join('_');
-  string = string.split('"').join('_');
-  string = string.split('@').join('_');
-  string = string.split('&').join('_');
-  string = string.split('$').join('_');
-  string = string.split('!').join('_');
-  string = string.split('(').join('_');
-  string = string.split(')').join('_');
-
-  return string;
-}
+    controllers = {};
 
 // Only load controllers if they're configured.
 (function() {
@@ -42,11 +22,11 @@ function sanitize (string) {
 
   for(deviceName in settings.config) {
     if((typeof settings.config[deviceName] === 'object') && (settings.config[deviceName]['disabled'] !== true)) {
-      settings.config[deviceName]['deviceID'] = sanitize(settings.config[deviceName]['title']);
+      settings.config[deviceName]['deviceID'] = deviceName;
 
-      controllers[deviceName] = require('./controllers/' + deviceName + 'Controller');
+      controllers[deviceName] = require('./controllers/' + settings.config[deviceName]['typeClass'] + 'Controller');
 
-      console.log('Loaded ' + deviceName + ' controller for ' + settings.config[deviceName]['title']);
+      console.log('Loaded ' + settings.config[deviceName]['typeClass'] + ' controller for ' + settings.config[deviceName]['title']);
 
       if(controllers[deviceName]['init'] !== undefined) {
         controllers[deviceName]['init']();
@@ -63,7 +43,7 @@ http.createServer(function(request, response) {
         directory,
         deviceController,
         _get      = url.parse(request.url, true).query,
-        device    = sanitize(_get.device || settings.config[settings.config.default]['deviceID']),
+        device    = _get.device || settings.config[settings.config.default]['deviceID'],
         filename  = path.basename(request.url),
         extension = path.extname(filename),
         exists    = path.exists || fs.exists,
@@ -244,7 +224,7 @@ http.createServer(function(request, response) {
       };
 
       if(typeof controllers[device] === 'object') {
-        deviceController = controllers[device][device + 'Controller'];
+        deviceController = controllers[device][settings.config[device]['typeClass'] + 'Controller'];
       }
 
       // If XHR, return JSON
@@ -311,13 +291,13 @@ http.createServer(function(request, response) {
             };
 
             for(deviceName in controllers) {
-              tempDevice = controllers[deviceName][deviceName + 'Controller'];
+              tempDevice = controllers[deviceName][settings.config[deviceName]['typeClass'] + 'Controller'];
 
               if(typeof tempDevice === 'object') {
                 staticDevices[i] = { 'controller': tempDevice, 'config': settings.config[deviceName] };
                 i += 1;
 
-                if(tempDevice.dynamicContent !== undefined) {
+                if(tempDevice.onload !== undefined) {
                   onloadDevices[j] = { 'controller': tempDevice, 'config': settings.config[deviceName] };
                   j += 1;
                 }

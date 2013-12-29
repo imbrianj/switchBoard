@@ -12,15 +12,23 @@ exports.config = {
 
   samsung : {
     'typeClass' : 'samsung',
-    'title'     : 'Samsung SmartTv',
+    'title'     : 'Samsung SmartTV',
     'deviceIp'  : '192.168.1.1',
-    'disabed'   : false
+    'disabled'  : false
+  },
+
+  // Here, I have another device of the same type.  Just give it a unique name.
+  samsungLivingRoom : {
+    'typeClass' : 'samsung',
+    'title'     : 'Living Room TV',
+    'deviceIp'  : '192.168.1.2',
+    'disabled'  : true,
   },
 
   roku : {
     'typeClass' : 'roku',
     'title'     : 'Roku',
-    'deviceIp'  : '192.168.1.2',
+    'deviceIp'  : '192.168.1.3',
     'disabled'  : false
   },
 
@@ -30,21 +38,21 @@ exports.config = {
     // Bluetooth mac address of PS3
     // This is *NOT* the TCP network mac address
     'deviceMac' : '00:00:00:00:00:00',
-    'deviceIp'  : '192.168.1.3',
+    'deviceIp'  : '192.168.1.4',
     'disabled'  : false
   },
 
   panasonic : {
     'typeClass' : 'panasonic',
     'title'     : 'Panasonic',
-    'deviceIp'  : '192.168.1.4',
+    'deviceIp'  : '192.168.1.5',
     'disabled'  : true
   },
 
   lg : {
     'typeClass' : 'lg',
     'title'     : 'LG TV',
-    'deviceIp'  : '192.168.1.5',
+    'deviceIp'  : '192.168.1.6',
     'disabled'  : true
   },
 

@@ -73,7 +73,7 @@ exports.ps3Controller = exports.ps3Controller || (function () {
       data = data.replace('{{' + config.config.typeClass.toUpperCase() + '_DYNAMIC}}', '');
 
       if(index > 0) {
-        devices[index - 1]['controller']['dynamicContent'](data, devices, index - 1, dataResponse);
+        devices[index - 1]['controller']['onload'](data, devices, index - 1, dataResponse);
       }
 
       else {
