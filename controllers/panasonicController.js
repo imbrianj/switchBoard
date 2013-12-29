@@ -40,7 +40,14 @@ exports.panasonicController = exports.panasonicController || (function () {
         host    : that.deviceIp,
         port    : that.devicePort,
         path    : path,
-        method  : method
+        method  : method,
+        headers : {
+                    'content-type'  : 'text/xml',
+                    'accept'        : 'text/xml',
+                    'cache-control' : 'no-cache',
+                    'pragma'        : 'no-cache',
+                    'soapaction'    : '"urn:panasonic-com:service:p00NetworkControl:1#X_SendKey"'
+                  }
       };
     },
 
@@ -51,7 +58,7 @@ exports.panasonicController = exports.panasonicController || (function () {
       var response = '',
           action   = 'X_SendKey',
           urn      = 'panasonic-com:service:p00NetworkControl:1',
-          value    = '<X_KeyEvent>NRC_' + that.command + '</X_KeyEvent>';
+          value    = '<X_KeyEvent>NRC_' + that.command + '-ONOFF</X_KeyEvent>';
 
       if(that.text) {
         action = 'X_SendString';

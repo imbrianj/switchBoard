@@ -58,10 +58,10 @@ exports.rokuController = exports.rokuController || (function () {
       }
 
       return {
-        host    : that.deviceIp,
-        port    : that.devicePort,
-        path    : path,
-        method  : method
+        host   : that.deviceIp,
+        port   : that.devicePort,
+        path   : path,
+        method : method
       };
     },
 
@@ -86,10 +86,10 @@ exports.rokuController = exports.rokuController || (function () {
               for(i in reply.apps.app) {
                 app = reply.apps.app[i];
 
-                apps[app['$']['id']] = { 'name' : app['_'],
-                                         'id'   : app['$']['id'],
-                                         'link' : 'http://' + config.config.deviceIp + ':8060/launch/11?contentID=' + app['$']['id'],
-                                         'image': 'http://' + config.config.deviceIp + ':8060/query/icon/' + app['$']['id']
+                apps[app['$']['id']] = { 'name'  : app['_'],
+                                         'id'    : app['$']['id'],
+                                         'link'  : 'http://' + config.config.deviceIp + ':8060/launch/11?contentID=' + app['$']['id'],
+                                         'image' : 'http://' + config.config.deviceIp + ':8060/query/icon/' + app['$']['id']
                                        };
 
                 markup = markup + template.replace('{{DEVICE_ID}}', config.config.deviceID);
