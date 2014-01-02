@@ -1,0 +1,25 @@
+{
+  "name": "universal-controller",
+  "description": "Universal Remote Controller powered by Node.js",
+  "version": "0.0.1",
+  "author": "Brian Johnson",
+  "contributors": [
+    "Akshay Patel"
+  ],
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/gruntjs/grunt-cli.git"
+  },
+  "license": "MIT",
+  "bin": {
+    "universal-controller": "bin/universal-controller"
+  },
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "preferGlobal": true,
+  "dependencies": {
+    "nopt": "~1.0.10"
+  }
+}
