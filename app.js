@@ -46,7 +46,7 @@ http.createServer(function(request, response) {
         device    = _get.device || settings.config[settings.config.default]['deviceID'],
         filename  = path.basename(request.url),
         extension = path.extname(filename),
-        exists    = path.exists || fs.exists,
+        exists    = fs.exists || path.exists,
         mimeTypes = {'.html' : 'text/html',
                      '.css'  : 'text/css',
                      '.js'   : 'application/javascript',
