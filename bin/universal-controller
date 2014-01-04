@@ -1,0 +1,6 @@
+#!/usr/bin/env node
+
+'use strict';
+
+process.title = 'universal-controller';
+require('../app.js');
