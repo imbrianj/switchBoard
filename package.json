@@ -9,7 +9,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git://github.com/gruntjs/grunt-cli.git"
+    "url": "git@github.com:imbrianj/universalController.git"
   },
   "license": "MIT",
   "bin": {
