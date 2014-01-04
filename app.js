@@ -245,7 +245,7 @@ http.createServer(function(request, response) {
 
       // Otherwise, show the markup
       else {
-        fs.readFile('templates/markup.html', 'utf-8', function(error, markup) {
+        fs.readFile(path.join(__dirname + '/templates/markup.html'), 'utf-8', function(error, markup) {
           response.writeHead(200, {'Content-Type': mimeTypes['.html']});
 
           runCommand({ command: _get.command, macro: _get.macro, text: _get.text, list: _get.list, launch: _get.launch, endResponse: false });
@@ -275,7 +275,7 @@ http.createServer(function(request, response) {
                 navData = navData + navTemplate.split('{{DEVICE_ID}}').join(config.deviceID);
                 navData = navData.split('{{DEVICE_TITLE}}').join(config.title);
 
-                fs.readFile('templates/' + config.typeClass + '.tpl', 'utf-8', function(error, deviceData) {
+                fs.readFile(path.join(__dirname + '/templates/' + config.typeClass + '.tpl'), 'utf-8', function(error, deviceData) {
                   deviceData = deviceData.split('{{DEVICE_ID}}').join(config.deviceID);
 
                   staticContent(template, data + deviceData, navTemplate, navData, staticDevices, index - 1, dataResponse);
@@ -315,7 +315,7 @@ http.createServer(function(request, response) {
 
             i -= 1;
 
-            fs.readFile('templates/fragments/navigation.tpl', 'utf-8', function(error, navTemplate) {
+            fs.readFile(path.join(__dirname + '/templates/fragments/navigation.tpl'), 'utf-8', function(error, navTemplate) {
               staticContent(markup, '', navTemplate, '', staticDevices.reverse(), i, response);
             });
           }());
