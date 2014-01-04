@@ -10,7 +10,7 @@ Although the code is intended to be flexible enough to control a number of diffe
 Setup
 ---
 ###Easy
-- ```npm install -g git@github.com:imbrianj/universalController.git```
+- ```npm install -g git+ssh://git@github.com:imbrianj/universalController.git```
 - Add a config file anywhere on the device you want to run the app on. See the [default](js/config.js) file for examples
 - Run ```universal-controller -c yournewconfigfile``` and profit
 
