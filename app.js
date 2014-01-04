@@ -1,4 +1,4 @@
-/*jslint white: true, nomen: true */
+/*jslint white: true, nomen: true, indent: 2, sub: true */
 /*global require, console, setTimeout */
 
 /**
@@ -11,8 +11,17 @@ var http        = require('http'),
     url         = require('url'),
     path        = require('path'),
     fs          = require('fs'),
-    settings    = require('./js/config'),
-    controllers = {};
+    nopt        = require("nopt"),
+    knownOpts   = { "config" : path },
+    shortHands  = { "c" : ["--config"] },
+    parsed      = nopt(knownOpts, shortHands, process.argv, 2),
+    controllers = {}, settings;
+
+if(parsed.config) {
+  settings = require(parsed.config);
+} else {
+  settings = require('./js/config');
+}
 
 // Only load controllers if they're configured.
 (function() {
@@ -316,4 +325,4 @@ http.createServer(function(request, response) {
   });
 
   request.resume();
-}).listen(settings.config.serverPort);
+}).listen(settings.config.serverPort, '0.0.0.0');
