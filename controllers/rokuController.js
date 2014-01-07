@@ -1,5 +1,5 @@
-/*jslint white: true */
-/*global exports, String, Buffer, require, console, setTimeout */
+/*jslint white: true, indent: 2, sub: true */
+/*global exports, require, console, setTimeout */
 
 exports.rokuController = exports.rokuController || (function () {
   'use strict';
@@ -71,6 +71,7 @@ exports.rokuController = exports.rokuController || (function () {
     onload : function (data, devices, index, dataResponse) {
       var xml2js = require('xml2js'),
           fs     = require('fs'),
+          path   = require('path'),
           parser = new xml2js.Parser(),
           config = devices[index],
           apps   = {};
@@ -78,12 +79,11 @@ exports.rokuController = exports.rokuController || (function () {
       exports.rokuController.send({ deviceIp: config.config.deviceIp, list: true, cbConnect: function(response) {
         parser.parseString(response, function(error, reply) {
           var markup = '',
-              app,
-              i;
+              app;
 
           if(reply) {
-            fs.readFile('templates/fragments/roku.tpl', 'utf-8', function(error, template) {
-              for(i in reply.apps.app) {
+            fs.readFile(path.join(__dirname + '/../templates/fragments/roku.tpl'), 'utf-8', function(error, template) {
+              for(var i in reply.apps.app) {
                 app = reply.apps.app[i];
 
                 apps[app['$']['id']] = { 'name'  : app['_'],
