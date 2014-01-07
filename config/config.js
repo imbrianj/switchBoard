@@ -1,8 +1,6 @@
 /*jslint white: true */
 /*global exports */
 
-var exports = exports || {};
-
 exports.config = {
   'serverPort' : '8080',
   'serverIp'   : '192.168.1.150',

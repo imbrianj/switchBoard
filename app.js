@@ -11,16 +11,16 @@ var http        = require('http'),
     url         = require('url'),
     path        = require('path'),
     fs          = require('fs'),
-    nopt        = require("nopt"),
-    knownOpts   = { "config" : path },
-    shortHands  = { "c" : ["--config"] },
+    nopt        = require('nopt'),
+    knownOpts   = { 'config' : path },
+    shortHands  = { 'c' : ['--config'] },
     parsed      = nopt(knownOpts, shortHands, process.argv, 2),
     controllers = {}, settings;
 
 if(parsed.config) {
   settings = require(parsed.config);
 } else {
-  settings = require('./js/config');
+  settings = require('./config/config');
 }
 
 // Only load controllers if they're configured.
