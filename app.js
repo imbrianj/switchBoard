@@ -49,6 +49,7 @@ http.createServer(function(request, response) {
 
   request.on('end', function () {
     var runCommand,
+        assetPath,
         directory,
         deviceController,
         _get      = url.parse(request.url, true).query,
@@ -83,9 +84,11 @@ http.createServer(function(request, response) {
 
     /* Serve static assets */
     if(directory) {
-      exists(directory + '/' + filename, function(exists) {
+      assetPath = path.join(__dirname + '/' + directory + '/' + filename);
+
+      exists(assetPath, function(exists) {
         if(exists) {
-          fs.readFile(directory + '/' + filename, 'utf-8', function(error, contents) {
+          fs.readFile(assetPath, 'utf-8', function(error, contents) {
             if(!error) {
               response.writeHead(200, {'Content-Type': mimeTypes[extension], 'Content-Length': contents.length});
               response.end(contents);
