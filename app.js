@@ -37,8 +37,8 @@ if(parsed.config) {
 
       console.log('Loaded ' + settings.config[deviceName]['typeClass'] + ' controller for ' + settings.config[deviceName]['title']);
 
-      if(controllers[deviceName]['init'] !== undefined) {
-        controllers[deviceName]['init']();
+      if(controllers[deviceName][settings.config[deviceName]['typeClass'] + 'Controller']['init'] !== undefined) {
+        controllers[deviceName][settings.config[deviceName]['typeClass'] + 'Controller']['init']();
       }
     }
   }

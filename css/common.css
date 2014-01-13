@@ -566,6 +566,7 @@ form legend {
 
 .samsung #samsung,
 .panasonic #panasonic,
+.lg #lg,
 .roku #roku,
 .ps3 #ps3,
 .macros #macros,
@@ -574,6 +575,8 @@ form legend {
 }
 
 .samsung .header .samsung a,
+.panasonic .header .panasonic a,
+.lg .header .lg a,
 .roku .header .roku a,
 .ps3 .header .ps3 a,
 .macros .header .macros a {
@@ -615,6 +618,7 @@ form legend {
 
 .theme-dark .samsung .header .samsung a,
 .theme-dark .panasonic .header .panasonic a,
+.theme-dark .lg .header .lg a,
 .theme-dark .roku .header .roku a,
 .theme-dark .ps3 .header .ps3 a,
 .theme-dark .macros .header .macros a {
@@ -640,6 +644,8 @@ form legend {
 .theme-dark .samsung .header .samsung a:focus,
 .theme-dark .panasonic .header .panasonic a:hover,
 .theme-dark .panasonic .header .panasonic a:focus,
+.theme-dark .lg .header .lg a:hover,
+.theme-dark .lg .header .lg a:focus,
 .theme-dark .roku .header .roku a:hover,
 .theme-dark .roku .header .roku a:focus,
 .theme-dark .ps3 .header .ps3 a:hover,

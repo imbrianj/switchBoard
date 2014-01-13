@@ -19,7 +19,7 @@ exports.ps3Controller = exports.ps3Controller || (function () {
     keymap  : ['PowerOn', 'Left', 'Right', 'Up', 'Down', 'PS', 'Select', 'Start', 'Triangle', 'Circle', 'Cross', 'Square'],
 
     translateCommand : function () {
-      var value = '';
+      var value  = '';
 
       switch(this.command) {
         case 'PowerOn' :
@@ -56,9 +56,9 @@ exports.ps3Controller = exports.ps3Controller || (function () {
 
       // PS3 requires a lock file to determine if the daemon is running.
       // If the server is just started up, we should assume it is not.
-      exists('ps3.lock', function(exists) {
+      exists('tmp/ps3.lock', function(exists) {
         if(exists) {
-          fs.unlink('ps3.lock', function(error) {
+          fs.unlink('tmp/ps3.lock', function(error) {
             if(error) {
               console.log(error);
             }
@@ -88,15 +88,39 @@ exports.ps3Controller = exports.ps3Controller || (function () {
       this.cbError   = config.cbError   || function () {};
 
       var that       = this,
-          exec       = require('child_process').exec;
+          fs         = require('fs'),
+          exists     = fs.exists;
 
-      exec(this.translateCommand(), function (error, stdout, stderr) {
-        that.cbConnect();
+      // PS3 requires a lock file to determine if the daemon is running.
+      // If the server is just started up, we should assume it is not.
+      exists('tmp/ps3.lock', function(exists) {
+        var exec = require('child_process').exec;
 
-        if(error) {
-          that.cbError();
-          console.log(error);
+        if(exists) {
+          // If the PS3 is already on, we shouldn't execute PowerOn again.
+          if(that.command === 'PowerOn') {
+            console.log('PS3 looks on already.  Changing command to PS');
+
+            that.command = 'PS';
+          }
         }
+
+        else {
+          // Regarldess of what command is desired, if the ps3 isn't on, we
+          // need to execute PowerOn first.
+          console.log('PS3 doesn\'t look on - connecting.');
+
+          that.command = 'PowerOn';
+        }
+
+        exec(that.translateCommand(), function (error, stdout, stderr) {
+          that.cbConnect();
+
+          if(error) {
+            that.cbError();
+            console.log(error);
+          }
+        });
       });
     }
   };

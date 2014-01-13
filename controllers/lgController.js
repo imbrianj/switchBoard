@@ -97,6 +97,91 @@ exports.lgController = exports.lgController || (function () {
     },
 
     findState : function () {
+    },
+
+    /**
+     * Prepare a POST request for a LG command.
+     */
+    postPrepare : function (that) {
+      var path    = '/udap/api/command',
+          method  = 'POST';
+
+      return {
+        host    : that.deviceIp,
+        port    : that.devicePort,
+        path    : path,
+        method  : method,
+        headers : {
+                    'content-type'  : 'text/xml',
+                    'accept'        : 'text/xml',
+                    'cache-control' : 'no-cache',
+                    'pragma'        : 'no-cache'
+                  }
+      };
+    },
+
+    /**
+     * Prepare a POST data the request.
+     */
+    postData : function (that) {
+      var response = '';
+
+      response += '<?xml version="1.0" encoding="utf-8"?>';
+      response += '<envelope>';
+      resposne += '  <api type="command">';
+      response += '    <name>HandleKeyInput</name>';
+      resposne += '    <value>' + that.command + '</value>';
+      response += '  </api>';
+      response += '</envelope>';
+
+      return response;
+    },
+
+    send : function (config) {
+      this.deviceIp   = config.deviceIp;
+      this.command    = this.translateCommand(config.command) || '';
+      this.devicePort = config.devicePort || 8080;
+      this.cbConnect  = config.cbConnect  || function () {};
+      this.cbError    = config.cbError    || function () {};
+
+      var that        = this,
+          http        = require('http'),
+          dataReply   = '',
+          request;
+
+      request = http.request(this.postPrepare(that), function(response) {
+                  response.on('data', function(response) {
+                    console.log('connected');
+
+                    dataReply += response;
+                  });
+
+                  response.on('end', function() {
+                    that.cbConnect(dataReply);
+                  });
+                });
+
+
+      request.on('error', function(error) {
+        var errorMsg = '';
+
+        if(error.code === 'ECONNRESET' || error.code === 'ECONNREFUSED') {
+          errorMsg = 'Device is off or unreachable';
+        }
+
+        else {
+          errorMsg = error.code;
+        }
+
+        console.log(errorMsg);
+
+        that.cbError(errorMsg);
+      });
+
+      request.write(this.postData(that));
+      request.end();
+
+      return dataReply;
     }
   };
 } ());
