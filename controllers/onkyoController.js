@@ -9,7 +9,7 @@ exports.onkyoController = exports.onkyoController || (function () {
    * @fileoverview Basic control of Onkyo receiver
    */
   return {
-    version : '0.0.0.0.1 alpha',
+    version : 0.000,
     /**
      * Whitelist of available key codes to use.
      */

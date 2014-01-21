@@ -13,7 +13,7 @@ exports.samsungController = exports.samsungController || (function () {
    *       http://forum.samygo.tv/viewtopic.php?f=12&t=1792
    */
   return {
-    version : '0.0.0.0.1 alpha',
+    version : 0.300,
     /**
      * Whitelist of available key codes to use.
      */

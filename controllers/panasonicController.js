@@ -12,7 +12,7 @@ exports.panasonicController = exports.panasonicController || (function () {
    *       http://cocoontech.com/forums/topic/21266-panasonic-viera-plasma-ip-control/page-2
    */
   return {
-    version : '0.0.0.0.1 alpha',
+    version : 0.200,
     /**
      * Whitelist of available key codes to use.
      */

@@ -7,7 +7,8 @@
  * @requires http, url, path, fs
  */
 
-var http        = require('http'),
+var version     = 0.300,
+    http        = require('http'),
     url         = require('url'),
     path        = require('path'),
     fs          = require('fs'),
@@ -19,7 +20,9 @@ var http        = require('http'),
 
 if(parsed.config) {
   settings = require(parsed.config);
-} else {
+}
+
+else {
   settings = require('./config/config');
 }
 

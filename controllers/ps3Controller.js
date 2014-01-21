@@ -10,7 +10,7 @@ exports.ps3Controller = exports.ps3Controller || (function () {
    * @requires child_process, fs
    */
   return {
-    version : '0.0.0.0.1 alpha',
+    version : 0.200,
     /**
      * Whitelist of available key codes to use.  We could support all buttons,
      * as they are supported in GIMX, but timing of events for unnecessary

@@ -11,7 +11,7 @@ exports.rokuController = exports.rokuController || (function () {
    * @requires xml2js, http, fs
    */
   return {
-    version : '0.0.0.0.1 alpha',
+    version : 0.300,
     /**
      * Whitelist of available key codes to use.
      */

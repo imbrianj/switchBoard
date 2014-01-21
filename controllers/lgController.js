@@ -12,7 +12,7 @@ exports.lgController = exports.lgController || (function () {
    *       http://forum.loxone.com/enen/software/4876-lg-tv-http-control.html#post32692
    */
   return {
-    version : '0.0.0.0.1 alpha',
+    version : 0.100,
     /**
      * Whitelist of available key codes to use.
      */
