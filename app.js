@@ -1,5 +1,5 @@
 /*jslint white: true, nomen: true, indent: 2, sub: true */
-/*global require, console, setTimeout */
+/*global require, console, setTimeout, process */
 
 /**
  * @author brian@bevey.org
@@ -246,7 +246,57 @@ http.createServer(function(request, response) {
       if(request.headers.ajax) {
         response.writeHead(200, { 'Content-Type': mimeTypes['.js'] });
 
+// runCommand current does a response.end with a simple reply.
         runCommand({ command: _get.command, macro: _get.macro, text: _get.text, list: _get.list, launch: _get.launch, endResponse: true });
+
+        // Check state of the world - which devices are configured and the
+        // state of each (if supported).
+        (function() {
+          var deviceName,
+              tempDevice,
+              stateContent,
+              staticDevices = [],
+              stateDevices  = [],
+              i = 0;
+
+          stateContent = function (rawDevices, index, parsedDevices) {
+            if(index >= 0) {
+              parsedDevices[rawDevices[index]['config']['title']] = rawDevices[i];
+
+              if(rawDevices[index]['controller']['findState'] !== undefined) {
+                rawDevices[index]['controller']['findState'](rawDevices, index - 1, parsedDevices);
+              }
+
+              else {
+                stateContent(rawDevices, index - 1, parsedDevices);
+              }
+            }
+
+            else {
+              if(index) {
+                index -= 1;
+                stateDevices[index]['controller']['findState'](rawDevices, index, parsedDevices);
+              }
+
+              else {
+                response.end(parsedDevices);
+              }
+            }
+          };
+
+          for(deviceName in controllers) {
+            tempDevice = controllers[deviceName][settings.config[deviceName]['typeClass'] + 'Controller'];
+
+            if(typeof tempDevice === 'object') {
+              staticDevices[i] = { 'controller': tempDevice, 'config': settings.config[deviceName] };
+              i += 1;
+            }
+          }
+
+          i -= 1;
+
+          stateContent(staticDevices, i, {});
+        }());
       }
 
       // Otherwise, show the markup

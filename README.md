@@ -70,7 +70,7 @@ Q. How secure is this?
 
 A. Not very.  It's assumed that any device that's on your network is deemed white-listed.  This probably shouldn't be used on a large network with people you don't trust to screw with your TV.
 
-Vesion Numbers
+Version Numbers
 ---
 Each controller file has an associated version number.  In order for this to be easily compared, it's a float.  The number to the left of the decimal represents milestone release of the given file.  Zero values imply a "pre-release" state.  The first number after the decimal represents the maturity within that release - a zero implies a file that's unusable (testing, placeholder or skeleton).  A 1 implies a file that's possibly workable, but largely untested.  A 2 implies a file that's tested, mostly works but may have additional steps for setup or otherwise incomplete.  A 3 implies a file that is mature enough for basic use.  Any numbers greater than 3 should be assumed to be in pretty good shape.  All decimals following this are smaller version bumps.
 

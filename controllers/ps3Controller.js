@@ -47,7 +47,12 @@ exports.ps3Controller = exports.ps3Controller || (function () {
       return value;
     },
 
-    findState : function () {
+    findState : function (rawDevices, index, parsedDevices) {
+      if(parsedDevices.typeof === 'Object') {
+      }
+
+      else {
+      }
     },
 
     init : function () {
