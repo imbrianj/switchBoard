@@ -1,7 +1,7 @@
 /*jslint white: true */
-/*global exports, String, Buffer, require, console */
+/*global panasonicController, module, String, require, console */
 
-exports.panasonicController = exports.panasonicController || (function () {
+var panasonicController = module.exports = (function () {
   'use strict';
 
   /**
@@ -12,14 +12,14 @@ exports.panasonicController = exports.panasonicController || (function () {
    *       http://cocoontech.com/forums/topic/21266-panasonic-viera-plasma-ip-control/page-2
    */
   return {
-    version : 0.200,
+    version : 20140312,
+
+    inputs  : ['command', 'text'],
+
     /**
      * Whitelist of available key codes to use.
      */
     keymap  : ['30S_SKIP', '3D', 'BD', 'BLUE', 'CANCEL', 'CC', 'CHG_INPUT', 'CHG_NETWORK', 'CH_DOWN', 'CH_UP', 'D0', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8', 'D9', 'DATA', 'DIGA_CTL', 'DISP_MODE', 'DMS_CH_DOWN', 'DMS_CH_UP', 'DOWN', 'DRIVE', 'ECO', 'ENTER', 'EPG', 'EZ_SYNC', 'FAVORITE', 'FF', 'GAME', 'GREEN', 'HOLD', 'INDEX', 'INFO', 'INTERNET', 'LEFT', 'MENU', 'MPX', 'MUTE', 'OFFTIMER', 'PAUSE', 'PICTAI', 'PLAY', 'POWER', 'PROG', 'P_NR', 'REC', 'RECLIST', 'RED', 'RETURN', 'REW', 'RIGHT', 'R_SCREEN', 'R_TUNE', 'R_TUNE', 'SAP', 'SD_CARD', 'SKIP_NEXT', 'SKIP_PREV', 'SPLIT', 'STOP', 'STTL', 'SUBMENU', 'SWAP', 'TEXT', 'TV', 'TV_MUTE_OFF', 'TV_MUTE_ON', 'UP', 'VIERA_LINK', 'VOD', 'VOLDOWN', 'VOLUP', 'VTOOLS', 'YELLOW'],
-
-    findState : function () {
-    },
 
     /**
      * Prepare a POST request for a command.
@@ -79,12 +79,11 @@ exports.panasonicController = exports.panasonicController || (function () {
     },
 
     send : function (config) {
-      this.deviceIp   = config.deviceIp;
+      this.deviceIp   = config.device.deviceIp;
       this.command    = config.command    || '';
       this.text       = config.text       || '';
       this.devicePort = config.devicePort || 55000;
-      this.cbConnect  = config.cbConnect  || function () {};
-      this.cbError    = config.cbError    || function () {};
+      this.callback   = config.callback   || function () {};
 
       var that        = this,
           http        = require('http'),
@@ -99,7 +98,7 @@ exports.panasonicController = exports.panasonicController || (function () {
                   });
 
                   response.on('end', function() {
-                    that.cbConnect(dataReply);
+                    that.callback(null, dataReply);
                   });
                 });
 
@@ -117,7 +116,7 @@ exports.panasonicController = exports.panasonicController || (function () {
 
         console.log(errorMsg);
 
-        that.cbError(errorMsg);
+        that.callback(errorMsg);
       });
 
       request.write(this.postData(that));
@@ -126,4 +125,4 @@ exports.panasonicController = exports.panasonicController || (function () {
       return dataReply;
     }
   };
-} ());
+}());

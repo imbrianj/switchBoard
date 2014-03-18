@@ -5,6 +5,8 @@ var Bevey = Bevey || (function () {
   'use strict';
 
   return {
+    version : 20140302,
+
    /**
     * Stops event bubbling further.
     *
@@ -117,7 +119,6 @@ var Bevey = Bevey || (function () {
         }
       }
     },
-
 
    /**
     * Shortcut function used to quickly find the target of an event (used in
@@ -421,7 +422,7 @@ var Bevey = Bevey || (function () {
 
         ajaxRequest = {
           path       : '/',
-          param      : 'text=' + text + '&device=' + device + '&ts=' + ts,
+          param      : device + '=text-' + text + '&ts=' + ts,
           method     : 'GET',
           onComplete : function () {
             console.log(ajaxRequest.response);

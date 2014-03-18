@@ -1,7 +1,7 @@
 /*jslint white: true */
-/*global exports, String, Buffer, require, console */
+/*global lgController, module, String, require, console */
 
-exports.lgController = exports.lgController || (function () {
+var lgController = module.exports = (function () {
   'use strict';
 
   /**
@@ -12,7 +12,10 @@ exports.lgController = exports.lgController || (function () {
    *       http://forum.loxone.com/enen/software/4876-lg-tv-http-control.html#post32692
    */
   return {
-    version : 0.100,
+    version : 20140312,
+
+    inputs  : ['command'],
+
     /**
      * Whitelist of available key codes to use.
      */
@@ -96,9 +99,6 @@ exports.lgController = exports.lgController || (function () {
       return this.hashTable[this.command];
     },
 
-    findState : function () {
-    },
-
     /**
      * Prepare a POST request for a LG command.
      */
@@ -138,11 +138,10 @@ exports.lgController = exports.lgController || (function () {
     },
 
     send : function (config) {
-      this.deviceIp   = config.deviceIp;
+      this.deviceIp   = config.device.deviceIp;
       this.command    = this.translateCommand(config.command) || '';
       this.devicePort = config.devicePort || 8080;
-      this.cbConnect  = config.cbConnect  || function () {};
-      this.cbError    = config.cbError    || function () {};
+      this.callback   = config.callback   || function () {};
 
       var that        = this,
           http        = require('http'),
@@ -157,7 +156,7 @@ exports.lgController = exports.lgController || (function () {
                   });
 
                   response.on('end', function() {
-                    that.cbConnect(dataReply);
+                    that.callback(null, dataReply);
                   });
                 });
 
@@ -175,7 +174,7 @@ exports.lgController = exports.lgController || (function () {
 
         console.log(errorMsg);
 
-        that.cbError(errorMsg);
+        that.callback(errorMsg);
       });
 
       request.write(this.postData(that));
@@ -184,4 +183,4 @@ exports.lgController = exports.lgController || (function () {
       return dataReply;
     }
   };
-} ());
+}());

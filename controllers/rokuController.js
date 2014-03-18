@@ -1,17 +1,20 @@
 /*jslint white: true, indent: 2, sub: true */
-/*global exports, require, console, setTimeout */
+/*global rokuController, module, String, setTimeout, require, console */
 
-exports.rokuController = exports.rokuController || (function () {
+var rokuController = module.exports = (function () {
   'use strict';
 
   /**
    * @author brian@bevey.org
    * @fileoverview Basic control over Roku devices via TCP POST requests using
    *               Node.js.
-   * @requires xml2js, http, fs
+   * @requires xml2js, http, fs, request
    */
   return {
-    version : 0.300,
+    version : 20140316,
+
+    inputs  : ['command', 'text', 'list', 'launch'],
+
     /**
      * Whitelist of available key codes to use.
      */
@@ -65,52 +68,94 @@ exports.rokuController = exports.rokuController || (function () {
       };
     },
 
-    findState : function () {
+    cacheImage : function (appName, appId, config) {
+      var fs       = require('fs'),
+          filePath = __dirname + '/../images/roku/icon_' + appId + '.png';
+
+      fs.exists(filePath, function(exists) {
+        var request;
+
+        if(!exists) {
+          request = require('request');
+
+          console.log('Roku: Saved image for ' + appName);
+          request('http://' + config.deviceIp + ':8060/query/icon/' + appId).pipe(fs.createWriteStream(filePath));
+        }
+
+        else {
+          console.log('Roku: Skipping ' + appName + ' image - already saved locally');
+        }
+      });
     },
 
-    onload : function (data, devices, index, dataResponse) {
+    onload : function (controller) {
+      var markup     = controller.markup,
+          fs         = require('fs'),
+          template   = fs.readFileSync(__dirname + '/../templates/fragments/roku.tpl').toString(),
+          apps       = JSON.parse(fs.readFileSync(__dirname + '/../tmp/roku.json').toString()),
+          i          = 0,
+          tempMarkup = '';
+
+      for(i in apps) {
+        tempMarkup = tempMarkup + template.split('{{APP_ID}}').join(apps[i]['id']);
+        tempMarkup = tempMarkup.split('{{APP_IMG}}').join(apps[i]['cache']);
+        tempMarkup = tempMarkup.split('{{APP_NAME}}').join(apps[i]['name']);
+      }
+
+      return markup.replace('{{ROKU_DYNAMIC}}', tempMarkup);
+    },
+
+    init : function (controller) {
       var xml2js = require('xml2js'),
           fs     = require('fs'),
           path   = require('path'),
           parser = new xml2js.Parser(),
-          config = devices[index],
+          config = controller.config,
           apps   = {};
 
-      exports.rokuController.send({ deviceIp: config.config.deviceIp, list: true, cbConnect: function(response) {
-        parser.parseString(response, function(error, reply) {
-          var markup = '',
-              app;
+      if(fs.existsSync(__dirname + '/../tmp/roku.json')) {
+        apps = JSON.parse(fs.readFileSync(__dirname + '/../tmp/roku.json'));
 
-          if(reply) {
-            fs.readFile(path.join(__dirname + '/../templates/fragments/roku.tpl'), 'utf-8', function(error, template) {
-              for(var i in reply.apps.app) {
-                app = reply.apps.app[i];
+        console.log('Roku: Pulled app settings from cache');
+      }
 
-                apps[app['$']['id']] = { 'name'  : app['_'],
-                                         'id'    : app['$']['id'],
-                                         'link'  : 'http://' + config.config.deviceIp + ':8060/launch/11?contentID=' + app['$']['id'],
-                                         'image' : 'http://' + config.config.deviceIp + ':8060/query/icon/' + app['$']['id']
-                                       };
+      else {
+        rokuController.send({ deviceIp: config.deviceIp, list: true, callback: function(err, response) {
+          parser.parseString(response, function(err, reply) {
+            var app;
 
-                markup = markup + template.replace('{{DEVICE_ID}}', config.config.deviceID);
-                markup = markup.replace('{{APP_ID}}', apps[app['$']['id']]['id']);
-                markup = markup.replace('{{APP_IMG}}', apps[app['$']['id']]['image']);
-                markup = markup.replace('{{APP_NAME}}', apps[app['$']['id']]['name']);
-              }
+            if(reply) {
+              fs.readFile(path.join(__dirname + '/../templates/fragments/roku.tpl'), function(err, template) {
+                var cache,
+                    i = 0;
 
-              data = data.replace('{{ROKU_DYNAMIC}}', markup);
+                if(err) {
+                  console.log('Roku: Unable to read template fragment');
+                }
 
-              if(index > 0) {
-                devices[index - 1]['controller']['onload'](data, devices, index - 1, dataResponse);
-              }
+                else {
+                  for(i in reply.apps.app) {
+                    app = reply.apps.app[i];
 
-              else {
-                dataResponse.end(data);
-              }
-            });
-          }
-        });
-      }});
+                    apps[app['$']['id']] = { 'name'  : app['_'],
+                                             'id'    : app['$']['id'],
+                                             'link'  : 'http://' + config.deviceIp + ':8060/launch/11?contentID=' + app['$']['id'],
+                                             'image' : 'http://' + config.deviceIp + ':8060/query/icon/' + app['$']['id'],
+                                             'cache' : '/images/roku/icon_' + app['$']['id'] + '.png'
+                                           };
+
+                    rokuController.cacheImage(app['_'], app['$']['id'], config);
+                  }
+
+                  cache = fs.createWriteStream(__dirname + '/../tmp/roku.json');
+                  cache.write(JSON.stringify(apps));
+                  console.log('Roku: Wrote app settings to cache');
+                }
+              });
+            }
+          });
+        }});
+      }
     },
 
     send : function (config) {
@@ -121,8 +166,7 @@ exports.rokuController = exports.rokuController || (function () {
       this.list       = config.list       || '';
       this.launch     = config.launch     || '';
       this.devicePort = config.devicePort || 8060;
-      this.cbConnect  = config.cbConnect  || function () {};
-      this.cbError    = config.cbError    || function () {};
+      this.callback   = config.callback   || function () {};
 
       var that        = this,
           http        = require('http'),
@@ -131,13 +175,13 @@ exports.rokuController = exports.rokuController || (function () {
 
       request = http.request(this.postPrepare(that), function(response) {
                   response.on('data', function(response) {
-                    console.log('connected');
+                    console.log('Roku: Connected');
 
                     dataReply += response;
                   });
 
                   response.on('end', function() {
-                    that.cbConnect(dataReply);
+                    that.callback(null, dataReply);
                   });
                 });
 
@@ -146,7 +190,7 @@ exports.rokuController = exports.rokuController || (function () {
         var errorMsg = '';
 
         if(error.code === 'ECONNRESET' || error.code === 'ECONNREFUSED') {
-          errorMsg = 'Device is off or unreachable';
+          errorMsg = 'Roku: Device is off or unreachable';
         }
 
         else {
@@ -155,7 +199,7 @@ exports.rokuController = exports.rokuController || (function () {
 
         console.log(errorMsg);
 
-        that.cbError(errorMsg);
+        that.callback(errorMsg);
       });
 
       request.end();
@@ -163,4 +207,4 @@ exports.rokuController = exports.rokuController || (function () {
       return dataReply;
     }
   };
-} ());
+}());

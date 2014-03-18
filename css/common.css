@@ -291,6 +291,13 @@ form legend {
 	position: relative;
 }
 
+.body h1 {
+	font-weight: bold;
+	margin: .4em .2em;
+	padding: 1em;
+	text-transform: uppercase;
+}
+
 .device {
 	font-size: 300%;
 }
@@ -326,12 +333,15 @@ form legend {
 .device .installed {
 	float: none;
 	margin: 0 auto;
+	text-align: center;
 	width: 90%;
 }
 
 .device .installed li {
-	float: left;
+	display: inline-block;
 	margin: .1em .5%;
+	max-width: 250px;
+	width: 45%;
 }
 
 .device .installed li a {
@@ -340,61 +350,8 @@ form legend {
 
 .device .installed li img {
 	height: 150px;
+	max-width: 100%;
 	width: 250px;
-}
-
-@media (max-width: 500px) {
-	.header h1 {
-		display: none;
-	}
-
-	.device .text input,
-	.device .text button {
-		margin: 0 auto;
-		width: 90%;
-	}
-}
-
-@media (max-width: 650px) {
-	.header ul {
-		clear: both;
-		float: none;
-	}
-
-	.header ul li {
-		margin-top: 1em;
-	}
-
-	.device {
-		font-size: 250%;
-	}
-
-	.device > div {
-		float: none;
-		width: 100%;
-	}
-}
-
-@media (min-width: 650px) {
-	.device {
-		font-sie: 300%;
-	}
-
-	.device > div {
-		float: left;
-		width: 50%;
-	}
-}
-
-@media (min-width: 1000px) {
-	.device {
-		font-size: 350%;
-	}
-
-	.device > div {
-		float: left;
-		width: 33%;
-	}
 }
 
 .device ol,
@@ -436,6 +393,12 @@ form legend {
 
 .device .control-block {
 	margin: .5em 0;
+}
+
+.device .control-block:only-child,
+.roku .control-block {
+	float: none;
+	margin: 0 auto;
 }
 
 .device .channel {
@@ -504,7 +467,7 @@ form legend {
 }
 
 .device .media {
-	padding-top: 1.9em;
+	padding-top: 1em;
 }
 
 .device .shortcuts,
@@ -553,7 +516,6 @@ form legend {
 	color: blue;
 }
 
-/* I personally don't use any of these, so I'll hide them */
 #samsung .tv-controls,
 #samsung .media,
 #samsung .information {
@@ -660,12 +622,67 @@ form legend {
 	background-image: linear-gradient(transparent, rgba(0,0,0, 0.05) 40%, rgba(0,0,0, 0.10));
 }
 
+@media (max-width: 500px) {
+	.header h1 {
+		display: none;
+	}
+
+	.device .text input,
+	.device .text button {
+		margin: 0 auto;
+		width: 90%;
+	}
+}
+
+@media (max-width: 650px) {
+	.header ul {
+		clear: both;
+		float: none;
+	}
+
+	.header ul li {
+		margin-top: 1em;
+	}
+
+	.device {
+		font-size: 250%;
+	}
+
+	.device > div {
+		float: none;
+		width: 100%;
+	}
+}
+
+@media (min-width: 650px) {
+	.device {
+		font-size: 300%;
+	}
+
+	.device > div {
+		float: left;
+		width: 50%;
+	}
+}
+
+@media (min-width: 1000px) {
+	.device {
+		font-size: 400%;
+	}
+
+	#samsung .tv-controls,
+	#samsung .media,
+	#samsung .information {
+		display: block;
+	}
+}
+
 /* This isn't done */
 #ps3 .powerState {
 	display: none;
 }
 
-li.macros {
+li.macro {
 	display: none;
 }
 
