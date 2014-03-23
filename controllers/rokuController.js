@@ -92,14 +92,20 @@ var rokuController = module.exports = (function () {
       var markup     = controller.markup,
           fs         = require('fs'),
           template   = fs.readFileSync(__dirname + '/../templates/fragments/roku.tpl').toString(),
-          apps       = JSON.parse(fs.readFileSync(__dirname + '/../tmp/roku.json').toString()),
           i          = 0,
-          tempMarkup = '';
+          tempMarkup = '',
+          apps;
 
-      for(i in apps) {
-        tempMarkup = tempMarkup + template.split('{{APP_ID}}').join(apps[i]['id']);
-        tempMarkup = tempMarkup.split('{{APP_IMG}}').join(apps[i]['cache']);
-        tempMarkup = tempMarkup.split('{{APP_NAME}}').join(apps[i]['name']);
+      if(fs.existsSync(__dirname + '/../tmp/roku.json')) {
+        apps = JSON.parse(fs.readFileSync(__dirname + '/../tmp/roku.json').toString());
+
+        if(apps) {
+          for(i in apps) {
+            tempMarkup = tempMarkup + template.split('{{APP_ID}}').join(apps[i]['id']);
+            tempMarkup = tempMarkup.split('{{APP_IMG}}').join(apps[i]['cache']);
+            tempMarkup = tempMarkup.split('{{APP_NAME}}').join(apps[i]['name']);
+          }
+        }
       }
 
       return markup.replace('{{ROKU_DYNAMIC}}', tempMarkup);
@@ -114,46 +120,56 @@ var rokuController = module.exports = (function () {
           apps   = {};
 
       if(fs.existsSync(__dirname + '/../tmp/roku.json')) {
-        apps = JSON.parse(fs.readFileSync(__dirname + '/../tmp/roku.json'));
-
-        console.log('Roku: Pulled app settings from cache');
+        console.log('Roku: App settings cached');
       }
 
       else {
         rokuController.send({ deviceIp: config.deviceIp, list: true, callback: function(err, response) {
-          parser.parseString(response, function(err, reply) {
-            var app;
+          if(err) {
+            if(err === 'EHOSTUNREACH') {
+              console.log('Roku: Device is off or unreachable');
+            }
 
-            if(reply) {
-              fs.readFile(path.join(__dirname + '/../templates/fragments/roku.tpl'), function(err, template) {
-                var cache,
-                    i = 0;
+            else {
+              console.log('Roku: ' + err);
+            }
+          }
 
-                if(err) {
-                  console.log('Roku: Unable to read template fragment');
-                }
+          else {
+            parser.parseString(response, function(err, reply) {
+              var app;
 
-                else {
-                  for(i in reply.apps.app) {
-                    app = reply.apps.app[i];
+              if(reply) {
+                fs.readFile(path.join(__dirname + '/../templates/fragments/roku.tpl'), function(err, template) {
+                  var cache,
+                      i = 0;
 
-                    apps[app['$']['id']] = { 'name'  : app['_'],
-                                             'id'    : app['$']['id'],
-                                             'link'  : 'http://' + config.deviceIp + ':8060/launch/11?contentID=' + app['$']['id'],
-                                             'image' : 'http://' + config.deviceIp + ':8060/query/icon/' + app['$']['id'],
-                                             'cache' : '/images/roku/icon_' + app['$']['id'] + '.png'
-                                           };
-
-                    rokuController.cacheImage(app['_'], app['$']['id'], config);
+                  if(err) {
+                    console.log('Roku: Unable to read template fragment');
                   }
 
-                  cache = fs.createWriteStream(__dirname + '/../tmp/roku.json');
-                  cache.write(JSON.stringify(apps));
-                  console.log('Roku: Wrote app settings to cache');
-                }
-              });
-            }
-          });
+                  else {
+                    for(i in reply.apps.app) {
+                      app = reply.apps.app[i];
+
+                      apps[app['$']['id']] = { 'name'  : app['_'],
+                                               'id'    : app['$']['id'],
+                                               'link'  : 'http://' + config.deviceIp + ':8060/launch/11?contentID=' + app['$']['id'],
+                                               'image' : 'http://' + config.deviceIp + ':8060/query/icon/' + app['$']['id'],
+                                               'cache' : '/images/roku/icon_' + app['$']['id'] + '.png'
+                                             };
+
+                      rokuController.cacheImage(app['_'], app['$']['id'], config);
+                    }
+
+                    cache = fs.createWriteStream(__dirname + '/../tmp/roku.json');
+                    cache.write(JSON.stringify(apps));
+                    console.log('Roku: Wrote app settings to cache');
+                  }
+                });
+              }
+            });
+          }
         }});
       }
     },

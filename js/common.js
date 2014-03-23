@@ -5,7 +5,7 @@ var Bevey = Bevey || (function () {
   'use strict';
 
   return {
-    version : 20140302,
+    version : 20140322,
 
    /**
     * Stops event bubbling further.
@@ -418,12 +418,12 @@ var Bevey = Bevey || (function () {
         e.preventDefault();
 
         text   = Bevey.getElementsByClassName('text-input', elm, 'input')[0].value;
-        device = Bevey.getElementsByClassName('device-input', elm, 'input')[0].value;
+        device = Bevey.getElementsByClassName('text-input', elm, 'input')[0].name;
 
         ajaxRequest = {
           path       : '/',
-          param      : device + '=text-' + text + '&ts=' + ts,
-          method     : 'GET',
+          param      : device + '=' + text,
+          method     : 'POST',
           onComplete : function () {
             console.log(ajaxRequest.response);
           }

@@ -4,19 +4,17 @@
 /**
  * @author brian@bevey.org
  * @fileoverview Interface for various hardware controllers.
- * @requires http, url, path, nopt, fs
+ * @requires http, url, path, nopt
  */
 
-var version        = 20140316,
+var version        = 20140322,
     http           = require('http'),
     url            = require('url'),
     path           = require('path'),
     nopt           = require('nopt'),
-    fs             = require('fs'),
-    staticAssets   = require('./js/staticAssets'),
-    loadController = require('./js/loadController'),
-    loadMarkup     = require('./js/loadMarkup'),
-    runCommand     = require('./js/runCommand'),
+    staticAssets   = require('./lib/staticAssets'),
+    loadController = require('./lib/loadController'),
+    requestInit    = require('./lib/requestInit'),
     knownOpts      = { 'config' : path },
     shortHands     = { 'c' : ['--config'] },
     parsed         = nopt(knownOpts, shortHands, process.argv, 2),
@@ -36,50 +34,37 @@ controllers = this.controllers = loadController.loadController(settings.config);
 http.createServer(function(request, response) {
   'use strict';
 
-  request.on('end', function () {
-    var deviceController,
-        device    = url.parse(request.url, true).query.device || controllers[controllers.config.default].config.deviceId,
-        filename  = path.basename(request.url),
-        extension = path.extname(filename),
-        directory = staticAssets.getDirectory(extension, request.url),
-        contents;
+  // Some commands can be accepted via POST - such as text inputs.
+  if(request.method === 'POST') {
+    console.log('POST command received');
 
-    controllers.config.default = device;
+    requestInit.requestInit(request, controllers, response);
+  }
 
-    /* Serve static assets */
-    if(directory) {
-      staticAssets.writeFile(directory, filename, response, controllers.config);
-    }
+  else {
+    request.on('end', function () {
+      var deviceController,
+          device    = url.parse(request.url, true).query.device || controllers[controllers.config.default].config.deviceId,
+          filename  = path.basename(request.url),
+          extension = path.extname(filename),
+          directory = staticAssets.getDirectory(extension, request.url),
+          contents;
 
-    /* Or the remote controller */
-    else {
-      // If XHR, return JSON
-      if(request.headers.ajax) {
-        console.log('AJAX request');
+      controllers.config.default = device;
 
-        response.writeHead(200, {'Content-Type' : staticAssets.mimeTypes['.js']});
-
-        runCommand.findCommands(request, controllers, response);
+      // Serve static assets
+      if(directory) {
+        staticAssets.writeFile(directory, filename, response, controllers.config);
       }
 
-      // Otherwise, show the markup
+      // Or the remote controller
       else {
-        console.log('Client connected');
-
-        runCommand.findCommands(request, controllers, response);
-
-        fs.readFile(path.join(__dirname + '/templates/markup.html'), 'utf-8', function(err, template) {
-          response.writeHead(200, {'Content-Type' : staticAssets.mimeTypes['.html']});
-
-          if(template) {
-            response.end(loadMarkup.loadMarkup(template, controllers, response));
-          }
-        });
+        requestInit.requestInit(request, controllers, response);
       }
-    }
-  });
+    });
 
-  request.resume();
+    request.resume();
+  }
 }).listen(settings.config.config.serverPort);
 
 console.log('Listening on port ' + settings.config.config.serverPort);

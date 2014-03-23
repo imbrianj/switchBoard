@@ -41,8 +41,7 @@
             <fieldset>
               <legend>Text Input</legend>
               <label for="samsung-text-input">Text Input:</label>
-              <input id="samsung-text-input" class="text-input" type="text" name="text" placeholder="Text Input" required>
-              <input class="device-input" type="hidden" name="device" value="{{DEVICE_ID}}">
+              <input id="samsung-text-input" class="text-input" type="text" name="{{DEVICE_ID}}" placeholder="Text Input" required>
               <button type="submit" class="button">Submit</button>
             </fieldset>
           </form>

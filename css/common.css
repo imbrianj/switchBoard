@@ -531,7 +531,7 @@ form legend {
 .lg #lg,
 .roku #roku,
 .ps3 #ps3,
-.macros #macros,
+.speech #speech,
 .device:target {
 	display: block;
 }
@@ -541,7 +541,7 @@ form legend {
 .lg .header .lg a,
 .roku .header .roku a,
 .ps3 .header .ps3 a,
-.macros .header .macros a {
+.speech .header .speech a {
 	background-color: #FFF;
 	border-color: #DDD;
 	color: #000;
@@ -583,7 +583,7 @@ form legend {
 .theme-dark .lg .header .lg a,
 .theme-dark .roku .header .roku a,
 .theme-dark .ps3 .header .ps3 a,
-.theme-dark .macros .header .macros a {
+.theme-dark .speech .header .speech a {
 	background-color: rgb(0, 120, 231);
 	border: 1px solid #999;  /*IE 6/7/8*/
 	border: none rgba(0, 0, 0, 0);  /*IE9 + everything else*/
@@ -612,8 +612,8 @@ form legend {
 .theme-dark .roku .header .roku a:focus,
 .theme-dark .ps3 .header .ps3 a:hover,
 .theme-dark .ps3 .header .ps3 a:focus,
-.theme-dark .macros .header .macros a:hover,
-.theme-dark .macros .header .macros a:focus {
+.theme-dark .speech .header .speech a:hover,
+.theme-dark .speech .header .speech a:focus {
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#1a000000',GradientType=0);
 	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(transparent), color-stop(40%, rgba(0,0,0, 0.05)), to(rgba(0,0,0, 0.10)));
 	background-image: -webkit-linear-gradient(transparent, rgba(0,0,0, 0.05) 40%, rgba(0,0,0, 0.10));
