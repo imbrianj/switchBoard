@@ -1,7 +1,7 @@
 /*jslint white: true */
-/*global ps3Controller, module, String, require, console */
+/*global module, String, require, console */
 
-var ps3Controller = module.exports = (function () {
+module.exports = (function () {
   'use strict';
 
   /**
@@ -23,12 +23,12 @@ var ps3Controller = module.exports = (function () {
      */
     keymap  : ['PowerOn', 'Left', 'Right', 'Up', 'Down', 'PS', 'Select', 'Start', 'Triangle', 'Circle', 'Cross', 'Square'],
 
-    translateCommand : function () {
+    translateCommand : function (command, deviceMac) {
       var value  = '';
 
-      switch(this.command) {
+      switch(command) {
         case 'PowerOn' :
-          value = 'date > tmp/ps3.lock && echo "Connecting to PS3" && emu ' + this.deviceMac + ' > /dev/null && echo "Disconnecting from PS3" && rm tmp/ps3.lock';
+          value = 'date > tmp/ps3.lock && echo "Connecting to PS3" && emu ' + deviceMac + ' > /dev/null && echo "Disconnecting from PS3" && rm tmp/ps3.lock';
         break;
 
         case 'PS' :
@@ -45,7 +45,7 @@ var ps3Controller = module.exports = (function () {
         case 'Circle'   :
         case 'Cross'    :
         case 'Square'   :
-          value = 'emuclient --event "' + this.command.toLowerCase() + '(255)" & sleep .01 && emuclient --event "' + this.command.toLowerCase() + '(0)"';
+          value = 'emuclient --event "' + command.toLowerCase() + '(255)" & sleep .01 && emuclient --event "' + command.toLowerCase() + '(0)"';
         break;
       }
 
@@ -96,7 +96,7 @@ var ps3Controller = module.exports = (function () {
         that.command = 'PowerOn';
       }
 
-      exec(that.translateCommand(), function (err, stdout, stderr) {
+      exec(that.translateCommand(that.command, that.deviceMac), function (err, stdout, stderr) {
         if(err) {
           that.callback(err);
           console.log(err);

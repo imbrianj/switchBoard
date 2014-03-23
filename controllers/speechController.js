@@ -1,7 +1,7 @@
 /*jslint white: true */
-/*global speechController, module, String, require, console */
+/*global module, String, require, console */
 
-var speechController = module.exports = (function () {
+module.exports = (function () {
   'use strict';
 
   /**
@@ -16,14 +16,14 @@ var speechController = module.exports = (function () {
 
     inputs  : ['text'],
 
-    translateCommand : function () {
-      var voice = this.voice === 'female' ? '-ven+f3' : '';
+    translateCommand : function (voice, text) {
+      voice = voice === 'female' ? '-ven+f3' : '';
 
-      return 'espeak ' + voice + ' "' + this.text + '"';
+      return 'espeak ' + voice + ' "' + text + '"';
     },
 
     init : function () {
-      speechController.send({ 'text' : 'Text to speech initiated' });
+      this.send({ 'text' : 'Text to speech initiated' });
     },
 
     send : function (config) {
@@ -35,7 +35,7 @@ var speechController = module.exports = (function () {
           exec      = require('child_process').exec;
 
       if(this.text) {
-        exec(speechController.translateCommand(), function (err, stdout, stderr) {
+        exec(this.translateCommand(this.voice, this.text), function (err, stdout, stderr) {
           if(err) {
             that.callback(err);
             console.log(err);

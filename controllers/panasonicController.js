@@ -1,7 +1,7 @@
 /*jslint white: true */
-/*global panasonicController, module, String, require, console */
+/*global module, String, require, console */
 
-var panasonicController = module.exports = (function () {
+module.exports = (function () {
   'use strict';
 
   /**

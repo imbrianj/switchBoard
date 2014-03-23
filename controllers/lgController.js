@@ -1,7 +1,7 @@
 /*jslint white: true */
-/*global lgController, module, String, require, console */
+/*global module, String, require, console */
 
-var lgController = module.exports = (function () {
+module.exports = (function () {
   'use strict';
 
   /**

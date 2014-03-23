@@ -1,7 +1,8 @@
 /*global document, window, ActiveXObject, init, console, XMLHttpRequest, Bevey*/
 /*jslint white: true */
+/*jshint -W020 */
 
-var Bevey = Bevey || (function () {
+Bevey = (function () {
   'use strict';
 
   return {
@@ -432,7 +433,7 @@ var Bevey = Bevey || (function () {
         Bevey.ajax.request(ajaxRequest);
       };
 
-      for(i = 0; i < searchInputs.length; i++) {
+      for(i = 0; i < searchInputs.length; i += 1) {
         Bevey.event.add(searchInputs[i], 'submit', runSearch);
       }
 

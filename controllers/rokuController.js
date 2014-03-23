@@ -1,7 +1,7 @@
 /*jslint white: true, indent: 2, sub: true */
-/*global rokuController, module, String, setTimeout, require, console */
+/*global module, String, setTimeout, require, console */
 
-var rokuController = module.exports = (function () {
+module.exports = (function () {
   'use strict';
 
   /**
@@ -23,7 +23,7 @@ var rokuController = module.exports = (function () {
     /**
      * Prepare a POST request for a Roku command.
      */
-    postPrepare : function (that) {
+    postPrepare : function (command) {
       var path    = '/',
           method  = 'POST',
           runText = function(i, text, ip) {
@@ -38,31 +38,31 @@ var rokuController = module.exports = (function () {
             }
           };
 
-      if(this.command) {
-        path += 'keypress/' + that.command;
+      if(command.command) {
+        path += 'keypress/' + command.command;
       }
 
-      if(that.letter) {
-        path += 'keypress/Lit_' + that.letter;
+      if(command.letter) {
+        path += 'keypress/Lit_' + command.letter;
       }
 
-      if(this.text) {
+      if(command.text) {
         // Roku requires a string to be sent one char at a time.
         runText(0, that.text, that.deviceIp);
       }
 
-      if(this.list) {
+      if(command.list) {
         method = 'GET';
         path  += 'query/apps';
       }
 
-      if(this.launch) {
-        path += 'launch/11?contentID=' + that.launch;
+      if(command.launch) {
+        path += 'launch/11?contentID=' + command.launch;
       }
 
       return {
-        host   : that.deviceIp,
-        port   : that.devicePort,
+        host   : command.deviceIp,
+        port   : command.devicePort,
         path   : path,
         method : method
       };
@@ -124,7 +124,7 @@ var rokuController = module.exports = (function () {
       }
 
       else {
-        rokuController.send({ deviceIp: config.deviceIp, list: true, callback: function(err, response) {
+        this.send({ deviceIp: config.deviceIp, list: true, callback: function(err, response) {
           if(err) {
             if(err === 'EHOSTUNREACH') {
               console.log('Roku: Device is off or unreachable');
@@ -159,7 +159,7 @@ var rokuController = module.exports = (function () {
                                                'cache' : '/images/roku/icon_' + app['$']['id'] + '.png'
                                              };
 
-                      rokuController.cacheImage(app['_'], app['$']['id'], config);
+                      this.cacheImage(app['_'], app['$']['id'], config);
                     }
 
                     cache = fs.createWriteStream(__dirname + '/../tmp/roku.json');
