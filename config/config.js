@@ -61,5 +61,12 @@ exports.config = {
     'typeClass'  : 'speech',
     'title'      : 'Speech',
     'voice'      : 'male'
+  },
+
+  stocks : {
+    'typeClass'  : 'stocks',
+    'title'      : 'Stocks',
+    'stocks'     : ['YHOO', 'AAPL', 'GOOG'],
+    'disabled'   : true
   }
 };

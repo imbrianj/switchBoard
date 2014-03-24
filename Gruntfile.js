@@ -20,7 +20,7 @@ module.exports = function(grunt) {
 
     concat: {
       css: {
-        src : ['css/common.css', 'css/font-awesome.min.css'],
+        src : ['css/common.css', 'css/font-awesome.css'],
         dest : 'css/combo.min.css'
       }
     },
