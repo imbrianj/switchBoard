@@ -23,30 +23,36 @@ module.exports = (function () {
      */
     keymap  : ['PowerOn', 'Left', 'Right', 'Up', 'Down', 'PS', 'Select', 'Start', 'Triangle', 'Circle', 'Cross', 'Square'],
 
-    translateCommand : function (command, deviceMac) {
+    translateCommand : function (command, deviceMac, platform) {
       var value  = '';
 
-      switch(command) {
-        case 'PowerOn' :
-          value = 'date > tmp/ps3.lock && echo "Connecting to PS3" && emu ' + deviceMac + ' > /dev/null && echo "Disconnecting from PS3" && rm tmp/ps3.lock';
-        break;
+      if(platform === 'linux' || platform === 'win32') {
+        switch(command) {
+          case 'PowerOn' :
+            value = 'date > tmp/ps3.lock && echo "Connecting to PS3" && emu ' + deviceMac + ' > /dev/null && echo "Disconnecting from PS3" && rm tmp/ps3.lock';
+          break;
 
-        case 'PS' :
-          value = 'emuclient --event "PS(255)"';
-        break;
+          case 'PS' :
+            value = 'emuclient --event "PS(255)"';
+          break;
 
-        case 'Left'     :
-        case 'Right'    :
-        case 'Up'       :
-        case 'Down'     :
-        case 'Select'   :
-        case 'Start'    :
-        case 'Triangle' :
-        case 'Circle'   :
-        case 'Cross'    :
-        case 'Square'   :
-          value = 'emuclient --event "' + command.toLowerCase() + '(255)" & sleep .01 && emuclient --event "' + command.toLowerCase() + '(0)"';
-        break;
+          case 'Left'     :
+          case 'Right'    :
+          case 'Up'       :
+          case 'Down'     :
+          case 'Select'   :
+          case 'Start'    :
+          case 'Triangle' :
+          case 'Circle'   :
+          case 'Cross'    :
+          case 'Square'   :
+            value = 'emuclient --event "' + command.toLowerCase() + '(255)" & sleep .01 && emuclient --event "' + command.toLowerCase() + '(0)"';
+          break;
+        }
+      }
+
+      else {
+        console.log('PS3: PS3 is not supported on your platform!');
       }
 
       return value;
@@ -72,6 +78,7 @@ module.exports = (function () {
       this.deviceMac = config.device.deviceMac;
       this.command   = config.command  || '';
       this.callback  = config.callback || function () {};
+      this.platform  = config.platform || process.platform;
 
       var that       = this,
           fs         = require('fs'),
@@ -96,7 +103,7 @@ module.exports = (function () {
         that.command = 'PowerOn';
       }
 
-      exec(that.translateCommand(that.command, that.deviceMac), function (err, stdout, stderr) {
+      exec(that.translateCommand(that.command, that.deviceMac, that.platform), function (err, stdout, stderr) {
         if(err) {
           that.callback(err);
           console.log(err);
