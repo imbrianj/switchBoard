@@ -31,12 +31,12 @@ module.exports = (function () {
      * input source.
      * "This is who I am."
      */
-    chunkOne : function () {
-      var ipencoded  = this.base64Encode(this.serverIp),
-          macencoded = this.base64Encode(this.serverMac),
-          message    = String.fromCharCode(0x64) + String.fromCharCode(0x00) + String.fromCharCode(ipencoded.length) + String.fromCharCode(0x00) + ipencoded + String.fromCharCode(macencoded.length) + String.fromCharCode(0x00) + macencoded + String.fromCharCode(this.base64Encode(this.remoteName).length) + String.fromCharCode(0x00) + this.base64Encode(this.remoteName);
+    chunkOne : function (samsung) {
+      var ipencoded  = this.base64Encode(samsung.serverIp),
+          macencoded = this.base64Encode(samsung.serverMac),
+          message    = String.fromCharCode(0x64) + String.fromCharCode(0x00) + String.fromCharCode(ipencoded.length) + String.fromCharCode(0x00) + ipencoded + String.fromCharCode(macencoded.length) + String.fromCharCode(0x00) + macencoded + String.fromCharCode(this.base64Encode(samsung.remoteName).length) + String.fromCharCode(0x00) + this.base64Encode(samsung.remoteName);
 
-      return String.fromCharCode(0x00) + String.fromCharCode(this.appString.length) + String.fromCharCode(0x00) + this.appString + String.fromCharCode(message.length) + String.fromCharCode(0x00) + message;
+      return String.fromCharCode(0x00) + String.fromCharCode(samsung.appString.length) + String.fromCharCode(0x00) + samsung.appString + String.fromCharCode(message.length) + String.fromCharCode(0x00) + message;
     },
 
     /**
@@ -44,48 +44,52 @@ module.exports = (function () {
      * be inputted into fields.
      * "Will you please do this for me?"
      */
-    chunkTwo : function () {
-      var command = 'KEY_' + this.command,
+    chunkTwo : function (samsung) {
+      var command = 'KEY_' + samsung.command,
           message = '';
 
-      if(this.command) {
+      if(samsung.command) {
         message = String.fromCharCode(0x00) + String.fromCharCode(0x00) + String.fromCharCode(0x00) + String.fromCharCode(this.base64Encode(command).length) + String.fromCharCode(0x00) + this.base64Encode(command);
 
-        return String.fromCharCode(0x00) + String.fromCharCode(this.tvAppString.length) + String.fromCharCode(0x00) + this.tvAppString + String.fromCharCode(message.length) + String.fromCharCode(0x00) + message;
+        return String.fromCharCode(0x00) + String.fromCharCode(samsung.tvAppString.length) + String.fromCharCode(0x00) + samsung.tvAppString + String.fromCharCode(message.length) + String.fromCharCode(0x00) + message;
       }
 
-      if(this.text) {
-        message = String.fromCharCode(0x01) + String.fromCharCode(0x00) + String.fromCharCode(this.base64Encode(this.text).length) + String.fromCharCode(0x00) + this.base64Encode(this.text);
+      else if(samsung.text) {
+        message = String.fromCharCode(0x01) + String.fromCharCode(0x00) + String.fromCharCode(this.base64Encode(samsung.text).length) + String.fromCharCode(0x00) + this.base64Encode(samsung.text);
 
-        return String.fromCharCode(0x01) + String.fromCharCode(this.appString.length) + String.fromCharCode(0x00) + this.appString + String.fromCharCode(message.length) + String.fromCharCode(0x00) + message;
+        return String.fromCharCode(0x01) + String.fromCharCode(samsung.appString.length) + String.fromCharCode(0x00) + samsung.appString + String.fromCharCode(message.length) + String.fromCharCode(0x00) + message;
       }
     },
 
     send : function (config) {
-      this.deviceIp    = config.device.deviceIp;
-      this.serverIp    = config.config.serverIp;
-      this.serverMac   = config.config.serverMac;
-      this.command     = config.command     || '';
-      this.text        = config.text        || '';
-      this.devicePort  = config.devicePort  || 55000;
-      this.appString   = config.appString   || "iphone..iapp.samsung";
-      this.tvAppString = config.tvAppString || "iphone.UN60ES8000.iapp.samsung";
-      this.remoteName  = config.remoteName  || "Node.js Samsung Remote";
-      this.callback    = config.callback    || function () {};
+      var net             = require('net'),
+          samsung         = {},
+          socket;
 
-      var that         = this,
-          net          = require('net'),
-          socket       = net.connect(this.devicePort, this.deviceIp);
+      samsung.deviceIp    = config.device.deviceIp;
+      samsung.serverIp    = config.config.serverIp;
+      samsung.serverMac   = config.config.serverMac;
+      samsung.command     = config.command     || '';
+      samsung.text        = config.text        || '';
+      samsung.devicePort  = config.devicePort  || 55000;
+      samsung.appString   = config.appString   || "iphone..iapp.samsung";
+      samsung.tvAppString = config.tvAppString || "iphone.UN60ES8000.iapp.samsung";
+      samsung.remoteName  = config.remoteName  || "Node.js Samsung Remote";
+      samsung.callback    = config.callback    || function () {};
+
+      socket = net.connect(samsung.devicePort, samsung.deviceIp);
 
       socket.on('connect', function() {
+        var samsungController = require('./samsungController');
+
         console.log('Samsung: Connected');
 
-        socket.write(that.chunkOne());
-        socket.write(that.chunkTwo());
+        socket.write(samsungController.chunkOne(samsung));
+        socket.write(samsungController.chunkTwo(samsung));
 
         socket.end();
 
-        that.callback();
+        samsung.callback();
       });
 
       socket.on('error', function(err) {
@@ -101,7 +105,7 @@ module.exports = (function () {
 
         console.log(errorMsg);
 
-        that.callback(errorMsg);
+        samsung.callback(errorMsg);
       });
     }
   };

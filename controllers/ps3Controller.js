@@ -75,23 +75,23 @@ module.exports = (function () {
     },
 
     send : function (config) {
-      this.deviceMac = config.device.deviceMac;
-      this.command   = config.command  || '';
-      this.callback  = config.callback || function () {};
-      this.platform  = config.platform || process.platform;
+      var fs        = require('fs'),
+          exec      = require('child_process').exec,
+          ps3       = {};
 
-      var that       = this,
-          fs         = require('fs'),
-          exec       = require('child_process').exec;
+      ps3.deviceMac = config.device.deviceMac;
+      ps3.command   = config.command  || '';
+      ps3.callback  = config.callback || function () {};
+      ps3.platform  = config.platform || process.platform;
 
       // PS3 requires a lock file to determine if the daemon is running.
       // If the server is just started up, we should assume it is not.
       if(fs.existsSync(__dirname + '/../tmp/ps3.lock')) {
         // If the PS3 is already on, we shouldn't execute PowerOn again.
-        if(that.command === 'PowerOn') {
+        if(ps3.command === 'PowerOn') {
           console.log('PS3 looks on already.  Changing command to PS');
 
-          that.command = 'PS';
+          ps3.command = 'PS';
         }
       }
 
@@ -100,17 +100,17 @@ module.exports = (function () {
         // need to execute PowerOn first.
         console.log('PS3 doesn\'t look on - connecting.');
 
-        that.command = 'PowerOn';
+        ps3.command = 'PowerOn';
       }
 
-      exec(that.translateCommand(that.command, that.deviceMac, that.platform), function (err, stdout, stderr) {
+      exec(this.translateCommand(ps3.command, ps3.deviceMac, ps3.platform), function (err, stdout, stderr) {
         if(err) {
-          that.callback(err);
+          ps3.callback(err);
           console.log(err);
         }
 
         else {
-          that.callback(null, stdout);
+          ps3.callback(null, stdout);
         }
       });
     }

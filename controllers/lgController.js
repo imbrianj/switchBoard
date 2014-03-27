@@ -102,13 +102,13 @@ module.exports = (function () {
     /**
      * Prepare a POST request for a LG command.
      */
-    postPrepare : function (that) {
+    postPrepare : function (lg) {
       var path    = '/udap/api/command',
           method  = 'POST';
 
       return {
-        host    : that.deviceIp,
-        port    : that.devicePort,
+        host    : lg.deviceIp,
+        port    : lg.devicePort,
         path    : path,
         method  : method,
         headers : {
@@ -123,14 +123,14 @@ module.exports = (function () {
     /**
      * Prepare a POST data the request.
      */
-    postData : function (that) {
+    postData : function (lg) {
       var response = '';
 
       response += '<?xml version="1.0" encoding="utf-8"?>';
       response += '<envelope>';
       resposne += '  <api type="command">';
       response += '    <name>HandleKeyInput</name>';
-      resposne += '    <value>' + that.command + '</value>';
+      resposne += '    <value>' + lg.command + '</value>';
       response += '  </api>';
       response += '</envelope>';
 
@@ -138,17 +138,18 @@ module.exports = (function () {
     },
 
     send : function (config) {
-      this.deviceIp   = config.device.deviceIp;
-      this.command    = this.translateCommand(config.command) || '';
-      this.devicePort = config.devicePort || 8080;
-      this.callback   = config.callback   || function () {};
-
-      var that        = this,
-          http        = require('http'),
-          dataReply   = '',
+      var http      = require('http'),
+          lg        = {},
+          dataReply = '',
           request;
 
-      request = http.request(this.postPrepare(that), function(response) {
+      lg.deviceIp   = config.device.deviceIp;
+      lg.command    = this.translateCommand(config.command) || '';
+      lg.devicePort = config.devicePort || 8080;
+      lg.callback   = config.callback   || function () {};
+      lg.pairKey    = config.pairKey;
+
+      request = http.request(this.postPrepare(lg), function(response) {
                   response.on('data', function(response) {
                     console.log('connected');
 
@@ -156,7 +157,7 @@ module.exports = (function () {
                   });
 
                   response.on('end', function() {
-                    that.callback(null, dataReply);
+                    lg.callback(null, dataReply);
                   });
                 });
 
@@ -174,10 +175,10 @@ module.exports = (function () {
 
         console.log(errorMsg);
 
-        that.callback(errorMsg);
+        lg.callback(errorMsg);
       });
 
-      request.write(this.postData(that));
+      request.write(this.postData(lg));
       request.end();
 
       return dataReply;

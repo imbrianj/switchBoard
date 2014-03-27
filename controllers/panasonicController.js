@@ -24,11 +24,11 @@ module.exports = (function () {
     /**
      * Prepare a POST request for a command.
      */
-    postPrepare : function (that) {
+    postPrepare : function (panasonic) {
       var path    = '/',
           method  = 'POST';
 
-      if(that.command || that.text) {
+      if(panasonic.command || panasonic.text) {
         path += 'nrc/control_0';
       }
 
@@ -37,8 +37,8 @@ module.exports = (function () {
       }
 
       return {
-        host    : that.deviceIp,
-        port    : that.devicePort,
+        host    : panasonic.deviceIp,
+        port    : panasonic.devicePort,
         path    : path,
         method  : method,
         headers : {
@@ -54,16 +54,16 @@ module.exports = (function () {
     /**
      * Prepare a POST data the request.
      */
-    postData : function (that) {
+    postData : function (panasonic) {
       var response = '',
           action   = 'X_SendKey',
           urn      = 'panasonic-com:service:p00NetworkControl:1',
-          value    = '<X_KeyEvent>NRC_' + that.command + '-ONOFF</X_KeyEvent>';
+          value    = '<X_KeyEvent>NRC_' + panasonic.command + '-ONOFF</X_KeyEvent>';
 
-      if(that.text) {
+      if(panasonic.text) {
         action = 'X_SendString';
         urn    = 'panasonic-com:service:p00NetworkControl:1';
-        value  = '<X_String>' + that.text + '</X_String>';
+        value  = '<X_String>' + panasonic.text + '</X_String>';
       }
 
       response += '<?xml version="1.0" encoding="utf-8"?>';
@@ -79,18 +79,18 @@ module.exports = (function () {
     },
 
     send : function (config) {
-      this.deviceIp   = config.device.deviceIp;
-      this.command    = config.command    || '';
-      this.text       = config.text       || '';
-      this.devicePort = config.devicePort || 55000;
-      this.callback   = config.callback   || function () {};
-
-      var that        = this,
-          http        = require('http'),
-          dataReply   = '',
+      var http             = require('http'),
+          panasonic        = {},
+          dataReply        = '',
           request;
 
-      request = http.request(this.postPrepare(that), function(response) {
+      panasonic.deviceIp   = config.device.deviceIp;
+      panasonic.command    = config.command    || '';
+      panasonic.text       = config.text       || '';
+      panasonic.devicePort = config.devicePort || 55000;
+      panasonic.callback   = config.callback   || function () {};
+
+      request = http.request(this.postPrepare(panasonic), function(response) {
                   response.on('data', function(response) {
                     console.log('connected');
 
@@ -98,7 +98,7 @@ module.exports = (function () {
                   });
 
                   response.on('end', function() {
-                    that.callback(null, dataReply);
+                    panasonic.callback(null, dataReply);
                   });
                 });
 
@@ -114,12 +114,12 @@ module.exports = (function () {
           errorMsg = error.code;
         }
 
-        console.log(errorMsg);
+        console.log('Panasonic: ' + errorMsg);
 
-        that.callback(errorMsg);
+        panasonic.callback(errorMsg);
       });
 
-      request.write(this.postData(that));
+      request.write(this.postData(panasonic));
       request.end();
 
       return dataReply;

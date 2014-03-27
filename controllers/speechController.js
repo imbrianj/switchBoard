@@ -47,23 +47,23 @@ module.exports = (function () {
     },
 
     send : function (config) {
-      this.text     = config.text     || '';
-      this.callback = config.callback || function () {};
-      this.voice    = config.voice    || 'male';
-      this.platform = config.platofrm || process.platform;
+      var exec        = require('child_process').exec,
+          speech      = {};
 
-      var that      = this,
-          exec      = require('child_process').exec;
+      speech.text     = config.text     || '';
+      speech.callback = config.callback || function () {};
+      speech.voice    = config.voice    || 'male';
+      speech.platform = config.platofrm || process.platform;
 
-      if(this.text) {
-        exec(this.translateCommand(this.voice, this.text, this.platform), function (err, stdout, stderr) {
+      if(speech.text) {
+        exec(this.translateCommand(speech.voice, speech.text, speech.platform), function (err, stdout, stderr) {
           if(err) {
-            that.callback(err);
+            speech.callback(err);
             console.log(err);
           }
 
           else {
-            that.callback(null, stdout);
+            speech.callback(null, stdout);
           }
         });
       }

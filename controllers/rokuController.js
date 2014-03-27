@@ -30,7 +30,7 @@ module.exports = (function () {
             var letter = text[i];
 
             if(letter) {
-              that.send({ letter: letter, deviceIp: ip });
+              roku.send({ letter: letter, deviceIp: ip });
 
               setTimeout(function() {
                 runText(i + 1, text, ip);
@@ -48,7 +48,7 @@ module.exports = (function () {
 
       if(command.text) {
         // Roku requires a string to be sent one char at a time.
-        runText(0, that.text, that.deviceIp);
+        runText(0, roku.text, roku.deviceIp);
       }
 
       if(command.list) {
@@ -175,21 +175,21 @@ module.exports = (function () {
     },
 
     send : function (config) {
-      this.deviceIp   = config.deviceIp;
-      this.command    = config.command    || '';
-      this.text       = config.text       || '';
-      this.letter     = config.letter     || '';
-      this.list       = config.list       || '';
-      this.launch     = config.launch     || '';
-      this.devicePort = config.devicePort || 8060;
-      this.callback   = config.callback   || function () {};
-
-      var that        = this,
-          http        = require('http'),
+      var http        = require('http'),
+          roku        = {},
           dataReply   = '',
           request;
 
-      request = http.request(this.postPrepare(that), function(response) {
+      roku.deviceIp   = config.deviceIp;
+      roku.command    = config.command    || '';
+      roku.text       = config.text       || '';
+      roku.letter     = config.letter     || '';
+      roku.list       = config.list       || '';
+      roku.launch     = config.launch     || '';
+      roku.devicePort = config.devicePort || 8060;
+      roku.callback   = config.callback   || function () {};
+
+      request = http.request(this.postPrepare(roku), function(response) {
                   response.on('data', function(response) {
                     console.log('Roku: Connected');
 
@@ -197,7 +197,7 @@ module.exports = (function () {
                   });
 
                   response.on('end', function() {
-                    that.callback(null, dataReply);
+                    roku.callback(null, dataReply);
                   });
                 });
 
@@ -205,17 +205,17 @@ module.exports = (function () {
       request.on('error', function(error) {
         var errorMsg = '';
 
-        if(error.code === 'ECONNRESET' || error.code === 'ECONNREFUSED') {
-          errorMsg = 'Roku: Device is off or unreachable';
+        if(error.code === 'ECONNRESET' || error.code === 'ECONNREFUSED' || error.code === 'EHOSTUNREACH') {
+          errorMsg = 'Device is off or unreachable';
         }
 
         else {
           errorMsg = error.code;
         }
 
-        console.log(errorMsg);
+        console.log('Roku: ' + errorMsg);
 
-        that.callback(errorMsg);
+        roku.callback(errorMsg);
       });
 
       request.end();
