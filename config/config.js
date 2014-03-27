@@ -74,7 +74,7 @@ exports.config = {
     typeClass  : 'speech',
     title      : 'Speech',
     voice      : 'male',
-    disabled   : true
+    disabled   : false
   },
 
   /*

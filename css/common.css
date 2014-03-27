@@ -509,9 +509,11 @@ form legend {
 	color: blue;
 }
 
-.device .preview-image img {
+.device .preview-image {
 	background: #000 no-repeat url(/images/loading.gif) center;
-	border: none;
+}
+
+.device .preview-image img {
 	color: transparent;
 	display: block;
 	max-width: 100%;

@@ -7,8 +7,8 @@
               <li><a href="/?{{DEVICE_ID}}=Preset3"><span>3</span></a></li>
             </ol>
             <ul class="alarm">
-              <li><a href="/?{{DEVICE_ID}}=AlarmOn" class="fa fa-lock"><span>AlarmOn</span></a></li>
-              <li><a href="/?{{DEVICE_ID}}=AlarmOff" class="fa fa-unlock"><span>AlarmOff</span></a></li>
+              <li><a href="/?{{DEVICE_ID}}=Preset1,sleep,sleep,AlarmOn" class="fa fa-lock"><span>AlarmOn</span></a></li>
+              <li><a href="/?{{DEVICE_ID}}=AlarmOff,Preset3" class="fa fa-unlock"><span>AlarmOff</span></a></li>
             </ul>
           </div>
         </div>

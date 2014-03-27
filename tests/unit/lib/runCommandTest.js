@@ -67,8 +67,8 @@ exports.runCommandTest = {
 
     var runCommand     = require('../../../lib/runCommand.js'),
         controllers    = { samsung : { config     : { deviceId : 'TEST-deviceId', title : 'TEST-title' },
-                                     markup     : '<span>{{DEVICE_ID}} {{TEST_KEY}}</span>',
-                                     controller : { inputs : ['command', 'text'],
+                                       markup     : '<span>{{DEVICE_ID}} {{TEST_KEY}}</span>',
+                                       controller : { inputs : ['command', 'text'],
                                                     keymap : ['VOLUP'],
                                                     send   : function(request) { return request; } } } },
         validCommand   = runCommand.validateCommand('samsung', 'VOLUP', controllers),
@@ -91,8 +91,8 @@ exports.runCommandTest = {
 
     var runCommand     = require('../../../lib/runCommand.js'),
         controllers    = { samsung : { config     : { deviceId : 'TEST-deviceId', title : 'TEST-title' },
-                                     markup     : '<span>{{DEVICE_ID}} {{TEST_KEY}}</span>',
-                                     controller : { inputs : ['command', 'text'],
+                                       markup     : '<span>{{DEVICE_ID}} {{TEST_KEY}}</span>',
+                                       controller : { inputs : ['command', 'text'],
                                                     keymap : ['VOLUP'],
                                                     send   : function(request) { return request; } } } },
         response       = { end : function(msg) { return msg; } },

@@ -1,5 +1,5 @@
 /*jslint white: true, indent: 2, sub: true */
-/*global module, String, setTimeout, require, console */
+/*global module, setTimeout, require, console */
 
 module.exports = (function () {
   'use strict';
