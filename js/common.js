@@ -405,9 +405,8 @@ Bevey = (function () {
           body         = Bevey.getElementsByClassName('body', document.body, 'div')[0],
           searchInputs = Bevey.getElementsByClassName('text-form', body, 'form'),
           runSearch,
+          lazyLoad,
           i;
-
-      Bevey.addClass(document.body, 'rich');
 
       runSearch = function(e) {
         var elm  = Bevey.getTarget(e),
@@ -433,6 +432,27 @@ Bevey = (function () {
         Bevey.ajax.request(ajaxRequest);
       };
 
+      lazyLoad = function(id) {
+        var container,
+            images,
+            i = 0;
+
+        if(document.getElementById(id)) {
+          container = document.getElementById(id);
+
+          images = container.getElementsByTagName('img');
+
+          for(i = 0; i < images.length; i += 1) {
+            if(images[i].getAttribute('data-src')) {
+              images[i].src = images[i].getAttribute('data-src');
+              images[i].removeAttribute('data-src');
+            }
+          }
+        }
+      };
+
+      lazyLoad(document.body.className);
+
       for(i = 0; i < searchInputs.length; i += 1) {
         Bevey.event.add(searchInputs[i], 'submit', runSearch);
       }
@@ -445,6 +465,8 @@ Bevey = (function () {
           e.preventDefault();
 
           document.body.className = elm.className;
+
+          lazyLoad(elm.className);
         }
       });
 
@@ -476,6 +498,8 @@ Bevey = (function () {
           Bevey.ajax.request(ajaxRequest);
         }
       });
+
+      Bevey.addClass(document.body, 'rich');
 
       if (typeof(init) === 'function') {
         init();

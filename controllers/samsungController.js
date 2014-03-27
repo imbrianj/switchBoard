@@ -100,7 +100,7 @@ module.exports = (function () {
         }
 
         else {
-          errorMsg = err.code;
+          errorMsg = 'Samsung: ' + err.code;
         }
 
         console.log(errorMsg);

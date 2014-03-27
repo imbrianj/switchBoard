@@ -25,11 +25,12 @@ exports.loadControllerTest = {
     'use strict';
 
     var loadController = require('../../../lib/loadController.js'),
-        devices        = { samsung   : { title : 'TEST Samsung SmartTV' },
+        devices        = { config    : { default : 'samsung' },
+                           samsung   : { title : 'TEST Samsung SmartTV' },
                            panasonic : { title : 'TEST Panasonic', disabled : true } },
         controller     = loadController.loadController(devices);
 
-    test.ok(controller.config === undefined, 'Config object is not populated');
+    test.deepEqual(controller.config, { default : 'samsung' }, 'Config object is not populated');
     test.ok(!controller.panasonic, 'Disabled devices are omitted');
 
     test.done();

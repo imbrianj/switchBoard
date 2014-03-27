@@ -166,11 +166,11 @@ module.exports = (function () {
         var errorMsg = '';
 
         if(error.code === 'ECONNRESET' || error.code === 'ECONNREFUSED') {
-          errorMsg = 'Device is off or unreachable';
+          errorMsg = 'LG: Device is off or unreachable';
         }
 
         else {
-          errorMsg = error.code;
+          errorMsg = 'LG: ' + error.code;
         }
 
         console.log(errorMsg);

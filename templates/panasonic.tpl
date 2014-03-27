@@ -43,7 +43,7 @@
             </fieldset>
           </form>
         </div>
-        <div class="tv-controls">
+        <div class="numeric-controls">
           <ol>
             <li><a href="/?{{DEVICE_ID}}=D1"><span>1</span></a></li>
             <li><a href="/?{{DEVICE_ID}}=D2"><span>2</span></a></li>

@@ -107,14 +107,14 @@ module.exports = (function () {
         var errorMsg = '';
 
         if(error.code === 'ECONNRESET' || error.code === 'ECONNREFUSED') {
-          errorMsg = 'Device is off or unreachable';
+          errorMsg = 'Panasonic: Device is off or unreachable';
         }
 
         else {
-          errorMsg = error.code;
+          errorMsg = 'Panasonic: ' + error.code;
         }
 
-        console.log('Panasonic: ' + errorMsg);
+        console.log(errorMsg);
 
         panasonic.callback(errorMsg);
       });

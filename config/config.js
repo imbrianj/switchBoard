@@ -92,5 +92,20 @@ exports.config = {
     title      : 'Weather',
     zip        : 98121,
     disabled   : true
+  },
+
+  /*
+   * This is insecure.  Your Foscam username and password will be sent in
+   * plain-text and can be viewable within the source of the rendered
+   * controller template.
+   * Procede with caution.
+   */
+  foscam : {
+    typeClass  : 'foscam',
+    title      : 'Foscam',
+    deviceIp   : '192.168.1.7',
+    username   : 'user',
+    password   : 'password',
+    disabled   : true
   }
 };

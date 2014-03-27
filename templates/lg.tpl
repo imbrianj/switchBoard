@@ -30,7 +30,7 @@
             <li><a href="/?{{DEVICE_ID}}=EXIT" class="fa fa-sign-out"><span>Exit</span></a></li>
           </ul>
         </div>
-        <div class="tv-controls">
+        <div class="numeric-controls">
           <ol>
             <li><a href="/?{{DEVICE_ID}}=1"><span>1</span></a></li>
             <li><a href="/?{{DEVICE_ID}}=2"><span>2</span></a></li>

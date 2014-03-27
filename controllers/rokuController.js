@@ -202,18 +202,18 @@ module.exports = (function () {
                 });
 
 
-      request.on('error', function(error) {
+      request.on('error', function(err) {
         var errorMsg = '';
 
-        if(error.code === 'ECONNRESET' || error.code === 'ECONNREFUSED' || error.code === 'EHOSTUNREACH') {
-          errorMsg = 'Device is off or unreachable';
+        if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
+          errorMsg = 'Roku: Device is off or unreachable';
         }
 
         else {
-          errorMsg = error.code;
+          errorMsg = 'Roku: ' + err.code;
         }
 
-        console.log('Roku: ' + errorMsg);
+        console.log(errorMsg);
 
         roku.callback(errorMsg);
       });

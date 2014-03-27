@@ -104,7 +104,10 @@ module.exports = (function () {
       }
 
       exec(this.translateCommand(ps3.command, ps3.deviceMac, ps3.platform), function (err, stdout, stderr) {
+        var errorMsg = '';
+
         if(err) {
+          errorMsg = 'PS3: ' + err;
           ps3.callback(err);
           console.log(err);
         }

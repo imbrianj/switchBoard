@@ -57,9 +57,12 @@ module.exports = (function () {
 
       if(speech.text) {
         exec(this.translateCommand(speech.voice, speech.text, speech.platform), function (err, stdout, stderr) {
+          var errorMsg = '';
+
           if(err) {
-            speech.callback(err);
-            console.log(err);
+            errorMsg = 'Speech: ' + err;
+            speech.callback(errorMsg);
+            console.log(errorMsg);
           }
 
           else {
