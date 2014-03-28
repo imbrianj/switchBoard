@@ -10,9 +10,9 @@ exports.weatherControllerTest = {
   translateCommand : function (test) {
     'use strict';
 
-    var weatherController = require(__dirname + '/../../../controllers/weatherController.js'),
-        config           = { host : 'TEST-host', port : '80', path : '/TEST/', method : 'GET', badData : 'FAILURE' },
-        testData         = weatherController.postPrepare(config);
+    var weatherController = require(__dirname + '/../../../controllers/weatherController'),
+        config            = { host : 'TEST-host', port : '80', path : '/TEST/', method : 'GET', badData : 'FAILURE' },
+        testData          = weatherController.postPrepare(config);
 
     test.deepEqual(testData, { host : 'TEST-host', port : '80', path : '/TEST/', method : 'GET' }, 'Additional params are filtered out.');
 

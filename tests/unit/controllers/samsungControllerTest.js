@@ -10,7 +10,7 @@ exports.samsungControllerTest = {
   base64Encode : function (test) {
     'use strict';
 
-    var samsungController = require(__dirname + '/../../../controllers/samsungController.js'),
+    var samsungController = require(__dirname + '/../../../controllers/samsungController'),
         encoded           = samsungController.base64Encode('TEST');
 
     test.equal(encoded, 'VEVTVA==', 'Base64 encoding validation');
@@ -21,7 +21,7 @@ exports.samsungControllerTest = {
   chunkOne : function (test) {
     'use strict';
 
-    var samsungController = require(__dirname + '/../../../controllers/samsungController.js'),
+    var samsungController = require(__dirname + '/../../../controllers/samsungController'),
         chunkOne          = samsungController.chunkOne({ serverIp : '123.456.789.101', serverMac : '12:34:56', remoteName : 'TEST-remoteName', appString : 'TEST-appString' });
 
     test.equal(chunkOne, '\u0000\u000e\u0000TEST-appString<\u0000d\u0000\u0014\u0000MTIzLjQ1Ni43ODkuMTAx\f\u0000MTI6MzQ6NTY=\u0014\u0000VEVTVC1yZW1vdGVOYW1l', 'chunkOne validation');
@@ -32,7 +32,7 @@ exports.samsungControllerTest = {
   chunkTwo : function (test) {
     'use strict';
 
-    var samsungController = require(__dirname + '/../../../controllers/samsungController.js'),
+    var samsungController = require(__dirname + '/../../../controllers/samsungController'),
         chunkTwoCommand   = samsungController.chunkTwo({ command : 'TESTING-COMMAND', tvAppString : 'TEST-tvAppString' }),
         chunkTwoText      = samsungController.chunkTwo({ text : 'TESTING-TEXT', appString : 'TEST-appString' });
 

@@ -31,40 +31,42 @@ else {
 
 controllers = this.controllers = loadController.loadController(settings.config);
 
-http.createServer(function(request, response) {
-  'use strict';
+if(controllers) {
+  http.createServer(function(request, response) {
+    'use strict';
 
-  // Some commands can be accepted via POST - such as text inputs.
-  if(request.method === 'POST') {
-    console.log('POST command received');
+    // Some commands can be accepted via POST - such as text inputs.
+    if(request.method === 'POST') {
+      console.log('POST command received');
 
-    requestInit.requestInit(request, controllers, response);
-  }
+      requestInit.requestInit(request, controllers, response);
+    }
 
-  else {
-    request.on('end', function () {
-      var deviceController,
-          device    = url.parse(request.url, true).query.device || controllers[controllers.config.default].config.deviceId,
-          filename  = path.basename(request.url),
-          extension = path.extname(filename),
-          directory = staticAssets.getDirectory(extension, request.url),
-          contents;
+    else {
+      request.on('end', function () {
+        var deviceController,
+            device    = url.parse(request.url, true).query.device || controllers[controllers.config.default].config.deviceId,
+            filename  = path.basename(request.url),
+            extension = path.extname(filename),
+            directory = staticAssets.getDirectory(extension, request.url),
+            contents;
 
-      controllers.config.default = device;
+        controllers.config.default = device;
 
-      // Serve static assets
-      if(directory) {
-        staticAssets.writeFile(directory, filename, response, controllers.config);
-      }
+        // Serve static assets
+        if(directory) {
+          staticAssets.writeFile(directory, filename, response, controllers.config);
+        }
 
-      // Or the remote controller
-      else {
-        requestInit.requestInit(request, controllers, response);
-      }
-    });
+        // Or the remote controller
+        else {
+          requestInit.requestInit(request, controllers, response);
+        }
+      });
 
-    request.resume();
-  }
-}).listen(settings.config.config.serverPort);
+      request.resume();
+    }
+  }).listen(settings.config.config.serverPort);
 
-console.log('Listening on port ' + settings.config.config.serverPort);
+  console.log('Listening on port ' + settings.config.config.serverPort);
+}

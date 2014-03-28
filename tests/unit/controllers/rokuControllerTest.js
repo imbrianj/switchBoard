@@ -10,7 +10,7 @@ exports.rokuControllerTest = {
   postPrepare : function (test) {
     'use strict';
 
-    var rokuController = require(__dirname + '/../../../controllers/rokuController.js'),
+    var rokuController = require(__dirname + '/../../../controllers/rokuController'),
         commandRequest = rokuController.postPrepare({ deviceIp : '123.456.789.101', devicePort : '80', command : 'TEST' }),
         letterRequest  = rokuController.postPrepare({ deviceIp : '123.456.789.101', devicePort : '80', letter : 'T' }),
         listRequest    = rokuController.postPrepare({ deviceIp : '123.456.789.101', devicePort : '80', list : true }),

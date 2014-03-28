@@ -12,7 +12,7 @@ exports.loadMarkupTest = {
     'use strict';
 
     var fs          = require('fs'),
-        loadMarkup  = require('../../../lib/loadMarkup.js'),
+        loadMarkup  = require('../../../lib/loadMarkup'),
         template    = fs.readFileSync(__dirname + '/../../../templates/markup.html').toString(),
         controllers = { config  : { theme  : 'TEST-theme', default : 'TEST-default' },
                         samsung : { config : { deviceId : 'TEST-deviceId', title : 'TEST-title' },

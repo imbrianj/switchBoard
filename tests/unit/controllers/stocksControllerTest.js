@@ -10,7 +10,7 @@ exports.stocksControllerTest = {
   translateCommand : function (test) {
     'use strict';
 
-    var stocksController = require(__dirname + '/../../../controllers/stocksController.js'),
+    var stocksController = require(__dirname + '/../../../controllers/stocksController'),
         config           = { host : 'TEST-host', port : '80', path : '/TEST/', method : 'GET', badData : 'FAILURE' },
         testData         = stocksController.postPrepare(config);
 

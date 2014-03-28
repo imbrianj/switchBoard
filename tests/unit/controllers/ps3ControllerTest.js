@@ -10,13 +10,13 @@ exports.ps3ControllerTest = {
   translateCommand : function (test) {
     'use strict';
 
-    var ps3Controller = require(__dirname + '/../../../controllers/ps3Controller.js'),
-        PowerOn       = ps3Controller.translateCommand('PowerOn', '12:34:56', 'linux'),
-        PS            = ps3Controller.translateCommand('PS', '12:34:56', 'win32'),
-        Cross         = ps3Controller.translateCommand('Cross', '12:34:56', 'linux'),
-        Square        = ps3Controller.translateCommand('Square', '12:34:56', 'sunos'),
+    var ps3Controller = require(__dirname + '/../../../controllers/ps3Controller'),
+        PowerOn       = ps3Controller.translateCommand('PowerOn',  '12:34:56', 'linux'),
+        PS            = ps3Controller.translateCommand('PS',       '12:34:56', 'win32'),
+        Cross         = ps3Controller.translateCommand('Cross',    '12:34:56', 'linux'),
+        Square        = ps3Controller.translateCommand('Square',   '12:34:56', 'sunos'),
         Triangle      = ps3Controller.translateCommand('Triangle', '12:34:56', 'freebsd'),
-        Left          = ps3Controller.translateCommand('Left', '12:34:56', 'darwin');
+        Left          = ps3Controller.translateCommand('Left',     '12:34:56', 'darwin');
 
     test.equal(PowerOn, 'date > tmp/ps3.lock && echo "Connecting to PS3" && emu 12:34:56 > /dev/null && echo "Disconnecting from PS3" && rm tmp/ps3.lock', 'PS3 PowerOn command on Linux validation');
     test.equal(PS, 'emuclient --event "PS(255)"', 'PS3 PS command on Windows validation');

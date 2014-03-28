@@ -10,9 +10,9 @@ exports.foscamControllerTest = {
   postPrepare : function (test) {
     'use strict';
 
-    var foscamController = require(__dirname + '/../../../controllers/foscamController.js'),
+    var foscamController = require(__dirname + '/../../../controllers/foscamController'),
         testAlarm        = foscamController.postPrepare({ deviceIp : 'TEST-host', devicePort: 80, username : 'TEST-username', password : 'TEST-password', command : 'AlarmOn' }),
-        testPreset        = foscamController.postPrepare({ deviceIp : 'TEST-host', devicePort: 80, username : 'TEST-username', password : 'TEST-password', command : 'Preset2' });
+        testPreset       = foscamController.postPrepare({ deviceIp : 'TEST-host', devicePort: 80, username : 'TEST-username', password : 'TEST-password', command : 'Preset2' });
 
     test.deepEqual(testAlarm, { host : 'TEST-host', port : '80', path : '/set_alarm.cgi?user=TEST-username&pwd=TEST-password&motion_armed=0', method : 'GET' }, 'Additional params are filtered out.');
 

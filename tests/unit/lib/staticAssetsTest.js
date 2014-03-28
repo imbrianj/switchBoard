@@ -10,7 +10,7 @@ exports.staticAssetsTest = {
   getDirectory : function (test) {
     'use strict';
 
-    var staticAssets = require('../../../lib/staticAssets.js'),
+    var staticAssets = require('../../../lib/staticAssets'),
         css          = staticAssets.getDirectory('.css', '/css/TEST-min.css'),
         js           = staticAssets.getDirectory('.js', '/js/TEST-min.js'),
         roku         = staticAssets.getDirectory('.png', '/images/roku/TEST.png'),

@@ -10,7 +10,7 @@ exports.runCommandTest = {
   parseCommands : function (test) {
     'use strict';
 
-    var runCommand   = require('../../../lib/runCommand.js'),
+    var runCommand   = require('../../../lib/runCommand'),
         controllers  = { samsung : { config     : { deviceId : 'TEST-deviceId', title : 'TEST-title' },
                                      markup     : '<span>{{DEVICE_ID}} {{TEST_KEY}}</span>',
                                      controller : { inputs : ['command'],
@@ -31,7 +31,7 @@ exports.runCommandTest = {
   stripTypePrefix : function (test) {
     'use strict';
 
-    var runCommand = require('../../../lib/runCommand.js'),
+    var runCommand = require('../../../lib/runCommand'),
         text       = runCommand.stripTypePrefix('text-TEST', 'text'),
         launch     = runCommand.stripTypePrefix('launch-TEST', 'launch'),
         list       = runCommand.stripTypePrefix('list', 'list'),
@@ -48,7 +48,7 @@ exports.runCommandTest = {
   getCommandType : function (test) {
     'use strict';
 
-    var runCommand = require('../../../lib/runCommand.js'),
+    var runCommand = require('../../../lib/runCommand'),
         text       = runCommand.getCommandType(null, 'text-TEST'),
         launch     = runCommand.getCommandType(null, 'launch-TEST'),
         list       = runCommand.getCommandType(null, 'list'),
@@ -65,7 +65,7 @@ exports.runCommandTest = {
   validateCommand : function (test) {
     'use strict';
 
-    var runCommand     = require('../../../lib/runCommand.js'),
+    var runCommand     = require('../../../lib/runCommand'),
         controllers    = { samsung : { config     : { deviceId : 'TEST-deviceId', title : 'TEST-title' },
                                        markup     : '<span>{{DEVICE_ID}} {{TEST_KEY}}</span>',
                                        controller : { inputs : ['command', 'text'],
@@ -89,7 +89,7 @@ exports.runCommandTest = {
   runCommand : function (test) {
     'use strict';
 
-    var runCommand     = require('../../../lib/runCommand.js'),
+    var runCommand     = require('../../../lib/runCommand'),
         controllers    = { samsung : { config     : { deviceId : 'TEST-deviceId', title : 'TEST-title' },
                                        markup     : '<span>{{DEVICE_ID}} {{TEST_KEY}}</span>',
                                        controller : { inputs : ['command', 'text'],

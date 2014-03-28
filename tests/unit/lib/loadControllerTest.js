@@ -10,7 +10,7 @@ exports.loadControllerTest = {
   loadControllerFile : function (test) {
     'use strict';
 
-    var loadController   = require(__dirname + '/../../../lib/loadController.js'),
+    var loadController   = require(__dirname + '/../../../lib/loadController'),
         controllerConfig = { typeClass : 'samsung',
                              title     : 'TEST samsung' },
         controller       = loadController.loadControllerFile(controllerConfig, 'samsung');
@@ -24,7 +24,7 @@ exports.loadControllerTest = {
   loadController : function (test) {
     'use strict';
 
-    var loadController = require('../../../lib/loadController.js'),
+    var loadController = require('../../../lib/loadController'),
         devices        = { config    : { default : 'samsung' },
                            samsung   : { title : 'TEST Samsung SmartTV' },
                            panasonic : { title : 'TEST Panasonic', disabled : true } },
