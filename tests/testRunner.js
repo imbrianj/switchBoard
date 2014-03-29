@@ -14,6 +14,7 @@ module.exports = (function () {
                 'tests/unit/lib/runCommandTest.js',
                 'tests/unit/lib/staticAssetsTest.js',
                 'tests/unit/controllers/foscamTest.js',
+                'tests/unit/controllers/mp3Test.js',
                 'tests/unit/controllers/ps3Test.js',
                 'tests/unit/controllers/rokuTest.js',
                 'tests/unit/controllers/samsungTest.js',

@@ -6,9 +6,10 @@ module.exports = (function () {
 
   /**
    * @author brian@bevey.org
-   * @fileoverview Basic control of text-to-speech using espeak.
+   * @fileoverview Basic control of text-to-speech using espeak / say.
    * @requires child_process
-   * @note Requires the installation of espeak, available via apt-get:
+   * @note For Linux/BSD/SunOS: Requires the installation of espeak.
+   *       On Raspbian, it's available via apt-get:
    *       sudo apt-get install espeak
    */
   return {
