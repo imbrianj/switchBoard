@@ -13,11 +13,11 @@ module.exports = (function () {
                 'tests/unit/lib/loadMarkupTest.js',
                 'tests/unit/lib/runCommandTest.js',
                 'tests/unit/lib/staticAssetsTest.js',
-                'tests/unit/controllers/foscamControllerTest.js',
-                'tests/unit/controllers/ps3ControllerTest.js',
-                'tests/unit/controllers/rokuControllerTest.js',
-                'tests/unit/controllers/samsungControllerTest.js',
-                'tests/unit/controllers/speechControllerTest.js',
-                'tests/unit/controllers/stocksControllerTest.js',
-                'tests/unit/controllers/weatherControllerTest.js']);
+                'tests/unit/controllers/foscamTest.js',
+                'tests/unit/controllers/ps3Test.js',
+                'tests/unit/controllers/rokuTest.js',
+                'tests/unit/controllers/samsungTest.js',
+                'tests/unit/controllers/speechTest.js',
+                'tests/unit/controllers/stocksTest.js',
+                'tests/unit/controllers/weatherTest.js']);
 }());

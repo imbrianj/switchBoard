@@ -10,7 +10,7 @@ exports.weatherControllerTest = {
   translateCommand : function (test) {
     'use strict';
 
-    var weatherController = require(__dirname + '/../../../controllers/weatherController'),
+    var weatherController = require(__dirname + '/../../../controllers/weather'),
         config            = { host : 'TEST-host', port : '80', path : '/TEST/', method : 'GET', badData : 'FAILURE' },
         testData          = weatherController.postPrepare(config);
 

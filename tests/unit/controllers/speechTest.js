@@ -10,7 +10,7 @@ exports.speechControllerTest = {
   translateCommand : function (test) {
     'use strict';
 
-    var speechController = require(__dirname + '/../../../controllers/speechController'),
+    var speechController = require(__dirname + '/../../../controllers/speech'),
         femaleBSD        = speechController.translateCommand('female', 'TEST female voice on FreeBSD', 'freebsd'),
         maleLinux        = speechController.translateCommand('male',   'TEST male voice on Linux',     'linux'),
         maleDarwin       = speechController.translateCommand('male',   'TEST male voice on Darwin',    'darwin'),

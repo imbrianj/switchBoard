@@ -10,7 +10,7 @@ exports.foscamControllerTest = {
   postPrepare : function (test) {
     'use strict';
 
-    var foscamController = require(__dirname + '/../../../controllers/foscamController'),
+    var foscamController = require(__dirname + '/../../../controllers/foscam'),
         testAlarm        = foscamController.postPrepare({ deviceIp : 'TEST-host', devicePort: 80, username : 'TEST-username', password : 'TEST-password', command : 'AlarmOn' }),
         testPreset       = foscamController.postPrepare({ deviceIp : 'TEST-host', devicePort: 80, username : 'TEST-username', password : 'TEST-password', command : 'Preset2' });
 

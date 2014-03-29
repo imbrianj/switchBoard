@@ -10,7 +10,7 @@ exports.ps3ControllerTest = {
   translateCommand : function (test) {
     'use strict';
 
-    var ps3Controller = require(__dirname + '/../../../controllers/ps3Controller'),
+    var ps3Controller = require(__dirname + '/../../../controllers/ps3'),
         PowerOn       = ps3Controller.translateCommand('PowerOn',  '12:34:56', 'linux'),
         PS            = ps3Controller.translateCommand('PS',       '12:34:56', 'win32'),
         Cross         = ps3Controller.translateCommand('Cross',    '12:34:56', 'linux'),
