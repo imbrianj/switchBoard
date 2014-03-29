@@ -3,7 +3,7 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview Unit test for rokuController.js
+ * @fileoverview Unit test for controllers/roku.js
  */
 
 exports.rokuControllerTest = {

@@ -3,7 +3,7 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview Unit test for samsungController.js
+ * @fileoverview Unit test for controllers/samsung.js
  */
 
 exports.samsungControllerTest = {

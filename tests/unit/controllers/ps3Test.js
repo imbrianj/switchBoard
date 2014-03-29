@@ -3,7 +3,7 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview Unit test for ps3Controller.js
+ * @fileoverview Unit test for controllers/ps3.js
  */
 
 exports.ps3ControllerTest = {

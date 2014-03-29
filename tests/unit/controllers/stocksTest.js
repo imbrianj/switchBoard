@@ -3,7 +3,7 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview Unit test for stocksController.js
+ * @fileoverview Unit test for controllers/stocks.js
  */
 
 exports.stocksControllerTest = {

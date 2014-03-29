@@ -80,7 +80,7 @@ module.exports = (function () {
       socket = net.connect(samsung.devicePort, samsung.deviceIp);
 
       socket.on('connect', function() {
-        var samsungController = require('./samsungController');
+        var samsungController = require('./samsung');
 
         console.log('Samsung: Connected');
 

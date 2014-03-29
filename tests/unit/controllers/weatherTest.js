@@ -3,7 +3,7 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview Unit test for weatherController.js
+ * @fileoverview Unit test for controllers/weather.js
  */
 
 exports.weatherControllerTest = {

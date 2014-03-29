@@ -3,7 +3,7 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview Unit test for foscamController.js
+ * @fileoverview Unit test for controllers/foscam.js
  */
 
 exports.foscamControllerTest = {

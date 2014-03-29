@@ -3,7 +3,7 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview Unit test for speechController.js
+ * @fileoverview Unit test for controllers/speech.js
  */
 
 exports.speechControllerTest = {
