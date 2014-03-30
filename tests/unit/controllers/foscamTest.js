@@ -34,7 +34,7 @@ exports.foscamControllerTest = {
 
     test.deepEqual(testAlarm, { host   : 'TEST-host',
                                 port   : '80',
-                                path   : '/set_alarm.cgi?user=TEST-username&pwd=TEST-password&motion_armed=0',
+                                path   : '/set_alarm.cgi?user=TEST-username&pwd=TEST-password&motion_armed=1',
                                 method : 'GET' }, 'Additional params are filtered out.');
 
     test.deepEqual(testPreset, { host   : 'TEST-host',
