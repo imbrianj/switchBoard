@@ -13,15 +13,16 @@ module.exports = (function () {
 
   return {
     fire : function(device, command, controllers) {
-      var deviceName = 0;
+      var runCommand = require('../lib/runCommand'),
+          deviceName = 0;
 
       if((command === 'AlarmOn') || (command === 'AlarmOff')) {
         for(deviceName in controllers) {
           if((deviceName !== 'config') && (controllers[deviceName].config.typeClass === 'speech')) {
-            controllers[deviceName].controller.send({ text : command === 'AlarmOn' ? 'Camera armed' : 'Camera disarmed' });
+            runCommand.runCommand(deviceName, command === 'AlarmOn' ? 'text-Camera armed' : 'text-Camera disarmed', controllers, 'single', false);
           }
         }
       }
     }
-  }
+  };
 }());

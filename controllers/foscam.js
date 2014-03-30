@@ -9,14 +9,14 @@ module.exports = (function () {
    * @fileoverview Basic control of Foscam IP camera.
    */
   return {
-    version : 20140316,
+    version : 20140329,
 
     inputs  : ['command', 'list'],
 
     /**
      * Whitelist of available key codes to use.
      */
-    keymap  : ['AlarmOff', 'AlarmOn', 'Preset1', 'Preset2', 'Preset3'],
+    keymap  : ['AlarmOff', 'AlarmOn', 'Down', 'Left', 'Preset1', 'Preset2', 'Preset3', 'Right', 'Stop', 'Up', 'Take'],
 
     postPrepare : function (config) {
       var path  = '',
@@ -31,6 +31,14 @@ module.exports = (function () {
           path = '/set_alarm.cgi' + login + 'motion_armed=0';
         break;
 
+        case 'Down' :
+          path = '/decoder_control.cgi' + login + 'command=2';
+        break;
+
+        case 'Left' :
+          path = '/decoder_control.cgi' + login + 'command=6';
+        break;
+
         case 'Preset1' :
           path = '/decoder_control.cgi' + login + 'command=31';
         break;
@@ -41,6 +49,22 @@ module.exports = (function () {
 
         case 'Preset3' :
           path = '/decoder_control.cgi' + login + 'command=35';
+        break;
+
+        case 'Right' :
+          path = '/decoder_control.cgi' + login + 'command=4';
+        break;
+
+        case 'Stop' :
+          path = '/decoder_control.cgi' + login + 'command=1';
+        break;
+
+        case 'Up' :
+          path = '/decoder_control.cgi' + login + 'command=0';
+        break;
+
+        case 'Take' :
+          path = '/snapshot.cgi' + login;
         break;
       }
 
@@ -56,6 +80,8 @@ module.exports = (function () {
 
     send : function (config) {
       var http      = require('http'),
+          fs        = require('fs'),
+          filePath  = __dirname + '/../images/foscam/' + Date.now() + '.jpg',
           foscam    = {},
           dataReply = '',
           request;
@@ -67,29 +93,53 @@ module.exports = (function () {
       foscam.devicePort = config.device.devicePort || 80;
       foscam.callback   = config.callback          || function () {};
 
-      request = http.request(this.postPrepare(foscam), function(response) {
-        response.on('data', function(response) {
-          console.log('Foscam: Connected');
+      if(config.command === 'Take') {
+        fs.exists(filePath, function(exists) {
+          var request,
+              controller,
+              postData;
+
+          if(exists) {
+            console.log('Foscam: Skipping image - already exists');
+          }
+
+          else {
+            request    = require('request');
+            controller = require('./foscam');
+            postData   = controller.postPrepare(foscam);
+
+            console.log('Foscam: Saved image');
+
+            request('http://' + postData.host + ':' + postData.port + postData.path).pipe(fs.createWriteStream(filePath));
+          }
         });
-      });
+      }
 
-      request.on('error', function(err) {
-        var errorMsg = '';
+      else {
+        request = http.request(this.postPrepare(foscam), function(response) {
+          response.on('data', function(response) {
+            console.log('Foscam: Connected');
+          });
+        });
 
-        if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
-          errorMsg = 'Foscam: Device is off or unreachable';
-        }
+        request.on('error', function(err) {
+          var errorMsg = '';
 
-        else {
-          errorMsg = 'Foscam: ' + err.code;
-        }
+          if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
+            errorMsg = 'Foscam: Device is off or unreachable';
+          }
 
-        console.log(errorMsg);
+          else {
+            errorMsg = 'Foscam: ' + err.code;
+          }
 
-        foscam.callback(errorMsg);
-      });
+          console.log(errorMsg);
 
-      request.end();
+          foscam.callback(errorMsg);
+        });
+
+        request.end();
+      }
     }
   };
 }());

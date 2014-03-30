@@ -28,17 +28,7 @@ module.exports = (function () {
             cache,
             i = 0;
 
-        if(err) {
-          if(err === 'EHOSTUNREACH') {
-            console.log('Weather: API is unreachable');
-          }
-
-          else {
-            console.log('Weather: ' + err);
-          }
-        }
-
-        else {
+        if(!err) {
           if(response) {
             response = JSON.parse(response);
             city     = response.query.results.channel;
@@ -58,7 +48,7 @@ module.exports = (function () {
     },
 
     send : function (config) {
-      var http        = require('http'),
+      var https       = require('https'),
           weather     = {},
           dataReply   = '',
           request;
@@ -66,12 +56,12 @@ module.exports = (function () {
       weather.zip      = config.zip;
       weather.host     = config.host       || 'query.yahooapis.com';
       weather.path     = config.path       || '/v1/public/yql?format=json&q=select * from weather.forecast where location=' + weather.zip;
-      weather.port     = config.port       || 80;
+      weather.port     = config.port       || 443;
       weather.method   = config.method     || 'GET';
       weather.callback = config.callback   || function () {};
 
       if(weather.zip !== null) {
-        request = http.request(this.postPrepare(weather), function(response) {
+        request = https.request(this.postPrepare(weather), function(response) {
                     response.on('data', function(response) {
                       console.log('Weather: Connected');
 
@@ -83,15 +73,15 @@ module.exports = (function () {
                     });
                   });
 
-        request.on('error', function(error) {
+        request.on('error', function(err) {
           var errorMsg = '';
 
-          if(error.code === 'ECONNRESET' || error.code === 'ECONNREFUSED') {
+          if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
             errorMsg = 'Weather: API is unreachable';
           }
 
           else {
-            errorMsg = 'Weather: ' + error.code;
+            errorMsg = 'Weather: ' + err.code;
           }
 
           console.log(errorMsg);

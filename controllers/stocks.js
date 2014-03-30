@@ -28,17 +28,7 @@ module.exports = (function () {
             cache,
             i = 0;
 
-        if(err) {
-          if(err === 'EHOSTUNREACH') {
-            console.log('Stock: API is unreachable');
-          }
-
-          else {
-            console.log('Stock: ' + err);
-          }
-        }
-
-        else {
+        if(!err) {
           if(response) {
             response = JSON.parse(response);
 
@@ -64,7 +54,7 @@ module.exports = (function () {
     },
 
     send : function (config) {
-      var http        = require('http'),
+      var https       = require('https'),
           stocks      = {},
           dataReply   = '',
           request;
@@ -72,12 +62,12 @@ module.exports = (function () {
       stocks.stocks   = config.stocks ? config.stocks.join('","') : null;
       stocks.host     = config.host     || 'query.yahooapis.com';
       stocks.path     = config.path     || '/v1/public/yql?format=json&env=http://datatables.org/alltables.env&q=select symbol, AskRealtime, BidRealtime, Change, DaysLow, DaysHigh, YearLow, YearHigh from yahoo.finance.quotes where symbol in ("' + stocks.stocks + '")';
-      stocks.port     = config.port     || 80;
+      stocks.port     = config.port     || 443;
       stocks.method   = config.method   || 'GET';
       stocks.callback = config.callback || function () {};
 
       if(stocks.stocks !== null) {
-        request = http.request(this.postPrepare(stocks), function(response) {
+        request = https.request(this.postPrepare(stocks), function(response) {
                     response.on('data', function(response) {
                       console.log('Stocks: Connected');
 
@@ -89,15 +79,15 @@ module.exports = (function () {
                     });
                   });
 
-        request.on('error', function(error) {
+        request.on('error', function(err) {
           var errorMsg = '';
 
-          if(error.code === 'ECONNRESET' || error.code === 'ECONNREFUSED') {
-            errorMsg = 'Stock: API is unreachable';
+          if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
+            errorMsg = 'Stocks: API is unreachable';
           }
 
           else {
-            errorMsg = 'Stock: ' + error.code;
+            errorMsg = 'Stocks: ' + err.code;
           }
 
           console.log(errorMsg);

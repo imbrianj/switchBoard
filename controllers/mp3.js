@@ -43,20 +43,21 @@ module.exports = (function () {
       var fs       = require('fs'),
           mp3      = {};
 
-      mp3.file     = config.file     || '';
+      mp3.file     = config.text ? __dirname + '/../mp3/' + config.text : '';
       mp3.callback = config.callback || function () {};
       mp3.platform = config.platofrm || process.platform;
 
       if(mp3.file) {
         fs.exists(mp3.file, function(exists) {
-          var exec = require('child_process').exec;
+          var exec          = require('child_process').exec,
+              mp3Controller = require('./mp3');
 
           if(!exists) {
             console.log('MP3: Specified file not found');
           }
 
           else {
-            exec(this.translateCommand(mp3.file, mp3.platform), function (err, stdout, stderr) {
+            exec(mp3Controller.translateCommand(mp3.file, mp3.platform), function (err, stdout, stderr) {
               var errorMsg = '';
 
               if(err) {

@@ -312,7 +312,9 @@ form legend {
 .device .control-block .media,
 .device .control-block .shortcuts,
 .device .control-block .control,
-.device .control-block .buttons {
+.device .control-block .buttons,
+.device .control-block .presets,
+.device .control-block .alarm {
 	float: left;
 	width: 15%;
 }
@@ -406,8 +408,13 @@ form legend {
 }
 
 .device .volume a,
-.device .channel a {
+.device .channel a,
+.device .presets a {
 	margin: .5em auto;
+}
+
+.device .alarm a {
+	margin: .15em auto;
 }
 
 .device .navigation a {
@@ -431,32 +438,7 @@ form legend {
 	font-size: 175%;
 }
 
-.device .numeric-controls li {
-	float: left;
-	width: 33%;
-}
-
-.device .numeric-controls ol li:last-child {
-	width: 100%;
-}
-
-.foscam .numeric-controls ol li:last-child {
-	width: 33%;
-}
-
-.device .numeric-controls ul li {
-	margin-top: -1em;
-}
-
-.foscam .numeric-controls ul li {
-	margin-top: 0;
-}
-
-.device .numeric-controls ul li:last-child {
-	float: right;
-}
-
-.device .numeric-controls ol span {
+.device .presets ol span {
 	display: block;
 }
 

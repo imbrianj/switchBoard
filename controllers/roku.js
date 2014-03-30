@@ -75,15 +75,15 @@ module.exports = (function () {
       fs.exists(filePath, function(exists) {
         var request;
 
-        if(!exists) {
+        if(exists) {
+          console.log('Roku: Skipping ' + appName + ' image - already saved locally');
+        }
+
+        else {
           request = require('request');
 
           console.log('Roku: Saved image for ' + appName);
           request('http://' + config.deviceIp + ':8060/query/icon/' + appId).pipe(fs.createWriteStream(filePath));
-        }
-
-        else {
-          console.log('Roku: Skipping ' + appName + ' image - already saved locally');
         }
       });
     },

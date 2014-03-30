@@ -2,10 +2,10 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
-    banner : { comment : '/*! <%= grunt.template.today("yyyy-mm-dd") %> */\n' },
+    banner : { comment : '/* <%= grunt.template.today("yyyymmdd") %> */\n' },
 
     jshint : {
-      files : ['config/*.js', 'lib/*.js', 'controllers/*.js', 'js/common.js', 'tests/**/*Test.js', 'app.js'],
+      files : ['config/*.js', 'lib/*.js', 'controllers/*.js', 'events/*.js', 'js/common.js', 'tests/**/*Test.js', 'app.js'],
       options : { globals : { console : true } }
     },
 
