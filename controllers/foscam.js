@@ -120,7 +120,7 @@ module.exports = (function () {
           response.on('data', function(response) {
             console.log('Foscam: Connected');
 
-            foscam.callback(null, dataReply);
+            foscam.callback(null, response);
           });
         });
 
