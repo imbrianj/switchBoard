@@ -438,6 +438,28 @@ form legend {
 	font-size: 175%;
 }
 
+.device .numeric-controls li {
+	float: left;
+	width: 33%;
+ }
+ 
+ .device .numeric-controls ol li:last-child {
+	width: 100%;
+ }
+ 
+ .foscam .numeric-controls ol li:last-child {
+	width: 33%;
+ }
+ 
+ .device .numeric-controls ul li {
+	margin-top: -1em;
+ }
+
+.device .numeric-controls ul li:last-child {
+	float: right;
+}
+
+.device .numeric-controls ol span,
 .device .presets ol span {
 	display: block;
 }
