@@ -89,7 +89,7 @@ module.exports = (function () {
 
         socket.end();
 
-        samsung.callback();
+        samsung.callback(null, dataReply);
       });
 
       socket.on('error', function(err) {

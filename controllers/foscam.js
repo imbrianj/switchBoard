@@ -119,6 +119,8 @@ module.exports = (function () {
         request = http.request(this.postPrepare(foscam), function(response) {
           response.on('data', function(response) {
             console.log('Foscam: Connected');
+
+            foscam.callback(null, dataReply);
           });
         });
 
