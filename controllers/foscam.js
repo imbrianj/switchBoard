@@ -24,11 +24,11 @@ module.exports = (function () {
 
       switch(config.command) {
         case 'AlarmOff' :
-          path = '/set_alarm.cgi' + login + 'motion_armed=1';
+          path = '/set_alarm.cgi' + login + 'motion_armed=0';
         break;
 
         case 'AlarmOn' :
-          path = '/set_alarm.cgi' + login + 'motion_armed=0';
+          path = '/set_alarm.cgi' + login + 'motion_armed=1';
         break;
 
         case 'Down' :
