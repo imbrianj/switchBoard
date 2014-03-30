@@ -11,10 +11,14 @@ exports.weatherControllerTest = {
     'use strict';
 
     var weatherController = require(__dirname + '/../../../controllers/weather'),
-        config            = { host : 'TEST-host', port : '80', path : '/TEST/', method : 'GET', badData : 'FAILURE' },
+        config            = { host    : 'TEST-host',
+                              port    : '443',
+                              path    : '/TEST/',
+                              method  : 'GET',
+                              badData : 'FAILURE' },
         testData          = weatherController.postPrepare(config);
 
-    test.deepEqual(testData, { host : 'TEST-host', port : '80', path : '/TEST/', method : 'GET' }, 'Additional params are filtered out.');
+    test.deepEqual(testData, { host : 'TEST-host', port : '443', path : '/TEST/', method : 'GET' }, 'Additional params are filtered out.');
 
     test.done();
   }

@@ -15,7 +15,8 @@ exports.loadMarkupTest = {
         loadMarkup  = require('../../../lib/loadMarkup'),
         template    = fs.readFileSync(__dirname + '/../../../templates/markup.html').toString(),
         controllers = { config  : { theme  : 'TEST-theme', default : 'TEST-default' },
-                        samsung : { config : { deviceId : 'TEST-deviceId', title : 'TEST-title' },
+                        samsung : { config : { deviceId : 'TEST-deviceId',
+                                               title : 'TEST-title' },
                                     markup : '<span>{{DEVICE_ID}} {{TEST_KEY}}</span>',
                                     controller : { onload : function(device) { return device.markup.replace('{{TEST_KEY}}', 'PASSED'); } } } },
         markup      = loadMarkup.loadMarkup(template, controllers, null);

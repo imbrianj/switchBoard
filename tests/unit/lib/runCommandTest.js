@@ -11,7 +11,8 @@ exports.runCommandTest = {
     'use strict';
 
     var runCommand   = require('../../../lib/runCommand'),
-        controllers  = { samsung : { config     : { deviceId : 'TEST-deviceId', title : 'TEST-title' },
+        controllers  = { samsung : { config     : { deviceId : 'TEST-deviceId',
+                                                    title : 'TEST-title' },
                                      markup     : '<span>{{DEVICE_ID}} {{TEST_KEY}}</span>',
                                      controller : { inputs : ['command'],
                                                     keymap : ['VOLUP'],
@@ -66,11 +67,12 @@ exports.runCommandTest = {
     'use strict';
 
     var runCommand     = require('../../../lib/runCommand'),
-        controllers    = { samsung : { config     : { deviceId : 'TEST-deviceId', title : 'TEST-title' },
+        controllers    = { samsung : { config     : { deviceId : 'TEST-deviceId',
+                                                      title : 'TEST-title' },
                                        markup     : '<span>{{DEVICE_ID}} {{TEST_KEY}}</span>',
                                        controller : { inputs : ['command', 'text'],
-                                                    keymap : ['VOLUP'],
-                                                    send   : function(request) { return request; } } } },
+                                                      keymap : ['VOLUP'],
+                                                      send   : function(request) { return request; } } } },
         validCommand   = runCommand.validateCommand('samsung', 'VOLUP', controllers),
         validtext      = runCommand.validateCommand('samsung', 'text-TEST', controllers),
         invalidLaunch  = runCommand.validateCommand('samsung', 'launch-TEST', controllers),
@@ -90,11 +92,12 @@ exports.runCommandTest = {
     'use strict';
 
     var runCommand     = require('../../../lib/runCommand'),
-        controllers    = { samsung : { config     : { deviceId : 'TEST-deviceId', title : 'TEST-title' },
+        controllers    = { samsung : { config     : { deviceId : 'TEST-deviceId',
+                                                      title : 'TEST-title' },
                                        markup     : '<span>{{DEVICE_ID}} {{TEST_KEY}}</span>',
                                        controller : { inputs : ['command', 'text'],
-                                                    keymap : ['VOLUP'],
-                                                    send   : function(request) { return request; } } } },
+                                                      keymap : ['VOLUP'],
+                                                      send   : function(request) { return request; } } } },
         response       = { end : function(msg) { return msg; } },
         validCommand   = runCommand.runCommand('samsung', 'VOLUP', controllers, null, response),
         invalidCommand = runCommand.runCommand('samsung', 'TEST', controllers, null, response);

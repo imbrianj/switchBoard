@@ -117,5 +117,29 @@ exports.config = {
     typeClass : 'mp3',
     title     : 'MP3',
     disabled  : true
+  },
+
+  /*
+   * SMS uses the twilio service that you must register for and populate your
+   * own twilioSid, twilioToken and twilioPhone values with.  Registration is
+   * free, however each message will be prefixed with a notice from Twilio:
+   * https://www.twilio.com/try-twilio
+   *
+   * Find your your twilioSid and twilioToken values here:
+   * https://www.twilio.com/user/account
+   *
+   * Find your your twilioPhone (phone number at Twilio) here:
+   * https://www.twilio.com/user/account/phone-numbers/incoming
+   */
+  sms : {
+    typeClass   : 'sms',
+    title       : 'SMS',
+    /* Your phone number to send texts to by default */
+    phone       : '1234567890',
+    twilioSid   : 'somethingSecret',
+    twilioToken : 'somethingSecret',
+    /* Your assigned Twilio phone number */
+    twilioPhone : '0987654321',
+    disabled    : true
   }
 };
