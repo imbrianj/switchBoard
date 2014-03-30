@@ -15,14 +15,14 @@ exports.staticAssetsTest = {
         js           = staticAssets.getDirectory('.js', '/js/TEST-min.js'),
         roku         = staticAssets.getDirectory('.png', '/images/roku/TEST.png'),
         png          = staticAssets.getDirectory('.png', '/images/TEST/TEST.png'),
-        ico          = staticAssets.getDirectory('.ico', '/images/TEST.ico'),
+        ico          = staticAssets.getDirectory('.ico', '/images/icons/TEST.ico'),
         woff         = staticAssets.getDirectory('.woff', '/font/TEST.woff');
 
     test.equal(css, 'css', 'CSS lives in the CSS directory');
     test.equal(js, 'js', 'JS lives in the JS directory');
     test.equal(roku, 'images/roku', 'Images live in their designated directories');
     test.equal(png, 'images/TEST', 'Images live in their designated directories');
-    test.equal(ico, 'images', 'Icons live in the images directory');
+    test.equal(ico, 'images/icons', 'Icons live in the images directory');
     test.equal(woff, 'font', 'Fonts live in the fonts directory');
 
     test.done();
