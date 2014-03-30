@@ -52,14 +52,14 @@ module.exports = (function () {
           postRequest = '',
           request;
 
-      sms.phone       = config.phone;
-      sms.twilioSid   = config.twilioSid;
-      sms.twilioToken = config.twilioToken;
+      sms.phone       = config.phone       || config.device.phone;
+      sms.twilioSid   = config.twilioSid   || config.device.twilioSid;
+      sms.twilioToken = config.twilioToken || config.device.twilioToken;
+      sms.twilioPhone = config.twilioPhone || config.device.twilioPhone || '';
       sms.host        = config.host        || 'api.twilio.com';
       sms.path        = config.path        || '/2010-04-01/Accounts/' + sms.twilioSid + '/Messages.json';
       sms.port        = config.port        || 443;
       sms.method      = config.method      || 'POST';
-      sms.twilioPhone = config.twilioPhone || '';
       sms.text        = config.text        || '';
       sms.callback    = config.callback    || function () {};
       sms.postRequest = this.postData(sms);
