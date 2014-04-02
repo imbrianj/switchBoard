@@ -6,6 +6,7 @@ module.exports = (function () {
 
   /**
    * @author brian@bevey.org
+   * @requires querystring, https
    * @fileoverview Basic control of Twilio text messaging API.
    */
   return {

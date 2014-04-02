@@ -6,6 +6,7 @@ module.exports = (function () {
 
   /**
    * @author brian@bevey.org
+   * @requires http, fs, request
    * @fileoverview Basic control of Foscam IP camera.
    */
   return {

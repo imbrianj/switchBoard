@@ -6,6 +6,7 @@ module.exports = (function () {
 
   /**
    * @author brian@bevey.org
+   * @requires fs, https
    * @fileoverview Basic weather information, courtesy of Yahoo.
    */
   return {

@@ -351,7 +351,7 @@ form legend {
 }
 
 .device .installed li img {
-	height: 150px;
+	max-height: 150px;
 	max-width: 100%;
 	width: 250px;
 }
@@ -541,6 +541,8 @@ form legend {
 .ps3 #ps3,
 .speech #speech,
 .foscam #foscam,
+.sms #sms,
+.pushover #pushover,
 .device:target {
 	display: block;
 }
@@ -550,7 +552,9 @@ form legend {
 .lg .header .lg a,
 .roku .header .roku a,
 .ps3 .header .ps3 a,
-.foscam .header .foscam a {
+.foscam .header .foscam a,
+.sms .header .sms a,
+.pushover .header .pushover a {
 	background-color: #FFF;
 	border-color: #DDD;
 	color: #000;
@@ -593,7 +597,9 @@ form legend {
 .theme-dark .roku .header .roku a,
 .theme-dark .ps3 .header .ps3 a,
 .theme-dark .speech .header .speech a,
-.theme-dark .foscam .header .foscam a {
+.theme-dark .foscam .header .foscam a,
+.theme-dark .sms .header .sms a,
+.theme-dark .pushover .header .pushover a {
 	background-color: rgb(0, 120, 231);
 	border: 1px solid #999;  /*IE 6/7/8*/
 	border: none rgba(0, 0, 0, 0);  /*IE9 + everything else*/
@@ -625,7 +631,11 @@ form legend {
 .theme-dark .speech .header .speech a:hover,
 .theme-dark .speech .header .speech a:focus,
 .theme-dark .foscam .header .foscam a:hover,
-.theme-dark .foscam .header .foscam a:focus {
+.theme-dark .foscam .header .foscam a:focus,
+.theme-dark .sms .header .sms a:hover,
+.theme-dark .sms .header .sms a:focus,
+.theme-dark .pushover .header .pushover a:hover,
+.theme-dark .pushover .header .pushover a:focus {
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#1a000000',GradientType=0);
 	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(transparent), color-stop(40%, rgba(0,0,0, 0.05)), to(rgba(0,0,0, 0.10)));
 	background-image: -webkit-linear-gradient(transparent, rgba(0,0,0, 0.05) 40%, rgba(0,0,0, 0.10));

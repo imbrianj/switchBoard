@@ -6,6 +6,7 @@ module.exports = (function () {
 
   /**
    * @author brian@bevey.org
+   * @requires fs, https
    * @fileoverview Basic stocks information, courtesy of Yahoo.
    */
   return {

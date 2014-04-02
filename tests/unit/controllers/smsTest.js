@@ -11,27 +11,27 @@ exports.smsControllerTest = {
     'use strict';
 
     var smsController = require(__dirname + '/../../../controllers/sms'),
-        config        = { twilioSid : 'TEST-sid',
+        config        = { twilioSid   : 'TEST-sid',
                           twilioToken : 'TEST-token',
-                          host : 'TEST-host',
-                          port : '443',
-                          path : '/TEST/',
-                          method : 'POST',
-                          badData : 'FAILURE',
+                          host        : 'TEST-host',
+                          port        : '443',
+                          path        : '/TEST/',
+                          method      : 'POST',
+                          badData     : 'FAILURE',
                           postRequest : 'Test message to send'
                         },
         testData      = smsController.postPrepare(config);
 
-    test.deepEqual(testData, { host : 'TEST-host',
-                               port : '443',
-                               path : '/TEST/',
-                               method : 'POST',
-                               auth : 'TEST-sid:TEST-token',
+    test.deepEqual(testData, { host    : 'TEST-host',
+                               port    : '443',
+                               path    : '/TEST/',
+                               method  : 'POST',
+                               auth    : 'TEST-sid:TEST-token',
                                headers : {
-                                'Accept' : 'application/json',
+                                'Accept'         : 'application/json',
                                 'Accept-Charset' : 'utf-8',
-                                'User-Agent' : 'twilio-node-universal-controller',
-                                'Content-Type' : 'application/x-www-form-urlencoded',
+                                'User-Agent'     : 'twilio-node-universal-controller',
+                                'Content-Type'   : 'application/x-www-form-urlencoded',
                                 'Content-Length' : 20
                               }
                             }, 'Additional params are filtered out.');

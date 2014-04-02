@@ -15,7 +15,7 @@ exports.config = {
     typeClass : 'samsung',
     title     : 'Samsung SmartTV',
     deviceIp  : '192.168.1.1',
-    disabled  : true
+    disabled  : false
   },
 
   // Here, I have another device of the same type.  Just give it a unique name.
@@ -71,10 +71,11 @@ exports.config = {
    * the built-in "say" command.  Windows is not supported.
    */
   speech : {
-    typeClass : 'speech',
-    title     : 'Speech',
-    voice     : 'male',
-    disabled  : true
+    typeClass     : 'speech',
+    title         : 'Speech',
+    voice         : 'male',
+    disableMarkup : true,
+    disabled      : true
   },
 
   /*
@@ -106,7 +107,7 @@ exports.config = {
     deviceIp  : '192.168.1.7',
     username  : 'user',
     password  : 'password',
-    disabled  : true
+    disabled  : false
   },
 
   /*
@@ -132,14 +133,34 @@ exports.config = {
    * https://www.twilio.com/user/account/phone-numbers/incoming
    */
   sms : {
-    typeClass   : 'sms',
-    title       : 'SMS',
+    typeClass     : 'sms',
+    title         : 'SMS',
     /* Your phone number to send texts to by default */
-    phone       : '1234567890',
-    twilioSid   : 'somethingSecret',
-    twilioToken : 'somethingSecret',
+    phone         : '1234567890',
+    twilioSid     : 'somethingSecret',
+    twilioToken   : 'somethingSecret',
     /* Your assigned Twilio phone number */
-    twilioPhone : '0987654321',
-    disabled    : true
+    twilioPhone   : '0987654321',
+    disableMarkup : true,
+    disabled      : true
+  },
+
+  /*
+   * Pushover is a neat IFTTT integrated push notification service.  Learn more
+   * at https://pushover.net
+   *
+   * Find your your Pushover userKey:
+   * https://pushover.net
+   *
+   * Generate your Pushover token here:
+   * https://pushover.net/apps/build
+   */
+  pushover : {
+    typeClass      : 'pushover',
+    title          : 'Pushover',
+    userKey        : 'somethingSecret',
+    token          : 'somethingSecret',
+    disabledMarkup : false,
+    disabled       : false
   }
 };

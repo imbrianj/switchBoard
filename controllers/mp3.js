@@ -7,7 +7,7 @@ module.exports = (function () {
   /**
    * @author brian@bevey.org
    * @fileoverview Basic control of mp3 playback using mpg123 / afplay.
-   * @requires child_process
+   * @requires fs, child_process
    * @note For Linux/BSD/SunOS: Requires the installation of mpg123.
    *       On Raspbian, it's available via apt-get:
    *       sudo apt-get install mpg123
