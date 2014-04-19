@@ -13,7 +13,7 @@ module.exports = (function () {
    *       sudo apt-get install espeak
    */
   return {
-    version : 20140315,
+    version : 20140418,
 
     inputs  : ['text'],
 
@@ -43,8 +43,8 @@ module.exports = (function () {
       return command;
     },
 
-    init : function () {
-      this.send({ 'text' : 'Text to speech initiated' });
+    init : function (controller) {
+      this.send({ text : 'Text to speech initiated', voice : controller.config.voice });
     },
 
     send : function (config) {

@@ -3,19 +3,20 @@
 
 exports.config = {
   config : {
-    serverPort : '8080',
-    serverIp   : '192.168.1.150',
-    serverMac  : '00:00:00:00:00:00',
-    theme      : 'dark',
-    default    : 'samsung',
-    macroPause : 1000
+    serverPort  : '8080',
+    serverIp    : '192.168.1.150',
+    serverMac   : '00:00:00:00:00:00',
+    theme       : 'dark',
+    default     : 'samsung',
+    macroPause  : 1000,
+    pollMinutes : 15
   },
 
   samsung : {
     typeClass : 'samsung',
     title     : 'Samsung SmartTV',
     deviceIp  : '192.168.1.1',
-    disabled  : false
+    disabled  : true
   },
 
   // Here, I have another device of the same type.  Just give it a unique name.
@@ -73,7 +74,7 @@ exports.config = {
   speech : {
     typeClass     : 'speech',
     title         : 'Speech',
-    voice         : 'male',
+    voice         : 'female',
     disableMarkup : true,
     disabled      : true
   },
@@ -84,7 +85,14 @@ exports.config = {
   stocks : {
     typeClass : 'stocks',
     title     : 'Stocks',
-    stocks    : ['YHOO', 'AAPL', 'GOOG'],
+    stocks    : ['YHOO', 'AAPL', 'GOOG', 'TSLA'],
+    // Not to be considered investment advice, but this shows how you can set
+    // stock prices to be notified of.
+    limits    : { YHOO : { buy : 30,  sell : 40 },
+                  TSLA : { buy : 150, sell : 250 } },
+    // Means by which you should be notified (if the controllers for each are
+    // properly configured).
+    notify    : ['pushover', 'twilio', 'speech'],
     disabled  : true
   },
 

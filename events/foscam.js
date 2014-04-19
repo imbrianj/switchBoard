@@ -12,9 +12,11 @@ module.exports = (function () {
   'use strict';
 
   return {
+    version : 20140418,
+
     fire : function(device, command, controllers) {
-      var runCommand = require('../lib/runCommand'),
-          deviceName = 0;
+      var runCommand = require(__dirname + '/../lib/runCommand'),
+          deviceName;
 
       if((command === 'AlarmOn') || (command === 'AlarmOff')) {
         for(deviceName in controllers) {
