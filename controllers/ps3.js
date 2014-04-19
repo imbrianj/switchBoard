@@ -12,7 +12,7 @@ module.exports = (function () {
    *       here: https://code.google.com/p/diyps3controller/downloads/list
    */
   return {
-    version : 20140315,
+    version : 20140418,
 
     inputs  : ['command'],
 
@@ -84,8 +84,6 @@ module.exports = (function () {
       ps3.callback  = config.callback || function () {};
       ps3.platform  = config.platform || process.platform;
 
-      // PS3 requires a lock file to determine if the daemon is running.
-      // If the server is just started up, we should assume it is not.
       if(fs.existsSync(__dirname + '/../tmp/ps3.lock')) {
         // If the PS3 is already on, we shouldn't execute PowerOn again.
         if(ps3.command === 'PowerOn') {
@@ -96,11 +94,7 @@ module.exports = (function () {
       }
 
       else {
-        // Regarldess of what command is desired, if the ps3 isn't on, we
-        // need to execute PowerOn first.
-        console.log('PS3 doesn\'t look on - connecting.');
-
-        ps3.command = 'PowerOn';
+        console.log('PS3 doesn\'t look on.');
       }
 
       exec(this.translateCommand(ps3.command, ps3.deviceMac, ps3.platform), function (err, stdout, stderr) {

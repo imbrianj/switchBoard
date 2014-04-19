@@ -393,6 +393,10 @@ form legend {
 	color: #F00;
 }
 
+.device a.power-on {
+	color: #0078E7;
+}
+
 .device .control-block {
 	margin: .5em 0;
 }
@@ -495,6 +499,10 @@ form legend {
 	float: none;
 	margin: .5em auto;
 	width: auto;
+}
+
+.device .control-block .compact a {
+	margin: .15em auto;
 }
 
 .device .media a.red {
@@ -653,6 +661,10 @@ form legend {
 	.device .text button {
 		margin: 0 auto;
 		width: 90%;
+	}
+
+	.device .shortcuts {
+		padding-top: .5em;
 	}
 }
 
