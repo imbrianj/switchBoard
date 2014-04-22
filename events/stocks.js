@@ -4,7 +4,6 @@
 /**
  * @author brian@bevey.org
  * @fileoverview Simple script to fire for each scheduled interval.
- * @requires fs
  */
 
 module.exports = (function () {
@@ -32,14 +31,18 @@ module.exports = (function () {
                 i          = 0,
                 stockName;
 
-            if(controller.config.limits) {
+            if((controller.config.limits) && (stocks)) {
               for(stockName in controller.config.limits) {
-                if(stocks[stockName].price >= controller.config.limits[stockName].sell) {
+                if((typeof controller.config.limits[stockName].sell !== 'undefined') && (stocks[stockName].price >= controller.config.limits[stockName].sell)) {
                   message = message + 'Your ' + stocks[stockName].name + ' stock is doing well at ' + stocks[stockName].ask + '.  Think about selling?  ';
                 }
 
-                else if(stocks[stockName].price <= controller.limits[stockName].buy) {
+                else if((typeof controller.config.limits[stockName].buy !== 'undefined') && (stocks[stockName].price <= controller.config.limits[stockName].buy)) {
                   message = message + 'Your ' + stocks[stockName].name + ' stock is low at ' + stocks[stockName].ask + '.  Think about buying?  ';
+                }
+
+                else {
+                  console.log('Schedule: ' + stocks[stockName].name + ' is at ' + stocks[stockName].price + ' - within range');
                 }
               }
             }
