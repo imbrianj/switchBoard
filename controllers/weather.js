@@ -42,7 +42,10 @@ module.exports = (function () {
                       };
 
             cache = fs.createWriteStream(__dirname + '/../tmp/weather.json');
-            cache.write(JSON.stringify(weather));
+
+            cache.on('open', function() {
+              cache.write(JSON.stringify(weather));
+            });
           }
         }
       }});
@@ -87,7 +90,7 @@ module.exports = (function () {
 
           console.log(errorMsg);
 
-          stocks.callback(errorMsg);
+          weather.callback(errorMsg);
         });
 
         request.end();

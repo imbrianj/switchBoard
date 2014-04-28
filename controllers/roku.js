@@ -163,8 +163,10 @@ module.exports = (function () {
                     }
 
                     cache = fs.createWriteStream(__dirname + '/../tmp/roku.json');
-                    cache.write(JSON.stringify(apps));
-                    console.log('Roku: Wrote app settings to cache');
+                    cache.on('open', function() {
+                      cache.write(JSON.stringify(apps));
+                      console.log('Roku: Wrote app settings to cache');
+                    });
                   }
                 });
               }

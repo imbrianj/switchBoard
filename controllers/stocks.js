@@ -73,7 +73,9 @@ module.exports = (function () {
                         }
 
                         cache = fs.createWriteStream(__dirname + '/../tmp/stocks.json');
-                        cache.write(JSON.stringify(stockData));
+                        cache.on('open', function() {
+                          cache.write(JSON.stringify(stockData));
+                        });
                       }
 
                       stocks.callback(null, stockData);
