@@ -4,7 +4,7 @@
 exports.config = {
   config : {
     serverPort  : '8080',
-    serverIp    : '192.168.1.150',
+    serverIp    : '192.168.1.145',
     serverMac   : '00:00:00:00:00:00',
     theme       : 'dark',
     default     : 'samsung',
@@ -115,7 +115,7 @@ exports.config = {
     deviceIp  : '192.168.1.7',
     username  : 'user',
     password  : 'password',
-    disabled  : false
+    disabled  : true
   },
 
   /*
@@ -169,6 +169,37 @@ exports.config = {
     userKey        : 'somethingSecret',
     token          : 'somethingSecret',
     disabledMarkup : false,
-    disabled       : false
+    disabled       : true
+  },
+
+  /*
+   * SmartThings is a home automation system that integrates IP controlled,
+   * Zigbee and Z-wave devices.  They allow OAuth control of their API.  Learn
+   * more at http://smartthings.com
+   *
+   * To use their OAuth API, you'll need to have an account on their site and
+   * create the OAuth endpoint SmartApp:
+   * https://graph.api.smartthings.com/ide/app/create
+   * Name: Universal Controller OAuth Endpoint
+   * Description: Universal Controller OAuth Endpoint
+   * Click "Enable OAuth in Smart App" and copy the "OAuth Client ID" and
+   * "OAuth Client Secret" to the fields below.
+   * Click "Create" to be presented with the SmartThings IDE.  Simply paste the
+   * sourcecode from their OAuth reference material:
+   * https://gist.github.com/aurman/9813279
+   * Click "Save", then "Publish" in the upper right.
+   *
+   * On initial startup of the Universal Controller with this configuration,
+   * you'll be propted in the command line for a URL to generate the security
+   * token used.  Simply visit the URL, grant the permissions you desire and
+   * click "Authorize".
+   */
+  smartthings : {
+    typeClass      : 'smartthings',
+    title          : 'SmartThings',
+    clientId       : 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+    clientSecret   : 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+    disabledMarkup : false,
+    disabled       : true
   }
 };
