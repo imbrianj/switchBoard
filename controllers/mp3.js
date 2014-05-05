@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global module, require, console */
+/*global App, module, require, console */
 
 module.exports = (function () {
   'use strict';
@@ -13,7 +13,7 @@ module.exports = (function () {
    *       sudo apt-get install mpg123
    */
   return {
-    version : 20140329,
+    version : 20140503,
 
     inputs  : ['text'],
 
@@ -39,11 +39,15 @@ module.exports = (function () {
       return command;
     },
 
+    init : function (controller) {
+      this.send({ text : 'magic' });
+    },
+
     send : function (config) {
       var fs       = require('fs'),
           mp3      = {};
 
-      mp3.file     = config.text ? __dirname + '/../mp3/' + config.text : '';
+      mp3.file     = config.text ? __dirname + '/../mp3/' + config.text + '.mp3' : '';
       mp3.callback = config.callback || function () {};
       mp3.platform = config.platofrm || process.platform;
 

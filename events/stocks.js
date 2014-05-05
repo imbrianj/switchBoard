@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global module, require, console */
+/*global App, module, require, console */
 
 /**
  * @author brian@bevey.org
@@ -10,7 +10,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20140418,
+    version : 20140503,
 
     fire : function(deviceName, command, controllers) {
       var controller = controllers[deviceName],
@@ -48,9 +48,17 @@ module.exports = (function () {
             }
 
             if(message) {
+              console.log('Schedule: ' + message);
+
               for(i; i < controller.config.notify.length; i += 1) {
                 if(typeof controllers[controller.config.notify[i]] !== 'undefined') {
-                  runCommand.runCommand(controller.config.notify[i], 'text-' + message, controllers, 'single', false);
+                  if(controllers[controller.config.notify[i]].config.typeClass === 'mp3') {
+                    runCommand.runCommand(controller.config.notify[i], 'text-cash', controllers, 'single', false);
+                  }
+
+                  else {
+                    runCommand.runCommand(controller.config.notify[i], 'text-' + message, controllers, 'single', false);
+                  }
                 }
               }
             }

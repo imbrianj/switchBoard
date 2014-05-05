@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global module, require, console */
+/*global App, module, require, console */
 
 module.exports = (function () {
   'use strict';
@@ -13,7 +13,7 @@ module.exports = (function () {
    *       sudo apt-get install espeak
    */
   return {
-    version : 20140418,
+    version : 20140504,
 
     inputs  : ['text'],
 
@@ -44,17 +44,17 @@ module.exports = (function () {
     },
 
     init : function (controller) {
-      this.send({ text : 'Text to speech initiated', voice : controller.config.voice });
+      this.send({ text : 'Text to speech initiated', device : { voice : controller.config.voice } });
     },
 
     send : function (config) {
       var exec        = require('child_process').exec,
           speech      = {};
 
-      speech.text     = config.text     || '';
-      speech.callback = config.callback || function () {};
-      speech.voice    = config.voice    || 'male';
-      speech.platform = config.platofrm || process.platform;
+      speech.text     = config.text         || '';
+      speech.callback = config.callback     || function () {};
+      speech.voice    = config.device.voice || 'male';
+      speech.platform = config.platofrm     || process.platform;
 
       if(speech.text) {
         exec(this.translateCommand(speech.voice, speech.text, speech.platform), function (err, stdout, stderr) {

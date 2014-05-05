@@ -1,5 +1,5 @@
-/*jslint white: true, indent: 2, sub: true */
-/*global module, setTimeout, require, console */
+/*jslint white: true */
+/*global App, module, setTimeout, require, console */
 
 module.exports = (function () {
   'use strict';
@@ -101,9 +101,9 @@ module.exports = (function () {
 
         if(apps) {
           for(i in apps) {
-            tempMarkup = tempMarkup + template.split('{{APP_ID}}').join(apps[i]['id']);
-            tempMarkup = tempMarkup.split('{{APP_IMG}}').join(apps[i]['cache']);
-            tempMarkup = tempMarkup.split('{{APP_NAME}}').join(apps[i]['name']);
+            tempMarkup = tempMarkup + template.split('{{APP_ID}}').join(apps[i].id);
+            tempMarkup = tempMarkup.split('{{APP_IMG}}').join(apps[i].cache);
+            tempMarkup = tempMarkup.split('{{APP_NAME}}').join(apps[i].name);
           }
         }
       }
@@ -152,14 +152,14 @@ module.exports = (function () {
                     for(i in reply.apps.app) {
                       app = reply.apps.app[i];
 
-                      apps[app['$']['id']] = { 'name'  : app['_'],
-                                               'id'    : app['$']['id'],
-                                               'link'  : 'http://' + config.deviceIp + ':8060/launch/11?contentID=' + app['$']['id'],
-                                               'image' : 'http://' + config.deviceIp + ':8060/query/icon/' + app['$']['id'],
-                                               'cache' : '/images/roku/icon_' + app['$']['id'] + '.png'
-                                             };
+                      apps[app.$.id] = { 'name'  : app._,
+                                         'id'    : app.$.id,
+                                         'link'  : 'http://' + config.deviceIp + ':8060/launch/11?contentID=' + app.$.id,
+                                         'image' : 'http://' + config.deviceIp + ':8060/query/icon/' + app.$.id,
+                                         'cache' : '/images/roku/icon_' + app.$.id + '.png'
+                                       };
 
-                      this.cacheImage(app['_'], app['$']['id'], config);
+                      this.cacheImage(app._, app.$.id, config);
                     }
 
                     cache = fs.createWriteStream(__dirname + '/../tmp/roku.json');

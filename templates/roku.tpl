@@ -1,4 +1,5 @@
-      <div id="{{DEVICE_ID}}" class="device">
+
+      <div id="{{DEVICE_ID}}" class="device{{DEVICE_SELECTED}}">
         <div class="control-block">
           <div class="media">
             <ul>

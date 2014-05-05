@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global module, require, console */
+/*global App, module, require, console */
 
 module.exports = (function () {
   'use strict';
@@ -10,14 +10,14 @@ module.exports = (function () {
    * @fileoverview Basic control of SmartThings endpoint.
    */
   return {
-    version : 20140430,
+    version : 20140504,
 
-    inputs  : ['list', 'launch'],
+    inputs  : ['list', 'subdevice'],
 
     /**
      * Prepare a POST request for a command.
      */
-    oauthPostPrepare : function(config) {
+    postPrepare : function(config) {
       return {
         host    : config.host,
         port    : config.port,
@@ -35,34 +35,20 @@ module.exports = (function () {
      * Use received OAuth2 code to query for access token to be used later.
      */
     oauthCode : function (oauthCode, deviceName, deviceConfig, config) {
-      var https       = require('https'),
-          smartthings = {},
-          that        = this,
-          postRequest = '',
-          request;
+      var smartthings = {},
+          that        = this;
 
-      smartthings.host     = deviceConfig.host     || 'graph.api.smartthings.com';
-      smartthings.port     = deviceConfig.port     || 443;
-      smartthings.path     = deviceConfig.path     || '/oauth/token?grant_type=authorization_code&client_id=' + deviceConfig.clientId + '&client_secret=' + deviceConfig.clientSecret + '&redirect_uri=http://' + config.serverIp + ':' + config.serverPort + '/oauth/' + deviceName + '&code=' + oauthCode + '&scope=app';
-      smartthings.method   = deviceConfig.method   || 'GET';
-      smartthings.callback = deviceConfig.callback || function() {};
+      smartthings.path     = deviceConfig.path || '/oauth/token?grant_type=authorization_code&client_id=' + deviceConfig.clientId + '&client_secret=' + deviceConfig.clientSecret + '&redirect_uri=http://' + config.serverIp + ':' + config.serverPort + '/oauth/' + deviceName + '&code=' + oauthCode + '&scope=app';
+      smartthings.callback = function(err, response) {
+        var fs       = require('fs'),
+            authData = {},
+            cache;
 
-      request = https.request(this.oauthPostPrepare(smartthings), function(response) {
-        response.setEncoding('utf8');
-
-        response.on('data', function(response) {
-          var fs       = require('fs'),
-              authData = {},
-              cache;
-
-          console.log('SmartThings: Connected');
-
+        if(!err) {
           response = JSON.parse(response);
 
           if(response.error) {
             console.log('SmartThings: ' + response.error_description);
-
-            smartthings.callback(response.error);
           }
 
           else {
@@ -70,62 +56,34 @@ module.exports = (function () {
             authData.expire      = response.expires_in;
 
             that.oauthUrl(authData, { 'controller' : that, 'config' : deviceConfig });
-
-            smartthings.callback(null, response);
           }
-        });
-      });
-
-      request.on('error', function(err) {
-        var errorMsg = '';
-
-        if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
-          errorMsg = 'SmartThings: API is unreachable';
         }
+      };
 
-        else {
-          errorMsg = 'SmartThings: ' + err.code;
-        }
-
-        console.log(errorMsg);
-
-        smartthings.callback(errorMsg);
-      });
-
-      request.end();
+      this.send(smartthings);
     },
 
+    /**
+     * Use received OAuth2 access token to query for endpoint URL to be used
+     * later.  Once we have all auth data, cache for future use.
+     */
     oauthUrl : function (auth, controller) {
-      var https       = require('https'),
-          smartthings = {},
-          devices     = {},
-          that        = this,
-          request;
-
-      smartthings.host     = controller.config.host     || 'graph.api.smartthings.com';
-      smartthings.port     = controller.config.port     || 443;
-      smartthings.path     = controller.config.path     || '/api/smartapps/endpoints/' + controller.config.clientId + '?access_token=' + auth.accessToken;
-      smartthings.method   = controller.config.method   || 'GET';
-      smartthings.callback = controller.config.callback || function() {};
+      var smartthings = {},
+          that        = this;
 
       console.log('SmartThings: Fetching device url');
 
-      request = https.request(controller.controller.oauthPostPrepare(smartthings), function(response) {
-        response.setEncoding('utf8');
+      smartthings.path     = controller.config.path || '/api/smartapps/endpoints/' + controller.config.clientId + '?access_token=' + auth.accessToken;
+      smartthings.callback = function(err, response) {
+        var fs = require('fs'),
+            i  = 0,
+            cache;
 
-        response.on('data', function(response) {
-          var fs       = require('fs'),
-              authData = {},
-              cache;
-
-          console.log('SmartThings: Connected');
-
+        if(!err) {
           response = JSON.parse(response);
 
           if(response.error) {
             console.log('SmartThings: ' + response.message);
-
-            smartthings.callback(response.error);
           }
 
           else {
@@ -139,113 +97,171 @@ module.exports = (function () {
 
               cache.write(JSON.stringify(auth));
             });
-
-            smartthings.callback(null, response);
           }
-        });
-      });
-
-      request.on('error', function(err) {
-        var errorMsg = '';
-
-        if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
-          errorMsg = 'SmartThings: API is unreachable';
         }
+      };
 
-        else {
-          errorMsg = 'SmartThings: ' + err.code;
-        }
-
-        console.log(errorMsg);
-
-        smartthings.callback(errorMsg);
-      });
-
-      request.end();
+      this.send(smartthings);
     },
 
+    /**
+     * Query for current device list and cache for future use.
+     */
     oauthDeviceList : function (auth, controller) {
-      var https       = require('https'),
-          smartthings = {},
-          devices     = {},
-          request     = {},
-          that        = this;
-
-      smartthings.host     = controller.config.host     || 'graph.api.smartthings.com';
-      smartthings.port     = controller.config.port     || 443;
-      smartthings.path     = controller.config.path     || auth.url + '/switches';
-      smartthings.method   = controller.config.method   || 'GET';
-      smartthings.callback = controller.config.callback || function() {};
-
-      request = controller.controller.oauthPostPrepare(smartthings);
-
-      request.headers.Authorization = 'Bearer ' + auth.accessToken;
+      var smartthings = {},
+          subDevices  = {},
+          request     = {};
 
       console.log('SmartThings: Fetching device info');
 
-      request = https.request(request, function(response) {
-        response.setEncoding('utf8');
+      smartthings.path     = controller.config.path || auth.url + '/switches';
+      smartthings.auth     = auth.accessToken;
+      smartthings.callback = function(err, response) {
+        var fs = require('fs'),
+            i  = 0,
+            cache;
 
-        response.on('data', function(response) {
-          var fs       = require('fs'),
-              authData = {},
-              devices  = {},
-              i        = 0,
-              cache;
-
-          console.log('SmartThings: Connected');
-
+        if(!err) {
           response = JSON.parse(response);
 
           if(response.error) {
             console.log('SmartThings: ' + response.message);
-
-            smartthings.callback(response.error);
           }
 
           else {
             for(i; i < response.length; i += 1) {
-              devices[i] = {
+              subDevices[i] = {
                 label : response[i].label,
                 type  : response[i].type
               };
 
-              if(response[i].type === 'switch') {
-                  devices[i].on     = 'https://graph.api.smartthings.com' + auth.url + '/switches/' + response[i].id + '/on?access_token=' + auth.accessToken;
-                  devices[i].off    = 'https://graph.api.smartthings.com' + auth.url + '/switches/' + response[i].id + '/off?access_token=' + auth.accessToken;
-                  devices[i].toggle = 'https://graph.api.smartthings.com' + auth.url + '/switches/' + response[i].id + '/toggle?access_token=' + auth.accessToken;
+              switch(response[i].type) {
+                case 'switch' :
+                  subDevices[i].on     = 'https://graph.api.smartthings.com' + auth.url + '/switches/' + response[i].id + '/on?access_token=' + auth.accessToken;
+                  subDevices[i].off    = 'https://graph.api.smartthings.com' + auth.url + '/switches/' + response[i].id + '/off?access_token=' + auth.accessToken;
+                  subDevices[i].toggle = 'https://graph.api.smartthings.com' + auth.url + '/switches/' + response[i].id + '/toggle?access_token=' + auth.accessToken;
+                break;
+
+                case 'lock' :
+                  subDevices[i].lock   = 'https://graph.api.smartthings.com' + auth.url + '/switches/' + response[i].id + '/lock?access_token=' + auth.accessToken;
+                  subDevices[i].unlock = 'https://graph.api.smartthings.com' + auth.url + '/switches/' + response[i].id + '/unlock?access_token=' + auth.accessToken;
+                  subDevices[i].toggle = 'https://graph.api.smartthings.com' + auth.url + '/switches/' + response[i].id + '/toggle?access_token=' + auth.accessToken;
+                break;
               }
             }
 
             cache = fs.createWriteStream(__dirname + '/../tmp/smartthingsDevices.json');
+
             cache.on('open', function() {
               console.log('SmartThings: Device data cached');
 
-              cache.write(JSON.stringify(devices));
+              cache.write(JSON.stringify(subDevices));
             });
-
-            smartthings.callback(null, response);
           }
-        });
-      });
-
-      request.on('error', function(err) {
-        var errorMsg = '';
-
-        if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
-          errorMsg = 'SmartThings: API is unreachable';
         }
+      };
 
-        else {
-          errorMsg = 'SmartThings: ' + err.code;
+      this.send(smartthings);
+    },
+
+    onload : function (controller) {
+      var markup          = controller.markup,
+          fs              = require('fs'),
+          templateSwitch  = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListSwitch.tpl').toString(),
+          templateLock    = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListLock.tpl').toString(),
+          templateGroup   = '',
+          i               = 0,
+          j               = 0,
+          tempMarkup      = '',
+          deviceMarkup    = '',
+          subDeviceMarkup = '',
+          subDeviceTemplate = '',
+          subDevice,
+          subDevices,
+          subDeviceGroup;
+
+      if(fs.existsSync(__dirname + '/../tmp/smartthingsDevices.json')) {
+        subDevices = JSON.parse(fs.readFileSync(__dirname + '/../tmp/smartthingsDevices.json').toString());
+
+        if(subDevices) {
+          // You want to display SmartThings devices in groups.
+          if(controller.config.groups) {
+            templateGroup = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsGroups.tpl').toString();
+
+            for(i in controller.config.groups) {
+              tempMarkup      = tempMarkup + templateGroup;
+              subDeviceMarkup = '';
+
+              for(j in controller.config.groups[i]) {
+                subDeviceGroup  = this.findSubDevices(controller.config.groups[i][j], subDevices);
+
+                if(subDeviceGroup && subDeviceGroup[0]) {
+                  switch(subDeviceGroup[0].type) {
+                    case 'switch' :
+                      subDeviceTemplate = templateSwitch;
+                    break;
+
+                    case 'lock' :
+                      subDeviceTemplate = templateLock;
+                    break;
+                  }
+
+                  subDeviceMarkup = subDeviceMarkup + subDeviceTemplate.split('{{SUB_DEVICE_ID}}').join(subDeviceGroup[0].label.split(' ').join('+'));
+                  subDeviceMarkup = subDeviceMarkup.split('{{SUB_DEVICE_NAME}}').join(subDeviceGroup[0].label);
+                }
+              }
+
+              tempMarkup = tempMarkup.split('{{GROUP_TITLE}}').join(i);
+              tempMarkup = tempMarkup.split('{{SUB_DEVICE_LIST}}').join(subDeviceMarkup);
+            }
+          }
+
+          // Otherwise, you want to show them in a list.
+          else {
+            for(i in subDevices) {
+              subDevice = subDevices[i];
+
+              switch(subDevice.type) {
+                case 'switch' :
+                  subDeviceTemplate = templateSwitch;
+                break;
+
+                case 'lock' :
+                  subDeviceTemplate = templateLock;
+                break;
+              }
+
+              tempMarkup = tempMarkup + subDeviceTemplate.split('{{SUB_DEVICE_ID}}').join(subDevice.label.split(' ').join('+'));
+              tempMarkup = tempMarkup.split('{{SUB_DEVICE_NAME}}').join(subDevice.label);
+            }
+          }
         }
+      }
 
-        console.log(errorMsg);
+      return markup.replace('{{SMARTTHINGS_DYNAMIC}}', tempMarkup);
+    },
 
-        smartthings.callback(errorMsg);
-      });
+    /**
+     * As devices can have the same names - but I assume they all want to be
+     * interacted with in concert, we'll not use a hash table - and return an
+     * object of applicable sub devices to act upon.
+     */
+    findSubDevices : function (subDeviceLabel, subDevices) {
+      var subDevice = {},
+          collected = [],
+          i         = 0,
+          j         = 0;
 
-      request.end();
+      for(i in subDevices) {
+        subDevice = subDevices[i];
+
+        if(subDevice.label === subDeviceLabel) {
+          collected[j] = subDevice;
+          j += 1;
+        }
+      }
+
+      return collected;
     },
 
     init : function (controller, config) {
@@ -275,8 +291,123 @@ module.exports = (function () {
       }
     },
 
-    send : function (config) {
+    getDevicePath : function(command, config) {
+      var fs = require('fs'),
+          subDevices  = JSON.parse(fs.readFileSync(__dirname + '/../tmp/smartthingsDevices.json').toString()),
+          commandType = '',
+          subDevice   = {},
+          path        = '',
+          i           = 1;
 
+      if(command.indexOf('toggle-') === 0) {
+        commandType = 'toggle';
+      }
+
+      else if(command.indexOf('on-') === 0) {
+        commandType = 'on';
+      }
+
+      else if(command.indexOf('off-') === 0) {
+        commandType = 'off';
+      }
+
+      else if(command.indexOf('lock-') === 0) {
+        commandType = 'lock';
+      }
+
+      else if(command.indexOf('unlock-') === 0) {
+        commandType = 'unlock';
+      }
+
+      if(commandType) {
+        subDevice = this.findSubDevices(command.replace(commandType + '-', ''), subDevices);
+
+        if(subDevice) {
+          path = subDevice[0][commandType];
+
+          // For same-named devices, we want them to operate in concert, so
+          // we'll send along the same command to each of them.
+          if(subDevice.length > 1) {
+            for(i; i < subDevice.length; i += 1) {
+              config.subdevice = '';
+
+              config.path = subDevice[i][commandType];
+
+              this.send(config);
+            }
+          }
+        }
+      }
+
+      return path;
+    },
+
+    send : function (config) {
+      var https       = require('https'),
+          smartthings = {},
+          devices     = {},
+          request     = {},
+          dataReply   = '',
+          that        = this;
+
+      smartthings.command  = config.subdevice || '';
+      smartthings.host     = config.host      || 'graph.api.smartthings.com';
+      smartthings.port     = config.port      || 443;
+      smartthings.path     = config.path      || '';
+      smartthings.auth     = config.auth      || '';
+      smartthings.method   = config.method    || 'GET';
+      smartthings.callback = config.callback  || function() {};
+
+      request = this.postPrepare(smartthings);
+
+      if(smartthings.auth) {
+        request.headers.Authorization = 'Bearer ' + smartthings.auth;
+      }
+
+      if(smartthings.command) {
+        request.path = this.getDevicePath(smartthings.command, config);
+      }
+
+      request = https.request(request, function(response) {
+                  response.on('data', function(response) {
+                    console.log('SmartThings: Connected');
+
+                    dataReply += response;
+                  });
+
+                  response.on('end', function() {
+                    if(dataReply) {
+                      smartthings.callback(null, dataReply);
+                    }
+
+                    else {
+                      console.log('SmartThings: No data returned from API');
+
+                      smartthings.callback(null, '');
+                    }
+                  });
+                });
+
+
+      request.on('error', function(err) {
+        var errorMsg = '';
+
+        if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
+          errorMsg = 'SmartThings: Device is off or unreachable';
+        }
+
+        else {
+          errorMsg = 'SmartThings: ' + err.code;
+        }
+
+        console.log(errorMsg);
+
+        smartthings.callback(errorMsg);
+      });
+
+      request.end();
+
+      return dataReply;
     }
   };
 }());

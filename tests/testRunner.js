@@ -20,5 +20,6 @@ module.exports = (function () {
                 'tests/unit/controllers/samsungTest.js',
                 'tests/unit/controllers/speechTest.js',
                 'tests/unit/controllers/stocksTest.js',
-                'tests/unit/controllers/weatherTest.js']);
+                'tests/unit/controllers/weatherTest.js',
+                'tests/unit/events/scheduleTest.js']);
 }());

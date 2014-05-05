@@ -532,6 +532,26 @@ form legend {
 	min-height: 200px;
 }
 
+.device .sub-device-group {
+	border: 1px solid #333;
+	padding: .4em .1em;
+}
+
+.device .sub-device-group h4 {
+	font-size: 50%;
+	margin-bottom: .5em;
+}
+
+.device .sub-device-group li {
+	max-width: 100%;
+	vertical-align: top;
+}
+
+.device .sub-device-list li span {
+	display: block;
+	font-size: 30%;
+}
+
 #samsung .numeric-controls,
 #samsung .media,
 #samsung .information {
@@ -542,27 +562,12 @@ form legend {
 	display: none;
 }
 
-.samsung #samsung,
-.panasonic #panasonic,
-.lg #lg,
-.roku #roku,
-.ps3 #ps3,
-.speech #speech,
-.foscam #foscam,
-.sms #sms,
-.pushover #pushover,
+body .selected,
 .device:target {
 	display: block;
 }
 
-.samsung .header .samsung a,
-.panasonic .header .panasonic a,
-.lg .header .lg a,
-.roku .header .roku a,
-.ps3 .header .ps3 a,
-.foscam .header .foscam a,
-.sms .header .sms a,
-.pushover .header .pushover a {
+.header .selected a {
 	background-color: #FFF;
 	border-color: #DDD;
 	color: #000;
@@ -571,7 +576,7 @@ form legend {
 /* Dark theme */
 .theme-dark body {
 	background: #000;
-	color: #FFF;
+	color: #333;
 }
 
 .theme-dark .header h1 a,
@@ -599,15 +604,7 @@ form legend {
 	font-weight: bold;
 }
 
-.theme-dark .samsung .header .samsung a,
-.theme-dark .panasonic .header .panasonic a,
-.theme-dark .lg .header .lg a,
-.theme-dark .roku .header .roku a,
-.theme-dark .ps3 .header .ps3 a,
-.theme-dark .speech .header .speech a,
-.theme-dark .foscam .header .foscam a,
-.theme-dark .sms .header .sms a,
-.theme-dark .pushover .header .pushover a {
+.theme-dark .header .selected a {
 	background-color: rgb(0, 120, 231);
 	border: 1px solid #999;  /*IE 6/7/8*/
 	border: none rgba(0, 0, 0, 0);  /*IE9 + everything else*/
@@ -626,24 +623,8 @@ form legend {
 	transition: 0.1s linear box-shadow;
 }
 
-.theme-dark .samsung .header .samsung a:hover,
-.theme-dark .samsung .header .samsung a:focus,
-.theme-dark .panasonic .header .panasonic a:hover,
-.theme-dark .panasonic .header .panasonic a:focus,
-.theme-dark .lg .header .lg a:hover,
-.theme-dark .lg .header .lg a:focus,
-.theme-dark .roku .header .roku a:hover,
-.theme-dark .roku .header .roku a:focus,
-.theme-dark .ps3 .header .ps3 a:hover,
-.theme-dark .ps3 .header .ps3 a:focus,
-.theme-dark .speech .header .speech a:hover,
-.theme-dark .speech .header .speech a:focus,
-.theme-dark .foscam .header .foscam a:hover,
-.theme-dark .foscam .header .foscam a:focus,
-.theme-dark .sms .header .sms a:hover,
-.theme-dark .sms .header .sms a:focus,
-.theme-dark .pushover .header .pushover a:hover,
-.theme-dark .pushover .header .pushover a:focus {
+.theme-dark .header .selected a:hover,
+.theme-dark .header .selected a:focus {
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#1a000000',GradientType=0);
 	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(transparent), color-stop(40%, rgba(0,0,0, 0.05)), to(rgba(0,0,0, 0.10)));
 	background-image: -webkit-linear-gradient(transparent, rgba(0,0,0, 0.05) 40%, rgba(0,0,0, 0.10));

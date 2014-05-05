@@ -6,7 +6,7 @@ Bevey = (function () {
   'use strict';
 
   return {
-    version : 20140322,
+    version : 20140504,
 
    /**
     * Stops event bubbling further.
@@ -401,14 +401,14 @@ Bevey = (function () {
     *  global function of "init" is available, it will also be executed.
     */
     init : function () {
-      var header       = Bevey.getElementsByClassName('header', document.body, 'div')[0],
-          body         = Bevey.getElementsByClassName('body', document.body, 'div')[0],
-          searchInputs = Bevey.getElementsByClassName('text-form', body, 'form'),
-          runSearch,
+      var header     = Bevey.getElementsByClassName('header', document.body, 'div')[0],
+          body       = Bevey.getElementsByClassName('body', document.body, 'div')[0],
+          textInputs = Bevey.getElementsByClassName('text-form', body, 'form'),
+          runText,
           lazyLoad,
           i;
 
-      runSearch = function(e) {
+      runText = function(e) {
         var elm  = Bevey.getTarget(e),
             ts   = new Date().getTime(),
             text = '',
@@ -453,20 +453,29 @@ Bevey = (function () {
 
       lazyLoad(document.body.className);
 
-      for(i = 0; i < searchInputs.length; i += 1) {
-        Bevey.event.add(searchInputs[i], 'submit', runSearch);
+      for(i = 0; i < textInputs.length; i += 1) {
+        Bevey.event.add(textInputs[i], 'submit', runText);
       }
 
       Bevey.event.add(header, 'click', function(e) {
-        var elm     = Bevey.getTarget(e).parentNode,
-            tagName = elm.tagName.toLowerCase();
+        var elm           = Bevey.getTarget(e).parentNode,
+            tagName       = elm.tagName.toLowerCase(),
+            newContent    = document.getElementById(elm.className),
+            selectNav     = Bevey.getElementsByClassName('selected', header, 'li')[0],
+            selectContent = Bevey.getElementsByClassName('selected', body, 'div')[0];
 
         if(tagName === 'li') {
           e.preventDefault();
 
-          document.body.className = elm.className;
+          if(elm !== selectNav) {
+            Bevey.removeClass(selectNav,     'selected');
+            Bevey.removeClass(selectContent, 'selected');
 
-          lazyLoad(elm.className);
+            Bevey.addClass(elm, 'selected');
+            Bevey.addClass(newContent, 'selected');
+
+            lazyLoad(elm.className);
+          }
         }
       });
 

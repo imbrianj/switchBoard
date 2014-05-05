@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global module, require, console */
+/*global App, module, require, console */
 
 /**
  * @author brian@bevey.org
@@ -29,6 +29,8 @@ module.exports = (function () {
           }
         }
       }
+
+      return true;
     }
   };
 }());

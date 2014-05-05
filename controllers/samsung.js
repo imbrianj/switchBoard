@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global module, Buffer, String, require, console */
+/*global App, module, Buffer, String, require, console */
 
 module.exports = (function () {
   'use strict';

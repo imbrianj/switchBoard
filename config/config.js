@@ -92,7 +92,7 @@ exports.config = {
                   TSLA : { buy : 150, sell : 250 } },
     // Means by which you should be notified (if the controllers for each are
     // properly configured).
-    notify    : ['pushover', 'twilio', 'speech'],
+    notify    : ['pushover', 'twilio', 'speech', 'mp3'],
     disabled  : true
   },
 
@@ -143,11 +143,11 @@ exports.config = {
   sms : {
     typeClass     : 'sms',
     title         : 'SMS',
-    /* Your phone number to send texts to by default */
+    // Your phone number to send texts to by default
     phone         : '1234567890',
     twilioSid     : 'somethingSecret',
     twilioToken   : 'somethingSecret',
-    /* Your assigned Twilio phone number */
+    // Your assigned Twilio phone number
     twilioPhone   : '0987654321',
     disableMarkup : true,
     disabled      : true
@@ -168,7 +168,6 @@ exports.config = {
     title          : 'Pushover',
     userKey        : 'somethingSecret',
     token          : 'somethingSecret',
-    disabledMarkup : false,
     disabled       : true
   },
 
@@ -199,6 +198,14 @@ exports.config = {
     title          : 'SmartThings',
     clientId       : 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
     clientSecret   : 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+    // You may group your devices together for display by using the group name
+    // you'd like shown as the object name.  Devices within that group should
+    // be the same name as you give them in SmartThings.
+    groups         : { 'Bedroom'     : ['Bedroom Lamps', 'Bedroom Switch'],
+                       'Office'      : ['Office Switch'],
+                       'Hallway'     : ['Hall Light'],
+                       'Living Room' : ['Living Room Lamp', 'Chandelier'],
+                       'Kitchen'     : ['Kitchen Light', 'Dining Lights'] },
     disabledMarkup : false,
     disabled       : true
   }

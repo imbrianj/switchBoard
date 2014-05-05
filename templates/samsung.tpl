@@ -1,4 +1,5 @@
-      <div id="{{DEVICE_ID}}" class="device">
+
+      <div id="{{DEVICE_ID}}" class="device{{DEVICE_SELECTED}}">
         <div class="control-block">
           <div class="volume">
             <a href="/?{{DEVICE_ID}}=VOLUP" class="fa fa-volume-up"><span>VolUp</span></a>
