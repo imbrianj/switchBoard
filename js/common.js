@@ -474,7 +474,7 @@ Bevey = (function () {
             Bevey.addClass(elm, 'selected');
             Bevey.addClass(newContent, 'selected');
 
-            lazyLoad(elm.className);
+            lazyLoad(elm.className.replace(' selected', ''));
           }
         }
       });

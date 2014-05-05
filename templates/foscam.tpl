@@ -30,6 +30,6 @@
         </div>
 
         <div class="preview-image">
-          <img data-src="{{FOSCAM_DYNAMIC}}" alt="{{DEVICE_ID}} Preview" />
+          <img {{LAZY_LOAD_IMAGE}}="{{FOSCAM_DYNAMIC}}" alt="{{DEVICE_ID}} Preview" />
         </div>
       </div>
