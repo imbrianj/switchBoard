@@ -532,9 +532,10 @@ form legend {
 	min-height: 200px;
 }
 
-.device .sub-device-group {
+.device .sub-device-list .sub-device-group {
 	border: 1px solid #333;
 	padding: .4em .1em;
+	margin: .1em 0;
 }
 
 .device .sub-device-group h4 {

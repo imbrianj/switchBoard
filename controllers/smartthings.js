@@ -274,7 +274,13 @@ module.exports = (function () {
             fs.readFile(__dirname + '/../tmp/smartthingsAuth.json', function(err, auth) {
               auth = JSON.parse(auth.toString());
 
-              controller.controller.oauthUrl(auth, controller);
+              if(typeof auth.url === 'string') {
+                controller.controller.oauthDeviceList(auth, controller);
+              }
+
+              else {
+                controller.controller.oauthUrl(auth, controller);
+              }
             });
           }
 
