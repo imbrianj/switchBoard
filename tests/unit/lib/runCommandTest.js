@@ -7,7 +7,7 @@
  */
 
 exports.runCommandTest = {
-  parseCommands : function (test) {
+  parseCommands : function(test) {
     'use strict';
 
     var runCommand   = require('../../../lib/runCommand'),
@@ -29,7 +29,7 @@ exports.runCommandTest = {
     test.done();
   },
 
-  stripTypePrefix : function (test) {
+  stripTypePrefix : function(test) {
     'use strict';
 
     var runCommand = require('../../../lib/runCommand'),
@@ -46,7 +46,7 @@ exports.runCommandTest = {
     test.done();
   },
 
-  getCommandType : function (test) {
+  getCommandType : function(test) {
     'use strict';
 
     var runCommand = require('../../../lib/runCommand'),
@@ -63,7 +63,7 @@ exports.runCommandTest = {
     test.done();
   },
 
-  validateCommand : function (test) {
+  validateCommand : function(test) {
     'use strict';
 
     var runCommand     = require('../../../lib/runCommand'),
@@ -88,7 +88,7 @@ exports.runCommandTest = {
     test.done();
   },
 
-  runCommand : function (test) {
+  runCommand : function(test) {
     'use strict';
 
     var runCommand     = require('../../../lib/runCommand'),

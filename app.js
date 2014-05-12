@@ -7,7 +7,7 @@
  * @requires http, url, path, nopt
  */
 
-GLOBAL.App = {};
+State = {};
 
 var version        = 20140504,
     http           = require('http'),

@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global App, module, require, console */
+/*global State, module, require, console */
 
 module.exports = (function () {
   'use strict';
@@ -328,7 +328,7 @@ module.exports = (function () {
       if(commandType) {
         subDevice = this.findSubDevices(command.replace(commandType + '-', ''), subDevices);
 
-        if(subDevice) {
+        if((subDevice) && (subDevice[0]) && (subDevice[0][commandType])) {
           path = subDevice[0][commandType];
 
           // For same-named devices, we want them to operate in concert, so

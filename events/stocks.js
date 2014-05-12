@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global App, module, require, console */
+/*global State, module, require, console */
 
 /**
  * @author brian@bevey.org
@@ -10,10 +10,11 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20140503,
+    version : 20140510,
 
     fire : function(deviceName, command, controllers) {
-      var controller = controllers[deviceName],
+      var runCommand = require(__dirname + '/../lib/runCommand'),
+          controller = controllers[deviceName],
           nycOffset  = -5,
           date       = new Date(),
           utcTime    = date.getTime() + (date.getTimezoneOffset() * 60000),
@@ -22,14 +23,18 @@ module.exports = (function () {
           callback;
 
       // Trading isn't open on weekends, so we don't need to poll.
-      if((nycTime.getDay() !== 6) && (nycTime.getDay() !== 0)) {
+      if((nycTime.getDay() !== 6) && (nycTime.getDay() !== 0) || 1) {
         // Trading is only open from 9am - 4pm.
-        if((nycTime.getHours() > 9) && (nycTime.getHours() < 16)) {
+        if((nycTime.getHours() > 9) && (nycTime.getHours() < 16) || 1) {
+          State[deviceName].state.active = true;
+
           callback = function(err, stocks) {
-            var runCommand = require(__dirname + '/../lib/runCommand'),
-                message    = '',
-                i          = 0,
+            var deviceState = require(__dirname + '/../lib/deviceState'),
+                message     = '',
+                i           = 0,
                 stockName;
+
+            deviceState.updateState(deviceName, { state : 'ok', value : stocks });
 
             if((controller.config.limits) && (stocks)) {
               for(stockName in controller.config.limits) {
@@ -64,15 +69,19 @@ module.exports = (function () {
             }
           };
 
-          controllers[deviceName].controller.send({ stocks : controllers[deviceName].config.stocks, callback : callback });
+          runCommand.runCommand(deviceName, 'list', controllers, deviceName, false, callback);
         }
 
         else {
+          State[deviceName].state.active = false;
+
           console.log('Schedule: Stock trading is closed - after hours');
         }
       }
 
       else {
+        State[deviceName].state.active = false;
+
         console.log('Schedule: Stock trading is closed - weekend');
       }
     }

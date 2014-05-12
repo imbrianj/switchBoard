@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global App, module, require, console */
+/*global State, module, require, console */
 
 module.exports = (function () {
   'use strict';
@@ -21,7 +21,7 @@ module.exports = (function () {
 
     postPrepare : function (config) {
       var path  = '',
-          login = '?user=' + config.username + '&pwd=' + config.password + '&';
+          login = '?user=' + config.username + '&amp;pwd=' + config.password + '&amp;';
 
       switch(config.command) {
         case 'AlarmOff' :
@@ -76,7 +76,7 @@ module.exports = (function () {
     },
 
     onload : function (controller) {
-      return controller.markup.replace('{{FOSCAM_DYNAMIC}}', 'http://' + controller.config.deviceIp + '/videostream.cgi?user=' + controller.config.username + '&pwd=' + controller.config.password);
+      return controller.markup.replace('{{FOSCAM_DYNAMIC}}', 'http://' + controller.config.deviceIp + '/videostream.cgi?user=' + controller.config.username + '&amp;pwd=' + controller.config.password);
     },
 
     send : function (config) {

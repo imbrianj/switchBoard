@@ -2,6 +2,13 @@ Universal Controller
 ---
 Universal Controller is a node.js based application intended to run on a device within a local network - preferrably a dedicated server (such as a Raspberry Pi).  It allows all web capable devices within that same network to issue commands to any other configured device.  You may use your phone, tablet, desktop or laptop browser to interact with any controllable device - or issue simple GET commands programmatically.
 
+Video demonstration:
+
+[![Demonstration of the Universal Controller](http://img.youtube.com/vi/6zJVRXMuuE4/0.jpg)](https://www.youtube.com/watch?v=6zJVRXMuuE4)
+
+And a screenshot of it from an Android phone:
+https://pbs.twimg.com/media/BnIqaMXCEAI5d-0.jpg
+
 Setup
 ---
 ###Easy

@@ -7,7 +7,7 @@
  */
 
 exports.loadMarkupTest = {
-  loadMarkup : function (test) {
+  loadMarkup : function(test) {
     'use strict';
 
     var fs          = require('fs'),

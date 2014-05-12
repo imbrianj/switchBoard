@@ -1,12 +1,12 @@
 
       <div id="{{DEVICE_ID}}" class="device{{DEVICE_SELECTED}}">
-        <div class="control-block">
+        <div class="control-block full">
           <div class="media">
             <ul>
               <li><a href="/?{{DEVICE_ID}}=InstantReplay" class="fa fa-backward"><span>InstantReplay</span></a></li>
               <li><a href="/?{{DEVICE_ID}}=Play" class="fa fa-play"><span>Play</span></a></li>
               <li><a href="/?{{DEVICE_ID}}=Fwd" class="fa fa-forward"><span>Fwd</span></a></li>
-            <ul>
+            </ul>
           </div>
           <div class="navigation">
             <a href="/?{{DEVICE_ID}}=Up" class="fa fa-arrow-up"><span>Up</span></a>

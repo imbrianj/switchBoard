@@ -33,23 +33,23 @@ exports.foscamControllerTest = {
                                                           command    : 'Take' });
 
     test.deepEqual(testAlarm, { host   : 'TEST-host',
-                                port   : '80',
-                                path   : '/set_alarm.cgi?user=TEST-username&pwd=TEST-password&motion_armed=1',
+                                port   : 80,
+                                path   : '/set_alarm.cgi?user=TEST-username&amp;pwd=TEST-password&amp;motion_armed=1',
                                 method : 'GET' }, 'Additional params are filtered out.');
 
     test.deepEqual(testPreset, { host   : 'TEST-host',
-                                 port   : '80',
-                                 path   : '/decoder_control.cgi?user=TEST-username&pwd=TEST-password&command=33',
+                                 port   : 80,
+                                 path   : '/decoder_control.cgi?user=TEST-username&amp;pwd=TEST-password&amp;command=33',
                                  method : 'GET' }, 'Additional params are filtered out.');
 
     test.deepEqual(testUp, { host   : 'TEST-host',
-                             port   : '80',
-                             path   : '/decoder_control.cgi?user=TEST-username&pwd=TEST-password&command=0',
+                             port   : 80,
+                             path   : '/decoder_control.cgi?user=TEST-username&amp;pwd=TEST-password&amp;command=0',
                              method : 'GET' }, 'Additional params are filtered out.');
 
     test.deepEqual(testTake, { host   : 'TEST-host',
-                               port   : '80',
-                               path   : '/snapshot.cgi?user=TEST-username&pwd=TEST-password&',
+                               port   : 80,
+                               path   : '/snapshot.cgi?user=TEST-username&amp;pwd=TEST-password&amp;',
                                method : 'GET' }, 'Additional params are filtered out.');
 
     test.done();

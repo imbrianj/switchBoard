@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global App, module, require, console */
+/*global State, module, require, console */
 
 module.exports = (function () {
   'use strict';
@@ -31,7 +31,7 @@ module.exports = (function () {
           dataReply   = '',
           request;
 
-      stocks.stocks   = config.stocks ? config.stocks.join('","') : null;
+      stocks.stocks   = config.stocks ? config.stocks.join('","') : null || config.device.stocks;
       stocks.host     = config.host     || 'query.yahooapis.com';
       stocks.path     = config.path     || '/v1/public/yql?format=json&env=http://datatables.org/alltables.env&q=select symbol, LastTradePriceOnly, AskRealtime, BidRealtime, Change, DaysLow, DaysHigh, YearLow, YearHigh from yahoo.finance.quotes where symbol in ("' + stocks.stocks + '")';
       stocks.port     = config.port     || 443;

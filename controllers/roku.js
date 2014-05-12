@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global App, module, setTimeout, require, console */
+/*global State, module, setTimeout, require, console */
 
 module.exports = (function () {
   'use strict';
@@ -11,7 +11,7 @@ module.exports = (function () {
    * @requires xml2js, http, fs, request
    */
   return {
-    version : 20140316,
+    version : 20140510,
 
     inputs  : ['command', 'text', 'list', 'launch'],
 

@@ -6,7 +6,12 @@ module.exports = function(grunt) {
 
     jshint : {
       files : ['config/*.js', 'lib/*.js', 'controllers/*.js', 'events/*.js', 'js/common.js', 'tests/**/*Test.js', 'app.js'],
-      options : { globals : { console : true } }
+      options : {
+        globals : {
+          console : true,
+          State   : true
+        }
+      }
     },
 
     nodeunit : {

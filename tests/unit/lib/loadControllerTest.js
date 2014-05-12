@@ -6,8 +6,10 @@
  * @fileoverview Unit test for loadController.js
  */
 
+State = {};
+
 exports.loadControllerTest = {
-  loadControllerFile : function (test) {
+  loadControllerFile : function(test) {
     'use strict';
 
     var loadController   = require(__dirname + '/../../../lib/loadController'),
@@ -21,7 +23,7 @@ exports.loadControllerTest = {
     test.done();
   },
 
-  loadController : function (test) {
+  loadController : function(test) {
     'use strict';
 
     var loadController = require('../../../lib/loadController'),

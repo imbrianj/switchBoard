@@ -402,7 +402,7 @@ form legend {
 }
 
 .device .control-block:only-child,
-.roku .control-block {
+.device .control-block.full {
 	float: none;
 	margin: 0 auto;
 }
