@@ -68,14 +68,14 @@ module.exports = (function () {
       request = https.request(this.postPrepare(sms), function(response) {
         response.setEncoding('utf8');
 
-        response.on('data', function(response) {
+        response.once('data', function(response) {
           console.log('SMS: Connected');
 
           sms.callback(null, response);
         });
       });
 
-      request.on('error', function(err) {
+      request.once('error', function(err) {
         var errorMsg = '';
 
         if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {

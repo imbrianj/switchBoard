@@ -40,13 +40,13 @@ module.exports = (function () {
 
       if(stocks.stocks !== null) {
         request = https.request(this.postPrepare(stocks), function(response) {
-                    response.on('data', function(response) {
+                    response.once('data', function(response) {
                       console.log('Stocks: Connected');
 
                       dataReply += response;
                     });
 
-                    response.on('end', function() {
+                    response.once('end', function() {
                       var fs        = require('fs'),
                           stockData = {},
                           stock,
@@ -73,7 +73,7 @@ module.exports = (function () {
                         }
 
                         cache = fs.createWriteStream(__dirname + '/../tmp/stocks.json');
-                        cache.on('open', function() {
+                        cache.once('open', function() {
                           cache.write(JSON.stringify(stockData));
                         });
                       }
@@ -82,7 +82,7 @@ module.exports = (function () {
                     });
                   });
 
-        request.on('error', function(err) {
+        request.once('error', function(err) {
           var errorMsg = '';
 
           if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {

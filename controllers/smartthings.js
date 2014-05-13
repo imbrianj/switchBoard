@@ -90,7 +90,7 @@ module.exports = (function () {
             auth.url = response[0].url;
 
             cache = fs.createWriteStream(__dirname + '/../tmp/smartthingsAuth.json');
-            cache.on('open', function() {
+            cache.once('open', function() {
               console.log('SmartThings: Auth data cached with URL');
 
               that.oauthDeviceList(auth, controller);
@@ -152,7 +152,7 @@ module.exports = (function () {
 
             cache = fs.createWriteStream(__dirname + '/../tmp/smartthingsDevices.json');
 
-            cache.on('open', function() {
+            cache.once('open', function() {
               console.log('SmartThings: Device data cached');
 
               cache.write(JSON.stringify(subDevices));
@@ -375,13 +375,13 @@ module.exports = (function () {
       }
 
       request = https.request(request, function(response) {
-                  response.on('data', function(response) {
+                  response.once('data', function(response) {
                     console.log('SmartThings: Connected');
 
                     dataReply += response;
                   });
 
-                  response.on('end', function() {
+                  response.once('end', function() {
                     if(dataReply) {
                       smartthings.callback(null, dataReply);
                     }
@@ -395,7 +395,7 @@ module.exports = (function () {
                 });
 
 
-      request.on('error', function(err) {
+      request.once('error', function(err) {
         var errorMsg = '';
 
         if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {

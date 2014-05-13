@@ -8,21 +8,6 @@ Bevey = (function () {
   return {
     version : 20140504,
 
-   /**
-    * Stops event bubbling further.
-    *
-    * @param {Event} e Event to prevent from bubbling further.
-    */
-    cancelBubble : function (e) {
-      e = e || window.event;
-
-      e.cancelBubble = true;
-
-      if (e.stopPropagation) {
-        e.stopPropagation();
-      }
-    },
-
     event : {
       list : [],
 

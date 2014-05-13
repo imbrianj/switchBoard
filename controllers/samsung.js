@@ -79,7 +79,7 @@ module.exports = (function () {
 
       socket = net.connect(samsung.devicePort, samsung.deviceIp);
 
-      socket.on('connect', function() {
+      socket.once('connect', function() {
         var samsungController = require('./samsung');
 
         console.log('Samsung: Connected');
@@ -92,7 +92,7 @@ module.exports = (function () {
         samsung.callback(null, '');
       });
 
-      socket.on('error', function(err) {
+      socket.once('error', function(err) {
         var errorMsg = '';
 
         if(err.code === 'EHOSTUNREACH' || err.code === 'ECONNREFUSED') {

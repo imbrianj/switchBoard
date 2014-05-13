@@ -5,7 +5,6 @@
  * @author brian@bevey.org
  * @fileoverview Simple script to fire when the given device executes a
  *               presumed good command.
- * @requires fs
  */
 
 module.exports = (function () {

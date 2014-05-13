@@ -118,14 +118,14 @@ module.exports = (function () {
 
       else {
         request = http.request(this.postPrepare(foscam), function(response) {
-          response.on('data', function(response) {
+          response.once('data', function(response) {
             console.log('Foscam: Connected');
 
             foscam.callback(null, response);
           });
         });
 
-        request.on('error', function(err) {
+        request.once('error', function(err) {
           var errorMsg = '';
 
           if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {

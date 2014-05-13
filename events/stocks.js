@@ -23,9 +23,9 @@ module.exports = (function () {
           callback;
 
       // Trading isn't open on weekends, so we don't need to poll.
-      if((nycTime.getDay() !== 6) && (nycTime.getDay() !== 0) || 1) {
+      if((nycTime.getDay() !== 6) && (nycTime.getDay() !== 0)) {
         // Trading is only open from 9am - 4pm.
-        if((nycTime.getHours() > 9) && (nycTime.getHours() < 16) || 1) {
+        if((nycTime.getHours() > 9) && (nycTime.getHours() < 16)) {
           State[deviceName].state.active = true;
 
           callback = function(err, stocks) {

@@ -150,19 +150,19 @@ module.exports = (function () {
       lg.pairKey    = config.pairKey;
 
       request = http.request(this.postPrepare(lg), function(response) {
-                  response.on('data', function(response) {
+                  response.once('data', function(response) {
                     console.log('connected');
 
                     dataReply += response;
                   });
 
-                  response.on('end', function() {
+                  response.once('end', function() {
                     lg.callback(null, dataReply);
                   });
                 });
 
 
-      request.on('error', function(error) {
+      request.once('error', function(error) {
         var errorMsg = '';
 
         if(error.code === 'ECONNRESET' || error.code === 'ECONNREFUSED') {

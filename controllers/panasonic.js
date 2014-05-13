@@ -91,19 +91,19 @@ module.exports = (function () {
       panasonic.callback   = config.callback   || function () {};
 
       request = http.request(this.postPrepare(panasonic), function(response) {
-                  response.on('data', function(response) {
+                  response.once('data', function(response) {
                     console.log('connected');
 
                     dataReply += response;
                   });
 
-                  response.on('end', function() {
+                  response.once('end', function() {
                     panasonic.callback(null, dataReply);
                   });
                 });
 
 
-      request.on('error', function(error) {
+      request.once('error', function(error) {
         var errorMsg = '';
 
         if(error.code === 'ECONNRESET' || error.code === 'ECONNREFUSED') {
