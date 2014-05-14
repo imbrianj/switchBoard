@@ -132,7 +132,8 @@ module.exports = (function () {
             for(i; i < response.length; i += 1) {
               subDevices[i] = {
                 label : response[i].label,
-                type  : response[i].type
+                type  : response[i].type,
+                state : response[i].state
               };
 
               switch(response[i].type) {
