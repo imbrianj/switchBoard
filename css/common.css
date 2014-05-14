@@ -522,7 +522,7 @@ form legend {
 }
 
 .device .preview-image {
-	background: #000 no-repeat url(/images/loading.gif) center;
+	background: #000 no-repeat url(../images/loading.gif) center;
 }
 
 .device .preview-image img {
