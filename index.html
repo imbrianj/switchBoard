@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" class="theme-dark">
+  <head>
+    <title>Universal Controller</title>
+    <link rel="stylesheet" href="css/combo.min.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="apple-touch-icon" href="images/icons/apple-touch-icon.png"/>
+  </head>
+  <body>
+    <div class="header">
+      <h1><a href="/">Universal Controller</a></h1>
+      <ul>
+        
+        <li class="samsung selected"><a href="#samsung">SmartTV</a></li>
+        <li class="roku"><a href="#roku">Roku</a></li>
+        <li class="ps3"><a href="#ps3">PS3</a></li>
+        <li class="foscam"><a href="#foscam">Camera</a></li>
+        <li class="smartthings"><a href="#smartthings">SmartThings</a></li>
+      </ul>
+    </div>
+
+    <div class="body">
+      
+      <div id="samsung" class="device selected">
+        <div class="control-block">
+          <div class="volume">
+            <a href="/?samsung=VOLUP" class="fa fa-volume-up"><span>VolUp</span></a>
+            <a href="/?samsung=VOLDOWN" class="fa fa-volume-down"><span>VolDown</span></a>
+            <a href="/?samsung=MUTE" class="fa fa-volume-off"><span>Mute</span></a>
+          </div>
+          <div class="navigation">
+            <a href="/?samsung=UP" class="fa fa-arrow-up"><span>Up</span></a>
+            <a href="/?samsung=LEFT" class="fa fa-arrow-left"><span>Left</span></a>
+            <a href="/?samsung=ENTER" class="fa-stack">
+              <i class="fa fa-square-o fa-stack-2x"></i>
+              <i class="fa fa-level-up fa-rotate-90"></i>
+              <span>Enter</span>
+            </a>
+            <a href="/?samsung=RIGHT" class="fa fa-arrow-right"><span>Right</span></a>
+            <a href="/?samsung=DOWN" class="fa fa-arrow-down"><span>Down</span></a>
+          </div>
+          <div class="channel">
+            <a href="/?samsung=CHUP" class="fa fa-chevron-up"><span>ChUp</span></a>
+            <a href="/?samsung=CHDOWN" class="fa fa-chevron-down"><span>ChDown</span></a>
+          </div>
+        </div>
+        <div class="shortcuts">
+          <ul>
+            <li><a href="/?samsung=POWEROFF" class="fa fa-power-off"><span>PowerOff</span></a></li>
+            <li><a href="/?samsung=CONTENTS" class="fa fa-th"><span>Contents</span></a></li>
+            <li><a href="/?samsung=SOURCE" class="fa fa-desktop"><span>Source</span></a></li>
+            <li><a href="/?samsung=CONVERGENCE" class="fa fa-globe"><span>Convergence</span></a></li>
+            <li><a href="/?samsung=HDMI4" class="fa fa-sitemap"><span>HDMI4</span></a></li>
+            <li><a href="/?samsung=TOOLS" class="fa fa-cog"><span>Tools</span></a></li>
+            <li><a href="/?samsung=MENU" class="fa fa-list-ul"><span>Menu</span></a></li>
+            <li><a href="/?samsung=EXIT" class="fa fa-sign-out"><span>Exit</span></a></li>
+            <li><a href="/?samsung=RETURN" class="fa fa-undo"><span>Return</span></a></li>
+            <!-- Macros can be programmed to run a series of commands.  This one will turn on my CEC ARC receiver. -->
+            <li><a href="/?samsung=HDMI4,DOWN,ENTER" class="fa fa-link"><span>HDMI4,DOWN,ENTER</span></a></li>
+          </ul>
+        </div>
+        <div class="text">
+          <form class="text-form" id="tv-search-form" action="/" method="get">
+            <fieldset>
+              <legend>Text Input</legend>
+              <label for="samsung-text-input">Text Input:</label>
+              <input id="samsung-text-input" class="text-input" type="text" name="samsung" placeholder="Text Input" required>
+              <button type="submit" class="button">Submit</button>
+            </fieldset>
+          </form>
+        </div>
+        <div class="numeric-controls">
+          <ol>
+            <li><a href="/?samsung=1"><span>1</span></a></li>
+            <li><a href="/?samsung=2"><span>2</span></a></li>
+            <li><a href="/?samsung=3"><span>3</span></a></li>
+            <li><a href="/?samsung=4"><span>4</span></a></li>
+            <li><a href="/?samsung=5"><span>5</span></a></li>
+            <li><a href="/?samsung=6"><span>6</span></a></li>
+            <li><a href="/?samsung=7"><span>7</span></a></li>
+            <li><a href="/?samsung=8"><span>8</span></a></li>
+            <li><a href="/?samsung=9"><span>9</span></a></li>
+            <li><a href="/?samsung=0"><span>0</span></a></li>
+          </ol>
+          <ul>
+            <li><a href="/?samsung=PRECH" class="fa fa-reply"><span>PreCh</span></a></li>
+            <li><a href="/?samsung=CH_LIST" class="fa fa-list"><span>Ch_List</span></a></li>
+          </ul>
+        </div>
+        <div class="media">
+          <ul>
+            <li><a href="/?samsung=REWIND" class="fa fa-backward"><span>Rewind</span></a></li>
+            <li><a href="/?samsung=STOP" class="fa fa-stop"><span>Stop</span></a></li>
+            <li><a href="/?samsung=PAUSE" class="fa fa-pause"><span>Pause</span></a></li>
+            <li><a href="/?samsung=PLAY" class="fa fa-play"><span>Play</span></a></li>
+            <li><a href="/?samsung=FF" class="fa fa-forward"><span>FF</span></a></li>
+            <li><a href="/?samsung=REC" class="fa fa-circle"><span>Rec</span></a></li>
+            <li><a href="/?samsung=RED" class="fa fa-stop red"><span>Red</span></a></li>
+            <li><a href="/?samsung=GREEN" class="fa fa-stop green"><span>Green</span></a></li>
+            <li><a href="/?samsung=YELLOW" class="fa fa-stop yellow"><span>Yellow</span></a></li>
+            <li><a href="/?samsung=BLUE" class="fa fa-stop blue"><span>Blue</span></a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="roku" class="device">
+        <div class="control-block full">
+          <div class="media">
+            <ul>
+              <li><a href="/?roku=InstantReplay" class="fa fa-backward"><span>InstantReplay</span></a></li>
+              <li><a href="/?roku=Play" class="fa fa-play"><span>Play</span></a></li>
+              <li><a href="/?roku=Fwd" class="fa fa-forward"><span>Fwd</span></a></li>
+            </ul>
+          </div>
+          <div class="navigation">
+            <a href="/?roku=Up" class="fa fa-arrow-up"><span>Up</span></a>
+            <a href="/?roku=Left" class="fa fa-arrow-left"><span>Left</span></a>
+            <a href="/?roku=Select" class="fa-stack">
+              <i class="fa fa-square-o fa-stack-2x"></i>
+              <i class="fa fa-level-up fa-rotate-90"></i>
+              <span>Select</span>
+            </a>
+            <a href="/?roku=Right" class="fa fa-arrow-right"><span>Right</span></a>
+            <a href="/?roku=Down" class="fa fa-arrow-down"><span>Down</span></a>
+          </div>
+          <div class="shortcuts">
+            <ul>
+              <li><a href="/?roku=Back" class="fa fa-undo"><span>Back</span></a></li>
+              <li><a href="/?roku=Home" class="fa fa-home"><span>Home</span></a></li>
+              <li><a href="/?roku=Backspace" class="fa fa-long-arrow-left"><span>Backspace</span></a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="text">
+          <form class="text-form" id="roku-search-form" action="/" method="get">
+            <fieldset>
+              <legend>Text Input</legend>
+              <label for="roku-text-input">Text Input:</label>
+              <input id="roku-text-input" class="text-input" type="text" name="roku" placeholder="Text Input" required>
+              <button type="submit" class="button">Submit</button>
+            </fieldset>
+          </form>
+        </div>
+        <div class="installed">
+          <ul class="roku-launch">
+            
+            <li><a href="/?roku=launch-12"><img data-src="./images/roku/icon_12.png" alt="Netflix" title="Netflix" /></a></li>
+            <li><a href="/?roku=launch-13"><img data-src="./images/roku/icon_13.png" alt="Amazon Instant Video" title="Amazon Instant Video" /></a></li>
+            <li><a href="/?roku=launch-28"><img data-src="./images/roku/icon_28.png" alt="Pandora" title="Pandora" /></a></li>
+            <li><a href="/?roku=launch-1616"><img data-src="./images/roku/icon_1616.png" alt="NASA TV" title="NASA TV" /></a></li>
+            <li><a href="/?roku=launch-1688"><img data-src="./images/roku/icon_1688.png" alt="Roku Newscaster" title="Roku Newscaster" /></a></li>
+            <li><a href="/?roku=launch-1968"><img data-src="./images/roku/icon_1968.png" alt="Flixster" title="Flixster" /></a></li>
+            <li><a href="/?roku=launch-2285"><img data-src="./images/roku/icon_2285.png" alt="Hulu Plus" title="Hulu Plus" /></a></li>
+            <li><a href="/?roku=launch-2946"><img data-src="./images/roku/icon_2946.png" alt="Fox News Channel" title="Fox News Channel" /></a></li>
+            <li><a href="/?roku=launch-4070"><img data-src="./images/roku/icon_4070.png" alt="TED" title="TED" /></a></li>
+            <li><a href="/?roku=launch-4785"><img data-src="./images/roku/icon_4785.png" alt="Yahoo! YUI Theater" title="Yahoo! YUI Theater" /></a></li>
+            <li><a href="/?roku=launch-6578"><img data-src="./images/roku/icon_6578.png" alt="Russia Today Europe" title="Russia Today Europe" /></a></li>
+            <li><a href="/?roku=launch-8378"><img data-src="./images/roku/icon_8378.png" alt="HBO GO" title="HBO GO" /></a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="ps3" class="device">
+        <div class="control-block">
+          <div class="control compact">
+            <ul>
+              <li><a href="/?ps3=PowerOn" class="fa fa-power-off power-on"><span>PowerOn</span></a></li>
+              <li><a href="/?ps3=PS,sleep,Cross,Down,Down,Cross,Cross" class="fa fa-power-off"><span>PowerOff</span></a></li>
+              <li><a href="/?ps3=Select" class="fa fa-th"><span>Select</span></a></li>
+              <li><a href="/?ps3=Start" class="fa fa-sign-in"><span>Start</span></a></li>
+            </ul>
+          </div>
+          <div class="navigation">
+            <a href="/?ps3=Up" class="fa fa-arrow-up"><span>Up</span></a>
+            <a href="/?ps3=Left" class="fa fa-arrow-left"><span>Left</span></a>
+            <a href="/?ps3=Cross" class="fa-stack">
+              <i class="fa fa-square-o fa-stack-2x"></i>
+              <i class="fa fa-level-up fa-rotate-90"></i>
+              <span>Cross</span>
+            </a>
+            <a href="/?ps3=Right" class="fa fa-arrow-right"><span>Right</span></a>
+            <a href="/?ps3=Down" class="fa fa-arrow-down"><span>Down</span></a>
+          </div>
+          <div class="buttons">
+            <ul>
+              <li><a href="/?ps3=PS" class="fa fa-cog"><span>PS</span></a></li>
+              <li><a href="/?ps3=Triangle" class="fa fa-sitemap"><span>Triangle</span></a></li>
+              <li><a href="/?ps3=Circle" class="fa fa-undo"><span>Circle</span></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div id="foscam" class="device">
+        <div class="control-block">
+          <div class="presets">
+            <ol>
+              <li><a href="/?foscam=Preset1"><span>1</span></a></li>
+              <li><a href="/?foscam=Preset2"><span>2</span></a></li>
+              <li><a href="/?foscam=Preset3"><span>3</span></a></li>
+            </ol>
+          </div>
+          <div class="navigation">
+            <a href="/?foscam=Up" class="fa fa-arrow-up"><span>Up</span></a>
+            <a href="/?foscam=Left" class="fa fa-arrow-left"><span>Left</span></a>
+            <a href="/?foscam=Stop" class="fa-stack">
+              <i class="fa fa-square-o fa-stack-2x"></i>
+              <i class="fa fa-level-up fa-rotate-90"></i>
+              <span>Stop</span>
+            </a>
+            <a href="/?foscam=Right" class="fa fa-arrow-right"><span>Right</span></a>
+            <a href="/?foscam=Down" class="fa fa-arrow-down"><span>Down</span></a>
+          </div>
+          <div class="alarm">
+            <ul>
+              <li><a href="/?foscam=Preset1,sleep,sleep,AlarmOn" class="fa fa-lock"><span>AlarmOn</span></a></li>
+              <li><a href="/?foscam=Take" class="fa fa-camera"><span>Take</span></a></li>
+              <li><a href="/?foscam=Take,Take,Take,Take,Take" class="fa fa-bolt"><span>Burst</span></a></li>
+              <li><a href="/?foscam=AlarmOff,Preset3" class="fa fa-unlock"><span>AlarmOff</span></a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="preview-image">
+          <img data-src="./images/foscam/placeholder.jpg" alt="foscam Preview" />
+        </div>
+      </div>
+
+      <div id="smartthings" class="device">
+        <div class="installed">
+          <ul class="sub-device-list">
+            
+            <li class="sub-device-group">
+              <h4>Bedroom</h4>
+              <ul>
+                
+                <li><a href="/?smartthings=subdevice-toggle-Bedroom+Lamps" class="fa fa-lightbulb-o"><span>Bedroom Lamps</span></a></li>
+                <li><a href="/?smartthings=subdevice-toggle-Bedroom+Switch" class="fa fa-lightbulb-o"><span>Bedroom Switch</span></a></li>
+              </ul>
+            </li>
+            <li class="sub-device-group">
+              <h4>Office</h4>
+              <ul>
+                
+                <li><a href="/?smartthings=subdevice-toggle-Office+Switch" class="fa fa-lightbulb-o"><span>Office Switch</span></a></li>
+              </ul>
+            </li>
+            <li class="sub-device-group">
+              <h4>Hallway</h4>
+              <ul>
+                
+                <li><a href="/?smartthings=subdevice-toggle-Hall+Light" class="fa fa-lightbulb-o"><span>Hall Light</span></a></li>
+              </ul>
+            </li>
+            <li class="sub-device-group">
+              <h4>Living Room</h4>
+              <ul>
+                
+                <li><a href="/?smartthings=subdevice-toggle-Living+Room+Lamp" class="fa fa-lightbulb-o"><span>Living Room Lamp</span></a></li>
+                <li><a href="/?smartthings=subdevice-toggle-Chandelier" class="fa fa-lightbulb-o"><span>Chandelier</span></a></li>
+              </ul>
+            </li>
+            <li class="sub-device-group">
+              <h4>Kitchen</h4>
+              <ul>
+                
+                <li><a href="/?smartthings=subdevice-toggle-Kitchen+Light" class="fa fa-lightbulb-o"><span>Kitchen Light</span></a></li>
+                <li><a href="/?smartthings=subdevice-toggle-Dining+Lights" class="fa fa-lightbulb-o"><span>Dining Lights</span></a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+    <script type="text/javascript" src="js/common.min.js"></script>
+  </body>
+</html>
