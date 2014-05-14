@@ -9,6 +9,9 @@ Video demonstration:
 And a screenshot of it from an Android phone:
 https://pbs.twimg.com/media/BnIqaMXCEAI5d-0.jpg
 
+Or you may browse through a static version:
+http://imbrianj.github.io/universalController/
+
 Setup
 ---
 ###Easy
