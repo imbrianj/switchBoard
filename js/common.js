@@ -489,7 +489,7 @@ Bevey = (function () {
             }
           };
 
-          Bevey.ajax.request(ajaxRequest);
+          console.log("This would normally fire an XHR to execute a command");
         }
       });
 
