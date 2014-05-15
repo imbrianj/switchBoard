@@ -324,12 +324,31 @@ form legend {
 	width: 70%;
 }
 
-.device .text {
+.device .text,
+.device .text-block {
 	clear: both;
 	float: none;
 	margin: 0 auto;
 	text-align: center;
 	width: 100%;
+}
+
+.device .text-block {
+	font-size: 50%;
+	line-height: 1.2em;
+	max-width: 40em;
+	text-align: left;
+	width: 90%;
+}
+
+.device .text-block a:link,
+.device .text-block a:visited {
+	color: #0078E7;
+	display: inline;
+}
+
+.device .text-block p {
+	padding: .5em 0;
 }
 
 .device .installed {
@@ -553,6 +572,10 @@ form legend {
 	font-size: 30%;
 }
 
+.light-on:before {
+	text-shadow: 0 -4px 5px rgba(255,255,60,.6);
+}
+
 #samsung .numeric-controls,
 #samsung .media,
 #samsung .information {
@@ -578,6 +601,34 @@ body .selected,
 .theme-dark body {
 	background: #000;
 	color: #333;
+	-moz-transition: all 2s ease-in-out;
+	-o-transition: all 2s ease-in-out;
+	-webkit-transition: all 2s ease-in-out;
+	transition: all 2s ease-in-out;
+}
+
+@media (luminosity: washed) {
+	body,
+	.theme-dark body {
+		background: #DDD;
+		color: #333;
+	}
+}
+
+@media (luminosity: normal) {
+	body,
+	.theme-dark body {
+		background: #444;
+		color: #222;
+	}
+}
+
+@media (luminosity: dim) {
+	body,
+	.theme-dark body {
+		background: #000;
+		color: #333;
+	}
 }
 
 .theme-dark .header h1 a,

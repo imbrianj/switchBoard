@@ -475,7 +475,7 @@ Bevey = (function () {
         elm = tagName === 'i'    ? elm.parentNode : elm;
         elm = tagName === 'span' ? elm.parentNode : elm;
 
-        if(elm.tagName.toLowerCase() === 'a') {
+        if((elm.tagName.toLowerCase() === 'a') && (elm.rel != 'external')) {
           e.preventDefault();
 
           command = elm.href;

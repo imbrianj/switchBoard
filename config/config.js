@@ -7,9 +7,16 @@ exports.config = {
     serverIp    : '192.168.1.145',
     serverMac   : '00:00:00:00:00:00',
     theme       : 'dark',
-    default     : 'samsung',
+    default     : 'welcome',
     macroPause  : 1000,
     pollMinutes : 15
+  },
+
+  // Be sure to mark the "disabled" to true to remove the welcome message.
+  welcome : {
+    typeClass : 'welcome',
+    title     : 'Welcome!',
+    disabled  : false,
   },
 
   samsung : {
