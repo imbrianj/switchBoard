@@ -2,8 +2,8 @@
       <div id="{{DEVICE_ID}}" class="device{{DEVICE_SELECTED}}">
         <div class="control-block">
           <div class="volume">
-            <a href="/?{{DEVICE_ID}}=VOLUP" class="fa fa-volume-up"><span>Vol_Up</span></a>
-            <a href="/?{{DEVICE_ID}}=VOLDOWN" class="fa fa-volume-down"><span>Vol_Down</span></a>
+            <a href="/?{{DEVICE_ID}}=VOLUP" class="fa fa-volume-up"><span>Volume Up</span></a>
+            <a href="/?{{DEVICE_ID}}=VOLDOWN" class="fa fa-volume-down"><span>Volume Down</span></a>
             <a href="/?{{DEVICE_ID}}=MUTE" class="fa fa-volume-off"><span>Mute</span></a>
           </div>
           <div class="navigation">
@@ -18,8 +18,8 @@
             <a href="/?{{DEVICE_ID}}=DOWN" class="fa fa-arrow-down"><span>Down</span></a>
           </div>
           <div class="channel">
-            <a href="/?{{DEVICE_ID}}=CH_UP" class="fa fa-chevron-up"><span>Ch_Up</span></a>
-            <a href="/?{{DEVICE_ID}}=CH_DOWN" class="fa fa-chevron-down"><span>Ch_Down</span></a>
+            <a href="/?{{DEVICE_ID}}=CH_UP" class="fa fa-chevron-up"><span>Channel Up</span></a>
+            <a href="/?{{DEVICE_ID}}=CH_DOWN" class="fa fa-chevron-down"><span>Channel Down</span></a>
           </div>
         </div>
         <div class="shortcuts">
@@ -47,12 +47,12 @@
         </div>
         <div class="media">
           <ul>
-            <li><a href="/?{{DEVICE_ID}}=REW" class="fa fa-backward"><span>Rew</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=REW" class="fa fa-backward"><span>Rewind</span></a></li>
             <li><a href="/?{{DEVICE_ID}}=STOP" class="fa fa-stop"><span>Stop</span></a></li>
             <li><a href="/?{{DEVICE_ID}}=PAUSE" class="fa fa-pause"><span>Pause</span></a></li>
             <li><a href="/?{{DEVICE_ID}}=PLAY" class="fa fa-play"><span>Play</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=FF" class="fa fa-forward"><span>FF</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=REC" class="fa fa-circle"><span>Rec</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=FF" class="fa fa-forward"><span>Fast Forward</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=REC" class="fa fa-circle"><span>Record</span></a></li>
             <li><a href="/?{{DEVICE_ID}}=RED" class="fa fa-stop red"><span>Red</span></a></li>
             <li><a href="/?{{DEVICE_ID}}=GREEN" class="fa fa-stop green"><span>Green</span></a></li>
             <li><a href="/?{{DEVICE_ID}}=YELLOW" class="fa fa-stop yellow"><span>Yellow</span></a></li>

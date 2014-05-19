@@ -3,9 +3,9 @@
         <div class="control-block full">
           <div class="media">
             <ul>
-              <li><a href="/?{{DEVICE_ID}}=InstantReplay" class="fa fa-backward"><span>InstantReplay</span></a></li>
+              <li><a href="/?{{DEVICE_ID}}=InstantReplay" class="fa fa-backward"><span>Instant Replay</span></a></li>
               <li><a href="/?{{DEVICE_ID}}=Play" class="fa fa-play"><span>Play</span></a></li>
-              <li><a href="/?{{DEVICE_ID}}=Fwd" class="fa fa-forward"><span>Fwd</span></a></li>
+              <li><a href="/?{{DEVICE_ID}}=Fwd" class="fa fa-forward"><span>Forward</span></a></li>
             </ul>
           </div>
           <div class="navigation">

@@ -21,10 +21,10 @@
           </div>
           <div class="alarm">
             <ul>
-              <li><a href="/?{{DEVICE_ID}}=Preset1,sleep,sleep,AlarmOn" class="fa fa-lock"><span>AlarmOn</span></a></li>
+              <li><a href="/?{{DEVICE_ID}}=Preset1,sleep,sleep,AlarmOn" class="fa fa-lock"><span>Alarm On</span></a></li>
               <li><a href="/?{{DEVICE_ID}}=Take" class="fa fa-camera"><span>Take</span></a></li>
               <li><a href="/?{{DEVICE_ID}}=Take,Take,Take,Take,Take" class="fa fa-bolt"><span>Burst</span></a></li>
-              <li><a href="/?{{DEVICE_ID}}=AlarmOff,Preset3" class="fa fa-unlock"><span>AlarmOff</span></a></li>
+              <li><a href="/?{{DEVICE_ID}}=AlarmOff,Preset3" class="fa fa-unlock"><span>Alarm Off</span></a></li>
             </ul>
           </div>
         </div>
