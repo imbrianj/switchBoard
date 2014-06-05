@@ -79,19 +79,21 @@ module.exports = (function () {
                       if(dataReply) {
                         data = JSON.parse(dataReply);
 
-                        for(i in data.query.results.quote) {
-                          stock = data.query.results.quote[i];
+                        if(data && data.query && data.query.results && data.query.results.quote) {
+                          for(i in data.query.results.quote) {
+                            stock = data.query.results.quote[i];
 
-                          stockData[stock.symbol] = { 'name'     : stock.symbol,
-                                                      'price'    : stock.LastTradePriceOnly,
-                                                      'ask'      : stock.AskRealtime,
-                                                      'bid'      : stock.BidRealtime,
-                                                      'change'   : stock.Change,
-                                                      'dayHigh'  : stock.DaysHigh,
-                                                      'dayLow'   : stock.DaysLow,
-                                                      'yearHigh' : stock.YearHigh,
-                                                      'yearLow'  : stock.YearLow
-                                                    };
+                            stockData[stock.symbol] = { 'name'     : stock.symbol,
+                                                        'price'    : stock.LastTradePriceOnly,
+                                                        'ask'      : stock.AskRealtime,
+                                                        'bid'      : stock.BidRealtime,
+                                                        'change'   : stock.Change,
+                                                        'dayHigh'  : stock.DaysHigh,
+                                                        'dayLow'   : stock.DaysLow,
+                                                        'yearHigh' : stock.YearHigh,
+                                                        'yearLow'  : stock.YearLow
+                                                      };
+                          }
                         }
 
                         cache = fs.createWriteStream(__dirname + '/../tmp/stocks.json');
