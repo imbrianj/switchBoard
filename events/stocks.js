@@ -60,11 +60,11 @@ module.exports = (function () {
 
             if((controller.config.limits) && (stocks)) {
               for(stockName in controller.config.limits) {
-                if((typeof controller.config.limits[stockName].sell !== 'undefined') && (stocks[stockName].price >= controller.config.limits[stockName].sell)) {
+                if((typeof controller.config.limits[stockName].sell !== 'undefined') && (stocks[stockName]) && (stocks[stockName].price >= controller.config.limits[stockName].sell)) {
                   message = message + 'Your ' + stocks[stockName].name + ' stock is doing well at ' + stocks[stockName].ask + '.  Think about selling?  ';
                 }
 
-                else if((typeof controller.config.limits[stockName].buy !== 'undefined') && (stocks[stockName].price <= controller.config.limits[stockName].buy)) {
+                else if((typeof controller.config.limits[stockName].buy !== 'undefined') && (stocks[stockName]) && (stocks[stockName].price <= controller.config.limits[stockName].buy)) {
                   message = message + 'Your ' + stocks[stockName].name + ' stock is low at ' + stocks[stockName].ask + '.  Think about buying?  ';
                 }
 
