@@ -48,11 +48,12 @@ module.exports = (function () {
     postPrepare : function (command) {
       var path    = '/',
           method  = 'POST',
+          that    = this,
           runText = function(i, text, ip) {
             var letter = text[i];
 
             if(letter) {
-              roku.send({ letter: letter, deviceIp: ip });
+              that.send({ letter: letter, device : { deviceIp: ip }});
 
               setTimeout(function() {
                 runText(i + 1, text, ip);
@@ -70,7 +71,7 @@ module.exports = (function () {
 
       if(command.text) {
         // Roku requires a string to be sent one char at a time.
-        runText(0, roku.text, roku.deviceIp);
+        runText(0, command.text, command.deviceIp);
       }
 
       if(command.list) {
@@ -139,7 +140,8 @@ module.exports = (function () {
           path   = require('path'),
           parser = new xml2js.Parser(),
           config = controller.config,
-          apps   = {};
+          apps   = {},
+          that   = this;
 
       if(fs.existsSync(__dirname + '/../tmp/roku.json')) {
         console.log('Roku: App settings cached');
@@ -181,7 +183,7 @@ module.exports = (function () {
                                          'cache' : '/images/roku/icon_' + app.$.id + '.png'
                                        };
 
-                      this.cacheImage(app._, app.$.id, config);
+                      that.cacheImage(app._, app.$.id, config);
                     }
 
                     cache = fs.createWriteStream(__dirname + '/../tmp/roku.json');
@@ -204,7 +206,7 @@ module.exports = (function () {
           dataReply   = '',
           request;
 
-      roku.deviceIp   = config.deviceIp;
+      roku.deviceIp   = config.device.deviceIp;
       roku.command    = config.command    || '';
       roku.text       = config.text       || '';
       roku.letter     = config.letter     || '';
