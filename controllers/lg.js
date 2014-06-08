@@ -117,8 +117,8 @@ module.exports = (function () {
                   'VID_SWITCH'    : 416,
                   'MY_APPS'       : 417 },
 
-    translateCommand : function () {
-      return this.hashTable[this.command];
+    translateCommand : function (command) {
+      return this.hashTable[command];
     },
 
     /**
@@ -143,16 +143,33 @@ module.exports = (function () {
     },
 
     /**
-     * Prepare a POST data the request.
+     * Prepare a POST data request for pairing key.
+     */
+    postPairData : function (lg) {
+      var response = '';
+
+      response += '<?xml version="1.0" encoding="utf-8"?>';
+      response += '<envelope>';
+      response += '  <api type="pairing">';
+      response += '    <name>hello</name>';
+      response += '    <value>' + lg.pairKey + '</value>';
+      response += '  </api>';
+      response += '</envelope>';
+
+      return response;
+    },
+
+    /**
+     * Prepare a POST data for request.
      */
     postData : function (lg) {
       var response = '';
 
       response += '<?xml version="1.0" encoding="utf-8"?>';
       response += '<envelope>';
-      resposne += '  <api type="command">';
+      response += '  <api type="command">';
       response += '    <name>HandleKeyInput</name>';
-      resposne += '    <value>' + lg.command + '</value>';
+      response += '    <value>' + lg.command + '</value>';
       response += '  </api>';
       response += '</envelope>';
 
@@ -169,7 +186,7 @@ module.exports = (function () {
       lg.command    = this.translateCommand(config.command) || '';
       lg.devicePort = config.devicePort || 8080;
       lg.callback   = config.callback   || function () {};
-      lg.pairKey    = config.pairKey;
+      lg.pairKey    = config.device.pairKey;
 
       request = http.request(this.postPrepare(lg), function(response) {
                   response.once('data', function(response) {
@@ -182,7 +199,6 @@ module.exports = (function () {
                     lg.callback(null, dataReply);
                   });
                 });
-
 
       request.once('error', function(error) {
         var errorMsg = '';
@@ -200,6 +216,7 @@ module.exports = (function () {
         lg.callback(errorMsg);
       });
 
+      request.write(this.postPairData(lg));
       request.write(this.postData(lg));
       request.end();
 
