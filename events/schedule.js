@@ -34,7 +34,7 @@ module.exports = (function () {
   return {
     version : 20140418,
 
-    fire : function(controllers) {
+    fire : function(controllers, type) {
       var runCommand = require(__dirname + '/../lib/runCommand'),
           deviceName;
 
@@ -44,8 +44,18 @@ module.exports = (function () {
             // Specify typeClass of controllers that should be fired on interval.
             case 'weather' :
             case 'stocks'  :
-              if(typeof controllers[deviceName].event === 'object') {
-                controllers[deviceName].event.fire(deviceName, 'schedule', controllers);
+              if(type === 'long') {
+                if(typeof controllers[deviceName].event === 'object') {
+                  controllers[deviceName].event.fire(deviceName, 'schedule', controllers);
+                }
+              }
+            break;
+
+            case 'samsung' :
+              if(type === 'short') {
+                if(typeof controllers[deviceName].controller.state === 'function') {
+                  controllers[deviceName].controller.state(controllers[deviceName]);
+                }
               }
             break;
           }

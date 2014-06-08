@@ -35,7 +35,7 @@ module.exports = (function () {
    *       http://forum.samygo.tv/viewtopic.php?f=12&t=1792
    */
   return {
-    version : 20140316,
+    version : 20140608,
 
     inputs  : ['command', 'text'],
 
@@ -83,9 +83,53 @@ module.exports = (function () {
       }
     },
 
+    state : function (controller, config) {
+      var net            = require('net'),
+          deviceState    = require('../lib/deviceState'),
+          samsung        = {},
+          socket;
+
+      samsung.deviceName = controller.config.deviceId;
+      samsung.deviceIp   = controller.config.deviceIp;
+      config             = config             || {};
+      samsung.devicePort = config.devicePort  || 55000;
+      samsung.callback   = config.callback    || function () {};
+
+      socket = net.connect(samsung.devicePort, samsung.deviceIp);
+
+      socket.once('connect', function() {
+        console.log('Samsung: Connected');
+
+        socket.end();
+
+        deviceState.updateState(samsung.deviceName, { state : 'ok' });
+
+        samsung.callback(null, '');
+      });
+
+      socket.once('error', function(err) {
+        var errorMsg = '';
+
+        if(err.code === 'EHOSTUNREACH' || err.code === 'ECONNREFUSED') {
+          errorMsg = 'Samsung: Device is off or unreachable';
+        }
+
+        else {
+          errorMsg = 'Samsung: ' + err.code;
+        }
+
+        console.log(errorMsg);
+
+        deviceState.updateState(samsung.deviceName, { state : 'err' });
+
+        samsung.callback(errorMsg);
+      });
+    },
+
     send : function (config) {
       var net             = require('net'),
           samsung         = {},
+          that            = this,
           socket;
 
       samsung.deviceIp    = config.device.deviceIp;
@@ -102,12 +146,10 @@ module.exports = (function () {
       socket = net.connect(samsung.devicePort, samsung.deviceIp);
 
       socket.once('connect', function() {
-        var samsungController = require('./samsung');
-
         console.log('Samsung: Connected');
 
-        socket.write(samsungController.chunkOne(samsung));
-        socket.write(samsungController.chunkTwo(samsung));
+        socket.write(that.chunkOne(samsung));
+        socket.write(that.chunkTwo(samsung));
 
         socket.end();
 
