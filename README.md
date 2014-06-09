@@ -15,7 +15,7 @@ http://imbrianj.github.io/universalController/
 Setup
 ---
 ###Easy
-- ```npm install -g git+ssh://git@github.com:imbrianj/universalController.git```
+- ```npm install -g git+https://github.com/imbrianj/universalController.git```
 - Add a config file anywhere on the device you want to run the app on. See the [default](config/config.js) file for examples
 - Run ```universal-controller -c yournewconfigfile``` and profit
 
