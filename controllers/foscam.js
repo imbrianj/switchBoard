@@ -89,6 +89,10 @@ module.exports = (function () {
         case 'Take' :
           path = '/snapshot.cgi' + login;
         break;
+
+        case 'Params' :
+          path = '/get_params.cgi' + login;
+        break;
       }
 
       return { host   : config.deviceIp,
@@ -99,6 +103,58 @@ module.exports = (function () {
 
     onload : function (controller) {
       return controller.markup.replace('{{FOSCAM_DYNAMIC}}', 'http://' + controller.config.deviceIp + '/videostream.cgi?user=' + controller.config.username + '&amp;pwd=' + controller.config.password);
+    },
+
+    state : function (controller, config) {
+      var http          = require('http'),
+          deviceState   = require('../lib/deviceState'),
+          foscam        = {},
+          request;
+
+      foscam.deviceName = controller.config.deviceId;
+      foscam.deviceIp   = controller.config.deviceIp;
+      foscam.username   = controller.config.username;
+      foscam.password   = controller.config.password;
+      foscam.command    = 'Params';
+      config            = config            || {};
+      foscam.devicePort = config.devicePort || 80;
+      foscam.callback   = config.callback   || function () {};
+
+      request = http.request(this.postPrepare(foscam), function(response) {
+        response.once('data', function(response) {
+          var params = {};
+
+          console.log('Foscam: Connected');
+
+          if(response.toString().indexOf('var alarm_motion_armed=0')) {
+            params.value = 'off';
+          }
+
+          else if(response.toString().indexOf('var alarm_motion_armed=1')) {
+            params.value = 'on';
+          }
+
+          foscam.callback(foscam.deviceName, null, response, params);
+        });
+      });
+
+      request.once('error', function(err) {
+        var errorMsg = '';
+
+        if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
+          errorMsg = 'Foscam: Device is off or unreachable';
+        }
+
+        else {
+          errorMsg = 'Foscam: ' + err.code;
+        }
+
+        console.log(errorMsg);
+
+        foscam.callback(foscam.deviceName, errorMsg);
+      });
+
+      request.end();
     },
 
     send : function (config) {

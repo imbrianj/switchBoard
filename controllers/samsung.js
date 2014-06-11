@@ -85,7 +85,6 @@ module.exports = (function () {
 
     state : function (controller, config) {
       var net            = require('net'),
-          deviceState    = require('../lib/deviceState'),
           samsung        = {},
           socket;
 
@@ -102,9 +101,7 @@ module.exports = (function () {
 
         socket.end();
 
-        deviceState.updateState(samsung.deviceName, { state : 'ok' });
-
-        samsung.callback(null, '');
+        samsung.callback(samsung.deviceName, null, 'ok');
       });
 
       socket.once('error', function(err) {
@@ -120,9 +117,7 @@ module.exports = (function () {
 
         console.log(errorMsg);
 
-        deviceState.updateState(samsung.deviceName, { state : 'err' });
-
-        samsung.callback(errorMsg);
+        samsung.callback(samsung.deviceName, errorMsg);
       });
     },
 

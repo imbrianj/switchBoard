@@ -36,7 +36,23 @@ module.exports = (function () {
 
     fire : function(controllers, type) {
       var runCommand = require(__dirname + '/../lib/runCommand'),
-          deviceName;
+          deviceName,
+          callback;
+
+      callback = function(deviceName, err, reply, params) {
+        var deviceState = require('../lib/deviceState'),
+            message     = 'error';
+
+        params = params || {};
+
+        if(reply) {
+          message = 'ok';
+        }
+
+        params.state = message;
+
+        deviceState.updateState(deviceName, params);
+      };
 
       for(deviceName in controllers) {
         if(deviceName !== 'config') {
@@ -51,10 +67,10 @@ module.exports = (function () {
               }
             break;
 
-            case 'samsung' :
+            default :
               if(type === 'short') {
                 if(typeof controllers[deviceName].controller.state === 'function') {
-                  controllers[deviceName].controller.state(controllers[deviceName]);
+                  controllers[deviceName].controller.state(controllers[deviceName], { callback : callback });
                 }
               }
             break;
