@@ -35,34 +35,45 @@ module.exports = (function () {
    *       sudo apt-get install espeak
    */
   return {
-    version : 20140504,
+    version : 20140611,
 
     inputs  : ['text'],
 
     translateCommand : function (voice, text, platform) {
-      var command = '';
+      var execute = { command : '', params : [] };
 
       switch(platform) {
         case 'linux' :
         case 'freebsd' :
         case 'sunos' :
-          voice = voice === 'female' ? '-ven+f3' : '';
+          execute.command = 'espeak';
 
-          command = 'espeak ' + voice + ' "' + text + '"';
+          if(voice === 'female') {
+            execute.params.push('-ven+f3');
+          }
+
+          execute.params.push(text);
         break;
 
         case 'darwin' :
-          voice = voice === 'female' ? '-v vicki' : '';
+          execute.command = 'say';
 
-          command = 'say ' + voice + ' "' + text + '"';
+          if(voice === 'female') {
+            execute.params.push('-v');
+            execute.params.push('vicki');
+          }
+
+          execute.params.push(text);
         break;
 
         default :
+          execute = '';
+
           console.log('Speech: Text to speech is not supported on your platform!');
         break;
       }
 
-      return command;
+      return execute;
     },
 
     init : function (controller) {
@@ -70,27 +81,21 @@ module.exports = (function () {
     },
 
     send : function (config) {
-      var exec        = require('child_process').exec,
-          speech      = {};
+      var spawn       = require('child_process').spawn,
+          speech      = {},
+          speak;
 
       speech.text     = config.text         || '';
       speech.callback = config.callback     || function () {};
       speech.voice    = config.device.voice || 'male';
-      speech.platform = config.platofrm     || process.platform;
+      speech.platform = config.platform     || process.platform;
+      speech.execute  = this.translateCommand(speech.voice, speech.text, speech.platform);
 
-      if(speech.text) {
-        exec(this.translateCommand(speech.voice, speech.text, speech.platform), function (err, stdout, stderr) {
-          var errorMsg = '';
+      if(speech.text && speech.execute) {
+        speak = spawn(speech.execute.command, speech.execute.params);
 
-          if(err) {
-            errorMsg = 'Speech: ' + err;
-            speech.callback(errorMsg);
-            console.log(errorMsg);
-          }
-
-          else {
-            speech.callback(null, stdout);
-          }
+        speak.once('close', function(code) {
+            speech.callback(null, code);
         });
       }
 

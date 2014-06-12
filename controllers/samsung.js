@@ -148,7 +148,7 @@ module.exports = (function () {
 
         socket.end();
 
-        samsung.callback(null, '');
+        samsung.callback(null, 'ok');
       });
 
       socket.once('error', function(err) {

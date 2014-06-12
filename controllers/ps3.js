@@ -34,7 +34,7 @@ module.exports = (function () {
    *       here: https://code.google.com/p/diyps3controller/downloads/list
    */
   return {
-    version : 20140418,
+    version : 20140611,
 
     inputs  : ['command'],
 
@@ -45,17 +45,23 @@ module.exports = (function () {
      */
     keymap  : ['PowerOn', 'Left', 'Right', 'Up', 'Down', 'PS', 'Select', 'Start', 'Triangle', 'Circle', 'Cross', 'Square'],
 
-    translateCommand : function (command, deviceMac, platform) {
-      var value  = '';
+    translateCommand : function (command, deviceMac, platform, revert) {
+      var execute = { command : '', params : [] },
+          value   = revert === true ? 0 : 255;
 
       if(platform === 'linux' || platform === 'win32') {
         switch(command) {
           case 'PowerOn' :
-            value = 'date > tmp/ps3.lock && echo "Connecting to PS3" && emu ' + deviceMac + ' > /dev/null && echo "Disconnecting from PS3" && rm tmp/ps3.lock';
+            execute.command = 'emu';
+
+            execute.params.push(deviceMac);
           break;
 
           case 'PS' :
-            value = 'emuclient --event "PS(255)"';
+            execute.command = 'emuclient';
+
+            execute.params.push('--event');
+            execute.params.push('PS(' + value + ')');
           break;
 
           case 'Left'     :
@@ -68,45 +74,39 @@ module.exports = (function () {
           case 'Circle'   :
           case 'Cross'    :
           case 'Square'   :
-            value = 'emuclient --event "' + command.toLowerCase() + '(255)" & sleep .01 && emuclient --event "' + command.toLowerCase() + '(0)"';
+            execute.command = 'emuclient';
+
+            execute.params.push('--event');
+            execute.params.push(command.toLowerCase() + '(' + value + ')');
           break;
         }
       }
 
       else {
-        console.log('PS3: PS3 is not supported on your platform!');
+        execute = '';
+
+        console.log('PS3: Gimx is not supported on your platform!');
       }
 
-      return value;
-    },
-
-    init : function () {
-      var fs = require('fs');
-
-      // PS3 requires a lock file to determine if the daemon is running.
-      // If the server is just started up, we should assume it is not.
-      fs.exists('tmp/ps3.lock', function(exists) {
-        if(exists) {
-          fs.unlink('tmp/ps3.lock', function(error) {
-            if(error) {
-              console.log(error);
-            }
-          });
-        }
-      });
+      return execute;
     },
 
     send : function (config) {
-      var fs        = require('fs'),
-          exec      = require('child_process').exec,
-          ps3       = {};
+      var fs          = require('fs'),
+          spawn       = require('child_process').spawn,
+          deviceState = require('../lib/deviceState'),
+          ps3         = {},
+          that        = this,
+          emuclient;
 
-      ps3.deviceMac = config.device.deviceMac;
-      ps3.command   = config.command  || '';
-      ps3.callback  = config.callback || function () {};
-      ps3.platform  = config.platform || process.platform;
+      ps3.deviceName  = config.device.deviceId;
+      ps3.deviceMac   = config.device.deviceMac;
+      ps3.command     = config.command  || '';
+      ps3.callback    = config.callback || function () {};
+      ps3.platform    = config.platform || process.platform;
+      ps3.revert      = config.revert   || false;
 
-      if(fs.existsSync(__dirname + '/../tmp/ps3.lock')) {
+      if(State[ps3.deviceName].state === 'ok') {
         // If the PS3 is already on, we shouldn't execute PowerOn again.
         if(ps3.command === 'PowerOn') {
           console.log('PS3 looks on already.  Changing command to PS');
@@ -119,17 +119,35 @@ module.exports = (function () {
         console.log('PS3 doesn\'t look on.');
       }
 
-      exec(this.translateCommand(ps3.command, ps3.deviceMac, ps3.platform), function (err, stdout, stderr) {
-        var errorMsg = '';
+      ps3.execute = this.translateCommand(ps3.command, ps3.deviceMac, ps3.platform, ps3.revert);
 
-        if(err) {
-          errorMsg = 'PS3: ' + err;
-          ps3.callback(err);
-          console.log(err);
+      emuclient = spawn(ps3.execute.command, ps3.execute.params);
+
+      // The Gimx service will run for quite a while, so we need to execute the
+      // callback to send a response before the command closes some time later.
+      if(ps3.command === 'PowerOn') {
+        ps3.callback(null, 'ok');
+      }
+
+      emuclient.once('close', function(code) {
+        if(ps3.command === 'PowerOn') {
+          deviceState.updateState(ps3.deviceName, { state : 'err' });
+        }
+
+        else if((ps3.revert !== true) && (ps3.command !== 'PS')) {
+          config.revert = true;
+
+          that.send(config);
         }
 
         else {
-          ps3.callback(null, stdout);
+          if(code === 0) {
+            ps3.callback(null, 'ok');
+          }
+
+          else {
+            ps3.callback('err');
+          }
         }
       });
     }

@@ -41,7 +41,7 @@ module.exports = (function () {
 
       callback = function(deviceName, err, reply, params) {
         var deviceState = require('../lib/deviceState'),
-            message     = 'error';
+            message     = 'err';
 
         params = params || {};
 
@@ -69,7 +69,7 @@ module.exports = (function () {
 
             default :
               if(type === 'short') {
-                if(typeof controllers[deviceName].controller.state === 'function') {
+                if((typeof controllers[deviceName].controller === 'object') && (typeof controllers[deviceName].controller.state === 'function')) {
                   controllers[deviceName].controller.state(controllers[deviceName], { callback : callback });
                 }
               }

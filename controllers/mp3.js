@@ -35,30 +35,36 @@ module.exports = (function () {
    *       sudo apt-get install mpg123
    */
   return {
-    version : 20140503,
+    version : 20140611,
 
     inputs  : ['text'],
 
     translateCommand : function (file, platform) {
-      var command = '';
+      var execute = { command : '', params : [] };
 
       switch(platform) {
         case 'linux' :
         case 'freebsd' :
         case 'sunos' :
-          command = 'mpg123 ' + file;
+          execute.command = 'mpg123';
+
+          execute.params.push(file);
         break;
 
         case 'darwin' :
-          command = 'afplay ' + file;
+          execute.command = 'afplay';
+
+          execute.params.push(file);
         break;
 
         default :
+          execute = '';
+
           console.log('MP3: MP3 playback is not supported on your platform!');
         break;
       }
 
-      return command;
+      return execute;
     },
 
     init : function (controller) {
@@ -72,30 +78,23 @@ module.exports = (function () {
       mp3.file     = config.text ? __dirname + '/../mp3/' + config.text + '.mp3' : '';
       mp3.callback = config.callback || function () {};
       mp3.platform = config.platofrm || process.platform;
+      mp3.execute  = this.translateCommand(mp3.file, mp3.platform);
 
       if(mp3.file) {
         fs.exists(mp3.file, function(exists) {
-          var exec          = require('child_process').exec,
-              mp3Controller = require('./mp3');
+          var spawn = require('child_process').spawn,
+              mpg123;
 
-          if(!exists) {
-            console.log('MP3: Specified file not found');
+          if(exists && mp3.execute) {
+            mpg123 = spawn(mp3.execute.command, mp3.execute.params);
+
+            mpg123.once('close', function(code) {
+              mp3.callback(null, code);
+            });
           }
 
           else {
-            exec(mp3Controller.translateCommand(mp3.file, mp3.platform), function (err, stdout, stderr) {
-              var errorMsg = '';
-
-              if(err) {
-                errorMsg = 'MP3: ' + err;
-                mp3.callback(errorMsg);
-                console.log(errorMsg);
-              }
-
-              else {
-                mp3.callback(null, stdout);
-              }
-            });
+            console.log('MP3: Specified file not found');
           }
         });
       }

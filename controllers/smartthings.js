@@ -417,7 +417,6 @@ module.exports = (function () {
                   });
                 });
 
-
       request.once('error', function(err) {
         var errorMsg = '';
 

@@ -107,7 +107,6 @@ module.exports = (function () {
 
     state : function (controller, config) {
       var http          = require('http'),
-          deviceState   = require('../lib/deviceState'),
           foscam        = {},
           request;
 

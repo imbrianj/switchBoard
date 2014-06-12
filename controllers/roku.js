@@ -33,7 +33,7 @@ module.exports = (function () {
    * @requires xml2js, http, fs, request
    */
   return {
-    version : 20140510,
+    version : 20140610,
 
     inputs  : ['command', 'text', 'list', 'launch'],
 
@@ -198,6 +198,45 @@ module.exports = (function () {
           }
         }});
       }
+    },
+
+    state : function (controller, config) {
+      var http        = require('http'),
+          roku        = {},
+          request;
+
+      roku.deviceName = controller.config.deviceId;
+      roku.deviceIp   = controller.config.deviceIp;
+      config          = config            || {};
+      roku.devicePort = config.devicePort || 8060;
+      roku.callback   = config.callback   || function () {};
+      roku.list       = true;
+
+      request = http.request(this.postPrepare(roku), function(response) {
+        response.once('data', function(response) {
+          console.log('Roku: Connected');
+
+          roku.callback(roku.deviceName, null, response);
+        });
+      });
+
+      request.once('error', function(err) {
+        var errorMsg = '';
+
+        if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
+          errorMsg = 'Roku: Device is off or unreachable';
+        }
+
+        else {
+          errorMsg = 'Roku: ' + err.code;
+        }
+
+        console.log(errorMsg);
+
+        roku.callback(roku.deviceName, errorMsg);
+      });
+
+      request.end();
     },
 
     send : function (config) {

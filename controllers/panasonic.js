@@ -100,6 +100,45 @@ module.exports = (function () {
       return response;
     },
 
+    state : function (controller, config) {
+      var http             = require('http'),
+          panasonic        = {},
+          request;
+
+      panasonic.deviceName = controller.config.deviceId;
+      panasonic.deviceIp   = controller.config.deviceIp;
+      config               = config            || {};
+      panasonic.devicePort = config.devicePort || 80;
+      panasonic.callback   = config.callback   || function () {};
+      panasonic.command    = 'STATE';
+
+      request = http.request(this.postPrepare(panasonic), function(response) {
+        response.once('data', function(response) {
+          console.log('Panasonic: Connected');
+
+          panasonic.callback(panasonic.deviceName, null, response);
+        });
+      });
+
+      request.once('error', function(err) {
+        var errorMsg = '';
+
+        if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
+          errorMsg = 'Panasonic: Device is off or unreachable';
+        }
+
+        else {
+          errorMsg = 'Panasonic: ' + err.code;
+        }
+
+        console.log(errorMsg);
+
+        panasonic.callback(panasonic.deviceName, errorMsg);
+      });
+
+      request.end();
+    },
+
     send : function (config) {
       var http             = require('http'),
           panasonic        = {},
