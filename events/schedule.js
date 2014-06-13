@@ -58,8 +58,9 @@ module.exports = (function () {
         if(deviceName !== 'config') {
           switch(controllers[deviceName].config.typeClass) {
             // Specify typeClass of controllers that should be fired on interval.
-            case 'weather' :
-            case 'stocks'  :
+            case 'weather'     :
+            case 'stocks'      :
+            case 'smartthings' :
               if(type === 'long') {
                 if(typeof controllers[deviceName].event === 'object') {
                   controllers[deviceName].event.fire(deviceName, 'schedule', controllers);

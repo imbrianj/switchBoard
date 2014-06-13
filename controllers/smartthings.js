@@ -136,11 +136,13 @@ module.exports = (function () {
 
       console.log('SmartThings: Fetching device info');
 
-      smartthings.path     = controller.config.path || auth.url + '/switches';
-      smartthings.auth     = auth.accessToken;
-      smartthings.callback = function(err, response) {
-        var fs = require('fs'),
-            i  = 0,
+      smartthings.deviceName = controller.config.deviceId;
+      smartthings.path       = controller.config.path || auth.url + '/switches';
+      smartthings.auth       = auth.accessToken;
+      smartthings.callback   = function(err, response) {
+        var fs          = require('fs'),
+            deviceState = require('../lib/deviceState'),
+            i           = 0,
             cache;
 
         if(!err) {
@@ -173,8 +175,9 @@ module.exports = (function () {
               }
             }
 
-            cache = fs.createWriteStream(__dirname + '/../tmp/smartthingsDevices.json');
+            deviceState.updateState(smartthings.deviceName, { value : subDevices });
 
+            cache = fs.createWriteStream(__dirname + '/../tmp/smartthingsDevices.json');
             cache.once('open', function() {
               console.log('SmartThings: Device data cached');
 

@@ -92,19 +92,18 @@ module.exports = (function () {
     },
 
     send : function (config) {
-      var fs          = require('fs'),
-          spawn       = require('child_process').spawn,
-          deviceState = require('../lib/deviceState'),
-          ps3         = {},
-          that        = this,
+      var fs         = require('fs'),
+          spawn      = require('child_process').spawn,
+          ps3        = {},
+          that       = this,
           emuclient;
 
-      ps3.deviceName  = config.device.deviceId;
-      ps3.deviceMac   = config.device.deviceMac;
-      ps3.command     = config.command  || '';
-      ps3.callback    = config.callback || function () {};
-      ps3.platform    = config.platform || process.platform;
-      ps3.revert      = config.revert   || false;
+      ps3.deviceName = config.device.deviceId;
+      ps3.deviceMac  = config.device.deviceMac;
+      ps3.command    = config.command  || '';
+      ps3.callback   = config.callback || function () {};
+      ps3.platform   = config.platform || process.platform;
+      ps3.revert     = config.revert   || false;
 
       if(State[ps3.deviceName].state === 'ok') {
         // If the PS3 is already on, we shouldn't execute PowerOn again.
@@ -130,7 +129,11 @@ module.exports = (function () {
       }
 
       emuclient.once('close', function(code) {
+        var deviceState;
+
         if(ps3.command === 'PowerOn') {
+          deviceState = require('../lib/deviceState');
+
           deviceState.updateState(ps3.deviceName, { state : 'err' });
         }
 

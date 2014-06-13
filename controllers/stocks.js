@@ -44,7 +44,7 @@ module.exports = (function () {
     },
 
     init : function (controller) {
-      this.send({ stocks : controller.config.stocks });
+      this.send({ deviceId: controller.config.deviceId, stocks : controller.config.stocks });
     },
 
     send : function (config) {
@@ -52,13 +52,14 @@ module.exports = (function () {
           stocks      = {},
           dataReply   = '',
           request;
-
-      stocks.stocks   = config.stocks ? config.stocks.join('","') : null || config.device.stocks;
-      stocks.host     = config.host     || 'query.yahooapis.com';
-      stocks.path     = config.path     || '/v1/public/yql?format=json&env=http://datatables.org/alltables.env&q=select symbol, LastTradePriceOnly, AskRealtime, BidRealtime, Change, DaysLow, DaysHigh, YearLow, YearHigh from yahoo.finance.quotes where symbol in ("' + stocks.stocks + '")';
-      stocks.port     = config.port     || 443;
-      stocks.method   = config.method   || 'GET';
-      stocks.callback = config.callback || function () {};
+console.log(config);
+      stocks.deviceName = config.deviceId;
+      stocks.stocks     = config.stocks ? config.stocks.join('","') : null || config.device.stocks;
+      stocks.host       = config.host     || 'query.yahooapis.com';
+      stocks.path       = config.path     || '/v1/public/yql?format=json&env=http://datatables.org/alltables.env&q=select symbol, LastTradePriceOnly, AskRealtime, BidRealtime, Change, DaysLow, DaysHigh, YearLow, YearHigh from yahoo.finance.quotes where symbol in ("' + stocks.stocks + '")';
+      stocks.port       = config.port     || 443;
+      stocks.method     = config.method   || 'GET';
+      stocks.callback   = config.callback || function () {};
 
       if(stocks.stocks !== null) {
         request = https.request(this.postPrepare(stocks), function(response) {
@@ -69,8 +70,9 @@ module.exports = (function () {
                     });
 
                     response.once('end', function() {
-                      var fs        = require('fs'),
-                          stockData = {},
+                      var fs          = require('fs'),
+                          deviceState = require('../lib/deviceState'),
+                          stockData   = {},
                           stock,
                           cache,
                           data,
@@ -95,6 +97,8 @@ module.exports = (function () {
                                                       };
                           }
                         }
+
+                        deviceState.updateState(stocks.deviceName, { value : stockData });
 
                         cache = fs.createWriteStream(__dirname + '/../tmp/stocks.json');
                         cache.once('open', function() {
