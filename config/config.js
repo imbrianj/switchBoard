@@ -9,7 +9,8 @@ exports.config = {
     theme       : 'dark',
     default     : 'welcome',
     macroPause  : 1000,
-    pollMinutes : 15
+    pollMinutes : 15,
+    pollSeconds : 15
   },
 
   // Be sure to mark the "disabled" to true to remove the welcome message.
@@ -82,7 +83,7 @@ exports.config = {
     typeClass     : 'speech',
     title         : 'Speech',
     voice         : 'female',
-    disableMarkup : true,
+    disableMarkup : false,
     disabled      : true
   },
 

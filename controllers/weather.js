@@ -44,22 +44,22 @@ module.exports = (function () {
     },
 
     init : function (controller) {
-      this.send({ deviceId: controller.config.deviceId, zip : controller.config.zip });
+      this.send({ device : { deviceId: controller.config.deviceId, zip : controller.config.zip } });
     },
 
     send : function (config) {
-      var https       = require('https'),
-          weather     = {},
-          dataReply   = '',
+      var https     = require('https'),
+          weather   = {},
+          dataReply = '',
           request;
 
-      weather.deviceName = config.deviceId;
-      weather.zip        = config.zip;
-      weather.host       = config.host       || 'query.yahooapis.com';
-      weather.path       = config.path       || '/v1/public/yql?format=json&q=select * from weather.forecast where location=' + weather.zip;
-      weather.port       = config.port       || 443;
-      weather.method     = config.method     || 'GET';
-      weather.callback   = config.callback   || function () {};
+      weather.deviceName = config.device.deviceId;
+      weather.zip        = config.device.zip;
+      weather.host       = config.host     || 'query.yahooapis.com';
+      weather.path       = config.path     || '/v1/public/yql?format=json&q=select * from weather.forecast where location=' + weather.zip;
+      weather.port       = config.port     || 443;
+      weather.method     = config.method   || 'GET';
+      weather.callback   = config.callback || function () {};
 
       if(weather.zip !== null) {
         request = https.request(this.postPrepare(weather), function(response) {

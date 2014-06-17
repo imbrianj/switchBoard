@@ -44,17 +44,17 @@ module.exports = (function () {
     },
 
     init : function (controller) {
-      this.send({ deviceId: controller.config.deviceId, stocks : controller.config.stocks });
+      this.send({ device : { deviceId: controller.config.deviceId, stocks : controller.config.stocks } });
     },
 
     send : function (config) {
-      var https       = require('https'),
-          stocks      = {},
-          dataReply   = '',
+      var https     = require('https'),
+          stocks    = {},
+          dataReply = '',
           request;
-console.log(config);
-      stocks.deviceName = config.deviceId;
-      stocks.stocks     = config.stocks ? config.stocks.join('","') : null || config.device.stocks;
+
+      stocks.deviceName = config.device.deviceId;
+      stocks.stocks     = config.device.stocks ? config.device.stocks.join('","') : null;
       stocks.host       = config.host     || 'query.yahooapis.com';
       stocks.path       = config.path     || '/v1/public/yql?format=json&env=http://datatables.org/alltables.env&q=select symbol, LastTradePriceOnly, AskRealtime, BidRealtime, Change, DaysLow, DaysHigh, YearLow, YearHigh from yahoo.finance.quotes where symbol in ("' + stocks.stocks + '")';
       stocks.port       = config.port     || 443;
