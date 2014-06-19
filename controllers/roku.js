@@ -91,7 +91,7 @@ module.exports = (function () {
       };
     },
 
-    cacheImage : function (appName, appId, config) {
+    cacheImage : function (appName, appId, config, logging) {
       var fs       = require('fs'),
           filePath = __dirname + '/../images/roku/icon_' + appId + '.png';
 
@@ -99,7 +99,9 @@ module.exports = (function () {
         var request;
 
         if(exists) {
-          console.log('Roku: Skipping ' + appName + ' image - already saved locally');
+          if(logging === 'verbose') {
+            console.log('Roku: Skipping ' + appName + ' image - already saved locally');
+          }
         }
 
         else {
@@ -119,22 +121,20 @@ module.exports = (function () {
           tempMarkup = '',
           apps;
 
-      if(fs.existsSync(__dirname + '/../tmp/roku.json')) {
-        apps = JSON.parse(fs.readFileSync(__dirname + '/../tmp/roku.json').toString());
+      apps = State[controller.config.deviceId].value;
 
-        if(apps) {
-          for(i in apps) {
-            tempMarkup = tempMarkup + template.split('{{APP_ID}}').join(apps[i].id);
-            tempMarkup = tempMarkup.split('{{APP_IMG}}').join(apps[i].cache);
-            tempMarkup = tempMarkup.split('{{APP_NAME}}').join(apps[i].name);
-          }
+      if(apps) {
+        for(i in apps) {
+          tempMarkup = tempMarkup + template.split('{{APP_ID}}').join(apps[i].id);
+          tempMarkup = tempMarkup.split('{{APP_IMG}}').join(apps[i].cache);
+          tempMarkup = tempMarkup.split('{{APP_NAME}}').join(apps[i].name);
         }
       }
 
       return markup.replace('{{ROKU_DYNAMIC}}', tempMarkup);
     },
 
-    init : function (controller) {
+    findState : function (controller, callback, logging) {
       var xml2js = require('xml2js'),
           fs     = require('fs'),
           path   = require('path'),
@@ -143,100 +143,84 @@ module.exports = (function () {
           apps   = {},
           that   = this;
 
-      if(fs.existsSync(__dirname + '/../tmp/roku.json')) {
-        console.log('Roku: App settings cached');
-      }
+      callback   = callback || function() {};
 
-      else {
-        this.send({ deviceIp: config.deviceIp, list: true, callback: function(err, response) {
-          if(err) {
-            if(err === 'EHOSTUNREACH') {
-              console.log('Roku: Device is off or unreachable');
-            }
+      this.send({ device : { deviceIp: config.deviceIp }, list: true, callback: function(err, response) {
+        if(err) {
+          var errorMsg = '';
 
-            else {
-              console.log('Roku: ' + err);
-            }
+          if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
+            errorMsg = 'Roku: Device is off or unreachable';
           }
 
           else {
-            parser.parseString(response, function(err, reply) {
-              var app;
-
-              if(reply) {
-                fs.readFile(path.join(__dirname + '/../templates/fragments/roku.tpl'), function(err, template) {
-                  var cache,
-                      i = 0;
-
-                  if(err) {
-                    console.log('Roku: Unable to read template fragment');
-                  }
-
-                  else {
-                    for(i in reply.apps.app) {
-                      app = reply.apps.app[i];
-
-                      apps[app.$.id] = { 'name'  : app._,
-                                         'id'    : app.$.id,
-                                         'link'  : 'http://' + config.deviceIp + ':8060/launch/11?contentID=' + app.$.id,
-                                         'image' : 'http://' + config.deviceIp + ':8060/query/icon/' + app.$.id,
-                                         'cache' : '/images/roku/icon_' + app.$.id + '.png'
-                                       };
-
-                      that.cacheImage(app._, app.$.id, config);
-                    }
-
-                    cache = fs.createWriteStream(__dirname + '/../tmp/roku.json');
-                    cache.once('open', function() {
-                      cache.write(JSON.stringify(apps));
-                      console.log('Roku: Wrote app settings to cache');
-                    });
-                  }
-                });
-              }
-            });
+            errorMsg = 'Roku: ' + err.code;
           }
-        }});
-      }
-    },
 
-    state : function (controller, config) {
-      var http        = require('http'),
-          roku        = {},
-          request;
-
-      roku.deviceName = controller.config.deviceId;
-      roku.deviceIp   = controller.config.deviceIp;
-      config          = config            || {};
-      roku.devicePort = config.devicePort || 8060;
-      roku.callback   = config.callback   || function () {};
-      roku.list       = true;
-
-      request = http.request(this.postPrepare(roku), function(response) {
-        response.once('data', function(response) {
-          console.log('Roku: Connected');
-
-          roku.callback(roku.deviceName, null, response);
-        });
-      });
-
-      request.once('error', function(err) {
-        var errorMsg = '';
-
-        if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
-          errorMsg = 'Roku: Device is off or unreachable';
+          callback(errorMsg);
         }
 
         else {
-          errorMsg = 'Roku: ' + err.code;
+          parser.parseString(response, function(err, reply) {
+            var app,
+                i = 0;
+
+            if(reply) {
+              if(err) {
+                console.log('Roku: Unable to parse reply');
+              }
+
+              else {
+                for(i in reply.apps.app) {
+                  app = reply.apps.app[i];
+
+                  apps[app.$.id] = { 'name'  : app._,
+                                     'id'    : app.$.id,
+                                     'link'  : 'http://' + config.deviceIp + ':8060/launch/11?contentID=' + app.$.id,
+                                     'image' : 'http://' + config.deviceIp + ':8060/query/icon/' + app.$.id,
+                                     'cache' : '/images/roku/icon_' + app.$.id + '.png'
+                                   };
+
+                  that.cacheImage(app._, app.$.id, config, logging);
+                }
+
+                callback(null, apps);
+              }
+            }
+          });
+        }
+      }});
+    },
+
+    init : function (controller, config) {
+      config.callback = function(deviceName, err, state, params) {
+        var deviceState = require('../lib/deviceState');
+
+        params.state = state;
+
+        deviceState.updateState(deviceName, params);
+      };
+
+      this.state(controller, config, 'verbose');
+    },
+
+    state : function (controller, config, logging) {
+      var callback = config.callback || function () {},
+          stateCallback;
+
+      logging  = logging || 'quiet';
+
+      stateCallback = function(err, reply) {
+        if(err) {
+          callback(controller.config.deviceId, err);
         }
 
-        console.log(errorMsg);
+        else if(reply) {
+          callback(controller.config.deviceId, null, 'ok', { value : reply });
+        }
+      };
 
-        roku.callback(roku.deviceName, errorMsg);
-      });
-
-      request.end();
+      this.findState(controller, stateCallback, logging);
     },
 
     send : function (config) {
@@ -265,7 +249,6 @@ module.exports = (function () {
                     roku.callback(null, dataReply);
                   });
                 });
-
 
       request.once('error', function(err) {
         var errorMsg = '';

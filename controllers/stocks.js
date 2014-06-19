@@ -74,7 +74,6 @@ module.exports = (function () {
                           deviceState = require('../lib/deviceState'),
                           stockData   = {},
                           stock,
-                          cache,
                           data,
                           i = 0;
 
@@ -99,11 +98,6 @@ module.exports = (function () {
                         }
 
                         deviceState.updateState(stocks.deviceName, { value : stockData });
-
-                        cache = fs.createWriteStream(__dirname + '/../tmp/stocks.json');
-                        cache.once('open', function() {
-                          cache.write(JSON.stringify(stockData));
-                        });
                       }
 
                       stocks.callback(null, stockData);

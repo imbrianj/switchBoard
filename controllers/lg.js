@@ -133,12 +133,10 @@ module.exports = (function () {
         port    : lg.devicePort,
         path    : path,
         method  : method,
-        headers : {
-                    'content-type'  : 'text/xml',
+        headers : { 'content-type'  : 'text/xml',
                     'accept'        : 'text/xml',
                     'cache-control' : 'no-cache',
-                    'pragma'        : 'no-cache'
-                  }
+                    'pragma'        : 'no-cache' }
       };
     },
 

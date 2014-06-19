@@ -74,7 +74,6 @@ module.exports = (function () {
                           deviceState = require('../lib/deviceState'),
                           weatherData = {},
                           city,
-                          cache,
                           i = 0;
 
                       if(!err) {
@@ -90,11 +89,6 @@ module.exports = (function () {
                                         };
 
                           deviceState.updateState(weather.deviceName, { value : weatherData });
-
-                          cache = fs.createWriteStream(__dirname + '/../tmp/weather.json');
-                          cache.once('open', function() {
-                            cache.write(JSON.stringify(weatherData));
-                          });
                         }
                       }
 

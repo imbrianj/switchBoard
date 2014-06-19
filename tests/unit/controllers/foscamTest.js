@@ -75,5 +75,20 @@ exports.foscamControllerTest = {
                                method : 'GET' }, 'Additional params are filtered out.');
 
     test.done();
+  },
+
+  onload : function (test) {
+    'use strict';
+
+    var foscamController = require(__dirname + '/../../../controllers/foscam'),
+        onloadMarkup     = foscamController.onload({ markup : '<h1>Contents:</h1> {{FOSCAM_DYNAMIC}}',
+                                                     config : { deviceIp : '127.0.0.1',
+                                                                username : 'USERNAME',
+                                                                password : 'PASSWORD' } });
+
+    test.ok((onloadMarkup.indexOf('<h1>Contents:</h1>') !== -1), 'Passed markup validated');
+    test.ok((onloadMarkup.indexOf('http://127.0.0.1/videostream.cgi?user=USERNAME&amp;pwd=PASSWORD') !== -1), 'Foscam image reference validated');
+
+    test.done();
   }
 };

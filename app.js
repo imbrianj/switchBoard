@@ -26,23 +26,26 @@
 /**
  * @author brian@bevey.org
  * @fileoverview Interface for various hardware controllers.
- * @requires http, url, path, nopt
+ * @requires http, url, path, nopt, websocket
  */
 
 State = {};
 
-var version        = 20140504,
-    http           = require('http'),
-    url            = require('url'),
-    path           = require('path'),
-    nopt           = require('nopt'),
-    staticAssets   = require('./lib/staticAssets'),
-    loadController = require('./lib/loadController'),
-    requestInit    = require('./lib/requestInit'),
-    knownOpts      = { 'config' : path },
-    shortHands     = { 'c' : ['--config'] },
-    parsed         = nopt(knownOpts, shortHands, process.argv, 2),
+var version         = 20140618,
+    http            = require('http'),
+    url             = require('url'),
+    path            = require('path'),
+    nopt            = require('nopt'),
+    webSocketServer = require('websocket').server,
+    staticAssets    = require('./lib/staticAssets'),
+    loadController  = require('./lib/loadController'),
+    requestInit     = require('./lib/requestInit'),
+    knownOpts       = { 'config' : path },
+    shortHands      = { 'c' : ['--config'] },
+    parsed          = nopt(knownOpts, shortHands, process.argv, 2),
     controllers,
+    server,
+    wsServer,
     settings;
 
 if(parsed.config) {
@@ -56,7 +59,7 @@ else {
 controllers = this.controllers = loadController.loadController(settings.config);
 
 if(controllers) {
-  http.createServer(function(request, response) {
+  server = http.createServer(function(request, response) {
     'use strict';
 
     // Some commands can be accepted via POST - such as text inputs.
@@ -90,7 +93,18 @@ if(controllers) {
 
       request.resume();
     }
-  }).listen(settings.config.config.serverPort);
+  }).listen(settings.config.config.serverPort, function() {
+    console.log('Listening on port ' + settings.config.config.serverPort);
+  });
 
-  console.log('Listening on port ' + settings.config.config.serverPort);
+  // Or you're connecting with Web Sockets
+  wsServer = new webSocketServer({ httpServer : server }, 'echo-protocol');
+
+  wsServer.on('request', function(request) {
+    var connection = request.accept('echo-protocol', request.origin);
+
+    connection.on('message', function(message) {
+      console.log(message.utf8Data);
+    });
+  });
 }

@@ -71,7 +71,7 @@ module.exports = (function () {
             default :
               if(type === 'short') {
                 if((typeof controllers[deviceName].controller === 'object') && (typeof controllers[deviceName].controller.state === 'function')) {
-                  controllers[deviceName].controller.state(controllers[deviceName], { callback : callback });
+                  controllers[deviceName].controller.state(controllers[deviceName], callback);
                 }
               }
             break;

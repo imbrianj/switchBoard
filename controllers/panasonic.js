@@ -63,13 +63,11 @@ module.exports = (function () {
         port    : panasonic.devicePort,
         path    : path,
         method  : method,
-        headers : {
-                    'content-type'  : 'text/xml',
+        headers : { 'content-type'  : 'text/xml',
                     'accept'        : 'text/xml',
                     'cache-control' : 'no-cache',
                     'pragma'        : 'no-cache',
-                    'soapaction'    : '"urn:panasonic-com:service:p00NetworkControl:1#X_SendKey"'
-                  }
+                    'soapaction'    : '"urn:panasonic-com:service:p00NetworkControl:1#X_SendKey"' }
       };
     },
 
