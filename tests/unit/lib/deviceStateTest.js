@@ -35,16 +35,14 @@ exports.deviceState = {
     'use strict';
 
     var deviceState   = require('../../../lib/deviceState'),
-        newFauxDevice = deviceState.newState('faux-device', {}),
-        newDevice     = deviceState.newState('foo-device',  { markup : '<div>foo</div>', controller : { inputs : ['text', 'command'], keymap : ['Up', 'Left', 'Down'] } });
+        newFauxDevice = deviceState.updateState('faux-device', {}),
+        newDevice     = deviceState.updateState('foo-device',  { markup : '<div>foo</div>' });
 
-    test.equal(State['faux-device'].markup,                   undefined, 'No markup was defined for the faux device');
-    test.equal(State['faux-device'].controller,               false,     'No controller was defined for the faux device');
-    test.notEqual(parseInt(State['faux-device'].updated, 10), NaN,       'Timestamp should return a number.');
+    test.equal(State['faux-device'].markup,                   undefined,       'No markup was defined for the faux device');
+    test.notEqual(parseInt(State['faux-device'].updated, 10), NaN,             'Timestamp should return a number.');
 
-    test.equal(State['foo-device'].markup,         '<div>foo</div>', 'Markup defined for the device');
-    test.deepEqual(State['foo-device'].controller, { inputs : ['text', 'command'], keymap : ['Up', 'Left', 'Down'] }, 'Controller should only contain input types and keymaps');
-    test.notEqual(parseInt(State['foo-device'].updated, 10), NaN, 'Timestamp should return a number.');
+    test.equal(State['foo-device'].markup,                   '<div>foo</div>', 'Markup defined for the device');
+    test.notEqual(parseInt(State['foo-device'].updated, 10), NaN,              'Timestamp should return a number.');
 
     test.done();
   },

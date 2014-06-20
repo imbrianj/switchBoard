@@ -594,13 +594,29 @@ form legend {
 	font-size: 30%;
 }
 
-.light-on:before {
-	text-shadow: 0 -4px 5px rgba(255,255,60,.6);
+.device-on:before {
+	text-shadow: -2px -2px 1px #286EA0,
+                 -2px 2px 1px #286EA0, 
+                 2px -2px 1px #286EA0, 
+                 2px 2px 1px #286EA0;
+	-moz-transition: text-shadow .1s ease-in-out;
+	-o-transition: text-shadow .1s ease-in-out;
+	-webkit-transition: text-shadow .1s ease-in-out;
+	transition: text-shadow .1s ease-in-out;
 }
 
-#samsung .numeric-controls,
-#samsung .media,
-#samsung .information {
+.device-on:hover:before {
+	text-shadow: 0 0 0 #286EA0;
+}
+
+.device.samsung .numeric-controls,
+.device.samsungsamsung .media,
+.device.samsungsamsung .information {
+	display: none;
+}
+
+.device.ps3.device-on .power-on,
+.device.ps3.device-off .power-off {
 	display: none;
 }
 
@@ -628,7 +644,7 @@ body .selected,
 	-webkit-transition: all 2s ease-in-out;
 	transition: all 2s ease-in-out;
 }
-
+/*
 @media (luminosity: washed) {
 	body,
 	.theme-dark body {
@@ -652,7 +668,7 @@ body .selected,
 		color: #333;
 	}
 }
-
+*/
 .theme-dark .header h1 a,
 .theme-dark input,
 .theme-dark button {

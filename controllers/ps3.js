@@ -34,7 +34,7 @@ module.exports = (function () {
    *       here: https://code.google.com/p/diyps3controller/downloads/list
    */
   return {
-    version : 20140611,
+    version : 20140619,
 
     inputs  : ['command'],
 
@@ -89,6 +89,27 @@ module.exports = (function () {
       }
 
       return execute;
+    },
+
+    init : function(controller, config) {
+      var deviceState = require('../lib/deviceState');
+
+      deviceState.updateState(controller.config.deviceId, { state : 'err' });
+    },
+
+    onload : function (controller) {
+      var markup = controller.markup,
+          state  = '';
+
+      if(State[controller.config.deviceId].state === 'ok') {
+        state = ' device-on';
+      }
+
+      else if(State[controller.config.deviceId].state === 'err') {
+        state = ' device-off';
+      }
+
+      return markup.replace('{{DEVICE_STATE}}', state);
     },
 
     send : function (config) {

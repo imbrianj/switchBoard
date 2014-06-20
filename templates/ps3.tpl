@@ -1,10 +1,10 @@
 
-      <div id="{{DEVICE_ID}}" class="device{{DEVICE_SELECTED}}">
+      <div id="{{DEVICE_ID}}" class="device {{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
         <div class="control-block">
-          <div class="control compact">
+          <div class="control">
             <ul>
               <li><a href="/?{{DEVICE_ID}}=PowerOn" class="fa fa-power-off power-on"><span>Power On</span></a></li>
-              <li><a href="/?{{DEVICE_ID}}=PS,sleep,Cross,Down,Down,Cross,Cross" class="fa fa-power-off"><span>Power Off</span></a></li>
+              <li><a href="/?{{DEVICE_ID}}=PS,sleep,Cross,Down,Down,Cross,Cross" class="fa fa-power-off power-off"><span>Power Off</span></a></li>
               <li><a href="/?{{DEVICE_ID}}=Select" class="fa fa-th"><span>Select</span></a></li>
               <li><a href="/?{{DEVICE_ID}}=Start" class="fa fa-sign-in"><span>Start</span></a></li>
             </ul>

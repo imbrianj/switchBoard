@@ -35,7 +35,7 @@ module.exports = (function () {
    *       http://forum.samygo.tv/viewtopic.php?f=12&t=1792
    */
   return {
-    version : 20140608,
+    version : 20140619,
 
     inputs  : ['command', 'text'],
 
@@ -107,7 +107,7 @@ module.exports = (function () {
       socket.once('error', function(err) {
         var errorMsg = '';
 
-        if(err.code === 'EHOSTUNREACH' || err.code === 'ECONNREFUSED') {
+        if(err.code === 'EHOSTUNREACH' || err.code === 'ECONNREFUSED' || err.code === 'ETIMEDOUT') {
           errorMsg = 'Samsung: Device is off or unreachable';
         }
 

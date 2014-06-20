@@ -33,7 +33,7 @@ module.exports = (function () {
    * @requires xml2js, http, fs, request
    */
   return {
-    version : 20140610,
+    version : 20140619,
 
     inputs  : ['command', 'text', 'list', 'launch'],
 
@@ -193,7 +193,7 @@ module.exports = (function () {
     },
 
     init : function (controller, config) {
-      config.callback = function(deviceName, err, state, params) {
+      var callback = function(deviceName, err, state, params) {
         var deviceState = require('../lib/deviceState');
 
         params.state = state;
@@ -201,12 +201,11 @@ module.exports = (function () {
         deviceState.updateState(deviceName, params);
       };
 
-      this.state(controller, config, 'verbose');
+      this.state(controller, callback, 'verbose');
     },
 
-    state : function (controller, config, logging) {
-      var callback = config.callback || function () {},
-          stateCallback;
+    state : function (controller, callback, logging) {
+      var stateCallback;
 
       logging  = logging || 'quiet';
 

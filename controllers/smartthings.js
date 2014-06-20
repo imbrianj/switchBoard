@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic control of SmartThings endpoint.
    */
   return {
-    version : 20140504,
+    version : 20140619,
 
     inputs  : ['list', 'subdevice'],
 
@@ -176,13 +176,6 @@ module.exports = (function () {
             }
 
             deviceState.updateState(smartthings.deviceName, { value : subDevices });
-
-            cache = fs.createWriteStream(__dirname + '/../tmp/smartthingsDevices.json');
-            cache.once('open', function() {
-              console.log('SmartThings: Device data cached');
-
-              cache.write(JSON.stringify(subDevices));
-            });
           }
         }
       };
@@ -191,75 +184,81 @@ module.exports = (function () {
     },
 
     onload : function (controller) {
-      var markup          = controller.markup,
-          fs              = require('fs'),
-          templateSwitch  = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListSwitch.tpl').toString(),
-          templateLock    = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListLock.tpl').toString(),
-          templateGroup   = '',
-          i               = 0,
-          j               = 0,
-          tempMarkup      = '',
-          deviceMarkup    = '',
-          subDeviceMarkup = '',
+      var markup            = controller.markup,
+          fs                = require('fs'),
+          templateSwitch    = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListSwitch.tpl').toString(),
+          templateLock      = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListLock.tpl').toString(),
+          templateGroup     = '',
+          i                 = 0,
+          j                 = 0,
+          tempMarkup        = '',
+          deviceMarkup      = '',
+          subDeviceMarkup   = '',
           subDeviceTemplate = '',
           subDevice,
           subDevices,
           subDeviceGroup;
 
-      if(fs.existsSync(__dirname + '/../tmp/smartthingsDevices.json')) {
-        subDevices = JSON.parse(fs.readFileSync(__dirname + '/../tmp/smartthingsDevices.json').toString());
+      subDevices = State[controller.config.deviceId].value;
 
-        if(subDevices) {
-          // You want to display SmartThings devices in groups.
-          if(controller.config.groups) {
-            templateGroup = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsGroups.tpl').toString();
+      if(subDevices) {
+        // You want to display SmartThings devices in groups.
+        if(controller.config.groups) {
+          templateGroup = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsGroups.tpl').toString();
 
-            for(i in controller.config.groups) {
-              tempMarkup      = tempMarkup + templateGroup;
-              subDeviceMarkup = '';
+          for(i in controller.config.groups) {
+            tempMarkup      = tempMarkup + templateGroup;
+            subDeviceMarkup = '';
 
-              for(j in controller.config.groups[i]) {
-                subDeviceGroup  = this.findSubDevices(controller.config.groups[i][j], subDevices);
+            for(j in controller.config.groups[i]) {
+              subDeviceGroup  = this.findSubDevices(controller.config.groups[i][j], subDevices);
 
-                if(subDeviceGroup && subDeviceGroup[0]) {
-                  switch(subDeviceGroup[0].type) {
-                    case 'switch' :
-                      subDeviceTemplate = templateSwitch;
-                    break;
+              if(subDeviceGroup && subDeviceGroup[0]) {
+                switch(subDeviceGroup[0].type) {
+                  case 'switch' :
+                    subDeviceTemplate = templateSwitch;
+                  break;
 
-                    case 'lock' :
-                      subDeviceTemplate = templateLock;
-                    break;
-                  }
+                  case 'lock' :
+                    subDeviceTemplate = templateLock;
+                  break;
+                }
 
-                  subDeviceMarkup = subDeviceMarkup + subDeviceTemplate.split('{{SUB_DEVICE_ID}}').join(subDeviceGroup[0].label.split(' ').join('+'));
-                  subDeviceMarkup = subDeviceMarkup.split('{{SUB_DEVICE_NAME}}').join(subDeviceGroup[0].label);
+                subDeviceMarkup = subDeviceMarkup + subDeviceTemplate.split('{{SUB_DEVICE_ID}}').join(subDeviceGroup[0].label.split(' ').join('+'));
+                subDeviceMarkup = subDeviceMarkup.split('{{SUB_DEVICE_NAME}}').join(subDeviceGroup[0].label);
+
+                if((subDeviceGroup[0].state === 'on') || (subDeviceGroup[0].state === 'lock')) {
+                  subDeviceMarkup = subDeviceMarkup.split('{{SUB_DEVICE_STATE}}').join(' device-on');
+                }
+
+                else {
+                  subDeviceMarkup = subDeviceMarkup.split('{{SUB_DEVICE_STATE}}').join('');
                 }
               }
-
-              tempMarkup = tempMarkup.split('{{GROUP_TITLE}}').join(i);
-              tempMarkup = tempMarkup.split('{{SUB_DEVICE_LIST}}').join(subDeviceMarkup);
             }
+
+            tempMarkup = tempMarkup.split('{{GROUP_TITLE}}').join(i);
+            tempMarkup = tempMarkup.split('{{SUB_DEVICE_LIST}}').join(subDeviceMarkup);
           }
+        }
 
-          // Otherwise, you want to show them in a list.
-          else {
-            for(i in subDevices) {
-              subDevice = subDevices[i];
+        // Otherwise, you want to show them in a list.
+        else {
+          for(i in subDevices) {
+            subDevice = subDevices[i];
 
-              switch(subDevice.type) {
-                case 'switch' :
-                  subDeviceTemplate = templateSwitch;
-                break;
+            switch(subDevice.type) {
+              case 'switch' :
+                subDeviceTemplate = templateSwitch;
+              break;
 
-                case 'lock' :
-                  subDeviceTemplate = templateLock;
-                break;
-              }
-
-              tempMarkup = tempMarkup + subDeviceTemplate.split('{{SUB_DEVICE_ID}}').join(subDevice.label.split(' ').join('+'));
-              tempMarkup = tempMarkup.split('{{SUB_DEVICE_NAME}}').join(subDevice.label);
+              case 'lock' :
+                subDeviceTemplate = templateLock;
+              break;
             }
+
+            tempMarkup = tempMarkup + subDeviceTemplate.split('{{SUB_DEVICE_ID}}').join(subDevice.label.split(' ').join('+'));
+            tempMarkup = tempMarkup.split('{{SUB_DEVICE_NAME}}').join(subDevice.label);
           }
         }
       }
@@ -325,7 +324,7 @@ module.exports = (function () {
 
     getDevicePath : function(command, config) {
       var fs = require('fs'),
-          subDevices  = JSON.parse(fs.readFileSync(__dirname + '/../tmp/smartthingsDevices.json').toString()),
+          subDevices  = State[config.deviceId].value,
           commandType = '',
           subDevice   = {},
           path        = '',

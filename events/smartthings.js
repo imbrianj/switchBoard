@@ -25,31 +25,33 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview Manage device state for clients.
+ * @fileoverview Simple script to fire for each scheduled interval.
  */
 
 module.exports = (function () {
   'use strict';
 
   return {
-    version : 20140619,
+    version : 20140613,
 
-    updateState : function(deviceName, config) {
-      var date = new Date(),
-          time = date.getTime();
+    fire : function(deviceName, command, controllers) {
+      var fs         = require('fs'),
+          runCommand = require(__dirname + '/../lib/runCommand'),
+          controller = controllers[deviceName],
+          callback;
 
-      if(typeof State[deviceName] !== 'object') {
-        State[deviceName] = { state : {} };
+      fs.exists(__dirname + '/../tmp/smartthingsAuth.json', function(fileExists) {
+        // If we have a presumed good auth token, we can populate the device list.
+        if(fileExists) {
+          fs.readFile(__dirname + '/../tmp/smartthingsAuth.json', function(err, auth) {
+            auth = JSON.parse(auth.toString());
 
-        State[deviceName].markup = config.markup;
-      }
-
-      config.state = config.state || 'err';
-      config.value = config.value || State[deviceName].value || false;
-
-      State[deviceName].state   = config.state;
-      State[deviceName].value   = config.value;
-      State[deviceName].updated = time;
+            if(typeof auth.url === 'string') {
+              controller.controller.oauthDeviceList(auth, controller);
+            }
+          });
+        }
+      });
     }
   };
 }());

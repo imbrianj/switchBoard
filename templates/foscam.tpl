@@ -1,5 +1,5 @@
 
-      <div id="{{DEVICE_ID}}" class="device{{DEVICE_SELECTED}}">
+      <div id="{{DEVICE_ID}}" class="device {{DEVICE_TYPE}}{{DEVICE_SELECTED}}">
         <div class="control-block">
           <div class="presets">
             <ol>
@@ -21,10 +21,10 @@
           </div>
           <div class="alarm">
             <ul>
-              <li><a href="/?{{DEVICE_ID}}=Preset1,sleep,sleep,AlarmOn" class="fa fa-lock"><span>Alarm On</span></a></li>
+              <li><a href="/?{{DEVICE_ID}}=Preset1,sleep,sleep,AlarmOn" class="fa fa-lock{{DEVICE_STATE_ON}}"><span>Alarm On</span></a></li>
               <li><a href="/?{{DEVICE_ID}}=Take" class="fa fa-camera"><span>Take</span></a></li>
               <li><a href="/?{{DEVICE_ID}}=Take,Take,Take,Take,Take" class="fa fa-bolt"><span>Burst</span></a></li>
-              <li><a href="/?{{DEVICE_ID}}=AlarmOff,Preset3" class="fa fa-unlock"><span>Alarm Off</span></a></li>
+              <li><a href="/?{{DEVICE_ID}}=AlarmOff,Preset3" class="fa fa-unlock{{DEVICE_STATE_OFF}}"><span>Alarm Off</span></a></li>
             </ul>
           </div>
         </div>

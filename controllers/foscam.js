@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic control of Foscam IP camera.
    */
   return {
-    version : 20140329,
+    version : 20140619,
 
     inputs  : ['command', 'list'],
 
@@ -102,12 +102,40 @@ module.exports = (function () {
     },
 
     onload : function (controller) {
-      return controller.markup.replace('{{FOSCAM_DYNAMIC}}', 'http://' + controller.config.deviceIp + '/videostream.cgi?user=' + controller.config.username + '&amp;pwd=' + controller.config.password);
+      var markup   = controller.markup,
+          stateOn  = '',
+          stateOff = '';
+
+      if(State[controller.config.deviceId].value === 'on') {
+        stateOn = ' device-on';
+      }
+
+      else if(State[controller.config.deviceId].value === 'off') {
+        stateOff = ' device-on';
+      }
+
+      markup = markup.replace('{{DEVICE_STATE_ON}}',  stateOn);
+      markup = markup.replace('{{DEVICE_STATE_OFF}}', stateOff);
+
+      return markup.replace('{{FOSCAM_DYNAMIC}}', 'http://' + controller.config.deviceIp + '/videostream.cgi?user=' + controller.config.username + '&amp;pwd=' + controller.config.password);
     },
 
-    state : function (controller, config) {
+    init : function (controller, config) {
+      var callback = function(deviceName, err, state, params) {
+        var deviceState = require('../lib/deviceState');
+
+        params.state = state;
+
+        deviceState.updateState(deviceName, params);
+      };
+
+      this.state(controller, callback);
+    },
+
+    state : function (controller, callback) {
       var http          = require('http'),
           foscam        = {},
+          config        = {},
           request;
 
       foscam.deviceName = controller.config.deviceId;
@@ -121,19 +149,19 @@ module.exports = (function () {
 
       request = http.request(this.postPrepare(foscam), function(response) {
         response.once('data', function(response) {
-          var params = {};
+          var params = { value : '' };
 
           console.log('Foscam: Connected');
 
-          if(response.toString().indexOf('var alarm_motion_armed=0')) {
+          if(response.toString().indexOf('var alarm_motion_armed=0') !== -1) {
             params.value = 'off';
           }
 
-          else if(response.toString().indexOf('var alarm_motion_armed=1')) {
+          else if(response.toString().indexOf('var alarm_motion_armed=1') !== -1) {
             params.value = 'on';
           }
 
-          foscam.callback(foscam.deviceName, null, response, params);
+          callback(foscam.deviceName, null, 'ok', params);
         });
       });
 
