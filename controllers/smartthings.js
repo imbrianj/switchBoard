@@ -324,7 +324,7 @@ module.exports = (function () {
 
     getDevicePath : function(command, config) {
       var fs = require('fs'),
-          subDevices  = State[config.deviceId].value,
+          subDevices  = State[config.device.deviceId].value,
           commandType = '',
           subDevice   = {},
           path        = '',
