@@ -13,7 +13,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -101,25 +101,6 @@ module.exports = (function () {
                method : 'GET' };
     },
 
-    onload : function (controller) {
-      var markup   = controller.markup,
-          stateOn  = '',
-          stateOff = '';
-
-      if(State[controller.config.deviceId].value === 'on') {
-        stateOn = ' device-on';
-      }
-
-      else if(State[controller.config.deviceId].value === 'off') {
-        stateOff = ' device-on';
-      }
-
-      markup = markup.replace('{{DEVICE_STATE_ON}}',  stateOn);
-      markup = markup.replace('{{DEVICE_STATE_OFF}}', stateOff);
-
-      return markup.replace('{{FOSCAM_DYNAMIC}}', 'http://' + controller.config.deviceIp + '/videostream.cgi?user=' + controller.config.username + '&amp;pwd=' + controller.config.password);
-    },
-
     init : function (controller, config) {
       var callback = function(deviceName, err, state, params) {
         var deviceState = require('../lib/deviceState');
@@ -182,6 +163,25 @@ module.exports = (function () {
       });
 
       request.end();
+    },
+
+    onload : function (controller) {
+      var markup   = controller.markup,
+          stateOn  = '',
+          stateOff = '';
+
+      if(State[controller.config.deviceId].value === 'on') {
+        stateOn = ' device-active';
+      }
+
+      else if(State[controller.config.deviceId].value === 'off') {
+        stateOff = ' device-active';
+      }
+
+      markup = markup.replace('{{DEVICE_STATE_ON}}',  stateOn);
+      markup = markup.replace('{{DEVICE_STATE_OFF}}', stateOff);
+
+      return markup.replace('{{FOSCAM_DYNAMIC}}', 'http://' + controller.config.deviceIp + '/videostream.cgi?user=' + controller.config.username + '&amp;pwd=' + controller.config.password);
     },
 
     send : function (config) {

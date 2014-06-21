@@ -13,7 +13,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic control of SmartThings endpoint.
    */
   return {
-    version : 20140619,
+    version : 20140621,
 
     inputs  : ['list', 'subdevice'],
 
@@ -111,6 +111,8 @@ module.exports = (function () {
           else {
             auth.url = response[0].url;
 
+            State[controller.config.deviceId].auth = auth;
+
             cache = fs.createWriteStream(__dirname + '/../tmp/smartthingsAuth.json');
             cache.once('open', function() {
               console.log('SmartThings: Auth data cached with URL');
@@ -127,60 +129,172 @@ module.exports = (function () {
     },
 
     /**
-     * Query for current device list and cache for future use.
+     * Query for current device list.
      */
     oauthDeviceList : function (auth, controller) {
-      var smartthings = {},
-          subDevices  = {},
-          request     = {};
+      var smartthings = { device : {} },
+          request     = {},
+          that        = this;
 
       console.log('SmartThings: Fetching device info');
 
-      smartthings.deviceName = controller.config.deviceId;
-      smartthings.path       = controller.config.path || auth.url + '/switches';
-      smartthings.auth       = auth.accessToken;
-      smartthings.callback   = function(err, response) {
-        var fs          = require('fs'),
-            deviceState = require('../lib/deviceState'),
-            i           = 0,
-            cache;
-
-        if(!err) {
-          response = JSON.parse(response);
-
-          if(response.error) {
-            console.log('SmartThings: ' + response.message);
-          }
-
-          else {
-            for(i; i < response.length; i += 1) {
-              subDevices[i] = {
-                label : response[i].label,
-                type  : response[i].type,
-                state : response[i].state
-              };
-
-              switch(response[i].type) {
-                case 'switch' :
-                  subDevices[i].on     = 'https://graph.api.smartthings.com' + auth.url + '/switches/' + response[i].id + '/on?access_token=' + auth.accessToken;
-                  subDevices[i].off    = 'https://graph.api.smartthings.com' + auth.url + '/switches/' + response[i].id + '/off?access_token=' + auth.accessToken;
-                  subDevices[i].toggle = 'https://graph.api.smartthings.com' + auth.url + '/switches/' + response[i].id + '/toggle?access_token=' + auth.accessToken;
-                break;
-
-                case 'lock' :
-                  subDevices[i].lock   = 'https://graph.api.smartthings.com' + auth.url + '/switches/' + response[i].id + '/lock?access_token=' + auth.accessToken;
-                  subDevices[i].unlock = 'https://graph.api.smartthings.com' + auth.url + '/switches/' + response[i].id + '/unlock?access_token=' + auth.accessToken;
-                  subDevices[i].toggle = 'https://graph.api.smartthings.com' + auth.url + '/switches/' + response[i].id + '/toggle?access_token=' + auth.accessToken;
-                break;
-              }
-            }
-
-            deviceState.updateState(smartthings.deviceName, { value : subDevices });
-          }
-        }
-      };
+      smartthings.device.deviceId = controller.config.deviceId;
+      smartthings.path            = controller.config.path || auth.url + '/switches';
+      smartthings.device.auth     = auth;
 
       this.send(smartthings);
+    },
+
+    updateState : function (smartthings, response) {
+      var subDevices  = {},
+          deviceState = require('../lib/deviceState'),
+          mode        = '',
+          i           = 0;
+
+      if((response) && (response.mode) && (response.devices)) {
+        mode = response.mode;
+
+        for(i; i < response.devices.length; i += 1) {
+          subDevices[i] = {
+            label : response.devices[i].label,
+            type  : response.devices[i].type,
+            state : response.devices[i].state
+          };
+
+          switch(response.devices[i].type) {
+            case 'switch' :
+              subDevices[i].on     = smartthings.auth.url + '/switches/' + response.devices[i].id + '/on?access_token=' + smartthings.auth.accessToken;
+              subDevices[i].off    = smartthings.auth.url + '/switches/' + response.devices[i].id + '/off?access_token=' + smartthings.auth.accessToken;
+              subDevices[i].toggle = smartthings.auth.url + '/switches/' + response.devices[i].id + '/toggle?access_token=' + smartthings.auth.accessToken;
+            break;
+
+            case 'lock' :
+              subDevices[i].lock   = smartthings.auth.url + '/switches/' + response.devices[i].id + '/lock?access_token=' + smartthings.auth.accessToken;
+              subDevices[i].unlock = smartthings.auth.url + '/switches/' + response.devices[i].id + '/unlock?access_token=' + smartthings.auth.accessToken;
+              subDevices[i].toggle = smartthings.auth.url + '/switches/' + response.devices[i].id + '/toggle?access_token=' + smartthings.auth.accessToken;
+            break;
+          }
+        }
+
+        deviceState.updateState(smartthings.deviceName, { value : { devices : subDevices, mode : mode } });
+      }
+    },
+
+    /**
+     * As devices can have the same names - but I assume they all want to be
+     * interacted with in concert, we'll not use a hash table - and return an
+     * object of applicable sub devices to act upon.
+     */
+    findSubDevices : function (subDeviceLabel, subDevices) {
+      var subDevice = {},
+          collected = [],
+          i         = 0,
+          j         = 0;
+
+      for(i in subDevices) {
+        subDevice = subDevices[i];
+
+        if(subDevice.label === subDeviceLabel) {
+          collected[j] = subDevice;
+          j += 1;
+        }
+      }
+
+      return collected;
+    },
+
+    getDevicePath : function(command, config) {
+      var subDevices  = State[config.device.deviceId].value.devices,
+          commandType = '',
+          subDevice   = {},
+          path        = '',
+          i           = 1;
+
+      if(command.indexOf('toggle-') === 0) {
+        commandType = 'toggle';
+      }
+
+      else if(command.indexOf('on-') === 0) {
+        commandType = 'on';
+      }
+
+      else if(command.indexOf('off-') === 0) {
+        commandType = 'off';
+      }
+
+      else if(command.indexOf('lock-') === 0) {
+        commandType = 'lock';
+      }
+
+      else if(command.indexOf('unlock-') === 0) {
+        commandType = 'unlock';
+      }
+
+      else if(command.indexOf('mode-') === 0) {
+        commandType = 'mode';
+      }
+
+      if(commandType === 'mode') {
+        path = config.device.auth.url + '/mode/' + command.replace(commandType + '-', '') + '?access_token=' + config.device.auth.accessToken;
+      }
+
+      else if(commandType) {
+        subDevice = this.findSubDevices(command.replace(commandType + '-', ''), subDevices);
+
+        if((subDevice) && (subDevice[0]) && (subDevice[0][commandType])) {
+          path = subDevice[0][commandType];
+
+          // For same-named devices, we want them to operate in concert, so
+          // we'll send along the same command to each of them.
+          if(subDevice.length > 1) {
+            for(i; i < subDevice.length; i += 1) {
+              config.subdevice = '';
+
+              config.path = subDevice[i][commandType];
+
+              this.send(config);
+            }
+          }
+        }
+      }
+
+      return path;
+    },
+
+    init : function (controller, config) {
+      var fs   = require('fs'),
+          auth = {};
+
+      if(typeof controller.config.clientId !== 'undefined' && controller.config.clientSecret !== 'undefined') {
+        fs.exists(__dirname + '/../tmp/smartthingsAuth.json', function(fileExists) {
+          // If we have a presumed good auth token, we can populate the device list.
+          if(fileExists) {
+            fs.readFile(__dirname + '/../tmp/smartthingsAuth.json', function(err, auth) {
+              auth = JSON.parse(auth.toString());
+
+              if(typeof auth.url === 'string') {
+                controller.config.auth = auth;
+
+                controller.controller.oauthDeviceList(auth, controller);
+              }
+
+              else {
+                controller.controller.oauthUrl(auth, controller);
+              }
+            });
+          }
+
+          // Otherwise, we need to prompt the user to retrieve the auth token.
+          else {
+            console.log('=====================================================================');
+            console.log('WARNING: SmartThings: Attempting to load controller that requires');
+            console.log('WARNING: additional OAuth configuration!');
+            console.log('WARNING: Visit this URL to authenticate:');
+            console.log('https://graph.api.smartthings.com/oauth/authorize?response_type=code&client_id=' + controller.config.clientId + '&redirect_uri=http://' + config.serverIp + ':' + config.serverPort + '/oauth/' + controller.config.deviceId + '&scope=app');
+            console.log('=====================================================================');
+          }
+        });
+      }
     },
 
     onload : function (controller) {
@@ -193,13 +307,15 @@ module.exports = (function () {
           j                 = 0,
           tempMarkup        = '',
           deviceMarkup      = '',
+          mode              = '',
           subDeviceMarkup   = '',
           subDeviceTemplate = '',
           subDevice,
           subDevices,
           subDeviceGroup;
 
-      subDevices = State[controller.config.deviceId].value;
+      mode       = State[controller.config.deviceId].value.mode;
+      subDevices = State[controller.config.deviceId].value.devices;
 
       if(subDevices) {
         // You want to display SmartThings devices in groups.
@@ -228,7 +344,7 @@ module.exports = (function () {
                 subDeviceMarkup = subDeviceMarkup.split('{{SUB_DEVICE_NAME}}').join(subDeviceGroup[0].label);
 
                 if((subDeviceGroup[0].state === 'on') || (subDeviceGroup[0].state === 'lock')) {
-                  subDeviceMarkup = subDeviceMarkup.split('{{SUB_DEVICE_STATE}}').join(' device-on');
+                  subDeviceMarkup = subDeviceMarkup.split('{{SUB_DEVICE_STATE}}').join(' device-active');
                 }
 
                 else {
@@ -263,114 +379,25 @@ module.exports = (function () {
         }
       }
 
+      switch(mode) {
+        case 'Home' :
+          markup = markup.split('{{DEVICE_STATE_HOME}}').join(' device-active');
+        break;
+
+        case 'Away' :
+          markup = markup.split('{{DEVICE_STATE_AWAY}}').join(' device-active');
+        break;
+
+        case 'Night' :
+          markup = markup.split('{{DEVICE_STATE_NIGHT}}').join(' device-active');
+        break;
+      }
+
+      markup = markup.split('{{DEVICE_STATE_HOME}}').join('');
+      markup = markup.split('{{DEVICE_STATE_AWAY}}').join('');
+      markup = markup.split('{{DEVICE_STATE_NIGHT}}').join('');
+
       return markup.replace('{{SMARTTHINGS_DYNAMIC}}', tempMarkup);
-    },
-
-    /**
-     * As devices can have the same names - but I assume they all want to be
-     * interacted with in concert, we'll not use a hash table - and return an
-     * object of applicable sub devices to act upon.
-     */
-    findSubDevices : function (subDeviceLabel, subDevices) {
-      var subDevice = {},
-          collected = [],
-          i         = 0,
-          j         = 0;
-
-      for(i in subDevices) {
-        subDevice = subDevices[i];
-
-        if(subDevice.label === subDeviceLabel) {
-          collected[j] = subDevice;
-          j += 1;
-        }
-      }
-
-      return collected;
-    },
-
-    init : function (controller, config) {
-      var fs = require('fs');
-
-      if(typeof controller.config.clientId !== 'undefined' && controller.config.clientSecret !== 'undefined') {
-        fs.exists(__dirname + '/../tmp/smartthingsAuth.json', function(fileExists) {
-          // If we have a presumed good auth token, we can populate the device list.
-          if(fileExists) {
-            fs.readFile(__dirname + '/../tmp/smartthingsAuth.json', function(err, auth) {
-              auth = JSON.parse(auth.toString());
-
-              if(typeof auth.url === 'string') {
-                controller.controller.oauthDeviceList(auth, controller);
-              }
-
-              else {
-                controller.controller.oauthUrl(auth, controller);
-              }
-            });
-          }
-
-          // Otherwise, we need to prompt the user to retrieve the auth token.
-          else {
-            console.log('=====================================================================');
-            console.log('WARNING: SmartThings: Attempting to load controller that requires');
-            console.log('WARNING: additional OAuth configuration!');
-            console.log('WARNING: Visit this URL to authenticate:');
-            console.log('https://graph.api.smartthings.com/oauth/authorize?response_type=code&client_id=' + controller.config.clientId + '&redirect_uri=http://' + config.serverIp + ':' + config.serverPort + '/oauth/' + controller.config.deviceId + '&scope=app');
-            console.log('=====================================================================');
-          }
-        });
-      }
-    },
-
-    getDevicePath : function(command, config) {
-      var fs = require('fs'),
-          subDevices  = State[config.device.deviceId].value,
-          commandType = '',
-          subDevice   = {},
-          path        = '',
-          i           = 1;
-
-      if(command.indexOf('toggle-') === 0) {
-        commandType = 'toggle';
-      }
-
-      else if(command.indexOf('on-') === 0) {
-        commandType = 'on';
-      }
-
-      else if(command.indexOf('off-') === 0) {
-        commandType = 'off';
-      }
-
-      else if(command.indexOf('lock-') === 0) {
-        commandType = 'lock';
-      }
-
-      else if(command.indexOf('unlock-') === 0) {
-        commandType = 'unlock';
-      }
-
-      if(commandType) {
-        subDevice = this.findSubDevices(command.replace(commandType + '-', ''), subDevices);
-
-        if((subDevice) && (subDevice[0]) && (subDevice[0][commandType])) {
-          path = subDevice[0][commandType];
-
-          // For same-named devices, we want them to operate in concert, so
-          // we'll send along the same command to each of them.
-          if(subDevice.length > 1) {
-            for(i; i < subDevice.length; i += 1) {
-              config.subdevice = '';
-
-              config.path = subDevice[i][commandType];
-
-              this.send(config);
-            }
-          }
-        }
-      }
-
-      return path;
     },
 
     send : function (config) {
@@ -381,18 +408,19 @@ module.exports = (function () {
           dataReply   = '',
           that        = this;
 
-      smartthings.command  = config.subdevice || '';
-      smartthings.host     = config.host      || 'graph.api.smartthings.com';
-      smartthings.port     = config.port      || 443;
-      smartthings.path     = config.path      || '';
-      smartthings.auth     = config.auth      || '';
-      smartthings.method   = config.method    || 'GET';
-      smartthings.callback = config.callback  || function() {};
+      smartthings.deviceName = config.device.deviceId;
+      smartthings.auth       = config.device.auth;
+      smartthings.command    = config.subdevice || '';
+      smartthings.host       = config.host      || 'graph.api.smartthings.com';
+      smartthings.port       = config.port      || 443;
+      smartthings.path       = config.path      || '';
+      smartthings.method     = config.method    || 'GET';
+      smartthings.callback   = config.callback  || function() {};
 
       request = this.postPrepare(smartthings);
 
       if(smartthings.auth) {
-        request.headers.Authorization = 'Bearer ' + smartthings.auth;
+        request.headers.Authorization = 'Bearer ' + smartthings.auth.accessToken;
       }
 
       if(smartthings.command) {
@@ -407,7 +435,14 @@ module.exports = (function () {
                   });
 
                   response.once('end', function() {
+                    var deviceState     = require('../lib/deviceState'),
+                        smartthingsData = {};
+
                     if(dataReply) {
+                      smartthingsData = JSON.parse(dataReply);
+
+                      that.updateState(smartthings, smartthingsData);
+
                       smartthings.callback(null, dataReply);
                     }
 

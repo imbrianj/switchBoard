@@ -10,7 +10,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -75,8 +75,6 @@ a:hover {
 }
 
 body {
-	background: #FFF;
-	color: #000;
 	font-family: helvetica;
 	line-height: 1;
 }
@@ -302,7 +300,7 @@ form legend {
 
 .header h1,
 .header ul li {
-	margin: .4em .2em;
+	margin: 1em .2em .4em .2em;
 }
 
 .header ul li a {
@@ -487,15 +485,15 @@ form legend {
 	float: left;
 	width: 33%;
  }
- 
+
  .device .numeric-controls ol li:last-child {
 	width: 100%;
  }
- 
+
  .foscam .numeric-controls ol li:last-child {
 	width: 33%;
  }
- 
+
  .device .numeric-controls ul li {
 	margin-top: -1em;
  }
@@ -594,10 +592,10 @@ form legend {
 	font-size: 30%;
 }
 
-.device-on:before {
+.device-active:before {
 	text-shadow: -2px -2px 1px #286EA0,
-                 -2px 2px 1px #286EA0, 
-                 2px -2px 1px #286EA0, 
+                 -2px 2px 1px #286EA0,
+                 2px -2px 1px #286EA0,
                  2px 2px 1px #286EA0;
 	-moz-transition: text-shadow .1s ease-in-out;
 	-o-transition: text-shadow .1s ease-in-out;
@@ -605,13 +603,13 @@ form legend {
 	transition: text-shadow .1s ease-in-out;
 }
 
-.device-on:hover:before {
+.device-active:hover:before {
 	text-shadow: 0 0 0 #286EA0;
 }
 
 .device.samsung .numeric-controls,
-.device.samsungsamsung .media,
-.device.samsungsamsung .information {
+.device.samsung .media,
+.device.samsung .information {
 	display: none;
 }
 
@@ -644,7 +642,7 @@ body .selected,
 	-webkit-transition: all 2s ease-in-out;
 	transition: all 2s ease-in-out;
 }
-/*
+
 @media (luminosity: washed) {
 	body,
 	.theme-dark body {
@@ -668,7 +666,7 @@ body .selected,
 		color: #333;
 	}
 }
-*/
+
 .theme-dark .header h1 a,
 .theme-dark input,
 .theme-dark button {
@@ -745,10 +743,6 @@ body .selected,
 		float: none;
 	}
 
-	.header ul li {
-		margin-top: 1em;
-	}
-
 	.device {
 		font-size: 250%;
 	}
@@ -776,9 +770,9 @@ body .selected,
 		font-size: 400%;
 	}
 
-	#samsung .numeric-controls,
-	#samsung .media,
-	#samsung .information {
+	.device.samsung .numeric-controls,
+	.device.samsung .media,
+	.device.samsung .information {
 		display: block;
 	}
 }

@@ -13,7 +13,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -113,27 +113,6 @@ module.exports = (function () {
       });
     },
 
-    onload : function (controller) {
-      var markup     = controller.markup,
-          fs         = require('fs'),
-          template   = fs.readFileSync(__dirname + '/../templates/fragments/roku.tpl').toString(),
-          i          = 0,
-          tempMarkup = '',
-          apps;
-
-      apps = State[controller.config.deviceId].value;
-
-      if(apps) {
-        for(i in apps) {
-          tempMarkup = tempMarkup + template.split('{{APP_ID}}').join(apps[i].id);
-          tempMarkup = tempMarkup.split('{{APP_IMG}}').join(apps[i].cache);
-          tempMarkup = tempMarkup.split('{{APP_NAME}}').join(apps[i].name);
-        }
-      }
-
-      return markup.replace('{{ROKU_DYNAMIC}}', tempMarkup);
-    },
-
     findState : function (controller, callback, logging) {
       var xml2js = require('xml2js'),
           fs     = require('fs'),
@@ -220,6 +199,27 @@ module.exports = (function () {
       };
 
       this.findState(controller, stateCallback, logging);
+    },
+
+    onload : function (controller) {
+      var markup     = controller.markup,
+          fs         = require('fs'),
+          template   = fs.readFileSync(__dirname + '/../templates/fragments/roku.tpl').toString(),
+          i          = 0,
+          tempMarkup = '',
+          apps;
+
+      apps = State[controller.config.deviceId].value;
+
+      if(apps) {
+        for(i in apps) {
+          tempMarkup = tempMarkup + template.split('{{APP_ID}}').join(apps[i].id);
+          tempMarkup = tempMarkup.split('{{APP_IMG}}').join(apps[i].cache);
+          tempMarkup = tempMarkup.split('{{APP_NAME}}').join(apps[i].name);
+        }
+      }
+
+      return markup.replace('{{ROKU_DYNAMIC}}', tempMarkup);
     },
 
     send : function (config) {

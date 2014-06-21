@@ -42,18 +42,18 @@ If you have questions, comments or want to complain, email me at brian@bevey.org
 
 FAQ
 ---
-Q. Why aren't you using a seed-based JS library / referencing CSS from a CDN?
+- Q. Why aren't you using a seed-based JS library / referencing CSS from a CDN?
 
-A. I want to make sure this works without any Internet access.  You need local LAN access, but nothing critical should be over the Internet.  Some services (stocks and weather) obviously require access, but they are not core to the functionality of the app.
+  A. I want to make sure this works without any Internet access.  You need local LAN access, but nothing critical should be over the Internet.  Some services (stocks and weather) obviously require access, but they are not core to the functionality of the app.
 
-Q. How can I configure my PS3?
+- Q. How can I configure my PS3?
 
-A.
- * You'll need a supported Bluetooth dongle: http://gimx.fr/wiki/index.php?title=Bluetooth_dongle
- * Install GIMX version 1.12+ (earlier versions won't work): https://code.google.com/p/diyps3controller/downloads/list
- * Spoof an already paired PS3 controller: http://gimx.fr/wiki/index.php?title=Command_line#Linux_.2B_bluetooth
- * That's it!
+  A.
+   * You'll need a supported Bluetooth dongle: http://gimx.fr/wiki/index.php?title=Bluetooth_dongle
+   * Install GIMX version 1.12+ (earlier versions won't work): https://code.google.com/p/diyps3controller/downloads/list
+   * Spoof an already paired PS3 controller: http://gimx.fr/wiki/index.php?title=Command_line#Linux_.2B_bluetooth
+   * That's it!
 
-Q. How secure is this?
+- Q. How secure is this?
 
-A. Not very.  It's assumed that any device that's on your network is deemed white-listed.  This probably shouldn't be used on a large network with people you don't trust to screw with your TV.
+  A. Not very.  It's assumed that any device that's on your network is deemed white-listed.  This probably shouldn't be used on a large network with people you don't trust to screw with your TV.

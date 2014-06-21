@@ -70,26 +70,23 @@ module.exports = (function () {
                     });
 
                     response.once('end', function() {
-                      var fs          = require('fs'),
-                          deviceState = require('../lib/deviceState'),
+                      var deviceState = require('../lib/deviceState'),
                           weatherData = {},
                           city,
                           i = 0;
 
-                      if(!err) {
-                        if(response) {
-                          response = JSON.parse(response);
-                          city     = response.query.results.channel;
+                      if(response) {
+                        response = JSON.parse(response);
+                        city     = response.query.results.channel;
 
-                          weatherData = { 'city'     : city.location.city,
-                                          'humidity' : city.atmosphere.humidity,
-                                          'sunrise'  : city.astronomy.sunrise,
-                                          'sunset'   : city.astronomy.sunset,
-                                          'forecast' : city.item.forecast
-                                        };
+                        weatherData = { 'city'     : city.location.city,
+                                        'humidity' : city.atmosphere.humidity,
+                                        'sunrise'  : city.astronomy.sunrise,
+                                        'sunset'   : city.astronomy.sunset,
+                                        'forecast' : city.item.forecast
+                                      };
 
-                          deviceState.updateState(weather.deviceName, { value : weatherData });
-                        }
+                        deviceState.updateState(weather.deviceName, { state : 'ok', value : weatherData });
                       }
 
                       weather.callback(null, weatherData);

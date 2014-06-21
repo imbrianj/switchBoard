@@ -70,8 +70,7 @@ module.exports = (function () {
                     });
 
                     response.once('end', function() {
-                      var fs          = require('fs'),
-                          deviceState = require('../lib/deviceState'),
+                      var deviceState = require('../lib/deviceState'),
                           stockData   = {},
                           stock,
                           data,
@@ -97,7 +96,7 @@ module.exports = (function () {
                           }
                         }
 
-                        deviceState.updateState(stocks.deviceName, { value : stockData });
+                        deviceState.updateState(stocks.deviceName, { state: 'ok', value : stockData });
                       }
 
                       stocks.callback(null, stockData);
