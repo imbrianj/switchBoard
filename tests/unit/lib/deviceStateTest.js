@@ -13,7 +13,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -35,14 +35,9 @@ exports.deviceState = {
     'use strict';
 
     var deviceState   = require('../../../lib/deviceState'),
-        newFauxDevice = deviceState.updateState('faux-device', {}),
-        newDevice     = deviceState.updateState('foo-device',  { markup : '<div>foo</div>' });
+        newFauxDevice = deviceState.updateState('faux-device', {});
 
-    test.equal(State['faux-device'].markup,                   undefined,       'No markup was defined for the faux device');
-    test.notEqual(parseInt(State['faux-device'].updated, 10), NaN,             'Timestamp should return a number.');
-
-    test.equal(State['foo-device'].markup,                   '<div>foo</div>', 'Markup defined for the device');
-    test.notEqual(parseInt(State['foo-device'].updated, 10), NaN,              'Timestamp should return a number.');
+    test.notEqual(parseInt(State['faux-device'].updated, 10), NaN, 'Timestamp should return a number.');
 
     test.done();
   },

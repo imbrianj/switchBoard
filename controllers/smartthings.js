@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic control of SmartThings endpoint.
    */
   return {
-    version : 20140621,
+    version : 20140622,
 
     inputs  : ['list', 'subdevice'],
 
@@ -156,24 +156,11 @@ module.exports = (function () {
 
         for(i; i < response.devices.length; i += 1) {
           subDevices[i] = {
+            id    : response.devices[i].id,
             label : response.devices[i].label,
             type  : response.devices[i].type,
             state : response.devices[i].state
           };
-
-          switch(response.devices[i].type) {
-            case 'switch' :
-              subDevices[i].on     = smartthings.auth.url + '/switches/' + response.devices[i].id + '/on?access_token=' + smartthings.auth.accessToken;
-              subDevices[i].off    = smartthings.auth.url + '/switches/' + response.devices[i].id + '/off?access_token=' + smartthings.auth.accessToken;
-              subDevices[i].toggle = smartthings.auth.url + '/switches/' + response.devices[i].id + '/toggle?access_token=' + smartthings.auth.accessToken;
-            break;
-
-            case 'lock' :
-              subDevices[i].lock   = smartthings.auth.url + '/switches/' + response.devices[i].id + '/lock?access_token=' + smartthings.auth.accessToken;
-              subDevices[i].unlock = smartthings.auth.url + '/switches/' + response.devices[i].id + '/unlock?access_token=' + smartthings.auth.accessToken;
-              subDevices[i].toggle = smartthings.auth.url + '/switches/' + response.devices[i].id + '/toggle?access_token=' + smartthings.auth.accessToken;
-            break;
-          }
         }
 
         deviceState.updateState(smartthings.deviceName, { value : { devices : subDevices, mode : mode } });
@@ -241,8 +228,14 @@ module.exports = (function () {
       else if(commandType) {
         subDevice = this.findSubDevices(command.replace(commandType + '-', ''), subDevices);
 
-        if((subDevice) && (subDevice[0]) && (subDevice[0][commandType])) {
-          path = subDevice[0][commandType];
+        if((subDevice) && (subDevice[0])) {
+          if(subDevice[0].type === 'switch') {
+            path = config.device.auth.url + '/switches/' + subDevice[0].id + '/' + commandType + '?access_token=' + config.device.auth.accessToken;
+          }
+
+          else if(subDevice[0].type === 'lock') {
+            path = config.device.auth.url + '/locks/' + subDevice[0].id + '/' + commandType + '?access_token=' + config.device.auth.accessToken;
+          }
 
           // For same-named devices, we want them to operate in concert, so
           // we'll send along the same command to each of them.

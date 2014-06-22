@@ -79,6 +79,18 @@ body {
 	line-height: 1;
 }
 
+.theme-dark body {
+	background: #000;
+	color: #333;
+	/* Not needed till light-level queries supported */
+	/*
+	-moz-transition: background 2s ease-in-out, color 2s ease-in-out;
+	-o-transition: background 2s ease-in-out, color 2s ease-in-out;
+	-webkit-transition: background 2s ease-in-out, color 2s ease-in-out;
+	transition: background 2s ease-in-out, color 2s ease-in-out;
+	*/
+}
+
 ol,
 ul {
 	list-style: none;
@@ -633,17 +645,7 @@ body .selected,
 	color: #000;
 }
 
-/* Dark theme */
-.theme-dark body {
-	background: #000;
-	color: #333;
-	-moz-transition: all 2s ease-in-out;
-	-o-transition: all 2s ease-in-out;
-	-webkit-transition: all 2s ease-in-out;
-	transition: all 2s ease-in-out;
-}
-
-@media (luminosity: washed) {
+@media (light-level: washed) {
 	body,
 	.theme-dark body {
 		background: #DDD;
@@ -651,7 +653,7 @@ body .selected,
 	}
 }
 
-@media (luminosity: normal) {
+@media (light-level: normal) {
 	body,
 	.theme-dark body {
 		background: #444;
@@ -659,7 +661,7 @@ body .selected,
 	}
 }
 
-@media (luminosity: dim) {
+@media (light-level: dim) {
 	body,
 	.theme-dark body {
 		background: #000;
