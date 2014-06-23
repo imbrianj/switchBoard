@@ -111,6 +111,10 @@ module.exports = (function () {
       };
 
       this.state(controller, callback);
+
+      controller.markup = controller.markup.replace('{{FOSCAM_DYNAMIC}}', 'http://' + controller.config.deviceIp + '/videostream.cgi?user=' + controller.config.username + '&amp;pwd=' + controller.config.password);
+
+      return controller;
     },
 
     state : function (controller, callback) {
@@ -166,22 +170,9 @@ module.exports = (function () {
     },
 
     onload : function (controller) {
-      var markup   = controller.markup,
-          stateOn  = '',
-          stateOff = '';
+      var parser = require(__dirname + '/../parsers/foscam').parser;
 
-      if(State[controller.config.deviceId].value === 'on') {
-        stateOn = ' device-active';
-      }
-
-      else if(State[controller.config.deviceId].value === 'off') {
-        stateOff = ' device-active';
-      }
-
-      markup = markup.replace('{{DEVICE_STATE_ON}}',  stateOn);
-      markup = markup.replace('{{DEVICE_STATE_OFF}}', stateOff);
-
-      return markup.replace('{{FOSCAM_DYNAMIC}}', 'http://' + controller.config.deviceIp + '/videostream.cgi?user=' + controller.config.username + '&amp;pwd=' + controller.config.password);
+      return parser(controller.deviceId, controller.markup, State[controller.config.deviceId].state, State[controller.config.deviceId].value);
     },
 
     send : function (config) {

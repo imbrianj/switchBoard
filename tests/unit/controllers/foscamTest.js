@@ -13,7 +13,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -93,7 +93,24 @@ exports.foscamControllerTest = {
                                                                 password : 'PASSWORD' } });
 
     test.ok((onloadMarkup.indexOf('<h1>Contents:</h1>') !== -1), 'Passed markup validated');
-    test.ok((onloadMarkup.indexOf('http://127.0.0.1/videostream.cgi?user=USERNAME&amp;pwd=PASSWORD') !== -1), 'Foscam image reference validated');
+
+    test.done();
+  },
+
+  init : function (test) {
+    'use strict';
+
+    State.FOO       = {};
+    State.FOO.value = 'on';
+
+    var foscamController = require(__dirname + '/../../../controllers/foscam'),
+        controller       = foscamController.init({ markup : '<h1>Contents:</h1> {{FOSCAM_DYNAMIC}}',
+                                                   config : { deviceId : 'FOO',
+                                                              deviceIp : '127.0.0.1',
+                                                              username : 'USERNAME',
+                                                              password : 'PASSWORD' } });
+
+    test.ok((controller.markup.indexOf('http://127.0.0.1/videostream.cgi?user=USERNAME&amp;pwd=PASSWORD') !== -1), 'Foscam image reference validated');
 
     test.done();
   }

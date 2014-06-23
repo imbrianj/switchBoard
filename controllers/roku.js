@@ -202,24 +202,11 @@ module.exports = (function () {
     },
 
     onload : function (controller) {
-      var markup     = controller.markup,
-          fs         = require('fs'),
-          template   = fs.readFileSync(__dirname + '/../templates/fragments/roku.tpl').toString(),
-          i          = 0,
-          tempMarkup = '',
-          apps;
+      var fs       = require('fs'),
+          parser   = require(__dirname + '/../parsers/roku').parser,
+          fragment = fs.readFileSync(__dirname + '/../templates/fragments/roku.tpl').toString();
 
-      apps = State[controller.config.deviceId].value;
-
-      if(apps) {
-        for(i in apps) {
-          tempMarkup = tempMarkup + template.split('{{APP_ID}}').join(apps[i].id);
-          tempMarkup = tempMarkup.split('{{APP_IMG}}').join(apps[i].cache);
-          tempMarkup = tempMarkup.split('{{APP_NAME}}').join(apps[i].name);
-        }
-      }
-
-      return markup.replace('{{ROKU_DYNAMIC}}', tempMarkup);
+      return parser(controller.deviceId, controller.markup, State[controller.config.deviceId].state, State[controller.config.deviceId].value, fragment);
     },
 
     send : function (config) {

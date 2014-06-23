@@ -111,8 +111,6 @@ module.exports = (function () {
           else {
             auth.url = response[0].url;
 
-            State[controller.config.deviceId].auth = auth;
-
             cache = fs.createWriteStream(__dirname + '/../tmp/smartthingsAuth.json');
             cache.once('open', function() {
               console.log('SmartThings: Auth data cached with URL');
@@ -141,6 +139,7 @@ module.exports = (function () {
       smartthings.device.deviceId = controller.config.deviceId;
       smartthings.path            = controller.config.path || auth.url + '/switches';
       smartthings.device.auth     = auth;
+      smartthings.device.groups   = controller.config.groups || {};
 
       this.send(smartthings);
     },
@@ -163,7 +162,7 @@ module.exports = (function () {
           };
         }
 
-        deviceState.updateState(smartthings.deviceName, { value : { devices : subDevices, mode : mode } });
+        deviceState.updateState(smartthings.deviceName, { value : { devices : subDevices, mode : mode, groups : response.groups } });
       }
     },
 
@@ -255,8 +254,9 @@ module.exports = (function () {
     },
 
     init : function (controller, config) {
-      var fs   = require('fs'),
-          auth = {};
+      var fs     = require('fs'),
+          auth   = {},
+          groups = config.groups || {};
 
       if(typeof controller.config.clientId !== 'undefined' && controller.config.clientSecret !== 'undefined') {
         fs.exists(__dirname + '/../tmp/smartthingsAuth.json', function(fileExists) {
@@ -288,109 +288,17 @@ module.exports = (function () {
           }
         });
       }
+
+      return controller;
     },
 
     onload : function (controller) {
-      var markup            = controller.markup,
-          fs                = require('fs'),
-          templateSwitch    = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListSwitch.tpl').toString(),
-          templateLock      = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListLock.tpl').toString(),
-          templateGroup     = '',
-          i                 = 0,
-          j                 = 0,
-          tempMarkup        = '',
-          deviceMarkup      = '',
-          mode              = '',
-          subDeviceMarkup   = '',
-          subDeviceTemplate = '',
-          subDevice,
-          subDevices,
-          subDeviceGroup;
+      var fs = require('fs'),
+          parser = require(__dirname + '/../parsers/smartthings').parser,
+          switchFragment = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListSwitch.tpl').toString(),
+          lockFragment   = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListLock.tpl').toString();
 
-      mode       = State[controller.config.deviceId].value.mode;
-      subDevices = State[controller.config.deviceId].value.devices;
-
-      if(subDevices) {
-        // You want to display SmartThings devices in groups.
-        if(controller.config.groups) {
-          templateGroup = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsGroups.tpl').toString();
-
-          for(i in controller.config.groups) {
-            tempMarkup      = tempMarkup + templateGroup;
-            subDeviceMarkup = '';
-
-            for(j in controller.config.groups[i]) {
-              subDeviceGroup  = this.findSubDevices(controller.config.groups[i][j], subDevices);
-
-              if(subDeviceGroup && subDeviceGroup[0]) {
-                switch(subDeviceGroup[0].type) {
-                  case 'switch' :
-                    subDeviceTemplate = templateSwitch;
-                  break;
-
-                  case 'lock' :
-                    subDeviceTemplate = templateLock;
-                  break;
-                }
-
-                subDeviceMarkup = subDeviceMarkup + subDeviceTemplate.split('{{SUB_DEVICE_ID}}').join(subDeviceGroup[0].label.split(' ').join('+'));
-                subDeviceMarkup = subDeviceMarkup.split('{{SUB_DEVICE_NAME}}').join(subDeviceGroup[0].label);
-
-                if((subDeviceGroup[0].state === 'on') || (subDeviceGroup[0].state === 'lock')) {
-                  subDeviceMarkup = subDeviceMarkup.split('{{SUB_DEVICE_STATE}}').join(' device-active');
-                }
-
-                else {
-                  subDeviceMarkup = subDeviceMarkup.split('{{SUB_DEVICE_STATE}}').join('');
-                }
-              }
-            }
-
-            tempMarkup = tempMarkup.split('{{GROUP_TITLE}}').join(i);
-            tempMarkup = tempMarkup.split('{{SUB_DEVICE_LIST}}').join(subDeviceMarkup);
-          }
-        }
-
-        // Otherwise, you want to show them in a list.
-        else {
-          for(i in subDevices) {
-            subDevice = subDevices[i];
-
-            switch(subDevice.type) {
-              case 'switch' :
-                subDeviceTemplate = templateSwitch;
-              break;
-
-              case 'lock' :
-                subDeviceTemplate = templateLock;
-              break;
-            }
-
-            tempMarkup = tempMarkup + subDeviceTemplate.split('{{SUB_DEVICE_ID}}').join(subDevice.label.split(' ').join('+'));
-            tempMarkup = tempMarkup.split('{{SUB_DEVICE_NAME}}').join(subDevice.label);
-          }
-        }
-      }
-
-      switch(mode) {
-        case 'Home' :
-          markup = markup.split('{{DEVICE_STATE_HOME}}').join(' device-active');
-        break;
-
-        case 'Away' :
-          markup = markup.split('{{DEVICE_STATE_AWAY}}').join(' device-active');
-        break;
-
-        case 'Night' :
-          markup = markup.split('{{DEVICE_STATE_NIGHT}}').join(' device-active');
-        break;
-      }
-
-      markup = markup.split('{{DEVICE_STATE_HOME}}').join('');
-      markup = markup.split('{{DEVICE_STATE_AWAY}}').join('');
-      markup = markup.split('{{DEVICE_STATE_NIGHT}}').join('');
-
-      return markup.replace('{{SMARTTHINGS_DYNAMIC}}', tempMarkup);
+      return parser(controller.deviceId, controller.markup, State[controller.config.deviceId].state, State[controller.config.deviceId].value, { switch : switchFragment, lock : lockFragment });
     },
 
     send : function (config) {
@@ -433,6 +341,8 @@ module.exports = (function () {
 
                     if(dataReply) {
                       smartthingsData = JSON.parse(dataReply);
+
+                      smartthingsData.groups = config.device.groups;
 
                       that.updateState(smartthings, smartthingsData);
 

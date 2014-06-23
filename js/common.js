@@ -1,4 +1,4 @@
-/*global document, window, ActiveXObject, init, console, XMLHttpRequest, Bevey*/
+/*global document, window, ActiveXObject, init, console, XMLHttpRequest, Switchboard*/
 /*jslint white: true */
 /*jshint -W020 */
 
@@ -14,7 +14,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -24,11 +24,13 @@
  * IN THE SOFTWARE.
  */
 
-Bevey = (function () {
+Switchboard = (function () {
   'use strict';
 
   return {
-    version : 20140504,
+    version : 20140622,
+
+    parser : {},
 
     event : {
       list : [],
@@ -44,8 +46,8 @@ Bevey = (function () {
       *         is triggered.
       * @param {Boolean} capture true if the event should be registered as a
       *         capturing listener.  Defaults to false.
-      * @note All events are added to the Bevey.event.list array for access
-      *        outside this function.
+      * @note All events are added to the Switchboard.event.list array for
+      *        access outside this function.
       */
       add : function (elm, event, action, capture) {
         capture = capture || false;
@@ -62,7 +64,7 @@ Bevey = (function () {
           elm['on' + event] = action;
         }
 
-        Bevey.event.list.push([elm, event, action]);
+        Switchboard.event.list.push([elm, event, action]);
       },
 
      /**
@@ -75,7 +77,8 @@ Bevey = (function () {
       *         and event.
       * @param {Boolean} capture true if the event was registered as a
       *         capturing listener.  Defaults to false.
-      * @note Automatically removes the event from the Bevey.event.list array.
+      * @note Automatically removes the event from the Switchboard.event.list
+      *         array.
       */
       remove : function (elm, event, action, capture) {
         capture = capture || false;
@@ -94,13 +97,13 @@ Bevey = (function () {
           elm['on' + event] = null;
         }
 
-        for (i; i < Bevey.event.list.length; i += 1) {
-          if (Bevey.event.list[i]) {
-            if ((Bevey.event.list[i]) &&
-                (Bevey.event.list[i][0] === elm) &&
-                (Bevey.event.list[i][1] === event) &&
-                (Bevey.event.list[i][2] === action)) {
-              Bevey.event.list.splice(i, 1);
+        for (i; i < Switchboard.event.list.length; i += 1) {
+          if (Switchboard.event.list[i]) {
+            if ((Switchboard.event.list[i]) &&
+                (Switchboard.event.list[i][0] === elm) &&
+                (Switchboard.event.list[i][1] === event) &&
+                (Switchboard.event.list[i][2] === action)) {
+              Switchboard.event.list.splice(i, 1);
 
               break;
             }
@@ -109,19 +112,19 @@ Bevey = (function () {
       },
 
      /**
-      * Loops through all registered events (referencing the Bevey.event.list
-      *  array) and removes all events.  This should only be executed onunload
-      *  to prevent documented IE6 memory leaks.
+      * Loops through all registered events (referencing the
+      *  Switchboard.event.list array) and removes all events.  This should
+      *  only be executed onunload to prevent documented IE6 memory leaks.
       */
       removeAll : function (elm) {
         elm = elm || document;
 
-        var i = Bevey.event.list.length - 1;
+        var i = Switchboard.event.list.length - 1;
 
         for (i; i >= 0 ; i -= 1) {
-          if (Bevey.event.list[i]) {
-            if ((Bevey.event.list[i]) && ((Bevey.event.list[i][0] === elm) || (elm === document))) {
-              Bevey.event.remove(Bevey.event.list[i][0], Bevey.event.list[i][1], Bevey.event.list[i][2]);
+          if (Switchboard.event.list[i]) {
+            if ((Switchboard.event.list[i]) && ((Switchboard.event.list[i][0] === elm) || (elm === document))) {
+              Switchboard.event.remove(Switchboard.event.list[i][0], Switchboard.event.list[i][1], Switchboard.event.list[i][2]);
             }
           }
         }
@@ -171,7 +174,7 @@ Bevey = (function () {
     * @param {String} className Class name being checked.
     */
     hasClass : function (elm, className) {
-      return Bevey.hasAttribute(elm, 'className', className);
+      return Switchboard.hasAttribute(elm, 'className', className);
     },
 
    /**
@@ -182,8 +185,8 @@ Bevey = (function () {
     * @param {String} className Class name to be applied.
     */
     addClass : function (elm, className) {
-      if (!Bevey.hasClass(elm, className)) {
-        elm.className = Bevey.trim(elm.className + ' ' + className);
+      if (!Switchboard.hasClass(elm, className)) {
+        elm.className = Switchboard.trim(elm.className + ' ' + className);
       }
     },
 
@@ -194,9 +197,9 @@ Bevey = (function () {
     * @param {String} className Class name to be removed.
     */
     removeClass : function (elm, className) {
-      if (Bevey.hasClass(elm, className)) {
+      if (Switchboard.hasClass(elm, className)) {
         elm.className = elm.className.replace(new RegExp('(\\s|^)' + className + '(\\s|$)'), ' ');
-        elm.className = Bevey.trim(elm.className);
+        elm.className = Switchboard.trim(elm.className);
       }
     },
 
@@ -208,12 +211,12 @@ Bevey = (function () {
     * @param {String} className Class Name to be toggled.
     */
     toggleClass : function (elm, className) {
-      if (!Bevey.hasClass(elm, className)) {
-        Bevey.addClass(elm, className);
+      if (!Switchboard.hasClass(elm, className)) {
+        Switchboard.addClass(elm, className);
       }
 
       else {
-        Bevey.removeClass(elm, className);
+        Switchboard.removeClass(elm, className);
       }
     },
 
@@ -264,7 +267,7 @@ Bevey = (function () {
         children = parent.getElementsByTagName(tag);
 
         for (i in children) {
-          if (Bevey.hasClass(children[i], className)) {
+          if (Switchboard.hasClass(children[i], className)) {
             elementsWithClass[j] = children[i];
             j += 1;
           }
@@ -345,7 +348,7 @@ Bevey = (function () {
             }
 
             else if (ajaxRequest.onComplete.childNodes[0]) {
-              Bevey.putText(ajaxRequest.onComplete, ajaxRequest.response);
+              Switchboard.putText(ajaxRequest.onComplete, ajaxRequest.response);
             }
             break;
 
@@ -385,7 +388,7 @@ Bevey = (function () {
 
         request.setRequestHeader('AJAX', 'true');
 
-        Bevey.event.add(request, 'readystatechange', function () {
+        Switchboard.event.add(request, 'readystatechange', function () {
           if (request.readyState === 4) {
             if (request.status === 200) {
               ajaxRequest.response = request.responseText;
@@ -404,19 +407,19 @@ Bevey = (function () {
     },
 
    /**
-    * Initialization for Bevey.  Executes the standard functions used.  If a
-    *  global function of "init" is available, it will also be executed.
+    * Initialization for Switchboard.  Executes the standard functions used.
+    *  If a global function of "init" is available, it will also be executed.
     */
     init : function () {
-      var header     = Bevey.getElementsByClassName('header', document.body, 'div')[0],
-          body       = Bevey.getElementsByClassName('body', document.body, 'div')[0],
-          textInputs = Bevey.getElementsByClassName('text-form', body, 'form'),
+      var header     = Switchboard.getElementsByClassName('header', document.body, 'div')[0],
+          body       = Switchboard.getElementsByClassName('body', document.body, 'div')[0],
+          textInputs = Switchboard.getElementsByClassName('text-form', body, 'form'),
           runText,
           lazyLoad,
           i;
 
       runText = function(e) {
-        var elm  = Bevey.getTarget(e),
+        var elm  = Switchboard.getTarget(e),
             ts   = new Date().getTime(),
             text = '',
             device,
@@ -424,8 +427,8 @@ Bevey = (function () {
 
         e.preventDefault();
 
-        text   = Bevey.getElementsByClassName('text-input', elm, 'input')[0].value;
-        device = Bevey.getElementsByClassName('text-input', elm, 'input')[0].name;
+        text   = Switchboard.getElementsByClassName('text-input', elm, 'input')[0].value;
+        device = Switchboard.getElementsByClassName('text-input', elm, 'input')[0].name;
 
         ajaxRequest = {
           path       : '/',
@@ -436,7 +439,7 @@ Bevey = (function () {
           }
         };
 
-        Bevey.ajax.request(ajaxRequest);
+        Switchboard.ajax.request(ajaxRequest);
       };
 
       lazyLoad = function(id) {
@@ -461,33 +464,33 @@ Bevey = (function () {
       lazyLoad(document.body.className);
 
       for(i = 0; i < textInputs.length; i += 1) {
-        Bevey.event.add(textInputs[i], 'submit', runText);
+        Switchboard.event.add(textInputs[i], 'submit', runText);
       }
 
-      Bevey.event.add(header, 'click', function(e) {
-        var elm           = Bevey.getTarget(e).parentNode,
+      Switchboard.event.add(header, 'click', function(e) {
+        var elm           = Switchboard.getTarget(e).parentNode,
             tagName       = elm.tagName.toLowerCase(),
             newContent    = document.getElementById(elm.className),
-            selectNav     = Bevey.getElementsByClassName('selected', header, 'li')[0],
-            selectContent = Bevey.getElementsByClassName('selected', body, 'div')[0];
+            selectNav     = Switchboard.getElementsByClassName('selected', header, 'li')[0],
+            selectContent = Switchboard.getElementsByClassName('selected', body, 'div')[0];
 
         if(tagName === 'li') {
           e.preventDefault();
 
           if(elm !== selectNav) {
-            Bevey.removeClass(selectNav,     'selected');
-            Bevey.removeClass(selectContent, 'selected');
+            Switchboard.removeClass(selectNav,     'selected');
+            Switchboard.removeClass(selectContent, 'selected');
 
-            Bevey.addClass(elm, 'selected');
-            Bevey.addClass(newContent, 'selected');
+            Switchboard.addClass(elm, 'selected');
+            Switchboard.addClass(newContent, 'selected');
 
             lazyLoad(elm.className.replace(' selected', ''));
           }
         }
       });
 
-      Bevey.event.add(body, 'click', function(e) {
-        var elm     = Bevey.getTarget(e),
+      Switchboard.event.add(body, 'click', function(e) {
+        var elm     = Switchboard.getTarget(e),
             tagName = elm.tagName.toLowerCase(),
             command = '',
             ts      = new Date().getTime(),
@@ -511,11 +514,11 @@ Bevey = (function () {
             }
           };
 
-          Bevey.ajax.request(ajaxRequest);
+          Switchboard.ajax.request(ajaxRequest);
         }
       });
 
-      Bevey.addClass(document.body, 'rich');
+      Switchboard.addClass(document.body, 'rich');
 
       if (typeof(init) === 'function') {
         init();
@@ -525,17 +528,17 @@ Bevey = (function () {
 } ());
 
 if (document.addEventListener) {
-  document.addEventListener('DOMContentLoaded', Bevey.init, false);
+  document.addEventListener('DOMContentLoaded', Switchboard.init, false);
 }
 
-Bevey.event.add(window, 'load', function () {
+Switchboard.event.add(window, 'load', function () {
   'use strict';
   if (!document.addEventListener) {
-    Bevey.init();
+    Switchboard.init();
   }
 });
 
-Bevey.event.add(window, 'unload', function () {
+Switchboard.event.add(window, 'unload', function () {
   'use strict';
-  Bevey.event.removeAll();
+  Switchboard.event.removeAll();
 });

@@ -5,7 +5,7 @@ module.exports = function(grunt) {
     banner : { comment : '/* <%= grunt.template.today("yyyymmdd") %> */\n' },
 
     jshint : {
-      files : ['config/*.js', 'lib/*.js', 'controllers/*.js', 'events/*.js', 'js/common.js', 'tests/**/*Test.js', 'app.js'],
+      files : ['config/*.js', 'lib/*.js', 'controllers/*.js', 'parsers/*.js', 'events/*.js', 'js/common.js', 'tests/**/*Test.js', 'app.js'],
       options : {
         globals : {
           console : true,
@@ -20,7 +20,7 @@ module.exports = function(grunt) {
 
     uglify : {
       options : { banner : '<%= banner.comment %>' },
-      dist : { files : { 'js/common.min.js' : ['js/common.js'] } }
+      dist : { files : { 'js/common.min.js' : ['js/common.js', 'parsers/*'] } }
     },
 
     concat: {
