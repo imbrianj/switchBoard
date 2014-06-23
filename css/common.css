@@ -334,6 +334,14 @@ form legend {
 	font-size: 300%;
 }
 
+.device-off {
+  filter: alpha(opacity=50);
+  -moz-opacity: .5;
+  -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=50)';
+  -webkit-opacity: .5;
+  opacity: .5;
+}
+
 .device > div {
 	float: left;
 	width: 50%;
@@ -496,19 +504,19 @@ form legend {
 .device .numeric-controls li {
 	float: left;
 	width: 33%;
- }
+}
 
- .device .numeric-controls ol li:last-child {
+.device .numeric-controls ol li:last-child {
 	width: 100%;
- }
+}
 
- .foscam .numeric-controls ol li:last-child {
+.foscam .numeric-controls ol li:last-child {
 	width: 33%;
- }
+}
 
- .device .numeric-controls ul li {
+.device .numeric-controls ul li {
 	margin-top: -1em;
- }
+}
 
 .device .numeric-controls ul li:last-child {
 	float: right;
@@ -606,9 +614,9 @@ form legend {
 
 .device-active:before {
 	text-shadow: -2px -2px 1px #286EA0,
-                 -2px 2px 1px #286EA0,
-                 2px -2px 1px #286EA0,
-                 2px 2px 1px #286EA0;
+               -2px 2px 1px #286EA0,
+               2px -2px 1px #286EA0,
+               2px 2px 1px #286EA0;
 	-moz-transition: text-shadow .1s ease-in-out;
 	-o-transition: text-shadow .1s ease-in-out;
 	-webkit-transition: text-shadow .1s ease-in-out;

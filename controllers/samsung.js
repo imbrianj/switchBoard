@@ -83,25 +83,22 @@ module.exports = (function () {
       }
     },
 
-    state : function (controller, config) {
+    state : function (controller, callback) {
       var net            = require('net'),
           samsung        = {},
           socket;
 
       samsung.deviceName = controller.config.deviceId;
       samsung.deviceIp   = controller.config.deviceIp;
-      config             = config             || {};
-      samsung.devicePort = config.devicePort  || 55000;
-      samsung.callback   = config.callback    || function () {};
 
-      socket = net.connect(samsung.devicePort, samsung.deviceIp);
+      socket = net.connect(55000, samsung.deviceIp);
 
       socket.once('connect', function() {
         console.log('Samsung: Connected');
 
         socket.end();
 
-        samsung.callback(samsung.deviceName, null, 'ok');
+        callback(samsung.deviceName, null, 'ok');
       });
 
       socket.once('error', function(err) {
@@ -117,7 +114,7 @@ module.exports = (function () {
 
         console.log(errorMsg);
 
-        samsung.callback(samsung.deviceName, errorMsg);
+        callback(samsung.deviceName, errorMsg);
       });
     },
 
