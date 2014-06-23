@@ -242,7 +242,13 @@ module.exports = (function () {
             for(i; i < subDevice.length; i += 1) {
               config.subdevice = '';
 
-              config.path = subDevice[i][commandType];
+              if(subDevice[i].type === 'switch') {
+                config.path = config.device.auth.url + '/switches/' + subDevice[i].id + '/' + commandType + '?access_token=' + config.device.auth.accessToken;
+              }
+
+              else if(subDevice[i].type === 'lock') {
+                config.path = config.device.auth.url + '/locks/' + subDevice[i].id + '/' + commandType + '?access_token=' + config.device.auth.accessToken;
+              }
 
               this.send(config);
             }
