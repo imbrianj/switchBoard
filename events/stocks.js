@@ -13,7 +13,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -35,12 +35,13 @@ module.exports = (function () {
     version : 20140510,
 
     fire : function(deviceName, command, controllers) {
-      var runCommand = require(__dirname + '/../lib/runCommand'),
-          controller = controllers[deviceName],
-          nycOffset  = -5,
-          date       = new Date(),
-          utcTime    = date.getTime() + (date.getTimezoneOffset() * 60000),
-          nycTime    = new Date(utcTime + (3600000 * nycOffset)),
+      var runCommand  = require(__dirname + '/../lib/runCommand'),
+          deviceState = require(__dirname + '/../lib/deviceState'),
+          controller  = controllers[deviceName],
+          nycOffset   = -5,
+          date        = new Date(),
+          utcTime     = date.getTime() + (date.getTimezoneOffset() * 60000),
+          nycTime     = new Date(utcTime + (3600000 * nycOffset)),
           speech,
           callback;
 
@@ -51,8 +52,7 @@ module.exports = (function () {
           State[deviceName].state.active = true;
 
           callback = function(err, stocks) {
-            var deviceState = require(__dirname + '/../lib/deviceState'),
-                message     = '',
+            var message     = '',
                 i           = 0,
                 stockName;
 
@@ -95,14 +95,14 @@ module.exports = (function () {
         }
 
         else {
-          State[deviceName].state.active = false;
+          deviceState.updateState(deviceName, { state : 'err', value : State[deviceName].state.value });
 
           console.log('Schedule: Stock trading is closed - after hours');
         }
       }
 
       else {
-        State[deviceName].state.active = false;
+        deviceState.updateState(deviceName, { state : 'err', value : State[deviceName].state.value });
 
         console.log('Schedule: Stock trading is closed - weekend');
       }

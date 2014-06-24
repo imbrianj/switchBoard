@@ -117,56 +117,36 @@ module.exports = (function () {
       return controller;
     },
 
-    state : function (controller, callback) {
-      var http          = require('http'),
-          foscam        = {},
-          config        = {},
-          request;
+    state : function (controller, callback, config) {
+      var foscam = { device : {}, config : {}};
 
-      foscam.deviceName = controller.config.deviceId;
-      foscam.deviceIp   = controller.config.deviceIp;
-      foscam.username   = controller.config.username;
-      foscam.password   = controller.config.password;
-      foscam.command    = 'Params';
-      config            = config            || {};
-      foscam.devicePort = config.devicePort || 80;
-      foscam.callback   = config.callback   || function () {};
+      foscam.device.deviceId = controller.config.deviceId;
+      foscam.device.deviceIp = controller.config.deviceIp;
+      foscam.device.username = controller.config.username;
+      foscam.device.password = controller.config.password;
+      foscam.command         = 'Params';
 
-      request = http.request(this.postPrepare(foscam), function(response) {
-        response.once('data', function(response) {
-          var params = { value : '' };
+      foscam.callback = function (err, reply) {
+        var params  = { value : '' };
 
-          console.log('Foscam: Connected');
-
-          if(response.toString().indexOf('var alarm_motion_armed=0') !== -1) {
+        if(reply) {
+          if(reply.toString().indexOf('var alarm_motion_armed=0') !== -1) {
             params.value = 'off';
           }
 
-          else if(response.toString().indexOf('var alarm_motion_armed=1') !== -1) {
+          else if(reply.toString().indexOf('var alarm_motion_armed=1') !== -1) {
             params.value = 'on';
           }
 
-          callback(foscam.deviceName, null, 'ok', params);
-        });
-      });
-
-      request.once('error', function(err) {
-        var errorMsg = '';
-
-        if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
-          errorMsg = 'Foscam: Device is off or unreachable';
+          callback(foscam.device.deviceId, null, 'ok', params);
         }
 
-        else {
-          errorMsg = 'Foscam: ' + err.code;
+        else if(err) {
+          foscam.callback(foscam.device.deviceId, 'err', 'err');
         }
+      };
 
-        console.log(errorMsg);
-
-        foscam.callback(foscam.deviceName, errorMsg);
-      });
-
-      request.end();
+      this.send(foscam);
     },
 
     onload : function (controller) {

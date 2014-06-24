@@ -83,39 +83,25 @@ module.exports = (function () {
       }
     },
 
-    state : function (controller, callback) {
-      var net            = require('net'),
-          samsung        = {},
-          socket;
+    state : function (controller, callback, config) {
+      var samsung = { device : {}, config : {}};
 
-      samsung.deviceName = controller.config.deviceId;
-      samsung.deviceIp   = controller.config.deviceIp;
+      samsung.device.deviceId  = controller.config.deviceId;
+      samsung.device.deviceIp  = controller.config.deviceIp;
+      samsung.config.serverIp  = config.serverIp;
+      samsung.config.serverMac = config.serverMac;
 
-      socket = net.connect(55000, samsung.deviceIp);
-
-      socket.once('connect', function() {
-        console.log('Samsung: Connected');
-
-        socket.end();
-
-        callback(samsung.deviceName, null, 'ok');
-      });
-
-      socket.once('error', function(err) {
-        var errorMsg = '';
-
-        if(err.code === 'EHOSTUNREACH' || err.code === 'ECONNREFUSED' || err.code === 'ETIMEDOUT') {
-          errorMsg = 'Samsung: Device is off or unreachable';
+      samsung.callback = function (err, reply) {
+        if(reply) {
+          callback(samsung.device.deviceId, null, 'ok');
         }
 
-        else {
-          errorMsg = 'Samsung: ' + err.code;
+        else if(err) {
+          callback(samsung.device.deviceId, 'err');
         }
+      };
 
-        console.log(errorMsg);
-
-        callback(samsung.deviceName, errorMsg);
-      });
+      this.send(samsung);
     },
 
     onload : function (controller) {
@@ -139,15 +125,17 @@ module.exports = (function () {
       samsung.appString   = config.appString   || "iphone..iapp.samsung";
       samsung.tvAppString = config.tvAppString || "iphone.UN60ES8000.iapp.samsung";
       samsung.remoteName  = config.remoteName  || "Node.js Samsung Remote";
-      samsung.callback    = config.callback    || function () {};
+      samsung.callback    = config.callback    || function() {};
 
       socket = net.connect(samsung.devicePort, samsung.deviceIp);
 
       socket.once('connect', function() {
         console.log('Samsung: Connected');
 
-        socket.write(that.chunkOne(samsung));
-        socket.write(that.chunkTwo(samsung));
+        if((samsung.command) || (samsung.text)) {
+          socket.write(that.chunkOne(samsung));
+          socket.write(that.chunkTwo(samsung));
+        }
 
         socket.end();
 

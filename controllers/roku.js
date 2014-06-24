@@ -180,10 +180,10 @@ module.exports = (function () {
         deviceState.updateState(deviceName, params);
       };
 
-      this.state(controller, callback, 'verbose');
+      this.state(controller, callback, config, 'verbose');
     },
 
-    state : function (controller, callback, logging) {
+    state : function (controller, callback, config, logging) {
       var stateCallback;
 
       logging  = logging || 'quiet';

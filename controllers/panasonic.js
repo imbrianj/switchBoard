@@ -13,7 +13,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -98,43 +98,37 @@ module.exports = (function () {
       return response;
     },
 
-    state : function (controller, config) {
-      var http             = require('http'),
-          panasonic        = {},
-          request;
+    state : function (controller, callback, config) {
+      var panasonic = { device : {}};
 
-      panasonic.deviceName = controller.config.deviceId;
-      panasonic.deviceIp   = controller.config.deviceIp;
-      config               = config            || {};
-      panasonic.devicePort = config.devicePort || 80;
-      panasonic.callback   = config.callback   || function () {};
-      panasonic.command    = 'STATE';
+      panasonic.device.deviceId = controller.config.deviceId;
+      panasonic.device.deviceIp = controller.config.deviceIp;
 
-      request = http.request(this.postPrepare(panasonic), function(response) {
-        response.once('data', function(response) {
+      panasonic.callback = function (err, reply) {
+        var message = '';
+
+        if(reply) {
           console.log('Panasonic: Connected');
 
-          panasonic.callback(panasonic.deviceName, null, response);
-        });
-      });
-
-      request.once('error', function(err) {
-        var errorMsg = '';
-
-        if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
-          errorMsg = 'Panasonic: Device is off or unreachable';
+          callback(panasonic.device.deviceId, null, response);
         }
 
-        else {
-          errorMsg = 'Panasonic: ' + err.code;
+        else if(err) {
+          if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
+            message = 'Panasonic: Device is off or unreachable';
+          }
+
+          else {
+            message = 'Panasonic: ' + err.code;
+          }
+
+          console.log(message);
+
+          callback(panasonic.device.deviceId, message);
         }
+      };
 
-        console.log(errorMsg);
-
-        panasonic.callback(panasonic.deviceName, errorMsg);
-      });
-
-      request.end();
+      this.send(panasonic);
     },
 
     send : function (config) {
@@ -146,7 +140,7 @@ module.exports = (function () {
       panasonic.deviceIp   = config.device.deviceIp;
       panasonic.command    = config.command    || '';
       panasonic.text       = config.text       || '';
-      panasonic.devicePort = config.devicePort || 55000;
+      panasonic.devicePort = config.devicePort || 80;
       panasonic.callback   = config.callback   || function () {};
 
       request = http.request(this.postPrepare(panasonic), function(response) {
