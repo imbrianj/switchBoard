@@ -147,11 +147,13 @@ module.exports = (function () {
     updateState : function (smartthings, response) {
       var subDevices  = {},
           deviceState = require('../lib/deviceState'),
+          state       = 'err',
           mode        = '',
           i           = 0;
 
       if((response) && (response.mode) && (response.devices)) {
-        mode = response.mode;
+        mode  = response.mode;
+        state = 'ok';
 
         for(i; i < response.devices.length; i += 1) {
           subDevices[i] = {
@@ -162,7 +164,7 @@ module.exports = (function () {
           };
         }
 
-        deviceState.updateState(smartthings.deviceName, { value : { devices : subDevices, mode : mode, groups : response.groups } });
+        deviceState.updateState(smartthings.deviceName, { state : state, value : { devices : subDevices, mode : mode, groups : response.groups } });
       }
     },
 
@@ -190,11 +192,16 @@ module.exports = (function () {
     },
 
     getDevicePath : function(command, config) {
-      var subDevices  = State[config.device.deviceId].value.devices,
-          commandType = '',
-          subDevice   = {},
-          path        = '',
-          i           = 1;
+      var deviceState  = require('../lib/deviceState'),
+          subDevices   = {},
+          commandType  = '',
+          subDevice    = {},
+          path         = '',
+          i            = 1;
+
+      if(typeof State[config.device.deviceId].value === 'object') {
+        subDevices = State[config.device.deviceId].value.devices;
+      }
 
       if(command.indexOf('toggle-') === 0) {
         commandType = 'toggle';
@@ -220,8 +227,36 @@ module.exports = (function () {
         commandType = 'mode';
       }
 
+      else if(command.indexOf('stateOn-') === 0) {
+        commandType = 'stateOn';
+      }
+
+      else if(command.indexOf('stateOff-') === 0) {
+        commandType = 'stateOff';
+      }
+
       if(commandType === 'mode') {
         path = config.device.auth.url + '/mode/' + command.replace(commandType + '-', '') + '?access_token=' + config.device.auth.accessToken;
+      }
+
+      else if((commandType === 'stateOn') || (commandType === 'stateOff')) {
+        if((commandType === 'stateOn') || (commandType === 'stateOff')) {
+          for(i in subDevices) {
+            subDevice = subDevices[i];
+
+            if(subDevice.label === command.replace(commandType + '-', '')) {
+              if(commandType === 'stateOn') {
+                subDevices[i].state = 'on';
+              }
+
+              else {
+                subDevices[i].state = 'off';
+              }
+
+              deviceState.updateState(config.device.deviceId, { value : { devices : subDevices, mode : State[config.device.deviceId].value.mode, groups : config.device.groups } });
+            }
+          }
+        }
       }
 
       else if(commandType) {
@@ -334,54 +369,56 @@ module.exports = (function () {
         request.path = this.getDevicePath(smartthings.command, config);
       }
 
-      request = https.request(request, function(response) {
-                  response.once('data', function(response) {
-                    console.log('SmartThings: Connected');
+      if(request.path) {
+        request = https.request(request, function(response) {
+                    response.once('data', function(response) {
+                      console.log('SmartThings: Connected');
 
-                    dataReply += response;
+                      dataReply += response;
+                    });
+
+                    response.once('end', function() {
+                      var deviceState     = require('../lib/deviceState'),
+                          smartthingsData = {};
+
+                      if(dataReply) {
+                        smartthingsData = JSON.parse(dataReply);
+
+                        smartthingsData.groups = config.device.groups;
+
+                        that.updateState(smartthings, smartthingsData);
+
+                        smartthings.callback(null, dataReply, true);
+                      }
+
+                      else {
+                        console.log('SmartThings: No data returned from API');
+
+                        smartthings.callback(null, '', true);
+                      }
+                    });
                   });
 
-                  response.once('end', function() {
-                    var deviceState     = require('../lib/deviceState'),
-                        smartthingsData = {};
+        request.once('error', function(err) {
+          var errorMsg = '';
 
-                    if(dataReply) {
-                      smartthingsData = JSON.parse(dataReply);
+          if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
+            errorMsg = 'SmartThings: Device is off or unreachable';
+          }
 
-                      smartthingsData.groups = config.device.groups;
+          else {
+            errorMsg = 'SmartThings: ' + err.code;
+          }
 
-                      that.updateState(smartthings, smartthingsData);
+          console.log(errorMsg);
 
-                      smartthings.callback(null, dataReply);
-                    }
+          smartthings.callback(errorMsg);
+        });
 
-                    else {
-                      console.log('SmartThings: No data returned from API');
+        request.end();
 
-                      smartthings.callback(null, '');
-                    }
-                  });
-                });
-
-      request.once('error', function(err) {
-        var errorMsg = '';
-
-        if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
-          errorMsg = 'SmartThings: Device is off or unreachable';
-        }
-
-        else {
-          errorMsg = 'SmartThings: ' + err.code;
-        }
-
-        console.log(errorMsg);
-
-        smartthings.callback(errorMsg);
-      });
-
-      request.end();
-
-      return dataReply;
+        return dataReply;
+      }
     }
   };
 }());

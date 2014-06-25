@@ -63,7 +63,7 @@ module.exports = (function () {
             case 'smartthings' :
               if(type === 'long') {
                 if(typeof controllers[deviceName].event === 'object') {
-                  controllers[deviceName].event.fire(deviceName, 'schedule', controllers);
+                  controllers[deviceName].event.poll(deviceName, 'schedule', controllers);
                 }
               }
             break;

@@ -136,7 +136,7 @@ module.exports = (function () {
             errorMsg = 'Roku: ' + err.code;
           }
 
-          callback(errorMsg);
+          callback(config.deviceId, errorMsg, 'err');
         }
 
         else {
@@ -163,7 +163,7 @@ module.exports = (function () {
                   that.cacheImage(app._, app.$.id, config, logging);
                 }
 
-                callback(null, apps);
+                callback(config.deviceId, null, 'ok', apps);
               }
             }
           });
@@ -174,6 +174,8 @@ module.exports = (function () {
     init : function (controller, config) {
       var callback = function(deviceName, err, state, params) {
         var deviceState = require('../lib/deviceState');
+
+        params = params || {};
 
         params.state = state;
 

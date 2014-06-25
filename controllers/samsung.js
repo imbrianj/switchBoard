@@ -145,7 +145,7 @@ module.exports = (function () {
       socket.once('error', function(err) {
         var errorMsg = '';
 
-        if(err.code === 'EHOSTUNREACH' || err.code === 'ECONNREFUSED') {
+        if(err.code === 'EHOSTUNREACH' || err.code === 'ECONNREFUSED' || err.code === 'ETIMEDOUT') {
           errorMsg = 'Samsung: Device is off or unreachable';
         }
 

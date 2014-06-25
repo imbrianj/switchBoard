@@ -28,7 +28,8 @@
  * @fileoverview Unit test for controllers/foscam.js
  */
 
-State = {};
+State       = {};
+Connections = {};
 
 exports.foscamControllerTest = {
   postPrepare : function (test) {

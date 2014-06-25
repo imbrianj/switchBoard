@@ -8,8 +8,9 @@ module.exports = function(grunt) {
       files : ['config/*.js', 'lib/*.js', 'controllers/*.js', 'parsers/*.js', 'events/*.js', 'js/common.js', 'tests/**/*Test.js', 'app.js'],
       options : {
         globals : {
-          console : true,
-          State   : true
+          console     : true,
+          State       : true,
+          Connections : true
         }
       }
     },

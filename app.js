@@ -13,7 +13,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -29,7 +29,8 @@
  * @requires http, url, path, nopt, websocket
  */
 
-State = {};
+State       = {};
+Connections = {};
 
 var version         = 20140618,
     http            = require('http'),
@@ -101,10 +102,20 @@ if(controllers) {
   wsServer = new webSocketServer({ httpServer : server }, 'echo-protocol');
 
   wsServer.on('request', function(request) {
-    var connection = request.accept('echo-protocol', request.origin);
+    var connection  = request.accept('echo-protocol', request.origin);
+
+    console.log(connection.remoteAddress + ' Websocket connected');
+
+    Connections[connection.remoteAddress] = connection;
 
     connection.on('message', function(message) {
-      console.log(message.utf8Data);
+      // This will eventually accept commands.
+      console.log(message);
+    });
+
+    connection.on('close', function(code, desc) {
+      console.log(connection.remoteAddress + ' Websocket disconnected');
+      delete Connections[connection.remoteAddress];
     });
   });
 }

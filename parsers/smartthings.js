@@ -59,7 +59,7 @@
           return collected;
         };
 
-    if(typeof value.mode === 'string') {
+    if(typeof value === 'object' && typeof value.mode === 'string') {
       mode       = value.mode;
       subDevices = value.devices;
 

@@ -34,7 +34,7 @@ module.exports = (function () {
   return {
     version : 20140510,
 
-    fire : function(deviceName, command, controllers) {
+    poll : function(deviceName, command, controllers) {
       var runCommand  = require(__dirname + '/../lib/runCommand'),
           deviceState = require(__dirname + '/../lib/deviceState'),
           controller  = controllers[deviceName],
