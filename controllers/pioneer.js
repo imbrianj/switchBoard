@@ -41,7 +41,7 @@ module.exports = (function () {
     /**
      * Whitelist of available key codes to use.
      */
-    keymap  : ['MUTE', 'POWER', 'VOL_DOWN', 'VOL_UP'],
+    keymap  : ['MUTE', 'POWER', 'VOL_DOWN', 'VOL_UP', 'BD', 'DVD', 'TV/SAT', 'DVR/BDR', 'HDMI 1', 'HDMI 2','HDMI 3', 'HDMI 4','HDMI 5','HDMI 6'],
 
     /**
      * Since I want to abstract commands, I'd rather deal with semi-readable
@@ -52,6 +52,17 @@ module.exports = (function () {
                   'VOL_UP'        : 'VU',
                   'VOL_DOWN'      : 'VD',
                   'MUTE'          : 'MZ',
+                  'BD'            : 'FN25',
+                  'DVD'           : 'FN04',
+                  'TV/SAT'        : 'FN05',
+                  'DVR/BDR'       : 'FN15',
+                  'HDMI 1'        : 'FN19',
+                  'HDMI 2'        : 'FN20',
+                  'HDMI 3'        : 'FN21',
+                  'HDMI 4'        : 'FN22',
+                  'HDMI 5'        : 'FN23',
+                  'HDMI 6'        : 'FN24',
+
  },
 
     translateCommand : function (command) {
