@@ -2,7 +2,7 @@
 /*global State, module, require, console */
 
 /**
- * Copyright (c) 2014 brian@bevey.org
+ * Copyright (c) 2014 markewest@gmail.com
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -27,11 +27,14 @@ module.exports = (function () {
   'use strict';
 
   /**
-   * @author brian@bevey.org
-   * @fileoverview Basic control of LG Smart TV
-   * @requires http
-   * @note Huge thanks for the unofficial documentation found here:
-   *       http://forum.loxone.com/enen/software/4876-lg-tv-http-control.html#post32692
+   * @author markewest@gmail.com
+   * @fileoverview Basic control of Pioneer VSX-XXXX Amps
+   * @requires net.js
+   * @note Big thanks to the base javascript from:
+   *  https://github.com/Vmaxence/SARAH-Plugin-ampliVSX
+   * And documentation here:
+   *  http://raymondjulin.com/2012/07/15/remote-control-your-pioneer-vsx-receiver-over-telnet/
+   *       
    */
   return {
     version : 20140607,
