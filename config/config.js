@@ -139,21 +139,6 @@ exports.config = {
   },
 
   /*
-   * This is insecure.  Your username and password will be sent in
-   * plain-text and can be viewable within the source of the rendered
-   * controller template.
-   * Procede with caution.
-   */
-  dlink : {
-    typeClass : 'dlink',
-    title     : 'Dlink',
-    deviceIp  : '192.168.1.1',
-    username  : 'user',
-    password  : 'password',
-    disabled  : true
-  },
-
-  /*
    * MP3 uses the "mpg123" package on Linux, BSD and SunOS. For OSX, it uses
    * the built-in "afplay" command.  Windows is not supported.
    */
