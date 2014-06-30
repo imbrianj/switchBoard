@@ -59,12 +59,12 @@ module.exports = (function () {
                   'DVD'           : 'FN04',
                   'TV/SAT'        : 'FN05',
                   'DVR/BDR'       : 'FN15',
-                  'HDMI 1'        : 'FN19',
-                  'HDMI 2'        : 'FN20',
-                  'HDMI 3'        : 'FN21',
-                  'HDMI 4'        : 'FN22',
-                  'HDMI 5'        : 'FN23',
-                  'HDMI 6'        : 'FN24',
+                  'HDMI_1'        : 'FN19',
+                  'HDMI_2'        : 'FN20',
+                  'HDMI_3'        : 'FN21',
+                  'HDMI_4'        : 'FN22',
+                  'HDMI_5'        : 'FN23',
+                  'HDMI_6'        : 'FN24',
 
  },
 
