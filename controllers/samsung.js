@@ -105,7 +105,7 @@ module.exports = (function () {
     },
 
     onload : function (controller) {
-      var parser = require(__dirname + '/../parsers/samsung').parser;
+      var parser = require(__dirname + '/../parsers/samsung').samsung;
 
       return parser(controller.deviceId, controller.markup, State[controller.config.deviceId].state, State[controller.config.deviceId].value);
     },

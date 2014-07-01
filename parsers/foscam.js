@@ -26,7 +26,7 @@
 (function(exports){
   'use strict';
 
-  exports.parser = function (deviceId, markup, state, value) {
+  exports.foscam = function (deviceId, markup, state, value) {
     var stateOn  = '',
         stateOff = '';
 
@@ -42,7 +42,7 @@
     markup = markup.replace('{{DEVICE_STATE_OFF}}', stateOff);
 
     if(typeof Switchboard === 'object') {
-      if(Switchboard.hasClass(Switchboard.getElementsByClassName('selected')[0], deviceId)) {
+      if(Switchboard.hasClass(Switchboard.getElementsByClassName('selected', null, 'li')[0], deviceId)) {
         markup = markup.split('{{LAZY_LOAD_IMAGE}}').join('src');
       }
 
@@ -53,4 +53,4 @@
 
     return markup;
   };
-})(typeof exports === 'undefined' ? this.Switchboard.parser.foscam = {} : exports);
+})(typeof exports === 'undefined' ? this.Switchboard.parsers : exports);

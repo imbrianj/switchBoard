@@ -13,7 +13,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -37,12 +37,12 @@ module.exports = (function () {
 
     fire : function(device, command, controllers) {
       var runCommand = require(__dirname + '/../lib/runCommand'),
-          deviceName;
+          deviceId;
 
       if((command === 'AlarmOn') || (command === 'AlarmOff')) {
-        for(deviceName in controllers) {
-          if((deviceName !== 'config') && (controllers[deviceName].config.typeClass === 'speech')) {
-            runCommand.runCommand(deviceName, command === 'AlarmOn' ? 'text-Camera armed' : 'text-Camera disarmed', controllers, 'single', false);
+        for(deviceId in controllers) {
+          if((deviceId !== 'config') && (controllers[deviceId].config.typeClass === 'speech')) {
+            runCommand.runCommand(deviceId, command === 'AlarmOn' ? 'text-Camera armed' : 'text-Camera disarmed', controllers, 'single', false);
           }
         }
       }

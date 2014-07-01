@@ -26,7 +26,7 @@
 (function(exports){
   'use strict';
 
-  exports.parser = function (deviceId, markup, state, value) {
+  exports.ps3 = function (deviceId, markup, state, value) {
     var className = '';
 
     if(state === 'ok') {
@@ -39,4 +39,4 @@
 
     return markup.replace('{{DEVICE_STATE}}', className);
   };
-})(typeof exports === 'undefined' ? this.Switchboard.parser.ps3 = {} : exports);
+})(typeof exports === 'undefined' ? this.Switchboard.parsers : exports);

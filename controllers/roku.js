@@ -136,7 +136,7 @@ module.exports = (function () {
             errorMsg = 'Roku: ' + err.code;
           }
 
-          callback(config.deviceId, errorMsg, 'err');
+          callback(errorMsg, reply);
         }
 
         else {
@@ -163,7 +163,7 @@ module.exports = (function () {
                   that.cacheImage(app._, app.$.id, config, logging);
                 }
 
-                callback(config.deviceId, null, 'ok', apps);
+                callback(null, apps);
               }
             }
           });
@@ -172,14 +172,14 @@ module.exports = (function () {
     },
 
     init : function (controller, config) {
-      var callback = function(deviceName, err, state, params) {
+      var callback = function(deviceId, err, state, params) {
         var deviceState = require('../lib/deviceState');
 
         params = params || {};
 
         params.state = state;
 
-        deviceState.updateState(deviceName, params);
+        deviceState.updateState(deviceId, 'roku', params);
       };
 
       this.state(controller, callback, config, 'verbose');
@@ -205,10 +205,10 @@ module.exports = (function () {
 
     onload : function (controller) {
       var fs       = require('fs'),
-          parser   = require(__dirname + '/../parsers/roku').parser,
+          parser   = require(__dirname + '/../parsers/roku').roku,
           fragment = fs.readFileSync(__dirname + '/../templates/fragments/roku.tpl').toString();
 
-      return parser(controller.deviceId, controller.markup, State[controller.config.deviceId].state, State[controller.config.deviceId].value, fragment);
+      return parser(controller.deviceId, controller.markup, State[controller.config.deviceId].state, State[controller.config.deviceId].value, { list : fragment });
     },
 
     send : function (config) {

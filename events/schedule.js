@@ -36,10 +36,10 @@ module.exports = (function () {
 
     fire : function(controllers, type) {
       var runCommand = require(__dirname + '/../lib/runCommand'),
-          deviceName,
+          deviceId,
           callback;
 
-      callback = function(deviceName, err, reply, params) {
+      callback = function(deviceId, err, reply, params) {
         var deviceState = require('../lib/deviceState'),
             message     = 'err';
 
@@ -51,27 +51,27 @@ module.exports = (function () {
 
         params.state = message;
 
-        deviceState.updateState(deviceName, params);
+        deviceState.updateState(deviceId, controllers[deviceId].config.typeClass, params);
       };
 
-      for(deviceName in controllers) {
-        if(deviceName !== 'config') {
-          switch(controllers[deviceName].config.typeClass) {
+      for(deviceId in controllers) {
+        if(deviceId !== 'config') {
+          switch(controllers[deviceId].config.typeClass) {
             // Specify typeClass of controllers that should be fired on interval.
             case 'weather'     :
             case 'stocks'      :
             case 'smartthings' :
               if(type === 'long') {
-                if(typeof controllers[deviceName].event === 'object') {
-                  controllers[deviceName].event.poll(deviceName, 'schedule', controllers);
+                if(typeof controllers[deviceId].event === 'object') {
+                  controllers[deviceId].event.poll(deviceId, 'schedule', controllers);
                 }
               }
             break;
 
             default :
               if(type === 'short') {
-                if((typeof controllers[deviceName].controller === 'object') && (typeof controllers[deviceName].controller.state === 'function')) {
-                  controllers[deviceName].controller.state(controllers[deviceName], callback, controllers.config);
+                if((typeof controllers[deviceId].controller === 'object') && (typeof controllers[deviceId].controller.state === 'function')) {
+                  controllers[deviceId].controller.state(controllers[deviceId], callback, controllers.config);
                 }
               }
             break;

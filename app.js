@@ -32,7 +32,7 @@
 State       = {};
 Connections = {};
 
-var version         = 20140618,
+var version         = 20140626,
     http            = require('http'),
     url             = require('url'),
     path            = require('path'),
@@ -102,15 +102,21 @@ if(controllers) {
   wsServer = new webSocketServer({ httpServer : server }, 'echo-protocol');
 
   wsServer.on('request', function(request) {
-    var connection  = request.accept('echo-protocol', request.origin);
+    var loadMarkup = require('./lib/loadMarkup'),
+        connection = request.accept('echo-protocol', request.origin);
 
     console.log(connection.remoteAddress + ' Websocket connected');
 
     Connections[connection.remoteAddress] = connection;
 
+    connection.sendUTF(JSON.stringify(loadMarkup.loadTemplates(controllers)));
+
     connection.on('message', function(message) {
-      // This will eventually accept commands.
-      console.log(message);
+      var response = { end : function(message) {} };
+
+      request.url = message.utf8Data;
+
+      requestInit.requestInit(request, controllers, response);
     });
 
     connection.on('close', function(code, desc) {

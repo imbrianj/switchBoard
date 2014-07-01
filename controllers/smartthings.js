@@ -56,11 +56,11 @@ module.exports = (function () {
     /**
      * Use received OAuth2 code to query for access token to be used later.
      */
-    oauthCode : function (oauthCode, deviceName, deviceConfig, config) {
+    oauthCode : function (oauthCode, deviceId, deviceConfig, config) {
       var smartthings = {},
           that        = this;
 
-      smartthings.path     = deviceConfig.path || '/oauth/token?grant_type=authorization_code&client_id=' + deviceConfig.clientId + '&client_secret=' + deviceConfig.clientSecret + '&redirect_uri=http://' + config.serverIp + ':' + config.serverPort + '/oauth/' + deviceName + '&code=' + oauthCode + '&scope=app';
+      smartthings.path     = deviceConfig.path || '/oauth/token?grant_type=authorization_code&client_id=' + deviceConfig.clientId + '&client_secret=' + deviceConfig.clientSecret + '&redirect_uri=http://' + config.serverIp + ':' + config.serverPort + '/oauth/' + deviceId + '&code=' + oauthCode + '&scope=app';
       smartthings.callback = function(err, response) {
         var fs       = require('fs'),
             authData = {},
@@ -164,7 +164,7 @@ module.exports = (function () {
           };
         }
 
-        deviceState.updateState(smartthings.deviceName, { state : state, value : { devices : subDevices, mode : mode, groups : response.groups } });
+        deviceState.updateState(smartthings.deviceId, 'smartthings', { state : state, value : { devices : subDevices, mode : mode, groups : response.groups } });
       }
     },
 
@@ -253,7 +253,7 @@ module.exports = (function () {
                 subDevices[i].state = 'off';
               }
 
-              deviceState.updateState(config.device.deviceId, { value : { devices : subDevices, mode : State[config.device.deviceId].value.mode, groups : config.device.groups } });
+              deviceState.updateState(config.device.deviceId, 'smartthings', { value : { devices : subDevices, mode : State[config.device.deviceId].value.mode, groups : config.device.groups } });
             }
           }
         }
@@ -335,11 +335,12 @@ module.exports = (function () {
 
     onload : function (controller) {
       var fs = require('fs'),
-          parser = require(__dirname + '/../parsers/smartthings').parser,
+          parser = require(__dirname + '/../parsers/smartthings').smartthings,
           switchFragment = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListSwitch.tpl').toString(),
-          lockFragment   = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListLock.tpl').toString();
+          lockFragment   = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListLock.tpl').toString(),
+          groupFragment  = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsGroups.tpl').toString();
 
-      return parser(controller.deviceId, controller.markup, State[controller.config.deviceId].state, State[controller.config.deviceId].value, { switch : switchFragment, lock : lockFragment });
+      return parser(controller.deviceId, controller.markup, State[controller.config.deviceId].state, State[controller.config.deviceId].value, { switch : switchFragment, lock : lockFragment, group : groupFragment });
     },
 
     send : function (config) {
@@ -350,14 +351,14 @@ module.exports = (function () {
           dataReply   = '',
           that        = this;
 
-      smartthings.deviceName = config.device.deviceId;
-      smartthings.auth       = config.device.auth;
-      smartthings.command    = config.subdevice || '';
-      smartthings.host       = config.host      || 'graph.api.smartthings.com';
-      smartthings.port       = config.port      || 443;
-      smartthings.path       = config.path      || '';
-      smartthings.method     = config.method    || 'GET';
-      smartthings.callback   = config.callback  || function() {};
+      smartthings.deviceId = config.device.deviceId;
+      smartthings.auth     = config.device.auth;
+      smartthings.command  = config.subdevice || '';
+      smartthings.host     = config.host      || 'graph.api.smartthings.com';
+      smartthings.port     = config.port      || 443;
+      smartthings.path     = config.path      || '';
+      smartthings.method   = config.method    || 'GET';
+      smartthings.callback = config.callback  || function() {};
 
       request = this.postPrepare(smartthings);
 

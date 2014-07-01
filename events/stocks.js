@@ -34,10 +34,10 @@ module.exports = (function () {
   return {
     version : 20140510,
 
-    poll : function(deviceName, command, controllers) {
+    poll : function(deviceId, command, controllers) {
       var runCommand  = require(__dirname + '/../lib/runCommand'),
           deviceState = require(__dirname + '/../lib/deviceState'),
-          controller  = controllers[deviceName],
+          controller  = controllers[deviceId],
           nycOffset   = -5,
           date        = new Date(),
           utcTime     = date.getTime() + (date.getTimezoneOffset() * 60000),
@@ -49,14 +49,14 @@ module.exports = (function () {
       if((nycTime.getDay() !== 6) && (nycTime.getDay() !== 0)) {
         // Trading is only open from 9am - 4pm.
         if((nycTime.getHours() > 9) && (nycTime.getHours() < 16)) {
-          State[deviceName].state.active = true;
+          State[deviceId].state.active = true;
 
           callback = function(err, stocks) {
             var message     = '',
                 i           = 0,
                 stockName;
 
-            deviceState.updateState(deviceName, { state : 'ok', value : stocks });
+            deviceState.updateState(deviceId, 'stocks', { state : 'ok', value : stocks });
 
             if((controller.config.limits) && (stocks)) {
               for(stockName in controller.config.limits) {
@@ -68,8 +68,12 @@ module.exports = (function () {
                   message = message + 'Your ' + stocks[stockName].name + ' stock is low at ' + stocks[stockName].ask + '.  Think about buying?  ';
                 }
 
-                else {
+                else if(stocks[stockName]){
                   console.log('Schedule: ' + stocks[stockName].name + ' is at ' + stocks[stockName].price + ' - within range');
+                }
+
+                else {
+                  console.log('Schedule: Failed to fetch valid stock data');
                 }
               }
             }
@@ -91,18 +95,18 @@ module.exports = (function () {
             }
           };
 
-          runCommand.runCommand(deviceName, 'list', controllers, deviceName, false, callback);
+          runCommand.runCommand(deviceId, 'list', controllers, deviceId, false, callback);
         }
 
         else {
-          deviceState.updateState(deviceName, { state : 'err', value : State[deviceName].state.value });
+          deviceState.updateState(deviceId, 'stocks', { state : 'err', value : State[deviceId].state.value });
 
           console.log('Schedule: Stock trading is closed - after hours');
         }
       }
 
       else {
-        deviceState.updateState(deviceName, { state : 'err', value : State[deviceName].state.value });
+        deviceState.updateState(deviceId, 'stocks', { state : 'err', value : State[deviceId].state.value });
 
         console.log('Schedule: Stock trading is closed - weekend');
       }

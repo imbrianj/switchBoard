@@ -34,10 +34,10 @@ module.exports = (function () {
   return {
     version : 20140613,
 
-    poll : function(deviceName, command, controllers) {
+    poll : function(deviceId, command, controllers) {
       var fs         = require('fs'),
           runCommand = require(__dirname + '/../lib/runCommand'),
-          controller = controllers[deviceName],
+          controller = controllers[deviceId],
           callback;
 
       fs.exists(__dirname + '/../tmp/smartthingsAuth.json', function(fileExists) {

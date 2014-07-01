@@ -323,6 +323,34 @@ form legend {
 	position: relative;
 }
 
+.header #indicator {
+	border-radius: .5em;
+	height: 1em;
+	overflow: hidden;
+	position: absolute;
+	right: 1em;
+	text-indent: -999px;
+	top: 1em;
+	width: 1em;
+}
+
+.header .disconnected {
+	background: #F00;
+	cursor: pointer;
+}
+
+.header .connecting {
+	background: #333;
+}
+
+.header .polling {
+	background: #666;
+}
+
+.header .connected {
+	background: #0078E7;
+}
+
 .body h1 {
 	font-weight: bold;
 	margin: .4em .2em;

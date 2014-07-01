@@ -102,12 +102,12 @@ module.exports = (function () {
     },
 
     init : function (controller, config) {
-      var callback = function(deviceName, err, state, params) {
+      var callback = function(deviceId, err, state, params) {
         var deviceState = require('../lib/deviceState');
 
         params.state = state;
 
-        deviceState.updateState(deviceName, params);
+        deviceState.updateState(deviceId, 'foscam', params);
       };
 
       this.state(controller, callback);
@@ -150,7 +150,7 @@ module.exports = (function () {
     },
 
     onload : function (controller) {
-      var parser = require(__dirname + '/../parsers/foscam').parser;
+      var parser = require(__dirname + '/../parsers/foscam').foscam;
 
       return parser(controller.deviceId, controller.markup, State[controller.config.deviceId].state, State[controller.config.deviceId].value);
     },

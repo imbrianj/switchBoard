@@ -26,9 +26,8 @@
 (function(exports){
   'use strict';
 
-  exports.parser = function (deviceId, markup, state, value, fragments) {
-    var fs         = require('fs'),
-        template   = fragments,
+  exports.roku = function (deviceId, markup, state, value, fragments) {
+    var template   = fragments.list,
         i          = 0,
         tempMarkup = '',
         apps;
@@ -43,4 +42,4 @@
 
     return markup.replace('{{ROKU_DYNAMIC}}', tempMarkup);
   };
-})(typeof exports === 'undefined' ? this.Switchboard.parser.roku = {} : exports);
+})(typeof exports === 'undefined' ? this.Switchboard.parsers : exports);
