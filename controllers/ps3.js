@@ -85,7 +85,7 @@ module.exports = (function () {
       else {
         execute = '';
 
-        console.log('PS3: Gimx is not supported on your platform!');
+        console.log('\x1b[31mPS3\x1b[0m: Gimx is not supported on your platform!');
       }
 
       return execute;
@@ -120,14 +120,14 @@ module.exports = (function () {
       if(State[ps3.deviceId].state === 'ok') {
         // If the PS3 is already on, we shouldn't execute PowerOn again.
         if(ps3.command === 'PowerOn') {
-          console.log('PS3 looks on already.  Changing command to PS');
+          console.log('\x1b[35mPS3\x1b[0m: Device looks on already.  Changing command to PS');
 
           ps3.command = 'PS';
         }
       }
 
       else {
-        console.log('PS3 doesn\'t look on');
+        console.log('\x1b[35mPS3\x1b[0m: Device doesn\'t look on');
       }
 
       ps3.execute = this.translateCommand(ps3.command, ps3.deviceMac, ps3.platform, ps3.revert);

@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic weather information, courtesy of Yahoo.
    */
   return {
-    version : 20140326,
+    version : 20140701,
 
     inputs  : ['list', 'launch'],
 
@@ -64,7 +64,7 @@ module.exports = (function () {
       if(weather.zip !== null) {
         request = https.request(this.postPrepare(weather), function(response) {
                     response.once('data', function(response) {
-                      console.log('Weather: Connected');
+                      console.log('\x1b[32mWeather\x1b[0m: Connected');
 
                       dataReply += response;
                     });
@@ -97,11 +97,11 @@ module.exports = (function () {
           var errorMsg = '';
 
           if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
-            errorMsg = 'Weather: API is unreachable';
+            errorMsg = '\x1b[31mWeather\x1b[0m: API is unreachable';
           }
 
           else {
-            errorMsg = 'Weather: ' + err.code;
+            errorMsg = '\x1b[31mWeather\x1b[0m: ' + err.code;
           }
 
           console.log(errorMsg);
@@ -115,7 +115,7 @@ module.exports = (function () {
       }
 
       else {
-        console.log('Weather: No zip code specified');
+        console.log('\x1b[31mWeather\x1b[0m: No zip code specified');
       }
     }
   };

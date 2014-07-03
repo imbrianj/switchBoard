@@ -40,7 +40,7 @@ module.exports = function(grunt) {
     },
 
     watch : {
-      files : ['<%= jshint.files %>', 'css/*.css'],
+      files : ['<%= jshint.files %>', 'css/common.css', 'css/font-awesome.css'],
       tasks : ['concat', 'cssmin', 'uglify', 'nodeunit', 'jshint']
     }
   });

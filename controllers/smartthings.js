@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic control of SmartThings endpoint.
    */
   return {
-    version : 20140622,
+    version : 20140701,
 
     inputs  : ['list', 'subdevice'],
 
@@ -70,7 +70,7 @@ module.exports = (function () {
           response = JSON.parse(response);
 
           if(response.error) {
-            console.log('SmartThings: ' + response.error_description);
+            console.log('\x1b[31mSmartThings\x1b[0m: ' + response.error_description);
           }
 
           else {
@@ -93,7 +93,7 @@ module.exports = (function () {
       var smartthings = {},
           that        = this;
 
-      console.log('SmartThings: Fetching device url');
+      console.log('\x1b[35mSmartThings\x1b[0m: Fetching device url');
 
       smartthings.path     = controller.config.path || '/api/smartapps/endpoints/' + controller.config.clientId + '?access_token=' + auth.accessToken;
       smartthings.callback = function(err, response) {
@@ -105,7 +105,7 @@ module.exports = (function () {
           response = JSON.parse(response);
 
           if(response.error) {
-            console.log('SmartThings: ' + response.message);
+            console.log('\x1b[31mSmartThings\x1b[0m: ' + response.message);
           }
 
           else {
@@ -113,7 +113,7 @@ module.exports = (function () {
 
             cache = fs.createWriteStream(__dirname + '/../tmp/smartthingsAuth.json');
             cache.once('open', function() {
-              console.log('SmartThings: Auth data cached with URL');
+              console.log('\x1b[35mSmartThings\x1b[0m: Auth data cached with URL');
 
               that.oauthDeviceList(auth, controller);
 
@@ -134,7 +134,7 @@ module.exports = (function () {
           request     = {},
           that        = this;
 
-      console.log('SmartThings: Fetching device info');
+      console.log('\x1b[35mSmartThings\x1b[0m: Fetching device info');
 
       smartthings.device.deviceId = controller.config.deviceId;
       smartthings.path            = controller.config.path || auth.url + '/switches';
@@ -320,12 +320,12 @@ module.exports = (function () {
 
           // Otherwise, we need to prompt the user to retrieve the auth token.
           else {
-            console.log('=====================================================================');
+            console.log('\x1b[31m=====================================================================\x1b[0m');
             console.log('WARNING: SmartThings: Attempting to load controller that requires');
             console.log('WARNING: additional OAuth configuration!');
             console.log('WARNING: Visit this URL to authenticate:');
             console.log('https://graph.api.smartthings.com/oauth/authorize?response_type=code&client_id=' + controller.config.clientId + '&redirect_uri=http://' + config.serverIp + ':' + config.serverPort + '/oauth/' + controller.config.deviceId + '&scope=app');
-            console.log('=====================================================================');
+            console.log('\x1b[31m=====================================================================\x1b[0m');
           }
         });
       }
@@ -373,7 +373,7 @@ module.exports = (function () {
       if(request.path) {
         request = https.request(request, function(response) {
                     response.once('data', function(response) {
-                      console.log('SmartThings: Connected');
+                      console.log('\x1b[32mSmartThings\x1b[0m: Connected');
 
                       dataReply += response;
                     });
@@ -393,7 +393,7 @@ module.exports = (function () {
                       }
 
                       else {
-                        console.log('SmartThings: No data returned from API');
+                        console.log('\x1b[31mSmartThings\x1b[0m: No data returned from API');
 
                         smartthings.callback(null, '', true);
                       }
@@ -404,11 +404,11 @@ module.exports = (function () {
           var errorMsg = '';
 
           if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
-            errorMsg = 'SmartThings: Device is off or unreachable';
+            errorMsg = '\x1b[31mSmartThings\x1b[0m: Device is off or unreachable';
           }
 
           else {
-            errorMsg = 'SmartThings: ' + err.code;
+            errorMsg = '\x1b[31mSmartThings\x1b[0m: ' + err.code;
           }
 
           console.log(errorMsg);

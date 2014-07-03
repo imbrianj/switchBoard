@@ -13,7 +13,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic control of Pushover notification API.
    */
   return {
-    version : 20140401,
+    version : 20140701,
 
     inputs  : ['text'],
 
@@ -88,7 +88,7 @@ module.exports = (function () {
         response.setEncoding('utf8');
 
         response.once('data', function(response) {
-          console.log('Pushover: Connected');
+          console.log('\x1b[32mPushover\x1b[0m: Connected');
 
           pushover.callback(null, response);
         });
@@ -98,11 +98,11 @@ module.exports = (function () {
         var errorMsg = '';
 
         if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
-          errorMsg = 'Pushover: API is unreachable';
+          errorMsg = '\x1b[31mPushover\x1b[0m: API is unreachable';
         }
 
         else {
-          errorMsg = 'Pushover: ' + err.code;
+          errorMsg = '\x1b[31mPushover\x1b[0m: ' + err.code;
         }
 
         console.log(errorMsg);

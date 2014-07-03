@@ -69,17 +69,17 @@ module.exports = (function () {
                 }
 
                 else if(stocks[stockName]){
-                  console.log('Schedule: ' + stocks[stockName].name + ' is at ' + stocks[stockName].price + ' - within range');
+                  console.log('\x1b[35mSchedule\x1b[0m: ' + stocks[stockName].name + ' is at ' + stocks[stockName].price + ' - within range');
                 }
 
                 else {
-                  console.log('Schedule: Failed to fetch valid stock data');
+                  console.log('\x1b[31mSchedule\x1b[0m: Failed to fetch valid stock data');
                 }
               }
             }
 
             if(message) {
-              console.log('Schedule: ' + message);
+              console.log('\x1b[35mSchedule\x1b[0m: ' + message);
 
               for(i; i < controller.config.notify.length; i += 1) {
                 if(typeof controllers[controller.config.notify[i]] !== 'undefined') {
@@ -101,14 +101,14 @@ module.exports = (function () {
         else {
           deviceState.updateState(deviceId, 'stocks', { state : 'err', value : State[deviceId].state.value });
 
-          console.log('Schedule: Stock trading is closed - after hours');
+          console.log('\x1b[35mSchedule\x1b[0m: Stock trading is closed - after hours');
         }
       }
 
       else {
         deviceState.updateState(deviceId, 'stocks', { state : 'err', value : State[deviceId].state.value });
 
-        console.log('Schedule: Stock trading is closed - weekend');
+        console.log('\x1b[35mSchedule\x1b[0m: Stock trading is closed - weekend');
       }
     }
   };

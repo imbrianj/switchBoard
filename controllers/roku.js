@@ -33,7 +33,7 @@ module.exports = (function () {
    * @requires xml2js, http, fs, request
    */
   return {
-    version : 20140619,
+    version : 20140701,
 
     inputs  : ['command', 'text', 'list', 'launch'],
 
@@ -100,14 +100,14 @@ module.exports = (function () {
 
         if(exists) {
           if(logging === 'verbose') {
-            console.log('Roku: Skipping ' + appName + ' image - already saved locally');
+            console.log('\x1b[35mRoku\x1b[0m: Skipping ' + appName + ' image - already saved locally');
           }
         }
 
         else {
           request = require('request');
 
-          console.log('Roku: Saved image for ' + appName);
+          console.log('\x1b[35mRoku\x1b[0m: Saved image for ' + appName);
           request('http://' + config.deviceIp + ':8060/query/icon/' + appId).pipe(fs.createWriteStream(filePath));
         }
       });
@@ -129,11 +129,11 @@ module.exports = (function () {
           var errorMsg = '';
 
           if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
-            errorMsg = 'Roku: Device is off or unreachable';
+            errorMsg = '\x1b[31mRoku\x1b[0m: Device is off or unreachable';
           }
 
           else {
-            errorMsg = 'Roku: ' + err.code;
+            errorMsg = '\x1b[31mRoku\x1b[0m: ' + err.code;
           }
 
           callback(errorMsg, reply);
@@ -146,7 +146,7 @@ module.exports = (function () {
 
             if(reply) {
               if(err) {
-                console.log('Roku: Unable to parse reply');
+                console.log('\x1b[31mRoku\x1b[0m: Unable to parse reply');
               }
 
               else {
@@ -228,7 +228,7 @@ module.exports = (function () {
 
       request = http.request(this.postPrepare(roku), function(response) {
                   response.once('data', function(response) {
-                    console.log('Roku: Connected');
+                    console.log('\x1b[32mRoku\x1b[0m: Connected');
 
                     dataReply += response;
                   });
@@ -242,11 +242,11 @@ module.exports = (function () {
         var errorMsg = '';
 
         if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
-          errorMsg = 'Roku: Device is off or unreachable';
+          errorMsg = '\x1b[31mRoku\x1b[0m: Device is off or unreachable';
         }
 
         else {
-          errorMsg = 'Roku: ' + err.code;
+          errorMsg = '\x1b[31mRoku:\x1b[0m ' + err.code;
         }
 
         console.log(errorMsg);

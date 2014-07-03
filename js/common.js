@@ -28,7 +28,7 @@ Switchboard = (function () {
   'use strict';
 
   return {
-    version : 20140625,
+    version : 20140630,
 
     parsers : {},
 
@@ -613,7 +613,7 @@ Switchboard = (function () {
           images = container.getElementsByTagName('img');
 
           for(i = 0; i < images.length; i += 1) {
-            if(images[i].getAttribute('data-src')) {
+            if((images[i].getAttribute('data-src')) && (!images[i].src)) {
               images[i].src = images[i].getAttribute('data-src');
             }
           }

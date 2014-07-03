@@ -419,6 +419,31 @@ form legend {
 	padding: .5em 0;
 }
 
+.device .text-block li {
+	margin: .5em 0;
+}
+
+.device .text-block li .fa {
+	margin-right: .5em;
+}
+
+.device .text-block li.loss .fa {
+	color: #F00;
+}
+
+.device .text-block li.gain .fa {
+	color: #0078E7;
+}
+
+.device .text-block li .fa span {
+	display: none;
+}
+
+.device .text-block li .name {
+	display: inline-block;
+	width: 3.5em;
+}
+
 .device .installed {
 	float: none;
 	margin: 0 auto;
@@ -615,6 +640,7 @@ form legend {
 .device .preview-image img {
 	color: transparent;
 	display: block;
+	margin: 0 auto;
 	max-width: 100%;
 	min-height: 200px;
 }

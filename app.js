@@ -30,7 +30,7 @@
  */
 
 State       = {};
-Connections = {};
+Connections = [];
 
 var version         = 20140626,
     http            = require('http'),
@@ -65,7 +65,7 @@ if(controllers) {
 
     // Some commands can be accepted via POST - such as text inputs.
     if(request.method === 'POST') {
-      console.log('POST command received');
+      console.log('\x1b[36mPOST command received\x1b[0m');
 
       requestInit.requestInit(request, controllers, response);
     }
@@ -95,7 +95,7 @@ if(controllers) {
       request.resume();
     }
   }).listen(settings.config.config.serverPort, function() {
-    console.log('Listening on port ' + settings.config.config.serverPort);
+    console.log('\x1b[36mListening on port ' + settings.config.config.serverPort + '\x1b[0m');
   });
 
   // Or you're connecting with Web Sockets
@@ -105,9 +105,9 @@ if(controllers) {
     var loadMarkup = require('./lib/loadMarkup'),
         connection = request.accept('echo-protocol', request.origin);
 
-    console.log(connection.remoteAddress + ' Websocket connected');
+    console.log('\x1b[36m' + connection.remoteAddress + ' WebSocket connected\x1b[0m');
 
-    Connections[connection.remoteAddress] = connection;
+    Connections.push(connection);
 
     connection.sendUTF(JSON.stringify(loadMarkup.loadTemplates(controllers)));
 
@@ -120,8 +120,19 @@ if(controllers) {
     });
 
     connection.on('close', function(code, desc) {
-      console.log(connection.remoteAddress + ' Websocket disconnected');
-      delete Connections[connection.remoteAddress];
+      var i = 0;
+
+      console.log('\x1b[36m' + connection.remoteAddress + ' WebSocket disconnected\x1b[0m');
+
+      connection.close();
+
+      for(i; i < Connections.length; i += 1) {
+        if(Connections[i] === connection) {
+          Connections.splice(i, 1);
+
+          break;
+        }
+      }
     });
   });
 }

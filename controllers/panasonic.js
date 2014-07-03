@@ -34,7 +34,7 @@ module.exports = (function () {
    *       http://cocoontech.com/forums/topic/21266-panasonic-viera-plasma-ip-control/page-2
    */
   return {
-    version : 20140312,
+    version : 20140701,
 
     inputs  : ['command', 'text'],
 
@@ -108,23 +108,11 @@ module.exports = (function () {
         var message = '';
 
         if(reply) {
-          console.log('Panasonic: Connected');
-
-          callback(panasonic.device.deviceId, null, response);
+          callback(panasonic.device.deviceId, null, 'ok');
         }
 
         else if(err) {
-          if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
-            message = 'Panasonic: Device is off or unreachable';
-          }
-
-          else {
-            message = 'Panasonic: ' + err.code;
-          }
-
-          console.log(message);
-
-          callback(panasonic.device.deviceId, message);
+          callback(panasonic.device.deviceId, 'err');
         }
       };
 
@@ -145,7 +133,7 @@ module.exports = (function () {
 
       request = http.request(this.postPrepare(panasonic), function(response) {
                   response.once('data', function(response) {
-                    console.log('connected');
+                    console.log('\x1b[32mPanasonic\x1b[0m: Connected');
 
                     dataReply += response;
                   });
@@ -160,11 +148,11 @@ module.exports = (function () {
         var errorMsg = '';
 
         if(error.code === 'ECONNRESET' || error.code === 'ECONNREFUSED') {
-          errorMsg = 'Panasonic: Device is off or unreachable';
+          errorMsg = '\x1b[31mPanasonic\x1b[0m: Device is off or unreachable';
         }
 
         else {
-          errorMsg = 'Panasonic: ' + error.code;
+          errorMsg = '\x1b[31mPanasonic\x1b[0m: ' + error.code;
         }
 
         console.log(errorMsg);
