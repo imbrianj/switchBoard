@@ -26,11 +26,10 @@
 (function(exports){
   'use strict';
 
-  exports.parser = function (deviceId, markup, state, value, fragments) {
-    var fs                = require('fs'),
-        templateSwitch    = fragments.switch,
+  exports.smartthings = function (deviceId, markup, state, value, fragments) {
+    var templateSwitch    = fragments.switch,
         templateLock      = fragments.lock,
-        templateGroup     = '',
+        templateGroup     = fragments.group,
         i                 = 0,
         j                 = 0,
         tempMarkup        = '',
@@ -59,15 +58,13 @@
           return collected;
         };
 
-    if(typeof value === 'object' && typeof value.mode === 'string') {
+    if((value) && (typeof value === 'object') && (typeof value.mode === 'string')) {
       mode       = value.mode;
       subDevices = value.devices;
 
       if(subDevices) {
         // You want to display SmartThings devices in groups.
         if(value.groups) {
-          templateGroup = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsGroups.tpl').toString();
-
           for(i in value.groups) {
             tempMarkup      = tempMarkup + templateGroup;
             subDeviceMarkup = '';
@@ -146,4 +143,4 @@
 
     return markup.replace('{{SMARTTHINGS_DYNAMIC}}', tempMarkup);
   };
-})(typeof exports === 'undefined' ? this.Switchboard.smartthings = {} : exports);
+})(typeof exports === 'undefined' ? this.Switchboard.parsers : exports);

@@ -13,7 +13,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic stocks information, courtesy of Yahoo.
    */
   return {
-    version : 20140326,
+    version : 20140701,
 
     inputs  : ['list', 'launch'],
 
@@ -47,24 +47,32 @@ module.exports = (function () {
       this.send({ device : { deviceId: controller.config.deviceId, stocks : controller.config.stocks } });
     },
 
+    onload : function (controller) {
+      var fs       = require('fs'),
+          parser   = require(__dirname + '/../parsers/stocks').stocks,
+          fragment = fs.readFileSync(__dirname + '/../templates/fragments/stocks.tpl').toString();
+
+      return parser(controller.deviceId, controller.markup, State[controller.config.deviceId].state, State[controller.config.deviceId].value, { list : fragment });
+    },
+
     send : function (config) {
       var https     = require('https'),
           stocks    = {},
           dataReply = '',
           request;
 
-      stocks.deviceName = config.device.deviceId;
-      stocks.stocks     = config.device.stocks ? config.device.stocks.join('","') : null;
-      stocks.host       = config.host     || 'query.yahooapis.com';
-      stocks.path       = config.path     || '/v1/public/yql?format=json&env=http://datatables.org/alltables.env&q=select symbol, LastTradePriceOnly, AskRealtime, BidRealtime, Change, DaysLow, DaysHigh, YearLow, YearHigh from yahoo.finance.quotes where symbol in ("' + stocks.stocks + '")';
-      stocks.port       = config.port     || 443;
-      stocks.method     = config.method   || 'GET';
-      stocks.callback   = config.callback || function () {};
+      stocks.deviceId = config.device.deviceId;
+      stocks.stocks   = config.device.stocks ? config.device.stocks.join('","') : null;
+      stocks.host     = config.host     || 'query.yahooapis.com';
+      stocks.path     = config.path     || '/v1/public/yql?format=json&env=http://datatables.org/alltables.env&q=select symbol, LastTradePriceOnly, AskRealtime, BidRealtime, Change, DaysLow, DaysHigh, YearLow, YearHigh, ChangeinPercent from yahoo.finance.quotes where symbol in ("' + stocks.stocks + '")';
+      stocks.port     = config.port     || 443;
+      stocks.method   = config.method   || 'GET';
+      stocks.callback = config.callback || function () {};
 
       if(stocks.stocks !== null) {
         request = https.request(this.postPrepare(stocks), function(response) {
                     response.once('data', function(response) {
-                      console.log('Stocks: Connected');
+                      console.log('\x1b[32mStocks\x1b[0m: Connected');
 
                       dataReply += response;
                     });
@@ -83,20 +91,21 @@ module.exports = (function () {
                           for(i in data.query.results.quote) {
                             stock = data.query.results.quote[i];
 
-                            stockData[stock.symbol] = { 'name'     : stock.symbol,
-                                                        'price'    : stock.LastTradePriceOnly,
-                                                        'ask'      : stock.AskRealtime,
-                                                        'bid'      : stock.BidRealtime,
-                                                        'change'   : stock.Change,
-                                                        'dayHigh'  : stock.DaysHigh,
-                                                        'dayLow'   : stock.DaysLow,
-                                                        'yearHigh' : stock.YearHigh,
-                                                        'yearLow'  : stock.YearLow
+                            stockData[stock.symbol] = { 'name'      : stock.symbol,
+                                                        'price'     : stock.LastTradePriceOnly,
+                                                        'ask'       : stock.AskRealtime,
+                                                        'bid'       : stock.BidRealtime,
+                                                        'change'    : stock.Change,
+                                                        'dayHigh'   : stock.DaysHigh,
+                                                        'dayLow'    : stock.DaysLow,
+                                                        'yearHigh'  : stock.YearHigh,
+                                                        'yearLow'   : stock.YearLow,
+                                                        'dayChange' : stock.ChangeinPercent
                                                       };
                           }
                         }
 
-                        deviceState.updateState(stocks.deviceName, { state: 'ok', value : stockData });
+                        deviceState.updateState(stocks.deviceId, 'stocks', { state: 'ok', value : stockData });
                       }
 
                       stocks.callback(null, stockData);
@@ -107,11 +116,11 @@ module.exports = (function () {
           var errorMsg = '';
 
           if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
-            errorMsg = 'Stocks: API is unreachable';
+            errorMsg = '\x1b[31mStocks\x1b[0m: API is unreachable';
           }
 
           else {
-            errorMsg = 'Stocks: ' + err.code;
+            errorMsg = '\x1b[31mStocks\x1b[0m: ' + err.code;
           }
 
           console.log(errorMsg);
@@ -125,7 +134,7 @@ module.exports = (function () {
       }
 
       else {
-        console.log('Stocks: No stocks specified');
+        console.log('\x1b[31mStocks\x1b[0m: No stocks specified');
       }
     }
   };

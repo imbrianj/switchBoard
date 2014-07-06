@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic control of Foscam IP camera.
    */
   return {
-    version : 20140619,
+    version : 20140701,
 
     inputs  : ['command', 'list'],
 
@@ -102,12 +102,12 @@ module.exports = (function () {
     },
 
     init : function (controller, config) {
-      var callback = function(deviceName, err, state, params) {
+      var callback = function(deviceId, err, state, params) {
         var deviceState = require('../lib/deviceState');
 
         params.state = state;
 
-        deviceState.updateState(deviceName, params);
+        deviceState.updateState(deviceId, 'foscam', params);
       };
 
       this.state(controller, callback);
@@ -150,7 +150,7 @@ module.exports = (function () {
     },
 
     onload : function (controller) {
-      var parser = require(__dirname + '/../parsers/foscam').parser;
+      var parser = require(__dirname + '/../parsers/foscam').foscam;
 
       return parser(controller.deviceId, controller.markup, State[controller.config.deviceId].state, State[controller.config.deviceId].value);
     },
@@ -177,7 +177,7 @@ module.exports = (function () {
               postData;
 
           if(exists) {
-            console.log('Foscam: Skipping image - already exists');
+            console.log('\x1b[35mFoscam\x1b[0m: Skipping image - already exists');
           }
 
           else {
@@ -185,7 +185,7 @@ module.exports = (function () {
             controller = require('./foscam');
             postData   = controller.postPrepare(foscam);
 
-            console.log('Foscam: Saved image');
+            console.log('\x1b[35mFoscam\x1b[0m: Saved image');
 
             request('http://' + postData.host + ':' + postData.port + postData.path).pipe(fs.createWriteStream(filePath));
           }
@@ -195,7 +195,7 @@ module.exports = (function () {
       else {
         request = http.request(this.postPrepare(foscam), function(response) {
           response.once('data', function(response) {
-            console.log('Foscam: Connected');
+            console.log('\x1b[32mFoscam\x1b[0m: Connected');
 
             foscam.callback(null, response);
           });
@@ -205,11 +205,11 @@ module.exports = (function () {
           var errorMsg = '';
 
           if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
-            errorMsg = 'Foscam: Device is off or unreachable';
+            errorMsg = '\x1b[31mFoscam\x1b[0m: Device is off or unreachable';
           }
 
           else {
-            errorMsg = 'Foscam: ' + err.code;
+            errorMsg = '\x1b[31mFoscam\x1b[0m: ' + err.code;
           }
 
           console.log(errorMsg);

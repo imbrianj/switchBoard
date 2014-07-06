@@ -85,7 +85,7 @@ module.exports = (function () {
       else {
         execute = '';
 
-        console.log('PS3: Gimx is not supported on your platform!');
+        console.log('\x1b[31mPS3\x1b[0m: Gimx is not supported on your platform!');
       }
 
       return execute;
@@ -94,11 +94,11 @@ module.exports = (function () {
     init : function(controller, config) {
       var deviceState = require('../lib/deviceState');
 
-      deviceState.updateState(controller.config.deviceId, { state : 'err' });
+      deviceState.updateState(controller.config.deviceId, 'ps3', { state : 'err' });
     },
 
     onload : function (controller) {
-      var parser = require(__dirname + '/../parsers/ps3').parser;
+      var parser = require(__dirname + '/../parsers/ps3').ps3;
 
       return parser(controller.deviceId, controller.markup, State[controller.config.deviceId].state, State[controller.config.deviceId].value);
     },
@@ -110,24 +110,24 @@ module.exports = (function () {
           that       = this,
           emuclient;
 
-      ps3.deviceName = config.device.deviceId;
-      ps3.deviceMac  = config.device.deviceMac;
-      ps3.command    = config.command  || '';
-      ps3.callback   = config.callback || function () {};
-      ps3.platform   = config.platform || process.platform;
-      ps3.revert     = config.revert   || false;
+      ps3.deviceId  = config.device.deviceId;
+      ps3.deviceMac = config.device.deviceMac;
+      ps3.command   = config.command  || '';
+      ps3.callback  = config.callback || function () {};
+      ps3.platform  = config.platform || process.platform;
+      ps3.revert    = config.revert   || false;
 
-      if(State[ps3.deviceName].state === 'ok') {
+      if(State[ps3.deviceId].state === 'ok') {
         // If the PS3 is already on, we shouldn't execute PowerOn again.
         if(ps3.command === 'PowerOn') {
-          console.log('PS3 looks on already.  Changing command to PS');
+          console.log('\x1b[35mPS3\x1b[0m: Device looks on already.  Changing command to PS');
 
           ps3.command = 'PS';
         }
       }
 
       else {
-        console.log('PS3 doesn\'t look on.');
+        console.log('\x1b[35mPS3\x1b[0m: Device doesn\'t look on');
       }
 
       ps3.execute = this.translateCommand(ps3.command, ps3.deviceMac, ps3.platform, ps3.revert);
@@ -146,7 +146,7 @@ module.exports = (function () {
         if(ps3.command === 'PowerOn') {
           deviceState = require('../lib/deviceState');
 
-          deviceState.updateState(ps3.deviceName, { state : 'err' });
+          deviceState.updateState(ps3.deviceId, 'ps3', { state : 'err' });
         }
 
         else if((ps3.revert !== true) && (ps3.command !== 'PS')) {

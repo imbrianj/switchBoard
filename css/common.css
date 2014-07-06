@@ -323,6 +323,34 @@ form legend {
 	position: relative;
 }
 
+.header #indicator {
+	border-radius: .5em;
+	height: 1em;
+	overflow: hidden;
+	position: absolute;
+	right: 1em;
+	text-indent: -999px;
+	top: 1em;
+	width: 1em;
+}
+
+.header .disconnected {
+	background: #F00;
+	cursor: pointer;
+}
+
+.header .connecting {
+	background: #333;
+}
+
+.header .polling {
+	background: #666;
+}
+
+.header .connected {
+	background: #0078E7;
+}
+
 .body h1 {
 	font-weight: bold;
 	margin: .4em .2em;
@@ -389,6 +417,31 @@ form legend {
 
 .device .text-block p {
 	padding: .5em 0;
+}
+
+.device .text-block li {
+	margin: .5em 0;
+}
+
+.device .text-block li .fa {
+	margin-right: .5em;
+}
+
+.device .text-block li.loss .fa {
+	color: #F00;
+}
+
+.device .text-block li.gain .fa {
+	color: #0078E7;
+}
+
+.device .text-block li .fa span {
+	display: none;
+}
+
+.device .text-block li .name {
+	display: inline-block;
+	width: 3.5em;
 }
 
 .device .installed {
@@ -587,6 +640,7 @@ form legend {
 .device .preview-image img {
 	color: transparent;
 	display: block;
+	margin: 0 auto;
 	max-width: 100%;
 	min-height: 200px;
 }

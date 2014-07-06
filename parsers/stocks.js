@@ -26,19 +26,48 @@
 (function(exports){
   'use strict';
 
-  exports.roku = function (deviceId, markup, state, value, fragments) {
+  exports.stocks = function (deviceId, markup, state, value, fragments) {
     var template   = fragments.list,
         i          = 0,
-        tempMarkup = '';
+        className  = '',
+        tempMarkup = '',
+        change     = '',
+        arrow      = '';
+
+    if(state === 'ok') {
+      className = ' device-on';
+    }
+
+    else if(state === 'err') {
+      className = ' device-off';
+    }
+
+    markup = markup.replace('{{DEVICE_STATE}}', className);
 
     if(value) {
       for(i in value) {
-        tempMarkup = tempMarkup + template.split('{{APP_ID}}').join(value[i].id);
-        tempMarkup = tempMarkup.split('{{APP_IMG}}').join(value[i].cache);
-        tempMarkup = tempMarkup.split('{{APP_NAME}}').join(value[i].name);
+        if(value[i].dayChange.indexOf('+') === 0) {
+          change = 'gain';
+          arrow  = '<span class="fa fa-arrow-up"><span>Gain</span></span>';
+        }
+
+        else if(value[i].dayChange.indexOf('-') === 0) {
+          change = 'loss';
+          arrow  = '<span class="fa fa-arrow-down"><span>Loss</span></span>';
+        }
+
+        else {
+          change = 'neutral';
+          arrow  = '<span class="fa fa-arrows-h"><span>Neutral</span></span>';
+        }
+
+        tempMarkup = tempMarkup + template.split('{{STOCK_CHANGE}}').join(change);
+        tempMarkup = tempMarkup.split('{{STOCK_ARROW}}').join(arrow);
+        tempMarkup = tempMarkup.split('{{STOCK_NAME}}').join(value[i].name);
+        tempMarkup = tempMarkup.split('{{STOCK_PRICE}}').join(value[i].price);
       }
     }
 
-    return markup.replace('{{ROKU_DYNAMIC}}', tempMarkup);
+    return markup.replace('{{STOCKS_DYNAMIC}}', tempMarkup);
   };
 })(typeof exports === 'undefined' ? this.Switchboard.parsers : exports);

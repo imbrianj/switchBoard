@@ -13,7 +13,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -69,7 +69,7 @@ module.exports = (function () {
         default :
           execute = '';
 
-          console.log('Speech: Text to speech is not supported on your platform!');
+          console.log('\x1b[31mSpeech\x1b[0m: Text to speech is not supported on your platform!');
         break;
       }
 
@@ -100,7 +100,7 @@ module.exports = (function () {
       }
 
       else {
-        console.log('Speech: No text specified');
+        console.log('\x1b[31mSpeech\x1b[0m: No text specified');
       }
     }
   };

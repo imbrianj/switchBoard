@@ -13,7 +13,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -34,7 +34,7 @@ module.exports = (function () {
    *       http://forum.loxone.com/enen/software/4876-lg-tv-http-control.html#post32692
    */
   return {
-    version : 20140607,
+    version : 20140701,
 
     inputs  : ['command'],
 
@@ -188,7 +188,7 @@ module.exports = (function () {
 
       request = http.request(this.postPrepare(lg), function(response) {
                   response.once('data', function(response) {
-                    console.log('connected');
+                    console.log('\x1b[32mLG\x1b[0m: Connected');
 
                     dataReply += response;
                   });
@@ -202,11 +202,11 @@ module.exports = (function () {
         var errorMsg = '';
 
         if(error.code === 'ECONNRESET' || error.code === 'ECONNREFUSED') {
-          errorMsg = 'LG: Device is off or unreachable';
+          errorMsg = '\x1b[31mLG\x1b[0m: Device is off or unreachable';
         }
 
         else {
-          errorMsg = 'LG: ' + error.code;
+          errorMsg = '\x1b[31mLG\x1b[0m: ' + error.code;
         }
 
         console.log(errorMsg);

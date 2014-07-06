@@ -1,5 +1,5 @@
 /*global document, window, ActiveXObject, init, console, XMLHttpRequest, Switchboard*/
-/*jslint white: true */
+/*jslint white: true, evil: true */
 /*jshint -W020 */
 
 /**
@@ -28,9 +28,11 @@ Switchboard = (function () {
   'use strict';
 
   return {
-    version : 20140622,
+    version : 20140630,
 
-    parser : {},
+    parsers : {},
+
+    templates : {},
 
     event : {
       list : [],
@@ -78,7 +80,7 @@ Switchboard = (function () {
       * @param {Boolean} capture true if the event was registered as a
       *         capturing listener.  Defaults to false.
       * @note Automatically removes the event from the Switchboard.event.list
-      *         array.
+      *        array.
       */
       remove : function (elm, event, action, capture) {
         capture = capture || false;
@@ -301,6 +303,31 @@ Switchboard = (function () {
     },
 
    /**
+    * Enters text into a given element, using the best method available.  If
+    *  text already exists within the element, it will be overwritten.
+    *
+    * @param {Object} elm Element to have text entered into.
+    * @param {String} text Text that will populate the element.
+    */
+    putText : function (elm, text) {
+      if (elm.textContent) {
+        elm.textContent = text;
+      }
+
+      else if (elm.innerText) {
+        elm.innerText = text;
+      }
+
+      else if (elm.text) {
+        elm.text = text;
+      }
+
+      else {
+        elm.innerHTML = text;
+      }
+    },
+
+   /**
     * Removes extra whitespace at the beginning or end of a given string.
     *
     * @param {String} string String of text that may have leading or trailing
@@ -312,6 +339,41 @@ Switchboard = (function () {
       string = string || '';
 
       return string.toString().replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+    },
+
+    /**
+     * Accepts a string of JSON and returns a native Javascript object.
+     *
+     * @param {String} string String of JSON code to be decoded to an object.
+     * @return {Object} Native Javascript object.
+     * @note Uses eval() if JSON.parse is not available, so as to support older
+     *        browsers.  This is dangerous if you do not trust your source of
+     *        the JSON string.
+     */
+    decode : function (json) {
+      var reply = '';
+
+      if (typeof JSON === 'object') {
+        reply = JSON.parse(json);
+      }
+
+      else {
+        // This is terrible.  Evil, in fact.
+        reply = eval('(' + json + ')');
+      }
+
+      return reply;
+    },
+
+    /**
+     * Stupid wrapper to ensure console.log exists before using it.
+     *
+     * @param {String} string String to be printed to console log.
+     */
+    log : function (message) {
+      if(typeof console === 'object' && typeof console.log === 'function') {
+        console.log(message);
+      }
     },
 
     ajax : {
@@ -386,7 +448,7 @@ Switchboard = (function () {
           request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         }
 
-        request.setRequestHeader('AJAX', 'true');
+        request.setRequestHeader('rest', 'true');
 
         Switchboard.event.add(request, 'readystatechange', function () {
           if (request.readyState === 4) {
@@ -414,34 +476,132 @@ Switchboard = (function () {
       var header     = Switchboard.getElementsByClassName('header', document.body, 'div')[0],
           body       = Switchboard.getElementsByClassName('body', document.body, 'div')[0],
           textInputs = Switchboard.getElementsByClassName('text-form', body, 'form'),
-          runText,
           lazyLoad,
+          templates,
+          socketConnect,
+          updateTemplate,
+          indicator,
+          socket,
           i;
 
-      runText = function(e) {
-        var elm  = Switchboard.getTarget(e),
-            ts   = new Date().getTime(),
-            text = '',
-            device,
-            ajaxRequest;
+      updateTemplate = function(state) {
+        var node        = document.getElementById(state.deviceId),
+            parser      = Switchboard.parsers[state.typeClass],
+            value       = state.value,
+            deviceState = state.state,
+            selected,
+            markup,
+            oldMarkup,
+            i;
 
-        e.preventDefault();
+        if(node) {
+          markup    = templates[state.typeClass].markup;
+          selected  = Switchboard.hasClass(node, 'selected') ? ' selected' : '';
+          oldMarkup = node.outerHTML;
 
-        text   = Switchboard.getElementsByClassName('text-input', elm, 'input')[0].value;
-        device = Switchboard.getElementsByClassName('text-input', elm, 'input')[0].name;
-
-        ajaxRequest = {
-          path       : '/',
-          param      : device + '=' + text,
-          method     : 'POST',
-          onComplete : function () {
-            console.log(ajaxRequest.response);
+          if(parser) {
+            markup = parser(state.deviceId, markup, deviceState, value, templates[state.typeClass].fragments);
           }
-        };
 
-        Switchboard.ajax.request(ajaxRequest);
+          if(node && markup && state) {
+            markup = markup.split('{{DEVICE_ID}}').join(state.deviceId);
+            markup = markup.split('{{DEVICE_TYPE}}').join(state.typeClass);
+            markup = markup.split('{{DEVICE_SELECTED}}').join(selected);
+
+            if(selected) {
+              markup = markup.split('{{LAZY_LOAD_IMAGE}}').join('src');
+            }
+
+            else {
+              markup = markup.split('{{LAZY_LOAD_IMAGE}}').join('data-src');
+            }
+          }
+
+          if(markup !== oldMarkup) {
+            node.outerHTML = markup;
+          }
+        }
       };
 
+      socketConnect = function () {
+        if(!document.getElementById('indicator')) {
+          indicator = document.createElement('span');
+          indicator.id = 'indicator';
+          Switchboard.addClass(indicator, 'connecting');
+          Switchboard.putText(indicator, 'Connecting');
+
+          header.appendChild(indicator);
+        }
+
+        socket = new WebSocket('ws://' + window.location.host, 'echo-protocol');
+
+        Switchboard.event.add(socket, 'open', function(e) {
+          indicator.className = 'connected';
+          Switchboard.putText(indicator, 'Connected');
+        });
+
+        Switchboard.event.add(socket, 'close', function(e) {
+          indicator.className = 'disconnected';
+          Switchboard.putText(indicator, 'Disconnected');
+        });
+
+        Switchboard.event.add(socket, 'message', function(e) {
+          var message = Switchboard.decode(event.data);
+
+          // If you already have templates (sent on initial connection), you
+          // must be getting sent a State dump.
+          if(templates) {
+            updateTemplate(message);
+          }
+
+          else {
+            templates = message;
+          }
+        });
+      };
+
+      if((typeof WebSocket === 'function') || (typeof WebSocket === 'object')) {
+        socketConnect();
+      }
+
+      else {
+        (function() {
+          var ajaxRequest;
+
+          // XHR, grab templates on init.
+          ajaxRequest = {
+            path   : '/templates/',
+            param  : 'ts=' + new Date().getTime(),
+            method : 'GET',
+            onComplete : function () {
+              templates = Switchboard.decode(ajaxRequest.response);
+            }
+          };
+
+          Switchboard.ajax.request(ajaxRequest);
+
+          // Set up our poller to continually grab device State.
+          setInterval(function() {
+            var pollRequest = {
+              path   : '/state/',
+              param  : 'ts=' + new Date().getTime(),
+              method : 'GET',
+              onComplete : function () {
+                var state = Switchboard.decode(pollRequest.response),
+                    device;
+
+                for(device in state) {
+                  updateTemplate(state[device]);
+                }
+              }
+            };
+
+            Switchboard.ajax.request(pollRequest);
+          }, 10000);
+        })();
+      }
+
+      /* Lazyload of images */
       lazyLoad = function(id) {
         var container,
             images,
@@ -453,9 +613,8 @@ Switchboard = (function () {
           images = container.getElementsByTagName('img');
 
           for(i = 0; i < images.length; i += 1) {
-            if(images[i].getAttribute('data-src')) {
+            if((images[i].getAttribute('data-src')) && (!images[i].src)) {
               images[i].src = images[i].getAttribute('data-src');
-              images[i].removeAttribute('data-src');
             }
           }
         }
@@ -463,10 +622,7 @@ Switchboard = (function () {
 
       lazyLoad(document.body.className);
 
-      for(i = 0; i < textInputs.length; i += 1) {
-        Switchboard.event.add(textInputs[i], 'submit', runText);
-      }
-
+      /* Clicking of navigation items */
       Switchboard.event.add(header, 'click', function(e) {
         var elm           = Switchboard.getTarget(e).parentNode,
             tagName       = elm.tagName.toLowerCase(),
@@ -487,8 +643,16 @@ Switchboard = (function () {
             lazyLoad(elm.className.replace(' selected', ''));
           }
         }
+
+        else if(Switchboard.getTarget(e).id === 'indicator') {
+          if(Switchboard.hasClass(Switchboard.getTarget(e), 'disconnected')) {
+            socketConnect();
+          }
+        }
+
       });
 
+      /* Typical command executions */
       Switchboard.event.add(body, 'click', function(e) {
         var elm     = Switchboard.getTarget(e),
             tagName = elm.tagName.toLowerCase(),
@@ -505,12 +669,49 @@ Switchboard = (function () {
 
           command = elm.href;
 
+          if(socket) {
+            socket.send(elm.href);
+          }
+
+          else {
+            ajaxRequest = {
+              path   : command,
+              param  : 'ts=' + ts,
+              method : 'GET',
+              onComplete : function () {
+                Switchboard.log(ajaxRequest.response);
+              }
+            };
+
+            Switchboard.ajax.request(ajaxRequest);
+          }
+        }
+      });
+
+      /* Form submissions - such as text */
+      Switchboard.event.add(body, 'submit', function(e) {
+        var elm  = Switchboard.getTarget(e),
+            ts   = new Date().getTime(),
+            text = '',
+            device,
+            ajaxRequest;
+
+        e.preventDefault();
+
+        text   = Switchboard.getElementsByClassName('text-input', elm, 'input')[0].value;
+        device = Switchboard.getElementsByClassName('text-input', elm, 'input')[0].name;
+
+        if(socket) {
+          socket.send('/?' + device + '=text-' + text);
+        }
+
+        else {
           ajaxRequest = {
-            path   : command,
-            param  : 'ts=' + ts,
-            method : 'GET',
+            path       : '/',
+            param      : device + '=' + text,
+            method     : 'POST',
             onComplete : function () {
-              console.log(ajaxRequest.response);
+              Switchboard.log(ajaxRequest.response);
             }
           };
 

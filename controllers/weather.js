@@ -13,7 +13,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic weather information, courtesy of Yahoo.
    */
   return {
-    version : 20140326,
+    version : 20140701,
 
     inputs  : ['list', 'launch'],
 
@@ -53,18 +53,18 @@ module.exports = (function () {
           dataReply = '',
           request;
 
-      weather.deviceName = config.device.deviceId;
-      weather.zip        = config.device.zip;
-      weather.host       = config.host     || 'query.yahooapis.com';
-      weather.path       = config.path     || '/v1/public/yql?format=json&q=select * from weather.forecast where location=' + weather.zip;
-      weather.port       = config.port     || 443;
-      weather.method     = config.method   || 'GET';
-      weather.callback   = config.callback || function () {};
+      weather.deviceId = config.device.deviceId;
+      weather.zip      = config.device.zip;
+      weather.host     = config.host     || 'query.yahooapis.com';
+      weather.path     = config.path     || '/v1/public/yql?format=json&q=select * from weather.forecast where location=' + weather.zip;
+      weather.port     = config.port     || 443;
+      weather.method   = config.method   || 'GET';
+      weather.callback = config.callback || function () {};
 
       if(weather.zip !== null) {
         request = https.request(this.postPrepare(weather), function(response) {
                     response.once('data', function(response) {
-                      console.log('Weather: Connected');
+                      console.log('\x1b[32mWeather\x1b[0m: Connected');
 
                       dataReply += response;
                     });
@@ -86,7 +86,7 @@ module.exports = (function () {
                                         'forecast' : city.item.forecast
                                       };
 
-                        deviceState.updateState(weather.deviceName, { state : 'ok', value : weatherData });
+                        deviceState.updateState(weather.deviceId, 'weather', { state : 'ok', value : weatherData });
                       }
 
                       weather.callback(null, weatherData);
@@ -97,11 +97,11 @@ module.exports = (function () {
           var errorMsg = '';
 
           if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
-            errorMsg = 'Weather: API is unreachable';
+            errorMsg = '\x1b[31mWeather\x1b[0m: API is unreachable';
           }
 
           else {
-            errorMsg = 'Weather: ' + err.code;
+            errorMsg = '\x1b[31mWeather\x1b[0m: ' + err.code;
           }
 
           console.log(errorMsg);
@@ -115,7 +115,7 @@ module.exports = (function () {
       }
 
       else {
-        console.log('Weather: No zip code specified');
+        console.log('\x1b[31mWeather\x1b[0m: No zip code specified');
       }
     }
   };

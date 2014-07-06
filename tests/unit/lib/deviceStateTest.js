@@ -35,7 +35,7 @@ exports.deviceState = {
     'use strict';
 
     var deviceState   = require('../../../lib/deviceState'),
-        newFauxDevice = deviceState.updateState('faux-device', {});
+        newFauxDevice = deviceState.updateState('faux-device', 'faux-type', {});
 
     test.notEqual(parseInt(State['faux-device'].updated, 10), NaN, 'Timestamp should return a number.');
 
@@ -49,8 +49,8 @@ exports.deviceState = {
     State['existing-device'] = { value : 50 };
 
     var deviceState = require('../../../lib/deviceState'),
-        device      = deviceState.updateState('faux-device', { state : 'ok', value : 100 }),
-        existing    = deviceState.updateState('existing-device', {});
+        device      = deviceState.updateState('faux-device', 'faux-type', { state : 'ok', value : 100 }),
+        existing    = deviceState.updateState('existing-device', 'existing-type', {});
 
     test.equal(State['faux-device'].state, 'ok', 'Device state should have been set to ok');
     test.equal(State['faux-device'].value, 100,  'Device value should have been set to 100');

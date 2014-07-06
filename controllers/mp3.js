@@ -13,7 +13,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -35,7 +35,7 @@ module.exports = (function () {
    *       sudo apt-get install mpg123
    */
   return {
-    version : 20140611,
+    version : 20140701,
 
     inputs  : ['text'],
 
@@ -60,7 +60,7 @@ module.exports = (function () {
         default :
           execute = '';
 
-          console.log('MP3: MP3 playback is not supported on your platform!');
+          console.log('\x1b[31mMP3\x1b[0m: MP3 playback is not supported on your platform!');
         break;
       }
 
@@ -94,13 +94,13 @@ module.exports = (function () {
           }
 
           else {
-            console.log('MP3: Specified file not found');
+            console.log('\x1b[31mMP3\x1b[0m: Specified file not found');
           }
         });
       }
 
       else {
-        console.log('MP3: No file specified');
+        console.log('\x1b[31mMP3\x1b[0m: No file specified');
       }
     }
   };
