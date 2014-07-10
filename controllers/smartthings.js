@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic control of SmartThings endpoint.
    */
   return {
-    version : 20140701,
+    version : 20140709,
 
     inputs  : ['list', 'subdevice'],
 
@@ -321,9 +321,9 @@ module.exports = (function () {
           // Otherwise, we need to prompt the user to retrieve the auth token.
           else {
             console.log('\x1b[31m=====================================================================\x1b[0m');
-            console.log('WARNING: SmartThings: Attempting to load controller that requires');
-            console.log('WARNING: additional OAuth configuration!');
-            console.log('WARNING: Visit this URL to authenticate:');
+            console.log('\x1b[31mWARNING\x1b[0m: SmartThings: Attempting to load controller that requires');
+            console.log('\x1b[31mWARNING\x1b[0m: additional OAuth configuration!');
+            console.log('\x1b[31mWARNING\x1b[0m: Visit this URL to authenticate:');
             console.log('https://graph.api.smartthings.com/oauth/authorize?response_type=code&client_id=' + controller.config.clientId + '&redirect_uri=http://' + config.serverIp + ':' + config.serverPort + '/oauth/' + controller.config.deviceId + '&scope=app');
             console.log('\x1b[31m=====================================================================\x1b[0m');
           }
@@ -351,14 +351,15 @@ module.exports = (function () {
           dataReply   = '',
           that        = this;
 
-      smartthings.deviceId = config.device.deviceId;
-      smartthings.auth     = config.device.auth;
-      smartthings.command  = config.subdevice || '';
-      smartthings.host     = config.host      || 'graph.api.smartthings.com';
-      smartthings.port     = config.port      || 443;
-      smartthings.path     = config.path      || '';
-      smartthings.method   = config.method    || 'GET';
-      smartthings.callback = config.callback  || function() {};
+      config.device        = config.device          || {};
+      smartthings.deviceId = config.device.deviceId || '';
+      smartthings.auth     = config.device.auth     || '';
+      smartthings.command  = config.subdevice       || '';
+      smartthings.host     = config.host            || 'graph.api.smartthings.com';
+      smartthings.port     = config.port            || 443;
+      smartthings.path     = config.path            || '';
+      smartthings.method   = config.method          || 'GET';
+      smartthings.callback = config.callback        || function() {};
 
       request = this.postPrepare(smartthings);
 
@@ -372,7 +373,7 @@ module.exports = (function () {
 
       if(request.path) {
         request = https.request(request, function(response) {
-                    response.once('data', function(response) {
+                    response.on('data', function(response) {
                       console.log('\x1b[32mSmartThings\x1b[0m: Connected');
 
                       dataReply += response;

@@ -46,12 +46,12 @@
 
     if(value) {
       for(i in value) {
-        if(value[i].dayChange.indexOf('+') === 0) {
+        if(value[i].dayChangeValue.indexOf('+') === 0) {
           change = 'gain';
           arrow  = '<span class="fa fa-arrow-up"><span>Gain</span></span>';
         }
 
-        else if(value[i].dayChange.indexOf('-') === 0) {
+        else if(value[i].dayChangeValue.indexOf('-') === 0) {
           change = 'loss';
           arrow  = '<span class="fa fa-arrow-down"><span>Loss</span></span>';
         }
@@ -65,6 +65,8 @@
         tempMarkup = tempMarkup.split('{{STOCK_ARROW}}').join(arrow);
         tempMarkup = tempMarkup.split('{{STOCK_NAME}}').join(value[i].name);
         tempMarkup = tempMarkup.split('{{STOCK_PRICE}}').join(value[i].price);
+        tempMarkup = tempMarkup.split('{{STOCK_CHANGE_VALUE}}').join(value[i].dayChangeValue);
+        tempMarkup = tempMarkup.split('{{STOCK_CHANGE_PERCENT}}').join(value[i].dayChangePercent);
       }
     }
 
