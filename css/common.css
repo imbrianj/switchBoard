@@ -444,7 +444,8 @@ form legend {
 	width: 3.5em;
 }
 
-.device .installed {
+.device .installed,
+.device .installed-list {
 	float: none;
 	margin: 0 auto;
 	text-align: center;
@@ -453,7 +454,8 @@ form legend {
 
 .device .installed .sub-device-group,
 .device .installed .sub-device-group li,
-.device .installed .sub-device-list li {
+.device .installed .sub-device-list li,
+.device .installed-list li {
 	display: inline-block;
 	margin: .1em .5%;
 	max-width: 30%;
@@ -461,11 +463,16 @@ form legend {
 	width: 500px;
 }
 
-.device .installed li a {
+.device .installed-list li {
 	width: auto;
 }
 
-.device .installed li img {
+.device .installed li a,
+.device .installed-list li a {
+	width: auto;
+}
+
+.device .installed-list li img {
 	max-height: 150px;
 	max-width: 100%;
 	width: 250px;
@@ -807,7 +814,8 @@ body .selected,
 
 	.device .installed .sub-device-group,
 	.device .installed .sub-device-group li,
-	.device .installed .sub-device-list li {
+	.device .installed .sub-device-list li,
+	.device .installed-list li {
 		max-width: 45%;
 	}
 }
@@ -829,7 +837,8 @@ body .selected,
 
 	.device .installed .sub-device-group,
 	.device .installed .sub-device-group li,
-	.device .installed .sub-device-list li {
+	.device .installed .sub-device-list li,
+	.device .installed-list li {
 		max-width: 90%;
 	}
 }
@@ -846,7 +855,8 @@ body .selected,
 
 	.device .installed .sub-device-group,
 	.device .installed .sub-device-group li,
-	.device .installed .sub-device-list li {
+	.device .installed .sub-device-list li,
+	.device .installed-list li {
 		max-width: 45%;
 	}
 }
@@ -864,7 +874,8 @@ body .selected,
 
 	.device .installed .sub-device-group,
 	.device .installed .sub-device-group li,
-	.device .installed .sub-device-list li {
+	.device .installed .sub-device-list li,
+	.device .installed-list li {
 		max-width: 30%;
 	}
 }
