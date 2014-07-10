@@ -451,11 +451,14 @@ form legend {
 	width: 90%;
 }
 
-.device .installed li {
+.device .installed .sub-device-group,
+.device .installed .sub-device-group li,
+.device .installed .sub-device-list li {
 	display: inline-block;
 	margin: .1em .5%;
-	max-width: 250px;
-	width: 45%;
+	max-width: 30%;
+	vertical-align: middle;
+	width: 500px;
 }
 
 .device .installed li a {
@@ -661,7 +664,8 @@ form legend {
 	vertical-align: top;
 }
 
-.device .sub-device-list li span {
+.device .sub-device-list li a span,
+.device .sub-device-list li span span {
 	display: block;
 	font-size: 30%;
 }
@@ -677,7 +681,7 @@ form legend {
 	transition: text-shadow .1s ease-in-out;
 }
 
-.device-active:hover:before {
+a.device-active:hover:before {
 	text-shadow: 0 0 0 #286EA0;
 }
 
@@ -785,22 +789,6 @@ body .selected,
 	background-image: linear-gradient(transparent, rgba(0,0,0,.05) 40%, rgba(0,0,0,.1));
 }
 
-@media (max-width: 500px) {
-	.header h1 {
-		display: none;
-	}
-
-	.device .text input,
-	.device .text button {
-		margin: 0 auto;
-		width: 90%;
-	}
-
-	.device .shortcuts {
-		padding-top: .5em;
-	}
-}
-
 @media (max-width: 650px) {
 	.header ul {
 		clear: both;
@@ -816,6 +804,34 @@ body .selected,
 		float: none;
 		width: 100%;
 	}
+
+	.device .installed .sub-device-group,
+	.device .installed .sub-device-group li,
+	.device .installed .sub-device-list li {
+		max-width: 45%;
+	}
+}
+
+@media (max-width: 500px) {
+	.header h1 {
+		display: none;
+	}
+
+	.device .text input,
+	.device .text button {
+		margin: 0 auto;
+		width: 90%;
+	}
+
+	.device .shortcuts {
+		padding-top: .5em;
+	}
+
+	.device .installed .sub-device-group,
+	.device .installed .sub-device-group li,
+	.device .installed .sub-device-list li {
+		max-width: 90%;
+	}
 }
 
 @media (min-width: 650px) {
@@ -826,6 +842,12 @@ body .selected,
 	.device > div {
 		float: left;
 		width: 50%;
+	}
+
+	.device .installed .sub-device-group,
+	.device .installed .sub-device-group li,
+	.device .installed .sub-device-list li {
+		max-width: 45%;
 	}
 }
 
@@ -838,6 +860,12 @@ body .selected,
 	.device.samsung .media,
 	.device.samsung .information {
 		display: block;
+	}
+
+	.device .installed .sub-device-group,
+	.device .installed .sub-device-group li,
+	.device .installed .sub-device-list li {
+		max-width: 30%;
 	}
 }
 

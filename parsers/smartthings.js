@@ -29,6 +29,9 @@
   exports.smartthings = function (deviceId, markup, state, value, fragments) {
     var templateSwitch    = fragments.switch,
         templateLock      = fragments.lock,
+        templateContact   = fragments.contact,
+        templateWater     = fragments.water,
+        templateMotion    = fragments.motion,
         templateGroup     = fragments.group,
         i                 = 0,
         j                 = 0,
@@ -56,6 +59,49 @@
           }
 
           return collected;
+        },
+        getDeviceMarkup = function(device, markup) {
+          var deviceTemplate = '',
+              deviceMarkup   = '';
+
+          switch(device.type) {
+            case 'switch' :
+              deviceTemplate = templateSwitch;
+            break;
+
+            case 'lock' :
+              deviceTemplate = templateLock;
+            break;
+
+            case 'contact' :
+              deviceTemplate = templateContact;
+            break;
+
+            case 'water' :
+              deviceTemplate = templateWater;
+            break;
+
+            case 'motion' :
+              deviceTemplate = templateMotion;
+            break;
+          }
+
+          deviceMarkup = deviceTemplate.split('{{SUB_DEVICE_ID}}').join(device.label.split(' ').join('+'));
+          deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_NAME}}').join(device.label);
+
+          if((device.state === 'on')   ||
+             (device.state === 'lock') ||
+             (device.state === 'open') ||
+             (device.state === 'wet')  ||
+             (device.state === 'active')) {
+            deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_STATE}}').join(' device-active');
+          }
+
+          else {
+            deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_STATE}}').join('');
+          }
+
+          return deviceMarkup;
         };
 
     if((value) && (typeof value === 'object') && (typeof value.mode === 'string')) {
@@ -73,26 +119,7 @@
               subDeviceGroup = findSubDevices(value.groups[i][j], subDevices);
 
               if(subDeviceGroup && subDeviceGroup[0]) {
-                switch(subDeviceGroup[0].type) {
-                  case 'switch' :
-                    subDeviceTemplate = templateSwitch;
-                  break;
-
-                  case 'lock' :
-                    subDeviceTemplate = templateLock;
-                  break;
-                }
-
-                subDeviceMarkup = subDeviceMarkup + subDeviceTemplate.split('{{SUB_DEVICE_ID}}').join(subDeviceGroup[0].label.split(' ').join('+'));
-                subDeviceMarkup = subDeviceMarkup.split('{{SUB_DEVICE_NAME}}').join(subDeviceGroup[0].label);
-
-                if((subDeviceGroup[0].state === 'on') || (subDeviceGroup[0].state === 'lock')) {
-                  subDeviceMarkup = subDeviceMarkup.split('{{SUB_DEVICE_STATE}}').join(' device-active');
-                }
-
-                else {
-                  subDeviceMarkup = subDeviceMarkup.split('{{SUB_DEVICE_STATE}}').join('');
-                }
+                subDeviceMarkup = subDeviceMarkup + getDeviceMarkup(subDeviceGroup[0]);
               }
             }
 
@@ -104,20 +131,8 @@
         // Otherwise, you want to show them in a list.
         else {
           for(i in subDevices) {
-            subDevice = subDevices[i];
-
-            switch(subDevice.type) {
-              case 'switch' :
-                subDeviceTemplate = templateSwitch;
-              break;
-
-              case 'lock' :
-                subDeviceTemplate = templateLock;
-              break;
-            }
-
-            tempMarkup = tempMarkup + subDeviceTemplate.split('{{SUB_DEVICE_ID}}').join(subDevice.label.split(' ').join('+'));
-            tempMarkup = tempMarkup.split('{{SUB_DEVICE_NAME}}').join(subDevice.label);
+            subDeviceTemplate = getTemplate(subDevices[i]);
+            tempDeviceMarkup  = tempDeviceMarkup + getDeviceMarkup(subDevices[i]);
           }
         }
       }

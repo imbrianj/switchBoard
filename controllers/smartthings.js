@@ -137,7 +137,7 @@ module.exports = (function () {
       console.log('\x1b[35mSmartThings\x1b[0m: Fetching device info');
 
       smartthings.device.deviceId = controller.config.deviceId;
-      smartthings.path            = controller.config.path || auth.url + '/switches';
+      smartthings.path            = controller.config.path   || auth.url + '/list';
       smartthings.device.auth     = auth;
       smartthings.device.groups   = controller.config.groups || {};
 
@@ -149,19 +149,55 @@ module.exports = (function () {
           deviceState = require('../lib/deviceState'),
           state       = 'err',
           mode        = '',
-          i           = 0;
+          i           = 0,
+          device;
 
       if((response) && (response.mode) && (response.devices)) {
         mode  = response.mode;
         state = 'ok';
 
         for(i; i < response.devices.length; i += 1) {
-          subDevices[i] = {
-            id    : response.devices[i].id,
-            label : response.devices[i].label,
-            type  : response.devices[i].type,
-            state : response.devices[i].state
-          };
+          device = response.devices[i];
+
+          if(device.values) {
+            subDevices[i] = {
+              id    : device.id,
+              label : device.label
+            };
+
+            // SmartThings supports multi-role devices - meaning a single device
+            // may report temp as well as be a contact sensor.  For now, we're
+            // only concerned with the primary role - and take priority over
+            // those functions that seem most valuable.
+            if(device.values.switch) {
+              // You're a switch
+              subDevices[i].type  = 'switch';
+              subDevices[i].state = device.values.switch.value;
+            }
+
+            else if(device.values.lock) {
+              // You're a lock
+              subDevices[i].type  = 'lock';
+              subDevices[i].state = device.values.lock.value;
+            }
+
+            else if(device.values.contact) {
+              // You're a contact sensor
+              subDevices[i].type  = 'contact';
+              subDevices[i].state = device.values.contact.value;
+            }
+
+            else if(device.values.water) {
+              // You're a moisture sensor
+              subDevices[i].type  = 'water';
+              subDevices[i].state = device.values.water.value;
+            }
+
+            else if(device.values.motion) {
+              subDevices[i].type  = 'motion';
+              subDevices[i].state = device.values.motion.value;
+            }
+          }
         }
 
         deviceState.updateState(smartthings.deviceId, 'smartthings', { state : state, value : { devices : subDevices, mode : mode, groups : response.groups } });
@@ -336,11 +372,23 @@ module.exports = (function () {
     onload : function (controller) {
       var fs = require('fs'),
           parser = require(__dirname + '/../parsers/smartthings').smartthings,
-          switchFragment = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListSwitch.tpl').toString(),
-          lockFragment   = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListLock.tpl').toString(),
-          groupFragment  = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsGroups.tpl').toString();
+          switchFragment  = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListSwitch.tpl').toString(),
+          lockFragment    = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListLock.tpl').toString(),
+          contactFragment = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListContact.tpl').toString(),
+          waterFragment   = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListWater.tpl').toString(),
+          motionFragment  = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListMotion.tpl').toString(),
+          groupFragment   = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsGroups.tpl').toString();
 
-      return parser(controller.deviceId, controller.markup, State[controller.config.deviceId].state, State[controller.config.deviceId].value, { switch : switchFragment, lock : lockFragment, group : groupFragment });
+      return parser(controller.deviceId,
+                    controller.markup,
+                    State[controller.config.deviceId].state,
+                    State[controller.config.deviceId].value,
+                    { switch  : switchFragment,
+                      lock    : lockFragment,
+                      contact : contactFragment,
+                      water   : waterFragment,
+                      motion  : motionFragment,
+                      group   : groupFragment });
     },
 
     send : function (config) {
