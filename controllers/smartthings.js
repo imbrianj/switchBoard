@@ -235,7 +235,7 @@ module.exports = (function () {
           path         = '',
           i            = 1;
 
-      if(typeof State[config.device.deviceId].value === 'object') {
+      if((State[config.device.deviceId].value) && (State[config.device.deviceId].value.devices)) {
         subDevices = State[config.device.deviceId].value.devices;
       }
 
