@@ -136,7 +136,7 @@ module.exports = (function () {
             errorMsg = '\x1b[31mRoku\x1b[0m: ' + err.code;
           }
 
-          callback(errorMsg, reply);
+          callback(errorMsg);
         }
 
         else {

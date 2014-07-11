@@ -452,9 +452,15 @@ form legend {
 	width: 90%;
 }
 
+.device .installed .sub-device-list li {
+	display: inline-block;
+	margin: .1em .5%;
+	vertical-align: middle;
+	width: 30%;
+}
+
 .device .installed .sub-device-group,
 .device .installed .sub-device-group li,
-.device .installed .sub-device-list li,
 .device .installed-list li {
 	display: inline-block;
 	margin: .1em .5%;
@@ -814,7 +820,6 @@ body .selected,
 
 	.device .installed .sub-device-group,
 	.device .installed .sub-device-group li,
-	.device .installed .sub-device-list li,
 	.device .installed-list li {
 		max-width: 45%;
 	}
@@ -836,9 +841,7 @@ body .selected,
 	}
 
 	.device .installed .sub-device-group,
-	.device .installed .sub-device-group li,
-	.device .installed .sub-device-list li,
-	.device .installed-list li {
+	.device .installed .sub-device-group li {
 		max-width: 90%;
 	}
 }
@@ -855,7 +858,6 @@ body .selected,
 
 	.device .installed .sub-device-group,
 	.device .installed .sub-device-group li,
-	.device .installed .sub-device-list li,
 	.device .installed-list li {
 		max-width: 45%;
 	}
@@ -874,7 +876,6 @@ body .selected,
 
 	.device .installed .sub-device-group,
 	.device .installed .sub-device-group li,
-	.device .installed .sub-device-list li,
 	.device .installed-list li {
 		max-width: 30%;
 	}
