@@ -49,7 +49,7 @@ module.exports = (function () {
         headers : {
           'Accept'         : 'application/json',
           'Accept-Charset' : 'utf-8',
-          'User-Agent'     : 'twilio-node-universal-controller',
+          'User-Agent'     : 'node-switchBoard',
           'Content-Type'   : 'application/x-www-form-urlencoded',
           'Content-Length' : config.postRequest.length
         }

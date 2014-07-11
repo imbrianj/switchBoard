@@ -187,8 +187,8 @@ exports.config = {
    * To use their OAuth API, you'll need to have an account on their site and
    * create the OAuth endpoint SmartApp:
    * https://graph.api.smartthings.com/ide/app/create
-   * Name: Universal Controller OAuth Endpoint
-   * Description: Universal Controller OAuth Endpoint
+   * Name: SwitchBoard OAuth Endpoint
+   * Description: SwitchBoard OAuth Endpoint
    * Click "Enable OAuth in Smart App" and copy the "OAuth Client ID" and
    * "OAuth Client Secret" to the fields below.
    * Click "Create" to be presented with the SmartThings IDE.  Simply paste the
@@ -196,10 +196,10 @@ exports.config = {
    * https://gist.github.com/aurman/9813279
    * Click "Save", then "Publish" in the upper right.
    *
-   * On initial startup of the Universal Controller with this configuration,
-   * you'll be propted in the command line for a URL to generate the security
-   * token used.  Simply visit the URL, grant the permissions you desire and
-   * click "Authorize".
+   * On initial startup of SwitchBoard with this configuration, you'll be
+   * propted in the command line for a URL to generate the security token used.
+   * Simply visit the URL, grant the permissions you desire and click
+   * "Authorize".
    */
   smartthings : {
     typeClass      : 'smartthings',

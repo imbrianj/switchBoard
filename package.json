@@ -1,5 +1,5 @@
 {
-  "name": "universal-controller",
+  "name": "switchBoard",
   "description": "Universal Remote Controller powered by Node.js",
   "version": "0.0.1",
   "author": "Brian Johnson",
@@ -9,11 +9,11 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git@github.com:imbrianj/universalController.git"
+    "url": "git@github.com:imbrianj/switchBoard.git"
   },
   "license": "MIT",
   "bin": {
-    "universal-controller": "bin/universal-controller"
+    "switchBoard": "bin/switchBoard"
   },
   "engines": {
     "node": ">= 0.8.0"

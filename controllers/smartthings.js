@@ -48,7 +48,7 @@ module.exports = (function () {
         headers : {
           'Accept'         : 'application/json',
           'Accept-Charset' : 'utf-8',
-          'User-Agent'     : 'node-universal-controller'
+          'User-Agent'     : 'node-switchBoard'
         }
       };
     },
