@@ -479,6 +479,7 @@ Switchboard = (function () {
           lazyLoad,
           templates,
           socketConnect,
+          checkConnection,
           updateTemplate,
           indicator,
           socket,
@@ -493,6 +494,8 @@ Switchboard = (function () {
             markup,
             oldMarkup,
             i;
+
+        Switchboard.log(state.deviceId + ' updated');
 
         if(node) {
           markup    = templates[state.typeClass].markup;
@@ -533,6 +536,8 @@ Switchboard = (function () {
           header.appendChild(indicator);
         }
 
+        Switchboard.log('Connecting to WebSocket');
+
         socket = new WebSocket('ws://' + window.location.host, 'echo-protocol');
 
         Switchboard.event.add(socket, 'open', function(e) {
@@ -548,16 +553,26 @@ Switchboard = (function () {
         Switchboard.event.add(socket, 'message', function(e) {
           var message = Switchboard.decode(event.data);
 
-          // If you already have templates (sent on initial connection), you
-          // must be getting sent a State dump.
-          if(templates) {
+          if(typeof message.deviceId === 'string') {
             updateTemplate(message);
           }
 
-          else {
+          else if(typeof message === 'object') {
             templates = message;
           }
         });
+      };
+
+      checkConnection = function () {
+        // If you have no connection indicator - or if it doesn't say we're
+        // connected, we should reconnect and grab the latest State.
+        var state = indicator && Switchboard.hasClass(indicator, 'connected');
+
+        if(!state) {
+          socketConnect();
+        }
+
+        return state;
       };
 
       if((typeof WebSocket === 'function') || (typeof WebSocket === 'object')) {
@@ -565,6 +580,8 @@ Switchboard = (function () {
       }
 
       else {
+        Switchboard.log('WebSockets not supported - using polling');
+
         (function() {
           var ajaxRequest;
 
@@ -670,7 +687,9 @@ Switchboard = (function () {
           command = elm.href;
 
           if(socket) {
-            socket.send(elm.href);
+            if(checkConnection()) {
+              socket.send(elm.href);
+            }
           }
 
           else {
@@ -702,7 +721,9 @@ Switchboard = (function () {
         device = Switchboard.getElementsByClassName('text-input', elm, 'input')[0].name;
 
         if(socket) {
-          socket.send('/?' + device + '=text-' + text);
+          if(checkConnection()) {
+            socket.send('/?' + device + '=text-' + text);
+          }
         }
 
         else {
@@ -728,13 +749,13 @@ Switchboard = (function () {
   };
 } ());
 
-if (document.addEventListener) {
+if(document.addEventListener) {
   document.addEventListener('DOMContentLoaded', Switchboard.init, false);
 }
 
 Switchboard.event.add(window, 'load', function () {
   'use strict';
-  if (!document.addEventListener) {
+  if(!document.addEventListener) {
     Switchboard.init();
   }
 });

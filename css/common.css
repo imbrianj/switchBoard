@@ -456,7 +456,7 @@ form legend {
 	display: inline-block;
 	margin: .1em .5%;
 	vertical-align: middle;
-	width: 30%;
+	width: 28%;
 }
 
 .device .installed .sub-device-group,
@@ -840,7 +840,10 @@ body .selected,
 		padding-top: .5em;
 	}
 
-	.device .installed .sub-device-group,
+	.device .installed .sub-device-list .sub-device-group {
+		width: 40%;
+	}
+
 	.device .installed .sub-device-group li {
 		max-width: 90%;
 	}

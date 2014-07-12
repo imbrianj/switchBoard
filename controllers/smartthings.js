@@ -184,18 +184,18 @@ module.exports = (function () {
             else if(device.values.contact) {
               // You're a contact sensor
               subDevices[i].type  = 'contact';
-              subDevices[i].state = device.values.contact.value;
+              subDevices[i].state = device.values.contact.value === 'open' ? 'on' : 'off';
             }
 
             else if(device.values.water) {
               // You're a moisture sensor
               subDevices[i].type  = 'water';
-              subDevices[i].state = device.values.water.value;
+              subDevices[i].state = device.values.water.value === 'wet' ? 'on' : 'off';
             }
 
             else if(device.values.motion) {
               subDevices[i].type  = 'motion';
-              subDevices[i].state = device.values.motion.value;
+              subDevices[i].state = device.values.motion.value === 'active' ? 'on' : 'off';
             }
           }
         }
@@ -228,15 +228,15 @@ module.exports = (function () {
     },
 
     getDevicePath : function(command, config) {
-      var deviceState  = require('../lib/deviceState'),
-          subDevices   = {},
-          commandType  = '',
-          subDevice    = {},
-          path         = '',
-          i            = 1;
+      var deviceState = require('../lib/deviceState'),
+          subDevices  = {},
+          commandType = '',
+          subDevice   = {},
+          path        = '',
+          i           = 1;
 
       if((State[config.device.deviceId].value) && (State[config.device.deviceId].value.devices)) {
-        subDevices = State[config.device.deviceId].value.devices;
+        subDevices = JSON.parse(JSON.stringify(State[config.device.deviceId].value.devices));
       }
 
       if(command.indexOf('toggle-') === 0) {
@@ -263,40 +263,69 @@ module.exports = (function () {
         commandType = 'mode';
       }
 
-      else if(command.indexOf('stateOn-') === 0) {
+      else if((command.indexOf('stateOn-')     === 0) ||
+              (command.indexOf('stateLock-')   === 0) ||
+              (command.indexOf('stateOpen-')   === 0) ||
+              (command.indexOf('stateWet-')    === 0) ||
+              (command.indexOf('stateActive-') === 0)) {
         commandType = 'stateOn';
+
+        command = command.replace('stateOn-',     '');
+        command = command.replace('stateLock-',   '');
+        command = command.replace('stateOpen-',   '');
+        command = command.replace('stateWet-',    '');
+        command = command.replace('stateActive-', '');
       }
 
-      else if(command.indexOf('stateOff-') === 0) {
+      else if((command.indexOf('stateOff-')    === 0) ||
+            (command.indexOf('stateUnlock-')   === 0) ||
+            (command.indexOf('stateClosed-')   === 0) ||
+            (command.indexOf('stateDry-')      === 0) ||
+            (command.indexOf('stateInactive-') === 0)) {
         commandType = 'stateOff';
+
+        command = command.replace('stateOff-',      '');
+        command = command.replace('stateUnlock-',   '');
+        command = command.replace('stateClosed-',   '');
+        command = command.replace('stateDry-',      '');
+        command = command.replace('stateInactive-', '');
+      }
+
+      else if(command.indexOf('state')) {
+        commandType = 'temp';
       }
 
       if(commandType === 'mode') {
-        path = config.device.auth.url + '/mode/' + command.replace(commandType + '-', '') + '?access_token=' + config.device.auth.accessToken;
+        command = command.replace(commandType + '-', '');
+        path    = config.device.auth.url + '/mode/' + command + '?access_token=' + config.device.auth.accessToken;
+      }
+
+      else if(commandType === 'temp') {
+        // "state75-Balcony Door"
+        // TODO: Strip out the temp for display
       }
 
       else if((commandType === 'stateOn') || (commandType === 'stateOff')) {
-        if((commandType === 'stateOn') || (commandType === 'stateOff')) {
-          for(i in subDevices) {
-            subDevice = subDevices[i];
+        for(i in subDevices) {
+          subDevice = subDevices[i];
 
-            if(subDevice.label === command.replace(commandType + '-', '')) {
-              if(commandType === 'stateOn') {
-                subDevices[i].state = 'on';
-              }
-
-              else {
-                subDevices[i].state = 'off';
-              }
-
-              deviceState.updateState(config.device.deviceId, 'smartthings', { value : { devices : subDevices, mode : State[config.device.deviceId].value.mode, groups : config.device.groups } });
+          if(subDevice.label === command) {
+            if(commandType === 'stateOn') {
+              subDevices[i].state = 'on';
             }
+
+            else {
+              subDevices[i].state = 'off';
+            }
+
+            deviceState.updateState(config.device.deviceId, 'smartthings', { state : 'ok', value : { devices : subDevices, mode : State[config.device.deviceId].value.mode, groups : config.device.groups } });
           }
         }
       }
 
       else if(commandType) {
-        subDevice = this.findSubDevices(command.replace(commandType + '-', ''), subDevices);
+        command   = command.replace(commandType + '-', '');
+        subDevice = this.findSubDevices(command, subDevices);
 
         if((subDevice) && (subDevice[0])) {
           if(subDevice[0].type === 'switch') {

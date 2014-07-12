@@ -89,11 +89,7 @@
           deviceMarkup = deviceTemplate.split('{{SUB_DEVICE_ID}}').join(device.label.split(' ').join('+'));
           deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_NAME}}').join(device.label);
 
-          if((device.state === 'on')   ||
-             (device.state === 'lock') ||
-             (device.state === 'open') ||
-             (device.state === 'wet')  ||
-             (device.state === 'active')) {
+          if(device.state === 'on') {
             deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_STATE}}').join(' device-active');
           }
 
