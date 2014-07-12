@@ -44,7 +44,7 @@ module.exports = (function () {
     /**
      * Whitelist of available key codes to use.
      */
-    keymap  : ['MUTE', 'POWER', 'VOL_DOWN', 'VOL_UP', 'BD', 'DVD', 'TV/SAT', 'DVR/BDR', 'HDMI 1', 'HDMI 2','HDMI 3', 'HDMI 4','HDMI 5','HDMI 6'],
+    keymap  : ['MUTE', 'POWER', 'VOL_DOWN', 'VOL_UP', 'BD', 'DVD', 'TV', 'ROKU', 'VIDEO','DVR/BDR', 'IPOD/USB','DVR/BDR','HDMI 1', 'HDMI 2','HDMI 3', 'HDMI 4','HDMI 5','HDMI 6','INTERNET RADIO','SIRIUSXM','PANDORA'],
 
     /**
      * Since I want to abstract commands, I'd rather deal with semi-readable
@@ -82,11 +82,6 @@ module.exports = (function () {
     },
 
     send : function (config) {
-
-      //pioneer.deviceIp   = config.device.deviceIp;
-      //pioneer.command    = this.translateCommand(config.command) || '';
-      //pioneer.devicePort = config.device.devicePort;
-      //pioneer.callback   = config.callback   || function () {};
 
       var tts = ""; var saut = "\r\n";
       var pioneerCommand = this.translateCommand(config.command) || '';
