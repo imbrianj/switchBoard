@@ -44,7 +44,7 @@ module.exports = (function () {
     /**
      * Whitelist of available key codes to use.
      */
-    keymap  : ['MUTE', 'POWER', 'VOL_DOWN', 'VOL_UP', 'BD', 'DVD', 'TV', 'ROKU', 'VIDEO','DVR/BDR', 'IPOD/USB','DVR/BDR','HDMI 1', 'HDMI 2','HDMI 3', 'HDMI 4','HDMI 5','HDMI 6','INTERNET RADIO','SIRIUSXM','PANDORA'],
+    keymap  : ['MUTE', 'POWER', 'VOL_DOWN', 'VOL_UP', 'BD', 'DVD', 'TV', 'ROKU', 'VIDEO','DVR/BDR', 'IPOD/USB','DVR/BDR','HDMI_1', 'HDMI_2','HDMI_3', 'HDMI_4','HDMI_5','HDMI_6','INTERNET RADIO','SIRIUSXM','PANDORA'],
 
     /**
      * Since I want to abstract commands, I'd rather deal with semi-readable
@@ -55,25 +55,25 @@ module.exports = (function () {
                   'VOL_UP'        : 'VU',
                   'VOL_DOWN'      : 'VD',
                   'MUTE'          : 'MZ',
-                  'CD'            : 'FN01',
-                  'TUNER'         : 'FN02',
-                  'CD-R/TAPE'     : 'FN03',
-                  'DVD'           : 'FN04',
-                  'TV'            : 'FN05',
-                  'ROKU'          : 'FN06',
-                  'VIDEO'         : 'FN10',
-                  'IPOD/USB'      : 'FN17',
-                  'DVR/BDR'       : 'FN15',
-                  'HDMI_1'        : 'FN19',
-                  'HDMI_2'        : 'FN20',
-                  'HDMI_3'        : 'FN21',
-                  'HDMI_4'        : 'FN22',
-                  'HDMI_5'        : 'FN23',
-                  'HDMI_6'        : 'FN24',
-                  'BD'            : 'FN25',
-                  'INTERNET RADIO': 'FN39',
-                  'SIRIUSXM'      : 'FN40',
-                  'PANDORA'       : 'FN41',
+                  'CD'            : '01FN',
+                  'TUNER'         : '02FN',
+                  'CD-R/TAPE'     : '03FN',
+                  'DVD'           : '04FN',
+                  'TV'            : '05FN',
+                  'ROKU'          : '06FN',
+                  'VIDEO'         : '10FN',
+                  'IPOD/USB'      : '17FN',
+                  'DVR/BDR'       : '15FN',
+                  'HDMI_1'        : '19FN',
+                  'HDMI_2'        : '20FN',
+                  'HDMI_3'        : '21FN',
+                  'HDMI_4'        : '22FN',
+                  'HDMI_5'        : '23FN',
+                  'HDMI_6'        : '24FN',
+                  'BD'            : '25FN',
+                  'INTERNET RADIO': '39FN',
+                  'SIRIUSXM'      : '40FN',
+                  'PANDORA'       : '41FN',
 
  },
 
