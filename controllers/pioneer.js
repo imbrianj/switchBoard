@@ -49,15 +49,20 @@ module.exports = (function () {
     /**
      * Since I want to abstract commands, I'd rather deal with semi-readable
      * key names - so this hash table will convert the pretty names to numeric
-     * values LG expects.
+     * values pioneer expects.
      */
     hashTable : { 'POWER'         : 'PZ',
                   'VOL_UP'        : 'VU',
                   'VOL_DOWN'      : 'VD',
                   'MUTE'          : 'MZ',
-                  'BD'            : 'FN25',
+                  'CD'            : 'FN01',
+                  'TUNER'         : 'FN02',
+                  'CD-R/TAPE'     : 'FN03',
                   'DVD'           : 'FN04',
-                  'TV/SAT'        : 'FN05',
+                  'TV'            : 'FN05',
+                  'ROKU'          : 'FN06',
+                  'VIDEO'         : 'FN10',
+                  'IPOD/USB'      : 'FN17',
                   'DVR/BDR'       : 'FN15',
                   'HDMI_1'        : 'FN19',
                   'HDMI_2'        : 'FN20',
@@ -65,6 +70,10 @@ module.exports = (function () {
                   'HDMI_4'        : 'FN22',
                   'HDMI_5'        : 'FN23',
                   'HDMI_6'        : 'FN24',
+                  'BD'            : 'FN25',
+                  'INTERNET RADIO': 'FN39',
+                  'SIRIUSXM'      : 'FN40',
+                  'PANDORA'       : 'FN41',
 
  },
 
