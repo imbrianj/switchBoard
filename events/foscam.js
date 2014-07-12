@@ -33,13 +33,35 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20140418,
+    version : 20140709,
 
     fire : function(device, command, controllers) {
       var runCommand = require(__dirname + '/../lib/runCommand'),
+          callback,
           deviceId;
 
       if((command === 'AlarmOn') || (command === 'AlarmOff')) {
+        callback = function(deviceId, err, reply, params) {
+          var deviceState = require('../lib/deviceState'),
+              message     = 'err';
+
+          params = params || {};
+
+          if(reply) {
+            message = 'ok';
+          }
+
+          params.state = message;
+
+          deviceState.updateState(deviceId, controllers[deviceId].config.typeClass, params);
+        };
+
+        setTimeout(function() {
+            console.log('\x1b[35mFoscam\x1b[0m: Fetching alarm state');
+
+            controllers[device].controller.state(controllers[device], callback, controllers[device].config);
+        }, 250);
+
         for(deviceId in controllers) {
           if((deviceId !== 'config') && (controllers[deviceId].config.typeClass === 'speech')) {
             runCommand.runCommand(deviceId, command === 'AlarmOn' ? 'text-Camera armed' : 'text-Camera disarmed', controllers, 'single', false);

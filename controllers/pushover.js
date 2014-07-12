@@ -48,7 +48,7 @@ module.exports = (function () {
         headers : {
           'Accept'         : 'application/json',
           'Accept-Charset' : 'utf-8',
-          'User-Agent'     : 'pushover-node-universal-controller',
+          'User-Agent'     : 'node-switchBoard',
           'Content-Type'   : 'application/x-www-form-urlencoded',
           'Content-Length' : config.postRequest.length
         }

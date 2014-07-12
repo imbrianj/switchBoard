@@ -1,23 +1,23 @@
-Universal Controller
+SwitchBoard
 ---
-Universal Controller is a node.js based application intended to run on a device within a local network - preferrably a dedicated server (such as a Raspberry Pi).  It allows all web capable devices within that same network to issue commands to any other configured device.  You may use your phone, tablet, desktop or laptop browser to interact with any controllable device - or issue simple GET commands programmatically.
+SwitchBoard is a node.js based application intended to run on a device within a local network - preferably a dedicated server (such as a Raspberry Pi).  It allows all web capable devices within that same network to issue commands to any other configured device.  You may use your phone, tablet, desktop or laptop browser to interact with any controllable device - or issue simple GET commands programmatically.
 
 Video demonstration:
 
-[![Demonstration of the Universal Controller](http://img.youtube.com/vi/6zJVRXMuuE4/0.jpg)](https://www.youtube.com/watch?v=6zJVRXMuuE4)
+[![Demonstration of SwitchBoard](http://img.youtube.com/vi/6zJVRXMuuE4/0.jpg)](https://www.youtube.com/watch?v=6zJVRXMuuE4)
 
 And a screenshot of it from an Android phone:
 https://pbs.twimg.com/media/BnIqaMXCEAI5d-0.jpg
 
 Or you may browse through a static version:
-http://imbrianj.github.io/universalController/
+http://imbrianj.github.io/switchBoard/
 
 Setup
 ---
 ###Easy
-- ```npm install -g git+https://github.com/imbrianj/universalController.git```
+- ```npm install -g git+https://github.com/imbrianj/switchBoard.git```
 - Add a config file anywhere on the device you want to run the app on. See the [default](config/config.js) file for examples
-- Run ```universal-controller -c yournewconfigfile``` and profit
+- Run ```switchBoard -c yournewconfigfile``` and profit
 
 ###Advanced
 Download the source, edit js/config.js to reflect your node server IP, desired port to hit when you visit the remote and web mac address of the server (used for authenticating against Samsung TVs).  If you don't have a specific device, just comment out or remove the configuration for it.  If you do have a device you'd like to control, just populate the given fields - they should all be pretty obvious in their use.  Run node app.js then visit your node page.  Run a command from the remote and Allow access on your TV.

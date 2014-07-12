@@ -1,0 +1,6 @@
+#!/usr/bin/env node
+
+'use strict';
+
+process.title = 'switchBoard';
+require('../app.js');

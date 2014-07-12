@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic control of SmartThings endpoint.
    */
   return {
-    version : 20140701,
+    version : 20140709,
 
     inputs  : ['list', 'subdevice'],
 
@@ -48,7 +48,7 @@ module.exports = (function () {
         headers : {
           'Accept'         : 'application/json',
           'Accept-Charset' : 'utf-8',
-          'User-Agent'     : 'node-universal-controller'
+          'User-Agent'     : 'node-switchBoard'
         }
       };
     },
@@ -137,7 +137,7 @@ module.exports = (function () {
       console.log('\x1b[35mSmartThings\x1b[0m: Fetching device info');
 
       smartthings.device.deviceId = controller.config.deviceId;
-      smartthings.path            = controller.config.path || auth.url + '/switches';
+      smartthings.path            = controller.config.path   || auth.url + '/list';
       smartthings.device.auth     = auth;
       smartthings.device.groups   = controller.config.groups || {};
 
@@ -149,19 +149,55 @@ module.exports = (function () {
           deviceState = require('../lib/deviceState'),
           state       = 'err',
           mode        = '',
-          i           = 0;
+          i           = 0,
+          device;
 
       if((response) && (response.mode) && (response.devices)) {
         mode  = response.mode;
         state = 'ok';
 
         for(i; i < response.devices.length; i += 1) {
-          subDevices[i] = {
-            id    : response.devices[i].id,
-            label : response.devices[i].label,
-            type  : response.devices[i].type,
-            state : response.devices[i].state
-          };
+          device = response.devices[i];
+
+          if(device.values) {
+            subDevices[i] = {
+              id    : device.id,
+              label : device.label
+            };
+
+            // SmartThings supports multi-role devices - meaning a single device
+            // may report temp as well as be a contact sensor.  For now, we're
+            // only concerned with the primary role - and take priority over
+            // those functions that seem most valuable.
+            if(device.values.switch) {
+              // You're a switch
+              subDevices[i].type  = 'switch';
+              subDevices[i].state = device.values.switch.value;
+            }
+
+            else if(device.values.lock) {
+              // You're a lock
+              subDevices[i].type  = 'lock';
+              subDevices[i].state = device.values.lock.value;
+            }
+
+            else if(device.values.contact) {
+              // You're a contact sensor
+              subDevices[i].type  = 'contact';
+              subDevices[i].state = device.values.contact.value === 'open' ? 'on' : 'off';
+            }
+
+            else if(device.values.water) {
+              // You're a moisture sensor
+              subDevices[i].type  = 'water';
+              subDevices[i].state = device.values.water.value === 'wet' ? 'on' : 'off';
+            }
+
+            else if(device.values.motion) {
+              subDevices[i].type  = 'motion';
+              subDevices[i].state = device.values.motion.value === 'active' ? 'on' : 'off';
+            }
+          }
         }
 
         deviceState.updateState(smartthings.deviceId, 'smartthings', { state : state, value : { devices : subDevices, mode : mode, groups : response.groups } });
@@ -192,15 +228,15 @@ module.exports = (function () {
     },
 
     getDevicePath : function(command, config) {
-      var deviceState  = require('../lib/deviceState'),
-          subDevices   = {},
-          commandType  = '',
-          subDevice    = {},
-          path         = '',
-          i            = 1;
+      var deviceState = require('../lib/deviceState'),
+          subDevices  = {},
+          commandType = '',
+          subDevice   = {},
+          path        = '',
+          i           = 1;
 
-      if(typeof State[config.device.deviceId].value === 'object') {
-        subDevices = State[config.device.deviceId].value.devices;
+      if((State[config.device.deviceId].value) && (State[config.device.deviceId].value.devices)) {
+        subDevices = JSON.parse(JSON.stringify(State[config.device.deviceId].value.devices));
       }
 
       if(command.indexOf('toggle-') === 0) {
@@ -227,40 +263,69 @@ module.exports = (function () {
         commandType = 'mode';
       }
 
-      else if(command.indexOf('stateOn-') === 0) {
+      else if((command.indexOf('stateOn-')     === 0) ||
+              (command.indexOf('stateLock-')   === 0) ||
+              (command.indexOf('stateOpen-')   === 0) ||
+              (command.indexOf('stateWet-')    === 0) ||
+              (command.indexOf('stateActive-') === 0)) {
         commandType = 'stateOn';
+
+        command = command.replace('stateOn-',     '');
+        command = command.replace('stateLock-',   '');
+        command = command.replace('stateOpen-',   '');
+        command = command.replace('stateWet-',    '');
+        command = command.replace('stateActive-', '');
       }
 
-      else if(command.indexOf('stateOff-') === 0) {
+      else if((command.indexOf('stateOff-')    === 0) ||
+            (command.indexOf('stateUnlock-')   === 0) ||
+            (command.indexOf('stateClosed-')   === 0) ||
+            (command.indexOf('stateDry-')      === 0) ||
+            (command.indexOf('stateInactive-') === 0)) {
         commandType = 'stateOff';
+
+        command = command.replace('stateOff-',      '');
+        command = command.replace('stateUnlock-',   '');
+        command = command.replace('stateClosed-',   '');
+        command = command.replace('stateDry-',      '');
+        command = command.replace('stateInactive-', '');
+      }
+
+      else if(command.indexOf('state')) {
+        commandType = 'temp';
       }
 
       if(commandType === 'mode') {
-        path = config.device.auth.url + '/mode/' + command.replace(commandType + '-', '') + '?access_token=' + config.device.auth.accessToken;
+        command = command.replace(commandType + '-', '');
+        path    = config.device.auth.url + '/mode/' + command + '?access_token=' + config.device.auth.accessToken;
+      }
+
+      else if(commandType === 'temp') {
+        // "state75-Balcony Door"
+        // TODO: Strip out the temp for display
       }
 
       else if((commandType === 'stateOn') || (commandType === 'stateOff')) {
-        if((commandType === 'stateOn') || (commandType === 'stateOff')) {
-          for(i in subDevices) {
-            subDevice = subDevices[i];
+        for(i in subDevices) {
+          subDevice = subDevices[i];
 
-            if(subDevice.label === command.replace(commandType + '-', '')) {
-              if(commandType === 'stateOn') {
-                subDevices[i].state = 'on';
-              }
-
-              else {
-                subDevices[i].state = 'off';
-              }
-
-              deviceState.updateState(config.device.deviceId, 'smartthings', { value : { devices : subDevices, mode : State[config.device.deviceId].value.mode, groups : config.device.groups } });
+          if(subDevice.label === command) {
+            if(commandType === 'stateOn') {
+              subDevices[i].state = 'on';
             }
+
+            else {
+              subDevices[i].state = 'off';
+            }
+
+            deviceState.updateState(config.device.deviceId, 'smartthings', { state : 'ok', value : { devices : subDevices, mode : State[config.device.deviceId].value.mode, groups : config.device.groups } });
           }
         }
       }
 
       else if(commandType) {
-        subDevice = this.findSubDevices(command.replace(commandType + '-', ''), subDevices);
+        command   = command.replace(commandType + '-', '');
+        subDevice = this.findSubDevices(command, subDevices);
 
         if((subDevice) && (subDevice[0])) {
           if(subDevice[0].type === 'switch') {
@@ -321,9 +386,9 @@ module.exports = (function () {
           // Otherwise, we need to prompt the user to retrieve the auth token.
           else {
             console.log('\x1b[31m=====================================================================\x1b[0m');
-            console.log('WARNING: SmartThings: Attempting to load controller that requires');
-            console.log('WARNING: additional OAuth configuration!');
-            console.log('WARNING: Visit this URL to authenticate:');
+            console.log('\x1b[31mWARNING\x1b[0m: SmartThings: Attempting to load controller that requires');
+            console.log('\x1b[31mWARNING\x1b[0m: additional OAuth configuration!');
+            console.log('\x1b[31mWARNING\x1b[0m: Visit this URL to authenticate:');
             console.log('https://graph.api.smartthings.com/oauth/authorize?response_type=code&client_id=' + controller.config.clientId + '&redirect_uri=http://' + config.serverIp + ':' + config.serverPort + '/oauth/' + controller.config.deviceId + '&scope=app');
             console.log('\x1b[31m=====================================================================\x1b[0m');
           }
@@ -336,11 +401,23 @@ module.exports = (function () {
     onload : function (controller) {
       var fs = require('fs'),
           parser = require(__dirname + '/../parsers/smartthings').smartthings,
-          switchFragment = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListSwitch.tpl').toString(),
-          lockFragment   = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListLock.tpl').toString(),
-          groupFragment  = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsGroups.tpl').toString();
+          switchFragment  = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListSwitch.tpl').toString(),
+          lockFragment    = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListLock.tpl').toString(),
+          contactFragment = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListContact.tpl').toString(),
+          waterFragment   = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListWater.tpl').toString(),
+          motionFragment  = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListMotion.tpl').toString(),
+          groupFragment   = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsGroups.tpl').toString();
 
-      return parser(controller.deviceId, controller.markup, State[controller.config.deviceId].state, State[controller.config.deviceId].value, { switch : switchFragment, lock : lockFragment, group : groupFragment });
+      return parser(controller.deviceId,
+                    controller.markup,
+                    State[controller.config.deviceId].state,
+                    State[controller.config.deviceId].value,
+                    { switch  : switchFragment,
+                      lock    : lockFragment,
+                      contact : contactFragment,
+                      water   : waterFragment,
+                      motion  : motionFragment,
+                      group   : groupFragment });
     },
 
     send : function (config) {
@@ -351,14 +428,15 @@ module.exports = (function () {
           dataReply   = '',
           that        = this;
 
-      smartthings.deviceId = config.device.deviceId;
-      smartthings.auth     = config.device.auth;
-      smartthings.command  = config.subdevice || '';
-      smartthings.host     = config.host      || 'graph.api.smartthings.com';
-      smartthings.port     = config.port      || 443;
-      smartthings.path     = config.path      || '';
-      smartthings.method   = config.method    || 'GET';
-      smartthings.callback = config.callback  || function() {};
+      config.device        = config.device          || {};
+      smartthings.deviceId = config.device.deviceId || '';
+      smartthings.auth     = config.device.auth     || '';
+      smartthings.command  = config.subdevice       || '';
+      smartthings.host     = config.host            || 'graph.api.smartthings.com';
+      smartthings.port     = config.port            || 443;
+      smartthings.path     = config.path            || '';
+      smartthings.method   = config.method          || 'GET';
+      smartthings.callback = config.callback        || function() {};
 
       request = this.postPrepare(smartthings);
 
@@ -372,7 +450,7 @@ module.exports = (function () {
 
       if(request.path) {
         request = https.request(request, function(response) {
-                    response.once('data', function(response) {
+                    response.on('data', function(response) {
                       console.log('\x1b[32mSmartThings\x1b[0m: Connected');
 
                       dataReply += response;

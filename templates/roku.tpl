@@ -37,7 +37,7 @@
             </fieldset>
           </form>
         </div>
-        <div class="installed">
+        <div class="installed-list">
           <ul class="roku-launch">
             {{ROKU_DYNAMIC}}
           </ul>

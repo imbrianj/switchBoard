@@ -1,2 +1,2 @@
 
-            <li class="{{STOCK_CHANGE}}">{{STOCK_ARROW}}<span class="name">{{STOCK_NAME}}</span> <span class="price">{{STOCK_PRICE}}</span></li>
+            <li class="{{STOCK_CHANGE}}">{{STOCK_ARROW}}<span class="name">{{STOCK_NAME}}</span> <span class="price">{{STOCK_PRICE}}</span> <span class="change">({{STOCK_CHANGE_VALUE}} {{STOCK_CHANGE_PERCENT}})</li>

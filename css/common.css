@@ -98,32 +98,32 @@ ul {
 
 /* Copy button styling from purecss.io */
 button {
-	background-color: rgb(0, 120, 231);
+	background-color: rgb(0,120,231);
 	border: 1px solid #999;  /*IE 6/7/8*/
-	border: none rgba(0, 0, 0, 0);  /*IE9 + everything else*/
+	border: none rgba(0,0,0,0);  /*IE9 + everything else*/
 	border-radius: 2px;
 	color: #FFF;
 	cursor: pointer;
 	font-size: .5em;
 	*font-size: 90%; /*IE 6/7 - To reduce IE's oversized button text*/
 	*overflow: visible; /*IE 6/7 - Because of IE's overly large left/right padding on buttons */
-	padding: 0.5em 1.5em 0.5em;
+	padding: .5em 1.5em .5em;
 	text-decoration: none;
 	/* Transitions */
-	-webkit-transition: 0.1s linear -webkit-box-shadow;
-	-moz-transition: 0.1s linear -moz-box-shadow;
-	-ms-transition: 0.1s linear box-shadow;
-	-o-transition: 0.1s linear box-shadow;
-	transition: 0.1s linear box-shadow;
+	-webkit-transition: .1s linear -webkit-box-shadow;
+	-moz-transition: .1s linear -moz-box-shadow;
+	-ms-transition: .1s linear box-shadow;
+	-o-transition: .1s linear box-shadow;
+	transition: .1s linear box-shadow;
 }
 
 button:hover,
 button:focus {
-	background-image: -webkit-linear-gradient(transparent, rgba(0,0,0,.05) 40%, rgba(0,0,0, 0.10));
-	background-image: -moz-linear-gradient(top, rgba(0,0,0, 0.05) 0%, rgba(0,0,0,.10));
-	background-image: -o-linear-gradient(transparent, rgba(0,0,0, 0.05) 40%, rgba(0,0,0,.10));
-	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(transparent), color-stop(40%, rgba(0,0,0, 0.05)), to(rgba(0,0,0,.10)));
-	background-image: linear-gradient(transparent, rgba(0,0,0, 0.05) 40%, rgba(0,0,0,.10));
+	background-image: -webkit-linear-gradient(transparent, rgba(0,0,0,.05) 40%, rgba(0,0,0,.1));
+	background-image: -moz-linear-gradient(top, rgba(0,0,0,.05) 0%, rgba(0,0,0,.1));
+	background-image: -o-linear-gradient(transparent, rgba(0,0,0,.05) 40%, rgba(0,0,0,.1));
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(transparent), color-stop(40%, rgba(0,0,0,.05)), to(rgba(0,0,0,.1)));
+	background-image: linear-gradient(transparent, rgba(0,0,0,.05) 40%, rgba(0,0,0,.1));
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#1a000000',GradientType=0);
 }
 
@@ -132,7 +132,7 @@ button:focus {
 }
 
 button:active {
-	box-shadow: 0 0 0 1px rgba(0,0,0, 0.15) inset, 0 0 6px rgba(0,0,0, 0.20) inset;
+	box-shadow: 0 0 0 1px rgba(0,0,0,.15) inset, 0 0 6px rgba(0,0,0,.2) inset;
 }
 
 /* Firefox: Get rid of the inner focus border */
@@ -163,13 +163,13 @@ form textarea {
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	display: inline-block;
-	font-size: 0.5em;
+	font-size: .5em;
 	padding: .5em .6em;
-	-webkit-transition: 0.3s linear border;
-	-moz-transition: 0.3s linear border;
-	-ms-transition: 0.3s linear border;
-	-o-transition: 0.3s linear border;
-	transition: 0.3s linear border;
+	-webkit-transition: .3s linear border;
+	-moz-transition: .3s linear border;
+	-ms-transition: .3s linear border;
+	-o-transition: .3s linear border;
+	transition: .3s linear border;
 }
 
 form input[type="text"]:focus,
@@ -444,25 +444,41 @@ form legend {
 	width: 3.5em;
 }
 
-.device .installed {
+.device .installed,
+.device .installed-list {
 	float: none;
 	margin: 0 auto;
 	text-align: center;
 	width: 90%;
 }
 
-.device .installed li {
+.device .installed .sub-device-list li {
 	display: inline-block;
 	margin: .1em .5%;
-	max-width: 250px;
-	width: 45%;
+	vertical-align: middle;
+	width: 28%;
 }
 
-.device .installed li a {
+.device .installed .sub-device-group,
+.device .installed .sub-device-group li,
+.device .installed-list li {
+	display: inline-block;
+	margin: .1em .5%;
+	max-width: 30%;
+	vertical-align: middle;
+	width: 500px;
+}
+
+.device .installed-list li {
 	width: auto;
 }
 
-.device .installed li img {
+.device .installed li a,
+.device .installed-list li a {
+	width: auto;
+}
+
+.device .installed-list li img {
 	max-height: 150px;
 	max-width: 100%;
 	width: 250px;
@@ -661,7 +677,8 @@ form legend {
 	vertical-align: top;
 }
 
-.device .sub-device-list li span {
+.device .sub-device-list li a span,
+.device .sub-device-list li span span {
 	display: block;
 	font-size: 30%;
 }
@@ -677,7 +694,7 @@ form legend {
 	transition: text-shadow .1s ease-in-out;
 }
 
-.device-active:hover:before {
+a.device-active:hover:before {
 	text-shadow: 0 0 0 #286EA0;
 }
 
@@ -742,7 +759,7 @@ body .selected,
 }
 
 .theme-dark button {
-	background-color: rgba(0,25,50);
+	background-color: #0078E7;
 }
 
 .theme-dark .header {
@@ -757,48 +774,32 @@ body .selected,
 }
 
 .theme-dark .header .selected a {
-	background-color: rgb(0, 120, 231);
+	background-color: rgb(0,120,231);
 	border: 1px solid #999;  /*IE 6/7/8*/
-	border: none rgba(0, 0, 0, 0);  /*IE9 + everything else*/
+	border: none rgba(0,0,0,0);  /*IE9 + everything else*/
 	border-radius: 2px;
 	color: #333;
 	cursor: pointer;
 	*font-size: 90%; /*IE 6/7 - To reduce IE's oversized button text*/
 	*overflow: visible; /*IE 6/7 - Because of IE's overly large left/right padding on buttons */
-	padding: 0.5em 1.5em 0.5em;
+	padding: .5em 1.5em .5em;
 	text-decoration: none;
 	/* Transitions */
-	-webkit-transition: 0.1s linear -webkit-box-shadow;
-	-moz-transition: 0.1s linear -moz-box-shadow;
-	-ms-transition: 0.1s linear box-shadow;
-	-o-transition: 0.1s linear box-shadow;
-	transition: 0.1s linear box-shadow;
+	-webkit-transition: .1s linear -webkit-box-shadow;
+	-moz-transition: .1s linear -moz-box-shadow;
+	-ms-transition: .1s linear box-shadow;
+	-o-transition: .1s linear box-shadow;
+	transition: .1s linear box-shadow;
 }
 
 .theme-dark .header .selected a:hover,
 .theme-dark .header .selected a:focus {
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#1a000000',GradientType=0);
-	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(transparent), color-stop(40%, rgba(0,0,0, 0.05)), to(rgba(0,0,0, 0.10)));
-	background-image: -webkit-linear-gradient(transparent, rgba(0,0,0, 0.05) 40%, rgba(0,0,0, 0.10));
-	background-image: -moz-linear-gradient(top, rgba(0,0,0, 0.05) 0%, rgba(0,0,0, 0.10));
-	background-image: -o-linear-gradient(transparent, rgba(0,0,0, 0.05) 40%, rgba(0,0,0, 0.10));
-	background-image: linear-gradient(transparent, rgba(0,0,0, 0.05) 40%, rgba(0,0,0, 0.10));
-}
-
-@media (max-width: 500px) {
-	.header h1 {
-		display: none;
-	}
-
-	.device .text input,
-	.device .text button {
-		margin: 0 auto;
-		width: 90%;
-	}
-
-	.device .shortcuts {
-		padding-top: .5em;
-	}
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(transparent), color-stop(40%, rgba(0,0,0,.05)), to(rgba(0,0,0,.1)));
+	background-image: -webkit-linear-gradient(transparent, rgba(0,0,0,.05) 40%, rgba(0,0,0,.1));
+	background-image: -moz-linear-gradient(top, rgba(0,0,0,.05) 0%, rgba(0,0,0,.1));
+	background-image: -o-linear-gradient(transparent, rgba(0,0,0,.05) 40%, rgba(0,0,0,.1));
+	background-image: linear-gradient(transparent, rgba(0,0,0,.05) 40%, rgba(0,0,0,.1));
 }
 
 @media (max-width: 650px) {
@@ -816,6 +817,36 @@ body .selected,
 		float: none;
 		width: 100%;
 	}
+
+	.device .installed .sub-device-group,
+	.device .installed .sub-device-group li,
+	.device .installed-list li {
+		max-width: 45%;
+	}
+}
+
+@media (max-width: 500px) {
+	.header h1 {
+		display: none;
+	}
+
+	.device .text input,
+	.device .text button {
+		margin: 0 auto;
+		width: 90%;
+	}
+
+	.device .shortcuts {
+		padding-top: .5em;
+	}
+
+	.device .installed .sub-device-list .sub-device-group {
+		width: 40%;
+	}
+
+	.device .installed .sub-device-group li {
+		max-width: 90%;
+	}
 }
 
 @media (min-width: 650px) {
@@ -826,6 +857,12 @@ body .selected,
 	.device > div {
 		float: left;
 		width: 50%;
+	}
+
+	.device .installed .sub-device-group,
+	.device .installed .sub-device-group li,
+	.device .installed-list li {
+		max-width: 45%;
 	}
 }
 
@@ -838,6 +875,12 @@ body .selected,
 	.device.samsung .media,
 	.device.samsung .information {
 		display: block;
+	}
+
+	.device .installed .sub-device-group,
+	.device .installed .sub-device-group li,
+	.device .installed-list li {
+		max-width: 30%;
 	}
 }
 
