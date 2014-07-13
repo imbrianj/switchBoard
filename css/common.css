@@ -81,7 +81,7 @@ body {
 
 .theme-dark body {
 	background: #000;
-	color: #333;
+	color: #444;
 	/* Not needed till light-level queries supported */
 	/*
 	-moz-transition: background 2s ease-in-out, color 2s ease-in-out;
@@ -189,7 +189,7 @@ form textarea:focus {
 form input[type="file"]:focus,
 form input[type="radio"]:focus,
 form input[type="checkbox"]:focus {
-	outline: thin dotted #333;
+	outline: thin dotted #444;
 	outline: 1px auto #129FEA;
 }
 
@@ -262,7 +262,7 @@ form fieldset {
 
 form legend {
 	border-bottom: 1px solid #E5E5E5;
-	color: #333;
+	color: #444;
 	display: block;
 	font-size: 125%;
 	margin-bottom: .3em;
@@ -340,11 +340,11 @@ form legend {
 }
 
 .header .connecting {
-	background: #333;
+	background: #444;
 }
 
 .header .polling {
-	background: #666;
+	background: #888;
 }
 
 .header .connected {
@@ -507,7 +507,7 @@ form legend {
 
 .device a:link,
 .device a:visited {
-	color: #333;
+	color: #444;
 	text-decoration: none;
 }
 
@@ -662,7 +662,7 @@ form legend {
 }
 
 .device .sub-device-list .sub-device-group {
-	border: 1px solid #333;
+	border: 1px solid #444;
 	padding: .4em .1em;
 	margin: .1em 0;
 }
@@ -728,7 +728,7 @@ body .selected,
 	body,
 	.theme-dark body {
 		background: #DDD;
-		color: #333;
+		color: #444;
 	}
 }
 
@@ -744,14 +744,14 @@ body .selected,
 	body,
 	.theme-dark body {
 		background: #000;
-		color: #333;
+		color: #444;
 	}
 }
 
 .theme-dark .header h1 a,
 .theme-dark input,
 .theme-dark button {
-	color: #333;
+	color: #444;
 }
 
 .theme-dark input {
@@ -767,9 +767,9 @@ body .selected,
 }
 
 .theme-dark .header ul a {
-	background-color: #333;
+	background-color: #444;
 	border: none;
-	color: #666;
+	color: #888;
 	font-weight: bold;
 }
 
@@ -778,7 +778,7 @@ body .selected,
 	border: 1px solid #999;  /*IE 6/7/8*/
 	border: none rgba(0,0,0,0);  /*IE9 + everything else*/
 	border-radius: 2px;
-	color: #333;
+	color: #444;
 	cursor: pointer;
 	*font-size: 90%; /*IE 6/7 - To reduce IE's oversized button text*/
 	*overflow: visible; /*IE 6/7 - Because of IE's overly large left/right padding on buttons */

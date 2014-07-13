@@ -62,7 +62,8 @@
         },
         getDeviceMarkup = function(device, markup) {
           var deviceTemplate = '',
-              deviceMarkup   = '';
+              deviceMarkup   = '',
+              peripheral     = '';
 
           switch(device.type) {
             case 'switch' :
@@ -86,8 +87,12 @@
             break;
           }
 
+          if((device.peripheral) && (device.peripheral.temp)) {
+            peripheral = ' (' + device.peripheral.temp + '&deg;)';
+          }
+
           deviceMarkup = deviceTemplate.split('{{SUB_DEVICE_ID}}').join(device.label.split(' ').join('+'));
-          deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_NAME}}').join(device.label);
+          deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_NAME}}').join(device.label + peripheral);
 
           if(device.state === 'on') {
             deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_STATE}}').join(' device-active');

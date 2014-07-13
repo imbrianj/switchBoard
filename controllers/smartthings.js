@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic control of SmartThings endpoint.
    */
   return {
-    version : 20140709,
+    version : 20140712,
 
     inputs  : ['list', 'subdevice'],
 
@@ -194,8 +194,23 @@ module.exports = (function () {
             }
 
             else if(device.values.motion) {
+              // You're a motion sensor
               subDevices[i].type  = 'motion';
               subDevices[i].state = device.values.motion.value === 'active' ? 'on' : 'off';
+            }
+
+            // These are commonly secondary sensors for a given device.
+            if(device.values.temperature) {
+              // If you have a proper state, temp is peripheral sensor.
+              if(subDevices[i].state) {
+                subDevices[i].peripheral = subDevices[i].peripheral || {};
+                subDevices[i].peripheral.temp = device.values.temperature.value;
+              }
+
+              // If you have no proper state, you're just a temperature sensor.
+              else {
+                subDevices[i].state = device.values.temperature.value;
+              }
             }
           }
         }
@@ -233,7 +248,8 @@ module.exports = (function () {
           commandType = '',
           subDevice   = {},
           path        = '',
-          i           = 1;
+          i           = 1,
+          value       = '';
 
       if((State[config.device.deviceId].value) && (State[config.device.deviceId].value.devices)) {
         subDevices = JSON.parse(JSON.stringify(State[config.device.deviceId].value.devices));
@@ -259,8 +275,10 @@ module.exports = (function () {
         commandType = 'unlock';
       }
 
-      else if(command.indexOf('mode-') === 0) {
-        commandType = 'mode';
+      else if(command.indexOf('stateMode-') === 0) {
+        commandType = 'stateMode';
+
+        command = command.replace('stateMode-', '');
       }
 
       else if((command.indexOf('stateOn-')     === 0) ||
@@ -291,7 +309,7 @@ module.exports = (function () {
         command = command.replace('stateInactive-', '');
       }
 
-      else if(command.indexOf('state')) {
+      else if(command.indexOf('state') === 0) {
         commandType = 'temp';
       }
 
@@ -301,8 +319,35 @@ module.exports = (function () {
       }
 
       else if(commandType === 'temp') {
-        // "state75-Balcony Door"
-        // TODO: Strip out the temp for display
+        command = command.replace('state', '');
+        value   = command.split('-');
+        command = value[1];
+        value   = value[0];
+
+        if(!isNaN(value)) {
+          for(i in subDevices) {
+            subDevice = subDevices[i];
+
+            if(subDevice.label === command) {
+              // If you have a proper state, temp is peripheral sensor.
+              if(subDevice.state) {
+                subDevices[i].peripheral = subDevices[i].peripheral || {};
+                subDevices[i].peripheral.temp = value;
+              }
+
+              // If you have no proper state, you're just a temperature sensor.
+              else {
+                subDevices[i].state = value;
+              }
+
+              deviceState.updateState(config.device.deviceId, 'smartthings', { state : 'ok', value : { devices : subDevices, mode : State[config.device.deviceId].value.mode, groups : config.device.groups } });
+            }
+          }
+        }
+      }
+
+      else if(commandType === 'stateMode') {
+        deviceState.updateState(config.device.deviceId, 'smartthings', { state : 'ok', value : { devices : subDevices, mode : command, groups : config.device.groups } });
       }
 
       else if((commandType === 'stateOn') || (commandType === 'stateOff')) {
