@@ -7,8 +7,8 @@
             <a href="/?{{DEVICE_ID}}=VOL_DOWN" class="fa fa-volume-down"><span>Volume Down</span></a>
             <a href="/?{{DEVICE_ID}}=MUTE" class="fa fa-volume-off"><span>Mute</span></a>
           </div>
-        <div class="shortcuts">
-          <ul>
+      <div class="installed">
+        <ul class="sub-device-list">
             <li><a href="/?{{DEVICE_ID}}=CD" class=""><span>CD</span></a>CD</li>
             <li><a href="/?{{DEVICE_ID}}=TUNER" class=""><span>TUNER</span></a>TUNER</li>
             <li><a href="/?{{DEVICE_ID}}=CD-R/TAPE" class=""><span>CD-R/TAPE</span></a>CD-R/TAPE</li>
