@@ -194,7 +194,7 @@ module.exports = (function () {
             }
 
             else if(device.values.motion) {
-              // You're a motion sensor
+              // You're a motion senso
               subDevices[i].type  = 'motion';
               subDevices[i].state = device.values.motion.value === 'active' ? 'on' : 'off';
             }
@@ -255,7 +255,12 @@ module.exports = (function () {
         subDevices = JSON.parse(JSON.stringify(State[config.device.deviceId].value.devices));
       }
 
-      if(command.indexOf('toggle-') === 0) {
+      if(command.indexOf('mode-') === 0) {
+        command = command.replace('mode-', '');
+        path    = config.device.auth.url + '/mode/' + command + '?access_token=' + config.device.auth.accessToken;
+      }
+
+      else if(command.indexOf('toggle-') === 0) {
         commandType = 'toggle';
       }
 
@@ -276,9 +281,9 @@ module.exports = (function () {
       }
 
       else if(command.indexOf('stateMode-') === 0) {
-        commandType = 'stateMode';
-
         command = command.replace('stateMode-', '');
+
+        deviceState.updateState(config.device.deviceId, 'smartthings', { state : 'ok', value : { devices : subDevices, mode : command, groups : config.device.groups } });
       }
 
       else if((command.indexOf('stateOn-')     === 0) ||
@@ -311,14 +316,6 @@ module.exports = (function () {
 
       else if(command.indexOf('state') === 0) {
         commandType = 'temp';
-      }
-
-      if(commandType === 'mode') {
-        command = command.replace(commandType + '-', '');
-        path    = config.device.auth.url + '/mode/' + command + '?access_token=' + config.device.auth.accessToken;
-      }
-
-      else if(commandType === 'temp') {
         command = command.replace('state', '');
         value   = command.split('-');
         command = value[1];
@@ -346,11 +343,7 @@ module.exports = (function () {
         }
       }
 
-      else if(commandType === 'stateMode') {
-        deviceState.updateState(config.device.deviceId, 'smartthings', { state : 'ok', value : { devices : subDevices, mode : command, groups : config.device.groups } });
-      }
-
-      else if((commandType === 'stateOn') || (commandType === 'stateOff')) {
+      if((commandType === 'stateOn') || (commandType === 'stateOff')) {
         for(i in subDevices) {
           subDevice = subDevices[i];
 

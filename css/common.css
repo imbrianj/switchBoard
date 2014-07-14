@@ -663,6 +663,9 @@ form legend {
 
 .device .sub-device-list .sub-device-group {
 	border: 1px solid #444;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
 	padding: .4em .1em;
 	margin: .1em 0;
 }
