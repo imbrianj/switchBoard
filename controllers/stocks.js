@@ -32,9 +32,41 @@ module.exports = (function () {
    * @fileoverview Basic stocks information, courtesy of Yahoo.
    */
   return {
-    version : 20140701,
+    version : 20140712,
 
     inputs  : ['list', 'launch'],
+
+    stocksOpen : function(deviceId) {
+      var deviceState = require(__dirname + '/../lib/deviceState'),
+          nycOffset   = -5,
+          date        = new Date(),
+          utcTime     = date.getTime() + (date.getTimezoneOffset() * 60000),
+          nycTime     = new Date(utcTime + (3600000 * nycOffset)),
+          open        = false;
+
+      // Trading isn't open on weekends, so we don't need to poll.
+      if((nycTime.getDay() !== 6) && (nycTime.getDay() !== 0)) {
+        // Trading is only open from 9am - 4pm.
+        if((nycTime.getHours() > 9) && (nycTime.getHours() < 16)) {
+          open = true;
+          deviceState.updateState(deviceId, 'stocks', { state : 'ok', value : State[deviceId].state.value });
+        }
+
+        else {
+          deviceState.updateState(deviceId, 'stocks', { state : 'err', value : State[deviceId].state.value });
+
+          console.log('\x1b[35mSchedule\x1b[0m: Stock trading is closed - after hours');
+        }
+      }
+
+      else {
+        deviceState.updateState(deviceId, 'stocks', { state : 'err', value : State[deviceId].state.value });
+
+        console.log('\x1b[35mSchedule\x1b[0m: Stock trading is closed - weekend');
+      }
+
+      return open;
+    },
 
     postPrepare : function (config) {
       return { host   : config.host,
@@ -57,6 +89,7 @@ module.exports = (function () {
 
     send : function (config) {
       var https     = require('https'),
+          that      = this,
           stocks    = {},
           dataReply = '',
           request;
@@ -82,6 +115,7 @@ module.exports = (function () {
                           stockData   = {},
                           stock,
                           data,
+                          state,
                           i = 0;
 
                       if(dataReply) {
@@ -105,7 +139,8 @@ module.exports = (function () {
                           }
                         }
 
-                        deviceState.updateState(stocks.deviceId, 'stocks', { state: 'ok', value : stockData });
+                        state = that.stocksOpen(stocks.deviceId) ? 'ok' : 'err';
+                        deviceState.updateState(stocks.deviceId, 'stocks', { state: state, value : stockData });
                       }
 
                       stocks.callback(null, stockData);
