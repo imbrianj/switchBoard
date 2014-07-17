@@ -13,7 +13,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -34,80 +34,92 @@ module.exports = (function () {
    *  https://github.com/Vmaxence/SARAH-Plugin-ampliVSX
    * And documentation here:
    *  http://raymondjulin.com/2012/07/15/remote-control-your-pioneer-vsx-receiver-over-telnet/
-   *       
+   *
    */
   return {
     version : 20140607,
 
-    inputs  : ['command'],
+    inputs : ['command'],
 
     /**
      * Whitelist of available key codes to use.
      */
-    keymap  : ['MUTE', 'POWER', 'VOL_DOWN', 'VOL_UP', 'BD', 'DVD', 'TV', 'ROKU', 'VIDEO','DVR/BDR', 'IPOD/USB','DVR/BDR','HDMI_1', 'HDMI_2','HDMI_3', 'HDMI_4','HDMI_5','HDMI_6','INTERNET RADIO','SIRIUSXM','PANDORA'],
+    keymap : ['MUTE', 'POWER', 'VOL_DOWN', 'VOL_UP', 'BD', 'DVD', 'TV', 'ROKU', 'VIDEO','DVR/BDR', 'IPOD/USB','DVR/BDR','HDMI_1', 'HDMI_2','HDMI_3', 'HDMI_4','HDMI_5','HDMI_6','INTERNET RADIO','SIRIUSXM','PANDORA'],
 
     /**
      * Since I want to abstract commands, I'd rather deal with semi-readable
      * key names - so this hash table will convert the pretty names to numeric
      * values pioneer expects.
      */
-    hashTable : { 'POWER'         : 'PZ',
-                  'VOL_UP'        : 'VU',
-                  'VOL_DOWN'      : 'VD',
-                  'MUTE'          : 'MZ',
-                  'CD'            : '01FN',
-                  'TUNER'         : '02FN',
-                  'CD-R/TAPE'     : '03FN',
-                  'DVD'           : '04FN',
-                  'TV'            : '05FN',
-                  'ROKU'          : '06FN',
-                  'VIDEO'         : '10FN',
-                  'IPOD/USB'      : '17FN',
-                  'DVR/BDR'       : '15FN',
-                  'HDMI_1'        : '19FN',
-                  'HDMI_2'        : '20FN',
-                  'HDMI_3'        : '21FN',
-                  'HDMI_4'        : '22FN',
-                  'HDMI_5'        : '23FN',
-                  'HDMI_6'        : '24FN',
-                  'BD'            : '25FN',
-                  'INTERNET RADIO': '39FN',
-                  'SIRIUSXM'      : '40FN',
-                  'PANDORA'       : '41FN',
-
- },
+    hashTable : { 'POWER'          : 'PZ',
+                  'VOL_UP'         : 'VU',
+                  'VOL_DOWN'       : 'VD',
+                  'MUTE'           : 'MZ',
+                  'CD'             : '01FN',
+                  'TUNER'          : '02FN',
+                  'CD-R_TAPE'      : '03FN',
+                  'DVD'            : '04FN',
+                  'TV'             : '05FN',
+                  'ROKU'           : '06FN',
+                  'VIDEO'          : '10FN',
+                  'IPOD_USB'       : '17FN',
+                  'DVR_BDR'        : '15FN',
+                  'HDMI_1'         : '19FN',
+                  'HDMI_2'         : '20FN',
+                  'HDMI_3'         : '21FN',
+                  'HDMI_4'         : '22FN',
+                  'HDMI_5'         : '23FN',
+                  'HDMI_6'         : '24FN',
+                  'BD'             : '25FN',
+                  'INTERNET_RADIO' : '39FN',
+                  'SIRIUSXM'       : '40FN',
+                  'PANDORA'        : '41FN'
+    },
 
     translateCommand : function (command) {
       return this.hashTable[command];
     },
 
     send : function (config) {
+      var net            = require('net'),
+          pioneer        = {},
+          saut           = "\r\n",
+          client;
 
-      var tts = ""; var saut = "\r\n";
-      var pioneerCommand = this.translateCommand(config.command) || '';
+      pioneer.deviceIp   = config.device.deviceIp;
+      pioneer.command    = this.translateCommand(config.command) || '';
+      pioneer.devicePort = config.devicePort || 8102;
+      pioneer.callback   = config.callback   || function () {};
 
-      if(pioneerCommand) {
-        var net = require('net');
-        var client = new net.Socket();
-        client.connect(config.device.devicePort, config.device.deviceIp, function() {
-            console.log('Connected');
-            console.log(pioneerCommand);
-            client.write(pioneerCommand+saut);
-          });
-          client.on('data', function(data) {
-          console.log('Received: ' + data);
-            client.destroy();
-          });
-            client.on('close', function() {
-            console.log('Connection closed');
-          });
-        }
-      else {
-        tts = "Command Error";
+      if(pioneer.command) {
+        client = new net.Socket();
+
+        client.connect(pioneer.devicePort, pioneer.deviceIp, function() {
+          console.log('\x1b[32mPioneer\x1b[0m: Connected');
+          client.write(pioneerCommand + saut);
+        });
+
+        client.once('data', function(dataReply) {
+          pioneer.callback(null, dataReply);
+
+          client.destroy();
+        });
+
+        client.once('close', function() {
+        });
+
+        client.once('error', function(err) {
+          var errorMsg = '\x1b[31mPioneer:\x1b[0m ' + err.code;
+
+          console.log(errorMsg);
+
+          pioneer.callback(errorMsg);
+        });
       }
-      console.log(tts);
-      //callback({'tts': tts});
-      return;
+
+      else {
+        console.log('\x1b[Pioneer\x1b[0m: No command sent');
+      }
     }
   };
 }());
