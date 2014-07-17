@@ -83,7 +83,6 @@ exports.config = {
     typeClass  : 'pioneer',
     title      : 'Pioneer Amp',
     deviceIp   : '192.168.1.6',
-    devicePort : '8102',
     disabled   : true
   },
 

@@ -32,6 +32,7 @@
         templateContact   = fragments.contact,
         templateWater     = fragments.water,
         templateMotion    = fragments.motion,
+        templatePresence  = fragments.presence,
         templateGroup     = fragments.group,
         i                 = 0,
         j                 = 0,
@@ -84,6 +85,10 @@
 
             case 'motion' :
               deviceTemplate = templateMotion;
+            break;
+
+            case 'presence' :
+              deviceTemplate = templatePresence;
             break;
           }
 

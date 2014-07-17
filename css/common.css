@@ -821,6 +821,10 @@ body .selected,
 		width: 100%;
 	}
 
+	.device .control-block {
+		margin: 0;
+	}
+
 	.device .installed .sub-device-group,
 	.device .installed .sub-device-group li,
 	.device .installed-list li {

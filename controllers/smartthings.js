@@ -194,9 +194,15 @@ module.exports = (function () {
             }
 
             else if(device.values.motion) {
-              // You're a motion senso
+              // You're a motion sensor
               subDevices[i].type  = 'motion';
               subDevices[i].state = device.values.motion.value === 'active' ? 'on' : 'off';
+            }
+
+            else if(device.values.presence) {
+              // You're a presence sensor
+              subDevices[i].type  = 'presence';
+              subDevices[i].state = device.values.presence.value === 'present' ? 'on' : 'off';
             }
 
             // These are commonly secondary sensors for a given device.
@@ -437,25 +443,27 @@ module.exports = (function () {
     },
 
     onload : function (controller) {
-      var fs = require('fs'),
-          parser = require(__dirname + '/../parsers/smartthings').smartthings,
-          switchFragment  = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListSwitch.tpl').toString(),
-          lockFragment    = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListLock.tpl').toString(),
-          contactFragment = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListContact.tpl').toString(),
-          waterFragment   = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListWater.tpl').toString(),
-          motionFragment  = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListMotion.tpl').toString(),
-          groupFragment   = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsGroups.tpl').toString();
+      var fs               = require('fs'),
+          parser           = require(__dirname + '/../parsers/smartthings').smartthings,
+          switchFragment   = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListSwitch.tpl').toString(),
+          lockFragment     = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListLock.tpl').toString(),
+          contactFragment  = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListContact.tpl').toString(),
+          waterFragment    = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListWater.tpl').toString(),
+          motionFragment   = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListMotion.tpl').toString(),
+          presenceFragment = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListPresence.tpl').toString(),
+          groupFragment    = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsGroups.tpl').toString();
 
       return parser(controller.deviceId,
                     controller.markup,
                     State[controller.config.deviceId].state,
                     State[controller.config.deviceId].value,
-                    { switch  : switchFragment,
-                      lock    : lockFragment,
-                      contact : contactFragment,
-                      water   : waterFragment,
-                      motion  : motionFragment,
-                      group   : groupFragment });
+                    { switch   : switchFragment,
+                      lock     : lockFragment,
+                      contact  : contactFragment,
+                      water    : waterFragment,
+                      motion   : motionFragment,
+                      presence : presenceFragment,
+                      group    : groupFragment });
     },
 
     send : function (config) {
