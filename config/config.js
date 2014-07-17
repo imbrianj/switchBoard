@@ -76,6 +76,18 @@ exports.config = {
   },
 
   /*
+   * This device is incomplete.  If you have one to test on, please let me
+   * know!
+   */
+  pioneer : {
+    typeClass : 'pioneer',
+    title     : 'Pioneer Amp',
+    deviceIp  : '192.168.1.6',
+    devicePort: '8102',
+    disabled  : true
+  },
+
+  /*
    * Speech uses the "espeak" package on Linux, BSD and SunOS. For OSX, it uses
    * the built-in "say" command.  Windows is not supported.
    */
