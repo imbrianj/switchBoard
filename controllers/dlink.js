@@ -2,7 +2,7 @@
 /*global State, module, require, console */
 
 /**
- * Copyright (c) 2014 markewest@gmail.com
+ * Copyright (c) 2014 brian@bevey.org
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -27,7 +27,7 @@ module.exports = (function () {
   'use strict';
 
   /**
-   * @author markewest@gmail.com
+   * @author brian@bevey.org
    * @requires http, fs, request
    * @fileoverview Basic control of Foscam IP camera.
    */
