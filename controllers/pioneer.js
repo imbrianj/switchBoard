@@ -44,12 +44,14 @@ module.exports = (function () {
     /**
      * Whitelist of available key codes to use.
      */
-    keymap : ['MUTE', 'POWER', 'VOL_DOWN', 'VOL_UP', 'BD', 'DVD', 'TV', 'ROKU', 'VIDEO','DVR/BDR', 'IPOD/USB','DVR/BDR','HDMI_1', 'HDMI_2','HDMI_3', 'HDMI_4','HDMI_5','HDMI_6','INTERNET RADIO','SIRIUSXM','PANDORA'],
+    keymap : ['MUTE', 'POWER', 'VOL_DOWN', 'VOL_UP', 'BD', 'DVD', 'TV', 'ROKU', 'VIDEO','DVR_BDR', 'IPOD_USB','DVR_BDR','HDMI_1', 'HDMI_2','HDMI_3', 'HDMI_4','HDMI_5','HDMI_6','INTERNET_RADIO','SIRIUSXM','PANDORA'],
 
     /**
      * Since I want to abstract commands, I'd rather deal with semi-readable
      * key names - so this hash table will convert the pretty names to numeric
      * values pioneer expects.
+     *
+     * NOTE: Not all capabilities are on all VSX models
      */
     hashTable : { 'POWER'          : 'PZ',
                   'VOL_UP'         : 'VU',
@@ -96,7 +98,7 @@ module.exports = (function () {
 
         client.connect(pioneer.devicePort, pioneer.deviceIp, function() {
           console.log('\x1b[32mPioneer\x1b[0m: Connected');
-          client.write(pioneerCommand + saut);
+          client.write(pioneer.command + saut);
         });
 
         client.once('data', function(dataReply) {
