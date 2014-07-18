@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic control of SmartThings endpoint.
    */
   return {
-    version : 20140712,
+    version : 20140717,
 
     inputs  : ['list', 'subdevice'],
 
@@ -292,32 +292,36 @@ module.exports = (function () {
         deviceState.updateState(config.device.deviceId, 'smartthings', { state : 'ok', value : { devices : subDevices, mode : command, groups : config.device.groups } });
       }
 
-      else if((command.indexOf('stateOn-')     === 0) ||
-              (command.indexOf('stateLock-')   === 0) ||
-              (command.indexOf('stateOpen-')   === 0) ||
-              (command.indexOf('stateWet-')    === 0) ||
-              (command.indexOf('stateActive-') === 0)) {
+      else if((command.indexOf('stateOn-')      === 0) ||
+              (command.indexOf('stateLock-')    === 0) ||
+              (command.indexOf('stateOpen-')    === 0) ||
+              (command.indexOf('stateWet-')     === 0) ||
+              (command.indexOf('stateActive-')  === 0) ||
+              (command.indexOf('statePresent-') === 0)) {
         commandType = 'stateOn';
 
-        command = command.replace('stateOn-',     '');
-        command = command.replace('stateLock-',   '');
-        command = command.replace('stateOpen-',   '');
-        command = command.replace('stateWet-',    '');
-        command = command.replace('stateActive-', '');
+        command = command.replace('stateOn-',      '');
+        command = command.replace('stateLock-',    '');
+        command = command.replace('stateOpen-',    '');
+        command = command.replace('stateWet-',     '');
+        command = command.replace('stateActive-',  '');
+        command = command.replace('statePresent-', '');
       }
 
-      else if((command.indexOf('stateOff-')    === 0) ||
-            (command.indexOf('stateUnlock-')   === 0) ||
-            (command.indexOf('stateClosed-')   === 0) ||
-            (command.indexOf('stateDry-')      === 0) ||
-            (command.indexOf('stateInactive-') === 0)) {
+      else if((command.indexOf('stateOff-')       === 0) ||
+            (command.indexOf('stateUnlock-')      === 0) ||
+            (command.indexOf('stateClosed-')      === 0) ||
+            (command.indexOf('stateDry-')         === 0) ||
+            (command.indexOf('stateInactive-')    === 0) ||
+            (command.indexOf('stateNot present-') === 0)) {
         commandType = 'stateOff';
 
-        command = command.replace('stateOff-',      '');
-        command = command.replace('stateUnlock-',   '');
-        command = command.replace('stateClosed-',   '');
-        command = command.replace('stateDry-',      '');
-        command = command.replace('stateInactive-', '');
+        command = command.replace('stateOff-',         '');
+        command = command.replace('stateUnlock-',      '');
+        command = command.replace('stateClosed-',      '');
+        command = command.replace('stateDry-',         '');
+        command = command.replace('stateInactive-',    '');
+        command = command.replace('stateNot present-', '');
       }
 
       else if(command.indexOf('state') === 0) {

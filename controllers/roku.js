@@ -246,7 +246,7 @@ module.exports = (function () {
         }
 
         else {
-          errorMsg = '\x1b[31mRoku:\x1b[0m ' + err.code;
+          errorMsg = '\x1b[31mRoku\x1b[0m: ' + err.code;
         }
 
         console.log(errorMsg);

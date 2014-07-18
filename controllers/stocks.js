@@ -36,7 +36,7 @@ module.exports = (function () {
 
     inputs  : ['list', 'launch'],
 
-    stocksOpen : function(deviceId) {
+    stocksOpen : function (deviceId) {
       var deviceState = require(__dirname + '/../lib/deviceState'),
           nycOffset   = -5,
           date        = new Date(),

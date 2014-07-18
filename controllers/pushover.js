@@ -39,7 +39,7 @@ module.exports = (function () {
     /**
      * Prepare a POST request for a command.
      */
-    postPrepare : function(config) {
+    postPrepare : function (config) {
       return {
         host    : config.host,
         port    : config.port,
@@ -68,7 +68,7 @@ module.exports = (function () {
              });
     },
 
-    send : function(config) {
+    send : function (config) {
       var https       = require('https'),
           pushover    = {},
           postRequest = '',

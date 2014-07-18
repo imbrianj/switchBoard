@@ -12,7 +12,7 @@
           <ul class="sub-device-list">
             <li><a href="/?{{DEVICE_ID}}=CD" class=""><span>CD</span></a></li>
             <li><a href="/?{{DEVICE_ID}}=TUNER" class=""><span>TUNER</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=CD-R_TAPE" class=""><span>CD-R/TAPE</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=CD_R_TAPE" class=""><span>CD-R/TAPE</span></a></li>
             <li><a href="/?{{DEVICE_ID}}=DVD" class=""><span>DVD</span></a></li>
             <li><a href="/?{{DEVICE_ID}}=TV" class=""><span>TV/SAT</span></a></li>
             <li><a href="/?{{DEVICE_ID}}=ROKU" class=""><span>ROKU</span></a></li>

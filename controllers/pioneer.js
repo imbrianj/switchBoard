@@ -44,7 +44,7 @@ module.exports = (function () {
     /**
      * Whitelist of available key codes to use.
      */
-    keymap : ['MUTE', 'POWER', 'VOL_DOWN', 'VOL_UP', 'BD', 'DVD', 'TV', 'ROKU', 'VIDEO','DVR_BDR', 'IPOD_USB','DVR_BDR','HDMI_1', 'HDMI_2','HDMI_3', 'HDMI_4','HDMI_5','HDMI_6','INTERNET_RADIO','SIRIUSXM','PANDORA'],
+    keymap : ['POWER', 'VOL_UP', 'VOL_DOWN', 'MUTE', 'CD', 'TUNER', 'CD_R_TAPE', 'DVD', 'TV', 'ROKU', 'VIDEO', 'IPOD_USB', 'DVR_BDR', 'HDMI_1', 'HDMI_2', 'HDMI_3', 'HDMI_4', 'HDMI_5', 'HDMI_6', 'BD', 'INTERNET_RADIO', 'SIRIUSXM', 'PANDORA'],
 
     /**
      * Since I want to abstract commands, I'd rather deal with semi-readable
@@ -59,7 +59,7 @@ module.exports = (function () {
                   'MUTE'           : 'MZ',
                   'CD'             : '01FN',
                   'TUNER'          : '02FN',
-                  'CD-R_TAPE'      : '03FN',
+                  'CD_R_TAPE'      : '03FN',
                   'DVD'            : '04FN',
                   'TV'             : '05FN',
                   'ROKU'           : '06FN',
@@ -82,46 +82,70 @@ module.exports = (function () {
       return this.hashTable[command];
     },
 
+    state : function (controller, callback, config) {
+      var pioneer = { device : {}, config : {} };
+
+      pioneer.device.deviceId  = controller.config.deviceId;
+      pioneer.device.deviceIp  = controller.config.deviceIp;
+      pioneer.config.serverIp  = config.serverIp;
+      pioneer.config.serverMac = config.serverMac;
+
+      pioneer.callback = function (err, reply) {
+        if(reply) {
+          callback(pioneer.device.deviceId, null, 'ok');
+        }
+
+        else if(err) {
+          callback(pioneer.device.deviceId, 'err');
+        }
+      };
+
+      this.send(pioneer);
+    },
+
     send : function (config) {
-      var net            = require('net'),
-          pioneer        = {},
-          saut           = "\r\n",
-          client;
+      var net     = require('net'),
+          pioneer = {},
+          client  = new net.Socket();
 
       pioneer.deviceIp   = config.device.deviceIp;
       pioneer.command    = this.translateCommand(config.command) || '';
       pioneer.devicePort = config.devicePort || 8102;
       pioneer.callback   = config.callback   || function () {};
 
-      if(pioneer.command) {
-        client = new net.Socket();
+      client.connect(pioneer.devicePort, pioneer.deviceIp, function() {
+        console.log('\x1b[32mPioneer\x1b[0m: Connected');
 
-        client.connect(pioneer.devicePort, pioneer.deviceIp, function() {
-          console.log('\x1b[32mPioneer\x1b[0m: Connected');
-          client.write(pioneer.command + saut);
-        });
+        if(pioneer.command) {
+          client.write(pioneer.command + "\r\n");
+        }
 
-        client.once('data', function(dataReply) {
-          pioneer.callback(null, dataReply);
+        else {
+          console.log('\x1b[31mPioneer\x1b[0m: No command sent');
+        }
+      });
 
-          client.destroy();
-        });
+      client.once('data', function(dataReply) {
+        pioneer.callback(null, dataReply);
 
-        client.once('close', function() {
-        });
+        client.destroy();
+      });
 
-        client.once('error', function(err) {
-          var errorMsg = '\x1b[31mPioneer:\x1b[0m ' + err.code;
+      client.once('error', function(err) {
+        var errorMsg = '';
 
-          console.log(errorMsg);
+        if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
+          errorMsg = '\x1b[31mPioneer\x1b[0m: Device is off or unreachable';
+        }
 
-          pioneer.callback(errorMsg);
-        });
-      }
+        else {
+          errorMsg = '\x1b[31mPioneer\x1b[0m: ' + err.code;
+        }
 
-      else {
-        console.log('\x1b[Pioneer\x1b[0m: No command sent');
-      }
+        console.log(errorMsg);
+
+        pioneer.callback(errorMsg);
+      });
     }
   };
 }());
