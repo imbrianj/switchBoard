@@ -80,10 +80,10 @@ exports.config = {
    * know!
    */
   pioneer : {
-    typeClass  : 'pioneer',
-    title      : 'Pioneer Amp',
-    deviceIp   : '192.168.1.6',
-    disabled   : true
+    typeClass : 'pioneer',
+    title     : 'Pioneer Amp',
+    deviceIp  : '192.168.1.6',
+    disabled  : true
   },
 
   /*
@@ -91,11 +91,11 @@ exports.config = {
    * the built-in "say" command.  Windows is not supported.
    */
   speech : {
-    typeClass     : 'speech',
-    title         : 'Speech',
-    voice         : 'female',
-    disableMarkup : false,
-    disabled      : true
+    typeClass      : 'speech',
+    title          : 'Speech',
+    voice          : 'female',
+    disabledMarkup : false,
+    disabled       : true
   },
 
   /*
@@ -160,16 +160,16 @@ exports.config = {
    * https://www.twilio.com/user/account/phone-numbers/incoming
    */
   sms : {
-    typeClass     : 'sms',
-    title         : 'SMS',
+    typeClass      : 'sms',
+    title          : 'SMS',
     // Your phone number to send texts to by default
-    phone         : '1234567890',
-    twilioSid     : 'somethingSecret',
-    twilioToken   : 'somethingSecret',
+    phone          : '1234567890',
+    twilioSid      : 'somethingSecret',
+    twilioToken    : 'somethingSecret',
     // Your assigned Twilio phone number
-    twilioPhone   : '0987654321',
-    disableMarkup : true,
-    disabled      : true
+    twilioPhone    : '0987654321',
+    disabledMarkup : true,
+    disabled       : true
   },
 
   /*
