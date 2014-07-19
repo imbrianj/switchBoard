@@ -432,6 +432,7 @@ form legend {
 	color: #F00;
 }
 
+.device .text-block h5 .fa,
 .device .text-block li.gain .fa {
 	color: #0078E7;
 }
@@ -702,10 +703,12 @@ a.device-active:hover:before {
 	text-shadow: 0 0 0 #286EA0;
 }
 
-.device.samsung .numeric-controls,
-.device.samsung .media,
-.device.samsung .information {
-	display: none;
+@media (max-width: 1000px), (max-height: 600px) {
+	.device.samsung .numeric-controls,
+	.device.samsung .media,
+	.device.samsung .information {
+		display: none;
+	}
 }
 
 .device.ps3.device-on .power-on,
@@ -877,12 +880,6 @@ body .selected,
 @media (min-width: 1000px) {
 	.device {
 		font-size: 400%;
-	}
-
-	.device.samsung .numeric-controls,
-	.device.samsung .media,
-	.device.samsung .information {
-		display: block;
 	}
 
 	.device .installed .sub-device-group,
