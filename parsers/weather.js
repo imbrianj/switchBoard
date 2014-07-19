@@ -132,7 +132,7 @@
 
     if(value) {
       markup = markup.replace('{{DEVICE_STATE}}', className);
-      markup = markup.replace('{{WEATHER_CURRENT}}', '<span class="fa fa-' + translateCode(value.code) + '"></span> ' + value.city + ' Weather: ' + value.temp + '&deg; ' + value.text);
+      markup = markup.replace('{{WEATHER_CURRENT}}', '<span class="fa fa-' + translateCode(value.code) + '"></span> ' + value.city + ' Current Weather: ' + value.temp + '&deg; ' + value.text);
 
       for(i in value.forecast) {
         tempMarkup = tempMarkup + template.split('{{WEATHER_ICON}}').join('<span class="fa fa-' + translateCode(value.forecast[i].code) + '"></span>');

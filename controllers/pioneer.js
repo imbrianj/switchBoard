@@ -120,9 +120,8 @@ module.exports = (function () {
           client.write(pioneer.command + "\r\n");
         }
 
-        else {
-          console.log('\x1b[31mPioneer\x1b[0m: No command sent');
-        }
+        pioneer.callback(null, 'ok');
+
       });
 
       client.once('data', function(dataReply) {

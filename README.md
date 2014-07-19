@@ -1,4 +1,4 @@
-[![Build Status](https://secure.travis-ci.org/imbrianj/switchBoard.png)](http://travis-ci.org/imbrianj/switchBoard.png)
+[![Build Status](https://secure.travis-ci.org/imbrianj/switchBoard.png)](http://travis-ci.org/imbrianj/switchBoard)
 
 SwitchBoard
 ---
