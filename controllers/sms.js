@@ -57,7 +57,7 @@ module.exports = (function () {
     },
 
     /**
-     * Prepare a POST data the request.
+     * Prepare a POST data for the request.
      */
     postData : function (sms) {
       var querystring = require('querystring');

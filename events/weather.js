@@ -32,16 +32,14 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20140717,
+    version : 20140718,
 
     poll : function(deviceId, command, controllers) {
-      var runCommand = require(__dirname + '/../lib/runCommand'),
-          controller = controllers[deviceId],
-          callback;
+      var runCommand  = require(__dirname + '/../lib/runCommand'),
+          deviceState = require(__dirname + '/../lib/deviceState'),
+          controller  = controllers[deviceId];
 
-      if((controller.config.auth) && (controller.config.auth.url)) {
-        controller.controller.oauthDeviceList(controller.config.auth, controller);
-      }
+      runCommand.runCommand(deviceId, 'list', controllers, deviceId);
     }
   };
 }());

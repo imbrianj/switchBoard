@@ -47,6 +47,14 @@ module.exports = (function () {
       this.send({ device : { deviceId: controller.config.deviceId, zip : controller.config.zip } });
     },
 
+    onload : function (controller) {
+      var fs       = require('fs'),
+          parser   = require(__dirname + '/../parsers/weather').weather,
+          fragment = fs.readFileSync(__dirname + '/../templates/fragments/weather.tpl').toString();
+
+      return parser(controller.deviceId, controller.markup, State[controller.config.deviceId].state, State[controller.config.deviceId].value, { forecast : fragment });
+    },
+
     send : function (config) {
       var https     = require('https'),
           weather   = {},
@@ -75,14 +83,17 @@ module.exports = (function () {
                           city,
                           i = 0;
 
-                      if(response) {
-                        response = JSON.parse(response);
-                        city     = response.query.results.channel;
+                      if(dataReply) {
+                        dataReply = JSON.parse(dataReply);
+                        city      = dataReply.query.results.channel;
 
                         weatherData = { 'city'     : city.location.city,
+                                        'temp'     : city.item.condition.temp,
+                                        'text'     : city.item.condition.text,
                                         'humidity' : city.atmosphere.humidity,
                                         'sunrise'  : city.astronomy.sunrise,
                                         'sunset'   : city.astronomy.sunset,
+                                        'code'     : city.item.condition.code,
                                         'forecast' : city.item.forecast
                                       };
 

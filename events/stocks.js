@@ -38,10 +38,6 @@ module.exports = (function () {
       var runCommand  = require(__dirname + '/../lib/runCommand'),
           deviceState = require(__dirname + '/../lib/deviceState'),
           controller  = controllers[deviceId],
-          nycOffset   = -5,
-          date        = new Date(),
-          utcTime     = date.getTime() + (date.getTimezoneOffset() * 60000),
-          nycTime     = new Date(utcTime + (3600000 * nycOffset)),
           speech,
           callback;
 
