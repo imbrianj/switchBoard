@@ -31,7 +31,7 @@ module.exports = (function () {
    * @fileoverview Basic control of Nest thermostat and Protect smoke detector.
    */
   return {
-    version : 20140716,
+    version : 20140720,
 
     inputs : ['command', 'text'],
 
@@ -191,6 +191,8 @@ module.exports = (function () {
     deviceList : function (auth, controller) {
       var config = {},
           that   = this;
+
+      console.log('\x1b[35mNest\x1b[0m: Fetching device info');
 
       config.host     = auth.url;
       config.path     = '/v2/mobile/user.' + auth.userId;

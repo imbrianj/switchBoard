@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic stocks information, courtesy of Yahoo.
    */
   return {
-    version : 20140712,
+    version : 20140720,
 
     inputs  : ['list', 'launch'],
 
@@ -104,9 +104,9 @@ module.exports = (function () {
 
       if(stocks.stocks !== null) {
         request = https.request(this.postPrepare(stocks), function(response) {
-                    response.once('data', function(response) {
-                      console.log('\x1b[32mStocks\x1b[0m: Connected');
+                    console.log('\x1b[32mStocks\x1b[0m: Connected');
 
+                    response.once('data', function(response) {
                       dataReply += response;
                     });
 

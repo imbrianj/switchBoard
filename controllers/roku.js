@@ -33,7 +33,7 @@ module.exports = (function () {
    * @requires xml2js, http, fs, request
    */
   return {
-    version : 20140701,
+    version : 20140720,
 
     inputs  : ['command', 'text', 'list', 'launch'],
 
@@ -227,9 +227,9 @@ module.exports = (function () {
       roku.callback   = config.callback   || function () {};
 
       request = http.request(this.postPrepare(roku), function(response) {
-                  response.once('data', function(response) {
-                    console.log('\x1b[32mRoku\x1b[0m: Connected');
+                  console.log('\x1b[32mRoku\x1b[0m: Connected');
 
+                  response.on('data', function(response) {
                     dataReply += response;
                   });
 

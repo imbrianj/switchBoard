@@ -34,7 +34,7 @@ module.exports = (function () {
    *       http://forum.loxone.com/enen/software/4876-lg-tv-http-control.html#post32692
    */
   return {
-    version : 20140701,
+    version : 20140720,
 
     inputs  : ['command'],
 
@@ -187,9 +187,9 @@ module.exports = (function () {
       lg.pairKey    = config.device.pairKey;
 
       request = http.request(this.postPrepare(lg), function(response) {
-                  response.once('data', function(response) {
-                    console.log('\x1b[32mLG\x1b[0m: Connected');
+                  console.log('\x1b[32mLG\x1b[0m: Connected');
 
+                  response.on('data', function(response) {
                     dataReply += response;
                   });
 

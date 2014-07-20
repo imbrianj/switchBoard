@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic control of Pushover notification API.
    */
   return {
-    version : 20140701,
+    version : 20140720,
 
     inputs  : ['text'],
 
@@ -87,9 +87,9 @@ module.exports = (function () {
       request = https.request(this.postPrepare(pushover), function(response) {
         response.setEncoding('utf8');
 
-        response.once('data', function(response) {
-          console.log('\x1b[32mPushover\x1b[0m: Connected');
+        console.log('\x1b[32mPushover\x1b[0m: Connected');
 
+        response.once('data', function(response) {
           pushover.callback(null, response);
         });
       });

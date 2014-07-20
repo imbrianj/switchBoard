@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic weather information, courtesy of Yahoo.
    */
   return {
-    version : 20140701,
+    version : 20140720,
 
     inputs  : ['list', 'launch'],
 
@@ -71,9 +71,9 @@ module.exports = (function () {
 
       if(weather.zip !== null) {
         request = https.request(this.postPrepare(weather), function(response) {
-                    response.once('data', function(response) {
-                      console.log('\x1b[32mWeather\x1b[0m: Connected');
+                    console.log('\x1b[32mWeather\x1b[0m: Connected');
 
+                    response.once('data', function(response) {
                       dataReply += response;
                     });
 

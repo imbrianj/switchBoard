@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic control of Twilio text messaging API.
    */
   return {
-    version : 20140329,
+    version : 20140720,
 
     inputs  : ['text'],
 
@@ -90,9 +90,9 @@ module.exports = (function () {
       request = https.request(this.postPrepare(sms), function(response) {
         response.setEncoding('utf8');
 
-        response.once('data', function(response) {
-          console.log('\x1b[35mSMS\x1b[0m: Connected');
+        console.log('\x1b[35mSMS\x1b[0m: Connected');
 
+        response.once('data', function(response) {
           sms.callback(null, response);
         });
       });

@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic control of Foscam IP camera.
    */
   return {
-    version : 20140709,
+    version : 20140720,
 
     inputs  : ['command', 'list'],
 
@@ -194,9 +194,9 @@ module.exports = (function () {
 
       else {
         request = http.request(this.postPrepare(foscam), function(response) {
-          response.on('data', function(response) {
-            console.log('\x1b[32mFoscam\x1b[0m: Connected');
+          console.log('\x1b[32mFoscam\x1b[0m: Connected');
 
+          response.on('data', function(response) {
             dataReply += response;
           });
 

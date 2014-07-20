@@ -34,7 +34,7 @@ module.exports = (function () {
    *       http://cocoontech.com/forums/topic/21266-panasonic-viera-plasma-ip-control/page-2
    */
   return {
-    version : 20140701,
+    version : 20140720,
 
     inputs  : ['command', 'text'],
 
@@ -132,9 +132,9 @@ module.exports = (function () {
       panasonic.callback   = config.callback   || function () {};
 
       request = http.request(this.postPrepare(panasonic), function(response) {
-                  response.once('data', function(response) {
-                    console.log('\x1b[32mPanasonic\x1b[0m: Connected');
+                  console.log('\x1b[32mPanasonic\x1b[0m: Connected');
 
+                  response.on('data', function(response) {
                     dataReply += response;
                   });
 
