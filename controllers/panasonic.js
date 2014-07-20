@@ -128,7 +128,7 @@ module.exports = (function () {
       panasonic.deviceIp   = config.device.deviceIp;
       panasonic.command    = config.command    || '';
       panasonic.text       = config.text       || '';
-      panasonic.devicePort = config.devicePort || 80;
+      panasonic.devicePort = config.devicePort || 55000;
       panasonic.callback   = config.callback   || function () {};
 
       request = http.request(this.postPrepare(panasonic), function(response) {
