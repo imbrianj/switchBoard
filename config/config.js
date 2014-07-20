@@ -183,11 +183,11 @@ exports.config = {
    * https://pushover.net/apps/build
    */
   pushover : {
-    typeClass      : 'pushover',
-    title          : 'Pushover',
-    userKey        : 'somethingSecret',
-    token          : 'somethingSecret',
-    disabled       : true
+    typeClass : 'pushover',
+    title     : 'Pushover',
+    userKey   : 'somethingSecret',
+    token     : 'somethingSecret',
+    disabled  : true
   },
 
   /*
@@ -232,8 +232,8 @@ exports.config = {
   nest : {
     typeClass : 'nest',
     title     : 'Nest',
-    username  : 'bjohnsonwsu@gmail.com',
-    password  : '7Wb>8xEX$4m]c#P)',
+    username  : 'user@example.com',
+    password  : 'password',
     disabled  : false
   }
 };
