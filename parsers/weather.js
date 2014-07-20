@@ -130,7 +130,7 @@
       className = ' device-off';
     }
 
-    if(value) {
+    if(value.code) {
       markup = markup.replace('{{DEVICE_STATE}}', className);
       markup = markup.replace('{{WEATHER_CURRENT}}', '<span class="fa fa-' + translateCode(value.code) + '"></span> ' + value.city + ' Current Weather: ' + value.temp + '&deg; ' + value.text);
 
@@ -141,6 +141,11 @@
         tempMarkup = tempMarkup.split('{{WEATHER_HIGH}}').join(value.forecast[i].high + '&deg;');
         tempMarkup = tempMarkup.split('{{WEATHER_LOW}}').join(value.forecast[i].low + '&deg;');
       }
+    }
+
+    else {
+      markup     = markup.replace('{{WEATHER_CURRENT}}', 'Looks like something went wrong <span class="fa fa-frown-o"></span>');
+      tempMarkup = value;
     }
 
     return markup.replace('{{WEATHER_FORECAST}}', tempMarkup);

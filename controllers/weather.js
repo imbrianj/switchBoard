@@ -87,17 +87,23 @@ module.exports = (function () {
                         dataReply = JSON.parse(dataReply);
                         city      = dataReply.query.results.channel;
 
-                        weatherData = { 'city'     : city.location.city,
-                                        'temp'     : city.item.condition.temp,
-                                        'text'     : city.item.condition.text,
-                                        'humidity' : city.atmosphere.humidity,
-                                        'sunrise'  : city.astronomy.sunrise,
-                                        'sunset'   : city.astronomy.sunset,
-                                        'code'     : city.item.condition.code,
-                                        'forecast' : city.item.forecast
-                                      };
+                        if(city.title.indexOf('Error') !== -1) {
+                          deviceState.updateState(weather.deviceId, 'weather', { state : 'err', value : city.title });
+                        }
 
-                        deviceState.updateState(weather.deviceId, 'weather', { state : 'ok', value : weatherData });
+                        else {
+                          weatherData = { 'city'     : city.location.city,
+                                          'temp'     : city.item.condition.temp,
+                                          'text'     : city.item.condition.text,
+                                          'humidity' : city.atmosphere.humidity,
+                                          'sunrise'  : city.astronomy.sunrise,
+                                          'sunset'   : city.astronomy.sunset,
+                                          'code'     : city.item.condition.code,
+                                          'forecast' : city.item.forecast
+                                        };
+
+                          deviceState.updateState(weather.deviceId, 'weather', { state : 'ok', value : weatherData });
+                        }
                       }
 
                       weather.callback(null, weatherData);
