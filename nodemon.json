@@ -1,0 +1,3 @@
+{
+  "ignore" : ["tmp/*", "js/common.min.js", "css/combo.min.css"]
+}

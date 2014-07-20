@@ -688,12 +688,14 @@ form legend {
 }
 
 .device .sub-device-list li a span,
-.device .sub-device-list li span span {
+.device .sub-device-list li span span,
+.device .sub-device-list li dl {
 	display: block;
 	font-size: 30%;
 }
 
-.device-active:before {
+.device-active .fa:before,
+.fa.device-active:before {
 	text-shadow: -2px -2px 1px #286EA0,
                -2px 2px 1px #286EA0,
                2px -2px 1px #286EA0,
@@ -702,6 +704,22 @@ form legend {
 	-o-transition: text-shadow .1s ease-in-out;
 	-webkit-transition: text-shadow .1s ease-in-out;
 	transition: text-shadow .1s ease-in-out;
+}
+
+.device-active.heat .fa:before,
+.device-active.smoke .fa:before,
+.device-active.co .fa:before,
+.device-active.batt .fa:before {
+	text-shadow: -2px -2px 1px #F00,
+               -2px 2px 1px #F00,
+               2px -2px 1px #F00,
+               2px 2px 1px #F00;
+}
+
+.device-active.smoke .smoke,
+.device-active.co .co,
+.device-active.batt .batt {
+	color: #F00;
 }
 
 a.device-active:hover:before {
@@ -892,6 +910,10 @@ body .selected,
 	.device .installed-list li {
 		max-width: 30%;
 	}
+}
+
+.installed .text-device-status .sub-device-group li {
+	max-width: 100%;
 }
 
 .header:after,

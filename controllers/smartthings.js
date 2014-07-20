@@ -500,9 +500,9 @@ module.exports = (function () {
 
       if(request.path) {
         request = https.request(request, function(response) {
-                    response.on('data', function(response) {
-                      console.log('\x1b[32mSmartThings\x1b[0m: Connected');
+                    console.log('\x1b[32mSmartThings\x1b[0m: Connected');
 
+                    response.on('data', function(response) {
                       dataReply += response;
                     });
 

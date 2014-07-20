@@ -227,5 +227,13 @@ exports.config = {
                        'Kitchen'     : ['Kitchen Light', 'Dining Lights'] },
     disabledMarkup : false,
     disabled       : true
+  },
+
+  nest : {
+    typeClass : 'nest',
+    title     : 'Nest',
+    username  : 'bjohnsonwsu@gmail.com',
+    password  : '7Wb>8xEX$4m]c#P)',
+    disabled  : false
   }
 };
