@@ -61,7 +61,7 @@ module.exports = (function () {
                       }
                     };
 
-      if((config.auth.userId) && (config.auth.token)) {
+      if((config.auth) && (config.auth.userId) && (config.auth.token)) {
         request.headers['X-nl-protocol-version'] = 1;
         request.headers['X-nl-user-id']          = config.auth.userId;
         request.headers.Authorization            = 'Basic ' + config.auth.token;

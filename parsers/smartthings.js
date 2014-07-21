@@ -40,7 +40,6 @@
         deviceMarkup      = '',
         mode              = '',
         subDeviceMarkup   = '',
-        subDeviceTemplate = '',
         subDevice,
         subDevices,
         subDeviceGroup,
@@ -137,8 +136,7 @@
         // Otherwise, you want to show them in a list.
         else {
           for(i in subDevices) {
-            subDeviceTemplate = getTemplate(subDevices[i]);
-            tempDeviceMarkup  = tempDeviceMarkup + getDeviceMarkup(subDevices[i]);
+            tempMarkup = tempMarkup + getDeviceMarkup(subDevices[i]);
           }
         }
       }

@@ -73,5 +73,5 @@ exports.smsControllerTest = {
     test.deepEqual(testData, 'From=1234567891&To=1987654321&Body=TEST%20SMS%20body%20text', 'Additional params are filtered out and params stringified');
 
     test.done();
-  },
+  }
 };

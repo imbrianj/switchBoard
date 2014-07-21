@@ -36,7 +36,7 @@ module.exports = (function () {
 
     inputs  : ['list', 'launch'],
 
-    stocksOpen : function (deviceId) {
+    stocksOpen : function (deviceId, explicit) {
       var deviceState = require(__dirname + '/../lib/deviceState'),
           nycOffset   = -5,
           date        = new Date(),
@@ -44,10 +44,14 @@ module.exports = (function () {
           nycTime     = new Date(utcTime + (3600000 * nycOffset)),
           open        = false;
 
+      if(explicit) {
+        nycTime = explicit;
+      }
+
       // Trading isn't open on weekends, so we don't need to poll.
       if((nycTime.getDay() !== 6) && (nycTime.getDay() !== 0)) {
         // Trading is only open from 9am - 4pm.
-        if((nycTime.getHours() > 9) && (nycTime.getHours() < 16)) {
+        if((nycTime.getHours() >= 9) && (nycTime.getHours() < 16)) {
           open = true;
           deviceState.updateState(deviceId, 'stocks', { state : 'ok', value : State[deviceId].state.value });
         }

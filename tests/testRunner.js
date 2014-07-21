@@ -13,7 +13,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -31,17 +31,23 @@
 module.exports = (function () {
   var reporter = require('nodeunit').reporters.default;
 
-  reporter.run(['tests/unit/lib/loadControllerTest.js',
+  reporter.run(['tests/unit/lib/deviceStateTest.js',
+                'tests/unit/lib/loadControllerTest.js',
                 'tests/unit/lib/loadMarkupTest.js',
                 'tests/unit/lib/runCommandTest.js',
                 'tests/unit/lib/staticAssetsTest.js',
                 'tests/unit/controllers/foscamTest.js',
                 'tests/unit/controllers/lgTest.js',
                 'tests/unit/controllers/mp3Test.js',
+                'tests/unit/controllers/nestTest.js',
                 'tests/unit/controllers/panasonicTest.js',
+                'tests/unit/controllers/pioneerTest.js',
                 'tests/unit/controllers/ps3Test.js',
+                'tests/unit/controllers/pushoverTest.js',
                 'tests/unit/controllers/rokuTest.js',
                 'tests/unit/controllers/samsungTest.js',
+                'tests/unit/controllers/smartThingsTest.js',
+                'tests/unit/controllers/smsTest.js',
                 'tests/unit/controllers/speechTest.js',
                 'tests/unit/controllers/stocksTest.js',
                 'tests/unit/controllers/weatherTest.js',

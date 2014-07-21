@@ -100,7 +100,7 @@ module.exports = (function () {
     onload : function (controller) {
       var parser = require(__dirname + '/../parsers/ps3').ps3;
 
-      return parser(controller.deviceId, controller.markup, State[controller.config.deviceId].state, State[controller.config.deviceId].value);
+      return parser(controller.deviceId, controller.markup, State[controller.config.deviceId].state);
     },
 
     send : function (config) {

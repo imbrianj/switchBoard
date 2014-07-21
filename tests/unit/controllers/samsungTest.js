@@ -13,7 +13,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -27,6 +27,8 @@
  * @author brian@bevey.org
  * @fileoverview Unit test for controllers/samsung.js
  */
+
+State = {};
 
 exports.samsungControllerTest = {
   base64Encode : function (test) {
@@ -65,6 +67,22 @@ exports.samsungControllerTest = {
 
     test.equal(chunkTwoCommand, '\u0000\u0010\u0000TEST-tvAppString!\u0000\u0000\u0000\u0000\u001c\u0000S0VZX1RFU1RJTkctQ09NTUFORA==', 'chunkTwo command validation');
     test.equal(chunkTwoText, '\u0001\u000e\u0000TEST-appString\u0014\u0000\u0001\u0000\u0010\u0000VEVTVElORy1URVhU', 'chunkTwo text validation');
+
+    test.done();
+  },
+
+  onload : function(test) {
+    'use strict';
+
+    State.FOO       = {};
+    State.FOO.state = 'ok';
+
+    var samsungController = require(__dirname + '/../../../controllers/samsung'),
+        onloadMarkup      = samsungController.onload({ markup : '<div class="samsung{{DEVICE_STATE}}"><h1>Contents</h1></div>',
+                                                       config : { deviceId : 'FOO' } });
+
+    test.ok((onloadMarkup.indexOf('<h1>Contents</h1>') !== -1), 'Passed markup validated');
+    test.ok((onloadMarkup.indexOf('class="samsung device-on"') !== -1),  'Device state validated');
 
     test.done();
   }

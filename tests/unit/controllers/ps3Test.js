@@ -13,7 +13,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -27,6 +27,8 @@
  * @author brian@bevey.org
  * @fileoverview Unit test for controllers/ps3.js
  */
+
+State = {};
 
 exports.ps3ControllerTest = {
   translateCommand : function (test) {
@@ -46,6 +48,22 @@ exports.ps3ControllerTest = {
     test.equal(Square,   '', 'Any command issued on SunOS should return null');
     test.equal(Triangle, '', 'Any command issued on FreeBSD should return null');
     test.equal(Square,   '', 'Any command issued on OSX should return null');
+
+    test.done();
+  },
+
+  onload : function(test) {
+    'use strict';
+
+    State.FOO       = {};
+    State.FOO.state = 'ok';
+
+    var ps3Controller = require(__dirname + '/../../../controllers/ps3'),
+        onloadMarkup  = ps3Controller.onload({ markup : '<div class="ps3{{DEVICE_STATE}}"><h1>Contents</h1></div>',
+                                                config : { deviceId : 'FOO' } });
+
+    test.ok((onloadMarkup.indexOf('<h1>Contents</h1>') !== -1), 'Passed markup validated');
+    test.ok((onloadMarkup.indexOf('class="ps3 device-on"') !== -1),  'Device state validated');
 
     test.done();
   }
