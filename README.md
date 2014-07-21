@@ -50,12 +50,19 @@ FAQ
 
 - Q. How can I configure my PS3?
 
-  A.
-   * You'll need a supported Bluetooth dongle: http://gimx.fr/wiki/index.php?title=Bluetooth_dongle
-   * Install GIMX version 1.12+ (earlier versions won't work): https://code.google.com/p/diyps3controller/downloads/list
-   * Spoof an already paired PS3 controller: http://gimx.fr/wiki/index.php?title=Command_line#Linux_.2B_bluetooth
+  You'll need to have your device (computer, raspberry pie, etc.) *pretend* to be a PS3 controller (aka Sixaxis Controller) that communicates with the PS3 via Bluetooth.  Therefore, you'll:
+
+   * Need a supported Bluetooth dongle that plugs into your device and communicates with the console (the CSR bluecore4-rom is recommended): http://gimx.fr/wiki/index.php?title=Bluetooth_dongle
+   * Install GIMX version 1.12+ (earlier versions won't work) on your device so it can talk to the PS3 via the dongle:
+     * Installing on a generic device: https://code.google.com/p/diyps3controller/downloads/list [Bad link?]
+     * Installing on a Raspberry Pi: http://gimx.fr/wiki/index.php?title=RPi 
+   * Plug your Sixaxis into your PS3, press the controller's start button to pair it, then unplug, and plug into your device.
+   * Grab the controller and console's Bluetooth address and copy it over to the dongle, then fire off the GIMX software: http://gimx.fr/wiki/index.php?title=Command_line#Linux_.2B_bluetooth_.2B_PS3
+     * Make sure to stop before running gimx.
+   * Go to your wireless router's hompepage, usually something like 192.168.2.1, and copy and paste over the IP address of your PS3 to the config/config.js file.
+   * Run $: node app in terminal
    * That's it!
 
 - Q. How secure is this?
 
-  A. Not very.  It's assumed that any device that's on your network is deemed white-listed.  This probably shouldn't be used on a large network with people you don't trust to screw with your TV.
+  A. Depends.  It's assumed that any device that's on your network is deemed white-listed.  This probably shouldn't be used on a large network with people you don't trust to screw with your TV. Outside your network, my goal is to provide the most security by keeping external connections to a minimum.  See "Q. Why aren't you using a seed-based JS library / referencing CSS from a CDN?"
