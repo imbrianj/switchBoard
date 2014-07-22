@@ -108,6 +108,8 @@ module.exports = (function () {
 
       if(stocks.stocks !== null) {
         request = https.request(this.postPrepare(stocks), function(response) {
+                    response.setEncoding('utf8');
+
                     console.log('\x1b[32mStocks\x1b[0m: Connected');
 
                     response.once('data', function(response) {

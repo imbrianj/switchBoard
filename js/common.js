@@ -164,7 +164,7 @@ Switchboard = (function () {
     */
     hasAttribute : function (elm, attribute, value) {
       if (elm[attribute]) {
-        return elm[attribute].match(new RegExp('(\\s|^)' + value + '(\\s|$)'));
+        return elm[attribute].match(new RegExp('(\\s|^)' + value + '(\\s|$)')) ? true : false;
       }
     },
 
@@ -176,7 +176,7 @@ Switchboard = (function () {
     * @param {String} className Class name being checked.
     */
     hasClass : function (elm, className) {
-      return Switchboard.hasAttribute(elm, 'className', className);
+      return Switchboard.hasAttribute(elm, 'className', className) ? true : false;
     },
 
    /**
@@ -477,6 +477,7 @@ Switchboard = (function () {
           body       = Switchboard.getElementsByClassName('body', document.body, 'div')[0],
           textInputs = Switchboard.getElementsByClassName('text-form', body, 'form'),
           lazyLoad,
+          lazyUnLoad,
           templates,
           socketConnect,
           checkConnection,
@@ -637,6 +638,23 @@ Switchboard = (function () {
         }
       };
 
+      /* Remove src attributes of streaming content to keep from wasting
+         bandwidth. */
+      lazyUnLoad = function(elm) {
+        var images,
+            i = 0;
+
+        if(elm) {
+          images = elm.getElementsByTagName('img');
+
+          for(i = 0; i < images.length; i += 1) {
+            if((images[i].getAttribute('src')) && (Switchboard.hasClass(images[i], 'streaming'))) {
+              images[i].removeAttribute('src');
+            }
+          }
+        }
+      };
+
       lazyLoad(document.body.className);
 
       /* Clicking of navigation items */
@@ -654,10 +672,12 @@ Switchboard = (function () {
             Switchboard.removeClass(selectNav,     'selected');
             Switchboard.removeClass(selectContent, 'selected');
 
+            lazyLoad(elm.className);
+
             Switchboard.addClass(elm, 'selected');
             Switchboard.addClass(newContent, 'selected');
 
-            lazyLoad(elm.className.replace(' selected', ''));
+            lazyUnLoad(selectContent);
           }
         }
 

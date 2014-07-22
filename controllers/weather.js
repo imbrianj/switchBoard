@@ -71,6 +71,8 @@ module.exports = (function () {
 
       if(weather.zip !== null) {
         request = https.request(this.postPrepare(weather), function(response) {
+                    response.setEncoding('utf8');
+
                     console.log('\x1b[32mWeather\x1b[0m: Connected');
 
                     response.once('data', function(response) {
