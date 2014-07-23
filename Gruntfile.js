@@ -4,13 +4,35 @@ module.exports = function(grunt) {
 
     banner : { comment : '/* <%= grunt.template.today("yyyymmdd") %> */\n' },
 
+    jsFiles : ['config/*.js', 'lib/*.js', 'controllers/*.js', 'parsers/*.js', 'events/*.js', 'js/common.js', 'tests/**/*Test.js', 'app.js'],
+
     jshint : {
-      files : ['config/*.js', 'lib/*.js', 'controllers/*.js', 'parsers/*.js', 'events/*.js', 'js/common.js', 'tests/**/*Test.js', 'app.js'],
+      files : '<%= jsFiles %>',
       options : {
-        globals : {
+        undef    : true,
+        eqnull   : true,
+        debug    : true,
+        noarg    : true,
+        boss     : true,
+        loopfunc : true,
+        evil     : true,
+        laxbreak : true,
+        bitwise  : true,
+        strict   : true,
+        nonew    : true,
+        globals  : {
           console     : true,
           State       : true,
-          Connections : true
+          Connections : true,
+          __dirname   : true,
+          Switchboard : true,
+          exports     : true,
+          process     : true,
+          setTimeout  : true,
+          setInterval : true,
+          WebSocket   : true,
+          document    : true,
+          window      : true
         }
       }
     },

@@ -28,7 +28,7 @@ Switchboard = (function () {
   'use strict';
 
   return {
-    version : 20140630,
+    version : 20140721,
 
     parsers : {},
 
@@ -528,6 +528,8 @@ Switchboard = (function () {
       };
 
       socketConnect = function () {
+        var reconnect = true;
+
         if(!document.getElementById('indicator')) {
           indicator = document.createElement('span');
           indicator.id = 'indicator';
@@ -535,6 +537,8 @@ Switchboard = (function () {
           Switchboard.putText(indicator, 'Connecting');
 
           header.appendChild(indicator);
+
+          reconnect = false;
         }
 
         Switchboard.log('Connecting to WebSocket');
@@ -544,6 +548,12 @@ Switchboard = (function () {
         Switchboard.event.add(socket, 'open', function(e) {
           indicator.className = 'connected';
           Switchboard.putText(indicator, 'Connected');
+
+          if(reconnect) {
+            Switchboard.log('Reconnected to WebSocket - fetching latest state');
+
+            socket.send('Reconnect');
+          }
         });
 
         Switchboard.event.add(socket, 'close', function(e) {
@@ -552,14 +562,29 @@ Switchboard = (function () {
         });
 
         Switchboard.event.add(socket, 'message', function(e) {
-          var message = Switchboard.decode(event.data);
+          var message = Switchboard.decode(e.data),
+              device  = {};
 
           if(typeof message.deviceId === 'string') {
             updateTemplate(message);
           }
 
           else if(typeof message === 'object') {
-            templates = message;
+            for(device in message) break;
+
+            // State objects have specific deviceIds associated.
+            if((message[device]) && (message[device].deviceId)) {
+              Switchboard.log('Received latest State');
+
+              for(device in message) {
+                updateTemplate(message[device]);
+              }
+            }
+
+            // Otherwise, you're grabbing the templates.
+            else if((message[device]) && (message[device].markup)) {
+              templates = message;
+            }
           }
         });
       };

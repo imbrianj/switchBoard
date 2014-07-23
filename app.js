@@ -95,6 +95,8 @@ if(controllers) {
       request.resume();
     }
   }).listen(settings.config.config.serverPort, function() {
+    'use strict';
+
     console.log('\x1b[36mListening on port ' + settings.config.config.serverPort + '\x1b[0m');
   });
 
@@ -102,6 +104,8 @@ if(controllers) {
   wsServer = new webSocketServer({ httpServer : server }, 'echo-protocol');
 
   wsServer.on('request', function(request) {
+    'use strict';
+
     var loadMarkup = require('./lib/loadMarkup'),
         connection = request.accept('echo-protocol', request.origin);
 
@@ -114,9 +118,17 @@ if(controllers) {
     connection.on('message', function(message) {
       var response = { end : function(message) {} };
 
-      request.url = message.utf8Data;
+      if(message.utf8Data === 'Reconnect') {
+        console.log('\x1b[36m' + connection.remoteAddress + ' Requested State\x1b[0m');
 
-      requestInit.requestInit(request, controllers, response);
+        connection.sendUTF(JSON.stringify(State));
+      }
+
+      else {
+        request.url = message.utf8Data;
+
+        requestInit.requestInit(request, controllers, response);
+      }
     });
 
     connection.on('close', function(code, desc) {
