@@ -75,7 +75,7 @@ module.exports = (function () {
 
                     console.log('\x1b[32mWeather\x1b[0m: Connected');
 
-                    response.once('data', function(response) {
+                    response.on('data', function(response) {
                       dataReply += response;
                     });
 
