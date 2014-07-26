@@ -35,16 +35,16 @@ exports.ps3ControllerTest = {
     'use strict';
 
     var ps3Controller = require(__dirname + '/../../../controllers/ps3'),
-        PowerOn       = ps3Controller.translateCommand('PowerOn',  '12:34:56', 'linux'),
-        PS            = ps3Controller.translateCommand('PS',       '12:34:56', 'win32'),
-        Cross         = ps3Controller.translateCommand('Cross',    '12:34:56', 'linux'),
-        Square        = ps3Controller.translateCommand('Square',   '12:34:56', 'sunos'),
-        Triangle      = ps3Controller.translateCommand('Triangle', '12:34:56', 'freebsd'),
-        Left          = ps3Controller.translateCommand('Left',     '12:34:56', 'darwin');
+        PowerOn       = ps3Controller.translateCommand('PowerOn',  '12:34:56', '127.0.0.1', '8181', 'linux'),
+        PS            = ps3Controller.translateCommand('PS',       '12:34:56', '127.0.0.1', '8181', 'win32'),
+        Cross         = ps3Controller.translateCommand('Cross',    '12:34:56', '127.0.0.1', '8181', 'linux'),
+        Square        = ps3Controller.translateCommand('Square',   '12:34:56', '127.0.0.1', '8181', 'sunos'),
+        Triangle      = ps3Controller.translateCommand('Triangle', '12:34:56', '127.0.0.1', '8181', 'freebsd'),
+        Left          = ps3Controller.translateCommand('Left',     '12:34:56', '127.0.0.1', '8181', 'darwin');
 
-    test.deepEqual(PowerOn, { command : 'emu',       params : ['12:34:56'] },              'PS3 PowerOn command on Linux validation');
-    test.deepEqual(PS,      { command : 'emuclient', params : ['--event', 'PS(255)'] },    'PS3 PS command on Windows validation');
-    test.deepEqual(Cross,   { command : 'emuclient', params : ['--event', 'cross(255)'] }, 'PS3 Cross command on Linux validation');
+    test.deepEqual(PowerOn, { command : 'gimx', params : ['--type', 'Sixaxis', '--src', '127.0.0.1:8181', '--bdaddr', '12:34:56'] }, 'PS3 PowerOn command on Linux validation');
+    test.deepEqual(PS,      { command : 'gimx', params : ['--dst', '127.0.0.1:8181', '--event', 'PS(255)'] },                        'PS3 PS command on Windows validation');
+    test.deepEqual(Cross,   { command : 'gimx', params : ['--dst', '127.0.0.1:8181', '--event', 'cross(255)'] },                     'PS3 Cross command on Linux validation');
     test.equal(Square,   '', 'Any command issued on SunOS should return null');
     test.equal(Triangle, '', 'Any command issued on FreeBSD should return null');
     test.equal(Square,   '', 'Any command issued on OSX should return null');

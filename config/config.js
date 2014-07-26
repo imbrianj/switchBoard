@@ -47,13 +47,16 @@ exports.config = {
    * only.  Refer to the README for information on setup.
    */
   ps3 : {
-    typeClass : 'ps3',
-    title     : 'PS3',
+    typeClass   : 'ps3',
+    title       : 'PS3',
     // Bluetooth mac address of PS3
     // This is *NOT* the TCP network mac address
-    deviceMac : '00:00:00:00:00:00',
-    deviceIp  : '192.168.1.4',
-    disabled  : true
+    deviceMac   : '00:00:00:00:00:00',
+    // Gimx requires starting up a server and port.  You can set it to something
+    // specific if you need, but this should be fine.
+    serviceIp   : '127.0.0.1',
+    servicePort : '8181',
+    disabled    : true
   },
 
   panasonic : {

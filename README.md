@@ -53,7 +53,7 @@ FAQ
   You'll need to have your device (computer, raspberry pie, etc.) *pretend* to be a PS3 controller (aka Sixaxis Controller) that communicates with the PS3 via Bluetooth.  Therefore, you'll:
 
    * Need a supported Bluetooth dongle that plugs into your device and communicates with the console (the CSR bluecore4-rom is recommended): http://gimx.fr/wiki/index.php?title=Bluetooth_dongle
-   * Install GIMX version 1.12+ (earlier versions won't work) on your device so it can talk to the PS3 via the dongle:
+   * Install GIMX version 2.0x+ (earlier versions won't work) on your device so it can talk to the PS3 via the dongle:
      * Installing on a generic device: https://code.google.com/p/diyps3controller/downloads/list [Bad link?]
      * Installing on a Raspberry Pi: http://gimx.fr/wiki/index.php?title=RPi 
    * Plug your Sixaxis into your PS3, press the controller's start button to pair it, then unplug, and plug into your device.

@@ -45,21 +45,28 @@ module.exports = (function () {
      */
     keymap  : ['PowerOn', 'Left', 'Right', 'Up', 'Down', 'PS', 'Select', 'Start', 'Triangle', 'Circle', 'Cross', 'Square'],
 
-    translateCommand : function (command, deviceMac, platform, revert) {
+    translateCommand : function (command, deviceMac, serviceIP, servicePort, platform, revert) {
       var execute = { command : '', params : [] },
           value   = revert === true ? 0 : 255;
 
       if(platform === 'linux' || platform === 'win32') {
         switch(command) {
           case 'PowerOn' :
-            execute.command = 'emu';
+            execute.command = 'gimx';
 
+            execute.params.push('--type');
+            execute.params.push('Sixaxis');
+            execute.params.push('--src');
+            execute.params.push(serviceIP + ':' + servicePort);
+            execute.params.push('--bdaddr');
             execute.params.push(deviceMac);
           break;
 
           case 'PS' :
-            execute.command = 'emuclient';
+            execute.command = 'gimx';
 
+            execute.params.push('--dst');
+            execute.params.push(serviceIP + ':' + servicePort);
             execute.params.push('--event');
             execute.params.push('PS(' + value + ')');
           break;
@@ -74,8 +81,10 @@ module.exports = (function () {
           case 'Circle'   :
           case 'Cross'    :
           case 'Square'   :
-            execute.command = 'emuclient';
+            execute.command = 'gimx';
 
+            execute.params.push('--dst');
+            execute.params.push(serviceIP + ':' + servicePort);
             execute.params.push('--event');
             execute.params.push(command.toLowerCase() + '(' + value + ')');
           break;
@@ -110,12 +119,14 @@ module.exports = (function () {
           that       = this,
           emuclient;
 
-      ps3.deviceId  = config.device.deviceId;
-      ps3.deviceMac = config.device.deviceMac;
-      ps3.command   = config.command  || '';
-      ps3.callback  = config.callback || function () {};
-      ps3.platform  = config.platform || process.platform;
-      ps3.revert    = config.revert   || false;
+      ps3.deviceId    = config.device.deviceId;
+      ps3.deviceMac   = config.device.deviceMac;
+      ps3.serviceIp   = config.device.serviceIp   || '127.0.0.1';
+      ps3.servicePort = config.device.servicePort || '8181';
+      ps3.command     = config.command            || '';
+      ps3.callback    = config.callback           || function () {};
+      ps3.platform    = config.platform           || process.platform;
+      ps3.revert      = config.revert             || false;
 
       if(State[ps3.deviceId].state === 'ok') {
         // If the PS3 is already on, we shouldn't execute PowerOn again.
@@ -130,7 +141,7 @@ module.exports = (function () {
         console.log('\x1b[35mPS3\x1b[0m: Device doesn\'t look on');
       }
 
-      ps3.execute = this.translateCommand(ps3.command, ps3.deviceMac, ps3.platform, ps3.revert);
+      ps3.execute = this.translateCommand(ps3.command, ps3.deviceMac, ps3.serviceIp, ps3.servicePort, ps3.platform, ps3.revert);
 
       emuclient = spawn(ps3.execute.command, ps3.execute.params);
 
