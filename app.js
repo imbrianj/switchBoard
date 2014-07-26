@@ -57,7 +57,7 @@ else {
   settings = require('./config/config');
 }
 
-controllers = this.controllers = loadController.loadController(settings.config);
+controllers = loadController.loadController(settings.config);
 
 if(controllers) {
   server = http.createServer(function(request, response) {
