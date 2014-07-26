@@ -38,9 +38,14 @@ module.exports = (function () {
 
     stocksOpen : function (deviceId, explicit) {
       var deviceState = require(__dirname + '/../lib/deviceState'),
-          nycOffset   = -5,
           date        = new Date(),
           utcTime     = date.getTime() + (date.getTimezoneOffset() * 60000),
+          // Try to determine if we're in DST by comparing one month that is
+          // in DST against the current timezone offset.
+          january     = new Date(date.getFullYear(), 0, 1),
+          july        = new Date(date.getFullYear(), 6, 1),
+          dst         = date.getTimezoneOffset() < Math.max(january.getTimezoneOffset(), july.getTimezoneOffset()),
+          nycOffset   = dst ? -4 : -5,
           nycTime     = new Date(utcTime + (3600000 * nycOffset)),
           open        = false;
 

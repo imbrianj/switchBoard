@@ -404,18 +404,18 @@ Switchboard = (function () {
           ajaxRequest.onStart();
 
           switch (typeof(ajaxRequest.onComplete)) {
-          case 'object' :
-            if (ajaxRequest.onComplete.value) {
-              ajaxRequest.onComplete.value = ajaxRequest.response;
-            }
+            case 'object' :
+              if (ajaxRequest.onComplete.value) {
+                ajaxRequest.onComplete.value = ajaxRequest.response;
+              }
 
-            else if (ajaxRequest.onComplete.childNodes[0]) {
-              Switchboard.putText(ajaxRequest.onComplete, ajaxRequest.response);
-            }
+              else if (ajaxRequest.onComplete.childNodes[0]) {
+                Switchboard.putText(ajaxRequest.onComplete, ajaxRequest.response);
+              }
             break;
 
-          case 'function' :
-            ajaxRequest.onComplete();
+            case 'function' :
+              ajaxRequest.onComplete();
             break;
           }
         };
@@ -483,6 +483,7 @@ Switchboard = (function () {
           checkConnection,
           updateTemplate,
           indicator,
+          buildIndicator,
           socket,
           i;
 
@@ -527,7 +528,7 @@ Switchboard = (function () {
         }
       };
 
-      socketConnect = function () {
+      buildIndicator = function (type) {
         var reconnect = true;
 
         if(!document.getElementById('indicator')) {
@@ -540,6 +541,12 @@ Switchboard = (function () {
 
           reconnect = false;
         }
+
+        return reconnect;
+      };
+
+      socketConnect = function () {
+        var reconnect = buildIndicator();
 
         Switchboard.log('Connecting to WebSocket');
 
@@ -601,12 +608,16 @@ Switchboard = (function () {
         return state;
       };
 
+      /* If we support WebSockets, we'll grab updates as they happen */
       if((typeof WebSocket === 'function') || (typeof WebSocket === 'object')) {
         socketConnect();
       }
 
+      /* Otherwise, we'll poll for updates */
       else {
         Switchboard.log('WebSockets not supported - using polling');
+
+        buildIndicator();
 
         (function() {
           var ajaxRequest;
@@ -633,8 +644,20 @@ Switchboard = (function () {
                 var state = Switchboard.decode(pollRequest.response),
                     device;
 
-                for(device in state) {
-                  updateTemplate(state[device]);
+                if(state) {
+                  indicator.className = 'connected';
+
+                  setTimeout(function() {
+                    indicator.className = 'connecting';
+                  }, 1000);
+
+                  for(device in state) {
+                    updateTemplate(state[device]);
+                  }
+                }
+
+                else {
+                  indicator.className = 'disconnected';
                 }
               }
             };
