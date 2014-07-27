@@ -429,12 +429,14 @@ form legend {
 	margin-right: .5em;
 }
 
-.device .text-block li.loss .fa {
+.device .text-block li.loss .fa,
+.device .state-err .fa {
 	color: #F00;
 }
 
 .device .text-block h5 .fa,
-.device .text-block li.gain .fa {
+.device .text-block li.gain .fa,
+.device .state-ok .fa {
 	color: #0078E7;
 }
 

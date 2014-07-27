@@ -62,6 +62,7 @@ module.exports = (function () {
             case 'stocks'      :
             case 'smartthings' :
             case 'nest'        :
+            case 'travis'      :
               if(type === 'long') {
                 if(typeof controllers[deviceId].event === 'object') {
                   controllers[deviceId].event.poll(deviceId, 'schedule', controllers);

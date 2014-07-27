@@ -132,10 +132,11 @@
 
     if(value.code) {
       markup = markup.replace('{{DEVICE_STATE}}', className);
-      markup = markup.replace('{{WEATHER_CURRENT}}', '<span class="fa fa-' + translateCode(value.code) + '"></span> ' + value.city + ' Current Weather: ' + value.temp + '&deg; ' + value.text);
+      markup = markup.replace('{{WEATHER_ICON}}', translateCode(value.code));
+      markup = markup.replace('{{WEATHER_CURRENT}}', value.city + ' Current Weather: ' + value.temp + '&deg; ' + value.text);
 
       for(i in value.forecast) {
-        tempMarkup = tempMarkup + template.split('{{WEATHER_ICON}}').join('<span class="fa fa-' + translateCode(value.forecast[i].code) + '"></span>');
+        tempMarkup = tempMarkup + template.split('{{WEATHER_ICON}}').join(translateCode(value.forecast[i].code));
         tempMarkup = tempMarkup.split('{{WEATHER_DAY}}').join(value.forecast[i].day + ':');
         tempMarkup = tempMarkup.split('{{WEATHER_TEXT}}').join(value.forecast[i].text);
         tempMarkup = tempMarkup.split('{{WEATHER_HIGH}}').join(value.forecast[i].high + '&deg;');
@@ -144,7 +145,7 @@
     }
 
     else {
-      markup     = markup.replace('{{WEATHER_CURRENT}}', 'Looks like something went wrong <span class="fa fa-frown-o"></span>');
+      markup     = markup.replace('{{WEATHER_CURRENT}}', 'Weather data unavailable');
       tempMarkup = value;
     }
 

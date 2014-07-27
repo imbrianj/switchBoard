@@ -238,5 +238,14 @@ exports.config = {
     username  : 'user@example.com',
     password  : 'password',
     disabled  : false
+  },
+
+  switchBoardCI : {
+    typeClass      : 'travis',
+    title          : 'Travis',
+    travisOwner    : 'imbrianj',
+    travisRepo     : 'switchBoard',
+    disabledMarkup : true,
+    disable        : true
   }
 };

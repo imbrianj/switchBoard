@@ -34,7 +34,7 @@ module.exports = (function () {
   return {
     version : 20140720,
 
-    inputs  : ['list', 'launch'],
+    inputs  : ['list'],
 
     stocksOpen : function (deviceId, explicit) {
       var deviceState = require(__dirname + '/../lib/deviceState'),

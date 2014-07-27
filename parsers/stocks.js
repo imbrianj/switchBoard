@@ -32,7 +32,8 @@
         className  = '',
         tempMarkup = '',
         change     = '',
-        arrow      = '';
+        arrow      = '',
+        direction  = '';
 
     if(state === 'ok') {
       className = ' device-on';
@@ -47,22 +48,26 @@
     if(value) {
       for(i in value) {
         if(value[i].dayChangeValue.indexOf('+') === 0) {
-          change = 'gain';
-          arrow  = '<span class="fa fa-arrow-up"><span>Gain</span></span>';
+          change    = 'gain';
+          arrow     = 'arrow-up';
+          direction = 'Gain';
         }
 
         else if(value[i].dayChangeValue.indexOf('-') === 0) {
-          change = 'loss';
-          arrow  = '<span class="fa fa-arrow-down"><span>Loss</span></span>';
+          change    = 'loss';
+          arrow     = 'arrow-down';
+          direction = 'Loss';
         }
 
         else {
-          change = 'neutral';
-          arrow  = '<span class="fa fa-arrows-h"><span>Neutral</span></span>';
+          change    = 'neutral';
+          arrow     = 'arrows-h';
+          direction = 'Neutral';
         }
 
         tempMarkup = tempMarkup + template.split('{{STOCK_CHANGE}}').join(change);
         tempMarkup = tempMarkup.split('{{STOCK_ARROW}}').join(arrow);
+        tempMarkup = tempMarkup.split('{{STOCK_DIRECTION}}').join(direction);
         tempMarkup = tempMarkup.split('{{STOCK_NAME}}').join(value[i].name);
         tempMarkup = tempMarkup.split('{{STOCK_PRICE}}').join(value[i].price);
         tempMarkup = tempMarkup.split('{{STOCK_CHANGE_VALUE}}').join(value[i].dayChangeValue);
