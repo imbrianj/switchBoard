@@ -43,6 +43,26 @@
         subDevice,
         subDevices,
         subDeviceGroup,
+        encodeName = function(name) {
+          name = name.split(' ').join('_');
+          name = name.split('>').join('_');
+          name = name.split('<').join('_');
+          name = name.split('"').join('_');
+          name = name.split('\'').join('_');
+          name = name.split('!').join('_');
+          name = name.split('@').join('_');
+          name = name.split('#').join('_');
+          name = name.split('$').join('_');
+          name = name.split('%').join('_');
+          name = name.split('^').join('_');
+          name = name.split('&').join('_');
+          name = name.split('*').join('_');
+          name = name.split('(').join('_');
+          name = name.split(')').join('_');
+          name = 'group-' + name.toLowerCase();
+
+          return name;
+        },
         findSubDevices = function (subDeviceLabel, subDevices) {
           var subDevice = {},
               collected = [],
@@ -128,6 +148,7 @@
               }
             }
 
+            tempMarkup = tempMarkup.split('{{GROUP_CLASS}}').join(encodeName(i));
             tempMarkup = tempMarkup.split('{{GROUP_TITLE}}').join(i);
             tempMarkup = tempMarkup.split('{{SUB_DEVICE_LIST}}').join(subDeviceMarkup);
           }

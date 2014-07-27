@@ -54,7 +54,7 @@ module.exports = (function () {
     },
 
     init : function (controller) {
-      this.send({travisOwner: controller.config.travisOwner, travisRepo: controller.config.travisRepo, device : { deviceId: controller.config.deviceId } });
+      this.send({ device : { deviceId: controller.config.deviceId, travisOwner: controller.config.travisOwner, travisRepo: controller.config.travisRepo } });
     },
 
     onload : function (controller) {
@@ -73,7 +73,7 @@ module.exports = (function () {
 
       travis.deviceId = config.device.deviceId;
       travis.host     = config.host     || 'api.travis-ci.org';
-      travis.path     = config.path     || '/repos/' + config.travisOwner + '/' + config.travisRepo + '/cc.json';
+      travis.path     = config.path     || '/repos/' + config.device.travisOwner + '/' + config.device.travisRepo + '/cc.json';
       travis.port     = config.port     || 443;
       travis.method   = config.method   || 'GET';
       travis.callback = config.callback || function () {};
