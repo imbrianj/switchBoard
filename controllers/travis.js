@@ -91,14 +91,13 @@ module.exports = (function () {
           var deviceState = require('../lib/deviceState'),
               travisData  = {};
 
-          if(dataReply) {
+          if((dataReply) && (dataReply[0] === '{')) {
             dataReply = JSON.parse(dataReply);
 
             travisData = { 'description' : dataReply.description,
                            'url'         : 'http://travis-ci.org/' + dataReply.slug,
                            'status'      : dataReply.last_build_result === 0 ? 'ok' : 'err',
-                           'duration'    : dataReply.last_build_duration
-                         };
+                           'duration'    : dataReply.last_build_duration };
 
             deviceState.updateState(travis.deviceId, 'travis', { state : travisData.status, value : travisData });
           }

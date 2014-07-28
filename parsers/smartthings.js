@@ -59,6 +59,9 @@
           name = name.split('*').join('_');
           name = name.split('(').join('_');
           name = name.split(')').join('_');
+          name = name.split(',').join('_');
+          name = name.split(';').join('_');
+          name = name.split('.').join('_');
           name = 'group-' + name.toLowerCase();
 
           return name;
