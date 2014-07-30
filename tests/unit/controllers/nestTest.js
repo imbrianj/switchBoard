@@ -115,13 +115,13 @@ exports.nestControllerTest = {
     test.done();
   },
 
-  findLocation : function (test) {
+  findLabel : function (test) {
     'use strict';
 
     var nestController = require(__dirname + '/../../../controllers/nest');
 
-    test.equal(nestController.findLocation('00000000-0000-0000-0000-000100000003'), 'Den',      'Translate location');
-    test.equal(nestController.findLocation('00000000-0000-0000-0000-00010000000f'), 'Upstairs', 'Translate location');
+    test.equal(nestController.findLabel('00000000-0000-0000-0000-000100000003'), 'Den',      'Translate location');
+    test.equal(nestController.findLabel('00000000-0000-0000-0000-00010000000f'), 'Upstairs', 'Translate location');
 
     test.done();
   },
@@ -134,7 +134,7 @@ exports.nestControllerTest = {
     State.FOO.value = { thermostat : {
                           '123456' : {
                             state    : 'cool',
-                            location : 'Living Room',
+                            label    : 'Living Room',
                             temp     : 72,
                             target   : 70,
                             humidity : 44
@@ -143,10 +143,10 @@ exports.nestControllerTest = {
 
                       protect : {
                         '456789' : {
-                          smoke    : 'ok',
-                          co       : 'ok',
-                          battery  : 'err',
-                          location : 'Office'
+                          smoke   : 'ok',
+                          co      : 'ok',
+                          battery : 'err',
+                          label   : 'Office'
                         }
                       }};
 
@@ -168,7 +168,7 @@ exports.nestControllerTest = {
     State.FOO.value = { thermostat : {
                           '123456' : {
                             state    : 'heat',
-                            location : 'Living Room',
+                            label    : 'Living Room',
                             temp     : 62,
                             target   : 65,
                             humidity : 44
@@ -177,10 +177,10 @@ exports.nestControllerTest = {
 
                       protect : {
                         '456789' : {
-                          smoke    : 'err',
-                          co       : 'err',
-                          battery  : 'ok',
-                          location : 'Bedroom'
+                          smoke   : 'err',
+                          co      : 'err',
+                          battery : 'ok',
+                          label   : 'Bedroom'
                         }
                       }};
 

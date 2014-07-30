@@ -54,7 +54,7 @@
         }
 
         thermostatMarkup = thermostatMarkup + thermostatTemplate.split('{{SUB_DEVICE_STATE}}').join(stateClass);
-        thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_NAME}}').join(device.location);
+        thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_NAME}}').join(device.label);
         thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_MODE}}').join(device.state);
         thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_TEMP}}').join(Math.round(device.temp) + '&deg;');
         thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_TARGET}}').join(Math.round(device.target) + '&deg;');
@@ -82,7 +82,7 @@
         }
 
         protectMarkup = protectMarkup + protectTemplate.split('{{SUB_DEVICE_STATE}}').join(stateClass);
-        protectMarkup = protectMarkup.split('{{SUB_DEVICE_NAME}}').join(device.location);
+        protectMarkup = protectMarkup.split('{{SUB_DEVICE_NAME}}').join(device.label);
         protectMarkup = protectMarkup.split('{{SUB_DEVICE_SMOKE}}').join(device.smoke);
         protectMarkup = protectMarkup.split('{{SUB_DEVICE_CO}}').join(device.co);
         protectMarkup = protectMarkup.split('{{SUB_DEVICE_BATT}}').join(device.battery);

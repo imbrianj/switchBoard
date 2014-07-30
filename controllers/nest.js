@@ -33,7 +33,7 @@ module.exports = (function () {
   return {
     version : 20140720,
 
-    inputs : ['command', 'text'],
+    inputs : ['subdevice'],
 
     /**
      * Whitelist of available key codes to use.
@@ -78,15 +78,24 @@ module.exports = (function () {
      * Prepare a POST data the request.
      */
     postData : function (nest) {
-      var querystring = require('querystring');
+      var querystring = require('querystring'),
+          value;
 
-      return querystring.stringify({
-               username : nest.username,
-               password : nest.password
-             });
+      if(nest.args) {
+        value = JSON.stringify(nest.args);
+      }
+
+      else {
+        value = querystring.stringify({
+                  username : nest.username,
+                  password : nest.password
+                });
+      }
+
+      return value;
     },
 
-    findLocation : function (id) {
+    findLabel : function (id) {
       var location = '';
 
       id = id.replace('00000000-0000-0000-0000-0001000000', '');
@@ -197,7 +206,7 @@ module.exports = (function () {
       config.host     = auth.url;
       config.path     = '/v2/mobile/user.' + auth.userId;
       config.method   = 'GET';
-      config.auth     = auth;
+      config.device   = { auth : auth, deviceId : controller.config.deviceId };
 
       config.callback = function(err, response) {
         var deviceState = require('../lib/deviceState'),
@@ -205,24 +214,31 @@ module.exports = (function () {
             i;
 
         if(response) {
+          for(i in response.structure) {
+            nest.structure = i;
+            break;
+          }
+
           // "topaz" contains only smoke detectors.
           for(i in response.topaz) {
-            nest.protect[response.topaz[i].serial_number]          = {};
-            nest.protect[response.topaz[i].serial_number].smoke    = response.topaz[i].smoke_status         === 0 ? 'ok' : 'err';
-            nest.protect[response.topaz[i].serial_number].co       = response.topaz[i].co_status            === 0 ? 'ok' : 'err';
-            nest.protect[response.topaz[i].serial_number].battery  = response.topaz[i].battery_health_state === 0 ? 'ok' : 'err';
-            nest.protect[response.topaz[i].serial_number].location = that.findLocation(response.topaz[i].where_id);
+            nest.protect[response.topaz[i].serial_number]         = {};
+            nest.protect[response.topaz[i].serial_number].serial  = response.topaz[i].serial_number;
+            nest.protect[response.topaz[i].serial_number].smoke   = response.topaz[i].smoke_status         === 0 ? 'ok' : 'err';
+            nest.protect[response.topaz[i].serial_number].co      = response.topaz[i].co_status            === 0 ? 'ok' : 'err';
+            nest.protect[response.topaz[i].serial_number].battery = response.topaz[i].battery_health_state === 0 ? 'ok' : 'err';
+            nest.protect[response.topaz[i].serial_number].label   = that.findLabel(response.topaz[i].where_id);
           }
 
           // "device" contains only thermostats.
           for(i in response.device) {
             nest.thermostat[response.device[i].serial_number]          = {};
+            nest.thermostat[response.device[i].serial_number].serial   = response.device[i].serial_number;
             nest.thermostat[response.device[i].serial_number].state    = response.shared[response.device[i].serial_number].target_temperature_type;
             nest.thermostat[response.device[i].serial_number].fanMode  = response.device[i].fan_mode;
             nest.thermostat[response.device[i].serial_number].humidity = response.device[i].current_humidity;
             nest.thermostat[response.device[i].serial_number].temp     = that.cToF(response.shared[response.device[i].serial_number].current_temperature);
             nest.thermostat[response.device[i].serial_number].target   = that.cToF(response.shared[response.device[i].serial_number].target_temperature);
-            nest.thermostat[response.device[i].serial_number].location = that.findLocation(response.device[i].where_id);
+            nest.thermostat[response.device[i].serial_number].label    = that.findLabel(response.device[i].where_id);
           }
 
           deviceState.updateState(controller.config.deviceId, 'nest', { state : 'ok', value : nest });
@@ -234,6 +250,103 @@ module.exports = (function () {
       };
 
       this.send(config);
+    },
+
+    /**
+     * As devices can have the same names - but I assume they all want to be
+     * interacted with in concert, we'll not use a hash table - and return an
+     * object of applicable sub devices to act upon.
+     */
+    findSubDevices : function (subDeviceLabel, subDevices) {
+      var subDevice = {},
+          collected = [],
+          i         = 0,
+          j         = 0;
+
+      for(i in subDevices) {
+        subDevice = subDevices[i];
+
+        if(subDevice.label === subDeviceLabel) {
+          collected[j] = subDevice;
+          j += 1;
+        }
+      }
+
+      return collected;
+    },
+
+    getDevicePath : function (config) {
+      var deviceState = require('../lib/deviceState'),
+          subDevices  = {},
+          commandType = '',
+          subDevice   = {},
+          i           = 1,
+          value       = '',
+          command     = config.command;
+
+      // We can only send commands to thermostats (currently).
+      if((State[config.deviceId].value) && (State[config.deviceId].value.thermostat)) {
+        subDevices = JSON.parse(JSON.stringify(State[config.deviceId].value));
+      }
+
+      if(command.indexOf('mode-') === 0) {
+        commandType = 'mode';
+      }
+
+      else if(command.indexOf('presence-') === 0) {
+        commandType = 'presence';
+      }
+
+      else if(command.indexOf('fan-') === 0) {
+        commandType = 'fan';
+      }
+
+      else if(command.indexOf('temp-') === 0) {
+        commandType = 'temp';
+      }
+
+      if(commandType) {
+        config.host = config.auth.url;
+        command     = command.replace(commandType + '-', '');
+
+        // Only thermostat mode and temperature setting are device specific.
+        // Fan mode and presence are shared among all devices.
+        if((commandType === 'mode') || (commandType === 'temp')) {
+          value     = command.split('-');
+          command   = value[0];
+          value     = value[1];
+
+          subDevice = this.findSubDevices(command, subDevices.thermostat);
+        }
+
+        switch(commandType) {
+          case 'mode' :
+            config.path = '/v2/put/shared.' + subDevice[0].serial;
+            config.args = { target_change_pending : true, target_temperature_type : value };
+          break;
+
+          case 'presence' :
+            config.path = '/v2/put/structure.' + subDevices.structure;
+            config.args = { away : true, away_timestamp : new Date().getTime(), away_setter : 0 };
+
+            if(command !== 'away') {
+              config.args.away = false;
+            }
+          break;
+
+          case 'fan' :
+            config.path = '/v2/put/structure.' + subDevices.structure;
+            config.args = { fan_mode : command };
+          break;
+
+          case 'temp' :
+            config.path = '/v2/put/shared.' + subDevice[0].serial;
+            config.args = { target_change_pending : true, target_temperature : this.fToC(value) };
+          break;
+        }
+      }
+
+      return config;
     },
 
     init : function (controller, config) {
@@ -263,7 +376,7 @@ module.exports = (function () {
                 }
 
                 else {
-                  that.getAuth({ username : controller.config.username, password : controller.config.password }, controller);
+                  that.getAuth({ device : { deviceId : controller.config.deviceId, username : controller.config.username, password : controller.config.password } }, controller);
                 }
               }
 
@@ -275,7 +388,7 @@ module.exports = (function () {
 
           // Otherwise, we need to retrieve the auth token.
           else {
-            that.getAuth({ username : controller.config.username, password : controller.config.password }, controller);
+            that.getAuth({ device : { deviceId : controller.config.deviceId, username : controller.config.username, password : controller.config.password } }, controller);
           }
         });
       }
@@ -298,20 +411,26 @@ module.exports = (function () {
     },
 
     send : function (config) {
-      var https       = require('https'),
-          nest        = {},
-          postRequest = '',
-          dataReply   = '',
+      var https        = require('https'),
+          nest         = {},
+          postRequest  = '',
+          dataReply    = '',
           request;
 
-      nest.host       = config.host     || 'home.nest.com';
-      nest.path       = config.path     || '/user/login';
-      nest.port       = config.port     || 443;
-      nest.method     = config.method   || 'POST';
-      nest.callback   = config.callback || function () {};
-      nest.username   = config.username || '';
-      nest.password   = config.password || '';
-      nest.auth       = config.auth     || {};
+      nest.deviceId = config.device.deviceId || '';
+      nest.command  = config.subdevice       || '';
+      nest.host     = config.host            || 'home.nest.com';
+      nest.path     = config.path            || '/user/login';
+      nest.port     = config.port            || 443;
+      nest.method   = config.method          || 'POST';
+      nest.callback = config.callback        || function () {};
+      nest.username = config.device.username || '';
+      nest.password = config.device.password || '';
+      nest.auth     = config.device.auth     || {};
+
+      if(nest.command) {
+        nest = this.getDevicePath(nest);
+      }
 
       if(nest.method === 'POST') {
         nest.postRequest = this.postData(nest);
