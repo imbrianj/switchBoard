@@ -237,7 +237,7 @@ exports.config = {
     title     : 'Nest',
     username  : 'user@example.com',
     password  : 'password',
-    disabled  : false
+    disabled  : true
   },
 
   switchBoardCI : {
