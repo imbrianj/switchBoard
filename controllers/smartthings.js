@@ -34,7 +34,7 @@ module.exports = (function () {
   return {
     version : 20140717,
 
-    inputs  : ['list', 'subdevice'],
+    inputs  : ['subdevice'],
 
     /**
      * Prepare a POST request for a command.
@@ -148,7 +148,7 @@ module.exports = (function () {
 
     updateState : function (smartthings, response) {
       var subDevices  = {},
-          deviceState = require('../lib/deviceState'),
+          deviceState = require(__dirname + '/../lib/deviceState'),
           state       = 'err',
           mode        = '',
           i           = 0,

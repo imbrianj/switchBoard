@@ -56,6 +56,8 @@ module.exports = (function () {
           deviceState.updateState(deviceId, controllers[deviceId].config.typeClass, params);
         };
 
+        // We want to grab the state from the source of truth (the actual
+        // device), but we need to wait a short time for it to register.
         setTimeout(function() {
             console.log('\x1b[35mFoscam\x1b[0m: Fetching alarm state');
 

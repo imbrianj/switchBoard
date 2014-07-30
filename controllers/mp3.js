@@ -35,7 +35,7 @@ module.exports = (function () {
    *       sudo apt-get install mpg123
    */
   return {
-    version : 20140701,
+    version : 20140729,
 
     inputs  : ['text'],
 
@@ -68,7 +68,18 @@ module.exports = (function () {
     },
 
     init : function (controller) {
-      this.send({ text : 'magic' });
+      var callback = function(err, reply) {
+            var deviceState = require(__dirname + '/../lib/deviceState'),
+                message     = 'err';
+
+            if(reply) {
+              message = 'ok';
+            }
+
+            deviceState.updateState(controller.config.deviceId, controller.config.typeClass, { state : message });
+          };
+
+      this.send({ text : 'magic', callback : callback });
     },
 
     send : function (config) {
@@ -85,16 +96,18 @@ module.exports = (function () {
           var spawn = require('child_process').spawn,
               mpg123;
 
-          if(exists && mp3.execute) {
+          if((exists) && (mp3.execute)) {
             mpg123 = spawn(mp3.execute.command, mp3.execute.params);
 
             mpg123.once('close', function(code) {
-              mp3.callback(null, code);
+              mp3.callback(null, 'ok');
             });
           }
 
           else {
             console.log('\x1b[31mMP3\x1b[0m: Specified file not found');
+
+            mp3.callback('err');
           }
         });
       }

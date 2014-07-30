@@ -68,6 +68,12 @@ module.exports = (function () {
              });
     },
 
+    init : function (controller) {
+      var deviceState = require(__dirname + '/../lib/deviceState');
+
+      deviceState.updateState(controller.config.deviceId, controller.config.typeClass, { state : 'ok' });
+    },
+
     send : function (config) {
       var https       = require('https'),
           pushover    = {},

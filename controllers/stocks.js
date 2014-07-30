@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic stocks information, courtesy of Yahoo.
    */
   return {
-    version : 20140720,
+    version : 20140729,
 
     inputs  : ['list'],
 
@@ -162,14 +162,14 @@ module.exports = (function () {
           var errorMsg = '';
 
           if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
-            errorMsg = '\x1b[31mStocks\x1b[0m: API is unreachable';
+            errorMsg = 'API is unreachable';
           }
 
           else {
-            errorMsg = '\x1b[31mStocks\x1b[0m: ' + err.code;
+            errorMsg = err.code;
           }
 
-          console.log(errorMsg);
+          console.log('\x1b[31mStocks\x1b[0m: ' + errorMsg);
 
           stocks.callback(errorMsg);
         });
