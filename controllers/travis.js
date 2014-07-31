@@ -102,7 +102,13 @@ module.exports = (function () {
             deviceState.updateState(travis.deviceId, 'travis', { state : travisData.status, value : travisData });
           }
 
-          travis.callback(null, travisData);
+          if(travisData.status === 'ok') {
+            travis.callback(null, travisData);
+          }
+
+          else {
+            travis.callback(travisData);
+          }
         });
       });
 
