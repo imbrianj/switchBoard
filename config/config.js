@@ -246,6 +246,6 @@ exports.config = {
     travisOwner    : 'imbrianj',
     travisRepo     : 'switchBoard',
     disabledMarkup : true,
-    disable        : true
+    disabled       : true
   }
 };
