@@ -104,12 +104,6 @@ module.exports = (function () {
       this.send(samsung);
     },
 
-    onload : function (controller) {
-      var parser = require(__dirname + '/../parsers/samsung').samsung;
-
-      return parser(controller.deviceId, controller.markup, State[controller.config.deviceId].state, State[controller.config.deviceId].value);
-    },
-
     send : function (config) {
       var net             = require('net'),
           samsung         = {},

@@ -513,6 +513,14 @@ Switchboard = (function () {
             markup = markup.split('{{DEVICE_TYPE}}').join(state.typeClass);
             markup = markup.split('{{DEVICE_SELECTED}}').join(selected);
 
+            if(state.state === 'ok') {
+              markup = markup.split('{{DEVICE_STATE}}').join(' device-on');
+            }
+
+            else {
+              markup = markup.split('{{DEVICE_STATE}}').join(' device-off');
+            }
+
             if(selected) {
               markup = markup.split('{{LAZY_LOAD_IMAGE}}').join('src');
             }
@@ -697,6 +705,7 @@ Switchboard = (function () {
 
           for(i = 0; i < images.length; i += 1) {
             if((images[i].getAttribute('src')) && (Switchboard.hasClass(images[i], 'streaming'))) {
+              images[i].setAttribute('data-src', images[i].src);
               images[i].removeAttribute('src');
             }
           }
@@ -823,6 +832,7 @@ if(document.addEventListener) {
 
 Switchboard.event.add(window, 'load', function () {
   'use strict';
+
   if(!document.addEventListener) {
     Switchboard.init();
   }
@@ -830,5 +840,6 @@ Switchboard.event.add(window, 'load', function () {
 
 Switchboard.event.add(window, 'unload', function () {
   'use strict';
+
   Switchboard.event.removeAll();
 });

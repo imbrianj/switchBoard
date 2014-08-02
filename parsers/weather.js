@@ -29,7 +29,6 @@
   exports.weather = function (deviceId, markup, state, value, fragments) {
     var template   = fragments.forecast,
         i          = 0,
-        className  = '',
         tempMarkup = '',
         translateCode;
 
@@ -122,16 +121,7 @@
       return icon;
     };
 
-    if(state === 'ok') {
-      className = ' device-on';
-    }
-
-    else if(state === 'err') {
-      className = ' device-off';
-    }
-
     if(value.code) {
-      markup = markup.replace('{{DEVICE_STATE}}', className);
       markup = markup.replace('{{WEATHER_ICON}}', translateCode(value.code));
       markup = markup.replace('{{WEATHER_CURRENT}}', value.city + ' Current Weather: ' + value.temp + '&deg; ' + value.text);
 

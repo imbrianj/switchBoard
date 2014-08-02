@@ -29,18 +29,7 @@
   exports.roku = function (deviceId, markup, state, value, fragments) {
     var template   = fragments.list,
         i          = 0,
-        tempMarkup = '',
-        className  = '';
-
-    if(state === 'ok') {
-      className = ' device-on';
-    }
-
-    else if(state === 'err') {
-      className = ' device-off';
-    }
-
-    markup = markup.replace('{{DEVICE_STATE}}', className);
+        tempMarkup = '';
 
     if(value) {
       for(i in value) {

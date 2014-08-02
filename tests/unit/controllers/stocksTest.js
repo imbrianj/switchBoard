@@ -80,8 +80,7 @@ exports.stocksControllerTest = {
         onloadMarkup     = stocksController.onload({ markup : '<div class="stocks{{DEVICE_STATE}}"><h1>Contents</h1></div>',
                                                      config : { deviceId : 'FOO' } });
 
-    test.ok((onloadMarkup.indexOf('<h1>Contents</h1>') !== -1),        'Passed markup validated');
-    test.ok((onloadMarkup.indexOf('class="stocks device-on"') !== -1), 'Device state validated');
+    test.ok((onloadMarkup.indexOf('<h1>Contents</h1>') !== -1), 'Passed markup validated');
 
     test.done();
   }

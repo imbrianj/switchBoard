@@ -525,7 +525,7 @@ module.exports = (function () {
                       else {
                         console.log('\x1b[31mSmartThings\x1b[0m: No data returned from API');
 
-                        smartthings.callback(null, '', true);
+                        smartthings.callback('err');
                       }
                     });
                   });

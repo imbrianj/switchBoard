@@ -101,23 +101,17 @@ module.exports = (function () {
     },
 
     init : function(controller, config) {
-      var deviceState = require('../lib/deviceState');
+      var deviceState = require(__dirname + '/../lib/deviceState');
 
       deviceState.updateState(controller.config.deviceId, 'ps3', { state : 'err' });
     },
 
-    onload : function (controller) {
-      var parser = require(__dirname + '/../parsers/ps3').ps3;
-
-      return parser(controller.deviceId, controller.markup, State[controller.config.deviceId].state);
-    },
-
     send : function (config) {
-      var fs         = require('fs'),
-          spawn      = require('child_process').spawn,
-          ps3        = {},
-          that       = this,
-          emuclient;
+      var fs          = require('fs'),
+          spawn       = require('child_process').spawn,
+          ps3         = {},
+          that        = this,
+          gimx;
 
       ps3.deviceId    = config.device.deviceId;
       ps3.deviceMac   = config.device.deviceMac;
@@ -143,19 +137,29 @@ module.exports = (function () {
 
       ps3.execute = this.translateCommand(ps3.command, ps3.deviceMac, ps3.serviceIp, ps3.servicePort, ps3.platform, ps3.revert);
 
-      emuclient = spawn(ps3.execute.command, ps3.execute.params);
+      gimx = spawn(ps3.execute.command, ps3.execute.params);
 
       // The Gimx service will run for quite a while, so we need to execute the
       // callback to send a response before the command closes some time later.
       if(ps3.command === 'PowerOn') {
         ps3.callback(null, 'ok');
+
+        gimx.stderr.on('data', function(err) {
+          if(err.toString().indexOf('shutdown') !== -1) {
+            console.log('\x1b[31mPS3\x1b[0m: Controller disconnected');
+          }
+
+          gimx.kill();
+        });
       }
 
-      emuclient.once('close', function(code) {
+      gimx.once('close', function(code) {
         var deviceState;
 
         if(ps3.command === 'PowerOn') {
-          deviceState = require('../lib/deviceState');
+          deviceState = require(__dirname + '/../lib/deviceState');
+
+          console.log('\x1b[31mPS3\x1b[0m: Device is off or unreachable');
 
           deviceState.updateState(ps3.deviceId, 'ps3', { state : 'err' });
         }

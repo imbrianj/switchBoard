@@ -1,5 +1,5 @@
 
-      <div id="{{DEVICE_ID}}" class="device{{DEVICE_SELECTED}}">
+      <div id="{{DEVICE_ID}}" class="device{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
         <div class="control-block">
           <div class="volume">
             <a href="/?{{DEVICE_ID}}=POWER" class="fa fa-power-off"><span>Power</span></a>

@@ -69,21 +69,5 @@ exports.samsungControllerTest = {
     test.equal(chunkTwoText, '\u0001\u000e\u0000TEST-appString\u0014\u0000\u0001\u0000\u0010\u0000VEVTVElORy1URVhU', 'chunkTwo text validation');
 
     test.done();
-  },
-
-  onload : function(test) {
-    'use strict';
-
-    State.FOO       = {};
-    State.FOO.state = 'ok';
-
-    var samsungController = require(__dirname + '/../../../controllers/samsung'),
-        onloadMarkup      = samsungController.onload({ markup : '<div class="samsung{{DEVICE_STATE}}"><h1>Contents</h1></div>',
-                                                       config : { deviceId : 'FOO' } });
-
-    test.ok((onloadMarkup.indexOf('<h1>Contents</h1>') !== -1), 'Passed markup validated');
-    test.ok((onloadMarkup.indexOf('class="samsung device-on"') !== -1),  'Device state validated');
-
-    test.done();
   }
 };

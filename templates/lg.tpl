@@ -1,5 +1,5 @@
 
-      <div id="{{DEVICE_ID}}" class="device {{DEVICE_TYPE}}{{DEVICE_SELECTED}}">
+      <div id="{{DEVICE_ID}}" class="device {{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
         <div class="control-block">
           <div class="volume">
             <a href="/?{{DEVICE_ID}}=VOL_UP" class="fa fa-volume-up"><span>Volume Up</span></a>
