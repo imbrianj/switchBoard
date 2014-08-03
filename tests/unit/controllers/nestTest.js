@@ -151,9 +151,9 @@ exports.nestControllerTest = {
                       }};
 
     var nestController = require(__dirname + '/../../../controllers/nest'),
-        onloadMarkup   = nestController.onload({ markup : '<div class="nest"><ul><li>{{NEST_THERMOSTAT}}</li></ul><li>{{NEST_PROTECT}}</li></ul></div>',
+        onloadMarkup   = nestController.onload({ markup : '<div class="nest"><ul>{{NEST_DYNAMIC}}</ul></div>',
                                                  config : { deviceId : 'FOO' } });
-
+console.log(onloadMarkup);
     test.ok((onloadMarkup.indexOf('class="thermostat device-active cool"')   !== -1), 'Thermostat is cooling');
     test.ok((onloadMarkup.indexOf('<dd class="state">State: cool</dd>')      !== -1), 'Thermostat is cooling');
     test.ok((onloadMarkup.indexOf('<dd class="temp">Temp: 72&deg;</dd>')     !== -1), 'Current thermostat temp');
@@ -184,7 +184,7 @@ exports.nestControllerTest = {
                         }
                       }};
 
-    onloadMarkup = nestController.onload({ markup : '<div class="nest"><ul><li>{{NEST_THERMOSTAT}}</li></ul><li>{{NEST_PROTECT}}</li></ul></div>',
+    onloadMarkup = nestController.onload({ markup : '<div class="nest"><ul>{{NEST_DYNAMIC}}</ul></div>',
                                            config : { deviceId : 'FOO' } });
 
     test.ok((onloadMarkup.indexOf('class="thermostat device-active heat"')       !== -1), 'Thermostat is heating');

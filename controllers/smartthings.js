@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic control of SmartThings endpoint.
    */
   return {
-    version : 20140717,
+    version : 20140803,
 
     inputs  : ['subdevice'],
 
@@ -326,9 +326,9 @@ module.exports = (function () {
         command = command.replace('stateNot present-', '');
       }
 
-      else if(command.indexOf('state') === 0) {
+      else if(command.indexOf('state-') === 0) {
         commandType = 'temp';
-        command = command.replace('state', '');
+        command = command.replace('state-', '');
         value   = command.split('-');
         command = value[1];
         value   = value[0];

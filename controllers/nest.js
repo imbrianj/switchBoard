@@ -31,14 +31,14 @@ module.exports = (function () {
    * @fileoverview Basic control of Nest thermostat and Protect smoke detector.
    */
   return {
-    version : 20140720,
+    version : 20140803,
 
-    inputs : ['subdevice'],
+    inputs : ['command', 'subdevice'],
 
     /**
      * Whitelist of available key codes to use.
      */
-    keymap : ['Heat', 'Cool', 'Off', 'Away', 'Home', 'Fan_On', 'Fan_Off'],
+    keymap : ['Away', 'Home', 'Fan_On', 'Fan_Auto'],
 
     cToF : function (c) {
       return (c * 1.8) + 32;
@@ -284,21 +284,33 @@ module.exports = (function () {
           value       = '',
           command     = config.command;
 
-      // We can only send commands to thermostats (currently).
+      // We can only send commands to thermostats.
       if((State[config.deviceId].value) && (State[config.deviceId].value.thermostat)) {
         subDevices = JSON.parse(JSON.stringify(State[config.deviceId].value));
       }
 
-      if(command.indexOf('mode-') === 0) {
+      if(command.indexOf('Home') === 0) {
+        config.path = '/v2/put/structure.' + subDevices.structure;
+        config.args = { away : false, away_timestamp : new Date().getTime(), away_setter : 0 };
+      }
+
+      if(command.indexOf('Away') === 0) {
+        config.path = '/v2/put/structure.' + subDevices.structure;
+        config.args = { away : true, away_timestamp : new Date().getTime(), away_setter : 0 };
+      }
+
+      else if(command.indexOf('Fan_On') === 0) {
+        config.path = '/v2/put/structure.' + subDevices.structure;
+        config.args = { fan_mode : 'on' };
+      }
+
+      else if(command.indexOf('Fan_Auto') === 0) {
+        config.path = '/v2/put/structure.' + subDevices.structure;
+        config.args = { fan_mode : 'auto' };
+      }
+
+      else if(command.indexOf('mode-') === 0) {
         commandType = 'mode';
-      }
-
-      else if(command.indexOf('presence-') === 0) {
-        commandType = 'presence';
-      }
-
-      else if(command.indexOf('fan-') === 0) {
-        commandType = 'fan';
       }
 
       else if(command.indexOf('temp-') === 0) {
@@ -309,39 +321,25 @@ module.exports = (function () {
         config.host = config.auth.url;
         command     = command.replace(commandType + '-', '');
 
-        // Only thermostat mode and temperature setting are device specific.
-        // Fan mode and presence are shared among all devices.
-        if((commandType === 'mode') || (commandType === 'temp')) {
-          value     = command.split('-');
-          command   = value[0];
-          value     = value[1];
+        value       = command.split('-');
+        command     = value[0];
+        value       = value[1];
 
-          subDevice = this.findSubDevices(command, subDevices.thermostat);
-        }
+        subDevice   = this.findSubDevices(command, subDevices.thermostat);
 
         switch(commandType) {
           case 'mode' :
-            config.path = '/v2/put/shared.' + subDevice[0].serial;
-            config.args = { target_change_pending : true, target_temperature_type : value };
-          break;
-
-          case 'presence' :
-            config.path = '/v2/put/structure.' + subDevices.structure;
-            config.args = { away : true, away_timestamp : new Date().getTime(), away_setter : 0 };
-
-            if(command !== 'away') {
-              config.args.away = false;
+            if((value === 'off') || (value === 'heat') || (value === 'cool')) {
+              config.path = '/v2/put/shared.' + subDevice[0].serial;
+              config.args = { target_change_pending : true, target_temperature_type : value };
             }
           break;
 
-          case 'fan' :
-            config.path = '/v2/put/structure.' + subDevices.structure;
-            config.args = { fan_mode : command };
-          break;
-
           case 'temp' :
-            config.path = '/v2/put/shared.' + subDevice[0].serial;
-            config.args = { target_change_pending : true, target_temperature : this.fToC(value) };
+            if(!isNaN(value)) {
+              config.path = '/v2/put/shared.' + subDevice[0].serial;
+              config.args = { target_change_pending : true, target_temperature : this.fToC(value) };
+            }
           break;
         }
       }
@@ -400,14 +398,16 @@ module.exports = (function () {
       var fs                 = require('fs'),
           parser             = require(__dirname + '/../parsers/nest').nest,
           thermostatFragment = fs.readFileSync(__dirname + '/../templates/fragments/nestThermostat.tpl').toString(),
-          protectFragment    = fs.readFileSync(__dirname + '/../templates/fragments/nestProtect.tpl').toString();
+          protectFragment    = fs.readFileSync(__dirname + '/../templates/fragments/nestProtect.tpl').toString(),
+          groupFragment      = fs.readFileSync(__dirname + '/../templates/fragments/nestGroups.tpl').toString();
 
       return parser(controller.deviceId,
                     controller.markup,
                     State[controller.config.deviceId].state,
                     State[controller.config.deviceId].value,
                     { thermostat : thermostatFragment,
-                      protect    : protectFragment });
+                      protect    : protectFragment,
+                      group      : groupFragment });
     },
 
     send : function (config) {

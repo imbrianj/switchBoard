@@ -27,8 +27,9 @@
   'use strict';
 
   exports.nest = function (deviceId, markup, state, value, fragments) {
-    var thermostatTemplate = fragments.thermostat,
-        protectTemplate    = fragments.protect,
+    var templateThermostat = fragments.thermostat,
+        templateProtect    = fragments.protect,
+        templateGroup      = fragments.group,
         thermostatMarkup   = '',
         protectMarkup      = '',
         stateClass         = '',
@@ -53,7 +54,7 @@
           break;
         }
 
-        thermostatMarkup = thermostatMarkup + thermostatTemplate.split('{{SUB_DEVICE_STATE}}').join(stateClass);
+        thermostatMarkup = thermostatMarkup + templateThermostat.split('{{SUB_DEVICE_STATE}}').join(stateClass);
         thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_NAME}}').join(device.label);
         thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_MODE}}').join(device.state);
         thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_TEMP}}').join(Math.round(device.temp) + '&deg;');
@@ -81,16 +82,27 @@
           stateClass = stateClass + 'device-active';
         }
 
-        protectMarkup = protectMarkup + protectTemplate.split('{{SUB_DEVICE_STATE}}').join(stateClass);
+        protectMarkup = protectMarkup + templateProtect.split('{{SUB_DEVICE_STATE}}').join(stateClass);
         protectMarkup = protectMarkup.split('{{SUB_DEVICE_NAME}}').join(device.label);
         protectMarkup = protectMarkup.split('{{SUB_DEVICE_SMOKE}}').join(device.smoke);
         protectMarkup = protectMarkup.split('{{SUB_DEVICE_CO}}').join(device.co);
         protectMarkup = protectMarkup.split('{{SUB_DEVICE_BATT}}').join(device.battery);
       }
+
+      if(thermostatMarkup) {
+        thermostatMarkup = templateGroup.replace('{{SUB_DEVICE_LIST}}', thermostatMarkup);
+        thermostatMarkup = thermostatMarkup.replace('{{SUB_DEVICE_CLASS}}', '');
+        thermostatMarkup = thermostatMarkup.replace('{{SUB_DEVICE_NAME}}', 'Thermostat');
+      }
+
+      if(protectMarkup) {
+        protectMarkup = templateGroup.replace('{{SUB_DEVICE_LIST}}', protectMarkup);
+        protectMarkup = protectMarkup.replace('{{SUB_DEVICE_CLASS}}', ' text-device-status');
+        protectMarkup = protectMarkup.replace('{{SUB_DEVICE_NAME}}', 'Protect');
+      }
     }
 
-    markup = markup.replace('{{NEST_THERMOSTAT}}', thermostatMarkup);
-    markup = markup.replace('{{NEST_PROTECT}}', protectMarkup);
+    markup = markup.replace('{{NEST_DYNAMIC}}', thermostatMarkup + protectMarkup);
 
     return markup;
   };
