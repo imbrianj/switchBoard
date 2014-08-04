@@ -97,12 +97,11 @@ module.exports = (function () {
             dataReply = JSON.parse(dataReply);
 
             for(i; i < dataReply.length; i += 1) {
-              travisData[i] = { 'label'       : dataReply[i].description,
+              travisData[i] = { 'label'       : dataReply[i].message,
                                 'url'         : 'http://travis-ci.org/' + config.device.travisOwner + '/' + config.device.travisRepo + '/builds/' + dataReply[i].id,
                                 'status'      : dataReply[i].result === 0 ? 'ok' : 'err',
                                 'duration'    : dataReply[i].duration,
-                                'state'       : dataReply[i].state,
-                                'description' : dataReply[i].message
+                                'state'       : dataReply[i].state
                               };
 
               if(i === (dataReply.length - 1)) {

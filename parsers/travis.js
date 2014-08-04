@@ -38,7 +38,7 @@
         icon     = '';
         duration = '';
 
-        if(value[i].state === 'created') {
+        if((value[i].state === 'created') || (value[i].state === 'started')) {
           icon = 'cogs';
         }
 
@@ -58,7 +58,7 @@
         tempMarkup = tempMarkup.split('{{TRAVIS_ICON}}').join(icon);
         tempMarkup = tempMarkup.split('{{TRAVIS_STATE}}').join(value[i].status);
         tempMarkup = tempMarkup.split('{{TRAVIS_DURATION}}').join(duration);
-        tempMarkup = tempMarkup.split('{{TRAVIS_DESCRIPTION}}').join(value[i].description);
+        tempMarkup = tempMarkup.split('{{TRAVIS_DESCRIPTION}}').join(value[i].label);
       }
 
       markup = markup.replace('{{TRAVIS_STATUS}}', tempMarkup);
