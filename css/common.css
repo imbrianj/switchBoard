@@ -378,7 +378,9 @@ form legend {
 .device .control-block .control,
 .device .control-block .buttons,
 .device .control-block .presets,
-.device .control-block .alarm {
+.device .control-block .alarm,
+.device .control-block .mode,
+.device .control-block .presence {
 	float: left;
 	width: 15%;
 }
@@ -506,7 +508,8 @@ form legend {
 	width: 1em;
 }
 
-.device a span {
+.device a span,
+.device .sub-device-list .icon .fa span {
 	display: none;
 }
 
@@ -532,6 +535,7 @@ form legend {
 
 .device .control-block {
 	margin: .5em 0;
+	overflow: hidden;
 }
 
 .device .control-block:only-child,
@@ -546,12 +550,17 @@ form legend {
 
 .device .volume a,
 .device .channel a,
-.device .presets a {
+.device .presets a,
+.device .mode a {
 	margin: .5em auto;
 }
 
 .device .alarm a {
 	margin: .15em auto;
+}
+
+.device .presence a {
+	margin: 1em auto;
 }
 
 .device .navigation a {
@@ -675,7 +684,8 @@ form legend {
 	margin: .1em 0;
 }
 
-.device .sub-device-group h4 {
+.device .sub-device-group h4,
+.device .sub-device-group dt {
 	font-size: 50%;
 	margin-bottom: .5em;
 }
@@ -687,9 +697,14 @@ form legend {
 
 .device .sub-device-list li a span,
 .device .sub-device-list li span span,
-.device .sub-device-list li dl {
+.device .sub-device-list li dl dd {
 	display: block;
 	font-size: 30%;
+}
+
+.device .sub-device-list li dl dd.fa,
+.device .sub-device-list li dl dd.icon {
+	font-size: 100%;
 }
 
 .device-active .fa:before,
@@ -734,6 +749,43 @@ a.device-active:hover:before {
 
 .device.ps3.device-on .power-on,
 .device.ps3.device-off .power-off {
+	display: none;
+}
+
+.device.nest .navigation {
+	margin-top: 1.5em;
+}
+
+.device.nest .text-input {
+	display: inline-block;
+}
+
+.device.nest .control-block .navigation a {
+	float: none;
+	margin: .1em auto;
+}
+
+.device.nest .sub-device-list .sub-device-group,
+.device.nest .sub-device-list .sub-device-group li {
+	max-width: 100%;
+	width: 100%;
+}
+
+.device.nest .sub-device-list .control-device-status li {
+	max-width: 40%;
+	width: 40%;
+}
+
+.device.nest .sub-device-list .text-device-status {
+	max-width: 100%;
+	width: 100%;
+}
+
+.device.nest .text-device-status .text-device-status li {
+	max-width: 22%;
+}
+
+.device.travis li:nth-child(3) ~ li {
 	display: none;
 }
 
@@ -855,6 +907,16 @@ body .selected,
 	.device .installed-list li {
 		max-width: 45%;
 	}
+
+	.device.nest .sub-device-list .sub-device-group {
+		max-width: 90%;
+		width: 90%;
+	}
+
+	.device.nest .sub-device-list .control-device-status li {
+		max-width: 100%;
+		width: 100%;
+	}
 }
 
 @media (max-width: 500px) {
@@ -879,6 +941,16 @@ body .selected,
 	.device .installed .sub-device-group li {
 		max-width: 90%;
 	}
+
+	.device.nest .sub-device-list .sub-device-group,
+	.device.nest .sub-device-list .control-device-status li {
+		max-width: 100%;
+		width: 100%;
+	}
+
+	.device.nest .text-device-status .text-device-status li {
+		max-width: 40%;
+	}
 }
 
 @media (min-width: 650px) {
@@ -896,6 +968,10 @@ body .selected,
 	.device .installed-list li {
 		max-width: 45%;
 	}
+
+	.device.nest .sub-device-list .sub-device-group {
+		max-width: 100%;
+	}
 }
 
 @media (min-width: 1000px) {
@@ -908,10 +984,10 @@ body .selected,
 	.device .installed-list li {
 		max-width: 30%;
 	}
-}
 
-.installed .text-device-status .sub-device-group li {
-	max-width: 100%;
+	.device.nest .text-device-status .text-device-status li {
+		max-width: 22%;
+	}
 }
 
 .header:after,

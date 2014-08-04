@@ -32,7 +32,35 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20140720,
+    version : 20140803,
+
+    fire : function(device, command, controllers) {
+      var runCommand = require(__dirname + '/../lib/runCommand'),
+          controller = controllers[device],
+          callback,
+          deviceId;
+
+      callback = function(deviceId, err, reply, params) {
+        var deviceState = require('../lib/deviceState'),
+            message     = 'err';
+
+        params = params || {};
+
+        if(reply) {
+          message = 'ok';
+        }
+
+        params.state = message;
+
+        deviceState.updateState(deviceId, controller.config.typeClass, params);
+      };
+
+      // We want to grab the state from the source of truth (the actual
+      // API), but we need to wait a short time for it to register.
+      setTimeout(function() {
+          controller.controller.deviceList(controller.config.auth, controller);
+      }, 1000);
+    },
 
     poll : function(deviceId, command, controllers) {
       var runCommand = require(__dirname + '/../lib/runCommand'),

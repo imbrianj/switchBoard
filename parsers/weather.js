@@ -47,7 +47,7 @@
       }
 
       else if(code <= 8) {
-        icon = 'asterik';
+        icon = 'asterisk';
       }
 
       else if(code <= 12) {
@@ -55,7 +55,7 @@
       }
 
       else if(code <= 18) {
-        icon = 'asterik';
+        icon = 'asterisk';
       }
 
       else if(code <= 22) {
@@ -68,7 +68,7 @@
 
       else if(code === 25 ||
               code === 35) {
-        icon = 'asterik';
+        icon = 'asterisk';
       }
 
       else if(code <= 30) {
@@ -95,7 +95,7 @@
       }
 
       else if(code <= 43) {
-        icon = 'asterik';
+        icon = 'asterisk';
       }
 
       else if(code === 44) {
@@ -107,7 +107,7 @@
       }
 
       else if(code === 46) {
-        icon = 'asterik';
+        icon = 'asterisk';
       }
 
       else if(code === 47) {

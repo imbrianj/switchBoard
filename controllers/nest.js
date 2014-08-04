@@ -216,6 +216,7 @@ module.exports = (function () {
         if(response) {
           for(i in response.structure) {
             nest.structure = i;
+            nest.presence  = response.structure[i].away === false ? 'on' : 'off';
             break;
           }
 
@@ -289,22 +290,26 @@ module.exports = (function () {
         subDevices = JSON.parse(JSON.stringify(State[config.deviceId].value));
       }
 
-      if(command.indexOf('Home') === 0) {
+      if(command === 'Home') {
+        config.host = config.auth.url;
         config.path = '/v2/put/structure.' + subDevices.structure;
         config.args = { away : false, away_timestamp : new Date().getTime(), away_setter : 0 };
       }
 
-      if(command.indexOf('Away') === 0) {
+      if(command === 'Away') {
+        config.host = config.auth.url;
         config.path = '/v2/put/structure.' + subDevices.structure;
         config.args = { away : true, away_timestamp : new Date().getTime(), away_setter : 0 };
       }
 
-      else if(command.indexOf('Fan_On') === 0) {
+      else if(command === 'Fan_On') {
+        config.host = config.auth.url;
         config.path = '/v2/put/structure.' + subDevices.structure;
         config.args = { fan_mode : 'on' };
       }
 
-      else if(command.indexOf('Fan_Auto') === 0) {
+      else if(command === 'Fan_Auto') {
+        config.host = config.auth.url;
         config.path = '/v2/put/structure.' + subDevices.structure;
         config.args = { fan_mode : 'auto' };
       }
@@ -319,12 +324,12 @@ module.exports = (function () {
 
       if(commandType) {
         config.host = config.auth.url;
+
         command     = command.replace(commandType + '-', '');
 
         value       = command.split('-');
-        command     = value[0];
-        value       = value[1];
-
+        command     = value[1];
+        value       = value[0];
         subDevice   = this.findSubDevices(command, subDevices.thermostat);
 
         switch(commandType) {
@@ -418,7 +423,7 @@ module.exports = (function () {
           request;
 
       nest.deviceId = config.device.deviceId || '';
-      nest.command  = config.subdevice       || '';
+      nest.command  = config.subdevice       || config.command || '';
       nest.host     = config.host            || 'home.nest.com';
       nest.path     = config.path            || '/user/login';
       nest.port     = config.port            || 443;

@@ -34,32 +34,68 @@
         protectMarkup      = '',
         stateClass         = '',
         device             = {},
-        i;
+        i,
+        encodeName = function(name) {
+          name = name.split(' ').join('_');
+          name = name.split('>').join('_');
+          name = name.split('<').join('_');
+          name = name.split('"').join('_');
+          name = name.split('\'').join('_');
+          name = name.split('!').join('_');
+          name = name.split('@').join('_');
+          name = name.split('#').join('_');
+          name = name.split('$').join('_');
+          name = name.split('%').join('_');
+          name = name.split('^').join('_');
+          name = name.split('&').join('_');
+          name = name.split('*').join('_');
+          name = name.split('(').join('_');
+          name = name.split(')').join('_');
+          name = name.split(',').join('_');
+          name = name.split(';').join('_');
+          name = name.split('.').join('_');
+          name = 'group-' + name.toLowerCase();
+
+          return name;
+        };
 
     if(value) {
       for(i in value.thermostat) {
         device = value.thermostat[i];
 
+        thermostatMarkup = thermostatMarkup + templateThermostat.split('{{SUB_DEVICE_ID}}').join(encodeName(device.label));
+        thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_NAME}}').join(device.label);
+        thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_TEMP}}').join(Math.round(device.temp));
+        thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_TARGET}}').join(Math.round(device.target));
+        thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_HUMIDITY}}').join(Math.round(device.humidity));
+
         switch(device.state) {
           case 'cool' :
-            stateClass = 'device-active cool';
+            thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_COOL}}').join(' device-active');
           break;
 
           case 'heat' :
-            stateClass = 'device-active heat';
+            thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_HEAT}}').join(' device-active');
           break;
 
           default :
-            stateClass = '';
+            thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_OFF}}').join(' device-active');
           break;
         }
 
-        thermostatMarkup = thermostatMarkup + templateThermostat.split('{{SUB_DEVICE_STATE}}').join(stateClass);
-        thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_NAME}}').join(device.label);
-        thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_MODE}}').join(device.state);
-        thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_TEMP}}').join(Math.round(device.temp) + '&deg;');
-        thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_TARGET}}').join(Math.round(device.target) + '&deg;');
-        thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_HUMIDITY}}').join(Math.round(device.humidity) + '%');
+        if((value.presence) && (value.presence === 'on')) {
+          thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_HOME}}').join(' device-active');
+        }
+
+        else {
+          thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_AWAY}}').join(' device-active');
+        }
+
+        thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_COOL}}').join('');
+        thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_HEAT}}').join('');
+        thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_OFF}}').join('');
+        thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_HOME}}').join('');
+        thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_AWAY}}').join('');
       }
 
       for(i in value.protect) {
@@ -91,7 +127,7 @@
 
       if(thermostatMarkup) {
         thermostatMarkup = templateGroup.replace('{{SUB_DEVICE_LIST}}', thermostatMarkup);
-        thermostatMarkup = thermostatMarkup.replace('{{SUB_DEVICE_CLASS}}', '');
+        thermostatMarkup = thermostatMarkup.replace('{{SUB_DEVICE_CLASS}}', ' control-device-status');
         thermostatMarkup = thermostatMarkup.replace('{{SUB_DEVICE_NAME}}', 'Thermostat');
       }
 

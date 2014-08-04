@@ -29,22 +29,37 @@
   exports.travis = function (deviceId, markup, state, value, fragments) {
     var template   = fragments.build,
         tempMarkup = '',
-        icon       = '';
+        icon       = '',
+        duration   = '',
+        i          = 0;
 
     if(state) {
-      if(state === 'ok') {
-        icon = 'check';
-      }
+      for(i; i < value.length; i += 1) {
+        icon     = '';
+        duration = '';
 
-      else if(state === 'err') {
-        icon = 'times';
-      }
+        if(value[i].state === 'created') {
+          icon = 'cogs';
+        }
 
-      tempMarkup = tempMarkup + template.split('{{TRAVIS_URL}}').join(value.url);
-      tempMarkup = tempMarkup.split('{{TRAVIS_ICON}}').join(icon);
-      tempMarkup = tempMarkup.split('{{TRAVIS_STATE}}').join(state);
-      tempMarkup = tempMarkup.split('{{TRAVIS_DURATION}}').join(value.duration + 's');
-      tempMarkup = tempMarkup.split('{{TRAVIS_DESCRIPTION}}').join(value.description);
+        else if(value[i].status === 'ok') {
+          icon = 'check';
+        }
+
+        else if(value[i].status === 'err') {
+          icon = 'times';
+        }
+
+        if(value[i].duration) {
+          duration = ' (' + value[i].duration + 's)';
+        }
+
+        tempMarkup = tempMarkup + template.split('{{TRAVIS_URL}}').join(value[i].url);
+        tempMarkup = tempMarkup.split('{{TRAVIS_ICON}}').join(icon);
+        tempMarkup = tempMarkup.split('{{TRAVIS_STATE}}').join(value[i].status);
+        tempMarkup = tempMarkup.split('{{TRAVIS_DURATION}}').join(duration);
+        tempMarkup = tempMarkup.split('{{TRAVIS_DESCRIPTION}}').join(value[i].description);
+      }
 
       markup = markup.replace('{{TRAVIS_STATUS}}', tempMarkup);
 

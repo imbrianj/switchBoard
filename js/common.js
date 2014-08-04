@@ -817,6 +817,57 @@ Switchboard = (function () {
         }
       });
 
+      /* Event delegate form auto-submission onblur */
+      Switchboard.event.add(body, 'blur', function(e) {
+        var elm = Switchboard.getTarget(e),
+            currentElm,
+            findForm;
+
+        if(Switchboard.hasClass(elm, 'auto-submit')) {
+          findForm = function(currentElm) {
+            var params = '',
+                ajaxRequest;
+
+            currentElm = currentElm.parentNode;
+
+            if(currentElm.tagName.toLowerCase() === 'form') {
+              if(elm.getAttribute('data-prefix')) {
+                params = elm.name + '=' + elm.getAttribute('data-prefix') + elm.value + '-' + elm.getAttribute('data-subdevice') ;
+              }
+
+              else {
+                params = elm.name + '=text-' + elm.value;
+              }
+
+              if(socket) {
+                if(checkConnection()) {
+                  socket.send('/?' + params);
+                }
+              }
+
+              else {
+                ajaxRequest = {
+                  path       : '/',
+                  param      : params,
+                  method     : 'POST',
+                  onComplete : function () {
+                    Switchboard.log(ajaxRequest.response);
+                  }
+                };
+
+                Switchboard.ajax.request(ajaxRequest);
+              }
+            }
+
+            else if(currentElm.tagName.toLowerCase() !== 'body') {
+              findForm(currentElm);
+            }
+          };
+
+          findForm(elm);
+        }
+      }, true);
+
       Switchboard.addClass(document.body, 'rich');
 
       if (typeof(init) === 'function') {

@@ -73,7 +73,7 @@ module.exports = (function () {
 
       travis.deviceId = config.device.deviceId;
       travis.host     = config.host     || 'api.travis-ci.org';
-      travis.path     = config.path     || '/repos/' + config.device.travisOwner + '/' + config.device.travisRepo + '/cc.json';
+      travis.path     = config.path     || '/repositories/' + config.device.travisOwner + '/' + config.device.travisRepo + '/builds.json';
       travis.port     = config.port     || 443;
       travis.method   = config.method   || 'GET';
       travis.callback = config.callback || function () {};
@@ -89,17 +89,28 @@ module.exports = (function () {
 
         response.once('end', function() {
           var deviceState = require('../lib/deviceState'),
-              travisData  = {};
+              travisData  = [],
+              i           = 0;
 
-          if((dataReply) && (dataReply[0] === '{')) {
+          // Stupid check to see if it's JSON and not HTML.
+          if((dataReply) && (dataReply[0] === '[')) {
             dataReply = JSON.parse(dataReply);
 
-            travisData = { 'description' : dataReply.description,
-                           'url'         : 'http://travis-ci.org/' + dataReply.slug,
-                           'status'      : dataReply.last_build_result === 0 ? 'ok' : 'err',
-                           'duration'    : dataReply.last_build_duration };
+            for(i; i < dataReply.length; i += 1) {
+              travisData[i] = { 'label'       : dataReply[i].description,
+                                'url'         : 'http://travis-ci.org/' + config.device.travisOwner + '/' + config.device.travisRepo + '/builds/' + dataReply[i].id,
+                                'status'      : dataReply[i].result === 0 ? 'ok' : 'err',
+                                'duration'    : dataReply[i].duration,
+                                'state'       : dataReply[i].state,
+                                'description' : dataReply[i].message
+                              };
 
-            deviceState.updateState(travis.deviceId, 'travis', { state : travisData.status, value : travisData });
+              if(i === (dataReply.length - 1)) {
+                travisData.status = travisData[0].status;
+
+                deviceState.updateState(travis.deviceId, 'travis', { state : travisData.status, value : travisData });
+              }
+            }
           }
 
           if(travisData.status === 'ok') {
