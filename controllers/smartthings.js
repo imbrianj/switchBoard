@@ -251,16 +251,17 @@ module.exports = (function () {
     },
 
     getDevicePath : function(command, config) {
-      var deviceState = require('../lib/deviceState'),
-          subDevices  = {},
-          commandType = '',
-          subDevice   = {},
-          path        = '',
-          i           = 1,
-          value       = '';
+      var deviceState      = require(__dirname + '/../lib/deviceState'),
+          smartThingsState = deviceState.getDeviceState(config.device.deviceId),
+          subDevices       = {},
+          commandType      = '',
+          subDevice        = {},
+          path             = '',
+          i                = 1,
+          value            = '';
 
-      if((State[config.device.deviceId].value) && (State[config.device.deviceId].value.devices)) {
-        subDevices = JSON.parse(JSON.stringify(State[config.device.deviceId].value.devices));
+      if((smartThingsState.value) && (smartThingsState.value.devices)) {
+        subDevices = JSON.parse(JSON.stringify(smartThingsState.value.devices));
       }
 
       if(command.indexOf('mode-') === 0) {
@@ -349,7 +350,7 @@ module.exports = (function () {
                 subDevices[i].state = value;
               }
 
-              deviceState.updateState(config.device.deviceId, 'smartthings', { state : 'ok', value : { devices : subDevices, mode : State[config.device.deviceId].value.mode, groups : config.device.groups } });
+              deviceState.updateState(config.device.deviceId, 'smartthings', { state : 'ok', value : { devices : subDevices, mode : smartThingsState.value.mode, groups : config.device.groups } });
             }
           }
         }
@@ -368,7 +369,7 @@ module.exports = (function () {
               subDevices[i].state = 'off';
             }
 
-            deviceState.updateState(config.device.deviceId, 'smartthings', { state : 'ok', value : { devices : subDevices, mode : State[config.device.deviceId].value.mode, groups : config.device.groups } });
+            deviceState.updateState(config.device.deviceId, 'smartthings', { state : 'ok', value : { devices : subDevices, mode : smartThingsState.value.mode, groups : config.device.groups } });
           }
         }
       }
@@ -451,6 +452,8 @@ module.exports = (function () {
     onload : function (controller) {
       var fs               = require('fs'),
           parser           = require(__dirname + '/../parsers/smartthings').smartthings,
+          deviceState      = require(__dirname + '/../lib/deviceState'),
+          smartThingsState = deviceState.getDeviceState(controller.config.deviceId),
           switchFragment   = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListSwitch.tpl').toString(),
           lockFragment     = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListLock.tpl').toString(),
           contactFragment  = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListContact.tpl').toString(),
@@ -461,8 +464,8 @@ module.exports = (function () {
 
       return parser(controller.deviceId,
                     controller.markup,
-                    State[controller.config.deviceId].state,
-                    State[controller.config.deviceId].value,
+                    smartThingsState.state,
+                    smartThingsState.value,
                     { switch   : switchFragment,
                       lock     : lockFragment,
                       contact  : contactFragment,

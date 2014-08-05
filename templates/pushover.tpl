@@ -1,7 +1,7 @@
 
       <div id="{{DEVICE_ID}}" class="device {{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
         <div class="text">
-          <form class="text-form" id="pushover-input-form" action="/" method="post">
+          <form class="text-form" id="pushover-input-form" action="/" method="get">
             <fieldset>
               <legend>Text Input</legend>
               <label for="pushover-text-input">Text Input:</label>

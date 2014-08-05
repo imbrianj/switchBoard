@@ -109,6 +109,8 @@ module.exports = (function () {
     send : function (config) {
       var fs          = require('fs'),
           spawn       = require('child_process').spawn,
+          deviceState = require(__dirname + '/../lib/deviceState'),
+          ps3State    = deviceState.getDeviceState(config.device.deviceId),
           ps3         = {},
           that        = this,
           gimx;
@@ -122,7 +124,7 @@ module.exports = (function () {
       ps3.platform    = config.platform           || process.platform;
       ps3.revert      = config.revert             || false;
 
-      if(State[ps3.deviceId].state === 'ok') {
+      if(ps3State.state === 'ok') {
         // If the PS3 is already on, we shouldn't execute PowerOn again.
         if(ps3.command === 'PowerOn') {
           console.log('\x1b[35mPS3\x1b[0m: Device looks on already.  Changing command to PS');
@@ -132,7 +134,7 @@ module.exports = (function () {
       }
 
       else {
-        console.log('\x1b[35mPS3\x1b[0m: Device doesn\'t look on');
+        console.log('\x1b[35mPS3\x1b[0m: Device is off or unreachable');
       }
 
       ps3.execute = this.translateCommand(ps3.command, ps3.deviceMac, ps3.serviceIp, ps3.servicePort, ps3.platform, ps3.revert);
@@ -171,12 +173,14 @@ module.exports = (function () {
         }
 
         else {
-          if(code === 0) {
-            ps3.callback(null, 'ok');
-          }
+          if(ps3State.state === 'ok') {
+            if(code === 0) {
+              ps3.callback(null, 'ok');
+            }
 
-          else {
-            ps3.callback('err');
+            else {
+              ps3.callback('err');
+            }
           }
         }
       });

@@ -535,7 +535,6 @@ form legend {
 
 .device .control-block {
 	margin: .5em 0;
-	overflow: hidden;
 }
 
 .device .control-block:only-child,
@@ -753,7 +752,7 @@ a.device-active:hover:before {
 }
 
 .device.nest .navigation {
-	margin-top: 1.5em;
+	margin-top: 1em;
 }
 
 .device.nest .text-input {
@@ -920,7 +919,8 @@ body .selected,
 }
 
 @media (max-width: 500px) {
-	.header h1 {
+	.header h1,
+	.sub-device-list h4 {
 		display: none;
 	}
 
@@ -991,7 +991,8 @@ body .selected,
 }
 
 .header:after,
-.header ul:after {
+.header ul:after,
+.device .control-block:after {
 	clear: both;
 	content: '.';
 	display: block;

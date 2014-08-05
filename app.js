@@ -38,9 +38,9 @@ var version         = 20140626,
     path            = require('path'),
     nopt            = require('nopt'),
     webSocketServer = require('websocket').server,
-    staticAssets    = require('./lib/staticAssets'),
-    loadController  = require('./lib/loadController'),
-    requestInit     = require('./lib/requestInit'),
+    staticAssets    = require(__dirname + '/lib/staticAssets'),
+    loadController  = require(__dirname + '/lib/loadController'),
+    requestInit     = require(__dirname + '/lib/requestInit'),
     knownOpts       = { 'config' : path },
     shortHands      = { 'c' : ['--config'] },
     parsed          = nopt(knownOpts, shortHands, process.argv, 2),
@@ -54,7 +54,7 @@ if(parsed.config) {
 }
 
 else {
-  settings = require('./config/config');
+  settings = require(__dirname + '/config/config');
 }
 
 controllers = loadController.loadController(settings.config);
@@ -106,7 +106,7 @@ if(controllers) {
   wsServer.on('request', function(request) {
     'use strict';
 
-    var loadMarkup = require('./lib/loadMarkup'),
+    var loadMarkup = require(__dirname + '/lib/loadMarkup'),
         connection = request.accept('echo-protocol', request.origin);
 
     console.log('\x1b[36m' + connection.remoteAddress + ' WebSocket connected\x1b[0m');

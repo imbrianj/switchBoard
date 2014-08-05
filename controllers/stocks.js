@@ -38,6 +38,7 @@ module.exports = (function () {
 
     stocksOpen : function (deviceId, explicit) {
       var deviceState = require(__dirname + '/../lib/deviceState'),
+          stocksState = deviceState.getDeviceState(deviceId),
           date        = new Date(),
           utcTime     = date.getTime() + (date.getTimezoneOffset() * 60000),
           // Try to determine if we're in DST by comparing one month that is
@@ -58,18 +59,18 @@ module.exports = (function () {
         // Trading is only open from 9am - 4pm.
         if((nycTime.getHours() >= 9) && (nycTime.getHours() < 16)) {
           open = true;
-          deviceState.updateState(deviceId, 'stocks', { state : 'ok', value : State[deviceId].state.value });
+          deviceState.updateState(deviceId, 'stocks', { state : 'ok', value : stocksState.value });
         }
 
         else {
-          deviceState.updateState(deviceId, 'stocks', { state : 'err', value : State[deviceId].state.value });
+          deviceState.updateState(deviceId, 'stocks', { state : 'err', value : stocksState.value });
 
           console.log('\x1b[35mSchedule\x1b[0m: Stock trading is closed - after hours');
         }
       }
 
       else {
-        deviceState.updateState(deviceId, 'stocks', { state : 'err', value : State[deviceId].state.value });
+        deviceState.updateState(deviceId, 'stocks', { state : 'err', value : stocksState.value });
 
         console.log('\x1b[35mSchedule\x1b[0m: Stock trading is closed - weekend');
       }
@@ -89,11 +90,13 @@ module.exports = (function () {
     },
 
     onload : function (controller) {
-      var fs       = require('fs'),
-          parser   = require(__dirname + '/../parsers/stocks').stocks,
-          fragment = fs.readFileSync(__dirname + '/../templates/fragments/stocks.tpl').toString();
+      var fs          = require('fs'),
+          deviceState = require(__dirname + '/../lib/deviceState'),
+          stocksState = deviceState.getDeviceState(controller.config.deviceId),
+          parser      = require(__dirname + '/../parsers/stocks').stocks,
+          fragment    = fs.readFileSync(__dirname + '/../templates/fragments/stocks.tpl').toString();
 
-      return parser(controller.deviceId, controller.markup, State[controller.config.deviceId].state, State[controller.config.deviceId].value, { list : fragment });
+      return parser(controller.deviceId, controller.markup, stocksState.state, stocksState.value, { list : fragment });
     },
 
     send : function (config) {

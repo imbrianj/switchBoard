@@ -32,7 +32,7 @@
             <fieldset>
               <legend>Text Input</legend>
               <label for="roku-text-input">Text Input:</label>
-              <input id="roku-text-input" class="text-input" type="text" name="{{DEVICE_ID}}" placeholder="Text Input" required>
+              <input id="roku-text-input" class="text-input" type="text" name="{{DEVICE_ID}}" placeholder="Text Input" required />
               <button type="submit" class="button">Submit</button>
             </fieldset>
           </form>

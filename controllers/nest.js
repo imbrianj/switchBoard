@@ -31,9 +31,9 @@ module.exports = (function () {
    * @fileoverview Basic control of Nest thermostat and Protect smoke detector.
    */
   return {
-    version : 20140803,
+    version : 20140804,
 
-    inputs : ['command', 'subdevice'],
+    inputs : ['command', 'text', 'subdevice'],
 
     /**
      * Whitelist of available key codes to use.
@@ -209,7 +209,7 @@ module.exports = (function () {
       config.device   = { auth : auth, deviceId : controller.config.deviceId };
 
       config.callback = function(err, response) {
-        var deviceState = require('../lib/deviceState'),
+        var deviceState = require(__dirname + '/../lib/deviceState'),
             nest        = { thermostat : {}, protect : {} },
             i;
 
@@ -277,7 +277,8 @@ module.exports = (function () {
     },
 
     getDevicePath : function (config) {
-      var deviceState = require('../lib/deviceState'),
+      var deviceState = require(__dirname + '/../lib/deviceState'),
+          nestState   = deviceState.getDeviceState(config.deviceId),
           subDevices  = {},
           commandType = '',
           subDevice   = {},
@@ -286,8 +287,8 @@ module.exports = (function () {
           command     = config.command;
 
       // We can only send commands to thermostats.
-      if((State[config.deviceId].value) && (State[config.deviceId].value.thermostat)) {
-        subDevices = JSON.parse(JSON.stringify(State[config.deviceId].value));
+      if((nestState.value) && (nestState.value.thermostat)) {
+        subDevices = JSON.parse(JSON.stringify(nestState.value));
       }
 
       if(command === 'Home') {
@@ -342,8 +343,10 @@ module.exports = (function () {
 
           case 'temp' :
             if(!isNaN(value)) {
-              config.path = '/v2/put/shared.' + subDevice[0].serial;
-              config.args = { target_change_pending : true, target_temperature : this.fToC(value) };
+              if((value >= 50) && (value <= 100)) {
+                config.path = '/v2/put/shared.' + subDevice[0].serial;
+                config.args = { target_change_pending : true, target_temperature : this.fToC(value) };
+              }
             }
           break;
         }
@@ -401,6 +404,8 @@ module.exports = (function () {
 
     onload : function (controller) {
       var fs                 = require('fs'),
+          deviceState        = require(__dirname + '/../lib/deviceState'),
+          nestState          = deviceState.getDeviceState(controller.config.deviceId),
           parser             = require(__dirname + '/../parsers/nest').nest,
           thermostatFragment = fs.readFileSync(__dirname + '/../templates/fragments/nestThermostat.tpl').toString(),
           protectFragment    = fs.readFileSync(__dirname + '/../templates/fragments/nestProtect.tpl').toString(),
@@ -408,8 +413,8 @@ module.exports = (function () {
 
       return parser(controller.deviceId,
                     controller.markup,
-                    State[controller.config.deviceId].state,
-                    State[controller.config.deviceId].value,
+                    nestState.state,
+                    nestState.value,
                     { thermostat : thermostatFragment,
                       protect    : protectFragment,
                       group      : groupFragment });
@@ -449,7 +454,7 @@ module.exports = (function () {
         });
 
         response.once('end', function() {
-          var deviceState = require('../lib/deviceState'),
+          var deviceState = require(__dirname + '/../lib/deviceState'),
               nestData    = {};
 
           if(dataReply) {

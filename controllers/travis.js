@@ -58,11 +58,13 @@ module.exports = (function () {
     },
 
     onload : function (controller) {
-      var fs       = require('fs'),
-          parser   = require(__dirname + '/../parsers/travis').travis,
-          fragment = fs.readFileSync(__dirname + '/../templates/fragments/travis.tpl').toString();
+      var fs          = require('fs'),
+          deviceState = require(__dirname + '/../lib/deviceState'),
+          travisState = deviceState.getDeviceState(controller.config.deviceId),
+          parser      = require(__dirname + '/../parsers/travis').travis,
+          fragment    = fs.readFileSync(__dirname + '/../templates/fragments/travis.tpl').toString();
 
-      return parser(controller.deviceId, controller.markup, State[controller.config.deviceId].state, State[controller.config.deviceId].value, { build : fragment });
+      return parser(controller.deviceId, controller.markup, travisState.state, travisState.value, { build : fragment });
     },
 
     send : function(config) {

@@ -154,15 +154,15 @@ exports.nestControllerTest = {
         onloadMarkup   = nestController.onload({ markup : '<div class="nest"><ul>{{NEST_DYNAMIC}}</ul></div>',
                                                  config : { deviceId : 'FOO' } });
 
-    test.ok((onloadMarkup.indexOf('class="fa fa-asterisk device-active"><span>Cool</span>')                     !== -1), 'Thermostat is cooling');
-    test.ok((onloadMarkup.indexOf('<dd class="temp">Temp: 72&deg;</dd>')                                        !== -1), 'Current thermostat temp');
-    test.ok((onloadMarkup.indexOf('type="number" max="100" min="50" class="text-input auto-submit" value="70"') !== -1), 'Current target temp');
-    test.ok((onloadMarkup.indexOf('<dd class="humidity">Humidity: 44%</dd>')                                    !== -1), 'Current humidity');
-    test.ok((onloadMarkup.indexOf('<li class="protect batt device-active">')                                    !== -1), 'Smoke detector has a low battery');
-    test.ok((onloadMarkup.indexOf('<dt>Office</dt>')                                                            !== -1), 'Smoke detector is in the Office');
-    test.ok((onloadMarkup.indexOf('<dd class="smoke">Smoke: ok</dd>')                                           !== -1), 'No smoke found');
-    test.ok((onloadMarkup.indexOf('<dd class="co">CO: ok</dd>')                                                 !== -1), 'No CO found');
-    test.ok((onloadMarkup.indexOf('<dd class="batt">Batt: err</dd>')                                            !== -1), 'Smoke detector has a low battery');
+    test.ok((onloadMarkup.indexOf('class="fa fa-asterisk device-active"><span>Cool</span>')                              !== -1), 'Thermostat is cooling');
+    test.ok((onloadMarkup.indexOf('<dd class="temp">Temp: 72&deg;</dd>')                                                 !== -1), 'Current thermostat temp');
+    test.ok((onloadMarkup.indexOf('class="text-input" type="number" max="100" min="50" name="{{DEVICE_ID}}" value="70"') !== -1), 'Current target temp');
+    test.ok((onloadMarkup.indexOf('<dd class="humidity">Humidity: 44%</dd>')                                             !== -1), 'Current humidity');
+    test.ok((onloadMarkup.indexOf('<li class="protect batt device-active">')                                             !== -1), 'Smoke detector has a low battery');
+    test.ok((onloadMarkup.indexOf('<dt>Office</dt>')                                                                     !== -1), 'Smoke detector is in the Office');
+    test.ok((onloadMarkup.indexOf('<dd class="smoke">Smoke: ok</dd>')                                                    !== -1), 'No smoke found');
+    test.ok((onloadMarkup.indexOf('<dd class="co">CO: ok</dd>')                                                          !== -1), 'No CO found');
+    test.ok((onloadMarkup.indexOf('<dd class="batt">Batt: err</dd>')                                                     !== -1), 'Smoke detector has a low battery');
 
     State.FOO.value = { thermostat : {
                           '123456' : {
@@ -186,15 +186,15 @@ exports.nestControllerTest = {
     onloadMarkup = nestController.onload({ markup : '<div class="nest"><ul>{{NEST_DYNAMIC}}</ul></div>',
                                            config : { deviceId : 'FOO' } });
 
-    test.ok((onloadMarkup.indexOf('class="fa fa-sun-o device-active"><span>Heat</span>')                        !== -1), 'Thermostat is heating');
-    test.ok((onloadMarkup.indexOf('<dd class="temp">Temp: 62&deg;</dd>')                                        !== -1), 'Current thermostat temp');
-    test.ok((onloadMarkup.indexOf('type="number" max="100" min="50" class="text-input auto-submit" value="65"') !== -1), 'Current target temp');
-    test.ok((onloadMarkup.indexOf('<dd class="humidity">Humidity: 44%</dd>')                                    !== -1), 'Current humidity');
-    test.ok((onloadMarkup.indexOf('<li class="protect smoke co device-active">')                                !== -1), 'Smoke detector detects both Smoke and CO');
-    test.ok((onloadMarkup.indexOf('<dt>Bedroom</dt>')                                                           !== -1), 'Smoke detector is in the Bedroom');
-    test.ok((onloadMarkup.indexOf('<dd class="smoke">Smoke: err</dd>')                                          !== -1), 'Smoke detected');
-    test.ok((onloadMarkup.indexOf('<dd class="co">CO: err</dd>')                                                !== -1), 'CO detected');
-    test.ok((onloadMarkup.indexOf('<dd class="batt">Batt: ok</dd>')                                             !== -1), 'Smoke detector battery is ok');
+    test.ok((onloadMarkup.indexOf('class="fa fa-sun-o device-active"><span>Heat</span>')                                 !== -1), 'Thermostat is heating');
+    test.ok((onloadMarkup.indexOf('<dd class="temp">Temp: 62&deg;</dd>')                                                 !== -1), 'Current thermostat temp');
+    test.ok((onloadMarkup.indexOf('class="text-input" type="number" max="100" min="50" name="{{DEVICE_ID}}" value="65"') !== -1), 'Current target temp');
+    test.ok((onloadMarkup.indexOf('<dd class="humidity">Humidity: 44%</dd>')                                             !== -1), 'Current humidity');
+    test.ok((onloadMarkup.indexOf('<li class="protect smoke co device-active">')                                         !== -1), 'Smoke detector detects both Smoke and CO');
+    test.ok((onloadMarkup.indexOf('<dt>Bedroom</dt>')                                                                    !== -1), 'Smoke detector is in the Bedroom');
+    test.ok((onloadMarkup.indexOf('<dd class="smoke">Smoke: err</dd>')                                                   !== -1), 'Smoke detected');
+    test.ok((onloadMarkup.indexOf('<dd class="co">CO: err</dd>')                                                         !== -1), 'CO detected');
+    test.ok((onloadMarkup.indexOf('<dd class="batt">Batt: ok</dd>')                                                      !== -1), 'Smoke detector battery is ok');
 
     test.done();
   }

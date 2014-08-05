@@ -40,7 +40,7 @@ module.exports = (function () {
           callback;
 
       callback = function(deviceId, err, reply, params) {
-        var deviceState = require('../lib/deviceState'),
+        var deviceState = require(__dirname + '/../lib/deviceState'),
             message     = 'err';
 
         params = params || {};

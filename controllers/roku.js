@@ -204,11 +204,13 @@ module.exports = (function () {
     },
 
     onload : function (controller) {
-      var fs       = require('fs'),
-          parser   = require(__dirname + '/../parsers/roku').roku,
-          fragment = fs.readFileSync(__dirname + '/../templates/fragments/roku.tpl').toString();
+      var fs          = require('fs'),
+          deviceState = require(__dirname + '/../lib/deviceState'),
+          rokuState   = deviceState.getDeviceState(controller.config.deviceId),
+          parser      = require(__dirname + '/../parsers/roku').roku,
+          fragment    = fs.readFileSync(__dirname + '/../templates/fragments/roku.tpl').toString();
 
-      return parser(controller.deviceId, controller.markup, State[controller.config.deviceId].state, State[controller.config.deviceId].value, { list : fragment });
+      return parser(controller.deviceId, controller.markup, State[controller.config.deviceId].state, rokuState.value, { list : fragment });
     },
 
     send : function (config) {

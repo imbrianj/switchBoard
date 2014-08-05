@@ -103,7 +103,7 @@ module.exports = (function () {
 
     init : function (controller, config) {
       var callback = function(deviceId, err, state, params) {
-        var deviceState = require('../lib/deviceState');
+        var deviceState = require(__dirname + '/../lib/deviceState');
 
         params.state = state;
 
@@ -150,14 +150,17 @@ module.exports = (function () {
     },
 
     onload : function (controller) {
-      var parser = require(__dirname + '/../parsers/foscam').foscam;
+      var deviceState = require(__dirname + '/../lib/deviceState'),
+          parser      = require(__dirname + '/../parsers/foscam').foscam,
+          foscamState = deviceState.getDeviceState(controller.config.deviceId);
 
-      return parser(controller.deviceId, controller.markup, State[controller.config.deviceId].state, State[controller.config.deviceId].value);
+      return parser(controller.deviceId, controller.markup, foscamState.state, foscamState.value);
     },
 
     send : function (config) {
       var http      = require('http'),
           fs        = require('fs'),
+          that      = this,
           filePath  = __dirname + '/../images/foscam/' + Date.now() + '.jpg',
           foscam    = {},
           dataReply = '',
@@ -182,8 +185,7 @@ module.exports = (function () {
 
           else {
             request    = require('request');
-            controller = require('./foscam');
-            postData   = controller.postPrepare(foscam);
+            postData   = that.postPrepare(foscam);
 
             console.log('\x1b[35mFoscam\x1b[0m: Saved image');
 

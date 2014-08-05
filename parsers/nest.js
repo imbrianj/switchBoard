@@ -79,7 +79,7 @@
           break;
 
           default :
-            thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_OFF}}').join(' device-active');
+            thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_OFF}}').join(' device-off');
           break;
         }
 

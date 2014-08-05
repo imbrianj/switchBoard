@@ -48,11 +48,13 @@ module.exports = (function () {
     },
 
     onload : function (controller) {
-      var fs       = require('fs'),
-          parser   = require(__dirname + '/../parsers/weather').weather,
-          fragment = fs.readFileSync(__dirname + '/../templates/fragments/weather.tpl').toString();
+      var fs           = require('fs'),
+          deviceState  = require(__dirname + '/../lib/deviceState'),
+          weatherState = deviceState.getDeviceState(controller.config.deviceId),
+          parser       = require(__dirname + '/../parsers/weather').weather,
+          fragment     = fs.readFileSync(__dirname + '/../templates/fragments/weather.tpl').toString();
 
-      return parser(controller.deviceId, controller.markup, State[controller.config.deviceId].state, State[controller.config.deviceId].value, { forecast : fragment });
+      return parser(controller.deviceId, controller.markup, weatherState.state, weatherState.value, { forecast : fragment });
     },
 
     send : function (config) {
