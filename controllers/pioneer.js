@@ -87,8 +87,6 @@ module.exports = (function () {
 
       pioneer.device.deviceId  = controller.config.deviceId;
       pioneer.device.deviceIp  = controller.config.deviceIp;
-      pioneer.config.serverIp  = config.serverIp;
-      pioneer.config.serverMac = config.serverMac;
 
       pioneer.callback = function (err, reply) {
         if(reply) {
@@ -121,7 +119,6 @@ module.exports = (function () {
         }
 
         pioneer.callback(null, 'ok');
-
       });
 
       client.once('data', function(dataReply) {
@@ -131,14 +128,10 @@ module.exports = (function () {
       });
 
       client.once('error', function(err) {
-        var errorMsg = '';
+        var errorMsg = '\x1b[31mPioneer\x1b[0m: ' + err.code;
 
-        if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
+        if((err.code === 'ECONNRESET') || (err.code === 'ECONNREFUSED') || (err.code === 'EHOSTUNREACH')) {
           errorMsg = '\x1b[31mPioneer\x1b[0m: Device is off or unreachable';
-        }
-
-        else {
-          errorMsg = '\x1b[31mPioneer\x1b[0m: ' + err.code;
         }
 
         console.log(errorMsg);

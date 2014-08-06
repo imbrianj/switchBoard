@@ -43,7 +43,7 @@ module.exports = (function () {
      * as they are supported in GIMX, but timing of events for unnecessary
      * buttons in the context of media control seems pointless.
      */
-    keymap  : ['PowerOn', 'Left', 'Right', 'Up', 'Down', 'PS', 'Select', 'Start', 'Triangle', 'Circle', 'Cross', 'Square'],
+    keymap  : ['PowerOn', 'Left', 'Right', 'Up', 'Down', 'PS', 'Select', 'Start', 'Triangle', 'Circle', 'Cross', 'Square', 'L1', 'L2', 'R1', 'R2'],
 
     translateCommand : function (command, deviceMac, serviceIP, servicePort, platform, revert) {
       var execute = { command : '', params : [] },

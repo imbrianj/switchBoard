@@ -90,6 +90,17 @@ exports.config = {
   },
 
   /*
+   * This device is incomplete.  If you have one to test on, please let me
+   * know!
+   */
+  denon : {
+    typeClass : 'denon',
+    title     : 'Denon Receiver',
+    deviceIp  : '192.168.1.6',
+    disabled  : true
+  },
+
+  /*
    * Speech uses the "espeak" package on Linux, BSD and SunOS. For OSX, it uses
    * the built-in "say" command.  Windows is not supported.
    */

@@ -25,21 +25,21 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview Unit test for controllers/pioneer.js
+ * @fileoverview Unit test for controllers/denon.js
  */
 
-exports.pioneerControllerTest = {
+exports.denonControllerTest = {
   translateCommand : function (test) {
     'use strict';
 
-    var pioneerController = require(__dirname + '/../../../controllers/pioneer'),
-        power             = pioneerController.translateCommand('POWER'),
-        volUp             = pioneerController.translateCommand('VOL_UP'),
-        tv                = pioneerController.translateCommand('TV');
+    var denonController = require(__dirname + '/../../../controllers/denon'),
+        power           = denonController.translateCommand('POWER_ON'),
+        volUp           = denonController.translateCommand('VOL_UP'),
+        volDown         = denonController.translateCommand('VOL_DOWN');
 
-    test.equal(power, 'PZ',   'Power is mapped to PZ');
-    test.equal(volUp, 'VU',   'Vol_Up is mapped to VU');
-    test.equal(tv,    '05FN', 'TV is mapped to 05FN');
+    test.equal(power,   'POWN',   'Power is mapped to PZ');
+    test.equal(volUp,   'MVVU',   'Vol_Up is mapped to MVVU');
+    test.equal(volDown, 'MVDOWN', 'Vol_Down is mapped to MVDOWN');
 
     test.done();
   }

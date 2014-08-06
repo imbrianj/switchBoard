@@ -751,6 +751,10 @@ a.device-active:hover:before {
 	display: none;
 }
 
+.device.ps3 .media a {
+	width: 25%;
+}
+
 .device.nest .navigation {
 	margin-top: 1em;
 }

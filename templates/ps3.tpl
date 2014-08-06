@@ -28,4 +28,12 @@
             </ul>
           </div>
         </div>
+        <div class="media">
+          <ul>
+            <li><a href="/?{{DEVICE_ID}}=L1" class="fa fa-step-backward"><span>L1</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=L2" class="fa fa-backward"><span>L2</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=R2" class="fa fa-forward"><span>R2</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=R1" class="fa fa-step-forward"><span>R1</span></a></li>
+          </ul>
+        </div>
       </div>
