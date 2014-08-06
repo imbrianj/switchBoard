@@ -31,7 +31,7 @@ module.exports = (function () {
    * @fileoverview Basic control of Nest thermostat and Protect smoke detector.
    */
   return {
-    version : 20140804,
+    version : 20140805,
 
     inputs : ['command', 'text', 'subdevice'],
 
@@ -329,8 +329,8 @@ module.exports = (function () {
         command     = command.replace(commandType + '-', '');
 
         value       = command.split('-');
-        command     = value[1];
-        value       = value[0];
+        command     = value[0];
+        value       = value[1];
         subDevice   = this.findSubDevices(command, subDevices.thermostat);
 
         switch(commandType) {

@@ -4,9 +4,9 @@
                     <dt>{{SUB_DEVICE_NAME}}</dt>
                     <dd class="control-block full icon">
                       <div class="mode">
-                        <a href="/?{{DEVICE_ID}}=subdevice-mode-heat-{{SUB_DEVICE_NAME}}" class="fa fa-sun-o{{DEVICE_STATE_HEAT}}"><span>Heat</span></a>
-                        <a href="/?{{DEVICE_ID}}=subdevice-mode-off-{{SUB_DEVICE_NAME}}" class="fa fa-power-off"><span>Off</span></a>
-                        <a href="/?{{DEVICE_ID}}=subdevice-mode-cool-{{SUB_DEVICE_NAME}}" class="fa fa-asterisk{{DEVICE_STATE_COOL}}"><span>Cool</span></a>
+                        <a href="/?{{DEVICE_ID}}=subdevice-mode-{{SUB_DEVICE_NAME}}-heat" class="fa fa-sun-o{{DEVICE_STATE_HEAT}}"><span>Heat</span></a>
+                        <a href="/?{{DEVICE_ID}}=subdevice-mode-{{SUB_DEVICE_NAME}}-off" class="fa fa-power-off"><span>Off</span></a>
+                        <a href="/?{{DEVICE_ID}}=subdevice-mode-{{SUB_DEVICE_NAME}}-cool" class="fa fa-asterisk{{DEVICE_STATE_COOL}}"><span>Cool</span></a>
                       </div>
                       <div class="navigation">
                         <form class="text-form" action="/" method="get">
@@ -14,6 +14,7 @@
                             <legend>Set Temperature</legend>
                             <label for="nest-{{SUB_DEVICE_ID}}-target">Target Temperature:</label>
                             <input id="nest-{{SUB_DEVICE_ID}}-target" class="text-input" type="number" max="100" min="50" name="{{DEVICE_ID}}" value="{{SUB_DEVICE_TARGET}}" required />
+                            <input class="input-type" type="hidden" value="subdevice-temp-{{SUB_DEVICE_NAME}}" name="type" />
                             <button type="submit" class="button">Submit</button>
                           </fieldset>
                         </form>

@@ -29,7 +29,7 @@ module.exports = (function () {
   /**
    * @author markewest@gmail.com
    * @fileoverview Basic control of Pioneer VSX-XXXX Amps
-   * @requires net.js
+   * @requires net
    * @note Big thanks to the base javascript from:
    *  https://github.com/Vmaxence/SARAH-Plugin-ampliVSX
    * And documentation here:

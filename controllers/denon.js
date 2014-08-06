@@ -29,7 +29,7 @@ module.exports = (function () {
   /**
    * @author markewest@gmail.com
    * @fileoverview Basic control of Denon x4000 Receiver
-   * @requires net.js
+   * @requires net
    */
   return {
     version : 20140805,

@@ -28,7 +28,9 @@ Switchboard = (function () {
   'use strict';
 
   return {
-    version : 20140721,
+    version : 20140805,
+
+    state : {},
 
     parsers : {},
 
@@ -789,6 +791,7 @@ Switchboard = (function () {
         var elm  = Switchboard.getTarget(e),
             ts   = new Date().getTime(),
             text = '',
+            type = '',
             device,
             ajaxRequest;
 
@@ -796,10 +799,11 @@ Switchboard = (function () {
 
         text   = Switchboard.getElementsByClassName('text-input', elm, 'input')[0].value;
         device = Switchboard.getElementsByClassName('text-input', elm, 'input')[0].name;
+        type   = Switchboard.getElementsByClassName('input-type', elm, 'input')[0].value;
 
         if(socket) {
           if(checkConnection()) {
-            socket.send('/?' + device + '=text-' + text);
+            socket.send('/?' + device + '=' + type + '-' + text);
           }
         }
 

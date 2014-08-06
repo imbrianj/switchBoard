@@ -33,7 +33,7 @@
         duration   = '',
         i          = 0;
 
-    if(state) {
+    if((state) && (value)) {
       for(i; i < value.length; i += 1) {
         icon     = '';
         duration = '';
