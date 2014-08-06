@@ -46,7 +46,7 @@ module.exports = (function () {
      * key names - so this hash table will convert the pretty names to numeric
      * values denon expects.
      */
-    hashTable : { 'POWER_ON'  : 'POWN',
+    hashTable : { 'POWER_ON'  : 'PWON',
                   'POWER_OFF' : 'PWSTANDBY',
                   'VOL_UP'    : 'MVVU',
                   'VOL_DOWN'  : 'MVDOWN',
@@ -90,7 +90,7 @@ module.exports = (function () {
         console.log('\x1b[32mDenon\x1b[0m: Connected');
 
         if(denon.command) {
-          client.write(denon.command + "\r\n");
+          client.write(denon.command + "\r");
         }
 
         denon.callback(null, 'ok');
