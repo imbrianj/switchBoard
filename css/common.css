@@ -915,6 +915,10 @@ body .selected,
 		max-width: 45%;
 	}
 
+	.device.ps3 .media {
+		padding-top: 1em;
+	}
+
 	.device.nest .sub-device-list .sub-device-group {
 		max-width: 90%;
 		width: 90%;
