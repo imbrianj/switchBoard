@@ -99,7 +99,7 @@ module.exports = (function () {
       client.once('data', function(dataReply) {
         denon.callback(null, dataReply);
 
-        client.destroy();
+        client.end();
       });
 
       client.once('error', function(err) {

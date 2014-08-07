@@ -40,6 +40,7 @@ module.exports = (function () {
           callback;
 
       if((controller.config.auth) && (controller.config.auth.url)) {
+        runCommand.runCommand(deviceId, 'list', controllers, deviceId, false, callback);
         controller.controller.oauthDeviceList(controller.config.auth, controller);
       }
     }

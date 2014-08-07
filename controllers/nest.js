@@ -33,7 +33,7 @@ module.exports = (function () {
   return {
     version : 20140805,
 
-    inputs : ['command', 'text', 'subdevice'],
+    inputs : ['command', 'text', 'list', 'subdevice'],
 
     /**
      * Whitelist of available key codes to use.
@@ -281,10 +281,10 @@ module.exports = (function () {
           nestState   = deviceState.getDeviceState(config.deviceId),
           subDevices  = {},
           commandType = '',
-          subDevice   = {},
           i           = 1,
           value       = '',
-          command     = config.command;
+          command     = config.command,
+          subdevice   = config.subdevice;
 
       // We can only send commands to thermostats.
       if((nestState.value) && (nestState.value.thermostat)) {
@@ -315,28 +315,28 @@ module.exports = (function () {
         config.args = { fan_mode : 'auto' };
       }
 
-      else if(command.indexOf('mode-') === 0) {
+      else if(subdevice.indexOf('mode-') === 0) {
         commandType = 'mode';
       }
 
-      else if(command.indexOf('temp-') === 0) {
+      else if(subdevice.indexOf('temp-') === 0) {
         commandType = 'temp';
       }
 
       if(commandType) {
         config.host = config.auth.url;
 
-        command     = command.replace(commandType + '-', '');
+        command     = subdevice.replace(commandType + '-', '');
 
         value       = command.split('-');
         command     = value[0];
         value       = value[1];
-        subDevice   = this.findSubDevices(command, subDevices.thermostat);
+        subdevice   = this.findSubDevices(command, subDevices.thermostat);
 
         switch(commandType) {
           case 'mode' :
             if((value === 'off') || (value === 'heat') || (value === 'cool')) {
-              config.path = '/v2/put/shared.' + subDevice[0].serial;
+              config.path = '/v2/put/shared.' + subdevice[0].serial;
               config.args = { target_change_pending : true, target_temperature_type : value };
             }
           break;
@@ -344,7 +344,7 @@ module.exports = (function () {
           case 'temp' :
             if(!isNaN(value)) {
               if((value >= 50) && (value <= 100)) {
-                config.path = '/v2/put/shared.' + subDevice[0].serial;
+                config.path = '/v2/put/shared.' + subdevice[0].serial;
                 config.args = { target_change_pending : true, target_temperature : this.fToC(value) };
               }
             }
@@ -427,18 +427,20 @@ module.exports = (function () {
           dataReply    = '',
           request;
 
-      nest.deviceId = config.device.deviceId || '';
-      nest.command  = config.subdevice       || config.command || '';
-      nest.host     = config.host            || 'home.nest.com';
-      nest.path     = config.path            || '/user/login';
-      nest.port     = config.port            || 443;
-      nest.method   = config.method          || 'POST';
-      nest.callback = config.callback        || function () {};
-      nest.username = config.device.username || '';
-      nest.password = config.device.password || '';
-      nest.auth     = config.device.auth     || {};
+      nest.deviceId  = config.device.deviceId || '';
+      nest.command   = config.command         || '';
+      nest.subdevice = config.subdevice       || '';
+      nest.list      = config.list            || '';
+      nest.host      = config.host            || 'home.nest.com';
+      nest.path      = config.path            || '/user/login';
+      nest.port      = config.port            || 443;
+      nest.method    = config.method          || 'POST';
+      nest.callback  = config.callback        || function () {};
+      nest.username  = config.device.username || '';
+      nest.password  = config.device.password || '';
+      nest.auth      = config.device.auth     || {};
 
-      if(nest.command) {
+      if((nest.command) || (nest.subdevice)) {
         nest = this.getDevicePath(nest);
       }
 
@@ -446,52 +448,58 @@ module.exports = (function () {
         nest.postRequest = this.postData(nest);
       }
 
-      request = https.request(this.postPrepare(nest), function(response) {
-        console.log('\x1b[32mNest\x1b[0m: Connected');
+      if(nest.list) {
+        this.deviceList(nest.auth, { config : { deviceId : config.device.deviceId } });
+      }
 
-        response.on('data', function(response) {
-          dataReply += response;
+      else {
+        request = https.request(this.postPrepare(nest), function(response) {
+          console.log('\x1b[32mNest\x1b[0m: Connected');
+
+          response.on('data', function(response) {
+            dataReply += response;
+          });
+
+          response.once('end', function() {
+            var deviceState = require(__dirname + '/../lib/deviceState'),
+                nestData    = {};
+
+            if(dataReply) {
+              nestData = JSON.parse(dataReply);
+
+              nest.callback(null, nestData);
+            }
+
+            else {
+              console.log('\x1b[31mNest\x1b[0m: No data returned from API');
+
+              nest.callback(null, '');
+            }
+          });
         });
 
-        response.once('end', function() {
-          var deviceState = require(__dirname + '/../lib/deviceState'),
-              nestData    = {};
+        request.once('error', function(err) {
+          var errorMsg = '';
 
-          if(dataReply) {
-            nestData = JSON.parse(dataReply);
-
-            nest.callback(null, nestData);
+          if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
+            errorMsg = '\x1b[31mNest\x1b[0m: API is unreachable';
           }
 
           else {
-            console.log('\x1b[31mNest\x1b[0m: No data returned from API');
-
-            nest.callback(null, '');
+            errorMsg = '\x1b[31mNest\x1b[0m: ' + err.code;
           }
+
+          console.log(errorMsg);
+
+          nest.callback(errorMsg);
         });
-      });
 
-      request.once('error', function(err) {
-        var errorMsg = '';
-
-        if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
-          errorMsg = '\x1b[31mNest\x1b[0m: API is unreachable';
+        if(nest.method === 'POST') {
+          request.write(nest.postRequest);
         }
 
-        else {
-          errorMsg = '\x1b[31mNest\x1b[0m: ' + err.code;
-        }
-
-        console.log(errorMsg);
-
-        nest.callback(errorMsg);
-      });
-
-      if(nest.method === 'POST') {
-        request.write(nest.postRequest);
+        request.end();
       }
-
-      request.end();
     }
   };
 }());

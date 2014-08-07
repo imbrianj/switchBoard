@@ -124,7 +124,7 @@ module.exports = (function () {
       client.once('data', function(dataReply) {
         pioneer.callback(null, dataReply);
 
-        client.destroy();
+        client.end();
       });
 
       client.once('error', function(err) {

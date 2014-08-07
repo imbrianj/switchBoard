@@ -1,4 +1,4 @@
-/*global document, window, ActiveXObject, init, console, XMLHttpRequest, Switchboard*/
+/*global document, window, ActiveXObject, init, console, XMLHttpRequest, Switchboard, Notification */
 /*jslint white: true, evil: true */
 /*jshint -W020 */
 
@@ -499,6 +499,8 @@ Switchboard = (function () {
             oldMarkup,
             i;
 
+        Switchboard.state[state.deviceId] = state;
+
         Switchboard.log(state.deviceId + ' updated');
 
         if(node) {
@@ -566,10 +568,10 @@ Switchboard = (function () {
           indicator.className = 'connected';
           Switchboard.putText(indicator, 'Connected');
 
-          if(reconnect) {
-            Switchboard.log('Reconnected to WebSocket - fetching latest state');
+          socket.send('fetch state');
 
-            socket.send('Reconnect');
+          if(reconnect) {
+            Switchboard.log('Reconnected to WebSocket');
           }
         });
 
@@ -580,9 +582,38 @@ Switchboard = (function () {
 
         Switchboard.event.add(socket, 'message', function(e) {
           var message = Switchboard.decode(e.data),
-              device  = {};
+              device  = {},
+              notification;
 
-          if(typeof message.deviceId === 'string') {
+          if(typeof message.title === 'string') {
+            if(typeof Notification === 'function') {
+              notification = new Notification(message.title, message.options);
+
+              setTimeout(function() {
+                notification.close();
+              }, 10000);
+
+              if(message.deviceId) {
+                Switchboard.event.add(notification, 'click', function(e) {
+                  var newContent    = document.getElementById(message.deviceId),
+                      selectNav     = Switchboard.getElementsByClassName('selected', header, 'li')[0],
+                      selectContent = Switchboard.getElementsByClassName('selected', body, 'div')[0];
+
+                  Switchboard.removeClass(selectNav,     'selected');
+                  Switchboard.removeClass(selectContent, 'selected');
+
+                  lazyLoad(message.deviceId);
+
+                  Switchboard.addClass(Switchboard.getElementsByClassName(message.deviceId, header, 'li')[0], 'selected');
+                  Switchboard.addClass(newContent, 'selected');
+
+                  lazyUnLoad(selectContent);
+                });
+              }
+            }
+          }
+
+          else if(typeof message.deviceId === 'string') {
             updateTemplate(message);
           }
 
@@ -743,6 +774,20 @@ Switchboard = (function () {
         else if(Switchboard.getTarget(e).id === 'indicator') {
           if(Switchboard.hasClass(Switchboard.getTarget(e), 'disconnected')) {
             socketConnect();
+          }
+
+          else {
+            Notification.requestPermission(function(permission) {
+              var notification;
+
+              if(!Notification.permission) {
+                Notification.permission = permission;
+              }
+
+              if(Notification.permission === 'granted') {
+                notification = new Notification('Welcome to Switchboard!', { body : 'You can now receive desktop notifications like this.', icon : '/images/icons/apple-touch-icon.png' });
+              }
+            });
           }
         }
 

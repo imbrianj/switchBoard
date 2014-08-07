@@ -13,7 +13,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -62,7 +62,7 @@ exports.runCommandTest = {
 
     test.equal(text, 'TEST', 'Text should be returned without prefix');
     test.equal(launch, 'TEST', 'Launch should be returned without prefix');
-    test.equal(list, '', 'List should return empty, as it acts as a flag, not a value');
+    test.equal(list, true, 'List should return a boolean');
     test.equal(command, 'TEST', 'Commands should be returned without change');
 
     test.done();

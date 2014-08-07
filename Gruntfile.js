@@ -63,7 +63,7 @@ module.exports = function(grunt) {
 
     watch : {
       files : ['<%= jshint.files %>', 'css/common.css', 'css/font-awesome.css'],
-      tasks : ['concat', 'cssmin', 'uglify', 'nodeunit', 'jshint']
+      tasks : ['concat', 'cssmin', 'nodeunit', 'jshint', 'uglify']
     }
   });
 
@@ -73,5 +73,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.registerTask('default', ['concat', 'cssmin', 'uglify', 'nodeunit', 'jshint']);
+  grunt.registerTask('default', ['concat', 'cssmin', 'nodeunit', 'jshint', 'uglify']);
 };

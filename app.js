@@ -118,7 +118,7 @@ if(controllers) {
     connection.on('message', function(message) {
       var response = { end : function(message) {} };
 
-      if(message.utf8Data === 'Reconnect') {
+      if(message.utf8Data === 'fetch state') {
         console.log('\x1b[36m' + connection.remoteAddress + ' Requested State\x1b[0m');
 
         connection.sendUTF(JSON.stringify(State));

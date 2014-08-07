@@ -188,7 +188,7 @@ module.exports = (function () {
     state : function (controller, callback, config, logging) {
       var stateCallback;
 
-      logging  = logging || 'quiet';
+      logging = logging || 'quiet';
 
       stateCallback = function(err, reply) {
         if(err) {

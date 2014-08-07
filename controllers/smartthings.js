@@ -34,7 +34,7 @@ module.exports = (function () {
   return {
     version : 20140803,
 
-    inputs  : ['subdevice'],
+    inputs  : ['list', 'subdevice'],
 
     /**
      * Prepare a POST request for a command.
@@ -289,50 +289,45 @@ module.exports = (function () {
         commandType = 'unlock';
       }
 
-      else if(command.indexOf('state-Mode-') === 0) {
-        command = command.replace('state-Mode-', '');
+      else if(command.indexOf('state-mode-') === 0) {
+        command = command.replace('state-mode-', '');
 
         deviceState.updateState(config.device.deviceId, 'smartthings', { state : 'ok', value : { devices : subDevices, mode : command, groups : config.device.groups } });
       }
 
-      else if((command.indexOf('state-On-')      === 0) ||
-              (command.indexOf('state-Lock-')    === 0) ||
-              (command.indexOf('state-Open-')    === 0) ||
-              (command.indexOf('state-Wet-')     === 0) ||
-              (command.indexOf('state-Active-')  === 0) ||
-              (command.indexOf('state-Present-') === 0)) {
-        commandType = 'state-On';
-
-        command = command.replace('state-On-',      '');
-        command = command.replace('state-Lock-',    '');
-        command = command.replace('state-Open-',    '');
-        command = command.replace('state-Wet-',     '');
-        command = command.replace('state-Active-',  '');
-        command = command.replace('state-Present-', '');
+      else if(command.indexOf('state-switch-') === 0) {
+        commandType = 'switch';
       }
 
-      else if((command.indexOf('state-Off-')       === 0) ||
-            (command.indexOf('state-Unlock-')      === 0) ||
-            (command.indexOf('state-Closed-')      === 0) ||
-            (command.indexOf('state-Dry-')         === 0) ||
-            (command.indexOf('state-Inactive-')    === 0) ||
-            (command.indexOf('state-Not present-') === 0)) {
-        commandType = 'state-Off';
-
-        command = command.replace('state-Off-',         '');
-        command = command.replace('state-Unlock-',      '');
-        command = command.replace('state-Closed-',      '');
-        command = command.replace('state-Dry-',         '');
-        command = command.replace('state-Inactive-',    '');
-        command = command.replace('state-Not present-', '');
+      else if(command.indexOf('state-lock-') === 0) {
+        commandType = 'lock';
       }
 
-      else if(command.indexOf('state-') === 0) {
+      else if(command.indexOf('state-temp-') === 0) {
         commandType = 'temp';
-        command = command.replace('state-', '');
+      }
+
+      else if(command.indexOf('state-contact-') === 0) {
+        commandType = 'contact';
+      }
+
+      else if(command.indexOf('state-moisture-') === 0) {
+        commandType = 'moisture';
+      }
+
+      else if(command.indexOf('state-motion-') === 0) {
+        commandType = 'motion';
+      }
+
+      else if(command.indexOf('state-presence-') === 0) {
+        commandType = 'presence';
+      }
+
+      if(commandType === 'temp') {
+        command = command.replace('state-temp-', '');
         value   = command.split('-');
-        command = value[1];
-        value   = value[0];
+        command = value[0];
+        value   = value[1];
 
         if(!isNaN(value)) {
           for(i in subDevices) {
@@ -356,18 +351,17 @@ module.exports = (function () {
         }
       }
 
-      if((commandType === 'state-On') || (commandType === 'state-Off')) {
+      else if((command.indexOf('state-') === 0) && (commandType)) {
+        command = command.replace('state-' + commandType + '-', '');
+        value   = command.split('-');
+        command = value[0];
+        value   = value[1];
+
         for(i in subDevices) {
           subDevice = subDevices[i];
 
           if(subDevice.label === command) {
-            if(commandType === 'state-On') {
-              subDevices[i].state = 'on';
-            }
-
-            else {
-              subDevices[i].state = 'off';
-            }
+            subDevices[i].state = value;
 
             deviceState.updateState(config.device.deviceId, 'smartthings', { state : 'ok', value : { devices : subDevices, mode : smartThingsState.value.mode, groups : config.device.groups } });
           }
@@ -487,6 +481,7 @@ module.exports = (function () {
       smartthings.deviceId = config.device.deviceId || '';
       smartthings.auth     = config.device.auth     || '';
       smartthings.command  = config.subdevice       || '';
+      smartthings.list     = config.list            || '';
       smartthings.host     = config.host            || 'graph.api.smartthings.com';
       smartthings.port     = config.port            || 443;
       smartthings.path     = config.path            || '';
@@ -503,7 +498,11 @@ module.exports = (function () {
         request.path = this.getDevicePath(smartthings.command, config);
       }
 
-      if(request.path) {
+      if(smartthings.list) {
+        this.oauthDeviceList(smartthings.auth, { config : { deviceId : config.device.deviceId, groups : config.device.groups } });
+      }
+
+      else if(request.path) {
         request = https.request(request, function(response) {
                     console.log('\x1b[32mSmartThings\x1b[0m: Connected');
 

@@ -131,8 +131,8 @@ exports.smartthingsControllerTest = {
 
     var smartthingsController = require(__dirname + '/../../../controllers/smartthings'),
         smartthings           = { device : { deviceId : 'FOO' } },
-        switchState           = smartthingsController.getDevicePath('state-On-Test Switch', smartthings),
-        contactState          = smartthingsController.getDevicePath('state-Open-Test Door', smartthings);
+        switchState           = smartthingsController.getDevicePath('state-switch-Test Switch-on', smartthings),
+        contactState          = smartthingsController.getDevicePath('state-contact-Test Door-on', smartthings);
 
     test.equal(State.FOO.value.devices[0].state, 'on', 'The first device should now be on');
     test.equal(State.FOO.value.devices[1].state, 'on', 'The second device should now be open');
