@@ -593,11 +593,17 @@ Switchboard = (function () {
                 notification.close();
               }, 10000);
 
-              if(message.deviceId) {
-                Switchboard.event.add(notification, 'click', function(e) {
-                  var newContent    = document.getElementById(message.deviceId),
-                      selectNav     = Switchboard.getElementsByClassName('selected', header, 'li')[0],
-                      selectContent = Switchboard.getElementsByClassName('selected', body, 'div')[0];
+              Switchboard.event.add(notification, 'click', function(e) {
+                var newContent,
+                    selectNav,
+                    selectContent;
+
+                window.focus();
+
+                if(message.deviceId) {
+                  newContent    = document.getElementById(message.deviceId);
+                  selectNav     = Switchboard.getElementsByClassName('selected', header, 'li')[0];
+                  selectContent = Switchboard.getElementsByClassName('selected', body, 'div')[0];
 
                   Switchboard.removeClass(selectNav,     'selected');
                   Switchboard.removeClass(selectContent, 'selected');
@@ -608,8 +614,8 @@ Switchboard = (function () {
                   Switchboard.addClass(newContent, 'selected');
 
                   lazyUnLoad(selectContent);
-                });
-              }
+                }
+              });
             }
           }
 
@@ -769,28 +775,23 @@ Switchboard = (function () {
 
             lazyUnLoad(selectContent);
           }
+
+          if(typeof Notification === 'function') {
+            if(Notification.permission !== 'denied') {
+              Notification.requestPermission(function(permission) {
+                if(Notification.permission !== permission) {
+                  Notification.permission = permission;
+                }
+              });
+            }
+          }
         }
 
         else if(Switchboard.getTarget(e).id === 'indicator') {
           if(Switchboard.hasClass(Switchboard.getTarget(e), 'disconnected')) {
             socketConnect();
           }
-
-          else {
-            Notification.requestPermission(function(permission) {
-              var notification;
-
-              if(!Notification.permission) {
-                Notification.permission = permission;
-              }
-
-              if(Notification.permission === 'granted') {
-                notification = new Notification('Welcome to Switchboard!', { body : 'You can now receive desktop notifications like this.', icon : '/images/icons/apple-touch-icon.png' });
-              }
-            });
-          }
         }
-
       });
 
       /* Typical command executions */
