@@ -100,14 +100,14 @@ module.exports = (function () {
 
         if(exists) {
           if(logging === 'verbose') {
-            console.log('\x1b[35mRoku\x1b[0m: Skipping ' + appName + ' image - already saved locally');
+            console.log('\x1b[35m' + config.title + '\x1b[0m: Skipping ' + appName + ' image - already saved locally');
           }
         }
 
         else {
           request = require('request');
 
-          console.log('\x1b[35mRoku\x1b[0m: Saved image for ' + appName);
+          console.log('\x1b[35m' + config.title + '\x1b[0m: Saved image for ' + appName);
           request('http://' + config.deviceIp + ':8060/query/icon/' + appId).pipe(fs.createWriteStream(filePath));
         }
       });
@@ -126,17 +126,7 @@ module.exports = (function () {
 
       this.send({ device : { deviceIp: config.deviceIp }, list: true, callback: function(err, response) {
         if(err) {
-          var errorMsg = '';
-
-          if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
-            errorMsg = '\x1b[31mRoku\x1b[0m: Device is off or unreachable';
-          }
-
-          else {
-            errorMsg = '\x1b[31mRoku\x1b[0m: ' + err.code;
-          }
-
-          callback(errorMsg);
+          callback(err);
         }
 
         else {
@@ -146,7 +136,7 @@ module.exports = (function () {
 
             if(reply) {
               if(err) {
-                console.log('\x1b[31mRoku\x1b[0m: Unable to parse reply');
+                console.log('\x1b[31m' + config.device.title + '\x1b[0m: Unable to parse reply');
               }
 
               else {
@@ -173,7 +163,7 @@ module.exports = (function () {
 
     init : function (controller, config) {
       var callback = function(deviceId, err, state, params) {
-        var deviceState = require('../lib/deviceState');
+        var deviceState = require(__dirname + '/../lib/deviceState');
 
         params = params || {};
 
@@ -229,8 +219,6 @@ module.exports = (function () {
       roku.callback   = config.callback   || function () {};
 
       request = http.request(this.postPrepare(roku), function(response) {
-                  console.log('\x1b[32mRoku\x1b[0m: Connected');
-
                   response.on('data', function(response) {
                     dataReply += response;
                   });
@@ -241,19 +229,7 @@ module.exports = (function () {
                 });
 
       request.once('error', function(err) {
-        var errorMsg = '';
-
-        if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
-          errorMsg = '\x1b[31mRoku\x1b[0m: Device is off or unreachable';
-        }
-
-        else {
-          errorMsg = '\x1b[31mRoku\x1b[0m: ' + err.code;
-        }
-
-        console.log(errorMsg);
-
-        roku.callback(errorMsg);
+        roku.callback(err);
       });
 
       request.end();

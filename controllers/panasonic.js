@@ -132,8 +132,6 @@ module.exports = (function () {
       panasonic.callback   = config.callback   || function () {};
 
       request = http.request(this.postPrepare(panasonic), function(response) {
-                  console.log('\x1b[32mPanasonic\x1b[0m: Connected');
-
                   response.on('data', function(response) {
                     dataReply += response;
                   });
@@ -144,20 +142,8 @@ module.exports = (function () {
                 });
 
 
-      request.once('error', function(error) {
-        var errorMsg = '';
-
-        if(error.code === 'ECONNRESET' || error.code === 'ECONNREFUSED') {
-          errorMsg = '\x1b[31mPanasonic\x1b[0m: Device is off or unreachable';
-        }
-
-        else {
-          errorMsg = '\x1b[31mPanasonic\x1b[0m: ' + error.code;
-        }
-
-        console.log(errorMsg);
-
-        panasonic.callback(errorMsg);
+      request.once('error', function(err) {
+        panasonic.callback(err);
       });
 
       request.write(this.postData(panasonic));

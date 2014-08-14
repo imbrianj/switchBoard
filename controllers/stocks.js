@@ -36,9 +36,9 @@ module.exports = (function () {
 
     inputs  : ['list'],
 
-    stocksOpen : function (deviceId, explicit) {
+    stocksOpen : function (config, explicit) {
       var deviceState = require(__dirname + '/../lib/deviceState'),
-          stocksState = deviceState.getDeviceState(deviceId),
+          stocksState = deviceState.getDeviceState(config.device.deviceId),
           date        = new Date(),
           utcTime     = date.getTime() + (date.getTimezoneOffset() * 60000),
           // Try to determine if we're in DST by comparing one month that is
@@ -59,20 +59,20 @@ module.exports = (function () {
         // Trading is only open from 9am - 4pm.
         if((nycTime.getHours() >= 9) && (nycTime.getHours() < 16)) {
           open = true;
-          deviceState.updateState(deviceId, 'stocks', { state : 'ok', value : stocksState.value });
+          deviceState.updateState(config.device.deviceId, 'stocks', { state : 'ok', value : stocksState.value });
         }
 
         else {
-          deviceState.updateState(deviceId, 'stocks', { state : 'err', value : stocksState.value });
+          deviceState.updateState(config.device.deviceId, 'stocks', { state : 'err', value : stocksState.value });
 
-          console.log('\x1b[35mSchedule\x1b[0m: Stock trading is closed - after hours');
+          console.log('\x1b[35m' + config.device.title + '\x1b[0m: Stock trading is closed - after hours');
         }
       }
 
       else {
-        deviceState.updateState(deviceId, 'stocks', { state : 'err', value : stocksState.value });
+        deviceState.updateState(config.device.deviceId, 'stocks', { state : 'err', value : stocksState.value });
 
-        console.log('\x1b[35mSchedule\x1b[0m: Stock trading is closed - weekend');
+        console.log('\x1b[35m' + config.device.title + '\x1b[0m: Stock trading is closed - weekend');
       }
 
       return open;
@@ -86,7 +86,7 @@ module.exports = (function () {
     },
 
     init : function (controller) {
-      this.send({ device : { deviceId: controller.config.deviceId, stocks : controller.config.stocks } });
+      this.send({ device : { deviceId : controller.config.deviceId, title : controller.config.title, stocks : controller.config.stocks } });
     },
 
     onload : function (controller) {
@@ -118,14 +118,12 @@ module.exports = (function () {
         request = https.request(this.postPrepare(stocks), function(response) {
                     response.setEncoding('utf8');
 
-                    console.log('\x1b[32mStocks\x1b[0m: Connected');
-
                     response.on('data', function(response) {
                       dataReply += response;
                     });
 
                     response.once('end', function() {
-                      var deviceState = require('../lib/deviceState'),
+                      var deviceState = require(__dirname + '/../lib/deviceState'),
                           stockData   = {},
                           stock,
                           data,
@@ -153,7 +151,7 @@ module.exports = (function () {
                           }
                         }
 
-                        state = that.stocksOpen(stocks.deviceId) ? 'ok' : 'err';
+                        state = that.stocksOpen(config) ? 'ok' : 'err';
                         deviceState.updateState(stocks.deviceId, 'stocks', { state: state, value : stockData });
                       }
 
@@ -162,19 +160,7 @@ module.exports = (function () {
                   });
 
         request.once('error', function(err) {
-          var errorMsg = '';
-
-          if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
-            errorMsg = 'API is unreachable';
-          }
-
-          else {
-            errorMsg = err.code;
-          }
-
-          console.log('\x1b[31mStocks\x1b[0m: ' + errorMsg);
-
-          stocks.callback(errorMsg);
+          stocks.callback(err);
         });
 
         request.end();
@@ -183,7 +169,7 @@ module.exports = (function () {
       }
 
       else {
-        console.log('\x1b[31mStocks\x1b[0m: No stocks specified');
+        stocks.callback('No stocks specified');
       }
     }
   };

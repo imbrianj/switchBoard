@@ -45,11 +45,11 @@ exports.stocksControllerTest = {
         openEarly        = new Date('July 21, 2014 09:01:00'),
         openLate         = new Date('July 21, 2014 15:59:00');
 
-    test.ok(stocksController.stocksOpen('FOO', weekend)     === false, 'Stocks are closed on weekends');
-    test.ok(stocksController.stocksOpen('FOO', beforeHours) === false, 'Stocks open at 9am');
-    test.ok(stocksController.stocksOpen('FOO', afterHours)  === false, 'Stocks close at 4pm');
-    test.ok(stocksController.stocksOpen('FOO', openEarly)   === true,  'Stocks open at 9am');
-    test.ok(stocksController.stocksOpen('FOO', openLate)    === true,  'Stocks close at 4pm');
+    test.ok(stocksController.stocksOpen({ device : { deviceId : 'FOO', title : 'Stocks' } }, weekend)     === false, 'Stocks are closed on weekends');
+    test.ok(stocksController.stocksOpen({ device : { deviceId : 'FOO', title : 'Stocks' } }, beforeHours) === false, 'Stocks open at 9am');
+    test.ok(stocksController.stocksOpen({ device : { deviceId : 'FOO', title : 'Stocks' } }, afterHours)  === false, 'Stocks close at 4pm');
+    test.ok(stocksController.stocksOpen({ device : { deviceId : 'FOO', title : 'Stocks' } }, openEarly)   === true,  'Stocks open at 9am');
+    test.ok(stocksController.stocksOpen({ device : { deviceId : 'FOO', title : 'Stocks' } }, openLate)    === true,  'Stocks close at 4pm');
 
     test.done();
   },

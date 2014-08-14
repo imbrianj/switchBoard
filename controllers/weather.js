@@ -75,14 +75,12 @@ module.exports = (function () {
         request = https.request(this.postPrepare(weather), function(response) {
                     response.setEncoding('utf8');
 
-                    console.log('\x1b[32mWeather\x1b[0m: Connected');
-
                     response.on('data', function(response) {
                       dataReply += response;
                     });
 
                     response.once('end', function() {
-                      var deviceState = require('../lib/deviceState'),
+                      var deviceState = require(__dirname + '/../lib/deviceState'),
                           weatherData = {},
                           city,
                           i = 0;
@@ -115,19 +113,7 @@ module.exports = (function () {
                   });
 
         request.once('error', function(err) {
-          var errorMsg = '';
-
-          if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
-            errorMsg = '\x1b[31mWeather\x1b[0m: API is unreachable';
-          }
-
-          else {
-            errorMsg = '\x1b[31mWeather\x1b[0m: ' + err.code;
-          }
-
-          console.log(errorMsg);
-
-          weather.callback(errorMsg);
+          weather.callback(err);
         });
 
         request.end();
@@ -136,7 +122,7 @@ module.exports = (function () {
       }
 
       else {
-        console.log('\x1b[31mWeather\x1b[0m: No zip code specified');
+        weather.callback('No zip code specified');
       }
     }
   };

@@ -59,8 +59,6 @@ module.exports = (function () {
 
         default :
           execute = '';
-
-          console.log('\x1b[31mMP3\x1b[0m: MP3 playback is not supported on your platform!');
         break;
       }
 
@@ -91,29 +89,33 @@ module.exports = (function () {
       mp3.platform = config.platofrm || process.platform;
       mp3.execute  = this.translateCommand(mp3.file, mp3.platform);
 
-      if(mp3.file) {
-        fs.exists(mp3.file, function(exists) {
-          var spawn = require('child_process').spawn,
-              mpg123;
+      if(mp3.execute) {
+        if(mp3.file) {
+          fs.exists(mp3.file, function(exists) {
+            var spawn = require('child_process').spawn,
+                mpg123;
 
-          if((exists) && (mp3.execute)) {
-            mpg123 = spawn(mp3.execute.command, mp3.execute.params);
+            if((exists) && (mp3.execute)) {
+              mpg123 = spawn(mp3.execute.command, mp3.execute.params);
 
-            mpg123.once('close', function(code) {
-              mp3.callback(null, 'ok');
-            });
-          }
+              mpg123.once('close', function(code) {
+                mp3.callback(null, 'ok');
+              });
+            }
 
-          else {
-            console.log('\x1b[31mMP3\x1b[0m: Specified file not found');
+            else {
+              mp3.callback('Specified file not found');
+            }
+          });
+        }
 
-            mp3.callback('err');
-          }
-        });
+        else {
+          mp3.callback('No file specified');
+        }
       }
 
       else {
-        console.log('\x1b[31mMP3\x1b[0m: No file specified');
+        mp3.callback('MP3 playback is not supported on your platform!');
       }
     }
   };

@@ -124,8 +124,6 @@ module.exports = (function () {
       socket = net.connect(samsung.devicePort, samsung.deviceIp);
 
       socket.once('connect', function() {
-        console.log('\x1b[32mSamsung\x1b[0m: Connected');
-
         if((samsung.command) || (samsung.text)) {
           socket.write(that.chunkOne(samsung));
           socket.write(that.chunkTwo(samsung));
@@ -137,19 +135,7 @@ module.exports = (function () {
       });
 
       socket.once('error', function(err) {
-        var errorMsg = '';
-
-        if(err.code === 'EHOSTUNREACH' || err.code === 'ECONNREFUSED' || err.code === 'ETIMEDOUT') {
-          errorMsg = '\x1b[31mSamsung\x1b[0m: Device is off or unreachable';
-        }
-
-        else {
-          errorMsg = '\x1b[31mSamsung\x1b[0m: ' + err.code;
-        }
-
-        console.log(errorMsg);
-
-        samsung.callback(errorMsg);
+        samsung.callback(err);
       });
     }
   };

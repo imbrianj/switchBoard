@@ -93,27 +93,13 @@ module.exports = (function () {
       request = https.request(this.postPrepare(pushover), function(response) {
         response.setEncoding('utf8');
 
-        console.log('\x1b[32mPushover\x1b[0m: Connected');
-
         response.once('data', function(response) {
           pushover.callback(null, response);
         });
       });
 
       request.once('error', function(err) {
-        var errorMsg = '';
-
-        if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
-          errorMsg = '\x1b[31mPushover\x1b[0m: API is unreachable';
-        }
-
-        else {
-          errorMsg = '\x1b[31mPushover\x1b[0m: ' + err.code;
-        }
-
-        console.log(errorMsg);
-
-        pushover.callback(errorMsg);
+        pushover.callback(err);
       });
 
       request.write(pushover.postRequest);

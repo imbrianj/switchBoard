@@ -83,14 +83,12 @@ module.exports = (function () {
       request = https.request(this.postPrepare(travis), function(response) {
         response.setEncoding('utf8');
 
-        console.log('\x1b[32mTravis\x1b[0m: Connected');
-
         response.on('data', function(response) {
           dataReply += response;
         });
 
         response.once('end', function() {
-          var deviceState = require('../lib/deviceState'),
+          var deviceState = require(__dirname + '/../lib/deviceState'),
               travisData  = [],
               i           = 0;
 
@@ -125,19 +123,7 @@ module.exports = (function () {
       });
 
       request.once('error', function(err) {
-        var errorMsg = '';
-
-        if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
-          errorMsg = '\x1b[31mTravis\x1b[0m: API is unreachable';
-        }
-
-        else {
-          errorMsg = '\x1b[31mTravis\x1b[0m: ' + err.code;
-        }
-
-        console.log(errorMsg);
-
-        travis.callback(errorMsg);
+        travis.callback(err);
       });
 
       request.end();

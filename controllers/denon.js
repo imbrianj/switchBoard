@@ -87,8 +87,6 @@ module.exports = (function () {
       denon.callback   = config.callback   || function () {};
 
       client.connect(denon.devicePort, denon.deviceIp, function() {
-        console.log('\x1b[32mDenon\x1b[0m: Connected');
-
         if(denon.command) {
           client.write(denon.command + "\r");
         }
@@ -103,15 +101,7 @@ module.exports = (function () {
       });
 
       client.once('error', function(err) {
-        var errorMsg = '\x1b[31mDenon\x1b[0m: ' + err.code;
-
-        if((err.code === 'ECONNRESET') || (err.code === 'ECONNREFUSED') || (err.code === 'EHOSTUNREACH')) {
-          errorMsg = '\x1b[31mDenon\x1b[0m: Device is off or unreachable';
-        }
-
-        console.log(errorMsg);
-
-        denon.callback(errorMsg);
+        denon.callback(err);
       });
     }
   };

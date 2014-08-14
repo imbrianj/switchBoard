@@ -93,8 +93,6 @@ module.exports = (function () {
 
       else {
         execute = '';
-
-        console.log('\x1b[31mPS3\x1b[0m: Gimx is not supported on your platform!');
       }
 
       return execute;
@@ -127,63 +125,65 @@ module.exports = (function () {
       if(ps3State.state === 'ok') {
         // If the PS3 is already on, we shouldn't execute PowerOn again.
         if(ps3.command === 'PowerOn') {
-          console.log('\x1b[35mPS3\x1b[0m: Device looks on already.  Changing command to PS');
+          console.log('\x1b[35m' + config.device.title + '\x1b[0m: Device looks on already.  Changing command to PS');
 
           ps3.command = 'PS';
         }
       }
 
       else {
-        console.log('\x1b[35mPS3\x1b[0m: Device is off or unreachable');
+        console.log('\x1b[35m' + config.device.title + '\x1b[0m: Device is off or unreachable');
       }
 
       ps3.execute = this.translateCommand(ps3.command, ps3.deviceMac, ps3.serviceIp, ps3.servicePort, ps3.platform, ps3.revert);
 
-      gimx = spawn(ps3.execute.command, ps3.execute.params);
+      if(ps3.execute) {
+        gimx = spawn(ps3.execute.command, ps3.execute.params);
 
-      // The Gimx service will run for quite a while, so we need to execute the
-      // callback to send a response before the command closes some time later.
-      if(ps3.command === 'PowerOn') {
-        ps3.callback(null, 'ok');
+        // The Gimx service will run for quite a while, so we need to execute the
+        // callback to send a response before the command closes some time later.
+        if(ps3.command === 'PowerOn') {
+          ps3.callback(null, 'ok');
 
-        gimx.stderr.on('data', function(err) {
-          if(err.toString().indexOf('shutdown') !== -1) {
-            console.log('\x1b[31mPS3\x1b[0m: Controller disconnected');
+          gimx.stderr.on('data', function(err) {
+            if(err.toString().indexOf('shutdown') !== -1) {
+              console.log('\x1b[31m' + config.device.title + '\x1b[0m: Controller disconnected');
+            }
+
+            gimx.kill();
+          });
+        }
+
+        gimx.once('close', function(code) {
+          var deviceState;
+
+          if(ps3.command === 'PowerOn') {
+            ps3.callback('Device is off or unreachable');
           }
 
-          gimx.kill();
+          else if((ps3.revert !== true) && (ps3.command !== 'PS')) {
+            config.revert = true;
+
+            that.send(config);
+          }
+
+          else {
+            if(ps3State.state === 'ok') {
+              if(code === 0) {
+                ps3.callback(null, 'ok');
+              }
+
+              else {
+                ps3.callback('err');
+              }
+            }
+          }
         });
       }
 
-      gimx.once('close', function(code) {
-        var deviceState;
-
-        if(ps3.command === 'PowerOn') {
-          deviceState = require(__dirname + '/../lib/deviceState');
-
-          console.log('\x1b[31mPS3\x1b[0m: Device is off or unreachable');
-
-          deviceState.updateState(ps3.deviceId, 'ps3', { state : 'err' });
-        }
-
-        else if((ps3.revert !== true) && (ps3.command !== 'PS')) {
-          config.revert = true;
-
-          that.send(config);
-        }
-
-        else {
-          if(ps3State.state === 'ok') {
-            if(code === 0) {
-              ps3.callback(null, 'ok');
-            }
-
-            else {
-              ps3.callback('err');
-            }
-          }
-        }
-      });
+      else {
+        ps3.callback('Gimx is not supported on your platform!');
+      }
     }
   };
 }());

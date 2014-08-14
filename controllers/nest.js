@@ -173,7 +173,7 @@ module.exports = (function () {
 
         if(!err) {
           if(response.error) {
-            console.log('\x1b[31mNest\x1b[0m: ' + response.error_description);
+            console.log('\x1b[31m' + controller.config.title + '\x1b[0m: ' + response.error_description);
           }
 
           else {
@@ -184,7 +184,7 @@ module.exports = (function () {
 
             cache = fs.createWriteStream(__dirname + '/../tmp/nestAuth.json');
             cache.once('open', function() {
-              console.log('\x1b[35mNest\x1b[0m: Auth data cached with URL');
+              console.log('\x1b[35m' + controller.config.title + '\x1b[0m: Auth data cached with URL');
 
               that.deviceList(auth, controller);
 
@@ -201,7 +201,7 @@ module.exports = (function () {
       var config = {},
           that   = this;
 
-      console.log('\x1b[35mNest\x1b[0m: Fetching device info');
+      console.log('\x1b[35m' + controller.config.title + '\x1b[0m: Fetching device info');
 
       config.host     = auth.url;
       config.path     = '/v2/mobile/user.' + auth.userId;
@@ -387,7 +387,7 @@ module.exports = (function () {
               }
 
               else {
-                console.log('\x1b[31mNest\x1b[0m: Auth cache is empty');
+                console.log('\x1b[31m' + controller.config.title + '\x1b[0m: Auth cache is empty');
               }
             });
           }
@@ -454,8 +454,6 @@ module.exports = (function () {
 
       else {
         request = https.request(this.postPrepare(nest), function(response) {
-          console.log('\x1b[32mNest\x1b[0m: Connected');
-
           response.on('data', function(response) {
             dataReply += response;
           });
@@ -471,7 +469,7 @@ module.exports = (function () {
             }
 
             else {
-              console.log('\x1b[31mNest\x1b[0m: No data returned from API');
+              console.log('\x1b[31m' + config.device.title + '\x1b[0m: No data returned from API');
 
               nest.callback(null, '');
             }
@@ -479,19 +477,7 @@ module.exports = (function () {
         });
 
         request.once('error', function(err) {
-          var errorMsg = '';
-
-          if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
-            errorMsg = '\x1b[31mNest\x1b[0m: API is unreachable';
-          }
-
-          else {
-            errorMsg = '\x1b[31mNest\x1b[0m: ' + err.code;
-          }
-
-          console.log(errorMsg);
-
-          nest.callback(errorMsg);
+          nest.callback(err);
         });
 
         if(nest.method === 'POST') {

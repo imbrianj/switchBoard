@@ -96,27 +96,13 @@ module.exports = (function () {
       request = https.request(this.postPrepare(sms), function(response) {
         response.setEncoding('utf8');
 
-        console.log('\x1b[35mSMS\x1b[0m: Connected');
-
         response.once('data', function(response) {
           sms.callback(null, response);
         });
       });
 
       request.once('error', function(err) {
-        var errorMsg = '';
-
-        if(err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED' || err.code === 'EHOSTUNREACH') {
-          errorMsg = '\x1b[31mSMS\x1b[0m: API is unreachable';
-        }
-
-        else {
-          errorMsg = '\x1b[31mSMS\x1b[0m: ' + err.code;
-        }
-
-        console.log(errorMsg);
-
-        sms.callback(errorMsg);
+        sms.callback(err);
       });
 
       request.write(sms.postRequest);

@@ -51,7 +51,7 @@
       }
 
       else if(code <= 12) {
-        icon = 'umbrella';
+        icon = 'tint';
       }
 
       else if(code <= 18) {
@@ -91,7 +91,7 @@
       }
 
       else if(code === 40) {
-        icon = 'umbrella';
+        icon = 'tint';
       }
 
       else if(code <= 43) {

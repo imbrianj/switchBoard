@@ -64,16 +64,16 @@ module.exports = (function () {
             case 'nest'        :
             case 'travis'      :
               if(type === 'long') {
-                if(typeof controllers[deviceId].event === 'object') {
-                  controllers[deviceId].event.poll(deviceId, 'schedule', controllers);
+                if(controllers[deviceId].controller.inputs.indexOf('poll') !== -1) {
+                  runCommand.runCommand(deviceId, 'poll', controllers, 'single', false);
                 }
               }
             break;
 
             default :
               if(type === 'short') {
-                if((typeof controllers[deviceId].controller === 'object') && (typeof controllers[deviceId].controller.state === 'function')) {
-                  controllers[deviceId].controller.state(controllers[deviceId], callback, controllers.config);
+                if(controllers[deviceId].controller.inputs.indexOf('state') !== -1) {
+                  runCommand.runCommand(deviceId, 'state', controllers, 'single', false);
                 }
               }
             break;

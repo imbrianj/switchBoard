@@ -112,8 +112,6 @@ module.exports = (function () {
       pioneer.callback   = config.callback   || function () {};
 
       client.connect(pioneer.devicePort, pioneer.deviceIp, function() {
-        console.log('\x1b[32mPioneer\x1b[0m: Connected');
-
         if(pioneer.command) {
           client.write(pioneer.command + "\r\n");
         }
@@ -128,15 +126,7 @@ module.exports = (function () {
       });
 
       client.once('error', function(err) {
-        var errorMsg = '\x1b[31mPioneer\x1b[0m: ' + err.code;
-
-        if((err.code === 'ECONNRESET') || (err.code === 'ECONNREFUSED') || (err.code === 'EHOSTUNREACH')) {
-          errorMsg = '\x1b[31mPioneer\x1b[0m: Device is off or unreachable';
-        }
-
-        console.log(errorMsg);
-
-        pioneer.callback(errorMsg);
+        pioneer.callback(err);
       });
     }
   };

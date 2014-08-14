@@ -187,8 +187,6 @@ module.exports = (function () {
       lg.pairKey    = config.device.pairKey;
 
       request = http.request(this.postPrepare(lg), function(response) {
-                  console.log('\x1b[32mLG\x1b[0m: Connected');
-
                   response.on('data', function(response) {
                     dataReply += response;
                   });
@@ -198,20 +196,8 @@ module.exports = (function () {
                   });
                 });
 
-      request.once('error', function(error) {
-        var errorMsg = '';
-
-        if(error.code === 'ECONNRESET' || error.code === 'ECONNREFUSED') {
-          errorMsg = '\x1b[31mLG\x1b[0m: Device is off or unreachable';
-        }
-
-        else {
-          errorMsg = '\x1b[31mLG\x1b[0m: ' + error.code;
-        }
-
-        console.log(errorMsg);
-
-        lg.callback(errorMsg);
+      request.once('error', function(err) {
+        lg.callback(err);
       });
 
       request.write(this.postPairData(lg));

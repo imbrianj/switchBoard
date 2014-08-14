@@ -68,8 +68,6 @@ module.exports = (function () {
 
         default :
           execute = '';
-
-          console.log('\x1b[31mSpeech\x1b[0m: Text to speech is not supported on your platform!');
         break;
       }
 
@@ -102,18 +100,22 @@ module.exports = (function () {
       speech.platform = config.platform     || process.platform;
       speech.execute  = this.translateCommand(speech.voice, speech.text, speech.platform);
 
-      if(speech.text && speech.execute) {
-        speak = spawn(speech.execute.command, speech.execute.params);
+      if(speech.platform) {
+        if(speech.text && speech.execute) {
+          speak = spawn(speech.execute.command, speech.execute.params);
 
-        speak.once('close', function(code) {
-            speech.callback(null, 'ok');
-        });
+          speak.once('close', function(code) {
+              speech.callback(null, 'ok');
+          });
+        }
+
+        else {
+          speak.callback('No text specified');
+        }
       }
 
       else {
-        console.log('\x1b[31mSpeech\x1b[0m: No text specified');
-
-        speak.callback('err');
+        speak.callback('Text to speech is not supported on your platform!');
       }
     }
   };
