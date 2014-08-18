@@ -32,16 +32,17 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20140712,
+    version : 20140816,
 
     poll : function(deviceId, command, controllers) {
       var runCommand  = require(__dirname + '/../lib/runCommand'),
           deviceState = require(__dirname + '/../lib/deviceState'),
+          notify,
           controller  = controllers[deviceId],
           speech,
           callback;
 
-      if(controllers[deviceId].controller.stocksOpen(deviceId)) {
+      if(controllers[deviceId].controller.stocksOpen({ device : { deviceId : deviceId, title : controllers[deviceId].config.title } })) {
         callback = function(err, stocks) {
           var message = '',
               i       = 0,
@@ -72,21 +73,25 @@ module.exports = (function () {
           if(message) {
             console.log('\x1b[35mSchedule\x1b[0m: ' + message);
 
+            notify = require(__dirname + '/../lib/notify');
+
+            notify.sendNotification(null, message, deviceId);
+
             for(i; i < controller.config.notify.length; i += 1) {
               if(typeof controllers[controller.config.notify[i]] !== 'undefined') {
                 if(controllers[controller.config.notify[i]].config.typeClass === 'mp3') {
-                  runCommand.runCommand(controller.config.notify[i], 'text-cash', controllers, 'single', false);
+                  runCommand.runCommand(controller.config.notify[i], 'text-cash', 'single', false);
                 }
 
                 else {
-                  runCommand.runCommand(controller.config.notify[i], 'text-' + message, controllers, 'single', false);
+                  runCommand.runCommand(controller.config.notify[i], 'text-' + message, 'single', false);
                 }
               }
             }
           }
         };
 
-        runCommand.runCommand(deviceId, 'list', controllers, deviceId, false, callback);
+        runCommand.runCommand(deviceId, 'list', deviceId, false, callback);
       }
     }
   };

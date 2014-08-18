@@ -35,7 +35,7 @@ module.exports = (function () {
    *       http://forum.samygo.tv/viewtopic.php?f=12&t=1792
    */
   return {
-    version : 20140701,
+    version : 20140813,
 
     inputs  : ['command', 'text'],
 
@@ -83,9 +83,10 @@ module.exports = (function () {
       }
     },
 
-    state : function (controller, callback, config) {
+    state : function (controller, config, callback) {
       var samsung = { device : {}, config : {}};
 
+      callback                 = callback || function() {};
       samsung.device.deviceId  = controller.config.deviceId;
       samsung.device.deviceIp  = controller.config.deviceIp;
       samsung.config.serverIp  = config.serverIp;
@@ -97,7 +98,7 @@ module.exports = (function () {
         }
 
         else if(err) {
-          callback(samsung.device.deviceId, 'err');
+          callback(samsung.device.deviceId, err);
         }
       };
 

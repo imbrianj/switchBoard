@@ -32,17 +32,23 @@ exports.runCommandTest = {
   parseCommands : function(test) {
     'use strict';
 
-    var runCommand   = require('../../../lib/runCommand'),
-        controllers  = { samsung : { config     : { deviceId : 'TEST-deviceId',
-                                                    title : 'TEST-title' },
-                                     markup     : '<span>{{DEVICE_ID}} {{TEST_KEY}}</span>',
-                                     controller : { inputs : ['command'],
-                                                    keymap : ['VOLUP'],
-                                                    send   : function(request) { return request; } } } },
-        response     = { end : function(msg) {} },
-        emptyCommand = runCommand.parseCommands('samsung', '', controllers, null, response),
-        badCommand   = runCommand.parseCommands('samsung', 'VOLMUTE', controllers, null, response),
-        goodCommand  = runCommand.parseCommands('samsung', 'VOLUP', controllers, null, response);
+    var runCommand  = require('../../../lib/runCommand'),
+        controllers = { samsung : { config     : { deviceId : 'TEST-deviceId',
+                                                   title : 'TEST-title' },
+                                    markup     : '<span>{{DEVICE_ID}} {{TEST_KEY}}</span>',
+                                    controller : { inputs : ['command'],
+                                                   keymap : ['VOLUP'],
+                                                   send   : function(request) { return request; } } } },
+        response    = { end : function() {} },
+        emptyCommand,
+        badCommand,
+        goodCommand;
+
+    runCommand.init(controllers);
+
+    emptyCommand = runCommand.parseCommands('samsung', '', null, response);
+    badCommand   = runCommand.parseCommands('samsung', 'VOLMUTE', null, response);
+    goodCommand  = runCommand.parseCommands('samsung', 'VOLUP', null, response);
 
     test.equal(emptyCommand, '', 'Empty reply if there is no command issued');
     test.deepEqual(badCommand, { device : 'samsung', command : 'VOLMUTE', message : 'invalid' }, 'Bad command should be invalidated');
@@ -88,21 +94,29 @@ exports.runCommandTest = {
   validateCommand : function(test) {
     'use strict';
 
-    var runCommand     = require('../../../lib/runCommand'),
-        controllers    = { samsung : { config     : { deviceId : 'TEST-deviceId',
-                                                      title : 'TEST-title' },
-                                       markup     : '<span>{{DEVICE_ID}} {{TEST_KEY}}</span>',
-                                       controller : { inputs : ['command', 'text'],
-                                                      keymap : ['VOLUP'],
-                                                      send   : function(request) { return request; } } } },
-        validCommand   = runCommand.validateCommand('samsung', 'VOLUP', controllers),
-        validtext      = runCommand.validateCommand('samsung', 'text-TEST', controllers),
-        invalidLaunch  = runCommand.validateCommand('samsung', 'launch-TEST', controllers),
-        invalidList    = runCommand.validateCommand('samsung', 'launch', controllers),
-        invalidCommand = runCommand.validateCommand('samsung', 'TEST', controllers);
+    var runCommand  = require('../../../lib/runCommand'),
+        controllers = { samsung : { config     : { deviceId : 'TEST-deviceId',
+                                                   title : 'TEST-title' },
+                                    markup     : '<span>{{DEVICE_ID}} {{TEST_KEY}}</span>',
+                                    controller : { inputs : ['command', 'text'],
+                                                   keymap : ['VOLUP'],
+                                                   send   : function(request) { return request; } } } },
+        validCommand,
+        validText,
+        invalidLaunch,
+        invalidList,
+        invalidCommand;
+
+    runCommand.init(controllers);
+
+    validCommand   = runCommand.validateCommand('samsung', 'VOLUP');
+    validText      = runCommand.validateCommand('samsung', 'text-TEST');
+    invalidLaunch  = runCommand.validateCommand('samsung', 'launch-TEST');
+    invalidList    = runCommand.validateCommand('samsung', 'launch');
+    invalidCommand = runCommand.validateCommand('samsung', 'TEST');
 
     test.ok(validCommand, 'Good command should be validated');
-    test.ok(validtext, 'Text should be validated');
+    test.ok(validText, 'Text should be validated');
     test.ok(!invalidLaunch, 'This device is not configured to support launch shortcuts');
     test.ok(!invalidList, 'This device is not configured to support list shortcuts');
     test.ok(!invalidCommand, 'Bad command should be invalidated');
@@ -121,11 +135,11 @@ exports.runCommandTest = {
                                                       keymap : ['VOLUP'],
                                                       send   : function(request) { return request; } } } },
         response       = { end : function(msg) { return msg; } },
-        validCommand   = runCommand.runCommand('samsung', 'VOLUP', controllers, null, response),
-        invalidCommand = runCommand.runCommand('samsung', 'TEST', controllers, null, response);
+        validCommand   = runCommand.runCommand('samsung', 'VOLUP', null, response),
+        invalidCommand = runCommand.runCommand('samsung', 'TEST', null, response);
 
-    test.deepEqual(validCommand, { device: 'samsung', command: 'VOLUP', message: 'valid' }, 'Good command should be validated');
-    test.deepEqual(invalidCommand, { device: 'samsung', command: 'TEST', message: 'invalid' }, 'Bad command should be invalidated');
+    test.deepEqual(validCommand,   { device: 'samsung', command: 'VOLUP', message: 'valid' },   'Good command should be validated');
+    test.deepEqual(invalidCommand, { device: 'samsung', command: 'TEST',  message: 'invalid' }, 'Bad command should be invalidated');
 
     test.done();
   }

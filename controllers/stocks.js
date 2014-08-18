@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic stocks information, courtesy of Yahoo.
    */
   return {
-    version : 20140729,
+    version : 20140813,
 
     inputs  : ['list'],
 

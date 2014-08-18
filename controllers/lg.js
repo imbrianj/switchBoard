@@ -34,7 +34,7 @@ module.exports = (function () {
    *       http://forum.loxone.com/enen/software/4876-lg-tv-http-control.html#post32692
    */
   return {
-    version : 20140720,
+    version : 20140813,
 
     inputs  : ['command'],
 

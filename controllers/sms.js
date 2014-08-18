@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic control of Twilio text messaging API.
    */
   return {
-    version : 20140720,
+    version : 20140813,
 
     inputs  : ['text'],
 

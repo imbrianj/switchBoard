@@ -186,7 +186,7 @@ module.exports = (function () {
             cache.once('open', function() {
               console.log('\x1b[35m' + controller.config.title + '\x1b[0m: Auth data cached with URL');
 
-              that.deviceList(auth, controller);
+              that.deviceList(controller.config);
 
               cache.write(JSON.stringify(auth));
             });
@@ -197,16 +197,17 @@ module.exports = (function () {
       this.send(config);
     },
 
-    deviceList : function (auth, controller) {
-      var config = {},
-          that   = this;
+    deviceList : function (config) {
+      var that     = this,
+          callback = config.callback || function() {};
 
-      console.log('\x1b[35m' + controller.config.title + '\x1b[0m: Fetching device info');
+      console.log('\x1b[35m' + config.title + '\x1b[0m: Fetching device info');
 
-      config.host     = auth.url;
-      config.path     = '/v2/mobile/user.' + auth.userId;
+      delete config.list;
+      config.host     = config.auth.url;
+      config.path     = '/v2/mobile/user.' + config.auth.userId;
       config.method   = 'GET';
-      config.device   = { auth : auth, deviceId : controller.config.deviceId };
+      config.device   = { auth : config.auth, deviceId : config.deviceId };
 
       config.callback = function(err, response) {
         var deviceState = require(__dirname + '/../lib/deviceState'),
@@ -242,11 +243,11 @@ module.exports = (function () {
             nest.thermostat[response.device[i].serial_number].label    = that.findLabel(response.device[i].where_id);
           }
 
-          deviceState.updateState(controller.config.deviceId, 'nest', { state : 'ok', value : nest });
+          callback(null, nest);
         }
 
         else {
-          deviceState.updateState(controller.deviceId, 'nest', { state : 'err' });
+          callback('err');
         }
       };
 
@@ -368,16 +369,16 @@ module.exports = (function () {
           // If we have a presumed good auth token, we can populate the device list.
           if(fileExists) {
             fs.readFile(__dirname + '/../tmp/nestAuth.json', function(err, auth) {
-              if(auth.toString()) {
-                auth = JSON.parse(auth.toString());
+              var runCommand  = require(__dirname + '/../lib/runCommand');
 
-                if((auth.expire) && (auth.expire > now)) {
+              if(auth.toString()) {
+                controller.config.auth = JSON.parse(auth.toString());
+
+                if((controller.config.auth.expire) && (controller.config.auth.expire > now)) {
                   expired = false;
 
-                  if(typeof auth.url === 'string') {
-                    controller.config.auth = auth;
-
-                    controller.controller.deviceList(auth, controller);
+                  if(typeof controller.config.auth.url === 'string') {
+                    runCommand.runCommand(controller.config.deviceId, 'list', controller.config.deviceId);
                   }
                 }
 
@@ -421,13 +422,14 @@ module.exports = (function () {
     },
 
     send : function (config) {
-      var https        = require('https'),
-          nest         = {},
-          postRequest  = '',
-          dataReply    = '',
+      var https       = require('https'),
+          nest        = {},
+          postRequest = '',
+          dataReply   = '',
           request;
 
       nest.deviceId  = config.device.deviceId || '';
+      nest.title     = config.device.title    || '';
       nest.command   = config.command         || '';
       nest.subdevice = config.subdevice       || '';
       nest.list      = config.list            || '';
@@ -449,7 +451,7 @@ module.exports = (function () {
       }
 
       if(nest.list) {
-        this.deviceList(nest.auth, { config : { deviceId : config.device.deviceId } });
+        this.deviceList(nest);
       }
 
       else {

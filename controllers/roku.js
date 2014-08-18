@@ -33,7 +33,7 @@ module.exports = (function () {
    * @requires xml2js, http, fs, request
    */
   return {
-    version : 20140720,
+    version : 20140813,
 
     inputs  : ['command', 'text', 'list', 'launch'],
 
@@ -172,13 +172,14 @@ module.exports = (function () {
         deviceState.updateState(deviceId, 'roku', params);
       };
 
-      this.state(controller, callback, config, 'verbose');
+      this.state(controller, config, callback, 'verbose');
     },
 
-    state : function (controller, callback, config, logging) {
+    state : function (controller, config, callback, logging) {
       var stateCallback;
 
-      logging = logging || 'quiet';
+      callback = callback || function() {};
+      logging  = logging  || 'quiet';
 
       stateCallback = function(err, reply) {
         if(err) {

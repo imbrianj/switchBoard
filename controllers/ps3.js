@@ -34,7 +34,7 @@ module.exports = (function () {
    *       here: https://code.google.com/p/diyps3controller/downloads/list
    */
   return {
-    version : 20140619,
+    version : 20140813,
 
     inputs  : ['command'],
 

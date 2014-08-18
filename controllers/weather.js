@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic weather information, courtesy of Yahoo.
    */
   return {
-    version : 20140720,
+    version : 20140813,
 
     inputs  : ['list'],
 

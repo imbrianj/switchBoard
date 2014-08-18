@@ -34,7 +34,7 @@ module.exports = (function () {
    *       http://cocoontech.com/forums/topic/21266-panasonic-viera-plasma-ip-control/page-2
    */
   return {
-    version : 20140720,
+    version : 20140813,
 
     inputs  : ['command', 'text'],
 
@@ -98,9 +98,10 @@ module.exports = (function () {
       return response;
     },
 
-    state : function (controller, callback, config) {
+    state : function (controller, config, callback) {
       var panasonic = { device : {}};
 
+      callback                  = callback || function() {};
       panasonic.device.deviceId = controller.config.deviceId;
       panasonic.device.deviceIp = controller.config.deviceIp;
 

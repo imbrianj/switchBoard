@@ -37,7 +37,7 @@ module.exports = (function () {
    *
    */
   return {
-    version : 20140607,
+    version : 20140813,
 
     inputs : ['command'],
 
@@ -82,11 +82,12 @@ module.exports = (function () {
       return this.hashTable[command];
     },
 
-    state : function (controller, callback, config) {
+    state : function (controller, config, callback) {
       var pioneer = { device : {}, config : {} };
 
-      pioneer.device.deviceId  = controller.config.deviceId;
-      pioneer.device.deviceIp  = controller.config.deviceIp;
+      callback                = callback || function() {};
+      pioneer.device.deviceId = controller.config.deviceId;
+      pioneer.device.deviceIp = controller.config.deviceIp;
 
       pioneer.callback = function (err, reply) {
         if(reply) {

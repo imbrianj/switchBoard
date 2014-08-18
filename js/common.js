@@ -578,6 +578,8 @@ Switchboard = (function () {
         Switchboard.event.add(socket, 'close', function(e) {
           indicator.className = 'disconnected';
           Switchboard.putText(indicator, 'Disconnected');
+
+          Switchboard.log('Disconnected from WebSocket');
         });
 
         Switchboard.event.add(socket, 'message', function(e) {

@@ -35,7 +35,7 @@ module.exports = (function () {
    *       sudo apt-get install mpg123
    */
   return {
-    version : 20140729,
+    version : 20140813,
 
     inputs  : ['text'],
 

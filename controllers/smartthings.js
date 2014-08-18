@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic control of SmartThings endpoint.
    */
   return {
-    version : 20140803,
+    version : 20140813,
 
     inputs  : ['list', 'subdevice'],
 
@@ -117,7 +117,7 @@ module.exports = (function () {
             cache.once('open', function() {
               console.log('\x1b[35m' + controller.config.title + '\x1b[0m: Auth data cached with URL');
 
-              that.oauthDeviceList(auth, controller);
+              that.oauthDeviceList(controller);
 
               cache.write(JSON.stringify(auth));
             });
@@ -131,19 +131,15 @@ module.exports = (function () {
     /**
      * Query for current device list.
      */
-    oauthDeviceList : function (auth, controller) {
-      var smartthings = { device : {} },
-          request     = {},
-          that        = this;
+    oauthDeviceList : function (config) {
+      console.log('\x1b[35m' + config.title + '\x1b[0m: Fetching device info');
 
-      console.log('\x1b[35m' + controller.config.title + '\x1b[0m: Fetching device info');
+      delete config.list;
+      config.deviceId = config.deviceId;
+      config.path     = config.path || config.auth.url + '/list';
+      config.device   = { auth : config.auth, deviceId : config.deviceId, groups : config.groups };
 
-      smartthings.device.deviceId = controller.config.deviceId;
-      smartthings.path            = controller.config.path   || auth.url + '/list';
-      smartthings.device.auth     = auth;
-      smartthings.device.groups   = controller.config.groups || {};
-
-      this.send(smartthings);
+      this.send(config);
     },
 
     updateState : function (smartthings, response) {
@@ -414,16 +410,22 @@ module.exports = (function () {
           // If we have a presumed good auth token, we can populate the device list.
           if(fileExists) {
             fs.readFile(__dirname + '/../tmp/smartthingsAuth.json', function(err, auth) {
-              auth = JSON.parse(auth.toString());
+              var runCommand  = require(__dirname + '/../lib/runCommand');
 
-              if(typeof auth.url === 'string') {
-                controller.config.auth = auth;
+              if(auth.toString()) {
+                controller.config.auth = JSON.parse(auth.toString());
 
-                controller.controller.oauthDeviceList(auth, controller);
+                if(typeof controller.config.auth.url === 'string') {
+                  runCommand.runCommand(controller.config.deviceId, 'list', controller.config.deviceId);
+                }
+
+                else {
+                  controller.controller.oauthUrl(auth, controller);
+                }
               }
 
               else {
-                controller.controller.oauthUrl(auth, controller);
+                console.log('\x1b[31m' + controller.config.title + '\x1b[0m: Auth cache is empty');
               }
             });
           }
@@ -479,7 +481,9 @@ module.exports = (function () {
 
       config.device        = config.device          || {};
       smartthings.deviceId = config.device.deviceId || '';
+      smartthings.title    = config.device.title    || '';
       smartthings.auth     = config.device.auth     || '';
+      smartthings.groups   = config.device.groups   || {};
       smartthings.command  = config.subdevice       || '';
       smartthings.list     = config.list            || '';
       smartthings.host     = config.host            || 'graph.api.smartthings.com';
@@ -488,53 +492,59 @@ module.exports = (function () {
       smartthings.method   = config.method          || 'GET';
       smartthings.callback = config.callback        || function() {};
 
-      request = this.postPrepare(smartthings);
-
-      if(smartthings.auth) {
-        request.headers.Authorization = 'Bearer ' + smartthings.auth.accessToken;
-      }
-
-      if(smartthings.command) {
-        request.path = this.getDevicePath(smartthings.command, config);
-      }
-
       if(smartthings.list) {
-        this.oauthDeviceList(smartthings.auth, { config : { deviceId : config.device.deviceId, groups : config.device.groups } });
+        this.oauthDeviceList(smartthings);
       }
 
-      else if(request.path) {
-        request = https.request(request, function(response) {
-                    response.on('data', function(response) {
-                      dataReply += response;
+      else {
+        request = this.postPrepare(smartthings);
+
+        if(smartthings.auth) {
+          request.headers.Authorization = 'Bearer ' + smartthings.auth.accessToken;
+        }
+
+        if(smartthings.command) {
+          request.path = this.getDevicePath(smartthings.command, config);
+        }
+
+        if(smartthings.list) {
+          this.oauthDeviceList(smartthings);
+        }
+
+        else if(request.path) {
+          request = https.request(request, function(response) {
+                      response.on('data', function(response) {
+                        dataReply += response;
+                      });
+
+                      response.once('end', function() {
+                        var deviceState     = require(__dirname + '/../lib/deviceState'),
+                            smartthingsData = {};
+
+                        if(dataReply) {
+                          smartthingsData = JSON.parse(dataReply);
+
+                          smartthingsData.groups = config.device.groups;
+
+                          that.updateState(smartthings, smartthingsData);
+
+                          smartthings.callback(null, dataReply, true);
+                        }
+
+                        else {
+                          smartthings.callback('No data returned from API');
+                        }
+                      });
                     });
 
-                    response.once('end', function() {
-                      var deviceState     = require(__dirname + '/../lib/deviceState'),
-                          smartthingsData = {};
+          request.once('error', function(err) {
+            smartthings.callback(err);
+          });
 
-                      if(dataReply) {
-                        smartthingsData = JSON.parse(dataReply);
+          request.end();
 
-                        smartthingsData.groups = config.device.groups;
-
-                        that.updateState(smartthings, smartthingsData);
-
-                        smartthings.callback(null, dataReply, true);
-                      }
-
-                      else {
-                        smartthings.callback('No data returned from API');
-                      }
-                    });
-                  });
-
-        request.once('error', function(err) {
-          smartthings.callback(err);
-        });
-
-        request.end();
-
-        return dataReply;
+          return dataReply;
+        }
       }
     }
   };

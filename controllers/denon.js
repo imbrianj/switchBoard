@@ -32,7 +32,7 @@ module.exports = (function () {
    * @requires net
    */
   return {
-    version : 20140805,
+    version : 20140813,
 
     inputs : ['command'],
 
@@ -57,9 +57,10 @@ module.exports = (function () {
       return this.hashTable[command];
     },
 
-    state : function (controller, callback, config) {
+    state : function (controller, config, callback) {
       var denon = { device : {}, config : {} };
 
+      callback              = callback || function() {};
       denon.device.deviceId = controller.config.deviceId;
       denon.device.deviceIp = controller.config.deviceIp;
 

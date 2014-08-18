@@ -355,6 +355,7 @@ form legend {
 }
 
 .device {
+	clear: both;
 	font-size: 300%;
 }
 
@@ -800,7 +801,7 @@ a.device-active:hover:before {
 	display: none;
 }
 
-body .selected,
+body.rich .selected,
 .device:target {
 	display: block;
 }

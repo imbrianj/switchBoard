@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic viewing of Travis CI job states.
    */
   return {
-    version : 20140726,
+    version : 20140813,
 
     inputs  : ['list'],
 

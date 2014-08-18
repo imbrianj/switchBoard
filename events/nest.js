@@ -32,33 +32,35 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20140803,
+    version : 20140816,
 
     fire : function(device, command, controllers) {
       var runCommand = require(__dirname + '/../lib/runCommand'),
           controller = controllers[device],
           callback;
 
-      callback = function(deviceId, err, reply, params) {
-        var deviceState = require(__dirname + '/../lib/deviceState'),
-            message     = 'err';
+      if(command !== 'list') {
+        callback = function(deviceId, err, reply, params) {
+          var deviceState = require(__dirname + '/../lib/deviceState'),
+              message     = 'err';
 
-        params = params || {};
+          params = params || {};
 
-        if(reply) {
-          message = 'ok';
-        }
+          if(reply) {
+            message = 'ok';
+          }
 
-        params.state = message;
+          params.state = message;
 
-        deviceState.updateState(deviceId, controller.config.typeClass, params);
-      };
+          deviceState.updateState(deviceId, controller.config.typeClass, params);
+        };
 
-      // We want to grab the state from the source of truth (the actual
-      // API), but we need to wait a short time for it to register.
-      setTimeout(function() {
-          runCommand.runCommand(device, 'list', controllers, device, false, callback);
-      }, 1000);
+        // We want to grab the state from the source of truth (the actual
+        // API), but we need to wait a short time for it to register.
+        setTimeout(function() {
+            runCommand.runCommand(device, 'list', device, false, callback);
+        }, 1000);
+      }
     },
 
     poll : function(deviceId, command, controllers) {
@@ -67,7 +69,7 @@ module.exports = (function () {
           callback;
 
       if(controller.config.auth) {
-        runCommand.runCommand(deviceId, 'list', controllers, deviceId, false, callback);
+        runCommand.runCommand(deviceId, 'list', deviceId, false, callback);
       }
     }
   };

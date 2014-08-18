@@ -32,14 +32,14 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20140718,
+    version : 20140816,
 
     poll : function(deviceId, command, controllers) {
       var runCommand  = require(__dirname + '/../lib/runCommand'),
           deviceState = require(__dirname + '/../lib/deviceState'),
           controller  = controllers[deviceId];
 
-      runCommand.runCommand(deviceId, 'list', controllers, deviceId);
+      runCommand.runCommand(deviceId, 'list', deviceId);
     }
   };
 }());

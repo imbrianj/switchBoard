@@ -33,7 +33,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20140709,
+    version : 20140816,
 
     fire : function(device, command, controllers) {
       var runCommand = require(__dirname + '/../lib/runCommand'),
@@ -61,12 +61,12 @@ module.exports = (function () {
         setTimeout(function() {
             console.log('\x1b[35mFoscam\x1b[0m: Fetching alarm state');
 
-            controllers[device].controller.state(controllers[device], callback, controllers[device].config);
+            controllers[device].controller.state(controllers[device], controllers[device].config, callback);
         }, 250);
 
         for(deviceId in controllers) {
           if((deviceId !== 'config') && (controllers[deviceId].config.typeClass === 'speech')) {
-            runCommand.runCommand(deviceId, command === 'AlarmOn' ? 'text-Camera armed' : 'text-Camera disarmed', controllers, 'single', false);
+            runCommand.runCommand(deviceId, command === 'AlarmOn' ? 'text-Camera armed' : 'text-Camera disarmed', 'single', false);
           }
         }
       }

@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic control of Foscam IP camera.
    */
   return {
-    version : 20140720,
+    version : 20140813,
 
     inputs  : ['command', 'list'],
 
@@ -102,24 +102,19 @@ module.exports = (function () {
     },
 
     init : function (controller, config) {
-      var callback = function(deviceId, err, state, params) {
-        var deviceState = require(__dirname + '/../lib/deviceState');
+      var runCommand  = require(__dirname + '/../lib/runCommand');
 
-        params.state = state;
-
-        deviceState.updateState(deviceId, 'foscam', params);
-      };
-
-      this.state(controller, callback);
+      runCommand.runCommand(controller.config.deviceId, 'state', controller.config.deviceId);
 
       controller.markup = controller.markup.replace('{{FOSCAM_DYNAMIC}}', 'http://' + controller.config.deviceIp + '/videostream.cgi?user=' + controller.config.username + '&amp;pwd=' + controller.config.password);
 
       return controller;
     },
 
-    state : function (controller, callback, config) {
+    state : function (controller, config, callback) {
       var foscam = { device : {}, config : {} };
 
+      callback               = callback || function() {};
       foscam.device.deviceId = controller.config.deviceId;
       foscam.device.deviceIp = controller.config.deviceIp;
       foscam.device.username = controller.config.username;
@@ -202,13 +197,13 @@ module.exports = (function () {
 
           response.once('end', function() {
             if(dataReply) {
-              foscam.callback(null, dataReply);
+              foscam.callback(null, dataReply, true);
             }
           });
         });
 
         request.once('error', function(err) {
-          foscam.callback(err);
+          foscam.callback(err, null, true);
         });
 
         request.end();

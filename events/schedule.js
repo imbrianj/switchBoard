@@ -32,27 +32,11 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20140418,
+    version : 20140816,
 
     fire : function(controllers, type) {
       var runCommand = require(__dirname + '/../lib/runCommand'),
-          deviceId,
-          callback;
-
-      callback = function(deviceId, err, reply, params) {
-        var deviceState = require(__dirname + '/../lib/deviceState'),
-            message     = 'err';
-
-        params = params || {};
-
-        if(reply) {
-          message = 'ok';
-        }
-
-        params.state = message;
-
-        deviceState.updateState(deviceId, controllers[deviceId].config.typeClass, params);
-      };
+          deviceId;
 
       for(deviceId in controllers) {
         if(deviceId !== 'config') {
@@ -65,7 +49,7 @@ module.exports = (function () {
             case 'travis'      :
               if(type === 'long') {
                 if(controllers[deviceId].controller.inputs.indexOf('poll') !== -1) {
-                  runCommand.runCommand(deviceId, 'poll', controllers, 'single', false);
+                  runCommand.runCommand(deviceId, 'poll', 'single', false);
                 }
               }
             break;
@@ -73,7 +57,7 @@ module.exports = (function () {
             default :
               if(type === 'short') {
                 if(controllers[deviceId].controller.inputs.indexOf('state') !== -1) {
-                  runCommand.runCommand(deviceId, 'state', controllers, 'single', false);
+                  runCommand.runCommand(deviceId, 'state', 'single', false);
                 }
               }
             break;

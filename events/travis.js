@@ -32,14 +32,22 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20140726,
+    version : 20140816,
 
     poll : function(deviceId, command, controllers) {
       var runCommand  = require(__dirname + '/../lib/runCommand'),
-          deviceState = require(__dirname + '/../lib/deviceState'),
-          controller  = controllers[deviceId];
+          notify,
+          callback;
 
-      runCommand.runCommand(deviceId, 'list', controllers, deviceId);
+      callback = function(err, travis) {
+        if((travis[0]) && (travis[0].state === 'finished') && (travis[0].status === 'err')) {
+          notify = require(__dirname + '/../lib/notify');
+
+          notify.sendNotification(null, 'Travis build failure!', deviceId);
+        }
+      };
+
+      runCommand.runCommand(deviceId, 'list', deviceId, false, callback);
     }
   };
 }());

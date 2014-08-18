@@ -32,15 +32,41 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20140717,
+    version : 20140816,
+
+    fire : function(device, command, controllers) {
+      var notify,
+          value,
+          message;
+
+      if(command.indexOf('subdevice-state-presence-') === 0) {
+        notify = require(__dirname + '/../lib/notify');
+
+        command = command.split('subdevice-state-presence-').join('');
+        value   = command.split('-');
+        command = value[0];
+        value   = value[1];
+
+        if(value === 'on') {
+          message = 'arrived';
+        }
+
+        else if(value === 'off') {
+          message = 'left';
+        }
+
+        if(message) {
+          notify.sendNotification(null, command + ' has just ' + message, device);
+        }
+      }
+    },
 
     poll : function(deviceId, command, controllers) {
       var runCommand = require(__dirname + '/../lib/runCommand'),
-          controller = controllers[deviceId],
-          callback;
+          controller = controllers[deviceId];
 
       if((controller.config.auth) && (controller.config.auth.url)) {
-        runCommand.runCommand(deviceId, 'list', controllers, deviceId, false, callback);
+        runCommand.runCommand(deviceId, 'list', deviceId, false);
       }
     }
   };
