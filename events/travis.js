@@ -40,7 +40,7 @@ module.exports = (function () {
           callback;
 
       callback = function(err, travis) {
-        if((travis[0]) && (travis[0].state === 'finished') && (travis[0].status === 'err')) {
+        if((travis) && (travis[0]) && (travis[0].state === 'finished') && (travis[0].status === 'err')) {
           notify = require(__dirname + '/../lib/notify');
 
           notify.sendNotification(null, 'Travis build failure!', deviceId);
