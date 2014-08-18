@@ -39,18 +39,45 @@ module.exports = (function () {
     /**
      * Whitelist of available key codes to use.
      */
-    keymap : ['POWER_ON', 'POWER_OFF', 'VOL_UP', 'VOL_DOWN', 'MUTE'],
+    keymap : ['POWER_ON', 'POWER_OFF', 'VOL_UP', 'VOL_DOWN', 'MUTE', 'UNMUTE', 'INPUT_BLURAY', 'INPUT_MPLAYER', 'INPUT_CD', 'INPUT_NETWORK', 'INPUT_TV', 'INPUT_GAME', 'MENU', 'MENU_UP', 'MENU_DOWN', 'MENU_LEFT', 'MENU_RIGHT', 'MENU_RETURN', 'SOUND_MOVIE', 'SOUND_MCHSTEREO', 'SOUND_PURE', 'ZONE1_ON', 'ZONE1_OFF', 'ZONE2_ON', 'ZONE2_VOL_UP', 'ZONE2_VOL_DOWN', 'ZONE2_OFF', 'ZONE3_ON', 'ZONE3_VOL_UP', 'ZONE3_VOL_DOWN', 'ZONE3_OFF' ],
 
     /**
      * Since I want to abstract commands, I'd rather deal with semi-readable
      * key names - so this hash table will convert the pretty names to numeric
      * values denon expects.
      */
-    hashTable : { 'POWER_ON'  : 'PWON',
-                  'POWER_OFF' : 'PWSTANDBY',
-                  'VOL_UP'    : 'MVVU',
-                  'VOL_DOWN'  : 'MVDOWN',
-                  'MUTE'      : 'MUON'
+    hashTable : { 'POWER_ON'        : 'PWON',
+                  'POWER_OFF'       : 'PWSTANDBY',
+                  'VOL_UP'          : 'MVUP',
+                  'VOL_DOWN'        : 'MVDOWN',
+                  'MUTE'            : 'MUON',
+                  'UNMUTE'          : 'MUOFF',
+                  'INPUT_BLURAY'    : 'SIBD',
+                  'INPUT_MPLAYER'   : 'SIMPLAY',
+                  'INPUT_CD'        : 'SICD',
+                  'INPUT_NETWORK'   : 'SINET',
+                  'INPUT_TV'        : 'SISAT/CBL',
+                  'INPUT_GAME'      : 'SIGAME',
+                  'MENU'            : 'MNMEN ON',
+                  'MENU_UP'         : 'MNCUP',
+                  'MENU_DOWN'       : 'MNCDN',
+                  'MENU_LEFT'       : 'MNCLT',
+                  'MENU_RIGHT'      : 'MENCRT',
+                  'MENU_RETURN'     : 'MNRTN',
+                  'SOUND_MOVIE'     : 'MSMOVIE',
+                  'SOUND_MCHSTEREO' : 'MSMCH STEREO',
+                  'SOUND_PURE'      : 'MSPURE DIRECT',
+                  'ZONE1_ON'        : 'ZMON',
+                  'ZONE1_OFF'       : 'ZMOFF',
+                  'ZONE2_ON'        : 'Z2ON',
+                  'ZONE2_VOL_UP'    : 'Z2UP',
+                  'ZONE2_VOL_DOWN'  : 'Z3DOWN',
+                  'ZONE2_OFF'       : 'Z2OFF',
+                  'ZONE3_ON'        : 'Z3ON',    
+                  'ZONE3_VOL_UP'    : 'Z3UP',     
+                  'ZONE3_VOL_DOWN'  : 'Z3DOWN',
+                  'ZONE3_OFF'       : 'Z3OFF'
+                  
     },
 
     translateCommand : function (command) {
@@ -87,18 +114,17 @@ module.exports = (function () {
       denon.devicePort = config.devicePort || 23;
       denon.callback   = config.callback   || function () {};
 
-      client.connect(denon.devicePort, denon.deviceIp, function() {
-        if(denon.command) {
+      if(denon.command) {
+        client.connect(denon.devicePort, denon.deviceIp, function() {
           client.write(denon.command + "\r");
-        }
+          client.end();
+        });
+      }
 
-        denon.callback(null, 'ok');
-      });
+      denon.callback(null, 'ok');
 
       client.once('data', function(dataReply) {
         denon.callback(null, dataReply);
-
-        client.end();
       });
 
       client.once('error', function(err) {
