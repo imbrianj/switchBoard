@@ -29,6 +29,29 @@
  */
 
 exports.loadMarkupTest = {
+  loadTemplates : function(test) {
+    'use strict';
+
+    var loadMarkup  = require('../../../lib/loadMarkup'),
+        controllers = { config  : { theme  : 'TEST-theme', default : 'samsung' },
+                        samsung : { config : { deviceId  : 'TEST-deviceId',
+                                               typeClass : 'samsung',
+                                               title     : 'TEST-title' } },
+                        speech  : { config : { deviceId  : 'Test-deviceId2',
+                                               typeClass : 'speech' } },
+                        nest    : { config : { deviceId  : 'Test-deviceId3',
+                                               typeClass : 'nest' } } },
+        templates    = loadMarkup.loadTemplates(controllers);
+
+    test.ok(typeof templates.samsung.fragments === 'undefined',   'Samsung has no template fragments');
+    test.ok(typeof templates.speech.fragments === 'undefined',    'Speech has no template fragments');
+    test.ok(typeof templates.nest.fragments === 'object',         'Nest has template fragments');
+    test.ok(typeof templates.nest.fragments.group === 'string',   'Nest has a "group" fragment');
+    test.ok(typeof templates.nest.fragments.protect === 'string', 'Nest has a "protect" fragment');
+
+    test.done();
+  },
+
   loadMarkup : function(test) {
     'use strict';
 

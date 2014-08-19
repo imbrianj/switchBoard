@@ -31,6 +31,19 @@
 State = {};
 
 exports.deviceState = {
+  getDeviceState : function(test) {
+    'use strict';
+
+    var deviceState    = require('../../../lib/deviceState'),
+        newFauxDevice  = deviceState.updateState('faux-device', 'faux-type', { state : 'ok', value : 100 }),
+        testFauxDevice = deviceState.getDeviceState('faux-device');
+
+    test.notEqual(parseInt(testFauxDevice.updated, 10), NaN, 'Timestamp should return a number.');
+    test.equal(testFauxDevice.value,                    100, 'Returned value should match set value.');
+
+    test.done();
+  },
+
   newState : function(test) {
     'use strict';
 

@@ -77,7 +77,6 @@ module.exports = (function () {
                   'ZONE3_VOL_UP'    : 'Z3UP',
                   'ZONE3_VOL_DOWN'  : 'Z3DOWN',
                   'ZONE3_OFF'       : 'Z3OFF'
-
     },
 
     translateCommand : function (command) {
