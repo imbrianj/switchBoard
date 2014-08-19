@@ -117,7 +117,7 @@ module.exports = (function () {
           }
 
           else {
-            travis.callback(travisData);
+            travis.callback('err', travisData);
           }
         });
       });

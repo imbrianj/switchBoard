@@ -73,11 +73,11 @@ module.exports = (function () {
                   'ZONE2_VOL_UP'    : 'Z2UP',
                   'ZONE2_VOL_DOWN'  : 'Z3DOWN',
                   'ZONE2_OFF'       : 'Z2OFF',
-                  'ZONE3_ON'        : 'Z3ON',    
-                  'ZONE3_VOL_UP'    : 'Z3UP',     
+                  'ZONE3_ON'        : 'Z3ON',
+                  'ZONE3_VOL_UP'    : 'Z3UP',
                   'ZONE3_VOL_DOWN'  : 'Z3DOWN',
                   'ZONE3_OFF'       : 'Z3OFF'
-                  
+
     },
 
     translateCommand : function (command) {
