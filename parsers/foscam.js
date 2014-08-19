@@ -28,7 +28,9 @@
 
   exports.foscam = function (deviceId, markup, state, value) {
     var stateOn  = '',
-        stateOff = '';
+        stateOff = '',
+        arm,
+        disarm;
 
     if(value === 'on') {
       stateOn = ' device-active';
@@ -42,12 +44,29 @@
     markup = markup.replace('{{DEVICE_STATE_OFF}}', stateOff);
 
     if(typeof Switchboard === 'object') {
-      if(Switchboard.hasClass(Switchboard.getElementsByClassName('selected', null, 'li')[0], deviceId)) {
-        markup = markup.split('{{LAZY_LOAD_IMAGE}}').join('src');
+      arm    = Switchboard.getElementsByClassName('fa-lock', document.getElementById(deviceId), 'a')[0];
+      disarm = Switchboard.getElementsByClassName('fa-unlock', document.getElementById(deviceId), 'a')[0];
+
+      if((value === 'on') && (!Switchboard.hasClass(arm, 'device-on'))) {
+        Switchboard.addClass(arm, 'device-active');
+        Switchboard.removeClass(disarm, 'device-active');
+        markup = '';
+      }
+
+      else if((value === 'off') && (!Switchboard.hasClass(disarm, 'device-on'))) {
+        Switchboard.addClass(disarm, 'device-active');
+        Switchboard.removeClass(arm, 'device-active');
+        markup = '';
       }
 
       else {
-        markup = markup.split('{{LAZY_LOAD_IMAGE}}').join('data-src');
+        if(Switchboard.hasClass(Switchboard.getElementsByClassName('selected', null, 'li')[0], deviceId)) {
+          markup = markup.split('{{LAZY_LOAD_IMAGE}}').join('src');
+        }
+
+        else {
+          markup = markup.split('{{LAZY_LOAD_IMAGE}}').join('data-src');
+        }
       }
     }
 

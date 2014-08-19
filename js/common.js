@@ -496,6 +496,7 @@ Switchboard = (function () {
             deviceState = state.state,
             selected,
             markup,
+            innerMarkup = document.createElement('div'),
             oldMarkup,
             i;
 
@@ -506,10 +507,22 @@ Switchboard = (function () {
         if(node) {
           markup    = templates[state.typeClass].markup;
           selected  = Switchboard.hasClass(node, 'selected') ? ' selected' : '';
-          oldMarkup = node.outerHTML;
+          oldMarkup = node.innerHTML;
 
           if(parser) {
             markup = parser(state.deviceId, markup, deviceState, value, templates[state.typeClass].fragments);
+          }
+
+          else {
+            if((deviceState === 'ok') && (Switchboard.hasClass(node, 'device-off'))) {
+              Switchboard.removeClass(node, 'device-off');
+              Switchboard.addClass(node, 'device-on');
+            }
+
+            else if((deviceState === 'err') && (Switchboard.hasClass(node, 'device-on'))) {
+              Switchboard.removeClass(node, 'device-on');
+              Switchboard.addClass(node, 'device-off');
+            }
           }
 
           if(node && markup && state) {
@@ -534,8 +547,13 @@ Switchboard = (function () {
             }
           }
 
-          if(markup !== oldMarkup) {
-            node.outerHTML = markup;
+          if(markup) {
+            innerMarkup.innerHTML = markup;
+            innerMarkup = Switchboard.getElementsByClassName('device', innerMarkup, 'div')[0];
+
+            if(innerMarkup.innerHTML !== oldMarkup) {
+              node.outerHTML = markup;
+            }
           }
         }
       };
