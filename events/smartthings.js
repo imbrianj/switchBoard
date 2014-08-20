@@ -32,12 +32,14 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20140816,
+    version : 20140819,
 
     fire : function(device, command, controllers) {
-      var notify,
+      var runCommand = require(__dirname + '/../lib/runCommand'),
+          notify,
           value,
-          message;
+          message,
+          deviceId;
 
       if(command.indexOf('subdevice-state-presence-') === 0) {
         notify = require(__dirname + '/../lib/notify');
@@ -57,6 +59,13 @@ module.exports = (function () {
 
         if(message) {
           notify.sendNotification(null, command + ' has just ' + message, device);
+
+          for(deviceId in controllers) {
+            if((deviceId !== 'config') && (controllers[deviceId].config.typeClass === 'speech')) {
+              runCommand.runCommand(deviceId, 'text-' + command + ' has just ' + message, 'single', false);
+              break;
+            }
+          }
         }
       }
     },

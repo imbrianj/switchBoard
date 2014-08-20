@@ -35,6 +35,9 @@
         stateClass         = '',
         device             = {},
         i,
+        heat,
+        cool,
+        off,
         encodeName = function(name) {
           name = name.split(' ').join('_');
           name = name.split('>').join('_');
@@ -62,6 +65,33 @@
     if(value) {
       for(i in value.thermostat) {
         device = value.thermostat[i];
+
+        if(typeof Switchboard === 'object') {
+          off  = Switchboard.getElementsByClassName(encodeName(device.label), document.getElementById(deviceId), 'li')[0];
+          heat = Switchboard.getElementsByClassName('fa-sun-o', off, 'a')[0];
+          cool = Switchboard.getElementsByClassName('fa-asterisk', off, 'a')[0];
+
+          if((device.state === 'cool') && (!Switchboard.hasClass(cool, 'device-on'))) {
+            Switchboard.addClass(cool, 'device-active');
+            Switchboard.removeClass(heat, 'device-active');
+            Switchboard.removeClass(off, 'device-off');
+            markup = '';
+          }
+
+          else if((device.state === 'heat') && (!Switchboard.hasClass(heat, 'device-on'))) {
+            Switchboard.addClass(heat, 'device-active');
+            Switchboard.removeClass(cool, 'device-active');
+            Switchboard.removeClass(off, 'device-off');
+            markup = '';
+          }
+
+          else if((device.state === 'off') && (!Switchboard.hasClass(off, 'device-off'))) {
+            Switchboard.addClass(off, 'device-off');
+            Switchboard.removeClass(cool, 'device-active');
+            Switchboard.removeClass(heat, 'device-active');
+            markup = '';
+          }
+        }
 
         thermostatMarkup = thermostatMarkup + templateThermostat.split('{{SUB_DEVICE_ID}}').join(encodeName(device.label));
         thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_NAME}}').join(device.label);

@@ -24,6 +24,7 @@ exports.config = {
     typeClass : 'samsung',
     title     : 'Samsung SmartTV',
     deviceIp  : '192.168.1.1',
+    timeout   : 3000,
     disabled  : true
   },
 
@@ -248,6 +249,7 @@ exports.config = {
     title     : 'Nest',
     username  : 'user@example.com',
     password  : 'password',
+    notify    : ['pushover', 'twilio', 'speech'],
     disabled  : true
   },
 

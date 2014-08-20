@@ -33,7 +33,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20140816,
+    version : 20140819,
 
     fire : function(device, command, controllers) {
       var runCommand = require(__dirname + '/../lib/runCommand'),
@@ -67,6 +67,7 @@ module.exports = (function () {
         for(deviceId in controllers) {
           if((deviceId !== 'config') && (controllers[deviceId].config.typeClass === 'speech')) {
             runCommand.runCommand(deviceId, command === 'AlarmOn' ? 'text-Camera armed' : 'text-Camera disarmed', 'single', false);
+            break;
           }
         }
       }

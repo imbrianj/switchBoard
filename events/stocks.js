@@ -32,7 +32,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20140816,
+    version : 20140819,
 
     poll : function(deviceId, command, controllers) {
       var runCommand  = require(__dirname + '/../lib/runCommand'),
@@ -70,7 +70,7 @@ module.exports = (function () {
             }
           }
 
-          if(message) {
+          if((message) && (controller.config.notify)) {
             console.log('\x1b[35mSchedule\x1b[0m: ' + message);
 
             notify = require(__dirname + '/../lib/notify');

@@ -1,5 +1,5 @@
 
-                <li class="protect {{SUB_DEVICE_STATE}}">
+                <li class="protect subdevice {{SUB_DEVICE_STATE}}">
                   <dl>
                     <dt>{{SUB_DEVICE_NAME}}</dt>
                     <dd class="fa fa-fire"></dd>

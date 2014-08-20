@@ -32,7 +32,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20140816,
+    version : 20140819,
 
     fire : function(device, command, controllers) {
       var runCommand = require(__dirname + '/../lib/runCommand'),
@@ -40,17 +40,52 @@ module.exports = (function () {
           callback;
 
       if(command !== 'list') {
-        callback = function(deviceId, err, reply, params) {
+        callback = function(err, reply) {
           var deviceState = require(__dirname + '/../lib/deviceState'),
-              message     = 'err';
-
-          params = params || {};
+              notify      = require(__dirname + '/../lib/notify'),
+              state       = 'err',
+              message     = '',
+              params      = {},
+              i           = 0,
+              deviceId,
+              subDevice;
 
           if(reply) {
-            message = 'ok';
+            state = 'ok';
+
+            if(reply.protect) {
+              for(deviceId in controllers) {
+                if((deviceId !== 'config') && (controllers[deviceId].config.typeClass === 'speech')) {
+                  break;
+                }
+              }
+
+              for(subDevice in reply.protect) {
+                if(reply.protect[subDevice].smoke !== 'ok') {
+                  message = message + ' ' + reply.protect[subDevice].label + ' smoke detected!';
+                  notify.sendNotification(null, reply.protect[subDevice].label + ' smoke detected!', device);
+                }
+
+                if(reply.protect[subDevice].co !== 'ok') {
+                  message = message + ' ' + reply.protect[subDevice].label + ' CO detected!';
+                  notify.sendNotification(null, reply.protect[subDevice].label + ' CO detected!', device);
+                }
+              }
+
+              if((message) && (controller.config.notify)) {
+                console.log('\x1b[35mSchedule\x1b[0m: ' + message);
+
+                for(i; i < controller.config.notify.length; i += 1) {
+                  if(typeof controllers[controller.config.notify[i]] !== 'undefined') {
+                    runCommand.runCommand(controller.config.notify[i], 'text-' + message, 'single', false);
+                  }
+                }
+              }
+            }
           }
 
-          params.state = message;
+          params.state = state;
+          params.value = reply;
 
           deviceState.updateState(deviceId, controller.config.typeClass, params);
         };

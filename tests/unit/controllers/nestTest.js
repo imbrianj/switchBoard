@@ -158,7 +158,7 @@ exports.nestControllerTest = {
     test.ok((onloadMarkup.indexOf('<dd class="temp">Temp: 72&deg;</dd>')                                                 !== -1), 'Current thermostat temp');
     test.ok((onloadMarkup.indexOf('class="text-input" type="number" max="100" min="50" name="{{DEVICE_ID}}" value="70"') !== -1), 'Current target temp');
     test.ok((onloadMarkup.indexOf('<dd class="humidity">Humidity: 44%</dd>')                                             !== -1), 'Current humidity');
-    test.ok((onloadMarkup.indexOf('<li class="protect batt device-active">')                                             !== -1), 'Smoke detector has a low battery');
+    test.ok((onloadMarkup.indexOf('<li class="protect subdevice batt device-active">')                                   !== -1), 'Smoke detector has a low battery');
     test.ok((onloadMarkup.indexOf('<dt>Office</dt>')                                                                     !== -1), 'Smoke detector is in the Office');
     test.ok((onloadMarkup.indexOf('<dd class="smoke">Smoke: ok</dd>')                                                    !== -1), 'No smoke found');
     test.ok((onloadMarkup.indexOf('<dd class="co">CO: ok</dd>')                                                          !== -1), 'No CO found');
@@ -190,7 +190,7 @@ exports.nestControllerTest = {
     test.ok((onloadMarkup.indexOf('<dd class="temp">Temp: 62&deg;</dd>')                                                 !== -1), 'Current thermostat temp');
     test.ok((onloadMarkup.indexOf('class="text-input" type="number" max="100" min="50" name="{{DEVICE_ID}}" value="65"') !== -1), 'Current target temp');
     test.ok((onloadMarkup.indexOf('<dd class="humidity">Humidity: 44%</dd>')                                             !== -1), 'Current humidity');
-    test.ok((onloadMarkup.indexOf('<li class="protect smoke co device-active">')                                         !== -1), 'Smoke detector detects both Smoke and CO');
+    test.ok((onloadMarkup.indexOf('<li class="protect subdevice smoke co device-active">')                               !== -1), 'Smoke detector detects both Smoke and CO');
     test.ok((onloadMarkup.indexOf('<dt>Bedroom</dt>')                                                                    !== -1), 'Smoke detector is in the Bedroom');
     test.ok((onloadMarkup.indexOf('<dd class="smoke">Smoke: err</dd>')                                                   !== -1), 'Smoke detected');
     test.ok((onloadMarkup.indexOf('<dd class="co">CO: err</dd>')                                                         !== -1), 'CO detected');

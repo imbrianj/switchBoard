@@ -1,5 +1,5 @@
 
-                <li class="thermostat{{DEVICE_STATE_OFF}}">
+                <li class="thermostat subdevice {{SUB_DEVICE_ID}}{{DEVICE_STATE_OFF}}">
                   <dl>
                     <dt>{{SUB_DEVICE_NAME}}</dt>
                     <dd class="control-block full icon">
@@ -24,6 +24,7 @@
                         <a href="/?{{DEVICE_ID}}=Away" class="fa fa-compass{{DEVICE_STATE_AWAY}}"><span>Away</span></a>
                       </div>
                     </dd>
+                    <dd class="target">Target: {{SUB_DEVICE_TARGET}}&deg;</dd>
                     <dd class="temp">Temp: {{SUB_DEVICE_TEMP}}&deg;</dd>
                     <dd class="humidity">Humidity: {{SUB_DEVICE_HUMIDITY}}%</dd>
                   </dl>

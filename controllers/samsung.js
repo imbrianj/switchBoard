@@ -35,7 +35,7 @@ module.exports = (function () {
    *       http://forum.samygo.tv/viewtopic.php?f=12&t=1792
    */
   return {
-    version : 20140813,
+    version : 20140819,
 
     inputs  : ['command', 'text'],
 
@@ -114,15 +114,21 @@ module.exports = (function () {
       samsung.deviceIp    = config.device.deviceIp;
       samsung.serverIp    = config.config.serverIp;
       samsung.serverMac   = config.config.serverMac;
-      samsung.command     = config.command     || '';
-      samsung.text        = config.text        || '';
-      samsung.devicePort  = config.devicePort  || 55000;
-      samsung.appString   = config.appString   || "iphone..iapp.samsung";
-      samsung.tvAppString = config.tvAppString || "iphone.UN60ES8000.iapp.samsung";
-      samsung.remoteName  = config.remoteName  || "Node.js Samsung Remote";
-      samsung.callback    = config.callback    || function() {};
+      samsung.timeout     = config.device.timeout || 3000;
+      samsung.command     = config.command        || '';
+      samsung.text        = config.text           || '';
+      samsung.devicePort  = config.devicePort     || 55000;
+      samsung.appString   = config.appString      || 'iphone..iapp.samsung';
+      samsung.tvAppString = config.tvAppString    || 'iphone.UN60ES8000.iapp.samsung';
+      samsung.remoteName  = config.remoteName     || 'SwitchBoard Remote';
+      samsung.callback    = config.callback       || function() {};
 
       socket = net.connect(samsung.devicePort, samsung.deviceIp);
+
+      socket.setTimeout(samsung.timeout, function() {
+        socket.end();
+        samsung.callback({ code : 'ETIMEDOUT' });
+      });
 
       socket.once('connect', function() {
         if((samsung.command) || (samsung.text)) {
