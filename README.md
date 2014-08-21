@@ -27,25 +27,25 @@ Download the source, edit config/config.js to reflect your node server IP, desir
 Supported Devices/Services
 ---
 
-| Name        | Status      | Notes                                                               |
-|-------------|-------------|---------------------------------------------------------------------|
-| Denon       | Testing     | New controller and still in testing                                 |
-| Foscam      | Stable      | Arm, Disarm, Go to presets, etc                                     |
-| LG TVs      | Development | Still need work on authentication                                   |
-| MP3         | Stable      | Works on *nix with mpg123 or OSX with afplay. Win not supported     |
-| Nest        | Stable      | Works with Nest thermostat and Protect smoke / co detectors         |
-| Panasonic   | Testing     | Reportedly works, but unable to test                                |
-| Pioneer     | Testing     | Reportedly works, but unable to test                                |
+| Name        | Status      | Notes                                                                           |
+|-------------|-------------|---------------------------------------------------------------------------------|
+| Denon       | Testing     | New controller and still in testing                                             |
+| Foscam      | Stable      | Arm, Disarm, Go to presets, etc. *INSECURE* Exposes camera credentials to users |
+| LG TVs      | Development | Still need work on authentication                                               |
+| MP3         | Stable      | Works on *nix with mpg123 or OSX with afplay. Win not supported                 |
+| Nest        | Stable      | Works with Nest thermostat and Protect smoke / co detectors                     |
+| Panasonic   | Testing     | Reportedly works, but unable to test                                            |
+| Pioneer     | Testing     | Reportedly works, but unable to test                                            |
 | PS3         | Stable      | Uses GIMX to emulate PS3 controller ([see below](https://github.com/imbrianj/switchBoard#faq)). OSX not supported  |
-| Pushover    | Stable      | Requires purchased app and token / user key                         |
-| Roku        | Stable      | Launch apps directly, text input and basic controls                 |
-| Samsung     | Stable      | Text input and basic controls                                       |
+| Pushover    | Stable      | Requires purchased app and token / user key                                     |
+| Roku        | Stable      | Launch apps directly, text input and basic controls                             |
+| Samsung     | Stable      | Text input and basic controls                                                   |
 | SmartThings | Stable      | Control devices and monitor real-time states. Requires [companion app](https://github.com/imbrianj/oauth_controller/blob/master/oauth_controller.groovy) |
-| SMS         | Stable      | Uses Twilio. Requires ID and token                                  |
-| Speech      | Stable      | Uses espeak for *nix, say on OSX.  Win not supported                |
-| Stocks      | Stable      | Uses Yahoo Finance                                                  |
-| Travis      | Stable      |                                                                     |
-| Weather     | Stable      | Uses Yahoo Weather                                                  |
+| SMS         | Stable      | Uses Twilio. Requires ID and token                                              |
+| Speech      | Stable      | Uses espeak for *nix, say on OSX.  Win not supported                            |
+| Stocks      | Stable      | Uses Yahoo Finance                                                              |
+| Travis      | Stable      |                                                                                 |
+| Weather     | Stable      | Uses Yahoo Weather                                                              |
 
 For details about each device's specific requirements for installation, refer to the well commented [config.js](config/config.js) for any given device.
 
