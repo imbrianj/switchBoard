@@ -47,6 +47,8 @@ Supported Devices/Services
 | Travis      | Stable      |                                                                     |
 | Weather     | Stable      | Uses Yahoo Weather                                                  |
 
+For details about each device's specific requirements for installation, refer to the well commented [config.js](config/config.js) for any given device.
+
 Credit
 ---
 Thank you to the people that sorted out how to write to the Samsung TVs and paving the way for me to port this to node: http://forum.samygo.tv/viewtopic.php?f=12&t=1792

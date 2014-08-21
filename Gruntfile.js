@@ -23,7 +23,6 @@ module.exports = function(grunt) {
         globals  : {
           console     : true,
           State       : true,
-          Connections : true,
           __dirname   : true,
           Switchboard : true,
           exports     : true,
