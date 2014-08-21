@@ -3,14 +3,15 @@
 
 exports.config = {
   config : {
-    serverPort  : '8080',
-    serverIp    : '192.168.1.145',
-    serverMac   : '00:00:00:00:00:00',
-    theme       : 'dark',
-    default     : 'welcome',
-    macroPause  : 1000,
-    pollMinutes : 15,
-    pollSeconds : 15
+    serverPort   : '8080',
+    serverIp     : '192.168.1.145',
+    serverMac    : '00:00:00:00:00:00',
+    theme        : 'dark',
+    default      : 'welcome',
+    macroPause   : 1000,
+    pollMinutes  : 15,
+    pollSeconds  : 15,
+    localTimeout : 1000
   },
 
   // Be sure to mark the "disabled" to true to remove the welcome message.
@@ -24,7 +25,6 @@ exports.config = {
     typeClass : 'samsung',
     title     : 'Samsung SmartTV',
     deviceIp  : '192.168.1.1',
-    timeout   : 3000,
     disabled  : true
   },
 

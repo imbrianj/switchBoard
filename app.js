@@ -29,8 +29,7 @@
  * @requires http, url, path, nopt, websocket
  */
 
-State       = {};
-Connections = [];
+State = {};
 
 var version         = 20140626,
     http            = require('http'),
@@ -41,6 +40,7 @@ var version         = 20140626,
     staticAssets    = require(__dirname + '/lib/staticAssets'),
     loadController  = require(__dirname + '/lib/loadController'),
     requestInit     = require(__dirname + '/lib/requestInit'),
+    webSockets      = require(__dirname + '/lib/webSockets'),
     knownOpts       = { 'config' : path },
     shortHands      = { 'c' : ['--config'] },
     parsed          = nopt(knownOpts, shortHands, process.argv, 2),
@@ -106,45 +106,6 @@ if(controllers) {
   wsServer.on('request', function(request) {
     'use strict';
 
-    var loadMarkup = require(__dirname + '/lib/loadMarkup'),
-        connection = request.accept('echo-protocol', request.origin);
-
-    console.log('\x1b[36m' + connection.remoteAddress + ' WebSocket connected\x1b[0m');
-
-    Connections.push(connection);
-
-    connection.sendUTF(JSON.stringify(loadMarkup.loadTemplates(controllers)));
-
-    connection.on('message', function(message) {
-      var response = { end : function(message) {} };
-
-      if(message.utf8Data === 'fetch state') {
-        console.log('\x1b[36m' + connection.remoteAddress + ' Requested State\x1b[0m');
-
-        connection.sendUTF(JSON.stringify(State));
-      }
-
-      else {
-        request.url = message.utf8Data;
-
-        requestInit.requestInit(request, controllers, response);
-      }
-    });
-
-    connection.on('close', function(code, desc) {
-      var i = 0;
-
-      console.log('\x1b[36m' + connection.remoteAddress + ' WebSocket disconnected\x1b[0m');
-
-      connection.close();
-
-      for(i; i < Connections.length; i += 1) {
-        if(Connections[i] === connection) {
-          Connections.splice(i, 1);
-
-          break;
-        }
-      }
-    });
+    webSockets.newConnection(request, controllers);
   });
 }

@@ -56,7 +56,7 @@ module.exports = (function () {
 
             default :
               if(type === 'short') {
-                if(controllers[deviceId].controller.inputs.indexOf('state') !== -1) {
+                if((controllers[deviceId].controller) && (controllers[deviceId].controller.inputs.indexOf('state') !== -1)) {
                   runCommand.runCommand(deviceId, 'state', 'single', false);
                 }
               }

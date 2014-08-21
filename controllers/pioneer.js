@@ -85,9 +85,11 @@ module.exports = (function () {
     state : function (controller, config, callback) {
       var pioneer = { device : {}, config : {} };
 
-      callback                = callback || function() {};
-      pioneer.device.deviceId = controller.config.deviceId;
-      pioneer.device.deviceIp = controller.config.deviceIp;
+      callback                    = callback || function() {};
+      pioneer.command             = 'state';
+      pioneer.device.deviceId     = controller.config.deviceId;
+      pioneer.device.deviceIp     = controller.config.deviceIp;
+      pioneer.device.localTimeout = controller.config.localTimeout || config.localTimeout;
 
       pioneer.callback = function (err, reply) {
         if(reply) {
@@ -108,9 +110,10 @@ module.exports = (function () {
           client  = new net.Socket();
 
       pioneer.deviceIp   = config.device.deviceIp;
+      pioneer.timeout    = config.device.localTimeout            || config.config.localTimeout;
       pioneer.command    = this.translateCommand(config.command) || '';
-      pioneer.devicePort = config.devicePort || 8102;
-      pioneer.callback   = config.callback   || function () {};
+      pioneer.devicePort = config.devicePort                     || 8102;
+      pioneer.callback   = config.callback                       || function () {};
 
       client.connect(pioneer.devicePort, pioneer.deviceIp, function() {
         if(pioneer.command) {
@@ -126,8 +129,17 @@ module.exports = (function () {
         client.end();
       });
 
+      if(pioneer.command === 'state') {
+        client.setTimeout(pioneer.timeout, function() {
+          client.destroy();
+          pioneer.callback({ code : 'ETIMEDOUT' });
+        });
+      }
+
       client.once('error', function(err) {
-        pioneer.callback(err);
+        if((err.code !== 'ETIMEDOUT') || (pioneer.command !== 'state')) {
+          pioneer.callback(err);
+        }
       });
     }
   };

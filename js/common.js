@@ -586,9 +586,9 @@ Switchboard = (function () {
           indicator.className = 'connected';
           Switchboard.putText(indicator, 'Connected');
 
-          socket.send('fetch state');
-
           if(reconnect) {
+            socket.send('fetch state');
+
             Switchboard.log('Reconnected to WebSocket');
           }
         });

@@ -101,9 +101,11 @@ module.exports = (function () {
     state : function (controller, config, callback) {
       var panasonic = { device : {}};
 
-      callback                  = callback || function() {};
-      panasonic.device.deviceId = controller.config.deviceId;
-      panasonic.device.deviceIp = controller.config.deviceIp;
+      callback                      = callback || function() {};
+      panasonic.command             = 'state';
+      panasonic.device.deviceId     = controller.config.deviceId;
+      panasonic.device.deviceIp     = controller.config.deviceIp;
+      panasonic.device.localTimeout = controller.config.localTimeout || config.localTimeout;
 
       panasonic.callback = function (err, reply) {
         var message = '';
@@ -127,10 +129,11 @@ module.exports = (function () {
           request;
 
       panasonic.deviceIp   = config.device.deviceIp;
-      panasonic.command    = config.command    || '';
-      panasonic.text       = config.text       || '';
-      panasonic.devicePort = config.devicePort || 55000;
-      panasonic.callback   = config.callback   || function () {};
+      panasonic.timeout    = config.device.localTimeout || config.config.localTimeout;
+      panasonic.command    = config.command             || '';
+      panasonic.text       = config.text                || '';
+      panasonic.devicePort = config.devicePort          || 55000;
+      panasonic.callback   = config.callback            || function () {};
 
       request = http.request(this.postPrepare(panasonic), function(response) {
                   response.on('data', function(response) {
@@ -142,9 +145,17 @@ module.exports = (function () {
                   });
                 });
 
+      if(panasonic.command === 'state') {
+        request.setTimeout(panasonic.timeout, function() {
+          request.destroy();
+          panasonic.callback({ code : 'ETIMEDOUT' }, null, true);
+        });
+      }
 
       request.once('error', function(err) {
-        panasonic.callback(err);
+        if((err.code !== 'ETIMEDOUT') || (panasonic.command !== 'state')) {
+          panasonic.callback(err);
+        }
       });
 
       request.write(this.postData(panasonic));

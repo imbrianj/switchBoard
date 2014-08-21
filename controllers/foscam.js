@@ -114,12 +114,14 @@ module.exports = (function () {
     state : function (controller, config, callback) {
       var foscam = { device : {}, config : {} };
 
-      callback               = callback || function() {};
-      foscam.device.deviceId = controller.config.deviceId;
-      foscam.device.deviceIp = controller.config.deviceIp;
-      foscam.device.username = controller.config.username;
-      foscam.device.password = controller.config.password;
-      foscam.command         = 'Params';
+      callback                   = callback || function() {};
+      foscam.command             = 'state';
+      foscam.device.deviceId     = controller.config.deviceId;
+      foscam.device.deviceIp     = controller.config.deviceIp;
+      foscam.device.localTimeout = controller.config.localTimeout || config.localTimeout;
+      foscam.device.username     = controller.config.username;
+      foscam.device.password     = controller.config.password;
+      foscam.command             = 'Params';
 
       foscam.callback = function (err, reply) {
         var params  = { value : '' };
@@ -162,11 +164,12 @@ module.exports = (function () {
           request;
 
       foscam.deviceIp   = config.device.deviceIp;
+      foscam.timeout    = config.device.localTimeout || config.config.localTimeout;
       foscam.username   = config.device.username;
       foscam.password   = config.device.password;
-      foscam.command    = config.command           || '';
-      foscam.devicePort = config.device.devicePort || 80;
-      foscam.callback   = config.callback          || function () {};
+      foscam.command    = config.command             || '';
+      foscam.devicePort = config.device.devicePort   || 80;
+      foscam.callback   = config.callback            || function () {};
 
       if(config.command === 'Take') {
         fs.exists(filePath, function(exists) {
@@ -202,8 +205,17 @@ module.exports = (function () {
           });
         });
 
+        if(foscam.command === 'state') {
+          request.setTimeout(foscam.timeout, function() {
+            request.destroy();
+            foscam.callback({ code : 'ETIMEDOUT' }, null, true);
+          });
+        }
+
         request.once('error', function(err) {
-          foscam.callback(err, null, true);
+          if((err.code !== 'ETIMEDOUT') || (foscam.command !== 'state')) {
+            foscam.callback(err, null, true);
+          }
         });
 
         request.end();

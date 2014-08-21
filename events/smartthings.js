@@ -41,30 +41,41 @@ module.exports = (function () {
           message,
           deviceId;
 
-      if(command.indexOf('subdevice-state-presence-') === 0) {
-        notify = require(__dirname + '/../lib/notify');
+      if(command.indexOf('subdevice-state-moisture-') === 0) {
+        command = command.split('subdevice-state-moisture-').join('');
+        value   = command.split('-');
+        command = value[0];
+        value   = value[1];
 
+        if(value === 'on') {
+          message = command + ' has detected water!';
+        }
+      }
+
+      else if(command.indexOf('subdevice-state-presence-') === 0) {
         command = command.split('subdevice-state-presence-').join('');
         value   = command.split('-');
         command = value[0];
         value   = value[1];
 
         if(value === 'on') {
-          message = 'arrived';
+          message = command + ' has just arrived';
         }
 
         else if(value === 'off') {
-          message = 'left';
+          message = command + ' has just left';
         }
+      }
 
-        if(message) {
-          notify.sendNotification(null, command + ' has just ' + message, device);
+      if(message) {
+        notify = require(__dirname + '/../lib/notify');
 
-          for(deviceId in controllers) {
-            if((deviceId !== 'config') && (controllers[deviceId].config.typeClass === 'speech')) {
-              runCommand.runCommand(deviceId, 'text-' + command + ' has just ' + message, 'single', false);
-              break;
-            }
+        notify.sendNotification(null, message, device);
+
+        for(deviceId in controllers) {
+          if((deviceId !== 'config') && (controllers[deviceId].config.typeClass === 'speech')) {
+            runCommand.runCommand(deviceId, 'text-' + message, 'single', false);
+            break;
           }
         }
       }

@@ -174,6 +174,29 @@ module.exports = (function () {
       return response;
     },
 
+    state : function (controller, config, callback) {
+      var lg = { device : {}, config : {}};
+
+      callback               = callback || function() {};
+      lg.command             = 'state';
+      lg.device.deviceId     = controller.config.deviceId;
+      lg.device.deviceIp     = controller.config.deviceIp;
+      lg.device.pairKey      = controller.config.serverIp;
+      lg.device.localTimeout = controller.config.localTimeout || config.localTimeout;
+
+      lg.callback = function (err, reply) {
+        if(reply) {
+          callback(lg.device.deviceId, null, 'ok');
+        }
+
+        else if(err) {
+          callback(lg.device.deviceId, err);
+        }
+      };
+
+      this.send(lg);
+    },
+
     send : function (config) {
       var http      = require('http'),
           lg        = {},
@@ -181,9 +204,10 @@ module.exports = (function () {
           request;
 
       lg.deviceIp   = config.device.deviceIp;
+      lg.timeout    = config.device.localTimeout            || config.config.localTimeout;
       lg.command    = this.translateCommand(config.command) || '';
-      lg.devicePort = config.devicePort || 8080;
-      lg.callback   = config.callback   || function () {};
+      lg.devicePort = config.devicePort                     || 8080;
+      lg.callback   = config.callback                       || function () {};
       lg.pairKey    = config.device.pairKey;
 
       request = http.request(this.postPrepare(lg), function(response) {
@@ -196,8 +220,17 @@ module.exports = (function () {
                   });
                 });
 
+      if(lg.command === 'state') {
+        request.setTimeout(lg.timeout, function() {
+          request.destroy();
+          lg.callback({ code : 'ETIMEDOUT' }, null, true);
+        });
+      }
+
       request.once('error', function(err) {
-        lg.callback(err);
+        if((err.code !== 'ETIMEDOUT') || (lg.command !== 'state')) {
+          lg.callback(err);
+        }
       });
 
       request.write(this.postPairData(lg));

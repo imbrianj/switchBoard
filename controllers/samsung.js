@@ -86,11 +86,13 @@ module.exports = (function () {
     state : function (controller, config, callback) {
       var samsung = { device : {}, config : {}};
 
-      callback                 = callback || function() {};
-      samsung.device.deviceId  = controller.config.deviceId;
-      samsung.device.deviceIp  = controller.config.deviceIp;
-      samsung.config.serverIp  = config.serverIp;
-      samsung.config.serverMac = config.serverMac;
+      callback                    = callback || function() {};
+      samsung.command             = 'state';
+      samsung.device.deviceId     = controller.config.deviceId;
+      samsung.device.deviceIp     = controller.config.deviceIp;
+      samsung.device.localTimeout = controller.config.localTimeout || config.localTimeout;
+      samsung.config.serverIp     = config.serverIp;
+      samsung.config.serverMac    = config.serverMac;
 
       samsung.callback = function (err, reply) {
         if(reply) {
@@ -109,40 +111,44 @@ module.exports = (function () {
       var net             = require('net'),
           samsung         = {},
           that            = this,
-          socket;
+          client          = new net.Socket();
 
       samsung.deviceIp    = config.device.deviceIp;
       samsung.serverIp    = config.config.serverIp;
       samsung.serverMac   = config.config.serverMac;
-      samsung.timeout     = config.device.timeout || 3000;
-      samsung.command     = config.command        || '';
-      samsung.text        = config.text           || '';
-      samsung.devicePort  = config.devicePort     || 55000;
-      samsung.appString   = config.appString      || 'iphone..iapp.samsung';
-      samsung.tvAppString = config.tvAppString    || 'iphone.UN60ES8000.iapp.samsung';
-      samsung.remoteName  = config.remoteName     || 'SwitchBoard Remote';
-      samsung.callback    = config.callback       || function() {};
+      samsung.timeout     = config.device.localTimeout || config.config.localTimeout;
+      samsung.command     = config.command             || '';
+      samsung.text        = config.text                || '';
+      samsung.devicePort  = config.devicePort          || 55000;
+      samsung.appString   = config.appString           || 'iphone..iapp.samsung';
+      samsung.tvAppString = config.tvAppString         || 'iphone.UN60ES8000.iapp.samsung';
+      samsung.remoteName  = config.remoteName          || 'SwitchBoard Remote';
+      samsung.callback    = config.callback            || function() {};
 
-      socket = net.connect(samsung.devicePort, samsung.deviceIp);
+      client.connect(samsung.devicePort, samsung.deviceIp);
 
-      socket.setTimeout(samsung.timeout, function() {
-        socket.end();
-        samsung.callback({ code : 'ETIMEDOUT' });
-      });
-
-      socket.once('connect', function() {
+      client.once('connect', function() {
         if((samsung.command) || (samsung.text)) {
-          socket.write(that.chunkOne(samsung));
-          socket.write(that.chunkTwo(samsung));
+          client.write(that.chunkOne(samsung));
+          client.write(that.chunkTwo(samsung));
         }
 
-        socket.end();
+        client.end();
 
         samsung.callback(null, 'ok');
       });
 
-      socket.once('error', function(err) {
-        samsung.callback(err);
+      if(samsung.command === 'state') {
+        client.setTimeout(samsung.timeout, function() {
+          client.destroy();
+          samsung.callback({ code : 'ETIMEDOUT' });
+        });
+      }
+
+      client.once('error', function(err) {
+        if((err.code !== 'ETIMEDOUT') || (samsung.command !== 'state')) {
+          samsung.callback(err);
+        }
       });
     }
   };

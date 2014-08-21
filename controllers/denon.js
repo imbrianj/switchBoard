@@ -86,9 +86,11 @@ module.exports = (function () {
     state : function (controller, config, callback) {
       var denon = { device : {}, config : {} };
 
-      callback              = callback || function() {};
-      denon.device.deviceId = controller.config.deviceId;
-      denon.device.deviceIp = controller.config.deviceIp;
+      callback                  = callback || function() {};
+      denon.command             = 'state';
+      denon.device.deviceId     = controller.config.deviceId;
+      denon.device.deviceIp     = controller.config.deviceIp;
+      denon.device.localTimeout = controller.config.localTimeout || config.localTimeout;
 
       denon.callback = function (err, reply) {
         if(reply) {
@@ -109,9 +111,10 @@ module.exports = (function () {
           client = new net.Socket();
 
       denon.deviceIp   = config.device.deviceIp;
+      denon.timeout    = config.device.localTimeout            || config.config.localTimeout;
       denon.command    = this.translateCommand(config.command) || '';
-      denon.devicePort = config.devicePort || 23;
-      denon.callback   = config.callback   || function () {};
+      denon.devicePort = config.devicePort                     || 23;
+      denon.callback   = config.callback                       || function () {};
 
       if(denon.command) {
         client.connect(denon.devicePort, denon.deviceIp, function() {
@@ -126,8 +129,17 @@ module.exports = (function () {
         denon.callback(null, dataReply);
       });
 
+      if(denon.command === 'state') {
+        client.setTimeout(denon.timeout, function() {
+          client.destroy();
+          denon.callback({ code : 'ETIMEDOUT' });
+        });
+      }
+
       client.once('error', function(err) {
-        denon.callback(err);
+        if((err.code !== 'ETIMEDOUT') || (denon.command !== 'state')) {
+          denon.callback(err);
+        }
       });
     }
   };
