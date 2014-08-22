@@ -71,14 +71,14 @@
           heat = Switchboard.getElementsByClassName('fa-sun-o', off, 'a')[0];
           cool = Switchboard.getElementsByClassName('fa-asterisk', off, 'a')[0];
 
-          if((device.state === 'cool') && (!Switchboard.hasClass(cool, 'device-on'))) {
+          if((device.state === 'cool') && (!Switchboard.hasClass(cool, 'device-active'))) {
             Switchboard.addClass(cool, 'device-active');
             Switchboard.removeClass(heat, 'device-active');
             Switchboard.removeClass(off, 'device-off');
             markup = '';
           }
 
-          else if((device.state === 'heat') && (!Switchboard.hasClass(heat, 'device-on'))) {
+          else if((device.state === 'heat') && (!Switchboard.hasClass(heat, 'device-active'))) {
             Switchboard.addClass(heat, 'device-active');
             Switchboard.removeClass(cool, 'device-active');
             Switchboard.removeClass(off, 'device-off');

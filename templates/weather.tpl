@@ -3,7 +3,7 @@
         <div class="text-block">
           <h5><span class="fa fa-{{WEATHER_ICON}}"></span> {{WEATHER_CURRENT}}</h5>
           <ul>
-            {{WEATHER_FORECAST}}
+            {{WEATHER_DYNAMIC}}
           </ul>
         </div>
       </div>

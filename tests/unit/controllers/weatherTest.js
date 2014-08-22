@@ -74,11 +74,11 @@ exports.weatherControllerTest = {
                           }
                         }};
 
-    onloadMarkup = weatherController.onload({ markup : '<div class="weather{{DEVICE_STATE}}"><h1><span class="fa fa-{{WEATHER_ICON}}"></span> {{WEATHER_CURRENT}}</h1><ul>{{WEATHER_FORECAST}}</ul></div>',
+    onloadMarkup = weatherController.onload({ markup : '<div class="weather{{DEVICE_STATE}}"><h1><span class="fa fa-{{WEATHER_ICON}}"></span> {{WEATHER_CURRENT}}</h1><ul>{{WEATHER_DYNAMIC}}</ul></div>',
                                               config : { deviceId : 'FOO' } });
 
     test.ok((onloadMarkup.indexOf('<span class="fa fa-bolt"></span> Seattle Current Weather: 75&deg; Lightning Storm') !== -1), 'Current weather populated');
-    test.ok((onloadMarkup.indexOf('<span class="fa fa-sun-o"></span> Friday: Sunny 75&deg;/65&deg;')                   !== -1),'Forecast weather populated');
+    test.ok((onloadMarkup.indexOf('<span class="fa fa-sun-o"></span> Friday: Sunny 75&deg;/65&deg;')                   !== -1), 'Forecast weather populated');
 
     test.done();
   }

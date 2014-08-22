@@ -28,14 +28,6 @@ exports.config = {
     disabled  : true
   },
 
-  // Here, I have another device of the same type.  Just give it a unique name.
-  samsungLivingRoom : {
-    typeClass : 'samsung',
-    title     : 'Living Room TV',
-    deviceIp  : '192.168.1.2',
-    disabled  : true
-  },
-
   roku : {
     typeClass : 'roku',
     title     : 'Roku',
@@ -218,8 +210,8 @@ exports.config = {
    * Click "Enable OAuth in Smart App" and copy the "OAuth Client ID" and
    * "OAuth Client Secret" to the fields below.
    * Click "Create" to be presented with the SmartThings IDE.  Simply paste the
-   * sourcecode from their OAuth reference material:
-   * https://gist.github.com/aurman/9813279
+   * sourcecode from the companion app:
+   * https://github.com/imbrianj/oauth_controller/blob/master/oauth_controller.groovy
    * Click "Save", then "Publish" in the upper right.
    *
    * On initial startup of SwitchBoard with this configuration, you'll be

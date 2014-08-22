@@ -31,11 +31,7 @@
 module.exports = (function () {
   var reporter = require('nodeunit').reporters.default;
 
-  reporter.run(['tests/unit/lib/deviceStateTest.js',
-                'tests/unit/lib/loadControllerTest.js',
-                'tests/unit/lib/loadMarkupTest.js',
-                'tests/unit/lib/runCommandTest.js',
-                'tests/unit/lib/staticAssetsTest.js',
+  reporter.run(['tests/unit/controllers/denonTest.js',
                 'tests/unit/controllers/foscamTest.js',
                 'tests/unit/controllers/lgTest.js',
                 'tests/unit/controllers/mp3Test.js',
@@ -50,6 +46,20 @@ module.exports = (function () {
                 'tests/unit/controllers/smsTest.js',
                 'tests/unit/controllers/speechTest.js',
                 'tests/unit/controllers/stocksTest.js',
+                'tests/unit/controllers/travisTest.js',
                 'tests/unit/controllers/weatherTest.js',
-                'tests/unit/events/scheduleTest.js']);
+                'tests/unit/events/scheduleTest.js',
+                'tests/unit/lib/deviceStateTest.js',
+                'tests/unit/lib/loadControllerTest.js',
+                'tests/unit/lib/loadMarkupTest.js',
+                'tests/unit/lib/runCommandTest.js',
+                'tests/unit/lib/staticAssetsTest.js',
+                'tests/unit/parsers/foscamTest.js',
+                'tests/unit/parsers/nestTest.js',
+                'tests/unit/parsers/rokuTest.js',
+                'tests/unit/parsers/smartthingsTest.js',
+                'tests/unit/parsers/stocksTest.js',
+                'tests/unit/parsers/travisTest.js',
+                'tests/unit/parsers/weatherTest.js',
+                'tests/unit/js/commonTest.js']);
 }());

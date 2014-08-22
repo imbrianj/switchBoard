@@ -60,10 +60,10 @@
         tempMarkup = tempMarkup.split('{{TRAVIS_DURATION}}').join(duration);
         tempMarkup = tempMarkup.split('{{TRAVIS_DESCRIPTION}}').join(value[i].label);
       }
-
-      markup = markup.replace('{{TRAVIS_STATUS}}', tempMarkup);
-
-      return markup;
     }
+
+    markup = markup.replace('{{TRAVIS_DYNAMIC}}', tempMarkup);
+
+    return markup;
   };
 })(typeof exports === 'undefined' ? this.Switchboard.parsers : exports);

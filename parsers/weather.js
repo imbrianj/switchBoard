@@ -121,7 +121,7 @@
       return icon;
     };
 
-    if(value.code) {
+    if((value) && (value.code)) {
       markup = markup.replace('{{WEATHER_ICON}}', translateCode(value.code));
       markup = markup.replace('{{WEATHER_CURRENT}}', value.city + ' Current Weather: ' + value.temp + '&deg; ' + value.text);
 
@@ -139,6 +139,6 @@
       tempMarkup = value;
     }
 
-    return markup.replace('{{WEATHER_FORECAST}}', tempMarkup);
+    return markup.replace('{{WEATHER_DYNAMIC}}', tempMarkup);
   };
 })(typeof exports === 'undefined' ? this.Switchboard.parsers : exports);

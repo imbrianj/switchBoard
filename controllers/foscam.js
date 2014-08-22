@@ -32,9 +32,9 @@ module.exports = (function () {
    * @fileoverview Basic control of Foscam IP camera.
    */
   return {
-    version : 20140813,
+    version : 20140821,
 
-    inputs  : ['command', 'list'],
+    inputs  : ['command'],
 
     /**
      * Whitelist of available key codes to use.
@@ -102,7 +102,7 @@ module.exports = (function () {
     },
 
     init : function (controller, config) {
-      var runCommand  = require(__dirname + '/../lib/runCommand');
+      var runCommand = require(__dirname + '/../lib/runCommand');
 
       runCommand.runCommand(controller.config.deviceId, 'state', controller.config.deviceId);
 
@@ -171,7 +171,7 @@ module.exports = (function () {
       foscam.devicePort = config.device.devicePort   || 80;
       foscam.callback   = config.callback            || function () {};
 
-      if(config.command === 'Take') {
+      if(foscam.command === 'Take') {
         fs.exists(filePath, function(exists) {
           var request,
               controller,

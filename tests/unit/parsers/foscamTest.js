@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global State, module, require, console */
+/*global module, String, require, console, Switchboard */
 
 /**
  * Copyright (c) 2014 brian@bevey.org
@@ -25,36 +25,23 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview Simple script to fire when the given device executes a
- *               presumed good command.
+ * @fileoverview Unit test for parsers/foscam.js
  */
 
-module.exports = (function () {
-  'use strict';
+exports.foscamParserTest = {
+  parser : function (test) {
+    'use strict';
 
-  return {
-    version : 20140819,
+    var foscamParser = require(__dirname + '/../../../parsers/foscam'),
+        markup       = '<h1>Foo</h1> <span class="{{DEVICE_STATE_ON}}">On</span> <span class="{{DEVICE_STATE_OFF}}">Off</span>',
+        onMarkup     = foscamParser.foscam('dummy', markup, 'ok', 'on'),
+        offMarkup    = foscamParser.foscam('dummy', markup, 'ok', 'off');
 
-    fire : function(device, command, controllers) {
-      var runCommand = require(__dirname + '/../lib/runCommand'),
-          deviceId;
+    test.ok((onMarkup.indexOf('{{') === -1), 'All values replaced');
+    test.ok((onMarkup.indexOf('<span class=" device-active">On</span> <span class="">Off</span>') !== -1), 'Passed markup validated1');
+    test.ok((offMarkup.indexOf('{{') === -1), 'All values replaced');
+    test.ok((offMarkup.indexOf('<span class="">On</span> <span class=" device-active">Off</span>') !== -1), 'Passed markup validated1');
 
-      if((command === 'AlarmOn') || (command === 'AlarmOff')) {
-        // We want to grab the state from the source of truth (the actual
-        // device), but we need to wait a short time for it to register.
-        setTimeout(function() {
-            console.log('\x1b[35mFoscam\x1b[0m: Fetching alarm state');
-
-            runCommand.runCommand(device, 'state', 'single', false);
-        }, 250);
-
-        for(deviceId in controllers) {
-          if((deviceId !== 'config') && (controllers[deviceId].config.typeClass === 'speech')) {
-            runCommand.runCommand(deviceId, command === 'AlarmOn' ? 'text-Camera armed' : 'text-Camera disarmed');
-            break;
-          }
-        }
-      }
-    }
-  };
-}());
+    test.done();
+  }
+};

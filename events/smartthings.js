@@ -73,9 +73,15 @@ module.exports = (function () {
         notify.sendNotification(null, message, device);
 
         for(deviceId in controllers) {
-          if((deviceId !== 'config') && (controllers[deviceId].config.typeClass === 'speech')) {
-            runCommand.runCommand(deviceId, 'text-' + message, 'single', false);
-            break;
+          if(deviceId !== 'config') {
+            if(controllers[deviceId].config.typeClass === 'speech') {
+              runCommand.runCommand(deviceId, 'text-' + message, device);
+            }
+
+            else if((value === 'on') && (controllers[deviceId].config.typeClass === 'foscam')) {
+              runCommand.runCommand(deviceId, 'AlarmOff', deviceId);
+              runCommand.runCommand(deviceId, 'Preset3',  device);
+            }
           }
         }
       }
