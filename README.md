@@ -88,6 +88,19 @@ FAQ
    * Run $: node app in terminal
    * That's it!
 
+  Q. What is that dot in the top right?
+
+  A. The dot indicates your connection state.  If you see it, congrats!  You're able to grab real-time info from SwitchBoard.  Your browser will attempt to connect via WebSockets for real-time updates.
+
+  If your browser does not support WebSockets, it'll attempt to set up standard XHR polling.  If your browser doesn't support that, you can still issue commands, but will need to manually refresh your browser for updates.
+
+  The colors indicate:
+
+   * Red - Disonnected
+   * Gray - Attempting to connect - or waiting to connect
+   * Blue - Connected
+   * No indicator - Either your browser doesn't support WebSockets, XHR or something bad happened.
+
 - Q. How secure is this?
 
   A. Depends.  It's assumed that any device that's on your network is deemed white-listed.  This probably shouldn't be used on a large network with people you don't trust to screw with your TV. Outside your network, my goal is to provide the most security by keeping external connections to a minimum.  See "Q. Why aren't you using a seed-based JS library / referencing CSS from a CDN?"

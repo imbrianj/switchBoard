@@ -28,7 +28,7 @@ Switchboard = (function () {
   'use strict';
 
   return {
-    version : 20140805,
+    version : 20140822,
 
     state : {},
 
@@ -513,16 +513,14 @@ Switchboard = (function () {
             markup = parser(state.deviceId, markup, deviceState, value, templates[state.typeClass].fragments);
           }
 
-          else {
-            if((deviceState === 'ok') && (Switchboard.hasClass(node, 'device-off'))) {
-              Switchboard.removeClass(node, 'device-off');
-              Switchboard.addClass(node, 'device-on');
-            }
+          if((deviceState === 'ok') && (Switchboard.hasClass(node, 'device-off'))) {
+            Switchboard.removeClass(node, 'device-off');
+            Switchboard.addClass(node, 'device-on');
+          }
 
-            else if((deviceState === 'err') && (Switchboard.hasClass(node, 'device-on'))) {
-              Switchboard.removeClass(node, 'device-on');
-              Switchboard.addClass(node, 'device-off');
-            }
+          else if((deviceState === 'err') && (Switchboard.hasClass(node, 'device-on'))) {
+            Switchboard.removeClass(node, 'device-on');
+            Switchboard.addClass(node, 'device-off');
           }
 
           if(node && markup && state) {
