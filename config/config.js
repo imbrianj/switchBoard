@@ -262,10 +262,10 @@ exports.config = {
    * Activate "Allow control of XBMC via HTTP"
    */
   xbmc : {
-    typeClass      : 'xbmc',
-    title          : 'XBMC',
-    deviceIp       : '192.168.1.8',
-    devicePort     : 8080,
-    disabled       : false
+    typeClass  : 'xbmc',
+    title      : 'XBMC',
+    deviceIp   : '192.168.1.8',
+    devicePort : 8080,
+    disabled   : true
   }
 };

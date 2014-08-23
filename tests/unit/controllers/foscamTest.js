@@ -104,17 +104,17 @@ exports.foscamControllerTest = {
     State.FOO.value = 'on';
 
     var runCommand            = require(__dirname + '/../../../lib/runCommand'),
-        controller            = { 'foo' : { markup     : '<h1>Contents:</h1> {{FOSCAM_DYNAMIC}}',
-                                       controller : { inputs   : ['state'],
-                                                      send     : function(request) { return request; } },
-                                       config     : { deviceId : 'FOO',
-                                                      deviceIp : '127.0.0.1',
-                                                      username : 'USERNAME',
-                                                      password : 'PASSWORD' } } };
+        controller            = { 'FOO' : { markup     : '<h1>Contents:</h1> {{FOSCAM_DYNAMIC}}',
+                                            controller : { inputs   : ['state'],
+                                            send       : function(request) { return request; } },
+                                            config     : { deviceId : 'FOO',
+                                                           deviceIp : '127.0.0.1',
+                                                           username : 'USERNAME',
+                                                           password : 'PASSWORD' } } };
         controller.controller = require(__dirname + '/../../../controllers/foscam');
 
     runCommand.init(controller);
-    controller = controller.controller.init(controller.foo);
+    controller = controller.controller.init(controller.FOO);
     test.ok((controller.markup.indexOf('http://127.0.0.1/videostream.cgi?user=USERNAME&amp;pwd=PASSWORD') !== -1), 'Foscam image reference validated');
 
     test.done();
