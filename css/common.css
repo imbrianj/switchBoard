@@ -1,3 +1,25 @@
+/**
+ * Copyright (c) 2014 brian@bevey.org
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to
+ * deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+ * sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+ * IN THE SOFTWARE.
+ */
+
 /* Reset */
 html,
 body,
@@ -53,10 +75,20 @@ a:hover {
 }
 
 body {
-	background: #FFF;
-	color: #000;
 	font-family: helvetica;
 	line-height: 1;
+}
+
+.theme-dark body {
+	background: #000;
+	color: #444;
+	/* Not needed till light-level queries supported */
+	/*
+	-moz-transition: background 2s ease-in-out, color 2s ease-in-out;
+	-o-transition: background 2s ease-in-out, color 2s ease-in-out;
+	-webkit-transition: background 2s ease-in-out, color 2s ease-in-out;
+	transition: background 2s ease-in-out, color 2s ease-in-out;
+	*/
 }
 
 ol,
@@ -66,32 +98,32 @@ ul {
 
 /* Copy button styling from purecss.io */
 button {
-	background-color: rgb(0, 120, 231);
+	background-color: rgb(0,120,231);
 	border: 1px solid #999;  /*IE 6/7/8*/
-	border: none rgba(0, 0, 0, 0);  /*IE9 + everything else*/
+	border: none rgba(0,0,0,0);  /*IE9 + everything else*/
 	border-radius: 2px;
 	color: #FFF;
 	cursor: pointer;
 	font-size: .5em;
 	*font-size: 90%; /*IE 6/7 - To reduce IE's oversized button text*/
 	*overflow: visible; /*IE 6/7 - Because of IE's overly large left/right padding on buttons */
-	padding: 0.5em 1.5em 0.5em;
+	padding: .5em 1.5em .5em;
 	text-decoration: none;
 	/* Transitions */
-	-webkit-transition: 0.1s linear -webkit-box-shadow;
-	-moz-transition: 0.1s linear -moz-box-shadow;
-	-ms-transition: 0.1s linear box-shadow;
-	-o-transition: 0.1s linear box-shadow;
-	transition: 0.1s linear box-shadow;
+	-webkit-transition: .1s linear -webkit-box-shadow;
+	-moz-transition: .1s linear -moz-box-shadow;
+	-ms-transition: .1s linear box-shadow;
+	-o-transition: .1s linear box-shadow;
+	transition: .1s linear box-shadow;
 }
 
 button:hover,
 button:focus {
-	background-image: -webkit-linear-gradient(transparent, rgba(0,0,0,.05) 40%, rgba(0,0,0, 0.10));
-	background-image: -moz-linear-gradient(top, rgba(0,0,0, 0.05) 0%, rgba(0,0,0,.10));
-	background-image: -o-linear-gradient(transparent, rgba(0,0,0, 0.05) 40%, rgba(0,0,0,.10));
-	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(transparent), color-stop(40%, rgba(0,0,0, 0.05)), to(rgba(0,0,0,.10)));
-	background-image: linear-gradient(transparent, rgba(0,0,0, 0.05) 40%, rgba(0,0,0,.10));
+	background-image: -webkit-linear-gradient(transparent, rgba(0,0,0,.05) 40%, rgba(0,0,0,.1));
+	background-image: -moz-linear-gradient(top, rgba(0,0,0,.05) 0%, rgba(0,0,0,.1));
+	background-image: -o-linear-gradient(transparent, rgba(0,0,0,.05) 40%, rgba(0,0,0,.1));
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(transparent), color-stop(40%, rgba(0,0,0,.05)), to(rgba(0,0,0,.1)));
+	background-image: linear-gradient(transparent, rgba(0,0,0,.05) 40%, rgba(0,0,0,.1));
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#1a000000',GradientType=0);
 }
 
@@ -100,7 +132,7 @@ button:focus {
 }
 
 button:active {
-	box-shadow: 0 0 0 1px rgba(0,0,0, 0.15) inset, 0 0 6px rgba(0,0,0, 0.20) inset;
+	box-shadow: 0 0 0 1px rgba(0,0,0,.15) inset, 0 0 6px rgba(0,0,0,.2) inset;
 }
 
 /* Firefox: Get rid of the inner focus border */
@@ -131,13 +163,13 @@ form textarea {
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	display: inline-block;
-	font-size: 0.5em;
+	font-size: .5em;
 	padding: .5em .6em;
-	-webkit-transition: 0.3s linear border;
-	-moz-transition: 0.3s linear border;
-	-ms-transition: 0.3s linear border;
-	-o-transition: 0.3s linear border;
-	transition: 0.3s linear border;
+	-webkit-transition: .3s linear border;
+	-moz-transition: .3s linear border;
+	-ms-transition: .3s linear border;
+	-o-transition: .3s linear border;
+	transition: .3s linear border;
 }
 
 form input[type="text"]:focus,
@@ -157,7 +189,7 @@ form textarea:focus {
 form input[type="file"]:focus,
 form input[type="radio"]:focus,
 form input[type="checkbox"]:focus {
-	outline: thin dotted #333;
+	outline: thin dotted #444;
 	outline: 1px auto #129FEA;
 }
 
@@ -230,7 +262,7 @@ form fieldset {
 
 form legend {
 	border-bottom: 1px solid #E5E5E5;
-	color: #333;
+	color: #444;
 	display: block;
 	font-size: 125%;
 	margin-bottom: .3em;
@@ -280,7 +312,7 @@ form legend {
 
 .header h1,
 .header ul li {
-	margin: .4em .2em;
+	margin: 1em .2em .4em .2em;
 }
 
 .header ul li a {
@@ -291,6 +323,30 @@ form legend {
 	position: relative;
 }
 
+.header #indicator {
+	border-radius: .5em;
+	height: 1em;
+	overflow: hidden;
+	position: absolute;
+	right: 1em;
+	text-indent: -999px;
+	top: 1em;
+	width: 1em;
+}
+
+.header .disconnected {
+	background: #F00;
+	cursor: pointer;
+}
+
+.header .connecting {
+	background: #444;
+}
+
+.header .connected {
+	background: #0078E7;
+}
+
 .body h1 {
 	font-weight: bold;
 	margin: .4em .2em;
@@ -299,7 +355,16 @@ form legend {
 }
 
 .device {
+	clear: both;
 	font-size: 300%;
+}
+
+.device-off {
+  filter: alpha(opacity=50);
+  -moz-opacity: .5;
+  -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=50)';
+  -webkit-opacity: .5;
+  opacity: .5;
 }
 
 .device > div {
@@ -314,7 +379,9 @@ form legend {
 .device .control-block .control,
 .device .control-block .buttons,
 .device .control-block .presets,
-.device .control-block .alarm {
+.device .control-block .alarm,
+.device .control-block .mode,
+.device .control-block .presence {
 	float: left;
 	width: 15%;
 }
@@ -324,7 +391,8 @@ form legend {
 	width: 70%;
 }
 
-.device .text {
+.device .text,
+.device .text-block {
 	clear: both;
 	float: none;
 	margin: 0 auto;
@@ -332,25 +400,93 @@ form legend {
 	width: 100%;
 }
 
-.device .installed {
+.device .text-block {
+	font-size: 50%;
+	line-height: 1.2em;
+	max-width: 40em;
+	text-align: left;
+	width: 90%;
+}
+
+.device .text-block a:link,
+.device .text-block a:visited {
+	color: #0078E7;
+	display: inline;
+}
+
+.device .text-block p {
+	padding: .5em 0;
+}
+
+.device .text-block h5 {
+	font-weight: bold;
+}
+
+.device .text-block h5,
+.device .text-block li {
+	margin: .5em 0;
+}
+
+.device .text-block h5 .fa,
+.device .text-block li .fa {
+	margin-right: .5em;
+}
+
+.device .text-block li.loss .fa,
+.device .state-err .fa {
+	color: #F00;
+}
+
+.device .text-block h5 .fa,
+.device .text-block li.gain .fa,
+.device .state-ok .fa {
+	color: #0078E7;
+}
+
+.device .text-block li .fa span {
+	display: none;
+}
+
+.device .text-block li .name {
+	display: inline-block;
+	width: 3.5em;
+}
+
+.device .installed,
+.device .installed-list {
 	float: none;
 	margin: 0 auto;
 	text-align: center;
 	width: 90%;
 }
 
-.device .installed li {
+.device .installed .sub-device-list li {
 	display: inline-block;
 	margin: .1em .5%;
-	max-width: 250px;
-	width: 45%;
+	vertical-align: middle;
+	width: 28%;
 }
 
-.device .installed li a {
+.device .installed .sub-device-group,
+.device .installed .sub-device-group li,
+.device .installed-list li {
+	display: inline-block;
+	margin: .1em .5%;
+	max-width: 30%;
+	vertical-align: middle;
+	width: 500px;
+}
+
+.device .installed-list li {
 	width: auto;
 }
 
-.device .installed li img {
+.device .installed li a,
+.device .installed-list li a {
+	width: auto;
+}
+
+.device .installed-list li img {
 	max-height: 150px;
 	max-width: 100%;
 	width: 250px;
@@ -373,13 +509,14 @@ form legend {
 	width: 1em;
 }
 
-.device a span {
+.device a span,
+.device .sub-device-list .icon .fa span {
 	display: none;
 }
 
 .device a:link,
 .device a:visited {
-	color: #333;
+	color: #444;
 	text-decoration: none;
 }
 
@@ -413,12 +550,17 @@ form legend {
 
 .device .volume a,
 .device .channel a,
-.device .presets a {
+.device .presets a,
+.device .mode a {
 	margin: .5em auto;
 }
 
 .device .alarm a {
 	margin: .15em auto;
+}
+
+.device .presence a {
+	margin: 1em auto;
 }
 
 .device .navigation a {
@@ -445,19 +587,19 @@ form legend {
 .device .numeric-controls li {
 	float: left;
 	width: 33%;
- }
- 
- .device .numeric-controls ol li:last-child {
+}
+
+.device .numeric-controls ol li:last-child {
 	width: 100%;
- }
- 
- .foscam .numeric-controls ol li:last-child {
+}
+
+.foscam .numeric-controls ol li:last-child {
 	width: 33%;
- }
- 
- .device .numeric-controls ul li {
+}
+
+.device .numeric-controls ul li {
 	margin-top: -1em;
- }
+}
 
 .device .numeric-controls ul li:last-child {
 	float: right;
@@ -528,17 +670,22 @@ form legend {
 .device .preview-image img {
 	color: transparent;
 	display: block;
+	margin: 0 auto;
 	max-width: 100%;
 	min-height: 200px;
 }
 
 .device .sub-device-list .sub-device-group {
-	border: 1px solid #333;
+	border: 1px solid #444;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
 	padding: .4em .1em;
 	margin: .1em 0;
 }
 
-.device .sub-device-group h4 {
+.device .sub-device-group h4,
+.device .sub-device-group dt {
 	font-size: 50%;
 	margin-bottom: .5em;
 }
@@ -548,22 +695,121 @@ form legend {
 	vertical-align: top;
 }
 
-.device .sub-device-list li span {
+.device .sub-device-list li a span,
+.device .sub-device-list li span span,
+.device .sub-device-list li dl dd {
 	display: block;
 	font-size: 30%;
 }
 
-#samsung .numeric-controls,
-#samsung .media,
-#samsung .information {
+.device .sub-device-list li dl dd.fa,
+.device .sub-device-list li dl dd.icon {
+	font-size: 100%;
+}
+
+.device-active .fa:before,
+.fa.device-active:before {
+	text-shadow: -2px -2px 1px #286EA0,
+               -2px 2px 1px #286EA0,
+               2px -2px 1px #286EA0,
+               2px 2px 1px #286EA0;
+	-moz-transition: text-shadow .1s ease-in-out;
+	-o-transition: text-shadow .1s ease-in-out;
+	-webkit-transition: text-shadow .1s ease-in-out;
+	transition: text-shadow .1s ease-in-out;
+}
+
+.device-active.heat .fa:before,
+.device-active.smoke .fa:before,
+.device-active.co .fa:before,
+.device-active.batt .fa:before {
+	text-shadow: -2px -2px 1px #F00,
+               -2px 2px 1px #F00,
+               2px -2px 1px #F00,
+               2px 2px 1px #F00;
+}
+
+.device-active.smoke .smoke,
+.device-active.co .co,
+.device-active.batt .batt {
+	color: #F00;
+}
+
+a.device-active:hover:before {
+	text-shadow: 0 0 0 #286EA0;
+}
+
+@media (max-width: 1000px), (max-height: 600px) {
+	.device.samsung .numeric-controls,
+	.device.samsung .media,
+	.device.samsung .information {
+		display: none;
+	}
+}
+
+.device.ps3.device-on .power-on,
+.device.ps3.device-off .power-off {
 	display: none;
+}
+
+.device.ps3 .media {
+	padding-top: 2.5em;
+}
+
+.device.ps3 .media a {
+	width: 25%;
+}
+
+.device.nest .navigation {
+	margin-top: 1em;
+}
+
+.device.nest .text-input {
+	display: inline-block;
+}
+
+.device.nest .control-block .navigation a {
+	float: none;
+	margin: .1em auto;
+}
+
+.device.nest .sub-device-list .sub-device-group,
+.device.nest .sub-device-list .sub-device-group li {
+	max-width: 100%;
+	width: 100%;
+}
+
+.device.nest .sub-device-list .control-device-status li {
+	max-width: 40%;
+	width: 40%;
+}
+
+.device.nest .sub-device-list .text-device-status {
+	max-width: 100%;
+	width: 100%;
+}
+
+.device.nest .text-device-status .text-device-status li {
+	max-width: 22%;
+}
+
+.device.travis li:nth-child(3) ~ li {
+	display: none;
+}
+
+.device,
+.subdevice {
+	-moz-transition: opacity .5s ease-in-out;
+	-o-transition: opacity .5s ease-in-out;
+	-webkit-transition: opacity .5s ease-in-out;
+	transition: opacity .5s ease-in-out;
 }
 
 .device {
 	display: none;
 }
 
-body .selected,
+body.rich .selected,
 .device:target {
 	display: block;
 }
@@ -574,16 +820,34 @@ body .selected,
 	color: #000;
 }
 
-/* Dark theme */
-.theme-dark body {
-	background: #000;
-	color: #333;
+@media (light-level: washed) {
+	body,
+	.theme-dark body {
+		background: #DDD;
+		color: #444;
+	}
+}
+
+@media (light-level: normal) {
+	body,
+	.theme-dark body {
+		background: #444;
+		color: #222;
+	}
+}
+
+@media (light-level: dim) {
+	body,
+	.theme-dark body {
+		background: #000;
+		color: #444;
+	}
 }
 
 .theme-dark .header h1 a,
 .theme-dark input,
 .theme-dark button {
-	color: #333;
+	color: #444;
 }
 
 .theme-dark input {
@@ -591,7 +855,7 @@ body .selected,
 }
 
 .theme-dark button {
-	background-color: rgba(0,25,50);
+	background-color: #0078E7;
 }
 
 .theme-dark .header {
@@ -599,43 +863,85 @@ body .selected,
 }
 
 .theme-dark .header ul a {
-	background-color: #333;
+	background-color: #444;
 	border: none;
-	color: #666;
+	color: #888;
 	font-weight: bold;
 }
 
 .theme-dark .header .selected a {
-	background-color: rgb(0, 120, 231);
+	background-color: rgb(0,120,231);
 	border: 1px solid #999;  /*IE 6/7/8*/
-	border: none rgba(0, 0, 0, 0);  /*IE9 + everything else*/
+	border: none rgba(0,0,0,0);  /*IE9 + everything else*/
 	border-radius: 2px;
-	color: #333;
+	color: #444;
 	cursor: pointer;
 	*font-size: 90%; /*IE 6/7 - To reduce IE's oversized button text*/
 	*overflow: visible; /*IE 6/7 - Because of IE's overly large left/right padding on buttons */
-	padding: 0.5em 1.5em 0.5em;
+	padding: .5em 1.5em .5em;
 	text-decoration: none;
 	/* Transitions */
-	-webkit-transition: 0.1s linear -webkit-box-shadow;
-	-moz-transition: 0.1s linear -moz-box-shadow;
-	-ms-transition: 0.1s linear box-shadow;
-	-o-transition: 0.1s linear box-shadow;
-	transition: 0.1s linear box-shadow;
+	-webkit-transition: .1s linear -webkit-box-shadow;
+	-moz-transition: .1s linear -moz-box-shadow;
+	-ms-transition: .1s linear box-shadow;
+	-o-transition: .1s linear box-shadow;
+	transition: .1s linear box-shadow;
 }
 
 .theme-dark .header .selected a:hover,
 .theme-dark .header .selected a:focus {
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#1a000000',GradientType=0);
-	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(transparent), color-stop(40%, rgba(0,0,0, 0.05)), to(rgba(0,0,0, 0.10)));
-	background-image: -webkit-linear-gradient(transparent, rgba(0,0,0, 0.05) 40%, rgba(0,0,0, 0.10));
-	background-image: -moz-linear-gradient(top, rgba(0,0,0, 0.05) 0%, rgba(0,0,0, 0.10));
-	background-image: -o-linear-gradient(transparent, rgba(0,0,0, 0.05) 40%, rgba(0,0,0, 0.10));
-	background-image: linear-gradient(transparent, rgba(0,0,0, 0.05) 40%, rgba(0,0,0, 0.10));
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(transparent), color-stop(40%, rgba(0,0,0,.05)), to(rgba(0,0,0,.1)));
+	background-image: -webkit-linear-gradient(transparent, rgba(0,0,0,.05) 40%, rgba(0,0,0,.1));
+	background-image: -moz-linear-gradient(top, rgba(0,0,0,.05) 0%, rgba(0,0,0,.1));
+	background-image: -o-linear-gradient(transparent, rgba(0,0,0,.05) 40%, rgba(0,0,0,.1));
+	background-image: linear-gradient(transparent, rgba(0,0,0,.05) 40%, rgba(0,0,0,.1));
+}
+
+@media (max-width: 650px) {
+	.header ul {
+		clear: both;
+		float: none;
+	}
+
+	.device {
+		font-size: 250%;
+	}
+
+	.device > div {
+		clear: both;
+		float: none;
+		width: 100%;
+	}
+
+	.device .control-block {
+		margin: 0;
+	}
+
+	.device .installed .sub-device-group,
+	.device .installed .sub-device-group li,
+	.device .installed-list li {
+		max-width: 45%;
+	}
+
+	.device.ps3 .media {
+		padding-top: 1em;
+	}
+
+	.device.nest .sub-device-list .sub-device-group {
+		max-width: 90%;
+		width: 90%;
+	}
+
+	.device.nest .sub-device-list .control-device-status li {
+		max-width: 100%;
+		width: 100%;
+	}
 }
 
 @media (max-width: 500px) {
-	.header h1 {
+	.header h1,
+	.sub-device-list h4 {
 		display: none;
 	}
 
@@ -648,26 +954,23 @@ body .selected,
 	.device .shortcuts {
 		padding-top: .5em;
 	}
-}
 
-@media (max-width: 650px) {
-	.header ul {
-		clear: both;
-		float: none;
+	.device .installed .sub-device-list .sub-device-group {
+		width: 40%;
 	}
 
-	.header ul li {
-		margin-top: 1em;
+	.device .installed .sub-device-group li {
+		max-width: 90%;
 	}
 
-	.device {
-		font-size: 250%;
-	}
-
-	.device > div {
-		clear: both;
-		float: none;
+	.device.nest .sub-device-list .sub-device-group,
+	.device.nest .sub-device-list .control-device-status li {
+		max-width: 100%;
 		width: 100%;
+	}
+
+	.device.nest .text-device-status .text-device-status li {
+		max-width: 40%;
 	}
 }
 
@@ -680,6 +983,16 @@ body .selected,
 		float: left;
 		width: 50%;
 	}
+
+	.device .installed .sub-device-group,
+	.device .installed .sub-device-group li,
+	.device .installed-list li {
+		max-width: 45%;
+	}
+
+	.device.nest .sub-device-list .sub-device-group {
+		max-width: 100%;
+	}
 }
 
 @media (min-width: 1000px) {
@@ -687,15 +1000,20 @@ body .selected,
 		font-size: 400%;
 	}
 
-	#samsung .numeric-controls,
-	#samsung .media,
-	#samsung .information {
-		display: block;
+	.device .installed .sub-device-group,
+	.device .installed .sub-device-group li,
+	.device .installed-list li {
+		max-width: 30%;
+	}
+
+	.device.nest .text-device-status .text-device-status li {
+		max-width: 22%;
 	}
 }
 
 .header:after,
-.header ul:after {
+.header ul:after,
+.device .control-block:after {
 	clear: both;
 	content: '.';
 	display: block;
