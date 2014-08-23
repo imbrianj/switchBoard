@@ -3,7 +3,7 @@
 
 exports.config = {
   config : {
-    serverPort   : '8080',
+    serverPort   : 8080,
     serverIp     : '192.168.1.145',
     serverMac    : '00:00:00:00:00:00',
     theme        : 'dark',
@@ -48,7 +48,7 @@ exports.config = {
     // Gimx requires starting up a server and port.  You can set it to something
     // specific if you need, but this should be fine.
     serviceIp   : '127.0.0.1',
-    servicePort : '8181',
+    servicePort : 8181,
     disabled    : true
   },
 
@@ -241,6 +241,7 @@ exports.config = {
     title     : 'Nest',
     username  : 'user@example.com',
     password  : 'password',
+    // Notifications are for Nest Protect alarms.
     notify    : ['pushover', 'twilio', 'speech'],
     disabled  : true
   },
@@ -252,5 +253,19 @@ exports.config = {
     travisRepo     : 'switchBoard',
     disabledMarkup : true,
     disabled       : true
+  },
+
+  /*
+   * You must first enable control of XBMC via HTTP.
+   *
+   * Go to: "Settings" > "Services" > "Web Server"
+   * Activate "Allow control of XBMC via HTTP"
+   */
+  xbmc : {
+    typeClass      : 'xbmc',
+    title          : 'XBMC',
+    deviceIp       : '192.168.1.8',
+    devicePort     : 8080,
+    disabled       : false
   }
 };

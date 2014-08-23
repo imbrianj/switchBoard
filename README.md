@@ -46,6 +46,7 @@ Supported Devices/Services
 | Stocks      | Stable      | Uses Yahoo Finance                                                              |
 | Travis      | Stable      |                                                                                 |
 | Weather     | Stable      | Uses Yahoo Weather                                                              |
+| XBMC        | Testing     | Basic controls work                                                             |
 
 For details about each device's specific requirements for installation, refer to the well commented [config.js](config/config.js) for any given device.
 

@@ -40,7 +40,7 @@ module.exports = function(grunt) {
       /* We want to explicitly run tests/unit/js/ last since it will create some
          mock client objects that would otherwise be picked up in
          tests/unit/parsers/ */
-      all : ['tests/unit/controller/*Test.js',
+      all : ['tests/unit/controllers/*Test.js',
              'tests/unit/events/*Test.js',
              'tests/unit/lib/*Test.js',
              'tests/unit/parsers/*Test.js',

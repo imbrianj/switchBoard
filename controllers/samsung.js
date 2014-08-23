@@ -28,8 +28,7 @@ module.exports = (function () {
 
   /**
    * @author brian@bevey.org
-   * @fileoverview Basic control over Samsung SmartTVs from 2011 onward via TCP
-   *               web sockets using Node.js.
+   * @fileoverview Basic control of Samsung SmartTVs from 2011 onward.
    * @requires net
    * @note This is a full-scale rip-off of the fine work done here:
    *       http://forum.samygo.tv/viewtopic.php?f=12&t=1792
