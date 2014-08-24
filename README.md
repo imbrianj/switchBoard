@@ -52,15 +52,13 @@ For details about each device's specific requirements for installation, refer to
 
 Credit
 ---
-Thank you to the people that sorted out how to write to the Samsung TVs and paving the way for me to port this to node: http://forum.samygo.tv/viewtopic.php?f=12&t=1792
+Thank you to [the people that sorted out how to write to the Samsung TVs](http://forum.samygo.tv/viewtopic.php?f=12&t=1792) and paving the way for me to port this to node.
 
-Thank you to Matlo from GIMX for his huge help in getting the PS3 control working.  You should definitely check out his project and donate so he can get a PS4 and add support for that device as well. http://blog.gimx.fr/
+Thank you to [Matlo from GIMX](http://blog.gimx.fr/) for his huge help in getting the PS3 control working.
 
-Thank you to the group that documented the Panasonic interface that I've ported to node:
-http://cocoontech.com/forums/topic/21266-panasonic-viera-plasma-ip-control/page-2
+Thank you to the [group that documented the Panasonic interface](http://cocoontech.com/forums/topic/21266-panasonic-viera-plasma-ip-control/page-2) that I've ported to node:
 
-Thank you to everyone that helped shed some light on LG develpment:
-http://forum.loxone.com/enen/software/4876-lg-tv-http-control.html#post32692
+Thank you to [everyone that helped shed some light](http://forum.loxone.com/enen/software/4876-lg-tv-http-control.html#post32692) on LG develpment
 
 Also thanks to purecss.io and fontawesome.io for their assets.
 
@@ -76,17 +74,14 @@ FAQ
 
 - Q. How can I configure my PS3?
 
-  You'll need to have your device (computer, raspberry pie, etc.) *pretend* to be a PS3 controller (aka Sixaxis Controller) that communicates with the PS3 via Bluetooth.  Therefore, you'll:
+  You'll need to have your SwitchBoard device (computer, raspberry pi, etc.) *pretend* to be a PS3 controller (aka Sixaxis Controller) that communicates with the PS3 via Bluetooth.
 
-   * Need a supported Bluetooth dongle that plugs into your device and communicates with the console (the CSR bluecore4-rom is recommended): http://gimx.fr/wiki/index.php?title=Bluetooth_dongle
-   * Install GIMX version 2.0x+ (earlier versions won't work) on your device so it can talk to the PS3 via the dongle:
-     * Installing on a generic device: https://code.google.com/p/diyps3controller/downloads/list [Bad link?]
-     * Installing on a Raspberry Pi: http://gimx.fr/wiki/index.php?title=RPi
-   * Plug your Sixaxis into your PS3, press the controller's start button to pair it, then unplug, and plug into your device.
-   * Grab the controller and console's Bluetooth address and copy it over to the dongle, then fire off the GIMX software: http://gimx.fr/wiki/index.php?title=Command_line#Linux_.2B_bluetooth_.2B_PS3
-     * Make sure to stop before running gimx.
-   * Go to your wireless router's hompepage, usually something like 192.168.2.1, and copy and paste over the IP address of your PS3 to the config/config.js file.
-   * Run $: node app in terminal
+   * You'll need a supported Bluetooth dongle that plugs into your device and communicates with the console (the CSR bluecore4-rom is recommended): http://gimx.fr/wiki/index.php?title=Bluetooth_dongle
+   * [Install GIMX](https://github.com/matlo/GIMX/releases) version 2.0x+ (earlier versions won't work)
+   * Some [detailed instructions](http://gimx.fr/wiki/index.php?title=RPi) for installing on a Raspberry Pi
+   * Plug your Sixaxis into your PS3, press the controller's PS button to pair it.  Then, unplug the controller from the PS3 and plug into your SwitchBoard device.
+   * Note the Bluetooth addresses of both the PS3 controller and PS3 Bluetooth address.  You'll need the PS3 Bluetooth address in your config and you'll need the controller address to copy over to your dongle.
+     * Refer to the [detailed instruction for spoofing your Bluetooth dongle's MAC address](http://gimx.fr/wiki/index.php?title=Command_line#Linux_.2B_bluetooth_.2B_PS3).
    * That's it!
 
   Q. What is that dot in the top right?
@@ -104,4 +99,4 @@ FAQ
 
 - Q. How secure is this?
 
-  A. Depends.  It's assumed that any device that's on your network is deemed white-listed.  This probably shouldn't be used on a large network with people you don't trust to screw with your TV. Outside your network, my goal is to provide the most security by keeping external connections to a minimum.  See "Q. Why aren't you using a seed-based JS library / referencing CSS from a CDN?"
+  A. Depends.  It's assumed that any device that's on your network is deemed white-listed.  This probably shouldn't be used on a large network with people you don't trust to screw with your TV. My goal is to provide the most security by keeping external connections to a minimum.  See "Q. Why aren't you using a seed-based JS library / referencing CSS from a CDN?"
