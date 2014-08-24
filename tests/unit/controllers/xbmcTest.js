@@ -35,10 +35,10 @@ exports.xbmcControllerTest = {
     'use strict';
 
     var xbmcController = require(__dirname + '/../../../controllers/xbmc'),
-        commandRequest = xbmcController.postPrepare({ deviceIp   : '123.456.789.101',
-                                                      devicePort : '8080',
-                                                      command    : 'TEST',
-                                                      method     : 'POST',
+        commandRequest = xbmcController.postPrepare({ deviceIp    : '123.456.789.101',
+                                                      devicePort  : '8080',
+                                                      command     : 'TEST',
+                                                      method      : 'POST',
                                                       postRequest : 'This is 21 bytes long'});
 
     test.deepEqual(commandRequest, { host    : '123.456.789.101',
@@ -61,9 +61,11 @@ exports.xbmcControllerTest = {
     'use strict';
 
     var xbmcController = require(__dirname + '/../../../controllers/xbmc'),
-        postRequest    = xbmcController.postData({ command : 'Input.Left' });
+        commandRequest = xbmcController.postData({ command : 'Input.Left' }),
+        textRequest    = xbmcController.postData({ command : 'Input.SendText', text : 'This is entered text' });
 
-    test.equals(postRequest, '{"id":1,"jsonrpc":"2.0","method":"Input.Left"}', 'XBMC post data validation');
+    test.strictEqual(commandRequest, '{"id":1,"jsonrpc":"2.0","method":"Input.Left"}',                                                           'XBMC command validation');
+    test.strictEqual(textRequest,    '{"id":0,"jsonrpc":"2.0","method":"Input.SendText","params":{"text":"This is entered text","done":false}}', 'XBMC text input validation');
 
     test.done();
   }

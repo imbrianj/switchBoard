@@ -13,7 +13,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -32,7 +32,7 @@ exports.scheduleTest = {
   getDirectory : function (test) {
     'use strict';
 
-    var schedule   = require('../../../events/schedule'),
+    var schedule   = require(__dirname + '/../../../events/schedule'),
         controller = { weather : { config : { typeClass : 'weather' },
                                    event  : { fire : function(deviceType, source, controllers) {
                                                        console.log('This should print');
@@ -46,7 +46,7 @@ exports.scheduleTest = {
                                                        console.log('This should NOT print');
                                                      } } } };
 
-    test.ok(schedule.fire(controller), 'Schedule shouldnt choke on config or a poorly configured controller');
+    test.strictEqual(schedule.fire(controller), true, 'Schedule shouldnt choke on config or a poorly configured controller');
 
     test.done();
   }

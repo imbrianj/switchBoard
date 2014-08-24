@@ -37,9 +37,9 @@ exports.denonControllerTest = {
         volUp           = denonController.translateCommand('VOL_UP'),
         volDown         = denonController.translateCommand('VOL_DOWN');
 
-    test.equal(power,   'PWON',   'Power is mapped to PWON');
-    test.equal(volUp,   'MVUP',   'Vol_Up is mapped to MVUP');
-    test.equal(volDown, 'MVDOWN', 'Vol_Down is mapped to MVDOWN');
+    test.strictEqual(power,   'PWON',   'Power is mapped to PWON');
+    test.strictEqual(volUp,   'MVUP',   'Vol_Up is mapped to MVUP');
+    test.strictEqual(volDown, 'MVDOWN', 'Vol_Down is mapped to MVDOWN');
 
     test.done();
   }

@@ -13,7 +13,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -39,9 +39,9 @@ exports.lgControllerTest = {
         volUp        = lgController.translateCommand('VOL_UP'),
         ok           = lgController.translateCommand('OK');
 
-    test.equal(external, 47, 'External is mapped to 47');
-    test.equal(volUp,    24, 'VolUp is mapped to 24');
-    test.equal(ok,       20, 'OK is mapped to 20');
+    test.strictEqual(external, 47, 'External is mapped to 47');
+    test.strictEqual(volUp,    24, 'VolUp is mapped to 24');
+    test.strictEqual(ok,       20, 'OK is mapped to 20');
 
     test.done();
   },
@@ -70,7 +70,7 @@ exports.lgControllerTest = {
     var lgController = require(__dirname + '/../../../controllers/lg'),
         postData     = lgController.postPairData({ pairKey : '123456' });
 
-    test.ok((postData.indexOf('<value>123456</value>') !== -1), 'Command should have a pair key');
+    test.notStrictEqual(postData.indexOf('<value>123456</value>'), -1, 'Command should have a pair key');
 
     test.done();
   },
@@ -81,7 +81,7 @@ exports.lgControllerTest = {
     var lgController = require(__dirname + '/../../../controllers/lg'),
         postData     = lgController.postData({ command : 20 });
 
-    test.ok((postData.indexOf('<value>20</value>') !== -1), 'Command should have a value of 20 (for "OK")');
+    test.notStrictEqual(postData.indexOf('<value>20</value>'), -1, 'Command should have a value of 20 (for "OK")');
 
     test.done();
   }

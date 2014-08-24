@@ -66,17 +66,17 @@ exports.smartthingsParserTest = {
         ungroupedMarkup   = smartthingsParser.smartthings('dummy', markup, 'ok', ungrouped, fragments),
         noValue           = smartthingsParser.smartthings('dummy', markup, 'ok', null, fragments);
 
-    test.ok((goodMarkup.indexOf('{{') === -1), 'All values replaced');
+    test.strictEqual(goodMarkup.indexOf('{{'),        -1, 'All values replaced');
 
-    test.ok((goodMarkup.indexOf('<h4>GROUP1</h4><ul><a href="/?TEST=subdevice-toggle-Label+Foo" class="fa fa-lightbulb-o device-active"><span>Label Foo</span></a><a href="/?TEST=subdevice-toggle-Label+Bar" class="fa fa-unlock-alt"><span>Label Bar</span></a>') !== -1), 'Passed markup validated1');
-    test.ok((goodMarkup.indexOf('<h4>GROUP2</h4><ul><span class="fa fa-folder-open-o device-active"><span>Label Baz (70&deg;)</span></span><span class="fa fa-tint"><span>Label Bang</span></span><span class="fa fa-paw"><span>Label Bif</span></span>')           !== -1), 'Passed markup validated2');
-    test.ok((goodMarkup.indexOf('<h4>GROUP3</h4><ul><span class="fa fa-male device-active"><span>Label Bam + Temp (70&deg;)</span></span>')                                                                                                                         !== -1), 'Passed markup validated3');
+    test.notStrictEqual(goodMarkup.indexOf('<h4>GROUP1</h4><ul><a href="/?TEST=subdevice-toggle-Label+Foo" class="fa fa-lightbulb-o device-active"><span>Label Foo</span></a><a href="/?TEST=subdevice-toggle-Label+Bar" class="fa fa-unlock-alt"><span>Label Bar</span></a>'), -1, 'Passed markup validated1');
+    test.notStrictEqual(goodMarkup.indexOf('<h4>GROUP2</h4><ul><span class="fa fa-folder-open-o device-active"><span>Label Baz (70&deg;)</span></span><span class="fa fa-tint"><span>Label Bang</span></span><span class="fa fa-paw"><span>Label Bif</span></span>'),           -1, 'Passed markup validated2');
+    test.notStrictEqual(goodMarkup.indexOf('<h4>GROUP3</h4><ul><span class="fa fa-male device-active"><span>Label Bam + Temp (70&deg;)</span></span>'),                                                                                                                         -1, 'Passed markup validated3');
 
-    test.ok((ungroupedMarkup.indexOf('{{') === -1),   'All values replaced');
-    test.ok((ungroupedMarkup.indexOf('<h4>') === -1), 'No group headers printed');
+    test.strictEqual(ungroupedMarkup.indexOf('{{'),   -1, 'All values replaced');
+    test.strictEqual(ungroupedMarkup.indexOf('<h4>'), -1, 'No group headers printed');
 
-    test.ok((noValue.indexOf('{{') === -1),         'All values replaced');
-    test.equal(noValue, '<h1>Foo</h1> <div></div>', 'Passed markup validated');
+    test.strictEqual(noValue.indexOf('{{'),           -1, 'All values replaced');
+    test.strictEqual(noValue, '<h1>Foo</h1> <div></div>', 'Passed markup validated');
 
     test.done();
   }

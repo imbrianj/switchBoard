@@ -43,11 +43,11 @@ exports.loadMarkupTest = {
                                                typeClass : 'nest' } } },
         templates    = loadMarkup.loadTemplates(controllers);
 
-    test.ok(typeof templates.samsung.fragments === 'undefined',   'Samsung has no template fragments');
-    test.ok(typeof templates.speech.fragments === 'undefined',    'Speech has no template fragments');
-    test.ok(typeof templates.nest.fragments === 'object',         'Nest has template fragments');
-    test.ok(typeof templates.nest.fragments.group === 'string',   'Nest has a "group" fragment');
-    test.ok(typeof templates.nest.fragments.protect === 'string', 'Nest has a "protect" fragment');
+    test.strictEqual(typeof templates.samsung.fragments,      'undefined', 'Samsung has no template fragments');
+    test.strictEqual(typeof templates.speech.fragments,       'undefined', 'Speech has no template fragments');
+    test.strictEqual(typeof templates.nest.fragments,         'object',    'Nest has template fragments');
+    test.strictEqual(typeof templates.nest.fragments.group,   'string',    'Nest has a "group" fragment');
+    test.strictEqual(typeof templates.nest.fragments.protect, 'string',    'Nest has a "protect" fragment');
 
     test.done();
   },
@@ -70,11 +70,11 @@ exports.loadMarkupTest = {
                                     controller : { onload : function(device) { return device.markup.replace('{{TEST_KEY}}', 'This should never be printed!'); } } } },
         markup      = loadMarkup.loadMarkup(template, controllers, null);
 
-    test.ok((markup.indexOf('class="theme-TEST-theme"') !== -1),          'Markup theme populated');
-    test.ok((markup.indexOf('class="TEST-deviceId selected"') !== -1),    'Markup active device populated');
-    test.ok((markup.indexOf('<li class="TEST-deviceId selected"><a href="#TEST-deviceId">TEST-title</a></li>') !== -1), 'Markup for nav populated');
-    test.ok((markup.indexOf('<span>TEST-deviceId PASSED</span>') !== -1), 'Markup for device populated');
-    test.ok((markup.indexOf('This should never be printed!') === -1),     'Module with disabled markup should be omitted');
+    test.notStrictEqual(markup.indexOf('class="theme-TEST-theme"'),          -1, 'Markup theme populated');
+    test.notStrictEqual(markup.indexOf('class="TEST-deviceId selected"'),    -1, 'Markup active device populated');
+    test.notStrictEqual(markup.indexOf('<li class="TEST-deviceId selected"><a href="#TEST-deviceId">TEST-title</a></li>'), -1, 'Markup for nav populated');
+    test.notStrictEqual(markup.indexOf('<span>TEST-deviceId PASSED</span>'), -1, 'Markup for device populated');
+    test.strictEqual(markup.indexOf('This should never be printed!'),        -1, 'Module with disabled markup should be omitted');
 
     test.done();
   }

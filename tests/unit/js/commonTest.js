@@ -35,11 +35,11 @@ exports.commonTest = {
   hasAttribute : function (test) {
     'use strict';
 
-    var common = require('../../../js/common'),
+    var common = require(__dirname + '/../../../js/common'),
         mock   = { className : 'foo', bar : 'baz' };
 
-    test.equal(true,  Switchboard.hasAttribute(mock, 'bar', 'baz'),  'Attribute exists');
-    test.equal(false, Switchboard.hasAttribute(mock, 'bar', 'bang'), 'Attribute does not exists');
+    test.strictEqual(Switchboard.hasAttribute(mock, 'bar', 'baz'),  true,  'Attribute exists');
+    test.strictEqual(Switchboard.hasAttribute(mock, 'bar', 'bang'), false, 'Attribute does not exists');
 
     test.done();
   },
@@ -47,11 +47,11 @@ exports.commonTest = {
   hasClass : function (test) {
     'use strict';
 
-    var common = require('../../../js/common'),
+    var common = require(__dirname + '/../../../js/common'),
         mock   = { className : 'foo' };
 
-    test.equal(true,  Switchboard.hasClass(mock, 'foo'), 'Class name exists');
-    test.equal(false, Switchboard.hasClass(mock, 'bar'), 'Class name does not exist');
+    test.strictEqual(Switchboard.hasClass(mock, 'foo'), true,  'Class name exists');
+    test.strictEqual(Switchboard.hasClass(mock, 'bar'), false, 'Class name does not exist');
 
     test.done();
   },
@@ -59,12 +59,12 @@ exports.commonTest = {
   addClass : function (test) {
     'use strict';
 
-    var common = require('../../../js/common'),
+    var common = require(__dirname + '/../../../js/common'),
         mock   = {className : 'foo'};
 
     Switchboard.addClass(mock, 'bar');
 
-    test.equal('foo bar', mock.className, 'New class name should have been added');
+    test.strictEqual(mock.className, 'foo bar', 'New class name should have been added');
 
     test.done();
   },
@@ -72,12 +72,12 @@ exports.commonTest = {
   removeClass : function (test) {
     'use strict';
 
-    var common = require('../../../js/common'),
+    var common = require(__dirname + '/../../../js/common'),
         mock   = {className : 'foo bar'};
 
     Switchboard.removeClass(mock, 'foo');
 
-    test.equal('bar', mock.className, 'Class name should have been removed');
+    test.strictEqual(mock.className, 'bar', 'Class name should have been removed');
 
     test.done();
   },
@@ -85,16 +85,16 @@ exports.commonTest = {
   toggleClass : function (test) {
     'use strict';
 
-    var common = require('../../../js/common'),
+    var common = require(__dirname + '/../../../js/common'),
         mock   = {className : 'foo bar'};
 
     Switchboard.toggleClass(mock, 'bar');
 
-    test.equal('foo', mock.className, 'Class name should have been removed');
+    test.strictEqual(mock.className, 'foo', 'Class name should have been removed');
 
     Switchboard.toggleClass(mock, 'bar');
 
-    test.equal('foo bar', mock.className, 'Class name should have been added');
+    test.strictEqual(mock.className, 'foo bar', 'Class name should have been added');
 
     test.done();
   },
@@ -102,20 +102,20 @@ exports.commonTest = {
   trim : function (test) {
     'use strict';
 
-    var common = require('../../../js/common');
+    var common = require(__dirname + '/../../../js/common');
 
-    test.equal('Testing', Switchboard.trim('   Testing   '), 'Trim should remove extra whitespace');
+    test.strictEqual(Switchboard.trim('   Testing   '), 'Testing', 'Trim should remove extra whitespace');
     test.done();
   },
 
   decode : function (test) {
     'use strict';
 
-    var common  = require('../../../js/common'),
+    var common  = require(__dirname + '/../../../js/common'),
         mock    = '{"foo":{"bar":"test","baz":"bang"}}',
         decoded = Switchboard.decode(mock);
 
-    test.equal('bang', decoded.foo.baz, 'Decode should turn string JSON into an object');
+    test.strictEqual(decoded.foo.baz, 'bang', 'Decode should turn string JSON into an object');
 
     test.done();
   }

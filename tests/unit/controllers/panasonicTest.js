@@ -13,7 +13,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -88,13 +88,13 @@ exports.panasonicControllerTest = {
                                                              devicePort : '80',
                                                              text       : 'Text' });
 
-    test.ok((commandRequest.indexOf('<X_KeyEvent>NRC_TEST-ONOFF</X_KeyEvent>')                               !== -1), 'Command should have a key event');
-    test.ok((commandRequest.indexOf('<X_String>')                                                            === -1), 'Command should not have an X string');
-    test.ok((commandRequest.indexOf('<u:X_SendKey xmlns:u="urn:panasonic-com:service:p00NetworkControl:1">') !== -1), 'Command should have an urn');
+    test.notStrictEqual(commandRequest.indexOf('<X_KeyEvent>NRC_TEST-ONOFF</X_KeyEvent>'),                               -1, 'Command should have a key event');
+    test.strictEqual(commandRequest.indexOf('<X_String>'),                                                               -1, 'Command should not have an X string');
+    test.notStrictEqual(commandRequest.indexOf('<u:X_SendKey xmlns:u="urn:panasonic-com:service:p00NetworkControl:1">'), -1, 'Command should have an urn');
 
-    test.ok((textRequest.indexOf('<X_KeyEvent>')                                                             === -1), 'Text should not have a key event');
-    test.ok((textRequest.indexOf('<X_String>Text</X_String>')                                                !== -1), 'Text should have an X string');
-    test.ok((textRequest.indexOf('<u:X_SendString xmlns:u="urn:panasonic-com:service:p00NetworkControl:1">') !== -1), 'Text should have an urn');
+    test.strictEqual(textRequest.indexOf('<X_KeyEvent>'),                                                                -1, 'Text should not have a key event');
+    test.notStrictEqual(textRequest.indexOf('<X_String>Text</X_String>'),                                                -1, 'Text should have an X string');
+    test.notStrictEqual(textRequest.indexOf('<u:X_SendString xmlns:u="urn:panasonic-com:service:p00NetworkControl:1">'), -1, 'Text should have an urn');
 
     test.done();
   }

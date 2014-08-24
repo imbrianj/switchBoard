@@ -13,7 +13,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -43,7 +43,7 @@ exports.speechControllerTest = {
     test.deepEqual(maleLinux,    { command : 'espeak', params : ['TEST male voice on Linux'] },                   'Male voice on Linux validation');
     test.deepEqual(maleDarwin,   { command : 'say',    params : ['TEST male voice on Darwin'] },                  'Male voice on Darwin validation');
     test.deepEqual(femaleDarwin, { command : 'say',    params : ['-v', 'vicki', 'TEST female voice on Darwin'] }, 'Female voice on Darwin validation');
-    test.equal(maleWin32,    '',                                                                                  'Male Win32 should return null as it\'s not supported');
+    test.strictEqual(maleWin32,  '',                                                                              'Male Win32 should return null as it\'s not supported');
 
     test.done();
   }

@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global module, String, require, console, Switchboard */
+/*global module, String, require, console */
 
 /**
  * Copyright (c) 2014 brian@bevey.org
@@ -25,22 +25,19 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview Unit test for parsers/foscam.js
+ * @fileoverview Unit test for sharedUtil.js
  */
 
-exports.foscamParserTest = {
-  parser : function (test) {
+State = {};
+
+exports.sharedUtilTest = {
+  encodeName : function(test) {
     'use strict';
 
-    var foscamParser = require(__dirname + '/../../../parsers/foscam'),
-        markup       = '<h1>Foo</h1> <span class="{{DEVICE_STATE_ON}}">On</span> <span class="{{DEVICE_STATE_OFF}}">Off</span>',
-        onMarkup     = foscamParser.foscam('dummy', markup, 'ok', 'on'),
-        offMarkup    = foscamParser.foscam('dummy', markup, 'ok', 'off');
+    var util = require(__dirname + '/../../../lib/sharedUtil');
 
-    test.strictEqual(onMarkup.indexOf('{{'),  -1, 'All values replaced');
-    test.notStrictEqual(onMarkup.indexOf('<span class=" device-active">On</span> <span class="">Off</span>'),  -1, 'Passed markup validated1');
-    test.strictEqual(offMarkup.indexOf('{{'), -1, 'All values replaced');
-    test.notStrictEqual(offMarkup.indexOf('<span class="">On</span> <span class=" device-active">Off</span>'), -1, 'Passed markup validated1');
+    test.strictEqual(util.util.encodeName(' \' $ This is a bad %^ ! name()'), '_____this_is_a_bad______name__', 'Name encoded');
+    test.strictEqual(util.util.encodeName('ThisIsAGoodName'),                 'thisisagoodname',                'Name encoded');
 
     test.done();
   }

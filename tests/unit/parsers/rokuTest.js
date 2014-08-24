@@ -40,11 +40,11 @@ exports.rokuParserTest = {
         goodMarkup = rokuParser.roku('dummy', markup, 'ok', value, fragments),
         noValue    = rokuParser.roku('dummy', markup, 'ok', null,  fragments);
 
-    test.ok((goodMarkup.indexOf('{{')                  === -1), 'All values replaced');
-    test.ok((goodMarkup.indexOf('<span>TESTID</span>') !== -1), 'Passed markup validated');
-    test.ok((goodMarkup.indexOf('<em>CACHE2</em>')     !== -1), 'Passed markup validated');
-    test.ok((noValue.indexOf('{{')                     === -1), 'All values replaced');
-    test.equal(noValue, '<h1>Foo</h1> <div></div>',             'Passed markup validated');
+    test.strictEqual(goodMarkup.indexOf('{{'),                     -1, 'All values replaced');
+    test.notStrictEqual(goodMarkup.indexOf('<span>TESTID</span>'), -1, 'Passed markup validated');
+    test.notStrictEqual(goodMarkup.indexOf('<em>CACHE2</em>'),     -1, 'Passed markup validated');
+    test.strictEqual(noValue.indexOf('{{'),                        -1, 'All values replaced');
+    test.strictEqual(noValue, '<h1>Foo</h1> <div></div>',              'Passed markup validated');
 
     test.done();
   }

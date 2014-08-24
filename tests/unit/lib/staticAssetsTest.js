@@ -13,7 +13,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -32,7 +32,7 @@ exports.staticAssetsTest = {
   getDirectory : function(test) {
     'use strict';
 
-    var staticAssets = require('../../../lib/staticAssets'),
+    var staticAssets = require(__dirname + '/../../../lib/staticAssets'),
         css          = staticAssets.getDirectory('.css', '/css/TEST-min.css'),
         js           = staticAssets.getDirectory('.js', '/js/TEST-min.js'),
         roku         = staticAssets.getDirectory('.png', '/images/roku/TEST.png'),
@@ -40,12 +40,12 @@ exports.staticAssetsTest = {
         ico          = staticAssets.getDirectory('.ico', '/images/icons/TEST.ico'),
         woff         = staticAssets.getDirectory('.woff', '/font/TEST.woff');
 
-    test.equal(css, 'css', 'CSS lives in the CSS directory');
-    test.equal(js, 'js', 'JS lives in the JS directory');
-    test.equal(roku, 'images/roku', 'Images live in their designated directories');
-    test.equal(png, 'images/TEST', 'Images live in their designated directories');
-    test.equal(ico, 'images/icons', 'Icons live in the images directory');
-    test.equal(woff, 'font', 'Fonts live in the fonts directory');
+    test.strictEqual(css,  'css', 'CSS lives in the CSS directory');
+    test.strictEqual(js,   'js', 'JS lives in the JS directory');
+    test.strictEqual(roku, 'images/roku', 'Images live in their designated directories');
+    test.strictEqual(png,  'images/TEST', 'Images live in their designated directories');
+    test.strictEqual(ico,  'images/icons', 'Icons live in the images directory');
+    test.strictEqual(woff, 'font', 'Fonts live in the fonts directory');
 
     test.done();
   }

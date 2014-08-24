@@ -36,9 +36,9 @@ exports.nestControllerTest = {
 
     var nestController = require(__dirname + '/../../../controllers/nest');
 
-    test.equal(nestController.cToF(0),   32,  'Freezing point');
-    test.equal(nestController.cToF(100), 212, 'Boiling point');
-    test.equal(nestController.cToF(24),  75.2, 'A nice day');
+    test.strictEqual(nestController.cToF(0),   32,  'Freezing point');
+    test.strictEqual(nestController.cToF(100), 212, 'Boiling point');
+    test.strictEqual(nestController.cToF(24),  75.2, 'A nice day');
 
     test.done();
   },
@@ -48,9 +48,9 @@ exports.nestControllerTest = {
 
     var nestController = require(__dirname + '/../../../controllers/nest');
 
-    test.equal(nestController.fToC(32),   0,   'Freezing point');
-    test.equal(nestController.fToC(212),  100, 'Boiling point');
-    test.equal(nestController.fToC(75.2), 24,  'A nice day');
+    test.strictEqual(nestController.fToC(32),   0,   'Freezing point');
+    test.strictEqual(nestController.fToC(212),  100, 'Boiling point');
+    test.strictEqual(nestController.fToC(75.2), 24,  'A nice day');
 
     test.done();
   },
@@ -120,8 +120,8 @@ exports.nestControllerTest = {
 
     var nestController = require(__dirname + '/../../../controllers/nest');
 
-    test.equal(nestController.findLabel('00000000-0000-0000-0000-000100000003'), 'Den',      'Translate location');
-    test.equal(nestController.findLabel('00000000-0000-0000-0000-00010000000f'), 'Upstairs', 'Translate location');
+    test.strictEqual(nestController.findLabel('00000000-0000-0000-0000-000100000003'), 'Den',      'Translate location');
+    test.strictEqual(nestController.findLabel('00000000-0000-0000-0000-00010000000f'), 'Upstairs', 'Translate location');
 
     test.done();
   },
@@ -154,15 +154,15 @@ exports.nestControllerTest = {
         onloadMarkup   = nestController.onload({ markup : '<div class="nest"><ul>{{NEST_DYNAMIC}}</ul></div>',
                                                  config : { deviceId : 'FOO' } });
 
-    test.ok((onloadMarkup.indexOf('class="fa fa-asterisk device-active"><span>Cool</span>')                              !== -1), 'Thermostat is cooling');
-    test.ok((onloadMarkup.indexOf('<dd class="temp">Temp: 72&deg;</dd>')                                                 !== -1), 'Current thermostat temp');
-    test.ok((onloadMarkup.indexOf('class="text-input" type="number" max="100" min="50" name="{{DEVICE_ID}}" value="70"') !== -1), 'Current target temp');
-    test.ok((onloadMarkup.indexOf('<dd class="humidity">Humidity: 44%</dd>')                                             !== -1), 'Current humidity');
-    test.ok((onloadMarkup.indexOf('<li class="protect subdevice batt device-active">')                                   !== -1), 'Smoke detector has a low battery');
-    test.ok((onloadMarkup.indexOf('<dt>Office</dt>')                                                                     !== -1), 'Smoke detector is in the Office');
-    test.ok((onloadMarkup.indexOf('<dd class="smoke">Smoke: ok</dd>')                                                    !== -1), 'No smoke found');
-    test.ok((onloadMarkup.indexOf('<dd class="co">CO: ok</dd>')                                                          !== -1), 'No CO found');
-    test.ok((onloadMarkup.indexOf('<dd class="batt">Batt: err</dd>')                                                     !== -1), 'Smoke detector has a low battery');
+    test.notStrictEqual(onloadMarkup.indexOf('class="fa fa-asterisk device-active"><span>Cool</span>'),                              -1, 'Thermostat is cooling');
+    test.notStrictEqual(onloadMarkup.indexOf('<dd class="temp">Temp: 72&deg;</dd>'),                                                 -1, 'Current thermostat temp');
+    test.notStrictEqual(onloadMarkup.indexOf('class="text-input" type="number" max="100" min="50" name="{{DEVICE_ID}}" value="70"'), -1, 'Current target temp');
+    test.notStrictEqual(onloadMarkup.indexOf('<dd class="humidity">Humidity: 44%</dd>'),                                             -1, 'Current humidity');
+    test.notStrictEqual(onloadMarkup.indexOf('<li class="protect subdevice batt device-active">'),                                   -1, 'Smoke detector has a low battery');
+    test.notStrictEqual(onloadMarkup.indexOf('<dt>Office</dt>'),                                                                     -1, 'Smoke detector is in the Office');
+    test.notStrictEqual(onloadMarkup.indexOf('<dd class="smoke">Smoke: ok</dd>'),                                                    -1, 'No smoke found');
+    test.notStrictEqual(onloadMarkup.indexOf('<dd class="co">CO: ok</dd>'),                                                          -1, 'No CO found');
+    test.notStrictEqual(onloadMarkup.indexOf('<dd class="batt">Batt: err</dd>'),                                                     -1, 'Smoke detector has a low battery');
 
     State.FOO.value = { thermostat : {
                           '123456' : {
@@ -186,15 +186,15 @@ exports.nestControllerTest = {
     onloadMarkup = nestController.onload({ markup : '<div class="nest"><ul>{{NEST_DYNAMIC}}</ul></div>',
                                            config : { deviceId : 'FOO' } });
 
-    test.ok((onloadMarkup.indexOf('class="fa fa-sun-o device-active"><span>Heat</span>')                                 !== -1), 'Thermostat is heating');
-    test.ok((onloadMarkup.indexOf('<dd class="temp">Temp: 62&deg;</dd>')                                                 !== -1), 'Current thermostat temp');
-    test.ok((onloadMarkup.indexOf('class="text-input" type="number" max="100" min="50" name="{{DEVICE_ID}}" value="65"') !== -1), 'Current target temp');
-    test.ok((onloadMarkup.indexOf('<dd class="humidity">Humidity: 44%</dd>')                                             !== -1), 'Current humidity');
-    test.ok((onloadMarkup.indexOf('<li class="protect subdevice smoke co device-active">')                               !== -1), 'Smoke detector detects both Smoke and CO');
-    test.ok((onloadMarkup.indexOf('<dt>Bedroom</dt>')                                                                    !== -1), 'Smoke detector is in the Bedroom');
-    test.ok((onloadMarkup.indexOf('<dd class="smoke">Smoke: err</dd>')                                                   !== -1), 'Smoke detected');
-    test.ok((onloadMarkup.indexOf('<dd class="co">CO: err</dd>')                                                         !== -1), 'CO detected');
-    test.ok((onloadMarkup.indexOf('<dd class="batt">Batt: ok</dd>')                                                      !== -1), 'Smoke detector battery is ok');
+    test.notStrictEqual(onloadMarkup.indexOf('class="fa fa-sun-o device-active"><span>Heat</span>'),                                 -1, 'Thermostat is heating');
+    test.notStrictEqual(onloadMarkup.indexOf('<dd class="temp">Temp: 62&deg;</dd>'),                                                 -1, 'Current thermostat temp');
+    test.notStrictEqual(onloadMarkup.indexOf('class="text-input" type="number" max="100" min="50" name="{{DEVICE_ID}}" value="65"'), -1, 'Current target temp');
+    test.notStrictEqual(onloadMarkup.indexOf('<dd class="humidity">Humidity: 44%</dd>'),                                             -1, 'Current humidity');
+    test.notStrictEqual(onloadMarkup.indexOf('<li class="protect subdevice smoke co device-active">'),                               -1, 'Smoke detector detects both Smoke and CO');
+    test.notStrictEqual(onloadMarkup.indexOf('<dt>Bedroom</dt>'),                                                                    -1, 'Smoke detector is in the Bedroom');
+    test.notStrictEqual(onloadMarkup.indexOf('<dd class="smoke">Smoke: err</dd>'),                                                   -1, 'Smoke detected');
+    test.notStrictEqual(onloadMarkup.indexOf('<dd class="co">CO: err</dd>'),                                                         -1, 'CO detected');
+    test.notStrictEqual(onloadMarkup.indexOf('<dd class="batt">Batt: ok</dd>'),                                                      -1, 'Smoke detector battery is ok');
 
     test.done();
   }

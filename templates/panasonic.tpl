@@ -35,11 +35,12 @@
           </ul>
         </div>
         <div class="text">
-          <form class="text-form" id="tv-search-form" action="/" method="get">
+          <form class="text-form" action="/" method="get">
             <fieldset>
               <legend>Text Input</legend>
-              <label for="panasonic-text-input">Text Input:</label>
-              <input id="panasonic-text-input" class="text-input" type="text" name="{{DEVICE_ID}}" placeholder="Text Input" required />
+              <label for="{{DEVICE_ID}}-text-input">Text Input:</label>
+              <input id="{{DEVICE_ID}}-text-input" class="text-input" type="text" name="{{DEVICE_ID}}" placeholder="Text Input" required />
+              <input class="input-type" type="hidden" value="text" name="type" />
               <button type="submit" class="button">Submit</button>
             </fieldset>
           </form>

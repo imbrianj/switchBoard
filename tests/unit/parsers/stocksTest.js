@@ -41,12 +41,12 @@ exports.stocksParserTest = {
         goodMarkup   = stocksParser.stocks('dummy', markup, 'ok', value, fragments),
         badMarkup    = stocksParser.stocks('dummy', markup, 'ok', null,  fragments);
 
-    test.ok((goodMarkup.indexOf('{{') === -1), 'All values replaced');
-    test.ok((goodMarkup.indexOf('<li class="gain"><span class="fa fa-arrow-up"><span>Gain</span></span><span class="name">YHOO</span> <span class="price">50.00</span> <span class="change">(+1.00 1%)</li>')       !== -1), 'Passed markup validated');
-    test.ok((goodMarkup.indexOf('<li class="loss"><span class="fa fa-arrow-down"><span>Loss</span></span><span class="name">TSLA</span> <span class="price">250.00</span> <span class="change">(-1.00 2%)</li>')    !== -1), 'Passed markup validated');
-    test.ok((goodMarkup.indexOf('<li class="neutral"><span class="fa fa-arrows-h"><span>Neutral</span></span><span class="name">GOOG</span> <span class="price">400.00</span> <span class="change">(0.00 0%)</li>') !== -1), 'Passed markup validated');
-    test.ok((badMarkup.indexOf('{{') === -1), 'All values replaced');
-    test.equal(badMarkup, '<h1>Foo</h1> <div></div>', 'Passed markup validated');
+    test.strictEqual(goodMarkup.indexOf('{{'),          -1, 'All values replaced');
+    test.notStrictEqual(goodMarkup.indexOf('<li class="gain"><span class="fa fa-arrow-up"><span>Gain</span></span><span class="name">YHOO</span> <span class="price">50.00</span> <span class="change">(+1.00 1%)</li>'),       -1, 'Passed markup validated');
+    test.notStrictEqual(goodMarkup.indexOf('<li class="loss"><span class="fa fa-arrow-down"><span>Loss</span></span><span class="name">TSLA</span> <span class="price">250.00</span> <span class="change">(-1.00 2%)</li>'),    -1, 'Passed markup validated');
+    test.notStrictEqual(goodMarkup.indexOf('<li class="neutral"><span class="fa fa-arrows-h"><span>Neutral</span></span><span class="name">GOOG</span> <span class="price">400.00</span> <span class="change">(0.00 0%)</li>'), -1, 'Passed markup validated');
+    test.strictEqual(badMarkup.indexOf('{{'),           -1, 'All values replaced');
+    test.strictEqual(badMarkup, '<h1>Foo</h1> <div></div>', 'Passed markup validated');
 
     test.done();
   }

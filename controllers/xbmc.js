@@ -36,7 +36,7 @@ module.exports = (function () {
   return {
     version : 20140819,
 
-    inputs  : ['command'],
+    inputs  : ['command', 'text'],
 
     /**
      * Whitelist of available key codes to use.
@@ -72,14 +72,13 @@ module.exports = (function () {
     postData : function (xbmc) {
       var value;
 
-      if(xbmc.args) {
-        value = JSON.stringify(xbmc.args);
-      }
+      value = { id      : xbmc.appId || 1,
+                jsonrpc : '2.0',
+                method  : xbmc.command };
 
-      else {
-        value = { id      : xbmc.appId || 1,
-                  jsonrpc : '2.0',
-                  method  : xbmc.command };
+      if(xbmc.text) {
+        value.id = 0;
+        value.params = { text : xbmc.text, done : false };
       }
 
       return JSON.stringify(value);
@@ -117,9 +116,14 @@ module.exports = (function () {
       xbmc.deviceIp   = config.device.deviceIp;
       xbmc.devicePort = config.device.devicePort;
       xbmc.command    = config.command    || '';
+      xbmc.text       = config.text       || '';
       xbmc.devicePort = config.devicePort || 8080;
       xbmc.method     = config.method     || 'POST';
       xbmc.callback   = config.callback   || function () {};
+
+      if(xbmc.text) {
+        xbmc.command = 'SendText';
+      }
 
       if(xbmc.command === 'state') {
         xbmc.command = 'Player.GetActivePlayers';

@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global module, console */
+/*global module, console, require */
 
 /**
  * Copyright (c) 2014 brian@bevey.org
@@ -44,27 +44,18 @@
         subDevices,
         subDeviceGroup,
         encodeName = function(name) {
-          name = name.split(' ').join('_');
-          name = name.split('>').join('_');
-          name = name.split('<').join('_');
-          name = name.split('"').join('_');
-          name = name.split('\'').join('_');
-          name = name.split('!').join('_');
-          name = name.split('@').join('_');
-          name = name.split('#').join('_');
-          name = name.split('$').join('_');
-          name = name.split('%').join('_');
-          name = name.split('^').join('_');
-          name = name.split('&').join('_');
-          name = name.split('*').join('_');
-          name = name.split('(').join('_');
-          name = name.split(')').join('_');
-          name = name.split(',').join('_');
-          name = name.split(';').join('_');
-          name = name.split('.').join('_');
-          name = 'group-' + name.toLowerCase();
+          var util;
 
-          return name;
+          if(typeof Switchboard === 'object') {
+            name = Switchboard.util.encodeName(name);
+          }
+
+          else {
+            util = require(__dirname + '/../lib/sharedUtil').util;
+            name = util.encodeName(name);
+          }
+
+          return 'group-' + name;
         },
         findSubDevices = function (subDeviceLabel, subDevices) {
           var subDevice = {},

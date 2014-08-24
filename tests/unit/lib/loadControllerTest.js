@@ -39,8 +39,8 @@ exports.loadControllerTest = {
                              title     : 'TEST samsung' },
         controller       = loadController.loadControllerFile(controllerConfig, 'samsung');
 
-    test.equal(controller.controller.keymap.length, 242, 'Controller file loaded');
-    test.ok((controller.markup.indexOf('control-block') !== -1), 'Controller markup loaded');
+    test.strictEqual(controller.controller.keymap.length, 242, 'Controller file loaded');
+    test.notStrictEqual(controller.markup.indexOf('control-block'), -1, 'Controller markup loaded');
 
     test.done();
   },
@@ -55,7 +55,7 @@ exports.loadControllerTest = {
         controller     = loadController.loadController(devices);
 
     test.deepEqual(controller.config, { default : 'samsung' }, 'Config object is not populated');
-    test.ok(!controller.panasonic, 'Disabled devices are omitted');
+    test.strictEqual(typeof controller.panasonic, 'undefined', 'Disabled devices are omitted');
 
     test.done();
   }

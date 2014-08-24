@@ -85,10 +85,10 @@ exports.smartthingsControllerTest = {
 
     smartthingsController.updateState(smartthings, response);
 
-    test.equal(State.FOO.value.devices[0].type, 'switch',  'The first device is a switch');
-    test.equal(State.FOO.value.devices[1].type, 'contact', 'The first device is a contact sensor');
-    test.equal(State.FOO.value.devices[1].peripheral.temp, 72, 'The second device has a peripheral function');
-    test.ok(State.FOO.updated > (now.getTime() - 1), 'State object should be newer than the initial time');
+    test.strictEqual(State.FOO.value.devices[0].type,           'switch',  'The first device is a switch');
+    test.strictEqual(State.FOO.value.devices[1].type,           'contact', 'The first device is a contact sensor');
+    test.strictEqual(State.FOO.value.devices[1].peripheral.temp, 72,       'The second device has a peripheral function');
+    test.strictEqual(State.FOO.updated > (now.getTime() - 1),    true,     'State object should be newer than the initial time');
 
     test.done();
   },
@@ -134,8 +134,8 @@ exports.smartthingsControllerTest = {
         switchState           = smartthingsController.getDevicePath('state-switch-Test Switch-on', smartthings),
         contactState          = smartthingsController.getDevicePath('state-contact-Test Door-on', smartthings);
 
-    test.equal(State.FOO.value.devices[0].state, 'on', 'The first device should now be on');
-    test.equal(State.FOO.value.devices[1].state, 'on', 'The second device should now be open');
+    test.strictEqual(State.FOO.value.devices[0].state, 'on', 'The first device should now be on');
+    test.strictEqual(State.FOO.value.devices[1].state, 'on', 'The second device should now be open');
 
     test.done();
   },
@@ -160,9 +160,9 @@ exports.smartthingsControllerTest = {
         onloadMarkup          = smartthingsController.onload({ markup : '<div class="smartthings">{{SMARTTHINGS_DYNAMIC}} <a href="/?smartthings=subdevice-mode-Home" class="fa fa-home{{DEVICE_STATE_HOME}}"><span>Home</span></a></div>',
                                                                config : { deviceId : 'FOO' } });
 
-    test.ok((onloadMarkup.indexOf('class="fa fa-lightbulb-o device-active"><span>Test Switch')                      !== -1), 'First device is a switch that is active');
-    test.ok((onloadMarkup.indexOf('class="fa fa-folder-open-o device-active"><span>Test Door (72&deg;)')            !== -1), 'Second device is a contact sensor that\'s open - and registering a temp reading');
-    test.ok((onloadMarkup.indexOf('/?smartthings=subdevice-mode-Home" class="fa fa-home device-active"><span>Home') !== -1), 'Currently in Home mode');
+    test.notStrictEqual(onloadMarkup.indexOf('class="fa fa-lightbulb-o device-active"><span>Test Switch'),                      -1, 'First device is a switch that is active');
+    test.notStrictEqual(onloadMarkup.indexOf('class="fa fa-folder-open-o device-active"><span>Test Door (72&deg;)'),            -1, 'Second device is a contact sensor that\'s open - and registering a temp reading');
+    test.notStrictEqual(onloadMarkup.indexOf('/?smartthings=subdevice-mode-Home" class="fa fa-home device-active"><span>Home'), -1, 'Currently in Home mode');
 
     test.done();
   }

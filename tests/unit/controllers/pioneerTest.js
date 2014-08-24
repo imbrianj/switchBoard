@@ -37,9 +37,9 @@ exports.pioneerControllerTest = {
         volUp             = pioneerController.translateCommand('VOL_UP'),
         tv                = pioneerController.translateCommand('TV');
 
-    test.equal(power, 'PZ',   'Power is mapped to PZ');
-    test.equal(volUp, 'VU',   'Vol_Up is mapped to VU');
-    test.equal(tv,    '05FN', 'TV is mapped to 05FN');
+    test.strictEqual(power, 'PZ',   'Power is mapped to PZ');
+    test.strictEqual(volUp, 'VU',   'Vol_Up is mapped to VU');
+    test.strictEqual(tv,    '05FN', 'TV is mapped to 05FN');
 
     test.done();
   }

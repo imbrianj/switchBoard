@@ -92,7 +92,7 @@ exports.foscamControllerTest = {
                                                                 username : 'USERNAME',
                                                                 password : 'PASSWORD' } });
 
-    test.ok((onloadMarkup.indexOf('<h1>Contents:</h1>') !== -1), 'Passed markup validated');
+    test.notStrictEqual(onloadMarkup.indexOf('<h1>Contents:</h1>'), -1, 'Passed markup validated');
 
     test.done();
   },
@@ -115,7 +115,7 @@ exports.foscamControllerTest = {
 
     runCommand.init(controller);
     controller = controller.controller.init(controller.FOO);
-    test.ok((controller.markup.indexOf('http://127.0.0.1/videostream.cgi?user=USERNAME&amp;pwd=PASSWORD') !== -1), 'Foscam image reference validated');
+    test.notStrictEqual(controller.markup.indexOf('http://127.0.0.1/videostream.cgi?user=USERNAME&amp;pwd=PASSWORD'), -1, 'Foscam image reference validated');
 
     test.done();
   }

@@ -41,12 +41,12 @@ exports.travisParserTest = {
         goodMarkup = travisParser.travis('dummy', markup, 'ok', value, fragments),
         noValue    = travisParser.travis('dummy', markup, 'ok', null,  fragments);
 
-    test.ok((goodMarkup.indexOf('{{')                  === -1), 'All values replaced');
-    test.ok((goodMarkup.indexOf('check <a href="#link1">Completed</a>')   !== -1), 'Passed markup validated1');
-    test.ok((goodMarkup.indexOf('cogs <a href="#link2">In progress</a>')  !== -1), 'Passed markup validated2');
-    test.ok((goodMarkup.indexOf('times <a href="#link3">Failed test</a>') !== -1), 'Passed markup validated3');
-    test.ok((noValue.indexOf('{{')                     === -1), 'All values replaced');
-    test.equal(noValue, '<h1>Foo</h1> <div></div>',             'Passed markup validated');
+    test.strictEqual(goodMarkup.indexOf('{{'),                                        -1, 'All values replaced');
+    test.notStrictEqual(goodMarkup.indexOf('check <a href="#link1">Completed</a>'),   -1, 'Passed markup validated1');
+    test.notStrictEqual(goodMarkup.indexOf('cogs <a href="#link2">In progress</a>'),  -1, 'Passed markup validated2');
+    test.notStrictEqual(goodMarkup.indexOf('times <a href="#link3">Failed test</a>'), -1, 'Passed markup validated3');
+    test.strictEqual(noValue.indexOf('{{'),                                           -1, 'All values replaced');
+    test.strictEqual(noValue, '<h1>Foo</h1> <div></div>',                                 'Passed markup validated');
 
     test.done();
   }

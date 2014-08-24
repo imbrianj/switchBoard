@@ -49,7 +49,7 @@ module.exports = function(grunt) {
 
     uglify : {
       options : { banner : '<%= banner.comment %>' },
-      dist : { files : { 'js/common.min.js' : ['js/common.js', 'parsers/*'] } }
+      dist : { files : { 'js/common.min.js' : ['js/common.js', 'parsers/*', 'lib/sharedUtil.js'] } }
     },
 
     concat: {

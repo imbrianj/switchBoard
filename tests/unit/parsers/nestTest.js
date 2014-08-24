@@ -64,26 +64,26 @@ exports.nestParserTest = {
         smokeMarkup = nestParser.nest('dummy', markup, 'ok', valueSmoke, fragments),
         noValue     = nestParser.nest('dummy', markup, 'ok', null,  fragments);
 
-    test.ok((goodMarkup.indexOf('{{') === -1), 'All values replaced');
+    test.strictEqual(goodMarkup.indexOf('{{'), -1, 'All values replaced');
 
-    test.ok((goodMarkup.indexOf('<dt>TEST1</dt><dd>Temp: 77</dd><dd>Target: 76</dd><dd>Humidity: 30</dd><dd class="cool device-active">Cool</dd><dd class="heat">Heat</dd><dd class="heat">Off</dd>') !== -1), 'Passed markup validated');
-    test.ok((goodMarkup.indexOf('<dt>TEST2</dt><dd>Temp: 80</dd><dd>Target: 79</dd><dd>Humidity: 25</dd><dd class="cool">Cool</dd><dd class="heat">Heat</dd><dd class="heat device-off">Off</dd>')    !== -1), 'Passed markup validated');
-    test.ok((goodMarkup.indexOf('<dt>TEST3</dt><dd>Temp: 70</dd><dd>Target: 73</dd><dd>Humidity: 20</dd><dd class="cool">Cool</dd><dd class="heat device-active">Heat</dd><dd class="heat">Off</dd>') !== -1), 'Passed markup validated');
+    test.notStrictEqual(goodMarkup.indexOf('<dt>TEST1</dt><dd>Temp: 77</dd><dd>Target: 76</dd><dd>Humidity: 30</dd><dd class="cool device-active">Cool</dd><dd class="heat">Heat</dd><dd class="heat">Off</dd>', -1), 'Passed markup validated');
+    test.notStrictEqual(goodMarkup.indexOf('<dt>TEST2</dt><dd>Temp: 80</dd><dd>Target: 79</dd><dd>Humidity: 25</dd><dd class="cool">Cool</dd><dd class="heat">Heat</dd><dd class="heat device-off">Off</dd>',    -1), 'Passed markup validated');
+    test.notStrictEqual(goodMarkup.indexOf('<dt>TEST3</dt><dd>Temp: 70</dd><dd>Target: 73</dd><dd>Humidity: 20</dd><dd class="cool">Cool</dd><dd class="heat device-active">Heat</dd><dd class="heat">Off</dd>', -1), 'Passed markup validated');
 
-    test.ok((goodMarkup.indexOf('<li class="smoke device-active"><dl><dt>TEST4</dt><dd>Smoke: err</dd><dd>CO: ok</dd><dd>Batt: ok</dd></dl></li>')           !== -1), 'Passed markup validated');
-    test.ok((goodMarkup.indexOf('<li class="co device-active"><dl><dt>TEST5</dt><dd>Smoke: ok</dd><dd>CO: err</dd><dd>Batt: ok</dd></dl></li>')              !== -1), 'Passed markup validated');
-    test.ok((goodMarkup.indexOf('<li class="batt device-active"><dl><dt>TEST6</dt><dd>Smoke: ok</dd><dd>CO: ok</dd><dd>Batt: err</dd></dl></li>')            !== -1), 'Passed markup validated');
-    test.ok((goodMarkup.indexOf('<li class="smoke co batt device-active"><dl><dt>TEST7</dt><dd>Smoke: err</dd><dd>CO: err</dd><dd>Batt: err</dd></dl></li>') !== -1), 'Passed markup validated');
-    test.ok((goodMarkup.indexOf('<li class=""><dl><dt>TEST8</dt><dd>Smoke: ok</dd><dd>CO: ok</dd><dd>Batt: ok</dd></dl></li>')                               !== -1), 'Passed markup validated');
+    test.notStrictEqual(goodMarkup.indexOf('<li class="smoke device-active"><dl><dt>TEST4</dt><dd>Smoke: err</dd><dd>CO: ok</dd><dd>Batt: ok</dd></dl></li>'),           -1, 'Passed markup validated');
+    test.notStrictEqual(goodMarkup.indexOf('<li class="co device-active"><dl><dt>TEST5</dt><dd>Smoke: ok</dd><dd>CO: err</dd><dd>Batt: ok</dd></dl></li>'),              -1, 'Passed markup validated');
+    test.notStrictEqual(goodMarkup.indexOf('<li class="batt device-active"><dl><dt>TEST6</dt><dd>Smoke: ok</dd><dd>CO: ok</dd><dd>Batt: err</dd></dl></li>'),            -1, 'Passed markup validated');
+    test.notStrictEqual(goodMarkup.indexOf('<li class="smoke co batt device-active"><dl><dt>TEST7</dt><dd>Smoke: err</dd><dd>CO: err</dd><dd>Batt: err</dd></dl></li>'), -1, 'Passed markup validated');
+    test.notStrictEqual(goodMarkup.indexOf('<li class=""><dl><dt>TEST8</dt><dd>Smoke: ok</dd><dd>CO: ok</dd><dd>Batt: ok</dd></dl></li>'),                               -1, 'Passed markup validated');
 
-    test.ok((thermMarkup.indexOf('<h4>Protect</h4>') === -1), 'No indication of smoke detectors if you don\'t have one');
-    test.ok((thermMarkup.indexOf('Smoke:')           === -1), 'No indication of smoke detectors if you don\'t have one');
+    test.strictEqual(thermMarkup.indexOf('<h4>Protect</h4>'),    -1, 'No indication of smoke detectors if you don\'t have one');
+    test.strictEqual(thermMarkup.indexOf('Smoke:'),              -1, 'No indication of smoke detectors if you don\'t have one');
 
-    test.ok((smokeMarkup.indexOf('<h4>Thermostat</h4>') === -1), 'No indication of thermostat if you don\'t have one');
-    test.ok((smokeMarkup.indexOf('Temp:')               === -1), 'No indication of thermostat if you don\'t have one');
+    test.strictEqual(smokeMarkup.indexOf('<h4>Thermostat</h4>'), -1, 'No indication of thermostat if you don\'t have one');
+    test.strictEqual(smokeMarkup.indexOf('Temp:'),               -1, 'No indication of thermostat if you don\'t have one');
 
-    test.ok((noValue.indexOf('{{') === -1), 'All values replaced');
-    test.equal(noValue, '<h1>Foo</h1> <div></div>', 'Passed markup validated');
+    test.strictEqual(noValue.indexOf('{{'), -1, 'All values replaced');
+    test.strictEqual(noValue, '<h1>Foo</h1> <div></div>', 'Passed markup validated');
 
     test.done();
   }

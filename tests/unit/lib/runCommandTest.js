@@ -32,7 +32,7 @@ exports.runCommandTest = {
   parseCommands : function(test) {
     'use strict';
 
-    var runCommand  = require('../../../lib/runCommand'),
+    var runCommand  = require(__dirname + '/../../../lib/runCommand'),
         controllers = { samsung : { config     : { deviceId : 'TEST-deviceId',
                                                    title : 'TEST-title' },
                                     markup     : '<span>{{DEVICE_ID}} {{TEST_KEY}}</span>',
@@ -50,7 +50,7 @@ exports.runCommandTest = {
     badCommand   = runCommand.parseCommands('samsung', 'VOLMUTE', null, response);
     goodCommand  = runCommand.parseCommands('samsung', 'VOLUP', null, response);
 
-    test.equal(emptyCommand, '', 'Empty reply if there is no command issued');
+    test.strictEqual(emptyCommand, '', 'Empty reply if there is no command issued');
     test.deepEqual(badCommand, { device : 'samsung', command : 'VOLMUTE', message : 'invalid' }, 'Bad command should be invalidated');
     test.deepEqual(goodCommand, { device : 'samsung', command : 'VOLUP', message : 'valid' }, 'Good command should be validated');
 
@@ -60,16 +60,16 @@ exports.runCommandTest = {
   stripTypePrefix : function(test) {
     'use strict';
 
-    var runCommand = require('../../../lib/runCommand'),
+    var runCommand = require(__dirname + '/../../../lib/runCommand'),
         text       = runCommand.stripTypePrefix('text-TEST', 'text'),
         launch     = runCommand.stripTypePrefix('launch-TEST', 'launch'),
         list       = runCommand.stripTypePrefix('list', 'list'),
         command    = runCommand.stripTypePrefix('TEST', 'command');
 
-    test.equal(text, 'TEST', 'Text should be returned without prefix');
-    test.equal(launch, 'TEST', 'Launch should be returned without prefix');
-    test.equal(list, true, 'List should return a boolean');
-    test.equal(command, 'TEST', 'Commands should be returned without change');
+    test.strictEqual(text,    'TEST', 'Text should be returned without prefix');
+    test.strictEqual(launch,  'TEST', 'Launch should be returned without prefix');
+    test.strictEqual(list,    true,   'List should return a boolean');
+    test.strictEqual(command, 'TEST', 'Commands should be returned without change');
 
     test.done();
   },
@@ -77,16 +77,16 @@ exports.runCommandTest = {
   getCommandType : function(test) {
     'use strict';
 
-    var runCommand = require('../../../lib/runCommand'),
+    var runCommand = require(__dirname + '/../../../lib/runCommand'),
         text       = runCommand.getCommandType(null, 'text-TEST'),
         launch     = runCommand.getCommandType(null, 'launch-TEST'),
         list       = runCommand.getCommandType(null, 'list'),
         command    = runCommand.getCommandType(null, 'TEST');
 
-    test.equal(text, 'text', 'Should return text');
-    test.equal(launch, 'launch', 'Should return launch');
-    test.equal(list, 'list', 'Should return list');
-    test.equal(command, 'command', 'Should return command');
+    test.strictEqual(text,    'text',    'Should return text');
+    test.strictEqual(launch,  'launch',  'Should return launch');
+    test.strictEqual(list,    'list',    'Should return list');
+    test.strictEqual(command, 'command', 'Should return command');
 
     test.done();
   },
@@ -94,7 +94,7 @@ exports.runCommandTest = {
   validateCommand : function(test) {
     'use strict';
 
-    var runCommand  = require('../../../lib/runCommand'),
+    var runCommand  = require(__dirname + '/../../../lib/runCommand'),
         controllers = { samsung : { config     : { deviceId : 'TEST-deviceId',
                                                    title : 'TEST-title' },
                                     markup     : '<span>{{DEVICE_ID}} {{TEST_KEY}}</span>',
@@ -115,11 +115,11 @@ exports.runCommandTest = {
     invalidList    = runCommand.validateCommand('samsung', 'launch');
     invalidCommand = runCommand.validateCommand('samsung', 'TEST');
 
-    test.ok(validCommand, 'Good command should be validated');
-    test.ok(validText, 'Text should be validated');
-    test.ok(!invalidLaunch, 'This device is not configured to support launch shortcuts');
-    test.ok(!invalidList, 'This device is not configured to support list shortcuts');
-    test.ok(!invalidCommand, 'Bad command should be invalidated');
+    test.strictEqual(validCommand,   true,  'Good command should be validated');
+    test.strictEqual(validText,      true,  'Text should be validated');
+    test.strictEqual(invalidLaunch,  false, 'This device is not configured to support launch shortcuts');
+    test.strictEqual(invalidList,    false, 'This device is not configured to support list shortcuts');
+    test.strictEqual(invalidCommand, false, 'Bad command should be invalidated');
 
     test.done();
   },
@@ -127,7 +127,7 @@ exports.runCommandTest = {
   runCommand : function(test) {
     'use strict';
 
-    var runCommand     = require('../../../lib/runCommand'),
+    var runCommand     = require(__dirname + '/../../../lib/runCommand'),
         controllers    = { samsung : { config     : { deviceId : 'TEST-deviceId',
                                                       title : 'TEST-title' },
                                        markup     : '<span>{{DEVICE_ID}} {{TEST_KEY}}</span>',

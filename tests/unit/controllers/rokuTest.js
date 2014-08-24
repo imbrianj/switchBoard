@@ -13,7 +13,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -79,9 +79,9 @@ exports.rokuControllerTest = {
         onloadMarkup   = rokuController.onload({ markup : '<h1>Contents:</h1> {{ROKU_DYNAMIC}}',
                                                  config : { deviceId : 'FOO' } });
 
-    test.ok((onloadMarkup.indexOf('<h1>Contents:</h1>') !== -1), 'Passed markup validated');
-    test.ok((onloadMarkup.indexOf('<li><a href="/?{{DEVICE_ID}}=launch-ID1"><img {{LAZY_LOAD_IMAGE}}="CACHE1" alt="NAME1" title="NAME1" /></a></li>') !== -1), 'First app validated');
-    test.ok((onloadMarkup.indexOf('<li><a href="/?{{DEVICE_ID}}=launch-ID2"><img {{LAZY_LOAD_IMAGE}}="CACHE2" alt="NAME2" title="NAME2" /></a></li>') !== -1), 'Second app validated');
+    test.notStrictEqual(onloadMarkup.indexOf('<h1>Contents:</h1>'), -1, 'Passed markup validated');
+    test.notStrictEqual(onloadMarkup.indexOf('<li><a href="/?{{DEVICE_ID}}=launch-ID1"><img {{LAZY_LOAD_IMAGE}}="CACHE1" alt="NAME1" title="NAME1" /></a></li>'), -1, 'First app validated');
+    test.notStrictEqual(onloadMarkup.indexOf('<li><a href="/?{{DEVICE_ID}}=launch-ID2"><img {{LAZY_LOAD_IMAGE}}="CACHE2" alt="NAME2" title="NAME2" /></a></li>'), -1, 'Second app validated');
 
     test.done();
   }
