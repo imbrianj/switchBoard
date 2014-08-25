@@ -111,7 +111,7 @@ module.exports = (function () {
 
     send : function (config) {
       var net    = require('net'),
-          denon  = {},
+          denon  = {};
 
       denon.deviceIp   = config.device.deviceIp;
       denon.timeout    = config.device.localTimeout            || config.config.localTimeout;
