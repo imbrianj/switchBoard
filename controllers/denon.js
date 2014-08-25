@@ -25,6 +25,8 @@
 
 module.exports = (function () {
   'use strict';
+  
+  var Socket = null;
 
   /**
    * @author markewest@gmail.com
@@ -32,14 +34,14 @@ module.exports = (function () {
    * @requires net
    */
   return {
-    version : 20140824,
+    version : 20140825,
 
     inputs : ['command'],
 
     /**
      * Whitelist of available key codes to use.
      */
-    keymap : ['POWERON', 'POWEROFF', 'VOLUP', 'VOLDOWN', 'MUTE', 'UNMUTE', 'INPUT_BLURAY', 'INPUT_MPLAYER', 'INPUT_CD', 'INPUT_NETWORK', 'INPUT_TV', 'INPUT_GAME', 'MENU', 'MENU_UP', 'MENU_DOWN', 'MENU_LEFT', 'MENU_RIGHT', 'MENU_RETURN', 'SOUND_MOVIE', 'SOUND_MCHSTEREO', 'SOUND_PURE', 'ZONE1_ON', 'ZONE1_OFF', 'ZONE2_ON', 'ZONE2_VOL_UP', 'ZONE2_VOL_DOWN', 'ZONE2_OFF', 'ZONE3_ON', 'ZONE3_VOL_UP', 'ZONE3_VOL_DOWN', 'ZONE3_OFF'],
+    keymap : ['POWERON', 'POWEROFF', 'VOLUP', 'VOLDOWN', 'MUTE', 'UNMUTE', 'INPUT_BLURAY', 'INPUT_MPLAYER', 'INPUT_CD', 'INPUT_NETWORK', 'INPUT_TV', 'INPUT_GAME', 'MENU', 'MENU_UP', 'MENU_DOWN', 'MENU_LEFT', 'MENU_RIGHT', 'MENU_RETURN', 'SOUND_MOVIE', 'SOUND_MCHSTEREO', 'SOUND_PURE', 'ZONE1_ON', 'ZONE1_OFF', 'ZONE2_STATUS', 'ZONE2_ON', 'ZONE2_VOL_UP', 'ZONE2_VOL_DOWN', 'ZONE2_OFF', 'ZONE3_STATUS', 'ZONE3_ON', 'ZONE3_VOL_UP', 'ZONE3_VOL_DOWN', 'ZONE3_OFF'],
 
     /**
      * Since I want to abstract commands, I'd rather deal with semi-readable
@@ -69,14 +71,20 @@ module.exports = (function () {
                   'SOUND_PURE'      : 'MSPURE DIRECT',
                   'ZONE1_ON'        : 'ZMON',
                   'ZONE1_OFF'       : 'ZMOFF',
+                  'ZONE2_STATUS'    : 'Z2?',
                   'ZONE2_ON'        : 'Z2ON',
                   'ZONE2_VOL_UP'    : 'Z2UP',
                   'ZONE2_VOL_DOWN'  : 'Z3DOWN',
                   'ZONE2_OFF'       : 'Z2OFF',
+                  'ZONE3_STATUS'    : 'Z3?',
                   'ZONE3_ON'        : 'Z3ON',
                   'ZONE3_VOL_UP'    : 'Z3UP',
                   'ZONE3_VOL_DOWN'  : 'Z3DOWN',
                   'ZONE3_OFF'       : 'Z3OFF'
+    },
+
+    translateCommand : function (command) {
+      return this.hashTable[command];
     },
 
     state : function (controller, config, callback) {
@@ -103,40 +111,56 @@ module.exports = (function () {
 
     send : function (config) {
       var net    = require('net'),
-          denon  = {},
-          client = new net.Socket();
+          denon  = {};
 
       denon.deviceIp   = config.device.deviceIp;
-      denon.timeout    = config.device.localTimeout     || config.config.localTimeout;
-      denon.command    = this.hashTable[config.command] || '';
-      denon.devicePort = config.devicePort              || 23;
-      denon.callback   = config.callback                || function () {};
+      denon.timeout    = config.device.localTimeout            || config.config.localTimeout;
+      denon.command    = this.translateCommand(config.command) || '';
+      denon.devicePort = config.devicePort                     || 23;
+      denon.callback   = config.callback                       || function () {};
 
-      if(denon.command) {
-        client.connect(denon.devicePort, denon.deviceIp, function() {
-          client.write(denon.command + "\r");
-          client.end();
-        });
-      }
-
-      denon.callback(null, 'ok');
-
-      client.once('data', function(dataReply) {
-        denon.callback(null, dataReply);
-      });
-
-      if(denon.command === 'state') {
-        client.setTimeout(denon.timeout, function() {
-          client.destroy();
-          denon.callback({ code : 'ETIMEDOUT' });
-        });
-      }
-
-      client.once('error', function(err) {
-        if((err.code !== 'ETIMEDOUT') || (denon.command !== 'state')) {
-          denon.callback(err);
+      if((Socket) && (denon.command)) {
+        if(denon.command !== 'state') {
+          Socket.write(denon.command + "\r");
         }
-      });
+ 
+        denon.callback(null, 'ok');
+      }
+ 
+      else if(denon.command) {
+        Socket = new net.Socket();
+ 
+        Socket.connect(denon.devicePort, denon.deviceIp);
+ 
+        Socket.once('connect', function() {
+          if(denon.command) {
+            Socket.write(denon.command + "\r");
+          }
+ 
+          denon.callback(null, 'ok');
+        });
+ 
+        if(denon.command === 'state') {
+          Socket.setTimeout(denon.timeout, function() {
+            Socket.destroy();
+            denon.callback({ code : 'ETIMEDOUT' });
+          });
+        }
+ 
+        Socket.on('data', function(dataReply) {
+          denon.callback(null, dataReply);
+        });
+ 
+        Socket.once('end', function() {
+          Socket = null;
+        });
+ 
+        Socket.once('error', function(err) {
+          if((err.code !== 'ETIMEDOUT') || (denon.command !== 'state')) {
+            denon.callback(err);
+          }
+        });
+      }
     }
   };
 }());
