@@ -373,8 +373,10 @@ Switchboard = (function () {
      * @param {String} string String to be printed to console log.
      */
     log : function (message) {
+      var now = new Date();
+
       if(typeof console === 'object' && typeof console.log === 'function') {
-        console.log(message);
+        console.log(message + ' (' + now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes() + ')');
       }
     },
 

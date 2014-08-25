@@ -133,10 +133,11 @@ module.exports = (function () {
         port    : lg.devicePort,
         path    : path,
         method  : method,
-        headers : { 'content-type'  : 'text/xml',
+        headers : { 'content-type'  : 'text/xml; charset=utf-8',
                     'accept'        : 'text/xml',
                     'cache-control' : 'no-cache',
-                    'pragma'        : 'no-cache' }
+                    'pragma'        : 'no-cache',
+                    'user-agent'    : 'UDAP/2.0' }
       };
     },
 
@@ -149,8 +150,9 @@ module.exports = (function () {
       response += '<?xml version="1.0" encoding="utf-8"?>';
       response += '<envelope>';
       response += '  <api type="pairing">';
-      response += '    <name>hello</name>';
+      response += '    <name>SwitchBoard</name>';
       response += '    <value>' + lg.pairKey + '</value>';
+      response += '    <port>' + lg.devicePort + '</value>';
       response += '  </api>';
       response += '</envelope>';
 

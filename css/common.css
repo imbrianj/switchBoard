@@ -878,7 +878,6 @@ body.rich .selected,
 	cursor: pointer;
 	*font-size: 90%; /*IE 6/7 - To reduce IE's oversized button text*/
 	*overflow: visible; /*IE 6/7 - Because of IE's overly large left/right padding on buttons */
-	padding: .5em 1.5em .5em;
 	text-decoration: none;
 	/* Transitions */
 	-webkit-transition: .1s linear -webkit-box-shadow;

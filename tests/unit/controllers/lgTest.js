@@ -56,10 +56,11 @@ exports.lgControllerTest = {
                                  port : '8080',
                                  path : '/udap/api/command',
                                  method : 'POST',
-                                 headers : { 'content-type'  : 'text/xml',
+                                 headers : { 'content-type'  : 'text/xml; charset=utf-8',
                                              'accept'        : 'text/xml',
                                              'cache-control' : 'no-cache',
-                                             'pragma'        : 'no-cache' } }, 'LG command validation');
+                                             'pragma'        : 'no-cache',
+                                             'user-agent'    : 'UDAP/2.0' } }, 'LG command validation');
 
     test.done();
   },
