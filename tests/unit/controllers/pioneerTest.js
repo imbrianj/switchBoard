@@ -33,12 +33,12 @@ exports.pioneerControllerTest = {
     'use strict';
 
     var pioneerController = require(__dirname + '/../../../controllers/pioneer'),
-        power             = pioneerController.translateCommand('POWER'),
-        volUp             = pioneerController.translateCommand('VOL_UP'),
-        tv                = pioneerController.translateCommand('TV');
+        power             = pioneerController.hashTable.POWER,
+        volUp             = pioneerController.hashTable.VOLUP,
+        tv                = pioneerController.hashTable.TV;
 
     test.strictEqual(power, 'PZ',   'Power is mapped to PZ');
-    test.strictEqual(volUp, 'VU',   'Vol_Up is mapped to VU');
+    test.strictEqual(volUp, 'VU',   'VOLUP is mapped to VU');
     test.strictEqual(tv,    '05FN', 'TV is mapped to 05FN');
 
     test.done();

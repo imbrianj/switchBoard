@@ -33,14 +33,35 @@ module.exports = (function () {
    * @requires xml2js, http, fs, request
    */
   return {
-    version : 20140813,
+    version : 20140824,
 
     inputs  : ['command', 'text', 'list', 'launch'],
 
     /**
      * Whitelist of available key codes to use.
      */
-    keymap  : ['Home', 'Rev', 'Fwd', 'Play', 'Select', 'Left', 'Right', 'Down', 'Up', 'Back', 'InstantReplay', 'Info', 'Backspace', 'Search', 'Enter'],
+    keymap  : ['HOME', 'Rev', 'Fwd', 'Play', 'Select', 'Left', 'Right', 'Down', 'Up', 'Back', 'InstantReplay', 'Info', 'Backspace', 'Search', 'Enter'],
+
+    /**
+     * To keep commands consistent with other devices, we'll use a hash table to
+     * normalize them.
+     */
+    hashTable : { 'BACK'           : 'Back',
+                  'BACKSPACE'      : 'Backspace',
+                  'DOWN'           : 'Down',
+                  'ENTER'          : 'Enter',
+                  'FWD'            : 'Fwd',
+                  'HOME'           : 'Home',
+                  'INFO'           : 'Info',
+                  'INSTANT_REPLAY' : 'InstantReplay',
+                  'LEFT'           : 'Left',
+                  'PLAY'           : 'Play',
+                  'REV'            : 'Rev',
+                  'RIGHT'          : 'Right',
+                  'SEARCH'         : 'Search',
+                  'SELECT'         : 'Select',
+                  'UP'             : 'Up',
+                },
 
     /**
      * Prepare a POST request for a Roku command.
@@ -211,13 +232,13 @@ module.exports = (function () {
           request;
 
       roku.deviceIp   = config.device.deviceIp;
-      roku.command    = config.command    || '';
-      roku.text       = config.text       || '';
-      roku.letter     = config.letter     || '';
-      roku.list       = config.list       || '';
-      roku.launch     = config.launch     || '';
-      roku.devicePort = config.devicePort || 8060;
-      roku.callback   = config.callback   || function () {};
+      roku.command    = this.hashTable[config.command] || '';
+      roku.text       = config.text                    || '';
+      roku.letter     = config.letter                  || '';
+      roku.list       = config.list                    || '';
+      roku.launch     = config.launch                  || '';
+      roku.devicePort = config.devicePort              || 8060;
+      roku.callback   = config.callback                || function () {};
 
       request = http.request(this.postPrepare(roku), function(response) {
                   response.on('data', function(response) {

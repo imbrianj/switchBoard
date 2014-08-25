@@ -44,7 +44,7 @@ module.exports = (function () {
     /**
      * Whitelist of available key codes to use.
      */
-    keymap : ['POWER', 'VOL_UP', 'VOL_DOWN', 'MUTE', 'CD', 'TUNER', 'CD_R_TAPE', 'DVD', 'TV', 'ROKU', 'VIDEO', 'IPOD_USB', 'DVR_BDR', 'HDMI_1', 'HDMI_2', 'HDMI_3', 'HDMI_4', 'HDMI_5', 'HDMI_6', 'BD', 'INTERNET_RADIO', 'SIRIUSXM', 'PANDORA'],
+    keymap : ['POWER', 'VOLUP', 'VOLDOWN', 'MUTE', 'CD', 'TUNER', 'CD_R_TAPE', 'DVD', 'TV', 'ROKU', 'VIDEO', 'IPOD_USB', 'DVR_BDR', 'HDMI_1', 'HDMI_2', 'HDMI_3', 'HDMI_4', 'HDMI_5', 'HDMI_6', 'BD', 'INTERNET_RADIO', 'SIRIUSXM', 'PANDORA'],
 
     /**
      * Since I want to abstract commands, I'd rather deal with semi-readable
@@ -54,8 +54,8 @@ module.exports = (function () {
      * NOTE: Not all capabilities are on all VSX models
      */
     hashTable : { 'POWER'          : 'PZ',
-                  'VOL_UP'         : 'VU',
-                  'VOL_DOWN'       : 'VD',
+                  'VOLUP'          : 'VU',
+                  'VOLDOWN'        : 'VD',
                   'MUTE'           : 'MZ',
                   'CD'             : '01FN',
                   'TUNER'          : '02FN',
@@ -76,10 +76,6 @@ module.exports = (function () {
                   'INTERNET_RADIO' : '39FN',
                   'SIRIUSXM'       : '40FN',
                   'PANDORA'        : '41FN'
-    },
-
-    translateCommand : function (command) {
-      return this.hashTable[command];
     },
 
     state : function (controller, config, callback) {
@@ -110,10 +106,10 @@ module.exports = (function () {
           client  = new net.Socket();
 
       pioneer.deviceIp   = config.device.deviceIp;
-      pioneer.timeout    = config.device.localTimeout            || config.config.localTimeout;
-      pioneer.command    = this.translateCommand(config.command) || '';
-      pioneer.devicePort = config.devicePort                     || 8102;
-      pioneer.callback   = config.callback                       || function () {};
+      pioneer.timeout    = config.device.localTimeout     || config.config.localTimeout;
+      pioneer.command    = this.hashTable[config.command] || '';
+      pioneer.devicePort = config.devicePort              || 8102;
+      pioneer.callback   = config.callback                || function () {};
 
       client.connect(pioneer.devicePort, pioneer.deviceIp, function() {
         if(pioneer.command) {

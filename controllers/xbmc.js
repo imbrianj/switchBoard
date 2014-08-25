@@ -34,15 +34,27 @@ module.exports = (function () {
    *       http://wiki.xbmc.org/index.php?title=JSON-RPC_API/Examples
    */
   return {
-    version : 20140819,
+    version : 20140824,
 
     inputs  : ['command', 'text'],
 
     /**
      * Whitelist of available key codes to use.
      */
-    keymap  : ['Up', 'Down', 'Left', 'Right', 'Home', 'Select', 'Back', 'Shutdown'],
+    keymap  : ['UP', 'DOWN', 'LEFT', 'RIGHT', 'HOME', 'SELECT', 'BACK', 'POWEROFF'],
 
+    /**
+     * To keep commands consistent with other devices, we'll use a hash table to
+     * normalize them.
+     */
+    hashTable : { 'UP'       : 'Up',
+                  'DOWN'     : 'Down',
+                  'LEFT'     : 'Left',
+                  'RIGHT'    : 'Right',
+                  'HOME'     : 'Home',
+                  'SELECT'   : 'Select',
+                  'BACK'     : 'Back',
+                  'POWEROFF' : 'Shutdown' },
     /**
      * Prepare a POST request for a Roku command.
      */
@@ -115,11 +127,11 @@ module.exports = (function () {
 
       xbmc.deviceIp   = config.device.deviceIp;
       xbmc.devicePort = config.device.devicePort;
-      xbmc.command    = config.command    || '';
-      xbmc.text       = config.text       || '';
-      xbmc.devicePort = config.devicePort || 8080;
-      xbmc.method     = config.method     || 'POST';
-      xbmc.callback   = config.callback   || function () {};
+      xbmc.command    = this.hashTable[config.command] || '';
+      xbmc.text       = config.text                    || '';
+      xbmc.devicePort = config.devicePort              || 8080;
+      xbmc.method     = config.method                  || 'POST';
+      xbmc.callback   = config.callback                || function () {};
 
       if(xbmc.text) {
         xbmc.command = 'SendText';

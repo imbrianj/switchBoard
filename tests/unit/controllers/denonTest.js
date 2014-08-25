@@ -33,13 +33,13 @@ exports.denonControllerTest = {
     'use strict';
 
     var denonController = require(__dirname + '/../../../controllers/denon'),
-        power           = denonController.translateCommand('POWER_ON'),
-        volUp           = denonController.translateCommand('VOL_UP'),
-        volDown         = denonController.translateCommand('VOL_DOWN');
+        power           = denonController.hashTable.POWERON,
+        volUp           = denonController.hashTable.VOLUP,
+        volDown         = denonController.hashTable.VOLDOWN;
 
-    test.strictEqual(power,   'PWON',   'Power is mapped to PWON');
-    test.strictEqual(volUp,   'MVUP',   'Vol_Up is mapped to MVUP');
-    test.strictEqual(volDown, 'MVDOWN', 'Vol_Down is mapped to MVDOWN');
+    test.strictEqual(power,   'PWON',   'POWER_ON is mapped to PWON');
+    test.strictEqual(volUp,   'MVUP',   'VOLUP is mapped to MVUP');
+    test.strictEqual(volDown, 'MVDOWN', 'VOLDOWN is mapped to MVDOWN');
 
     test.done();
   }

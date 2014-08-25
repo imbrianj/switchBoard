@@ -32,65 +32,65 @@ module.exports = (function () {
    * @fileoverview Basic control of Foscam IP camera.
    */
   return {
-    version : 20140821,
+    version : 20140824,
 
     inputs  : ['command'],
 
     /**
      * Whitelist of available key codes to use.
      */
-    keymap  : ['AlarmOff', 'AlarmOn', 'Down', 'Left', 'Preset1', 'Preset2', 'Preset3', 'Right', 'Stop', 'Up', 'Take'],
+    keymap  : ['ALARM_OFF', 'ALARM_ON', 'DOWN', 'LEFT', 'PRESET1', 'PRESET2', 'PRESET3', 'RIGHT', 'STOP', 'UP', 'TAKE'],
 
     postPrepare : function (config) {
       var path  = '',
           login = '?user=' + config.username + '&amp;pwd=' + config.password + '&amp;';
 
       switch(config.command) {
-        case 'AlarmOff' :
+        case 'ALARM_OFF' :
           path = '/set_alarm.cgi' + login + 'motion_armed=0';
         break;
 
-        case 'AlarmOn' :
+        case 'ALARM_ON' :
           path = '/set_alarm.cgi' + login + 'motion_armed=1';
         break;
 
-        case 'Down' :
+        case 'DOWN' :
           path = '/decoder_control.cgi' + login + 'command=2';
         break;
 
-        case 'Left' :
+        case 'LEFT' :
           path = '/decoder_control.cgi' + login + 'command=6';
         break;
 
-        case 'Preset1' :
+        case 'PRESET1' :
           path = '/decoder_control.cgi' + login + 'command=31';
         break;
 
-        case 'Preset2' :
+        case 'PRESET2' :
           path = '/decoder_control.cgi' + login + 'command=33';
         break;
 
-        case 'Preset3' :
+        case 'PRESET3' :
           path = '/decoder_control.cgi' + login + 'command=35';
         break;
 
-        case 'Right' :
+        case 'RIGHT' :
           path = '/decoder_control.cgi' + login + 'command=4';
         break;
 
-        case 'Stop' :
+        case 'STOP' :
           path = '/decoder_control.cgi' + login + 'command=1';
         break;
 
-        case 'Up' :
+        case 'UP' :
           path = '/decoder_control.cgi' + login + 'command=0';
         break;
 
-        case 'Take' :
+        case 'TAKE' :
           path = '/snapshot.cgi' + login;
         break;
 
-        case 'Params' :
+        case 'PARAMS' :
           path = '/get_params.cgi' + login;
         break;
       }
@@ -121,7 +121,7 @@ module.exports = (function () {
       foscam.device.localTimeout = controller.config.localTimeout || config.localTimeout;
       foscam.device.username     = controller.config.username;
       foscam.device.password     = controller.config.password;
-      foscam.command             = 'Params';
+      foscam.command             = 'PARAMS';
 
       foscam.callback = function (err, reply) {
         var params  = { value : '' };
@@ -171,7 +171,7 @@ module.exports = (function () {
       foscam.devicePort = config.device.devicePort   || 80;
       foscam.callback   = config.callback            || function () {};
 
-      if(foscam.command === 'Take') {
+      if(foscam.command === 'TAKE') {
         fs.exists(filePath, function(exists) {
           var request,
               controller,

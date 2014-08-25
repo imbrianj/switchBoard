@@ -35,12 +35,12 @@ exports.lgControllerTest = {
     'use strict';
 
     var lgController = require(__dirname + '/../../../controllers/lg'),
-        external     = lgController.translateCommand('EXTERNAL'),
-        volUp        = lgController.translateCommand('VOL_UP'),
-        ok           = lgController.translateCommand('OK');
+        external     = lgController.hashTable.EXTERNAL,
+        volUp        = lgController.hashTable.VOLUP,
+        ok           = lgController.hashTable.OK;
 
-    test.strictEqual(external, 47, 'External is mapped to 47');
-    test.strictEqual(volUp,    24, 'VolUp is mapped to 24');
+    test.strictEqual(external, 47, 'EXTERNAL is mapped to 47');
+    test.strictEqual(volUp,    24, 'VOLUP is mapped to 24');
     test.strictEqual(ok,       20, 'OK is mapped to 20');
 
     test.done();

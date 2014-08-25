@@ -34,7 +34,7 @@ module.exports = (function () {
    *       here: https://code.google.com/p/diyps3controller/downloads/list
    */
   return {
-    version : 20140813,
+    version : 20140824,
 
     inputs  : ['command'],
 
@@ -43,7 +43,7 @@ module.exports = (function () {
      * as they are supported in GIMX, but timing of events for unnecessary
      * buttons in the context of media control seems pointless.
      */
-    keymap  : ['PowerOn', 'Left', 'Right', 'Up', 'Down', 'PS', 'Select', 'Start', 'Triangle', 'Circle', 'Cross', 'Square', 'L1', 'L2', 'R1', 'R2'],
+    keymap  : ['POWERON', 'LEFT', 'RIGHT', 'UP', 'DOWN', 'PS', 'SELECT', 'START', 'TRIANGLE', 'CIRCLE', 'CROS', 'SQUARE', 'L1', 'L2', 'R1', 'R2'],
 
     translateCommand : function (command, deviceMac, serviceIP, servicePort, platform, revert) {
       var execute = { command : '', params : [] },
@@ -51,7 +51,7 @@ module.exports = (function () {
 
       if(platform === 'linux' || platform === 'win32') {
         switch(command) {
-          case 'PowerOn' :
+          case 'POWERON' :
             execute.command = 'gimx';
 
             execute.params.push('--type');
@@ -71,16 +71,16 @@ module.exports = (function () {
             execute.params.push('PS(' + value + ')');
           break;
 
-          case 'Left'     :
-          case 'Right'    :
-          case 'Up'       :
-          case 'Down'     :
-          case 'Select'   :
-          case 'Start'    :
-          case 'Triangle' :
-          case 'Circle'   :
-          case 'Cross'    :
-          case 'Square'   :
+          case 'LEFT'     :
+          case 'RIGHT'    :
+          case 'UP'       :
+          case 'DOWN'     :
+          case 'SELECT'   :
+          case 'START'    :
+          case 'TRIANGLE' :
+          case 'CIRCLE'   :
+          case 'CROSS'    :
+          case 'SQUARE'   :
             execute.command = 'gimx';
 
             execute.params.push('--dst');
@@ -124,7 +124,7 @@ module.exports = (function () {
 
       if(ps3State.state === 'ok') {
         // If the PS3 is already on, we shouldn't execute PowerOn again.
-        if(ps3.command === 'PowerOn') {
+        if(ps3.command === 'POWERON') {
           console.log('\x1b[35m' + config.device.title + '\x1b[0m: Device looks on already.  Changing command to PS');
 
           ps3.command = 'PS';
@@ -142,7 +142,7 @@ module.exports = (function () {
 
         // The Gimx service will run for quite a while, so we need to execute the
         // callback to send a response before the command closes some time later.
-        if(ps3.command === 'PowerOn') {
+        if(ps3.command === 'POWERON') {
           ps3.callback(null, 'ok');
 
           gimx.stderr.on('data', function(err) {
@@ -157,7 +157,7 @@ module.exports = (function () {
         gimx.once('close', function(code) {
           var deviceState;
 
-          if(ps3.command === 'PowerOn') {
+          if(ps3.command === 'POWERON') {
             ps3.callback('Device is off or unreachable');
           }
 

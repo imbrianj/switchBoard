@@ -34,14 +34,14 @@ module.exports = (function () {
    *       http://forum.loxone.com/enen/software/4876-lg-tv-http-control.html#post32692
    */
   return {
-    version : 20140813,
+    version : 20140824,
 
     inputs  : ['command'],
 
     /**
      * Whitelist of available key codes to use.
      */
-    keymap  : ['0', '1', '2', '3', '3D_LR', '3D_VID', '4', '5', '6', '7', '8', '9', 'AUD_DESC', 'AV_MODE', 'BACK', 'BLUE', 'CH_DOWN', 'CH_UP', 'DASH', 'DOWN', 'ENERGY', 'EPG', 'EXIT', 'EXTERNAL', 'FAV', 'FF', 'FLASH_BACK', 'GREEN', 'HOME', 'INFO', 'LEFT', 'LIST', 'LIVE', 'MARK', 'MENU', 'MUTE', 'MY_APPS', 'NETCAST', 'NEXT', 'OK', 'PAUSE', 'PIP', 'PIP_DOWN', 'PIP_UP', 'PLAY', 'POWER', 'PREV', 'QUICK_MENU', 'RATIO', 'REC', 'REC_LIST', 'RED', 'REPEAT', 'RES_PROG_LIST', 'REW', 'RIGHT', 'SIMPLINK', 'STOP', 'SUBTITLE', 'TEXT_OPTION', 'TTL', 'UP', 'VID_SWITCH', 'VOL_DOWN', 'VOL_UP', 'YELLOW'],
+    keymap  : ['0', '1', '2', '3', '3D_LR', '3D_VID', '4', '5', '6', '7', '8', '9', 'AUD_DESC', 'AV_MODE', 'BACK', 'BLUE', 'CH_DOWN', 'CH_UP', 'DASH', 'DOWN', 'ENERGY', 'EPG', 'EXIT', 'EXTERNAL', 'FAV', 'FF', 'FLASH_BACK', 'GREEN', 'HOME', 'INFO', 'LEFT', 'LIST', 'LIVE', 'MARK', 'MENU', 'MUTE', 'MY_APPS', 'NETCAST', 'NEXT', 'OK', 'PAUSE', 'PIP', 'PIP_DOWN', 'PIP_UP', 'PLAY', 'POWER', 'PREV', 'QUICK_MENU', 'RATIO', 'REC', 'REC_LIST', 'RED', 'REPEAT', 'RES_PROG_LIST', 'REW', 'RIGHT', 'SIMPLINK', 'STOP', 'SUBTITLE', 'TEXT_OPTION', 'TTL', 'UP', 'VID_SWITCH', 'VOLDOWN', 'VOLUP', 'YELLOW'],
 
     /**
      * Since I want to abstract commands, I'd rather deal with semi-readable
@@ -68,8 +68,8 @@ module.exports = (function () {
                   'HOME'          : 21,
                   'MENU'          : 22,
                   'BACK'          : 23,
-                  'VOL_UP'        : 24,
-                  'VOL_DOWN'      : 25,
+                  'VOLUP'         : 24,
+                  'VOLDOWN'       : 25,
                   'MUTE'          : 26,
                   'CH_UP'         : 27,
                   'CH_DOWN'       : 28,
@@ -116,10 +116,6 @@ module.exports = (function () {
                   'PIP_DOWN'      : 415,
                   'VID_SWITCH'    : 416,
                   'MY_APPS'       : 417 },
-
-    translateCommand : function (command) {
-      return this.hashTable[command];
-    },
 
     /**
      * Prepare a POST request for a LG command.
@@ -206,10 +202,10 @@ module.exports = (function () {
           request;
 
       lg.deviceIp   = config.device.deviceIp;
-      lg.timeout    = config.device.localTimeout            || config.config.localTimeout;
-      lg.command    = this.translateCommand(config.command) || '';
-      lg.devicePort = config.devicePort                     || 8080;
-      lg.callback   = config.callback                       || function () {};
+      lg.timeout    = config.device.localTimeout     || config.config.localTimeout;
+      lg.command    = this.hashTable[config.command] || '';
+      lg.devicePort = config.devicePort              || 8080;
+      lg.callback   = config.callback                || function () {};
       lg.pairKey    = config.device.pairKey;
 
       request = http.request(this.postPrepare(lg), function(response) {

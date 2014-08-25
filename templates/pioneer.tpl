@@ -3,8 +3,8 @@
         <div class="control-block">
           <div class="volume">
             <a href="/?{{DEVICE_ID}}=POWER" class="fa fa-power-off"><span>Power</span></a>
-            <a href="/?{{DEVICE_ID}}=VOL_UP" class="fa fa-volume-up"><span>Volume Up</span></a>
-            <a href="/?{{DEVICE_ID}}=VOL_DOWN" class="fa fa-volume-down"><span>Volume Down</span></a>
+            <a href="/?{{DEVICE_ID}}=VOLUP" class="fa fa-volume-up"><span>Volume Up</span></a>
+            <a href="/?{{DEVICE_ID}}=VOLDOWN" class="fa fa-volume-down"><span>Volume Down</span></a>
             <a href="/?{{DEVICE_ID}}=MUTE" class="fa fa-volume-off"><span>Mute</span></a>
           </div>
         </div>
