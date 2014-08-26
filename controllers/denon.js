@@ -25,7 +25,7 @@
 
 module.exports = (function () {
   'use strict';
-  
+
   var Socket = null;
 
   /**
@@ -83,10 +83,6 @@ module.exports = (function () {
                   'ZONE3_OFF'       : 'Z3OFF'
     },
 
-    translateCommand : function (command) {
-      return this.hashTable[command];
-    },
-
     state : function (controller, config, callback) {
       var denon = { device : {}, config : {} };
 
@@ -114,47 +110,47 @@ module.exports = (function () {
           denon  = {};
 
       denon.deviceIp   = config.device.deviceIp;
-      denon.timeout    = config.device.localTimeout            || config.config.localTimeout;
-      denon.command    = this.translateCommand(config.command) || '';
-      denon.devicePort = config.devicePort                     || 23;
-      denon.callback   = config.callback                       || function () {};
+      denon.timeout    = config.device.localTimeout     || config.config.localTimeout;
+      denon.command    = this.hashTable[config.command] || '';
+      denon.devicePort = config.devicePort              || 23;
+      denon.callback   = config.callback                || function () {};
 
       if((Socket) && (denon.command)) {
         if(denon.command !== 'state') {
           Socket.write(denon.command + "\r");
         }
- 
+
         denon.callback(null, 'ok');
       }
- 
+
       else if(denon.command) {
         Socket = new net.Socket();
- 
+
         Socket.connect(denon.devicePort, denon.deviceIp);
- 
+
         Socket.once('connect', function() {
           if(denon.command) {
             Socket.write(denon.command + "\r");
           }
- 
+
           denon.callback(null, 'ok');
         });
- 
+
         if(denon.command === 'state') {
           Socket.setTimeout(denon.timeout, function() {
             Socket.destroy();
             denon.callback({ code : 'ETIMEDOUT' });
           });
         }
- 
+
         Socket.on('data', function(dataReply) {
           denon.callback(null, dataReply);
         });
- 
+
         Socket.once('end', function() {
           Socket = null;
         });
- 
+
         Socket.once('error', function(err) {
           if((err.code !== 'ETIMEDOUT') || (denon.command !== 'state')) {
             denon.callback(err);

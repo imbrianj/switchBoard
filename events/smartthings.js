@@ -79,8 +79,8 @@ module.exports = (function () {
             }
 
             else if((value === 'on') && (controllers[deviceId].config.typeClass === 'foscam')) {
-              runCommand.runCommand(deviceId, 'AlarmOff', deviceId);
-              runCommand.runCommand(deviceId, 'Preset3',  device);
+              runCommand.runCommand(deviceId, 'ALARM_OFF', deviceId);
+              runCommand.runCommand(deviceId, 'PRESET3',  device);
             }
           }
         }

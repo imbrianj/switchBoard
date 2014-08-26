@@ -31,7 +31,7 @@
 State = {};
 
 exports.lgControllerTest = {
-  translateCommand : function (test) {
+  hashTable : function (test) {
     'use strict';
 
     var lgController = require(__dirname + '/../../../controllers/lg'),

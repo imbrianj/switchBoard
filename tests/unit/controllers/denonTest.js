@@ -29,7 +29,7 @@
  */
 
 exports.denonControllerTest = {
-  translateCommand : function (test) {
+  hashTable : function (test) {
     'use strict';
 
     var denonController = require(__dirname + '/../../../controllers/denon'),

@@ -29,7 +29,7 @@
  */
 
 exports.pioneerControllerTest = {
-  translateCommand : function (test) {
+  hashTable : function (test) {
     'use strict';
 
     var pioneerController = require(__dirname + '/../../../controllers/pioneer'),

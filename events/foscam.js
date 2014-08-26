@@ -39,7 +39,7 @@ module.exports = (function () {
       var runCommand = require(__dirname + '/../lib/runCommand'),
           deviceId;
 
-      if((command === 'AlarmOn') || (command === 'AlarmOff')) {
+      if((command === 'ALARM_ON') || (command === 'ALARM_OFF')) {
         // We want to grab the state from the source of truth (the actual
         // device), but we need to wait a short time for it to register.
         setTimeout(function() {
