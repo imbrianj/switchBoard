@@ -54,7 +54,9 @@ module.exports = (function () {
     },
 
     init : function (controller) {
-      this.send({ device : { deviceId: controller.config.deviceId, travisOwner: controller.config.travisOwner, travisRepo: controller.config.travisRepo } });
+      var runCommand = require(__dirname + '/../lib/runCommand');
+
+      runCommand.runCommand(controller.config.deviceId, 'list', controller.config.deviceId);
     },
 
     onload : function (controller) {

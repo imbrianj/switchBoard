@@ -34,6 +34,12 @@ module.exports = (function () {
   return {
     version : 20140816,
 
+    /**
+     * On poll, check the Travis build state.  If the latest build is failing,
+     * send a Desktop Notification.  As build failures are not always terrible
+     * (such as a pending pull request), we don't want to send an annoying
+     * notification via SMS, push or text.
+     */
     poll : function(deviceId, command, controllers) {
       var runCommand  = require(__dirname + '/../lib/runCommand'),
           notify,

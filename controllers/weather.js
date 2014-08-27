@@ -44,7 +44,9 @@ module.exports = (function () {
     },
 
     init : function (controller) {
-      this.send({ device : { deviceId: controller.config.deviceId, zip : controller.config.zip } });
+      var runCommand = require(__dirname + '/../lib/runCommand');
+
+      runCommand.runCommand(controller.config.deviceId, 'list', controller.config.deviceId);
     },
 
     onload : function (controller) {

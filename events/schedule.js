@@ -32,35 +32,33 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20140816,
+    version : 20140826,
 
+    /**
+     * Gets called from lib/schedule and calls the appropriate methods from
+     * controllers at the intervals expected.  For long intervals, they will
+     * "poll", for short intervals, they will grab "state".
+     */
     fire : function(controllers, type) {
       var runCommand = require(__dirname + '/../lib/runCommand'),
           deviceId;
 
       for(deviceId in controllers) {
         if(deviceId !== 'config') {
-          switch(controllers[deviceId].config.typeClass) {
-            // Specify typeClass of controllers that should be fired on interval.
-            case 'weather'     :
-            case 'stocks'      :
-            case 'smartthings' :
-            case 'nest'        :
-            case 'travis'      :
-              if(type === 'long') {
-                if(controllers[deviceId].controller.inputs.indexOf('poll') !== -1) {
-                  runCommand.runCommand(deviceId, 'poll', 'single', false);
-                }
-              }
-            break;
+          // If the long poller fired this, we'll only run for controllers that
+          // have "poll".
+          if(type === 'long') {
+            if(controllers[deviceId].controller.inputs.indexOf('poll') !== -1) {
+              runCommand.runCommand(deviceId, 'poll', 'single', false);
+            }
+          }
 
-            default :
-              if(type === 'short') {
-                if((controllers[deviceId].controller) && (controllers[deviceId].controller.inputs.indexOf('state') !== -1)) {
-                  runCommand.runCommand(deviceId, 'state', 'single', false);
-                }
-              }
-            break;
+          // If the short poller fired this, we'll only run for controllers that
+          // have "state".
+          else if(type === 'short') {
+            if((controllers[deviceId].controller) && (controllers[deviceId].controller.inputs.indexOf('state') !== -1)) {
+              runCommand.runCommand(deviceId, 'state', 'single', false);
+            }
           }
         }
       }

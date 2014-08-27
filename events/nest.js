@@ -32,64 +32,78 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20140819,
+    version : 20140826,
 
-    fire : function(device, command, controllers) {
-      var runCommand = require(__dirname + '/../lib/runCommand'),
-          controller = controllers[device],
-          callback;
+    /**
+     * If the API states that a Nest Protect smoke detector has gone off in any
+     * way (smoke, co or battery), we should raise the alarm via Desktop
+     * Notifications as well as any notification means defined in the config.
+     */
+    checkProtect : function(device, controllers) {
+      return function(err, reply) {
+        var runCommand  = require(__dirname + '/../lib/runCommand'),
+            deviceState = require(__dirname + '/../lib/deviceState'),
+            notify      = require(__dirname + '/../lib/notify'),
+            controller  = controllers[device],
+            state       = 'err',
+            message     = '',
+            params      = {},
+            i           = 0,
+            deviceId,
+            subDevice;
 
-      if(command !== 'list') {
-        callback = function(err, reply) {
-          var deviceState = require(__dirname + '/../lib/deviceState'),
-              notify      = require(__dirname + '/../lib/notify'),
-              state       = 'err',
-              message     = '',
-              params      = {},
-              i           = 0,
-              deviceId,
-              subDevice;
+        if(reply) {
+          state = 'ok';
 
-          if(reply) {
-            state = 'ok';
+          if(reply.protect) {
+            for(deviceId in controllers) {
+              if((deviceId !== 'config') && (controllers[deviceId].config.typeClass === 'speech')) {
+                break;
+              }
+            }
 
-            if(reply.protect) {
-              for(deviceId in controllers) {
-                if((deviceId !== 'config') && (controllers[deviceId].config.typeClass === 'speech')) {
-                  break;
-                }
+            for(subDevice in reply.protect) {
+              if(reply.protect[subDevice].smoke !== 'ok') {
+                message = message + ' ' + reply.protect[subDevice].label + ' smoke detected!';
+                notify.sendNotification(null, reply.protect[subDevice].label + ' smoke detected!', device);
               }
 
-              for(subDevice in reply.protect) {
-                if(reply.protect[subDevice].smoke !== 'ok') {
-                  message = message + ' ' + reply.protect[subDevice].label + ' smoke detected!';
-                  notify.sendNotification(null, reply.protect[subDevice].label + ' smoke detected!', device);
-                }
-
-                if(reply.protect[subDevice].co !== 'ok') {
-                  message = message + ' ' + reply.protect[subDevice].label + ' CO detected!';
-                  notify.sendNotification(null, reply.protect[subDevice].label + ' CO detected!', device);
-                }
+              if(reply.protect[subDevice].co !== 'ok') {
+                message = message + ' ' + reply.protect[subDevice].label + ' CO detected!';
+                notify.sendNotification(null, reply.protect[subDevice].label + ' CO detected!', device);
               }
+            }
 
-              if((message) && (controller.config.notify)) {
-                console.log('\x1b[35mSchedule\x1b[0m: ' + message);
+            if((message) && (controller.config.notify)) {
+              console.log('\x1b[35mSchedule\x1b[0m: ' + message);
 
-                for(i; i < controller.config.notify.length; i += 1) {
-                  if(typeof controllers[controller.config.notify[i]] !== 'undefined') {
-                    runCommand.runCommand(controller.config.notify[i], 'text-' + message, 'single', false);
-                  }
+              for(i; i < controller.config.notify.length; i += 1) {
+                if(typeof controllers[controller.config.notify[i]] !== 'undefined') {
+                  runCommand.runCommand(controller.config.notify[i], 'text-' + message, 'single', false);
                 }
               }
             }
           }
+        }
 
-          params.state = state;
-          params.value = reply;
+        params.state = state;
+        params.value = reply;
 
-          deviceState.updateState(deviceId, controller.config.typeClass, params);
-        };
+        deviceState.updateState(deviceId, controller.config.typeClass, params);
+      };
+    },
 
+    /**
+     * Everytime you make a change to your Nest device, we'll wait a short time
+     * for the change to be registered on the remote API - then poll for the
+     * current state instead of waiting for the next scheduled poll.
+     */
+    fire : function(device, command, controllers) {
+      var runCommand = require(__dirname + '/../lib/runCommand'),
+          controller = controllers[device],
+          callback   = this.checkProtect(device, controllers);
+
+      if(command !== 'LIST') {
         // We want to grab the state from the source of truth (the actual
         // API), but we need to wait a short time for it to register.
         setTimeout(function() {
@@ -98,10 +112,14 @@ module.exports = (function () {
       }
     },
 
+    /**
+     * When we poll the Nest API, we want to include the callback to properly
+     * register device states and send notifications when applicable.
+     */
     poll : function(deviceId, command, controllers) {
       var runCommand = require(__dirname + '/../lib/runCommand'),
           controller = controllers[deviceId],
-          callback;
+          callback   = this.checkProtect(deviceId, controllers);
 
       if(controller.config.auth) {
         runCommand.runCommand(deviceId, 'list', deviceId, false, callback);

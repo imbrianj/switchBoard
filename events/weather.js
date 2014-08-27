@@ -34,6 +34,9 @@ module.exports = (function () {
   return {
     version : 20140816,
 
+    /**
+     * On long interval, poll the Yahoo Weather API for the latest report.
+     */
     poll : function(deviceId, command, controllers) {
       var runCommand  = require(__dirname + '/../lib/runCommand'),
           deviceState = require(__dirname + '/../lib/deviceState'),

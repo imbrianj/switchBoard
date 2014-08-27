@@ -34,6 +34,12 @@ module.exports = (function () {
   return {
     version : 20140819,
 
+    /**
+     * If moisture is detected (such as a laundry room or basement flood), or
+     * a person's arrival or departure, notify via appropriate means.  If
+     * someone comes home, also disarm the Foscam and point it in a safe
+     * direction, if one is available.
+     */
     fire : function(device, command, controllers) {
       var runCommand = require(__dirname + '/../lib/runCommand'),
           notify,
@@ -87,6 +93,11 @@ module.exports = (function () {
       }
     },
 
+    /**
+     * On long interval, poll the SmartThings API just to sync state.  This is
+     * largely unnecessary, as state is sent through normal use via API
+     * callbacks, but this will ensure things are current.
+     */
     poll : function(deviceId, command, controllers) {
       var runCommand = require(__dirname + '/../lib/runCommand'),
           controller = controllers[deviceId];

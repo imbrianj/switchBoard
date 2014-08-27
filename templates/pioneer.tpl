@@ -2,22 +2,22 @@
       <div id="{{DEVICE_ID}}" class="device{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
         <div class="control-block">
           <div class="volume">
-            <a href="/?{{DEVICE_ID}}=POWER" class="fa fa-power-off"><span>Power</span></a>
-            <a href="/?{{DEVICE_ID}}=VOLUP" class="fa fa-volume-up"><span>Volume Up</span></a>
-            <a href="/?{{DEVICE_ID}}=VOLDOWN" class="fa fa-volume-down"><span>Volume Down</span></a>
-            <a href="/?{{DEVICE_ID}}=MUTE" class="fa fa-volume-off"><span>Mute</span></a>
+            <a href="/?{{DEVICE_ID}}=Power" class="fa fa-power-off"><span>Power</span></a>
+            <a href="/?{{DEVICE_ID}}=VolUp" class="fa fa-volume-up"><span>Volume Up</span></a>
+            <a href="/?{{DEVICE_ID}}=VolDown" class="fa fa-volume-down"><span>Volume Down</span></a>
+            <a href="/?{{DEVICE_ID}}=Mute" class="fa fa-volume-off"><span>Mute</span></a>
           </div>
         </div>
         <div class="installed">
           <ul class="sub-device-list">
             <li><a href="/?{{DEVICE_ID}}=CD" class=""><span>CD</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=TUNER" class=""><span>TUNER</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=CD_R_TAPE" class=""><span>CD-R/TAPE</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=Tuner" class=""><span>Tuner</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=CD_R_Tape" class=""><span>CD-R/TAPE</span></a></li>
             <li><a href="/?{{DEVICE_ID}}=DVD" class=""><span>DVD</span></a></li>
             <li><a href="/?{{DEVICE_ID}}=TV" class=""><span>TV/SAT</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=ROKU" class=""><span>ROKU</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=VIDEO" class=""><span>VIDEO</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=IPOD_USB" class=""><span>IPOD/USB</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=Roku" class=""><span>Roku</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=Video" class=""><span>Video</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=iPod_USB" class=""><span>iPod/USB</span></a></li>
             <li><a href="/?{{DEVICE_ID}}=DVR_BDR" class=""><span>DVR/BDR</span></a></li>
             <li><a href="/?{{DEVICE_ID}}=HDMI_1" class=""><span>HDMI 1</span></a></li>
             <li><a href="/?{{DEVICE_ID}}=HDMI_2" class=""><span>HDMI 2</span></a></li>
@@ -26,9 +26,9 @@
             <li><a href="/?{{DEVICE_ID}}=HDMI_5" class=""><span>HDMI 5</span></a></li>
             <li><a href="/?{{DEVICE_ID}}=HDMI_6" class=""><span>HDMI 6</span></a></li>
             <li><a href="/?{{DEVICE_ID}}=BD" class=""><span>BD</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=INTERNET_RADIO" class=""><span>INTERNET RADIO</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=SIRIUSXM" class=""><span>SAT RADIO</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=PANDORA" class=""><span>PANDORA</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=Internet_Radio" class=""><span>Internet Radio</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=SiriusXM" class=""><span>Sirius XM</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=Pandora" class=""><span>Pandora</span></a></li>
           </ul>
         </div>
       </div>

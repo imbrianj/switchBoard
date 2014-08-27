@@ -66,18 +66,9 @@ module.exports = (function () {
     },
 
     init : function (controller) {
-      var callback = function(err, reply) {
-            var deviceState = require(__dirname + '/../lib/deviceState'),
-                message     = 'err';
+      var runCommand = require(__dirname + '/../lib/runCommand');
 
-            if(reply) {
-              message = 'ok';
-            }
-
-            deviceState.updateState(controller.config.deviceId, controller.config.typeClass, { state : message });
-          };
-
-      this.send({ text : 'magic', callback : callback });
+      runCommand.runCommand(controller.config.deviceId, 'text-magic', controller.config.deviceId);
     },
 
     send : function (config) {

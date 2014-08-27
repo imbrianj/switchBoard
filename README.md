@@ -8,9 +8,6 @@ Video demonstration:
 
 [![Demonstration of SwitchBoard](http://img.youtube.com/vi/6zJVRXMuuE4/0.jpg)](https://www.youtube.com/watch?v=6zJVRXMuuE4)
 
-And a screenshot of it from an Android phone:
-https://pbs.twimg.com/media/BnIqaMXCEAI5d-0.jpg
-
 Or you may browse through a static version:
 http://imbrianj.github.io/switchBoard/
 

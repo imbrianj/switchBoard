@@ -34,6 +34,11 @@ module.exports = (function () {
   return {
     version : 20140819,
 
+    /**
+     * On poll, check the stock price against any configured stock limits.  If
+     * any stock price goes above or below the designated prices, notify the
+     * user by all means defined in the config.
+     */
     poll : function(deviceId, command, controllers) {
       var runCommand  = require(__dirname + '/../lib/runCommand'),
           deviceState = require(__dirname + '/../lib/deviceState'),

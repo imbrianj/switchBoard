@@ -33,8 +33,16 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20140819,
+    version : 20140826,
 
+    /**
+     * When the foscam is armed or disarmed, we want to wait a very short time
+     * to allow the new setting to be registered on the device - then grab the
+     * new state instead of waiting for the next scheduled state.
+     *
+     * If you have a speech controller set up, give a verbal confirmation that
+     * the camera has been armed or disarmed.
+     */
     fire : function(device, command, controllers) {
       var runCommand = require(__dirname + '/../lib/runCommand'),
           deviceId;
@@ -43,14 +51,14 @@ module.exports = (function () {
         // We want to grab the state from the source of truth (the actual
         // device), but we need to wait a short time for it to register.
         setTimeout(function() {
-            console.log('\x1b[35mFoscam\x1b[0m: Fetching alarm state');
+            console.log('\x1b[35m' + controllers[device].config.title + '\x1b[0m: Fetching alarm state');
 
             runCommand.runCommand(device, 'state', 'single', false);
         }, 250);
 
         for(deviceId in controllers) {
           if((deviceId !== 'config') && (controllers[deviceId].config.typeClass === 'speech')) {
-            runCommand.runCommand(deviceId, command === 'AlarmOn' ? 'text-Camera armed' : 'text-Camera disarmed');
+            runCommand.runCommand(deviceId, command === 'ALARM_ON' ? 'text-Camera armed' : 'text-Camera disarmed');
             break;
           }
         }

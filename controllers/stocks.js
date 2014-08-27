@@ -86,7 +86,9 @@ module.exports = (function () {
     },
 
     init : function (controller) {
-      this.send({ device : { deviceId : controller.config.deviceId, title : controller.config.title, stocks : controller.config.stocks } });
+      var runCommand = require(__dirname + '/../lib/runCommand');
+
+      runCommand.runCommand(controller.config.deviceId, 'list', controller.config.deviceId);
     },
 
     onload : function (controller) {
@@ -152,10 +154,11 @@ module.exports = (function () {
                         }
 
                         state = that.stocksOpen(config) ? 'ok' : 'err';
+
                         deviceState.updateState(stocks.deviceId, 'stocks', { state: state, value : stockData });
                       }
 
-                      stocks.callback(null, stockData);
+                      stocks.callback(state === 'err' ? 'ignore' : null, stockData);
                     });
                   });
 

@@ -112,20 +112,14 @@ module.exports = (function () {
       };
     },
 
-    cacheImage : function (appName, appId, config, logging) {
+    cacheImage : function (appName, appId, config) {
       var fs       = require('fs'),
           filePath = __dirname + '/../images/roku/icon_' + appId + '.png';
 
       fs.exists(filePath, function(exists) {
         var request;
 
-        if(exists) {
-          if(logging === 'verbose') {
-            console.log('\x1b[35m' + config.title + '\x1b[0m: Skipping ' + appName + ' image - already saved locally');
-          }
-        }
-
-        else {
+        if(!exists) {
           request = require('request');
 
           console.log('\x1b[35m' + config.title + '\x1b[0m: Saved image for ' + appName);
@@ -134,7 +128,7 @@ module.exports = (function () {
       });
     },
 
-    findState : function (controller, callback, logging) {
+    findState : function (controller, callback) {
       var xml2js = require('xml2js'),
           fs     = require('fs'),
           path   = require('path'),
@@ -171,7 +165,7 @@ module.exports = (function () {
                                      'cache' : '/images/roku/icon_' + app.$.id + '.png'
                                    };
 
-                  that.cacheImage(app._, app.$.id, config, logging);
+                  that.cacheImage(app._, app.$.id, config);
                 }
 
                 callback(null, apps);
@@ -183,24 +177,15 @@ module.exports = (function () {
     },
 
     init : function (controller, config) {
-      var callback = function(deviceId, err, state, params) {
-        var deviceState = require(__dirname + '/../lib/deviceState');
+      var runCommand = require(__dirname + '/../lib/runCommand');
 
-        params = params || {};
-
-        params.state = state;
-
-        deviceState.updateState(deviceId, 'roku', params);
-      };
-
-      this.state(controller, config, callback, 'verbose');
+      runCommand.runCommand(controller.config.deviceId, 'list', controller.config.deviceId);
     },
 
-    state : function (controller, config, callback, logging) {
+    state : function (controller, config, callback) {
       var stateCallback;
 
       callback = callback || function() {};
-      logging  = logging  || 'quiet';
 
       stateCallback = function(err, reply) {
         if(err) {
@@ -212,7 +197,7 @@ module.exports = (function () {
         }
       };
 
-      this.findState(controller, stateCallback, logging);
+      this.findState(controller, stateCallback);
     },
 
     onload : function (controller) {

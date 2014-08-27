@@ -38,7 +38,7 @@ module.exports = (function () {
     /**
      * Whitelist of available key codes to use.
      */
-    keymap : ['Away', 'Home', 'Fan_On', 'Fan_Auto'],
+    keymap : ['AWAY', 'HOME', 'FAN_ON', 'FAN_AUTO'],
 
     cToF : function (c) {
       return (c * 1.8) + 32;
@@ -292,25 +292,25 @@ module.exports = (function () {
         subDevices = JSON.parse(JSON.stringify(nestState.value));
       }
 
-      if(command === 'Home') {
+      if(command === 'HOME') {
         config.host = config.auth.url;
         config.path = '/v2/put/structure.' + subDevices.structure;
         config.args = { away : false, away_timestamp : new Date().getTime(), away_setter : 0 };
       }
 
-      if(command === 'Away') {
+      if(command === 'AWAY') {
         config.host = config.auth.url;
         config.path = '/v2/put/structure.' + subDevices.structure;
         config.args = { away : true, away_timestamp : new Date().getTime(), away_setter : 0 };
       }
 
-      else if(command === 'Fan_On') {
+      else if(command === 'FAN_ON') {
         config.host = config.auth.url;
         config.path = '/v2/put/structure.' + subDevices.structure;
         config.args = { fan_mode : 'on' };
       }
 
-      else if(command === 'Fan_Auto') {
+      else if(command === 'FAN_AUTO') {
         config.host = config.auth.url;
         config.path = '/v2/put/structure.' + subDevices.structure;
         config.args = { fan_mode : 'auto' };

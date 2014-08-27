@@ -25,6 +25,7 @@ exports.config = {
     typeClass : 'samsung',
     title     : 'Samsung SmartTV',
     deviceIp  : '192.168.1.1',
+    power     : 60,
     disabled  : true
   },
 
@@ -32,6 +33,7 @@ exports.config = {
     typeClass : 'roku',
     title     : 'Roku',
     deviceIp  : '192.168.1.3',
+    power     : 5,
     disabled  : true
   },
 
@@ -49,6 +51,7 @@ exports.config = {
     // specific if you need, but this should be fine.
     serviceIp   : '127.0.0.1',
     servicePort : 8181,
+    power       : 230,
     disabled    : true
   },
 
@@ -56,6 +59,7 @@ exports.config = {
     typeClass : 'panasonic',
     title     : 'Panasonic',
     deviceIp  : '192.168.1.5',
+    power     : 60,
     disabled  : true
   },
 
@@ -68,6 +72,7 @@ exports.config = {
     title     : 'LG TV',
     deviceIp  : '192.168.1.6',
     pairKey   : '123456',
+    power     : 60,
     disabled  : true
   },
 
@@ -79,6 +84,7 @@ exports.config = {
     typeClass : 'pioneer',
     title     : 'Pioneer Amp',
     deviceIp  : '192.168.1.6',
+    power     : 60,
     disabled  : true
   },
 
@@ -90,6 +96,7 @@ exports.config = {
     typeClass : 'denon',
     title     : 'Denon Receiver',
     deviceIp  : '192.168.1.6',
+    power     : 60,
     disabled  : true
   },
 
@@ -141,6 +148,7 @@ exports.config = {
     deviceIp  : '192.168.1.7',
     username  : 'user',
     password  : 'password',
+    power     : 6,
     disabled  : true
   },
 
@@ -227,11 +235,18 @@ exports.config = {
     // You may group your devices together for display by using the group name
     // you'd like shown as the object name.  Devices within that group should
     // be the same name as you give them in SmartThings.
-    groups         : { 'Bedroom'     : ['Bedroom Lamps', 'Bedroom Switch'],
-                       'Office'      : ['Office Switch'],
-                       'Hallway'     : ['Hall Light'],
-                       'Living Room' : ['Living Room Lamp', 'Chandelier'],
-                       'Kitchen'     : ['Kitchen Light', 'Dining Lights'] },
+    groups         : { 'Bedroom'          : ['Bedroom Lamps', 'Bedroom Switch'],
+                       'Office'           : ['Office Switch'],
+                       'Hallway'          : ['Hall Light'],
+                       'Living Room'      : ['Living Room Lamp', 'Chandelier'],
+                       'Kitchen'          : ['Kitchen Light', 'Dining Lights'] },
+    power          : { 'Bedroom Lamps'    : 30,
+                       'Office Switch'    : 15,
+                       'Hall Light'       : 45,
+                       'Living Room Lamp' : 15,
+                       'Chandelier'       : 120,
+                       'Kitchen Light'    : 30,
+                       'Dining Lights'    : 120 },
     disabledMarkup : false,
     disabled       : true
   },
@@ -243,6 +258,7 @@ exports.config = {
     password  : 'password',
     // Notifications are for Nest Protect alarms.
     notify    : ['pushover', 'twilio', 'speech'],
+    power     : { 'Living Room' : 3000 },
     disabled  : true
   },
 
@@ -266,6 +282,7 @@ exports.config = {
     title      : 'XBMC',
     deviceIp   : '192.168.1.8',
     devicePort : 8080,
+    power      : 4,
     disabled   : true
   }
 };
