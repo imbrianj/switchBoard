@@ -876,7 +876,7 @@ Switchboard = (function () {
         else {
           ajaxRequest = {
             path       : '/',
-            param      : device + '=' + text,
+            param      : device + '=' + type + '-' + text,
             method     : 'POST',
             onComplete : function () {
               Switchboard.log(ajaxRequest.response);
