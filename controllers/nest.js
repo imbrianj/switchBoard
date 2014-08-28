@@ -29,6 +29,7 @@ module.exports = (function () {
   /**
    * @author brian@bevey.org
    * @fileoverview Basic control of Nest thermostat and Protect smoke detector.
+   * @requires querystring, fs, https
    */
   return {
     version : 20140805,
@@ -40,14 +41,29 @@ module.exports = (function () {
      */
     keymap : ['AWAY', 'HOME', 'FAN_ON', 'FAN_AUTO'],
 
+    /**
+     * Convert Celcius to Fahrenheit.
+     *
+     * The Nest API is all in Celcius, so we need to convert to Fahrenheit for
+     * display.
+     */
     cToF : function (c) {
       return (c * 1.8) + 32;
     },
 
+    /**
+     * Convert Fahrenheit to Celcius.
+     *
+     * The Nest API is all in Celcius, so we need to convert from Fahrenheit for
+     * sending any temperature changes.
+     */
     fToC : function (f) {
       return (f - 32) / 1.8;
     },
 
+    /**
+     * Prepare a request for command execution.
+     */
     postPrepare : function (config) {
       var request = { host    : config.host,
                       port    : config.port,
@@ -75,7 +91,7 @@ module.exports = (function () {
     },
 
     /**
-     * Prepare a POST data the request.
+     * Prepare the POST data to be sent.
      */
     postData : function (nest) {
       var querystring = require('querystring'),
@@ -95,6 +111,10 @@ module.exports = (function () {
       return value;
     },
 
+    /**
+     * Device labels are sent as big crazy codes.  We'll convert those to the
+     * expected names.
+     */
     findLabel : function (id) {
       var location = '';
 
@@ -161,6 +181,9 @@ module.exports = (function () {
       return location;
     },
 
+    /**
+     * Query - then cache your auth information into a file for later recall.
+     */
     getAuth : function (config, controller) {
       var that = this;
 
@@ -197,6 +220,10 @@ module.exports = (function () {
       this.send(config);
     },
 
+    /**
+     * Once we get the API response from Nest, we'll parse through it and grab
+     * just the parts we care about.
+     */
     deviceList : function (config) {
       var that     = this,
           callback = config.callback || function() {};
@@ -277,6 +304,12 @@ module.exports = (function () {
       return collected;
     },
 
+    /**
+     * When a Nest command is issued to SwitchBoard, we'll determine what it is
+     * and how to act.  Some commands (presence and fan mode) are device
+     * agnostic while other commands (temperature setting, heating, cooling) are
+     * specific to one thermostat.
+     */
     getDevicePath : function (config) {
       var deviceState = require(__dirname + '/../lib/deviceState'),
           nestState   = deviceState.getDeviceState(config.deviceId),
@@ -356,6 +389,11 @@ module.exports = (function () {
       return config;
     },
 
+    /**
+     * Grab the latest state as soon as SwitchBoard starts up.
+     *
+     * If you don't have registered auth information, we can check for that now.
+     */
     init : function (controller, config) {
       var fs      = require('fs'),
           that    = this,
@@ -403,6 +441,10 @@ module.exports = (function () {
       return controller;
     },
 
+    /**
+     * Collect all required markup, state, value and fragments to send to the
+     * parser when someone visits.
+     */
     onload : function (controller) {
       var fs                 = require('fs'),
           deviceState        = require(__dirname + '/../lib/deviceState'),

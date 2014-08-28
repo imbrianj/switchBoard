@@ -44,7 +44,7 @@ module.exports = (function () {
     keymap  : ['30S_SKIP', '3D', 'BD', 'BLUE', 'CANCEL', 'CC', 'CHG_INPUT', 'CHG_NETWORK', 'CH_DOWN', 'CH_UP', 'D0', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8', 'D9', 'DATA', 'DIGA_CTL', 'DISP_MODE', 'DMS_CH_DOWN', 'DMS_CH_UP', 'DOWN', 'DRIVE', 'ECO', 'ENTER', 'EPG', 'EZ_SYNC', 'FAVORITE', 'FF', 'GAME', 'GREEN', 'HOLD', 'INDEX', 'INFO', 'INTERNET', 'LEFT', 'MENU', 'MPX', 'MUTE', 'OFFTIMER', 'PAUSE', 'PICTAI', 'PLAY', 'POWER', 'PROG', 'P_NR', 'REC', 'RECLIST', 'RED', 'RETURN', 'REW', 'RIGHT', 'R_SCREEN', 'R_TUNE', 'R_TUNE', 'SAP', 'SD_CARD', 'SKIP_NEXT', 'SKIP_PREV', 'SPLIT', 'STOP', 'STTL', 'SUBMENU', 'SWAP', 'TEXT', 'TV', 'TV_MUTE_OFF', 'TV_MUTE_ON', 'UP', 'VIERA_LINK', 'VOD', 'VOLDOWN', 'VOLUP', 'VTOOLS', 'YELLOW'],
 
     /**
-     * Prepare a POST request for a command.
+     * Prepare a request for command execution.
      */
     postPrepare : function (panasonic) {
       var path    = '/',
@@ -72,7 +72,7 @@ module.exports = (function () {
     },
 
     /**
-     * Prepare a POST data the request.
+     * Prepare the POST data to be sent.
      */
     postData : function (panasonic) {
       var response = '',
@@ -98,6 +98,9 @@ module.exports = (function () {
       return response;
     },
 
+    /**
+     * Prepares and calls send() to request the current state.
+     */
     state : function (controller, config, callback) {
       var panasonic = { device : {}};
 

@@ -41,6 +41,9 @@ module.exports = (function () {
      */
     keymap  : ['ALARM_OFF', 'ALARM_ON', 'DOWN', 'LEFT', 'PRESET1', 'PRESET2', 'PRESET3', 'RIGHT', 'STOP', 'UP', 'TAKE'],
 
+    /**
+     * Prepare a request for command execution.
+     */
     postPrepare : function (config) {
       var path  = '',
           login = '?user=' + config.username + '&amp;pwd=' + config.password + '&amp;';
@@ -101,6 +104,11 @@ module.exports = (function () {
                method : 'GET' };
     },
 
+    /**
+     * Grab the latest state as soon as SwitchBoard starts up.  We'll also take
+     * this opportunity to alter the default markup template with the correct
+     * path for the image since it will always be part of a data attribute.
+     */
     init : function (controller, config) {
       var runCommand = require(__dirname + '/../lib/runCommand');
 
@@ -111,6 +119,9 @@ module.exports = (function () {
       return controller;
     },
 
+    /**
+     * Prepares and calls send() to request the current state.
+     */
     state : function (controller, config, callback) {
       var foscam = { device : {}, config : {} };
 
@@ -146,6 +157,10 @@ module.exports = (function () {
       this.send(foscam);
     },
 
+    /**
+     * Collect all required markup, state, value and fragments to send to the
+     * parser when someone visits.
+     */
     onload : function (controller) {
       var deviceState = require(__dirname + '/../lib/deviceState'),
           parser      = require(__dirname + '/../parsers/foscam').foscam,

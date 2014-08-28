@@ -39,6 +39,10 @@ module.exports = (function () {
 
     inputs  : ['text'],
 
+    /*
+     * Find the correct path to execute the command to speak the given text on
+     * the given platform with the given voice (male or female).
+     */
     translateCommand : function (voice, text, platform) {
       var execute = { command : '', params : [] };
 
@@ -74,6 +78,11 @@ module.exports = (function () {
       return execute;
     },
 
+    /**
+     * Issue a command to speak a short bit of text to indicate that SwitchBoard
+     * has started up.  This will also force the correct state to be recorded
+     * once the text has finished.
+     */
     init : function (controller) {
       var callback = function(err, reply) {
             var deviceState = require(__dirname + '/../lib/deviceState'),

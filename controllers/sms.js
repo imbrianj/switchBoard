@@ -37,7 +37,7 @@ module.exports = (function () {
     inputs  : ['text'],
 
     /**
-     * Prepare a POST request for a command.
+     * Prepare a request for command execution.
      */
     postPrepare : function(config) {
       return {
@@ -57,7 +57,7 @@ module.exports = (function () {
     },
 
     /**
-     * Prepare a POST data for the request.
+     * Prepare the POST data to be sent.
      */
     postData : function (sms) {
       var querystring = require('querystring');
@@ -69,6 +69,10 @@ module.exports = (function () {
              });
     },
 
+    /**
+     * We should expect that Twilio won't be down, so we'll set it's initial
+     * state to explicitly be "ok".
+     */
     init : function (controller) {
       var deviceState = require(__dirname + '/../lib/deviceState');
 

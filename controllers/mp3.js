@@ -39,6 +39,9 @@ module.exports = (function () {
 
     inputs  : ['text'],
 
+    /*
+     * Find the correct path to execute the given file on the given platform.
+     */
     translateCommand : function (file, platform) {
       var execute = { command : '', params : [] };
 
@@ -65,6 +68,11 @@ module.exports = (function () {
       return execute;
     },
 
+    /**
+     * Issue a command to play a short sound to indicate that SwitchBoard has
+     * started up.  This will also force the correct state to be recorded once
+     * the sound has finished.
+     */
     init : function (controller) {
       var runCommand = require(__dirname + '/../lib/runCommand');
 

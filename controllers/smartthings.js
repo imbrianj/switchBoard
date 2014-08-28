@@ -37,7 +37,7 @@ module.exports = (function () {
     inputs  : ['list', 'subdevice'],
 
     /**
-     * Prepare a POST request for a command.
+     * Prepare a request for command execution.
      */
     postPrepare : function(config) {
       return {
@@ -142,6 +142,11 @@ module.exports = (function () {
       this.send(config);
     },
 
+    /**
+     * When we get a full API response from SmartThings (during every poll and
+     * every SwitchBoard commadn), we'll parse through it and set the new state
+     * of the world.
+     */
     updateState : function (smartthings, response) {
       var subDevices  = {},
           deviceState = require(__dirname + '/../lib/deviceState'),
@@ -246,6 +251,14 @@ module.exports = (function () {
       return collected;
     },
 
+    /**
+     * The companion SmartThings SmartApp allows for local IP callbacks.  When
+     * an action occurs on the SmartThings network, it sends that message to the
+     * local hub.  The hub then fires a simple REST request to SwitchBoard to
+     * indicate when a device's state has changes.  This is where we accept that
+     * request and determine which device has changed to which state based on
+     * the device path provided.
+     */
     getDevicePath : function(command, config) {
       var deviceState      = require(__dirname + '/../lib/deviceState'),
           smartThingsState = deviceState.getDeviceState(config.device.deviceId),
@@ -400,6 +413,12 @@ module.exports = (function () {
       return path;
     },
 
+    /**
+     * Grab the latest state as soon as SwitchBoard starts up.
+     *
+     * If we have your auth information but do not have your valid keys, we'll
+     * print out a friendly message with a link for you to finish the setup.
+     */
     init : function (controller, config) {
       var fs     = require('fs'),
           auth   = {},
@@ -445,6 +464,10 @@ module.exports = (function () {
       return controller;
     },
 
+    /**
+     * Collect all required markup, state, value and fragments to send to the
+     * parser when someone visits.
+     */
     onload : function (controller) {
       var fs               = require('fs'),
           parser           = require(__dirname + '/../parsers/smartthings').smartthings,

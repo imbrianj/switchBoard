@@ -36,6 +36,9 @@ module.exports = (function () {
 
     inputs  : ['list'],
 
+    /**
+     * Prepare a request for command execution.
+     */
     postPrepare : function (config) {
       return { host   : config.host,
                port   : config.port,
@@ -43,12 +46,19 @@ module.exports = (function () {
                method : config.method };
     },
 
+    /**
+     * Grab the latest state as soon as SwitchBoard starts up.
+     */
     init : function (controller) {
       var runCommand = require(__dirname + '/../lib/runCommand');
 
       runCommand.runCommand(controller.config.deviceId, 'list', controller.config.deviceId);
     },
 
+    /**
+     * Collect all required markup, state, value and fragments to send to the
+     * parser when someone visits.
+     */
     onload : function (controller) {
       var fs           = require('fs'),
           deviceState  = require(__dirname + '/../lib/deviceState'),

@@ -29,7 +29,7 @@ module.exports = (function () {
   /**
    * @author brian@bevey.org
    * @fileoverview Basic control of XBMC
-   * @requires net
+   * @requires http
    * @note Refernce docs:
    *       http://wiki.xbmc.org/index.php?title=JSON-RPC_API/Examples
    */
@@ -44,8 +44,7 @@ module.exports = (function () {
     keymap  : ['UP', 'DOWN', 'LEFT', 'RIGHT', 'HOME', 'SELECT', 'BACK', 'POWEROFF'],
 
     /**
-     * To keep commands consistent with other devices, we'll use a hash table to
-     * normalize them.
+     * Map inputted commands to the values the device or API is expecting.
      */
     hashTable : { 'UP'       : 'Up',
                   'DOWN'     : 'Down',
@@ -56,7 +55,7 @@ module.exports = (function () {
                   'BACK'     : 'Back',
                   'POWEROFF' : 'Shutdown' },
     /**
-     * Prepare a POST request for a Roku command.
+     * Prepare a request for command execution.
      */
     postPrepare : function (config) {
       var request = { host    : config.deviceIp,
@@ -79,7 +78,7 @@ module.exports = (function () {
     },
 
     /**
-     * Prepare a POST data the request.
+     * Prepare the POST data to be sent.
      */
     postData : function (xbmc) {
       var value;
@@ -96,6 +95,9 @@ module.exports = (function () {
       return JSON.stringify(value);
     },
 
+    /**
+     * Prepares and calls send() to request the current state.
+     */
     state : function (controller, config, callback) {
       var xbmc = { device : {}, config : {}};
 

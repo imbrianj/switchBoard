@@ -47,9 +47,7 @@ module.exports = (function () {
     keymap : ['POWER', 'VOLUP', 'VOLDOWN', 'MUTE', 'CD', 'TUNER', 'CD_R_TAPE', 'DVD', 'TV', 'ROKU', 'VIDEO', 'IPOD_USB', 'DVR_BDR', 'HDMI_1', 'HDMI_2', 'HDMI_3', 'HDMI_4', 'HDMI_5', 'HDMI_6', 'BD', 'INTERNET_RADIO', 'SIRIUSXM', 'PANDORA'],
 
     /**
-     * Since I want to abstract commands, I'd rather deal with semi-readable
-     * key names - so this hash table will convert the pretty names to numeric
-     * values pioneer expects.
+     * Map inputted commands to the values the device or API is expecting.
      *
      * NOTE: Not all capabilities are on all VSX models
      */
@@ -78,6 +76,9 @@ module.exports = (function () {
                   'PANDORA'        : '41FN'
     },
 
+    /**
+     * Prepares and calls send() to request the current state.
+     */
     state : function (controller, config, callback) {
       var pioneer = { device : {}, config : {} };
 

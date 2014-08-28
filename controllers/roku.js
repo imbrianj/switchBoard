@@ -30,7 +30,7 @@ module.exports = (function () {
    * @author brian@bevey.org
    * @fileoverview Basic control over Roku devices via TCP POST requests using
    *               Node.js.
-   * @requires xml2js, http, fs, request
+   * @requires xml2js, http, fs, request, path
    */
   return {
     version : 20140824,
@@ -43,8 +43,7 @@ module.exports = (function () {
     keymap  : ['HOME', 'Rev', 'Fwd', 'Play', 'Select', 'Left', 'Right', 'Down', 'Up', 'Back', 'InstantReplay', 'Info', 'Backspace', 'Search', 'Enter'],
 
     /**
-     * To keep commands consistent with other devices, we'll use a hash table to
-     * normalize them.
+     * Map inputted commands to the values the device or API is expecting.
      */
     hashTable : { 'BACK'           : 'Back',
                   'BACKSPACE'      : 'Backspace',
@@ -64,7 +63,7 @@ module.exports = (function () {
                 },
 
     /**
-     * Prepare a POST request for a Roku command.
+     * Prepare a request for command execution.
      */
     postPrepare : function (command) {
       var path    = '/',
@@ -112,6 +111,11 @@ module.exports = (function () {
       };
     },
 
+    /**
+     * For each app installed, we'll query the Roku, find it's associated image,
+     * and save it locally for quicker and offline recall.  If the image is
+     * already cached, it will be retained.
+     */
     cacheImage : function (appName, appId, config) {
       var fs       = require('fs'),
           filePath = __dirname + '/../images/roku/icon_' + appId + '.png';
@@ -128,6 +132,11 @@ module.exports = (function () {
       });
     },
 
+    /**
+     * Prepare the request and build the callback that will take the XML from
+     * the Roku, parse through it, find the installed applications and call
+     * cacheImage.
+     */
     findState : function (controller, callback) {
       var xml2js = require('xml2js'),
           fs     = require('fs'),
@@ -176,12 +185,18 @@ module.exports = (function () {
       }});
     },
 
+    /**
+     * Grab the latest state as soon as SwitchBoard starts up.
+     */
     init : function (controller, config) {
       var runCommand = require(__dirname + '/../lib/runCommand');
 
       runCommand.runCommand(controller.config.deviceId, 'list', controller.config.deviceId);
     },
 
+    /**
+     * Prepares and calls send() to request the current state.
+     */
     state : function (controller, config, callback) {
       var stateCallback;
 
@@ -200,6 +215,10 @@ module.exports = (function () {
       this.findState(controller, stateCallback);
     },
 
+    /**
+     * Collect all required markup, state, value and fragments to send to the
+     * parser when someone visits.
+     */
     onload : function (controller) {
       var fs          = require('fs'),
           deviceState = require(__dirname + '/../lib/deviceState'),

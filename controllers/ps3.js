@@ -29,9 +29,12 @@ module.exports = (function () {
   /**
    * @author brian@bevey.org
    * @fileoverview Basic control over PS3 pre-configured GIMX setup.
-   * @requires child_process, fs
-   * @note Requires the installation of sixemu package, version 1.11+ available
-   *       here: https://code.google.com/p/diyps3controller/downloads/list
+   * @requires child_process
+   * @note Requires the installation of GIMX package, version 2.x available
+   *       here: https://github.com/matlo/GIMX/releases/
+   *       See this page for detailed information about how to spoof your
+   *       Bluetooth dongle's Mac address:
+   *       http://gimx.fr/wiki/index.php?title=Command_line#Linux_.2B_bluetooth_.2B_PS3
    */
   return {
     version : 20140826,
@@ -45,6 +48,9 @@ module.exports = (function () {
      */
     keymap  : ['POWERON', 'LEFT', 'RIGHT', 'UP', 'DOWN', 'PS', 'SELECT', 'START', 'TRIANGLE', 'CIRCLE', 'CROSS', 'SQUARE', 'L1', 'L2', 'R1', 'R2'],
 
+    /*
+     * Find the correct path to execute the given command on the given platform.
+     */
     translateCommand : function (command, deviceMac, serviceIP, servicePort, platform, revert) {
       var execute = { command : '', params : [] },
           value   = revert === true ? 0 : 255;
@@ -98,6 +104,10 @@ module.exports = (function () {
       return execute;
     },
 
+    /**
+     * On startup, your PS3 is clearly not connected to SwitchBoard, so we'll
+     * start it off with the "err" (or "off") state.
+     */
     init : function(controller, config) {
       var deviceState = require(__dirname + '/../lib/deviceState');
 
@@ -105,8 +115,7 @@ module.exports = (function () {
     },
 
     send : function (config) {
-      var fs          = require('fs'),
-          spawn       = require('child_process').spawn,
+      var spawn       = require('child_process').spawn,
           deviceState = require(__dirname + '/../lib/deviceState'),
           ps3State    = deviceState.getDeviceState(config.device.deviceId),
           ps3         = {},

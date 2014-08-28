@@ -44,9 +44,7 @@ module.exports = (function () {
     keymap : ['POWERON', 'POWEROFF', 'VOLUP', 'VOLDOWN', 'MUTE', 'UNMUTE', 'INPUT_BLURAY', 'INPUT_MPLAYER', 'INPUT_CD', 'INPUT_NETWORK', 'INPUT_TV', 'INPUT_GAME', 'MENU', 'MENU_UP', 'MENU_DOWN', 'MENU_LEFT', 'MENU_RIGHT', 'MENU_RETURN', 'SOUND_MOVIE', 'SOUND_MCHSTEREO', 'SOUND_PURE', 'ZONE1_ON', 'ZONE1_OFF', 'ZONE2_STATUS', 'ZONE2_ON', 'ZONE2_VOL_UP', 'ZONE2_VOL_DOWN', 'ZONE2_OFF', 'ZONE3_STATUS', 'ZONE3_ON', 'ZONE3_VOL_UP', 'ZONE3_VOL_DOWN', 'ZONE3_OFF'],
 
     /**
-     * Since I want to abstract commands, I'd rather deal with semi-readable
-     * key names - so this hash table will convert the pretty names to numeric
-     * values denon expects.
+     * Map inputted commands to the values the device or API is expecting.
      */
     hashTable : { 'POWERON'         : 'PWON',
                   'POWEROFF'        : 'PWSTANDBY',
@@ -83,6 +81,9 @@ module.exports = (function () {
                   'ZONE3_OFF'       : 'Z3OFF'
     },
 
+    /**
+     * Prepares and calls send() to request the current state.
+     */
     state : function (controller, config, callback) {
       var denon = { device : {}, config : {} };
 

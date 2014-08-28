@@ -44,9 +44,7 @@ module.exports = (function () {
     keymap  : ['0', '1', '2', '3', '3D_LR', '3D_VID', '4', '5', '6', '7', '8', '9', 'AUD_DESC', 'AV_MODE', 'BACK', 'BLUE', 'CH_DOWN', 'CH_UP', 'DASH', 'DOWN', 'ENERGY', 'EPG', 'EXIT', 'EXTERNAL', 'FAV', 'FF', 'FLASH_BACK', 'GREEN', 'HOME', 'INFO', 'LEFT', 'LIST', 'LIVE', 'MARK', 'MENU', 'MUTE', 'MY_APPS', 'NETCAST', 'NEXT', 'OK', 'PAUSE', 'PIP', 'PIP_DOWN', 'PIP_UP', 'PLAY', 'POWER', 'PREV', 'QUICK_MENU', 'RATIO', 'REC', 'REC_LIST', 'RED', 'REPEAT', 'RES_PROG_LIST', 'REW', 'RIGHT', 'SIMPLINK', 'STOP', 'SUBTITLE', 'TEXT_OPTION', 'TTL', 'UP', 'VID_SWITCH', 'VOLDOWN', 'VOLUP', 'YELLOW'],
 
     /**
-     * Since I want to abstract commands, I'd rather deal with semi-readable
-     * key names - so this hash table will convert the pretty names to numeric
-     * values LG expects.
+     * Map inputted commands to the values the device or API is expecting.
      */
     hashTable : { 'POWER'         : 1,
                   '0'             : 2,
@@ -118,7 +116,7 @@ module.exports = (function () {
                   'MY_APPS'       : 417 },
 
     /**
-     * Prepare a POST request for a LG command.
+     * Prepare a request for command execution.
      */
     postPrepare : function (lg) {
       var path    = '/udap/api/command',
@@ -156,7 +154,7 @@ module.exports = (function () {
     },
 
     /**
-     * Prepare a POST data for request.
+     * Prepare the POST data to be sent.
      */
     postData : function (lg) {
       var response = '';
@@ -172,6 +170,9 @@ module.exports = (function () {
       return response;
     },
 
+    /**
+     * Prepares and calls send() to request the current state.
+     */
     state : function (controller, config, callback) {
       var lg = { device : {}, config : {}};
 
