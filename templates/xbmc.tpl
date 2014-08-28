@@ -1,5 +1,6 @@
 
       <div id="{{DEVICE_ID}}" class="device {{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
+        <h3>XBMC</h3>
         <div class="control-block full">
           <div class="shortcuts">
             <ul>

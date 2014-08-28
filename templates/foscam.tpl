@@ -1,11 +1,12 @@
 
       <div id="{{DEVICE_ID}}" class="device {{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
+        <h3>Foscam</h3>
         <div class="control-block">
           <div class="presets">
             <ol>
               <li><a href="/?{{DEVICE_ID}}=Preset1"><span>1</span></a></li>
               <li><a href="/?{{DEVICE_ID}}=Preset2"><span>2</span></a></li>
-              <li><a href="/?{{DEVICE_ID}}=PRESET3"><span>3</span></a></li>
+              <li><a href="/?{{DEVICE_ID}}=Preset3"><span>3</span></a></li>
             </ol>
           </div>
           <div class="navigation">
@@ -24,7 +25,7 @@
               <li><a href="/?{{DEVICE_ID}}=Preset1,Sleep,Sleep,Alarm_On" class="fa fa-lock{{DEVICE_STATE_ON}}"><span>Alarm On</span></a></li>
               <li><a href="/?{{DEVICE_ID}}=Take" class="fa fa-camera"><span>Take</span></a></li>
               <li><a href="/?{{DEVICE_ID}}=Take,Take,Take,Take,Take" class="fa fa-bolt"><span>Burst</span></a></li>
-              <li><a href="/?{{DEVICE_ID}}=Alarm_Off,PRESET3" class="fa fa-unlock{{DEVICE_STATE_OFF}}"><span>Alarm Off</span></a></li>
+              <li><a href="/?{{DEVICE_ID}}=Alarm_Off,Preset3" class="fa fa-unlock{{DEVICE_STATE_OFF}}"><span>Alarm Off</span></a></li>
             </ul>
           </div>
         </div>

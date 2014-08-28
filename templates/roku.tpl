@@ -1,5 +1,6 @@
 
       <div id="{{DEVICE_ID}}" class="device {{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
+        <h3>Roku</h3>
         <div class="control-block full">
           <div class="media">
             <ul>

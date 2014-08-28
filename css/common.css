@@ -359,6 +359,14 @@ form legend {
 	font-size: 300%;
 }
 
+.device h3 {
+	display: none;
+}
+
+.device .text-block h3 {
+	display: block;
+}
+
 .device-off {
   filter: alpha(opacity=50);
   -moz-opacity: .5;

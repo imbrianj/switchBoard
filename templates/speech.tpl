@@ -1,5 +1,6 @@
 
       <div id="{{DEVICE_ID}}" class="device {{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
+        <h3>Speech</h3>
         <div class="text">
           <form class="text-form" id="speech-input-form" action="/" method="get">
             <fieldset>
