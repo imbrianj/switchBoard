@@ -157,18 +157,6 @@ module.exports = (function () {
       this.send(foscam);
     },
 
-    /**
-     * Collect all required markup, state, value and fragments to send to the
-     * parser when someone visits.
-     */
-    onload : function (controller) {
-      var deviceState = require(__dirname + '/../lib/deviceState'),
-          parser      = require(__dirname + '/../parsers/foscam').foscam,
-          foscamState = deviceState.getDeviceState(controller.config.deviceId);
-
-      return parser(controller.deviceId, controller.markup, foscamState.state, foscamState.value);
-    },
-
     send : function (config) {
       var http      = require('http'),
           fs        = require('fs'),

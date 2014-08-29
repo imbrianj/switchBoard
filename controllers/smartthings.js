@@ -37,6 +37,21 @@ module.exports = (function () {
     inputs  : ['list', 'subdevice'],
 
     /**
+     * Reference template fragments to be used by the parser.
+     */
+    fragments : function () {
+      var fs = require('fs');
+
+      return { group    : fs.readFileSync(__dirname + '/../templates/fragments/smartthingsGroups.tpl').toString(),
+               lock     : fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListLock.tpl').toString(),
+               switch   : fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListSwitch.tpl').toString(),
+               contact  : fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListContact.tpl').toString(),
+               water    : fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListWater.tpl').toString(),
+               motion   : fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListMotion.tpl').toString(),
+               presence : fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListPresence.tpl').toString() };
+    },
+
+    /**
      * Prepare a request for command execution.
      */
     postPrepare : function(config) {
@@ -462,36 +477,6 @@ module.exports = (function () {
       }
 
       return controller;
-    },
-
-    /**
-     * Collect all required markup, state, value and fragments to send to the
-     * parser when someone visits.
-     */
-    onload : function (controller) {
-      var fs               = require('fs'),
-          parser           = require(__dirname + '/../parsers/smartthings').smartthings,
-          deviceState      = require(__dirname + '/../lib/deviceState'),
-          smartThingsState = deviceState.getDeviceState(controller.config.deviceId),
-          switchFragment   = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListSwitch.tpl').toString(),
-          lockFragment     = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListLock.tpl').toString(),
-          contactFragment  = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListContact.tpl').toString(),
-          waterFragment    = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListWater.tpl').toString(),
-          motionFragment   = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListMotion.tpl').toString(),
-          presenceFragment = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListPresence.tpl').toString(),
-          groupFragment    = fs.readFileSync(__dirname + '/../templates/fragments/smartthingsGroups.tpl').toString();
-
-      return parser(controller.deviceId,
-                    controller.markup,
-                    smartThingsState.state,
-                    smartThingsState.value,
-                    { switch   : switchFragment,
-                      lock     : lockFragment,
-                      contact  : contactFragment,
-                      water    : waterFragment,
-                      motion   : motionFragment,
-                      presence : presenceFragment,
-                      group    : groupFragment });
     },
 
     send : function (config) {

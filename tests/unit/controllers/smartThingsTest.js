@@ -31,6 +31,23 @@
 State = {};
 
 exports.smartthingsControllerTest = {
+  fragments : function(test) {
+    'use strict';
+
+    var smartthingsController = require(__dirname + '/../../../controllers/smartthings'),
+        fragments             = smartthingsController.fragments();
+
+    test.strictEqual(typeof fragments.group,    'string', 'Group fragment verified');
+    test.strictEqual(typeof fragments.lock,     'string', 'Lock fragment verified');
+    test.strictEqual(typeof fragments.switch,   'string', 'Switch fragment verified');
+    test.strictEqual(typeof fragments.contact,  'string', 'Contact fragment verified');
+    test.strictEqual(typeof fragments.water,    'string', 'Water fragment verified');
+    test.strictEqual(typeof fragments.motion,   'string', 'Motion fragment verified');
+    test.strictEqual(typeof fragments.presence, 'string', 'Presence fragment verified');
+
+    test.done();
+  },
+
   postPrepare : function (test) {
     'use strict';
 
@@ -136,33 +153,6 @@ exports.smartthingsControllerTest = {
 
     test.strictEqual(State.FOO.value.devices[0].state, 'on', 'The first device should now be on');
     test.strictEqual(State.FOO.value.devices[1].state, 'on', 'The second device should now be open');
-
-    test.done();
-  },
-
-  onload : function (test) {
-    'use strict';
-
-    State.FOO       = {};
-    State.FOO.state = 'ok';
-    State.FOO.value = { mode    : 'Home',
-                        devices : { 0 : { id    : '01234567890',
-                                          label : 'Test Switch',
-                                          type  : 'switch',
-                                          state : 'on' },
-                                    1 : { id    : '09876543210',
-                                          label : 'Test Door',
-                                          type  : 'contact',
-                                          state : 'on',
-                                          peripheral : { temp: 72 } } } };
-
-    var smartthingsController = require(__dirname + '/../../../controllers/smartthings'),
-        onloadMarkup          = smartthingsController.onload({ markup : '<div class="smartthings">{{SMARTTHINGS_DYNAMIC}} <a href="/?smartthings=subdevice-mode-Home" class="fa fa-home{{DEVICE_STATE_HOME}}"><span>Home</span></a></div>',
-                                                               config : { deviceId : 'FOO' } });
-
-    test.notStrictEqual(onloadMarkup.indexOf('class="fa fa-lightbulb-o device-active"><span>Test Switch'),                      -1, 'First device is a switch that is active');
-    test.notStrictEqual(onloadMarkup.indexOf('class="fa fa-folder-open-o device-active"><span>Test Door (72&deg;)'),            -1, 'Second device is a contact sensor that\'s open - and registering a temp reading');
-    test.notStrictEqual(onloadMarkup.indexOf('/?smartthings=subdevice-mode-Home" class="fa fa-home device-active"><span>Home'), -1, 'Currently in Home mode');
 
     test.done();
   }

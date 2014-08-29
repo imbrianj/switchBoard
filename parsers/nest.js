@@ -104,6 +104,10 @@
           break;
         }
 
+        if(device.leaf === true) {
+          thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_LEAF}}').join(' device-active');
+        }
+
         if((value.presence) && (value.presence === 'on')) {
           thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_HOME}}').join(' device-active');
         }
@@ -115,6 +119,7 @@
         thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_COOL}}').join('');
         thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_HEAT}}').join('');
         thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_OFF}}').join('');
+        thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_LEAF}}').join('');
         thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_HOME}}').join('');
         thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_AWAY}}').join('');
       }

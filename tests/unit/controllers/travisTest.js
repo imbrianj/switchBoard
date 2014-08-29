@@ -29,6 +29,17 @@
  */
 
 exports.travisControllerTest = {
+  fragments : function(test) {
+    'use strict';
+
+    var travisController = require(__dirname + '/../../../controllers/travis'),
+        fragments        = travisController.fragments();
+
+    test.strictEqual(typeof fragments.build, 'string', 'Fragment verified');
+
+    test.done();
+  },
+
   postPrepare : function (test) {
     'use strict';
 

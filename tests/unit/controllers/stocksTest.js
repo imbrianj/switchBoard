@@ -31,6 +31,17 @@
  State = {};
 
 exports.stocksControllerTest = {
+  fragments : function(test) {
+    'use strict';
+
+    var stocksController = require(__dirname + '/../../../controllers/stocks'),
+        fragments        = stocksController.fragments();
+
+    test.strictEqual(typeof fragments.list, 'string', 'Fragment verified');
+
+    test.done();
+  },
+
   stocksOpen : function (test) {
     'use strict';
 
@@ -66,21 +77,6 @@ exports.stocksControllerTest = {
         testData         = stocksController.postPrepare(config);
 
     test.deepEqual(testData, { host : 'TEST-host', port : '443', path : '/TEST/', method : 'GET' }, 'Additional params are filtered out.');
-
-    test.done();
-  },
-
-  onload : function(test) {
-    'use strict';
-
-    State.FOO       = {};
-    State.FOO.state = 'ok';
-
-    var stocksController = require(__dirname + '/../../../controllers/stocks'),
-        onloadMarkup     = stocksController.onload({ markup : '<div class="stocks{{DEVICE_STATE}}"><h1>Contents</h1></div>',
-                                                     config : { deviceId : 'FOO' } });
-
-    test.notStrictEqual(onloadMarkup.indexOf('<h1>Contents</h1>'), -1, 'Passed markup validated');
 
     test.done();
   }

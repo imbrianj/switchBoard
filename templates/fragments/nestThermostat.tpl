@@ -9,6 +9,7 @@
                         <a href="/?{{DEVICE_ID}}=subdevice-mode-{{SUB_DEVICE_NAME}}-cool" class="fa fa-asterisk{{DEVICE_STATE_COOL}}"><span>Cool</span></a>
                       </div>
                       <div class="navigation">
+                        <span class="fa fa-leaf{{DEVICE_STATE_LEAF}}"><span>Leaf</span></span>
                         <form class="text-form" action="/" method="get">
                           <fieldset>
                             <legend>Set Temperature</legend>

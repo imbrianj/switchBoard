@@ -89,7 +89,7 @@ module.exports = (function () {
         params.state = state;
         params.value = reply;
 
-        deviceState.updateState(deviceId, controller.config.typeClass, params);
+        deviceState.updateState(device, controller.config.typeClass, params);
       };
     },
 

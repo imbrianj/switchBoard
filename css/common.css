@@ -769,7 +769,7 @@ a.device-active:hover:before {
 }
 
 .device.nest .navigation {
-	margin-top: 1em;
+	margin-top: .5em;
 }
 
 .device.nest .text-input {

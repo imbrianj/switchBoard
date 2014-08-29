@@ -31,6 +31,17 @@
 State = {};
 
 exports.rokuControllerTest = {
+  fragments : function(test) {
+    'use strict';
+
+    var rokuController = require(__dirname + '/../../../controllers/roku'),
+        fragments      = rokuController.fragments();
+
+    test.strictEqual(typeof fragments.list, 'string', 'Fragment verified');
+
+    test.done();
+  },
+
   postPrepare : function (test) {
     'use strict';
 
@@ -64,24 +75,6 @@ exports.rokuControllerTest = {
                                     port   : '80',
                                     path   : '/launch/11?contentID=TEST',
                                     method : 'POST' }, 'Roku list validation');
-
-    test.done();
-  },
-
-  onload : function (test) {
-    'use strict';
-
-    State.FOO       = {};
-    State.FOO.value = [{ id : 'ID1', cache : 'CACHE1', name : 'NAME1' },
-                       { id : 'ID2', cache : 'CACHE2', name : 'NAME2' }];
-
-    var rokuController = require(__dirname + '/../../../controllers/roku'),
-        onloadMarkup   = rokuController.onload({ markup : '<h1>Contents:</h1> {{ROKU_DYNAMIC}}',
-                                                 config : { deviceId : 'FOO' } });
-
-    test.notStrictEqual(onloadMarkup.indexOf('<h1>Contents:</h1>'), -1, 'Passed markup validated');
-    test.notStrictEqual(onloadMarkup.indexOf('<li><a href="/?{{DEVICE_ID}}=launch-ID1"><img {{LAZY_LOAD_IMAGE}}="CACHE1" alt="NAME1" title="NAME1" /></a></li>'), -1, 'First app validated');
-    test.notStrictEqual(onloadMarkup.indexOf('<li><a href="/?{{DEVICE_ID}}=launch-ID2"><img {{LAZY_LOAD_IMAGE}}="CACHE2" alt="NAME2" title="NAME2" /></a></li>'), -1, 'Second app validated');
 
     test.done();
   }

@@ -37,6 +37,15 @@ module.exports = (function () {
     inputs  : ['list'],
 
     /**
+     * Reference template fragments to be used by the parser.
+     */
+    fragments : function () {
+      var fs = require('fs');
+
+      return { forecast : fs.readFileSync(__dirname + '/../templates/fragments/weather.tpl').toString() };
+    },
+
+    /**
      * Prepare a request for command execution.
      */
     postPrepare : function (config) {
@@ -53,20 +62,6 @@ module.exports = (function () {
       var runCommand = require(__dirname + '/../lib/runCommand');
 
       runCommand.runCommand(controller.config.deviceId, 'list', controller.config.deviceId);
-    },
-
-    /**
-     * Collect all required markup, state, value and fragments to send to the
-     * parser when someone visits.
-     */
-    onload : function (controller) {
-      var fs           = require('fs'),
-          deviceState  = require(__dirname + '/../lib/deviceState'),
-          weatherState = deviceState.getDeviceState(controller.config.deviceId),
-          parser       = require(__dirname + '/../parsers/weather').weather,
-          fragment     = fs.readFileSync(__dirname + '/../templates/fragments/weather.tpl').toString();
-
-      return parser(controller.deviceId, controller.markup, weatherState.state, weatherState.value, { forecast : fragment });
     },
 
     send : function (config) {

@@ -42,6 +42,17 @@ module.exports = (function () {
     keymap : ['AWAY', 'HOME', 'FAN_ON', 'FAN_AUTO'],
 
     /**
+     * Reference template fragments to be used by the parser.
+     */
+    fragments : function () {
+      var fs = require('fs');
+
+      return { group      : fs.readFileSync(__dirname + '/../templates/fragments/nestGroups.tpl').toString(),
+               thermostat : fs.readFileSync(__dirname + '/../templates/fragments/nestThermostat.tpl').toString(),
+               protect    : fs.readFileSync(__dirname + '/../templates/fragments/nestProtect.tpl').toString() };
+    },
+
+    /**
      * Convert Celcius to Fahrenheit.
      *
      * The Nest API is all in Celcius, so we need to convert to Fahrenheit for
@@ -260,14 +271,17 @@ module.exports = (function () {
 
           // "device" contains only thermostats.
           for(i in response.device) {
-            nest.thermostat[response.device[i].serial_number]          = {};
-            nest.thermostat[response.device[i].serial_number].serial   = response.device[i].serial_number;
-            nest.thermostat[response.device[i].serial_number].state    = response.shared[response.device[i].serial_number].target_temperature_type;
-            nest.thermostat[response.device[i].serial_number].fanMode  = response.device[i].fan_mode;
-            nest.thermostat[response.device[i].serial_number].humidity = response.device[i].current_humidity;
-            nest.thermostat[response.device[i].serial_number].temp     = that.cToF(response.shared[response.device[i].serial_number].current_temperature);
-            nest.thermostat[response.device[i].serial_number].target   = that.cToF(response.shared[response.device[i].serial_number].target_temperature);
-            nest.thermostat[response.device[i].serial_number].label    = that.findLabel(response.device[i].where_id);
+            nest.thermostat[response.device[i].serial_number]              = {};
+            nest.thermostat[response.device[i].serial_number].serial       = response.device[i].serial_number;
+            nest.thermostat[response.device[i].serial_number].state        = response.shared[response.device[i].serial_number].target_temperature_type;
+            nest.thermostat[response.device[i].serial_number].active       = response.shared[response.device[i].serial_number].hvac_heater_state ? 'heat' : response.shared[response.device[i].serial_number].hvac_ac_state ? 'cool' : 'off';
+            nest.thermostat[response.device[i].serial_number].fanMode      = response.device[i].fan_mode;
+            nest.thermostat[response.device[i].serial_number].humidity     = response.device[i].current_humidity;
+            nest.thermostat[response.device[i].serial_number].temp         = that.cToF(response.shared[response.device[i].serial_number].current_temperature);
+            nest.thermostat[response.device[i].serial_number].target       = that.cToF(response.shared[response.device[i].serial_number].target_temperature);
+            nest.thermostat[response.device[i].serial_number].timeToTarget = response.device[i].time_to_target;
+            nest.thermostat[response.device[i].serial_number].leaf         = response.device[i].leaf;
+            nest.thermostat[response.device[i].serial_number].label        = that.findLabel(response.device[i].where_id);
           }
 
           callback(null, nest);
@@ -439,28 +453,6 @@ module.exports = (function () {
       }
 
       return controller;
-    },
-
-    /**
-     * Collect all required markup, state, value and fragments to send to the
-     * parser when someone visits.
-     */
-    onload : function (controller) {
-      var fs                 = require('fs'),
-          deviceState        = require(__dirname + '/../lib/deviceState'),
-          nestState          = deviceState.getDeviceState(controller.config.deviceId),
-          parser             = require(__dirname + '/../parsers/nest').nest,
-          thermostatFragment = fs.readFileSync(__dirname + '/../templates/fragments/nestThermostat.tpl').toString(),
-          protectFragment    = fs.readFileSync(__dirname + '/../templates/fragments/nestProtect.tpl').toString(),
-          groupFragment      = fs.readFileSync(__dirname + '/../templates/fragments/nestGroups.tpl').toString();
-
-      return parser(controller.deviceId,
-                    controller.markup,
-                    nestState.state,
-                    nestState.value,
-                    { thermostat : thermostatFragment,
-                      protect    : protectFragment,
-                      group      : groupFragment });
     },
 
     send : function (config) {

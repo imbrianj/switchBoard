@@ -63,6 +63,15 @@ module.exports = (function () {
                 },
 
     /**
+     * Reference template fragments to be used by the parser.
+     */
+    fragments : function () {
+      var fs = require('fs');
+
+      return { list : fs.readFileSync(__dirname + '/../templates/fragments/roku.tpl').toString() };
+    },
+
+    /**
      * Prepare a request for command execution.
      */
     postPrepare : function (command) {
@@ -213,20 +222,6 @@ module.exports = (function () {
       };
 
       this.findState(controller, stateCallback);
-    },
-
-    /**
-     * Collect all required markup, state, value and fragments to send to the
-     * parser when someone visits.
-     */
-    onload : function (controller) {
-      var fs          = require('fs'),
-          deviceState = require(__dirname + '/../lib/deviceState'),
-          rokuState   = deviceState.getDeviceState(controller.config.deviceId),
-          parser      = require(__dirname + '/../parsers/roku').roku,
-          fragment    = fs.readFileSync(__dirname + '/../templates/fragments/roku.tpl').toString();
-
-      return parser(controller.deviceId, controller.markup, State[controller.config.deviceId].state, rokuState.value, { list : fragment });
     },
 
     send : function (config) {

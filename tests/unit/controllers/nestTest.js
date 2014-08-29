@@ -31,6 +31,19 @@
 State = {};
 
 exports.nestControllerTest = {
+  fragments : function(test) {
+    'use strict';
+
+    var nestController = require(__dirname + '/../../../controllers/nest'),
+        fragments      = nestController.fragments();
+
+    test.strictEqual(typeof fragments.group,      'string', 'Group fragment verified');
+    test.strictEqual(typeof fragments.protect,    'string', 'Protect fragment verified');
+    test.strictEqual(typeof fragments.thermostat, 'string', 'Thermostat fragment verified');
+
+    test.done();
+  },
+
   cToF : function (test) {
     'use strict';
 
@@ -122,79 +135,6 @@ exports.nestControllerTest = {
 
     test.strictEqual(nestController.findLabel('00000000-0000-0000-0000-000100000003'), 'Den',      'Translate location');
     test.strictEqual(nestController.findLabel('00000000-0000-0000-0000-00010000000f'), 'Upstairs', 'Translate location');
-
-    test.done();
-  },
-
-  onload : function(test) {
-    'use strict';
-
-    State.FOO       = {};
-    State.FOO.state = 'ok';
-    State.FOO.value = { thermostat : {
-                          '123456' : {
-                            state    : 'cool',
-                            label    : 'Living Room',
-                            temp     : 72,
-                            target   : 70,
-                            humidity : 44
-                          }
-                      },
-
-                      protect : {
-                        '456789' : {
-                          smoke   : 'ok',
-                          co      : 'ok',
-                          battery : 'err',
-                          label   : 'Office'
-                        }
-                      }};
-
-    var nestController = require(__dirname + '/../../../controllers/nest'),
-        onloadMarkup   = nestController.onload({ markup : '<div class="nest"><ul>{{NEST_DYNAMIC}}</ul></div>',
-                                                 config : { deviceId : 'FOO' } });
-
-    test.notStrictEqual(onloadMarkup.indexOf('class="fa fa-asterisk device-active"><span>Cool</span>'),                              -1, 'Thermostat is cooling');
-    test.notStrictEqual(onloadMarkup.indexOf('<dd class="temp">Temp: 72&deg;</dd>'),                                                 -1, 'Current thermostat temp');
-    test.notStrictEqual(onloadMarkup.indexOf('class="text-input" type="number" max="100" min="50" name="{{DEVICE_ID}}" value="70"'), -1, 'Current target temp');
-    test.notStrictEqual(onloadMarkup.indexOf('<dd class="humidity">Humidity: 44%</dd>'),                                             -1, 'Current humidity');
-    test.notStrictEqual(onloadMarkup.indexOf('<li class="protect subdevice batt device-active">'),                                   -1, 'Smoke detector has a low battery');
-    test.notStrictEqual(onloadMarkup.indexOf('<dt>Office</dt>'),                                                                     -1, 'Smoke detector is in the Office');
-    test.notStrictEqual(onloadMarkup.indexOf('<dd class="smoke">Smoke: ok</dd>'),                                                    -1, 'No smoke found');
-    test.notStrictEqual(onloadMarkup.indexOf('<dd class="co">CO: ok</dd>'),                                                          -1, 'No CO found');
-    test.notStrictEqual(onloadMarkup.indexOf('<dd class="batt">Batt: err</dd>'),                                                     -1, 'Smoke detector has a low battery');
-
-    State.FOO.value = { thermostat : {
-                          '123456' : {
-                            state    : 'heat',
-                            label    : 'Living Room',
-                            temp     : 62,
-                            target   : 65,
-                            humidity : 44
-                          }
-                      },
-
-                      protect : {
-                        '456789' : {
-                          smoke   : 'err',
-                          co      : 'err',
-                          battery : 'ok',
-                          label   : 'Bedroom'
-                        }
-                      }};
-
-    onloadMarkup = nestController.onload({ markup : '<div class="nest"><ul>{{NEST_DYNAMIC}}</ul></div>',
-                                           config : { deviceId : 'FOO' } });
-
-    test.notStrictEqual(onloadMarkup.indexOf('class="fa fa-sun-o device-active"><span>Heat</span>'),                                 -1, 'Thermostat is heating');
-    test.notStrictEqual(onloadMarkup.indexOf('<dd class="temp">Temp: 62&deg;</dd>'),                                                 -1, 'Current thermostat temp');
-    test.notStrictEqual(onloadMarkup.indexOf('class="text-input" type="number" max="100" min="50" name="{{DEVICE_ID}}" value="65"'), -1, 'Current target temp');
-    test.notStrictEqual(onloadMarkup.indexOf('<dd class="humidity">Humidity: 44%</dd>'),                                             -1, 'Current humidity');
-    test.notStrictEqual(onloadMarkup.indexOf('<li class="protect subdevice smoke co device-active">'),                               -1, 'Smoke detector detects both Smoke and CO');
-    test.notStrictEqual(onloadMarkup.indexOf('<dt>Bedroom</dt>'),                                                                    -1, 'Smoke detector is in the Bedroom');
-    test.notStrictEqual(onloadMarkup.indexOf('<dd class="smoke">Smoke: err</dd>'),                                                   -1, 'Smoke detected');
-    test.notStrictEqual(onloadMarkup.indexOf('<dd class="co">CO: err</dd>'),                                                         -1, 'CO detected');
-    test.notStrictEqual(onloadMarkup.indexOf('<dd class="batt">Batt: ok</dd>'),                                                      -1, 'Smoke detector battery is ok');
 
     test.done();
   }
