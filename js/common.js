@@ -475,8 +475,8 @@ Switchboard = (function () {
     *  If a global function of "init" is available, it will also be executed.
     */
     init : function () {
-      var header     = Switchboard.getElementsByClassName('header', document.body, 'div')[0],
-          body       = Switchboard.getElementsByClassName('body', document.body, 'div')[0],
+      var header     = document.getElementsByTagName('header')[0],
+          body       = document.getElementsByTagName('main')[0],
           textInputs = Switchboard.getElementsByClassName('text-form', body, 'form'),
           lazyLoad,
           lazyUnLoad,
@@ -547,7 +547,7 @@ Switchboard = (function () {
 
           if(markup) {
             innerMarkup.innerHTML = markup;
-            innerMarkup = Switchboard.getElementsByClassName('device', innerMarkup, 'div')[0];
+            innerMarkup = innerMarkup.getElementsByTagName('section')[0];
 
             if(innerMarkup.innerHTML !== oldMarkup) {
               node.outerHTML = markup;
@@ -624,7 +624,7 @@ Switchboard = (function () {
                 if(message.deviceId) {
                   newContent    = document.getElementById(message.deviceId);
                   selectNav     = Switchboard.getElementsByClassName('selected', header, 'li')[0];
-                  selectContent = Switchboard.getElementsByClassName('selected', body, 'div')[0];
+                  selectContent = Switchboard.getElementsByClassName('selected', body,   'section')[0];
 
                   Switchboard.removeClass(selectNav,     'selected');
                   Switchboard.removeClass(selectContent, 'selected');
@@ -781,7 +781,7 @@ Switchboard = (function () {
             tagName       = elm.tagName.toLowerCase(),
             newContent    = document.getElementById(elm.className),
             selectNav     = Switchboard.getElementsByClassName('selected', header, 'li')[0],
-            selectContent = Switchboard.getElementsByClassName('selected', body, 'div')[0];
+            selectContent = Switchboard.getElementsByClassName('selected', body,   'section')[0];
 
         if(tagName === 'li') {
           e.preventDefault();
@@ -792,7 +792,7 @@ Switchboard = (function () {
 
             lazyLoad(elm.className);
 
-            Switchboard.addClass(elm, 'selected');
+            Switchboard.addClass(elm,        'selected');
             Switchboard.addClass(newContent, 'selected');
 
             lazyUnLoad(selectContent);
@@ -880,7 +880,7 @@ console.log('This would normally fire a WebSocket request');
         else {
           ajaxRequest = {
             path       : '/',
-            param      : device + '=' + text,
+            param      : device + '=' + type + '-' + text,
             method     : 'POST',
             onComplete : function () {
               Switchboard.log(ajaxRequest.response);
