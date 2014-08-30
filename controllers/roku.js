@@ -200,7 +200,7 @@ module.exports = (function () {
     init : function (controller, config) {
       var runCommand = require(__dirname + '/../lib/runCommand');
 
-      runCommand.runCommand(controller.config.deviceId, 'list', controller.config.deviceId);
+      runCommand.runCommand(controller.config.deviceId, 'state', controller.config.deviceId);
     },
 
     /**
@@ -239,23 +239,29 @@ module.exports = (function () {
       roku.devicePort = config.devicePort              || 8060;
       roku.callback   = config.callback                || function () {};
 
-      request = http.request(this.postPrepare(roku), function(response) {
-                  response.on('data', function(response) {
-                    dataReply += response;
+      if(roku.command === 'state') {
+        this.state( { config : { deviceId : config.device.deviceId,
+                                 deviceIp : roku.deviceIp,
+                                 device   : { title : config.device.title } } });
+      }
+
+      else {
+        request = http.request(this.postPrepare(roku), function(response) {
+                    response.on('data', function(response) {
+                      dataReply += response;
+                    });
+
+                    response.once('end', function() {
+                      roku.callback(null, dataReply);
+                    });
                   });
 
-                  response.once('end', function() {
-                    roku.callback(null, dataReply);
-                  });
-                });
+        request.once('error', function(err) {
+          roku.callback(err);
+        });
 
-      request.once('error', function(err) {
-        roku.callback(err);
-      });
-
-      request.end();
-
-      return dataReply;
+        request.end();
+      }
     }
   };
 }());

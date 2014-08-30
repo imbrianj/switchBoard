@@ -1,6 +1,6 @@
 
-      <div id="{{DEVICE_ID}}" class="device {{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
-        <h3>Foscam</h3>
+      <section id="{{DEVICE_ID}}" class="{{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
+        <h1>Foscam</h1>
         <div class="control-block">
           <div class="presets">
             <ol>
@@ -33,4 +33,4 @@
         <div class="preview-image">
           <img {{LAZY_LOAD_IMAGE}}="{{FOSCAM_DYNAMIC}}" alt="{{DEVICE_ID}} Preview" class="streaming" />
         </div>
-      </div>
+      </section>

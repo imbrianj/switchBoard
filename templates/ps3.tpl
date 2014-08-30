@@ -1,6 +1,6 @@
 
-      <div id="{{DEVICE_ID}}" class="device {{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
-        <h3>PS3</h3>
+      <section id="{{DEVICE_ID}}" class="{{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
+        <h1>PS3</h1>
         <div class="control-block">
           <div class="control">
             <ul>
@@ -37,4 +37,4 @@
             <li><a href="/?{{DEVICE_ID}}=R1" class="fa fa-step-forward"><span>R1</span></a></li>
           </ul>
         </div>
-      </div>
+      </section>

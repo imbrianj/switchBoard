@@ -78,11 +78,14 @@ module.exports = (function () {
           request;
 
       travis.deviceId = config.device.deviceId;
-      travis.host     = config.host     || 'api.travis-ci.org';
-      travis.path     = config.path     || '/repositories/' + config.device.travisOwner + '/' + config.device.travisRepo + '/builds.json';
-      travis.port     = config.port     || 443;
-      travis.method   = config.method   || 'GET';
-      travis.callback = config.callback || function () {};
+      travis.owner    = config.device.travisOwner;
+      travis.repo     = config.device.travisRepo;
+      travis.host     = config.host            || 'api.travis-ci.org';
+      travis.path     = config.path            || '/repositories/' + travis.owner + '/' + travis.repo + '/builds.json';
+      travis.port     = config.port            || 443;
+      travis.method   = config.method          || 'GET';
+      travis.maxCount = config.device.maxCount || 3;
+      travis.callback = config.callback        || function () {};
 
       request = https.request(this.postPrepare(travis), function(response) {
         response.setEncoding('utf8');
@@ -101,17 +104,19 @@ module.exports = (function () {
             dataReply = JSON.parse(dataReply);
 
             for(i; i < dataReply.length; i += 1) {
-              travisData[i] = { 'label'       : dataReply[i].message,
-                                'url'         : 'http://travis-ci.org/' + config.device.travisOwner + '/' + config.device.travisRepo + '/builds/' + dataReply[i].id,
-                                'status'      : dataReply[i].result === 0 ? 'ok' : 'err',
-                                'duration'    : dataReply[i].duration,
-                                'state'       : dataReply[i].state
-                              };
+              if(i < travis.maxCount) {
+                travisData[i] = { 'label'       : dataReply[i].message,
+                                  'url'         : 'http://travis-ci.org/' + travis.owner + '/' + travis.repo + '/builds/' + dataReply[i].id,
+                                  'status'      : dataReply[i].result === 0 ? 'ok' : 'err',
+                                  'duration'    : dataReply[i].duration,
+                                  'state'       : dataReply[i].state
+                                };
 
-              if(i === (dataReply.length - 1)) {
-                travisData.status = travisData[0].status;
+                if((i === (dataReply.length - 1)) || (i === (travis.maxCount - 1))) {
+                  travisData.status = travisData[0].status;
 
-                deviceState.updateState(travis.deviceId, 'travis', { state : travisData.status, value : travisData });
+                  deviceState.updateState(travis.deviceId, 'travis', { state : travisData.status, value : travisData });
+                }
               }
             }
           }

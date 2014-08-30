@@ -1,7 +1,7 @@
 
-      <div id="{{DEVICE_ID}}" class="device {{DEVICE_TYPE}}{{DEVICE_SELECTED}}">
+      <section id="{{DEVICE_ID}}" class="{{DEVICE_TYPE}}{{DEVICE_SELECTED}}">
         <div class="text-block">
-          <h3>Welcome!</h3>
+          <h1>Welcome!</h1>
           <p>
             Welcome to SwitchBoard.  If you're seeing this message, it means you've got everything set up and you'll just need to configure your remote.
           </p>
@@ -12,4 +12,4 @@
             Stuck?  Have questions?  Something go wrong or have any suggestions?  Feel free to <a href="https://github.com/imbrianj/switchBoard/issues/new" rel="external">file a ticket</a> or send me an email at <a href="mailto:brian@bevey.org" rel="external">brian@bevey.org</a>.
           </p>
         </div>
-      </div>
+      </section>

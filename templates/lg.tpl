@@ -1,6 +1,6 @@
 
-      <div id="{{DEVICE_ID}}" class="device {{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
-        <h3>LG</h3>
+      <section id="{{DEVICE_ID}}" class="{{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
+        <h1>LG</h1>
         <div class="control-block">
           <div class="volume">
             <a href="/?{{DEVICE_ID}}=VolUp" class="fa fa-volume-up"><span>Volume Up</span></a>
@@ -60,4 +60,4 @@
             <li><a href="/?{{DEVICE_ID}}=Blue" class="fa fa-stop blue"><span>Blue</span></a></li>
           </ul>
         </div>
-      </div>
+      </section>

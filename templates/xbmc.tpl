@@ -1,6 +1,6 @@
 
-      <div id="{{DEVICE_ID}}" class="device {{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
-        <h3>XBMC</h3>
+      <section id="{{DEVICE_ID}}" class="{{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
+        <h1>XBMC</h1>
         <div class="control-block full">
           <div class="shortcuts">
             <ul>
@@ -32,4 +32,4 @@
             </fieldset>
           </form>
         </div>
-      </div>
+      </section>

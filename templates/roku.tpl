@@ -1,6 +1,6 @@
 
-      <div id="{{DEVICE_ID}}" class="device {{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
-        <h3>Roku</h3>
+      <section id="{{DEVICE_ID}}" class="{{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
+        <h1>Roku</h1>
         <div class="control-block full">
           <div class="media">
             <ul>
@@ -44,4 +44,4 @@
             {{ROKU_DYNAMIC}}
           </ul>
         </div>
-      </div>
+      </section>

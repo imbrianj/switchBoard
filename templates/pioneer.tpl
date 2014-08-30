@@ -1,6 +1,6 @@
 
-      <div id="{{DEVICE_ID}}" class="device{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
-        <h3>Pioneer</h3>
+      <section id="{{DEVICE_ID}}" class="{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
+        <h1>Pioneer</h1>
         <div class="control-block">
           <div class="volume">
             <a href="/?{{DEVICE_ID}}=Power" class="fa fa-power-off"><span>Power</span></a>
@@ -32,4 +32,4 @@
             <li><a href="/?{{DEVICE_ID}}=Pandora" class=""><span>Pandora</span></a></li>
           </ul>
         </div>
-      </div>
+      </section>
