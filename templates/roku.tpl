@@ -29,7 +29,7 @@
           </div>
         </div>
         <div class="text">
-          <form class="text-form" id="roku-search-form" action="/" method="get">
+          <form class="text-form" action="/" method="get">
             <fieldset>
               <legend>Text Input</legend>
               <label for="{{DEVICE_ID}}-text-input">Text Input:</label>

@@ -40,6 +40,17 @@ exports.travisControllerTest = {
     test.done();
   },
 
+  encodeMessage : function (test) {
+    'use strict';
+
+    var travisController = require(__dirname + '/../../../controllers/travis'),
+        encodeMessage    = travisController.encodeMessage('<script>EVIL!&</script>');
+
+    test.strictEqual(encodeMessage, '&lt;script&gt;EVIL!&amp;&lt;/script&gt;', 'Encoding verified');
+
+    test.done();
+  },
+
   postPrepare : function (test) {
     'use strict';
 

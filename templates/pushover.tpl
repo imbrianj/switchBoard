@@ -2,7 +2,7 @@
       <section id="{{DEVICE_ID}}" class="{{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
         <h1>Pushover</h1>
         <div class="text">
-          <form class="text-form" id="pushover-input-form" action="/" method="get">
+          <form class="text-form" action="/" method="get">
             <fieldset>
               <legend>Text Input</legend>
               <label for="{{DEVICE_ID}}-text-input">Text Input:</label>

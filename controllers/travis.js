@@ -46,6 +46,18 @@ module.exports = (function () {
     },
 
     /**
+     * If the API responds with markup, we want to escape it instead of
+     * rendering it.
+     */
+     encodeMessage : function (message) {
+       message = message.split('&').join('&amp;');
+       message = message.split('<').join('&lt;');
+       message = message.split('>').join('&gt;');
+
+       return message;
+    },
+
+    /**
      * Prepare a request for command execution.
      */
     postPrepare : function(config) {
@@ -73,6 +85,7 @@ module.exports = (function () {
 
     send : function(config) {
       var https     = require('https'),
+          that      = this,
           travis    = {},
           dataReply = '',
           request;
@@ -105,7 +118,7 @@ module.exports = (function () {
 
             for(i; i < dataReply.length; i += 1) {
               if(i < travis.maxCount) {
-                travisData[i] = { 'label'       : dataReply[i].message,
+                travisData[i] = { 'label'       : that.encodeMessage(dataReply[i].message),
                                   'url'         : 'http://travis-ci.org/' + travis.owner + '/' + travis.repo + '/builds/' + dataReply[i].id,
                                   'status'      : dataReply[i].result === 0 ? 'ok' : 'err',
                                   'duration'    : dataReply[i].duration,
