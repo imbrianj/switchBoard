@@ -427,16 +427,16 @@ section .text-block p {
 	padding: .5em 0;
 }
 
-section .text-block h5 {
+section .text-block h2 {
 	font-weight: bold;
 }
 
-section .text-block h5,
+section .text-block h2,
 section .text-block li {
 	margin: .5em 0;
 }
 
-section .text-block h5 .fa,
+section .text-block h2 .fa,
 section .text-block li .fa {
 	margin-right: .5em;
 }
@@ -446,7 +446,7 @@ section .state-err .fa {
 	color: #F00;
 }
 
-section .text-block h5 .fa,
+section .text-block h2 .fa,
 section .text-block li.gain .fa,
 section .state-ok .fa {
 	color: #0078E7;
