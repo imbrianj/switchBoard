@@ -41,32 +41,40 @@ module.exports = (function () {
     /**
      * Whitelist of available key codes to use.
      */
-    keymap : ['POWERON', 'POWEROFF', 'VOLUP', 'VOLDOWN', 'MUTE', 'UNMUTE', 'INPUT_BLURAY', 'INPUT_MPLAYER', 'INPUT_CD', 'INPUT_NETWORK', 'INPUT_TV', 'INPUT_GAME', 'MENU', 'MENU_UP', 'MENU_DOWN', 'MENU_LEFT', 'MENU_RIGHT', 'MENU_RETURN', 'SOUND_MOVIE', 'SOUND_MCHSTEREO', 'SOUND_PURE', 'ZONE1_ON', 'ZONE1_OFF', 'ZONE2_STATUS', 'ZONE2_ON', 'ZONE2_VOL_UP', 'ZONE2_VOL_DOWN', 'ZONE2_OFF', 'ZONE3_STATUS', 'ZONE3_ON', 'ZONE3_VOL_UP', 'ZONE3_VOL_DOWN', 'ZONE3_OFF'],
+    keymap : ['POWER_STATUS', 'POWERON', 'POWEROFF', 'VOL_STATUS' ,'VOLUP', 'VOLDOWN', 'MUTE_STATUS', 'MUTE', 'UNMUTE', 'INPUT_STATUS', 'INPUT_BLURAY', 'INPUT_MPLAYER', 'INPUT_CD', 'INPUT_NETWORK', 'INPUT_TV', 'INPUT_GAME', 'MENU_STATUS', 'MENU', 'MENU_UP', 'MENU_DOWN', 'MENU_LEFT', 'MENU_RIGHT', 'MENU_ENTER', 'MENU_RETURN', 'SOUND_STATUS', 'SOUND_MOVIE', 'SOUND_MCHSTEREO', 'SOUND_PURE', 'ZONE1_STATUS', 'ZONE1_ON', 'ZONE1_OFF', 'ZONE2_STATUS', 'ZONE2_ON', 'ZONE2_VOL_UP', 'ZONE2_VOL_DOWN', 'ZONE2_OFF', 'ZONE3_STATUS', 'ZONE3_ON', 'ZONE3_VOL_UP', 'ZONE3_VOL_DOWN', 'ZONE3_OFF'],
 
     /**
      * Map inputted commands to the values the device or API is expecting.
      */
-    hashTable : { 'POWERON'         : 'PWON',
+    hashTable : { 'POWER_STATUS'    : 'PW?',
+                  'POWERON'         : 'PWON',
                   'POWEROFF'        : 'PWSTANDBY',
+                  'VOL_STATUS'      : 'MV?',
                   'VOLUP'           : 'MVUP',
                   'VOLDOWN'         : 'MVDOWN',
+                  'MUTE_STATUS'     : 'MU?',
                   'MUTE'            : 'MUON',
                   'UNMUTE'          : 'MUOFF',
+                  'INPUT_STATUS'    : 'SI?',
                   'INPUT_BLURAY'    : 'SIBD',
                   'INPUT_MPLAYER'   : 'SIMPLAY',
                   'INPUT_CD'        : 'SICD',
                   'INPUT_NETWORK'   : 'SINET',
                   'INPUT_TV'        : 'SISAT/CBL',
                   'INPUT_GAME'      : 'SIGAME',
+                  'MENU_STATUS'     : 'MNMEN?',
                   'MENU'            : 'MNMEN ON',
                   'MENU_UP'         : 'MNCUP',
                   'MENU_DOWN'       : 'MNCDN',
                   'MENU_LEFT'       : 'MNCLT',
-                  'MENU_RIGHT'      : 'MENCRT',
+                  'MENU_RIGHT'      : 'MNCRT',
+                  'MENU_ENTER'      : 'MNENT',
                   'MENU_RETURN'     : 'MNRTN',
+                  'SOUND_STATUS'    : 'MS?',
                   'SOUND_MOVIE'     : 'MSMOVIE',
                   'SOUND_MCHSTEREO' : 'MSMCH STEREO',
                   'SOUND_PURE'      : 'MSPURE DIRECT',
+                  'ZONE1_STATUS'    : 'ZM?',
                   'ZONE1_ON'        : 'ZMON',
                   'ZONE1_OFF'       : 'ZMOFF',
                   'ZONE2_STATUS'    : 'Z2?',
@@ -146,6 +154,7 @@ module.exports = (function () {
 
         Socket.on('data', function(dataReply) {
           denon.callback(null, dataReply);
+          console.log(dataReply.toString().split("\r"));
         });
 
         Socket.once('end', function() {
