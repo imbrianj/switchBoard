@@ -48,7 +48,7 @@ module.exports = (function () {
           // If the long poller fired this, we'll only run for controllers that
           // have "poll".
           if(type === 'long') {
-            if(controllers[deviceId].controller.inputs.indexOf('poll') !== -1) {
+            if((controllers[deviceId].controller) && (controllers[deviceId].controller.inputs.indexOf('poll') !== -1)) {
               runCommand.runCommand(deviceId, 'poll', 'single', false);
             }
           }

@@ -103,6 +103,10 @@ ul {
 	list-style: none;
 }
 
+.fa {
+	text-align: center;
+}
+
 /* Copy button styling from purecss.io */
 button {
 	background-color: rgb(0,120,231);
@@ -762,6 +766,8 @@ a.device-active:hover:before {
 	}
 }
 
+section.denon.device-on .power-on,
+section.denon.device-off .power-off,
 section.ps3.device-on .power-on,
 section.ps3.device-off .power-off {
 	display: none;
@@ -810,6 +816,10 @@ section.nest .text-device-status .text-device-status li {
 
 section.weather li span.fa {
 	min-width: 1em;
+}
+
+section.denon .numeric-controls {
+	clear: left;
 }
 
 section,
@@ -940,6 +950,10 @@ header .selected a {
 
 	section.ps3 .media {
 		padding-top: 1em;
+	}
+
+	section .shortcuts {
+		padding-top: 0;
 	}
 
 	section.nest .sub-device-list .sub-device-group {

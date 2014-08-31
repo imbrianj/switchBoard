@@ -477,9 +477,12 @@ Switchboard = (function () {
     *  If a global function of "init" is available, it will also be executed.
     */
     init : function () {
-      var header     = document.getElementsByTagName('header')[0],
-          body       = document.getElementsByTagName('main')[0],
-          textInputs = Switchboard.getElementsByClassName('text-form', body, 'form'),
+      var header             = document.getElementsByTagName('header')[0],
+          body               = document.getElementsByTagName('main')[0],
+          textInputs         = Switchboard.getElementsByClassName('text-form', body, 'form'),
+          connectedString    = header.dataset.stringConnected,
+          connectingString   = header.dataset.stringConnecting,
+          disconnectedString = header.dataset.stringDisonnected,
           lazyLoad,
           lazyUnLoad,
           templates,
@@ -565,7 +568,7 @@ Switchboard = (function () {
           indicator = document.createElement('span');
           indicator.id = 'indicator';
           Switchboard.addClass(indicator, 'connecting');
-          Switchboard.putText(indicator, 'Connecting');
+          Switchboard.putText(indicator, connectingString);
 
           header.appendChild(indicator);
 
@@ -584,7 +587,7 @@ Switchboard = (function () {
 
         Switchboard.event.add(socket, 'open', function(e) {
           indicator.className = 'connected';
-          Switchboard.putText(indicator, 'Connected');
+          Switchboard.putText(indicator, connectedString);
 
           if(reconnect) {
             socket.send('fetch state');
@@ -595,7 +598,7 @@ Switchboard = (function () {
 
         Switchboard.event.add(socket, 'close', function(e) {
           indicator.className = 'disconnected';
-          Switchboard.putText(indicator, 'Disconnected');
+          Switchboard.putText(indicator, disconnectedString);
 
           Switchboard.log('Disconnected from WebSocket');
         });
@@ -713,9 +716,11 @@ Switchboard = (function () {
 
                 if(state) {
                   indicator.className = 'connected';
+                  Switchboard.putText(indicator, connectedString);
 
                   setTimeout(function() {
                     indicator.className = 'connecting';
+                    Switchboard.putText(indicator, connectingString);
                   }, 1000);
 
                   for(device in state) {
@@ -725,6 +730,7 @@ Switchboard = (function () {
 
                 else {
                   indicator.className = 'disconnected';
+                  Switchboard.putText(indicator, disconnectedString);
                 }
               }
             };

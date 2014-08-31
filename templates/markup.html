@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html" class="theme-{{THEME}}">
   <head>
-    <title>SwitchBoard</title>
+    <title>{{i18n_APPNAME}}</title>
     <link rel="stylesheet" href="css/combo.min.css" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <link rel="apple-touch-icon" href="images/icons/apple-touch-icon.png" />
@@ -14,8 +14,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   </head>
   <body>
-    <header>
-      <h1><a href="/">SwitchBoard</a></h1>
+    <header data-string-connected="{{i18n_CONNECTED}}" data-string-connecting="{{i18n_CONNECTING}}" data-string-disconnected="{{i18n_DISCONNECTED}}">
+      <h1><a href="/">{{i18n_APPNAME}}</a></h1>
       <nav>
         <ul>
           {{NAVIGATION}}

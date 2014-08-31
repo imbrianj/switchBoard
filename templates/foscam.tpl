@@ -1,6 +1,6 @@
 
       <section id="{{DEVICE_ID}}" class="{{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
-        <h1>Foscam</h1>
+        <h1>{{i18n_FOSCAM}}</h1>
         <div class="control-block">
           <div class="presets">
             <ol>
@@ -10,22 +10,22 @@
             </ol>
           </div>
           <div class="navigation">
-            <a href="/?{{DEVICE_ID}}=Up" class="fa fa-arrow-up"><span>Up</span></a>
-            <a href="/?{{DEVICE_ID}}=Left" class="fa fa-arrow-left"><span>Left</span></a>
+            <a href="/?{{DEVICE_ID}}=Up" class="fa fa-arrow-up"><span>{{i18n_UP}}</span></a>
+            <a href="/?{{DEVICE_ID}}=Left" class="fa fa-arrow-left"><span>{{i18n_LEFT}}</span></a>
             <a href="/?{{DEVICE_ID}}=Stop" class="fa-stack">
               <i class="fa fa-square-o fa-stack-2x"></i>
               <i class="fa fa-level-up fa-rotate-90"></i>
-              <span>Stop</span>
+              <span>{{i18n_STOP}}</span>
             </a>
-            <a href="/?{{DEVICE_ID}}=Right" class="fa fa-arrow-right"><span>Right</span></a>
-            <a href="/?{{DEVICE_ID}}=Down" class="fa fa-arrow-down"><span>Down</span></a>
+            <a href="/?{{DEVICE_ID}}=Right" class="fa fa-arrow-right"><span>{{i18n_RIGHT}}</span></a>
+            <a href="/?{{DEVICE_ID}}=Down" class="fa fa-arrow-down"><span>{{i18n_DOWN}}</span></a>
           </div>
           <div class="alarm">
             <ul>
-              <li><a href="/?{{DEVICE_ID}}=Preset1,Sleep,Sleep,Alarm_On" class="fa fa-lock{{DEVICE_STATE_ON}}"><span>Alarm On</span></a></li>
-              <li><a href="/?{{DEVICE_ID}}=Take" class="fa fa-camera"><span>Take</span></a></li>
-              <li><a href="/?{{DEVICE_ID}}=Take,Take,Take,Take,Take" class="fa fa-bolt"><span>Burst</span></a></li>
-              <li><a href="/?{{DEVICE_ID}}=Alarm_Off,Preset3" class="fa fa-unlock{{DEVICE_STATE_OFF}}"><span>Alarm Off</span></a></li>
+              <li><a href="/?{{DEVICE_ID}}=Preset1,Sleep,Sleep,Alarm_On" class="fa fa-lock{{DEVICE_STATE_ON}}"><span>{{i18n_ARM}}</span></a></li>
+              <li><a href="/?{{DEVICE_ID}}=Take" class="fa fa-camera"><span>{{i18n_TAKE}}</span></a></li>
+              <li><a href="/?{{DEVICE_ID}}=Take,Take,Take,Take,Take" class="fa fa-bolt"><span>{{i18n_BURST}}</span></a></li>
+              <li><a href="/?{{DEVICE_ID}}=Alarm_Off,Preset3" class="fa fa-unlock{{DEVICE_STATE_OFF}}"><span>{{i18n_DISARM}}</span></a></li>
             </ul>
           </div>
         </div>

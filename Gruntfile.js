@@ -4,7 +4,7 @@ module.exports = function(grunt) {
 
     banner : { comment : '/* <%= grunt.template.today("yyyymmdd") %> */\n' },
 
-    jsFiles : ['config/*.js', 'lib/*.js', 'controllers/*.js', 'parsers/*.js', 'events/*.js', 'js/common.js', 'tests/**/*Test.js', 'app.js'],
+    jsFiles : ['config/*.js', 'lib/*.js', 'controllers/*.js', 'parsers/*.js', 'events/*.js', 'js/common.js', 'lang/*.js', 'tests/**/*Test.js', 'app.js'],
 
     jshint : {
       files : '<%= jsFiles %>',

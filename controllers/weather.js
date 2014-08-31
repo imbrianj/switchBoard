@@ -79,6 +79,8 @@ module.exports = (function () {
       weather.callback = config.callback || function () {};
 
       if(weather.zip !== null) {
+        console.log('\x1b[35m' + config.title + '\x1b[0m: Fetching device info');
+
         request = https.request(this.postPrepare(weather), function(response) {
                     response.setEncoding('utf8');
 

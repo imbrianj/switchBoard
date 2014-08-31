@@ -1,48 +1,48 @@
 
       <section id="{{DEVICE_ID}}" class="{{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
-        <h1>Panasonic</h1>
+        <h1>{{i18n_PANASONIC}}</h1>
         <div class="control-block">
           <div class="volume">
-            <a href="/?{{DEVICE_ID}}=VolUp" class="fa fa-volume-up"><span>Volume Up</span></a>
-            <a href="/?{{DEVICE_ID}}=VolDown" class="fa fa-volume-down"><span>Volume Down</span></a>
-            <a href="/?{{DEVICE_ID}}=Mute" class="fa fa-volume-off"><span>Mute</span></a>
+            <a href="/?{{DEVICE_ID}}=VolUp" class="fa fa-volume-up"><span>{{i18n_VOLUME_UP}}</span></a>
+            <a href="/?{{DEVICE_ID}}=VolDown" class="fa fa-volume-down"><span>{{i18n_VOLUME_DOWN}}</span></a>
+            <a href="/?{{DEVICE_ID}}=Mute" class="fa fa-volume-off"><span>{{i18n_MUTE}}</span></a>
           </div>
           <div class="navigation">
-            <a href="/?{{DEVICE_ID}}=Up" class="fa fa-arrow-up"><span>Up</span></a>
-            <a href="/?{{DEVICE_ID}}=Left" class="fa fa-arrow-left"><span>Left</span></a>
+            <a href="/?{{DEVICE_ID}}=Up" class="fa fa-arrow-up"><span>{{i18n_UP}}</span></a>
+            <a href="/?{{DEVICE_ID}}=Left" class="fa fa-arrow-left"><span>{{i18n_LEFT}}</span></a>
             <a href="/?{{DEVICE_ID}}=Enter" class="fa-stack">
               <i class="fa fa-square-o fa-stack-2x"></i>
               <i class="fa fa-level-up fa-rotate-90"></i>
-              <span>Enter</span>
+              <span>{{i18n_ENTER}}</span>
             </a>
-            <a href="/?{{DEVICE_ID}}=Right" class="fa fa-arrow-right"><span>Right</span></a>
-            <a href="/?{{DEVICE_ID}}=Down" class="fa fa-arrow-down"><span>Down</span></a>
+            <a href="/?{{DEVICE_ID}}=Right" class="fa fa-arrow-right"><span>{{i18n_RIGHT}}</span></a>
+            <a href="/?{{DEVICE_ID}}=Down" class="fa fa-arrow-down"><span>{{i18n_DOWN}}</span></a>
           </div>
           <div class="channel">
-            <a href="/?{{DEVICE_ID}}=Ch_Up" class="fa fa-chevron-up"><span>Channel Up</span></a>
-            <a href="/?{{DEVICE_ID}}=Ch_Down" class="fa fa-chevron-down"><span>Channel Down</span></a>
+            <a href="/?{{DEVICE_ID}}=Ch_Up" class="fa fa-chevron-up"><span>{{i18n_CHANNEL_UP}}</span></a>
+            <a href="/?{{DEVICE_ID}}=Ch_Down" class="fa fa-chevron-down"><span>{{i18n_CHANNEL_DOWN}}</span></a>
           </div>
         </div>
         <div class="shortcuts">
           <ul>
-            <li><a href="/?{{DEVICE_ID}}=Power" class="fa fa-power-off"><span>Power</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=Viera_Link" class="fa fa-th"><span>Viera Link</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=Chg_Input" class="fa fa-desktop"><span>Change Input</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=Internet" class="fa fa-globe"><span>Internet</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=HDMI4" class="fa fa-sitemap"><span>HDMI4</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=Submenu" class="fa fa-cog"><span>Submenu</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=Menu" class="fa fa-list-ul"><span>Menu</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=Cancel" class="fa fa-sign-out"><span>Cancel</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=Power" class="fa fa-power-off"><span>{{i18n_POWER}}</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=Viera_Link" class="fa fa-th"><span>{{i18n_VIERA_LINK}}</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=Chg_Input" class="fa fa-desktop"><span>{{i18n_CHANGE_INPUT}}</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=Internet" class="fa fa-globe"><span>{{i18n_INTERNET}}</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=HDMI4" class="fa fa-sitemap"><span>{{i18n_HDMI}} 4</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=Submenu" class="fa fa-cog"><span>{{i18n_SUBMENU}}</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=Menu" class="fa fa-list-ul"><span>{{i18n_MENU}}</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=Cancel" class="fa fa-sign-out"><span>{{i18n_CANCEL}}</span></a></li>
           </ul>
         </div>
         <div class="text">
           <form class="text-form" action="/" method="get">
             <fieldset>
-              <legend>Text Input</legend>
-              <label for="{{DEVICE_ID}}-text-input">Text Input:</label>
-              <input id="{{DEVICE_ID}}-text-input" class="text-input" type="text" name="{{DEVICE_ID}}" placeholder="Text Input" required />
+              <legend>{{i18n_TEXT_INPUT}}</legend>
+              <label for="{{DEVICE_ID}}-text-input">{{i18n_TEXT_INPUT}}:</label>
+              <input id="{{DEVICE_ID}}-text-input" class="text-input" type="text" name="{{DEVICE_ID}}" placeholder="{{i18n_TEXT_INPUT}}" required />
               <input class="input-type" type="hidden" value="text" name="type" />
-              <button type="submit" class="button">Submit</button>
+              <button type="submit" class="button">{{i18n_SUBMIT}}</button>
             </fieldset>
           </form>
         </div>
@@ -60,22 +60,22 @@
             <li><a href="/?{{DEVICE_ID}}=D0"><span>0</span></a></li>
           </ol>
           <ul>
-            <li><a href="/?{{DEVICE_ID}}=Return" class="fa fa-reply"><span>Return</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=Info" class="fa fa-list"><span>Info</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=Return" class="fa fa-reply"><span>{{i18n_RETURN}}</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=Info" class="fa fa-list"><span>{{i18n_INFO}}</span></a></li>
           </ul>
         </div>
         <div class="media">
           <ul>
-            <li><a href="/?{{DEVICE_ID}}=Rew" class="fa fa-backward"><span>Rewind</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=Sop" class="fa fa-stop"><span>Stop</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=Pause" class="fa fa-pause"><span>Pause</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=Play" class="fa fa-play"><span>Play</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=FF" class="fa fa-forward"><span>Fast Forward</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=Rec" class="fa fa-circle"><span>Record</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=Red" class="fa fa-stop red"><span>Red</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=Green" class="fa fa-stop green"><span>Green</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=Yellow" class="fa fa-stop yellow"><span>Yellow</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=Blue" class="fa fa-stop blue"><span>Blue</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=Rew" class="fa fa-backward"><span>{{i18n_REWIND}}</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=Sop" class="fa fa-stop"><span>{{i18n_STOP}}</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=Pause" class="fa fa-pause"><span>{{i18n_PAUSE}}</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=Play" class="fa fa-play"><span>{{i18n_PLAY}}</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=FF" class="fa fa-forward"><span>{{i18n_FAST_FORWARD}}</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=Rec" class="fa fa-circle"><span>{{i18n_RECORD}}</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=Red" class="fa fa-stop red"><span>{{i18n_RED}}</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=Green" class="fa fa-stop green"><span>{{i18n_GREEN}}</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=Yellow" class="fa fa-stop yellow"><span>{{i18n_YELLOW}}</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=Blue" class="fa fa-stop blue"><span>{{i18n_BLUE}}</span></a></li>
           </ul>
         </div>
       </section>

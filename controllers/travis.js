@@ -100,55 +100,59 @@ module.exports = (function () {
       travis.maxCount = config.device.maxCount || 3;
       travis.callback = config.callback        || function () {};
 
-      request = https.request(this.postPrepare(travis), function(response) {
-        response.setEncoding('utf8');
+      if((travis.owner) && (travis.repo)) {
+        console.log('\x1b[35m' + config.title + '\x1b[0m: Fetching device info');
 
-        response.on('data', function(response) {
-          dataReply += response;
-        });
+        request = https.request(this.postPrepare(travis), function(response) {
+          response.setEncoding('utf8');
 
-        response.once('end', function() {
-          var deviceState = require(__dirname + '/../lib/deviceState'),
-              travisData  = [],
-              i           = 0;
+          response.on('data', function(response) {
+            dataReply += response;
+          });
 
-          // Stupid check to see if it's JSON and not HTML.
-          if((dataReply) && (dataReply[0] === '[')) {
-            dataReply = JSON.parse(dataReply);
+          response.once('end', function() {
+            var deviceState = require(__dirname + '/../lib/deviceState'),
+                travisData  = [],
+                i           = 0;
 
-            for(i; i < dataReply.length; i += 1) {
-              if(i < travis.maxCount) {
-                travisData[i] = { 'label'       : that.encodeMessage(dataReply[i].message),
-                                  'url'         : 'http://travis-ci.org/' + travis.owner + '/' + travis.repo + '/builds/' + dataReply[i].id,
-                                  'status'      : dataReply[i].result === 0 ? 'ok' : 'err',
-                                  'duration'    : dataReply[i].duration,
-                                  'state'       : dataReply[i].state
-                                };
+            // Stupid check to see if it's JSON and not HTML.
+            if((dataReply) && (dataReply[0] === '[')) {
+              dataReply = JSON.parse(dataReply);
 
-                if((i === (dataReply.length - 1)) || (i === (travis.maxCount - 1))) {
-                  travisData.status = travisData[0].status;
+              for(i; i < dataReply.length; i += 1) {
+                if(i < travis.maxCount) {
+                  travisData[i] = { 'label'       : that.encodeMessage(dataReply[i].message),
+                                    'url'         : 'http://travis-ci.org/' + travis.owner + '/' + travis.repo + '/builds/' + dataReply[i].id,
+                                    'status'      : dataReply[i].result === 0 ? 'ok' : 'err',
+                                    'duration'    : dataReply[i].duration,
+                                    'state'       : dataReply[i].state
+                                  };
 
-                  deviceState.updateState(travis.deviceId, 'travis', { state : travisData.status, value : travisData });
+                  if((i === (dataReply.length - 1)) || (i === (travis.maxCount - 1))) {
+                    travisData.status = travisData[0].status;
+
+                    deviceState.updateState(travis.deviceId, 'travis', { state : travisData.status, value : travisData });
+                  }
                 }
               }
             }
-          }
 
-          if(travisData.status === 'ok') {
-            travis.callback(null, travisData);
-          }
+            if(travisData.status === 'ok') {
+              travis.callback(null, travisData);
+            }
 
-          else {
-            travis.callback('err', travisData);
-          }
+            else {
+              travis.callback('err', travisData);
+            }
+          });
         });
-      });
 
-      request.once('error', function(err) {
-        travis.callback(err);
-      });
+        request.once('error', function(err) {
+          travis.callback(err);
+        });
 
-      request.end();
+        request.end();
+      }
     }
   };
 }());

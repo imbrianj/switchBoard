@@ -37,7 +37,7 @@ exports.loadControllerTest = {
     var loadController   = require(__dirname + '/../../../lib/loadController'),
         controllerConfig = { typeClass : 'samsung',
                              title     : 'TEST samsung' },
-        controller       = loadController.loadControllerFile(controllerConfig, 'samsung');
+        controller       = loadController.loadControllerFile(controllerConfig, 'samsung', { config : { language : 'en-US' } });
 
     test.strictEqual(controller.controller.keymap.length, 242, 'Controller file loaded');
     test.notStrictEqual(controller.markup.indexOf('control-block'), -1, 'Controller markup loaded');

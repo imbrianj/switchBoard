@@ -126,6 +126,8 @@ module.exports = (function () {
       stocks.callback = config.callback || function () {};
 
       if(stocks.stocks !== null) {
+        console.log('\x1b[35m' + config.title + '\x1b[0m: Fetching device info');
+
         request = https.request(this.postPrepare(stocks), function(response) {
                     response.setEncoding('utf8');
 
