@@ -175,7 +175,7 @@ module.exports = (function () {
         samsung : {
           SAMSUNG          : "Samsung",
           CEC_SPEAKERS     : "CEC Speakers",
-          CHANNEL_LISTING  : "CHannel Listing",
+          CHANNEL_LISTING  : "Channel Listing",
           MORE             : "More",
           PREVIOUS_CHANNEL : "Previous Channel",
           SMART_HUB        : "Smart Hub",

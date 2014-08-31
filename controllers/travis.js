@@ -101,7 +101,7 @@ module.exports = (function () {
       travis.callback = config.callback        || function () {};
 
       if((travis.owner) && (travis.repo)) {
-        console.log('\x1b[35m' + config.title + '\x1b[0m: Fetching device info');
+        console.log('\x1b[35m' + config.device.title + '\x1b[0m: Fetching device info');
 
         request = https.request(this.postPrepare(travis), function(response) {
           response.setEncoding('utf8');
