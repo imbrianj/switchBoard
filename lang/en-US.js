@@ -94,12 +94,14 @@ module.exports = (function () {
           BLU_RAY      : "Blu-ray"
         },
         foscam : {
-          FOSCAM : "Foscam",
-          ARM    : "Arm",
-          BURST  : "Burst",
-          DISARM : "Disarm",
-          PRESET : "Preset",
-          TAKE   : "Take"
+          FOSCAM          : "Foscam",
+          ARM             : "Arm",
+          BURST           : "Burst",
+          CAMERA_ARMED    : "Camera armed",
+          CAMERA_DISARMED : "Camera disarmed",
+          DISARM          : "Disarm",
+          PRESET          : "Preset",
+          TAKE            : "Take"
         },
         lg : {
           LG       : "LG",
@@ -112,20 +114,36 @@ module.exports = (function () {
         nest : {
           NEST               : "Nest",
           AWAY               : "Away",
+          BASEMENT           : "Basement",
           BATT               : "Batt",
+          BEDROOM            : "Bedroom",
           CO                 : "CO",
+          CO_DETECTED        : "{{LABEL}} CO detected!",
           COOL               : "Cool",
+          DEN                : "Den",
+          DINING_ROOM        : "Dining Room",
+          DOWNSTAIRS         : "Downstairs",
+          ENTRYWAY           : "Entryway",
+          FAMILY_ROOM        : "Family Room",
+          HALLWAY            : "Hallway",
           HEAT               : "Heat",
           HOME               : "Home",
           HUMIDITY           : "Humidity",
+          KIDS_ROOM          : "Kids Room",
+          KITCHEN            : "Kitchen",
           LEAF               : "Leaf",
+          LIVING_ROOM        : "Living Room",
+          MASTER_BEDROOM     : "Master Bedroom",
+          OFFICE             : "Office",
           PROTECT            : "Protect",
           SET_TEMPERATURE    : "Set Temperature",
           SMOKE              : "Smoke",
+          SMOKE_DETECTED     : "{{LABEL}} smoke detected!",
           TARGET             : "Target",
           TARGET_TEMPERATURE : "Target Temperature",
           TEMP               : "Temp",
-          THERMOSTAT         : "Thermostat"
+          THERMOSTAT         : "Thermostat",
+          UPSTAIRS           : "Upstairs"
         },
         panasonic : {
           PANASONIC    : "Panasonic",
@@ -184,10 +202,13 @@ module.exports = (function () {
           WEB_BROWSER      : "Web Browser"
         },
         smartthings : {
-          SMARTTHINGS : "SmartThings",
-          AWAY        : "Away",
-          HOME        : "Home",
-          NIGHT       : "Night"
+          SMARTTHINGS    : "SmartThings",
+          ARRIVED        : "{{LABEL}} has just arrived",
+          AWAY           : "Away",
+          HOME           : "Home",
+          LEFT           : "{{LABEL}} has just left",
+          NIGHT          : "Night",
+          WATER_DETECTED : "{{LABEL}} has detected water!"
         },
         sms : {
           SMS : "SMS"
@@ -197,13 +218,16 @@ module.exports = (function () {
         },
         stocks : {
           STOCKS  : "Stocks",
+          BUY     : "Your {{LABEL}} stock is low at {{PRICE}}.  Think about buying?",
           LOSS    : "Loss",
           GAIN    : "Gain",
-          NEUTRAL : "Neutral"
+          NEUTRAL : "Neutral",
+          SELL    : "Your {{LABEL}} stock is doing well at {{PRICE}}.  Think about selling?"
         },
         travis : {
-          TRAVIS       : "Travis",
-          BUILD_STATUS : "Build Status"
+          TRAVIS        : "Travis",
+          BUILD_FAILURE : "Travis build failure!",
+          BUILD_STATUS  : "Build Status"
         },
         weather : {
           WEATHER     : "Weather",

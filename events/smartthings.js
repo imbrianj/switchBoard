@@ -32,7 +32,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20140819,
+    version : 20140901,
 
     /**
      * If moisture is detected (such as a laundry room or basement flood), or
@@ -42,6 +42,7 @@ module.exports = (function () {
      */
     fire : function(device, command, controllers) {
       var runCommand = require(__dirname + '/../lib/runCommand'),
+          translate  = require(__dirname + '/../lib/translate'),
           notify,
           value,
           message,
@@ -54,7 +55,7 @@ module.exports = (function () {
         value   = value[1];
 
         if(value === 'on') {
-          message = command + ' has detected water!';
+          message = translate.translate('{{i18n_WATER_DETECTED}}', 'smartthings', controllers.config.language).replace('{{LABEL}}', command);
         }
       }
 
@@ -65,11 +66,11 @@ module.exports = (function () {
         value   = value[1];
 
         if(value === 'on') {
-          message = command + ' has just arrived';
+          message = translate.translate('{{i18n_ARRIVED}}', 'smartthings', controllers.config.language).replace('{{LABEL}}', command);
         }
 
         else if(value === 'off') {
-          message = command + ' has just left';
+          message = translate.translate('{{i18n_LEFT}}', 'smartthings', controllers.config.language).replace('{{LABEL}}', command);
         }
       }
 

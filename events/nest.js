@@ -32,7 +32,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20140826,
+    version : 20140901,
 
     /**
      * If the API states that a Nest Protect smoke detector has gone off in any
@@ -43,9 +43,11 @@ module.exports = (function () {
       return function(err, reply) {
         var runCommand  = require(__dirname + '/../lib/runCommand'),
             deviceState = require(__dirname + '/../lib/deviceState'),
+            translate   = require(__dirname + '/../lib/translate'),
             notify      = require(__dirname + '/../lib/notify'),
             controller  = controllers[device],
             state       = 'err',
+            tempMessage = '',
             message     = '',
             params      = {},
             i           = 0,
@@ -64,13 +66,27 @@ module.exports = (function () {
 
             for(subDevice in reply.protect) {
               if(reply.protect[subDevice].smoke !== 'ok') {
-                message = message + ' ' + reply.protect[subDevice].label + ' smoke detected!';
-                notify.sendNotification(null, reply.protect[subDevice].label + ' smoke detected!', device);
+                tempMessage = translate('{{i18n_SMOKE_DETECTED}}', 'nest', controllers.config.language).replace('{{LABEL}}', reply.protect[subDevice].label);
+
+                if(message) {
+                  message = message + ' ';
+                }
+
+                message = message + tempMessage;
+
+                notify.sendNotification(null, tempMessage, device);
               }
 
               if(reply.protect[subDevice].co !== 'ok') {
-                message = message + ' ' + reply.protect[subDevice].label + ' CO detected!';
-                notify.sendNotification(null, reply.protect[subDevice].label + ' CO detected!', device);
+                tempMessage = translate('{{i18n_CO_DETECTED}}', 'nest', controllers.config.language).replace('{{LABEL}}', reply.protect[subDevice].label);
+
+                if(message) {
+                  message = message + ' ';
+                }
+
+                message = message + tempMessage;
+
+                notify.sendNotification(null, tempMessage, device);
               }
             }
 

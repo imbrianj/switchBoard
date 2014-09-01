@@ -126,70 +126,71 @@ module.exports = (function () {
      * Device labels are sent as big crazy codes.  We'll convert those to the
      * expected names.
      */
-    findLabel : function (id) {
-      var location = '';
+    findLabel : function (id, language) {
+      var translate = require(__dirname + '/../lib/translate'),
+          location  = '';
 
       id = id.replace('00000000-0000-0000-0000-0001000000', '');
 
       switch(id) {
         case '01' :
-          location = 'Basement';
+          location = 'BASEMENT';
         break;
 
         case '0d' :
-          location = 'Bedroom';
+          location = 'BEDROOM';
         break;
 
         case '03' :
-          location = 'Den';
+          location = 'DEN';
         break;
 
         case '10' :
-          location = 'Dining Room';
+          location = 'DINING_ROOM';
         break;
 
         case '06' :
-          location = 'Downstairs';
+          location = 'DOWNSTAIRS';
         break;
 
         case '00' :
-          location = 'Entryway';
+          location = 'ENTRYWAY';
         break;
 
         case '0b' :
-          location = 'Family Room';
+          location = 'FAMILY_ROOM';
         break;
 
         case '02' :
-          location = 'Hallway';
+          location = 'HALLWAY';
         break;
 
         case '08' :
-          location = 'Kids Room';
+          location = 'KIDS_ROOM';
         break;
 
         case '0a' :
-          location = 'Kitchen';
+          location = 'KITCHEN';
         break;
 
         case '0c' :
-          location = 'Living Room';
+          location = 'LIVING_ROOM';
         break;
 
         case '05' :
-          location = 'Master Bedroom';
+          location = 'MASTER_BEDROOM';
         break;
 
         case '0e' :
-          location = 'Office';
+          location = 'OFFICE';
         break;
 
         case '0f' :
-          location = 'Upstairs';
+          location = 'UPSTAIRS';
         break;
       }
 
-      return location;
+      return translate.translate('{{i18n_' + location + '}}', 'nest', language);
     },
 
     /**
@@ -266,7 +267,7 @@ module.exports = (function () {
             nest.protect[response.topaz[i].serial_number].smoke   = response.topaz[i].smoke_status         === 0 ? 'ok' : 'err';
             nest.protect[response.topaz[i].serial_number].co      = response.topaz[i].co_status            === 0 ? 'ok' : 'err';
             nest.protect[response.topaz[i].serial_number].battery = response.topaz[i].battery_health_state === 0 ? 'ok' : 'err';
-            nest.protect[response.topaz[i].serial_number].label   = that.findLabel(response.topaz[i].where_id);
+            nest.protect[response.topaz[i].serial_number].label   = that.findLabel(response.topaz[i].where_id, config.language);
           }
 
           // "device" contains only thermostats.
@@ -475,6 +476,7 @@ module.exports = (function () {
       nest.username  = config.device.username || '';
       nest.password  = config.device.password || '';
       nest.auth      = config.device.auth     || {};
+      nest.language  = config.language        || config.config.language || 'en-US';
 
       if((nest.command) || (nest.subdevice)) {
         nest = this.getDevicePath(nest);

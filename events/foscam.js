@@ -33,7 +33,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20140826,
+    version : 20140901,
 
     /**
      * When the foscam is armed or disarmed, we want to wait a very short time
@@ -45,6 +45,8 @@ module.exports = (function () {
      */
     fire : function(device, command, controllers) {
       var runCommand = require(__dirname + '/../lib/runCommand'),
+          translate  = require(__dirname + '/../lib/translate'),
+          message    = '',
           deviceId;
 
       if((command === 'ALARM_ON') || (command === 'ALARM_OFF')) {
@@ -58,7 +60,15 @@ module.exports = (function () {
 
         for(deviceId in controllers) {
           if((deviceId !== 'config') && (controllers[deviceId].config.typeClass === 'speech')) {
-            runCommand.runCommand(deviceId, command === 'ALARM_ON' ? 'text-Camera armed' : 'text-Camera disarmed');
+            if(command === 'ALARM_ON') {
+              message = translate.translate('{{i18n_CAMERA_ARMED}}', 'foscam', controllers.config.language);
+            }
+
+            else if(command === 'ALARM_OFF') {
+              message = translate.translate('{{i18n_CAMERA_DISARMED}}', 'foscam', controllers.config.language);
+            }
+
+            runCommand.runCommand(deviceId, 'text-' + message);
             break;
           }
         }

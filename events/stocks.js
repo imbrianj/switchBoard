@@ -32,7 +32,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20140819,
+    version : 20140901,
 
     /**
      * On poll, check the stock price against any configured stock limits.  If
@@ -42,6 +42,7 @@ module.exports = (function () {
     poll : function(deviceId, command, controllers) {
       var runCommand  = require(__dirname + '/../lib/runCommand'),
           deviceState = require(__dirname + '/../lib/deviceState'),
+          translate   = require(__dirname + '/../lib/translate'),
           notify,
           controller  = controllers[deviceId],
           speech,
@@ -58,11 +59,11 @@ module.exports = (function () {
           if((controller.config.limits) && (stocks)) {
             for(stockName in controller.config.limits) {
               if((typeof controller.config.limits[stockName].sell !== 'undefined') && (stocks[stockName]) && (stocks[stockName].price >= controller.config.limits[stockName].sell)) {
-                message = message + 'Your ' + stocks[stockName].name + ' stock is doing well at ' + stocks[stockName].ask + '.  Think about selling?  ';
+                message = message + translate('{{i18n_SELL}}', 'stocks', controllers.config.language).replace('{{LABEL}}', stocks[stockName].name).replace('{{PRICE}}', stocks[stockName].ask) + ' ';
               }
 
               else if((typeof controller.config.limits[stockName].buy !== 'undefined') && (stocks[stockName]) && (stocks[stockName].price <= controller.config.limits[stockName].buy)) {
-                message = message + 'Your ' + stocks[stockName].name + ' stock is low at ' + stocks[stockName].ask + '.  Think about buying?  ';
+                message = message + translate('{{i18n_BUY}}', 'stocks', controllers.config.language).replace('{{LABEL}}', stocks[stockName].name).replace('{{PRICE}}', stocks[stockName].ask) + ' ';
               }
 
               else if(stocks[stockName]){

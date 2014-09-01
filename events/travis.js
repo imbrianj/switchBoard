@@ -32,7 +32,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20140816,
+    version : 20140901,
 
     /**
      * On poll, check the Travis build state.  If the latest build is failing,
@@ -41,7 +41,8 @@ module.exports = (function () {
      * notification via SMS, push or text.
      */
     poll : function(deviceId, command, controllers) {
-      var runCommand  = require(__dirname + '/../lib/runCommand'),
+      var runCommand = require(__dirname + '/../lib/runCommand'),
+          translate  = require(__dirname + '/../lib/translate'),
           notify,
           callback;
 
@@ -49,7 +50,7 @@ module.exports = (function () {
         if((travis) && (travis[0]) && (travis[0].state === 'finished') && (travis[0].status === 'err')) {
           notify = require(__dirname + '/../lib/notify');
 
-          notify.sendNotification(null, 'Travis build failure!', deviceId);
+          notify.sendNotification(null, translate.translate('{{i18n_BUILD_FAILURE}}', 'travis', controllers.config.language), deviceId);
         }
       };
 
