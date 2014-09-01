@@ -35,15 +35,15 @@ exports.loadMarkupTest = {
     var loadMarkup  = require('../../../lib/loadMarkup'),
         controllers = { config  : { theme      : 'TEST-theme', default : 'samsung' },
                         samsung : { config     : { deviceId  : 'TEST-deviceId',
-                                                 typeClass : 'samsung',
-                                                 title     : 'TEST-title' } },
+                                                   typeClass : 'samsung',
+                                                   title     : 'TEST-title' } },
                         speech  : { config     : { deviceId  : 'Test-deviceId2',
-                                                 typeClass : 'speech' } },
+                                                   typeClass : 'speech' } },
                         nest    : { config     : { deviceId  : 'Test-deviceId3',
-                                                 typeClass : 'nest' },
+                                                   typeClass : 'nest' },
                                     markup     : 'TESTING1',
-                                    controller : { fragments : function () { return { 'group'   : 'TESTING2',
-                                                                                      'protect' : 'TESTING3' }; } } } },
+                                    fragments  : { group   : 'TESTING2',
+                                                   protect : 'TESTING3' } } },
         templates    = loadMarkup.loadTemplates(controllers);
 
     test.strictEqual(typeof templates.samsung.fragments,      'undefined', 'Samsung has no template fragments');

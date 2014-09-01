@@ -39,6 +39,7 @@ module.exports = (function () {
     strings : function () {
       return {
         container : {
+          LANGUAGE     : "en-US",
           APPNAME      : "Switchboard",
           CONNECTED    : "Connected",
           CONNECTING   : "Connecting",

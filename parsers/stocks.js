@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global module, console */
+/*global module, console, require */
 
 /**
  * Copyright (c) 2014 brian@bevey.org
@@ -26,32 +26,46 @@
 (function(exports){
   'use strict';
 
-  exports.stocks = function (deviceId, markup, state, value, fragments) {
+  exports.stocks = function (deviceId, markup, state, value, fragments, language) {
     var template   = fragments.list,
         i          = 0,
         tempMarkup = '',
         change     = '',
         arrow      = '',
-        direction  = '';
+        direction  = '',
+        translate  = function(message) {
+          var util;
+
+          if(typeof Switchboard === 'object') {
+            message = Switchboard.util.translate(message, 'stocks');
+          }
+
+          else {
+            util    = require(__dirname + '/../lib/sharedUtil').util;
+            message = util.translate(message, 'stocks', language);
+          }
+
+          return message;
+        };
 
     if(value) {
       for(i in value) {
         if(value[i].dayChangeValue.indexOf('+') === 0) {
           change    = 'gain';
           arrow     = 'arrow-up';
-          direction = 'Gain';
+          direction = translate('GAIN');
         }
 
         else if(value[i].dayChangeValue.indexOf('-') === 0) {
           change    = 'loss';
           arrow     = 'arrow-down';
-          direction = 'Loss';
+          direction = translate('LOSS');
         }
 
         else {
           change    = 'neutral';
           arrow     = 'arrows-h';
-          direction = 'Neutral';
+          direction = translate('NEUTRAL');
         }
 
         tempMarkup = tempMarkup + template.split('{{STOCK_CHANGE}}').join(change);

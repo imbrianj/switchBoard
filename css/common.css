@@ -404,6 +404,12 @@ section .control-block .navigation {
 	width: 70%;
 }
 
+section .text-control li {
+	display: inline-block;
+	font-size: 50%;
+	width: 22%;
+}
+
 section .text,
 section .text-block {
 	clear: both;
@@ -470,7 +476,7 @@ section .installed-list {
 	float: none;
 	margin: 0 auto;
 	text-align: center;
-	width: 90%;
+	width: 100%;
 }
 
 section .installed .sub-device-list li {
@@ -796,6 +802,7 @@ section.nest .control-block .navigation a {
 
 section.nest .sub-device-list .sub-device-group,
 section.nest .sub-device-list .sub-device-group li {
+	box-sizing: border-box;
 	max-width: 100%;
 	width: 100%;
 }
@@ -822,6 +829,10 @@ section.denon .numeric-controls {
 	clear: left;
 }
 
+section.pioneer .text-control li a {
+	text-align: right;
+}
+
 section,
 .subdevice {
 	-moz-transition: opacity .5s ease-in-out;
@@ -832,6 +843,7 @@ section,
 
 section {
 	display: none;
+	margin: 0 .5em;
 }
 
 body.rich .selected,

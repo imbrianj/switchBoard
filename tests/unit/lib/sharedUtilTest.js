@@ -31,13 +31,23 @@
 State = {};
 
 exports.sharedUtilTest = {
-  encodeName : function(test) {
+  encodeName : function (test) {
     'use strict';
 
     var util = require(__dirname + '/../../../lib/sharedUtil');
 
     test.strictEqual(util.util.encodeName(' \' $ This is a bad %^ ! name()'), '_____this_is_a_bad______name__', 'Name encoded');
     test.strictEqual(util.util.encodeName('ThisIsAGoodName'),                 'thisisagoodname',                'Name encoded');
+
+    test.done();
+  },
+
+  translate : function (test) {
+    'use strict';
+
+    var util = require(__dirname + '/../../../lib/sharedUtil');
+
+    test.strictEqual(util.util.translate('THERMOSTAT', 'nest', 'en'), 'Thermostat', 'Token translated');
 
     test.done();
   }

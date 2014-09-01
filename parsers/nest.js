@@ -26,7 +26,7 @@
 (function(exports){
   'use strict';
 
-  exports.nest = function (deviceId, markup, state, value, fragments) {
+  exports.nest = function (deviceId, markup, state, value, fragments, language) {
     var templateThermostat = fragments.thermostat,
         templateProtect    = fragments.protect,
         templateGroup      = fragments.group,
@@ -51,6 +51,20 @@
           }
 
           return 'group-' + name;
+        },
+        translate  = function(message) {
+          var util;
+
+          if(typeof Switchboard === 'object') {
+            message = Switchboard.util.translate(message, 'nest');
+          }
+
+          else {
+            util    = require(__dirname + '/../lib/sharedUtil').util;
+            message = util.translate(message, 'nest', language);
+          }
+
+          return message;
         };
 
     if(value) {
@@ -59,25 +73,25 @@
 
         if(typeof Switchboard === 'object') {
           off  = Switchboard.getElementsByClassName(encodeName(device.label), document.getElementById(deviceId), 'li')[0];
-          heat = Switchboard.getElementsByClassName('fa-sun-o', off, 'a')[0];
+          heat = Switchboard.getElementsByClassName('fa-sun-o',    off, 'a')[0];
           cool = Switchboard.getElementsByClassName('fa-asterisk', off, 'a')[0];
 
           if((device.state === 'cool') && (!Switchboard.hasClass(cool, 'device-active'))) {
-            Switchboard.addClass(cool, 'device-active');
+            Switchboard.addClass(cool,    'device-active');
             Switchboard.removeClass(heat, 'device-active');
-            Switchboard.removeClass(off, 'device-off');
+            Switchboard.removeClass(off,  'device-off');
             markup = '';
           }
 
           else if((device.state === 'heat') && (!Switchboard.hasClass(heat, 'device-active'))) {
-            Switchboard.addClass(heat, 'device-active');
+            Switchboard.addClass(heat,    'device-active');
             Switchboard.removeClass(cool, 'device-active');
-            Switchboard.removeClass(off, 'device-off');
+            Switchboard.removeClass(off,  'device-off');
             markup = '';
           }
 
           else if((device.state === 'off') && (!Switchboard.hasClass(off, 'device-off'))) {
-            Switchboard.addClass(off, 'device-off');
+            Switchboard.addClass(off,     'device-off');
             Switchboard.removeClass(cool, 'device-active');
             Switchboard.removeClass(heat, 'device-active');
             markup = '';
@@ -152,15 +166,15 @@
       }
 
       if(thermostatMarkup) {
-        thermostatMarkup = templateGroup.replace('{{SUB_DEVICE_LIST}}', thermostatMarkup);
+        thermostatMarkup = templateGroup.replace('{{SUB_DEVICE_LIST}}',     thermostatMarkup);
         thermostatMarkup = thermostatMarkup.replace('{{SUB_DEVICE_CLASS}}', ' control-device-status');
-        thermostatMarkup = thermostatMarkup.replace('{{SUB_DEVICE_NAME}}', 'Thermostat');
+        thermostatMarkup = thermostatMarkup.replace('{{SUB_DEVICE_NAME}}',  translate('THERMOSTAT'));
       }
 
       if(protectMarkup) {
-        protectMarkup = templateGroup.replace('{{SUB_DEVICE_LIST}}', protectMarkup);
+        protectMarkup = templateGroup.replace('{{SUB_DEVICE_LIST}}',  protectMarkup);
         protectMarkup = protectMarkup.replace('{{SUB_DEVICE_CLASS}}', ' text-device-status');
-        protectMarkup = protectMarkup.replace('{{SUB_DEVICE_NAME}}', 'Protect');
+        protectMarkup = protectMarkup.replace('{{SUB_DEVICE_NAME}}',  translate('PROTECT'));
       }
     }
 
