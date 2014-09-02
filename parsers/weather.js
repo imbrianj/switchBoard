@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global module, console */
+/*global module, console, require */
 
 /**
  * Copyright (c) 2014 brian@bevey.org
@@ -26,11 +26,27 @@
 (function(exports){
   'use strict';
 
-  exports.weather = function (deviceId, markup, state, value, fragments) {
+  exports.weather = function (deviceId, markup, state, value, fragments, language) {
     var template   = fragments.forecast,
         i          = 0,
         tempMarkup = '',
+        translate,
         translateCode;
+
+    translate  = function(message) {
+      var util;
+
+      if(typeof Switchboard === 'object') {
+        message = Switchboard.util.translate(message, 'weather');
+      }
+
+      else {
+        util    = require(__dirname + '/../lib/sharedUtil').util;
+        message = util.translate(message, 'weather', language);
+      }
+
+      return message;
+    };
 
     // https://developer.yahoo.com/weather/#codes
     translateCode = function(code) {
@@ -123,7 +139,7 @@
 
     if((value) && (value.code)) {
       markup = markup.replace('{{WEATHER_ICON}}', translateCode(value.code));
-      markup = markup.replace('{{WEATHER_CURRENT}}', value.city + ' Current Weather: ' + value.temp + '&deg; ' + value.text);
+      markup = markup.replace('{{WEATHER_CURRENT}}', value.city + ' ' + translate('CURRENT') + ': ' + value.temp + '&deg; ' + value.text);
 
       for(i in value.forecast) {
         tempMarkup = tempMarkup + template.split('{{WEATHER_ICON}}').join(translateCode(value.forecast[i].code));
@@ -135,7 +151,7 @@
     }
 
     else {
-      markup     = markup.replace('{{WEATHER_CURRENT}}', 'Weather data unavailable');
+      markup     = markup.replace('{{WEATHER_CURRENT}}', translate('UNAVAILABLE'));
       tempMarkup = value;
     }
 

@@ -336,14 +336,14 @@ header ul li a {
 }
 
 header #indicator {
-	border-radius: .5em;
-	height: 1em;
+	border-radius: 50%;
+	height: 1.2em;
 	overflow: hidden;
 	position: absolute;
 	right: 1em;
 	text-indent: -999px;
 	top: 1em;
-	width: 1em;
+	width: 1.2em;
 }
 
 header .disconnected {
