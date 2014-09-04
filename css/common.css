@@ -365,11 +365,14 @@ section {
 }
 
 section h1 {
-	display: none;
+	height: 0;
+	overflow: hidden;
+	text-indent: -999px;
 }
 
 section .text-block h1 {
-	display: block;
+	height: auto;
+	text-indent: 0;
 }
 
 .device-off {
