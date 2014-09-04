@@ -1,5 +1,5 @@
 
-      <section id="{{DEVICE_ID}}" class="{{DEVICE_TYPE}}{{DEVICE_SELECTED}}">
+      <section id="{{DEVICE_ID}}" class="{{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
         <h1>{{i18n_TRAVIS}}</h1>
         <div class="text-block">
           <ul>

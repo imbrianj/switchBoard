@@ -33,14 +33,14 @@ module.exports = (function () {
    * @requires xml2js, http, fs, request, path
    */
   return {
-    version : 20140824,
+    version : 20140903,
 
     inputs  : ['command', 'text', 'list', 'launch'],
 
     /**
      * Whitelist of available key codes to use.
      */
-    keymap  : ['HOME', 'Rev', 'Fwd', 'Play', 'Select', 'Left', 'Right', 'Down', 'Up', 'Back', 'InstantReplay', 'Info', 'Backspace', 'Search', 'Enter'],
+    keymap  : ['HOME', 'REV', 'FWD', 'PLAY', 'SELECT', 'LEFT', 'RIGHT', 'DOWN', 'UP', 'BACK', 'INSTANTREPLAY', 'INFO', 'BACKSPACE', 'SEARCH', 'ENTER'],
 
     /**
      * Map inputted commands to the values the device or API is expecting.

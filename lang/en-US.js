@@ -46,6 +46,7 @@ module.exports = (function () {
           DISCONNECTED : "Disconnected"
         },
         common : {
+          ACTIVE         : "Active",
           BACK           : "Back",
           BLUE           : "Blue",
           CANCEL         : "Cancel",
@@ -59,10 +60,13 @@ module.exports = (function () {
           GREEN          : "Green",
           HDMI           : "HDMI",
           HOME           : "Home",
+          INACTIVE       : "Inactive",
           LEFT           : "Left",
           MENU           : "Menu",
           MUTE           : "Mute",
+          OFF            : "Off",
           OK             : "OK",
+          ON             : "On",
           PAUSE          : "Pause",
           PLAY           : "Play",
           POWER          : "Power",

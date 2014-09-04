@@ -289,7 +289,7 @@ module.exports = (function () {
         }
 
         else {
-          callback('err');
+          callback(err);
         }
       };
 
