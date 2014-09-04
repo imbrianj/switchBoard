@@ -24,22 +24,26 @@
  */
 
 /**
- * @author andres.narva@gmail.com]
- * @fileoverview Spanish translation file created by an americanized Colombian. Please feel free to modify this file if you feel you're more Colombian than I am, or copy over to a new {lang}-{region}.js file and modify to make terms more familiar to your locale, then submit as a pull request.
- * @note The en-US file is used as the default language in the case that a
- *       given string is not available.
+ * @author andres.narva@gmail.com
+ * @fileoverview Spanish translation file created by an americanized Colombian.
+ *               Please feel free to modify this file if you feel you're more
+ *               Colombian than I am, or copy over to a new {lang}-{region}.js
+ *               file and modify to make terms more familiar to your locale,
+ *               then submit as a pull request.
+ * @note The en file is used as the default language in the case that a given
+ *       string is not available.
  */
 
 module.exports = (function () {
   'use strict';
 
   return {
-    version : 20140829,
+    version : 20140904,
 
     strings : function () {
       return {
         container : {
-          LANGUAGE     : "en-US",
+          LANGUAGE     : "es-CO",
           APPNAME      : "SwitchBoard",
           CONNECTED    : "Conectado",
           CONNECTING   : "Conectándonos",
@@ -119,7 +123,7 @@ module.exports = (function () {
           BEDROOM            : "Cuarto",
           CO                 : "CO",
           CO_DETECTED        : "¡{{LABEL}} detección de CO!",
-          COOL               : "Fresco",	
+          COOL               : "Fresco",
           DEN                : "Sala de estudio",
           DINING_ROOM        : "Sala de Comedor",
           DOWNSTAIRS         : "Piso de Abajo",

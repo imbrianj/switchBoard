@@ -216,6 +216,7 @@ module.exports = (function () {
             auth.token  = response.access_token;
             auth.userId = parseInt(response.userid, 10);
             auth.expire = new Date(response.expires_in).getTime();
+            controller.config.auth = auth;
 
             cache = fs.createWriteStream(__dirname + '/../tmp/nestAuth.json');
             cache.once('open', function() {
@@ -476,7 +477,7 @@ module.exports = (function () {
       nest.username  = config.device.username || '';
       nest.password  = config.device.password || '';
       nest.auth      = config.device.auth     || {};
-      nest.language  = config.language        || config.config.language || 'en-US';
+      nest.language  = config.language        || 'en';
 
       if((nest.command) || (nest.subdevice)) {
         nest = this.getDevicePath(nest);
@@ -500,7 +501,11 @@ module.exports = (function () {
             var deviceState = require(__dirname + '/../lib/deviceState'),
                 nestData    = {};
 
-            if(dataReply) {
+            if(dataReply.indexOf('<html>redirect to') === 0) {
+              nest.callback('API redirected');
+            }
+
+            else if(dataReply) {
               nestData = JSON.parse(dataReply);
 
               nest.callback(null, nestData);

@@ -35,9 +35,9 @@ exports.translateTest = {
     var translate = require('../../../lib/translate'),
         message   = 'This is {{FOO}} an {{i18n_OK}} {{i18n_POWER}} {{i18n_PLAY}} for {{i18n_PROTECT}} against {{i18n_SMOKE}}';
 
-    test.strictEqual(translate.translate(message, 'nest', 'en-US'),  'This is {{FOO}} an OK Power Play for Protect against Smoke', 'Translate works for both common and device specific.');
+    test.strictEqual(translate.translate(message, 'nest', 'en'),     'This is {{FOO}} an OK Power Play for Protect against Smoke', 'Translate works for both common and device specific.');
     test.strictEqual(translate.translate(message, 'nest', 'en-FOO'), 'This is {{FOO}} an OK Power Play for Protect against Smoke', 'Translate shouldn\'t die with a bad language sent.');
-    test.strictEqual(translate.translate('',      'nest', 'en-US'),  '',                                                           'Translate shouldn\'t die with a bad string sent.');
+    test.strictEqual(translate.translate('',      'nest', 'en'),     '',                                                           'Translate shouldn\'t die with a bad string sent.');
 
     test.done();
   }

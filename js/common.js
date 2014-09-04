@@ -500,9 +500,10 @@ Switchboard = (function () {
     *  If a global function of "init" is available, it will also be executed.
     */
     init : function () {
-      var header     = Switchboard.getByTag('header')[0],
-          body       = Switchboard.getByTag('main')[0],
-          textInputs = Switchboard.getByClass('text-form', body, 'form'),
+      var SB         = Switchboard,
+          header     = SB.getByTag('header')[0],
+          body       = SB.getByTag('main')[0],
+          textInputs = SB.getByClass('text-form', body, 'form'),
           lazyLoad,
           lazyUnLoad,
           templates,
@@ -514,15 +515,15 @@ Switchboard = (function () {
           socket,
           i;
 
-      Switchboard.strings = { ACTIVE       : body.dataset.stringActive,
-                              INACTIVE     : body.dataset.stringInactive,
-                              CONNECTED    : header.dataset.stringConnected,
-                              CONNECTING   : header.dataset.stringConnecting,
-                              DISCONNECTED : header.dataset.stringDisconnected };
+      SB.strings = { ACTIVE       : body.dataset.stringActive,
+                     INACTIVE     : body.dataset.stringInactive,
+                     CONNECTED    : header.dataset.stringConnected,
+                     CONNECTING   : header.dataset.stringConnecting,
+                     DISCONNECTED : header.dataset.stringDisconnected };
 
       updateTemplate = function(state) {
-        var node        = Switchboard.get(state.deviceId),
-            parser      = Switchboard.parsers[state.typeClass],
+        var node        = SB.get(state.deviceId),
+            parser      = SB.parsers[state.typeClass],
             value       = state.value,
             deviceState = state.state,
             deviceHeader,
@@ -532,15 +533,15 @@ Switchboard = (function () {
             oldMarkup,
             i;
 
-        Switchboard.state[state.deviceId] = state;
+        SB.state[state.deviceId] = state;
 
-        Switchboard.log(state.deviceId + ' updated');
+        SB.log(state.deviceId + ' updated');
 
         if(node) {
           markup       = templates[state.typeClass].markup;
-          selected     = Switchboard.hasClass(node, 'selected') ? ' selected' : '';
+          selected     = SB.hasClass(node, 'selected') ? ' selected' : '';
           oldMarkup    = node.cloneNode(true);
-          deviceHeader = Switchboard.getByTag('h1', oldMarkup)[0];
+          deviceHeader = SB.getByTag('h1', oldMarkup)[0];
           oldMarkup.removeChild(deviceHeader);
           oldMarkup    = oldMarkup.innerHTML;
 
@@ -549,22 +550,22 @@ Switchboard = (function () {
           }
 
           if(deviceState === 'ok') {
-            markup = markup.split('{{DEVICE_ACTIVE}}').join(Switchboard.strings.ACTIVE);
+            markup = markup.split('{{DEVICE_ACTIVE}}').join(SB.strings.ACTIVE);
 
-            if(Switchboard.hasClass(node, 'device-off')) {
-              Switchboard.removeClass(node, 'device-off');
-              Switchboard.addClass(node, 'device-on');
-              Switchboard.putText(Switchboard.getByTag('em', Switchboard.getByTag('h1', node)[0])[0], Switchboard.strings.ACTIVE);
+            if(SB.hasClass(node, 'device-off')) {
+              SB.removeClass(node, 'device-off');
+              SB.addClass(node, 'device-on');
+              SB.putText(SB.getByTag('em', SB.getByTag('h1', node)[0])[0], SB.strings.ACTIVE);
             }
           }
 
           else {
-            markup = markup.split('{{DEVICE_ACTIVE}}').join(Switchboard.strings.INACTIVE);
+            markup = markup.split('{{DEVICE_ACTIVE}}').join(SB.strings.INACTIVE);
 
-            if(Switchboard.hasClass(node, 'device-on')) {
-              Switchboard.removeClass(node, 'device-on');
-              Switchboard.addClass(node, 'device-off');
-              Switchboard.putText(Switchboard.getByTag('em', Switchboard.getByTag('h1', node)[0])[0], Switchboard.strings.INACTIVE);
+            if(SB.hasClass(node, 'device-on')) {
+              SB.removeClass(node, 'device-on');
+              SB.addClass(node, 'device-off');
+              SB.putText(SB.getByTag('em', SB.getByTag('h1', node)[0])[0], SB.strings.INACTIVE);
             }
           }
 
@@ -592,8 +593,8 @@ Switchboard = (function () {
 
           if(markup) {
             innerMarkup.innerHTML = markup;
-            innerMarkup = Switchboard.getByTag('section', innerMarkup)[0];
-            innerMarkup.removeChild(Switchboard.getByTag('h1', innerMarkup)[0]);
+            innerMarkup = SB.getByTag('section', innerMarkup)[0];
+            innerMarkup.removeChild(SB.getByTag('h1', innerMarkup)[0]);
 
             if(innerMarkup.innerHTML !== oldMarkup) {
               node.outerHTML = markup;
@@ -605,11 +606,11 @@ Switchboard = (function () {
       buildIndicator = function (type) {
         var reconnect = true;
 
-        if(!Switchboard.get('indicator')) {
+        if(!SB.get('indicator')) {
           indicator = document.createElement('span');
           indicator.id = 'indicator';
-          Switchboard.addClass(indicator, 'connecting');
-          Switchboard.putText(indicator, Switchboard.strings.CONNECTING);
+          SB.addClass(indicator, 'connecting');
+          SB.putText(indicator, SB.strings.CONNECTING);
 
           header.appendChild(indicator);
 
@@ -622,30 +623,30 @@ Switchboard = (function () {
       socketConnect = function () {
         var reconnect = buildIndicator();
 
-        Switchboard.log('Connecting to WebSocket');
+        SB.log('Connecting to WebSocket');
 
         socket = new WebSocket('ws://' + window.location.host, 'echo-protocol');
 
-        Switchboard.event.add(socket, 'open', function(e) {
+        SB.event.add(socket, 'open', function(e) {
           indicator.className = 'connected';
-          Switchboard.putText(indicator, Switchboard.strings.CONNECTED);
+          SB.putText(indicator, SB.strings.CONNECTED);
 
           if(reconnect) {
             socket.send('fetch state');
 
-            Switchboard.log('Reconnected to WebSocket');
+            SB.log('Reconnected to WebSocket');
           }
         });
 
-        Switchboard.event.add(socket, 'close', function(e) {
+        SB.event.add(socket, 'close', function(e) {
           indicator.className = 'disconnected';
-          Switchboard.putText(indicator, Switchboard.strings.DISCONNECTED);
+          SB.putText(indicator, SB.strings.DISCONNECTED);
 
-          Switchboard.log('Disconnected from WebSocket');
+          SB.log('Disconnected from WebSocket');
         });
 
-        Switchboard.event.add(socket, 'message', function(e) {
-          var message = Switchboard.decode(e.data),
+        SB.event.add(socket, 'message', function(e) {
+          var message = SB.decode(e.data),
               device  = {},
               notification;
 
@@ -657,7 +658,7 @@ Switchboard = (function () {
                 notification.close();
               }, 10000);
 
-              Switchboard.event.add(notification, 'click', function(e) {
+              SB.event.add(notification, 'click', function(e) {
                 var newContent,
                     selectNav,
                     selectContent;
@@ -665,17 +666,17 @@ Switchboard = (function () {
                 window.focus();
 
                 if(message.deviceId) {
-                  newContent    = Switchboard.get(message.deviceId);
-                  selectNav     = Switchboard.getByClass('selected', header, 'li')[0];
-                  selectContent = Switchboard.getByClass('selected', body,   'section')[0];
+                  newContent    = SB.get(message.deviceId);
+                  selectNav     = SB.getByClass('selected', header, 'li')[0];
+                  selectContent = SB.getByClass('selected', body,   'section')[0];
 
-                  Switchboard.removeClass(selectNav,     'selected');
-                  Switchboard.removeClass(selectContent, 'selected');
+                  SB.removeClass(selectNav,     'selected');
+                  SB.removeClass(selectContent, 'selected');
 
                   lazyLoad(message.deviceId);
 
-                  Switchboard.addClass(Switchboard.getByClass(message.deviceId, header, 'li')[0], 'selected');
-                  Switchboard.addClass(newContent, 'selected');
+                  SB.addClass(SB.getByClass(message.deviceId, header, 'li')[0], 'selected');
+                  SB.addClass(newContent, 'selected');
 
                   lazyUnLoad(selectContent);
                 }
@@ -692,7 +693,7 @@ Switchboard = (function () {
 
             // State objects have specific deviceIds associated.
             if((message[device]) && (message[device].deviceId)) {
-              Switchboard.log('Received latest State');
+              SB.log('Received latest State');
 
               for(device in message) {
                 updateTemplate(message[device]);
@@ -710,7 +711,7 @@ Switchboard = (function () {
       checkConnection = function () {
         // If you have no connection indicator - or if it doesn't say we're
         // connected, we should reconnect and grab the latest State.
-        var state = indicator && Switchboard.hasClass(indicator, 'connected');
+        var state = indicator && SB.hasClass(indicator, 'connected');
 
         if(!state) {
           socketConnect();
@@ -726,7 +727,7 @@ Switchboard = (function () {
 
       /* Otherwise, we'll poll for updates */
       else {
-        Switchboard.log('WebSockets not supported - using polling');
+        SB.log('WebSockets not supported - using polling');
 
         buildIndicator();
 
@@ -739,11 +740,11 @@ Switchboard = (function () {
             param  : 'ts=' + new Date().getTime(),
             method : 'GET',
             onComplete : function () {
-              templates = Switchboard.decode(ajaxRequest.response);
+              templates = SB.decode(ajaxRequest.response);
             }
           };
 
-          Switchboard.ajax.request(ajaxRequest);
+          SB.ajax.request(ajaxRequest);
 
           // Set up our poller to continually grab device State.
           setInterval(function() {
@@ -752,16 +753,16 @@ Switchboard = (function () {
               param  : 'ts=' + new Date().getTime(),
               method : 'GET',
               onComplete : function () {
-                var state = Switchboard.decode(pollRequest.response),
+                var state = SB.decode(pollRequest.response),
                     device;
 
                 if(state) {
                   indicator.className = 'connected';
-                  Switchboard.putText(indicator, Switchboard.strings.CONNECTED);
+                  SB.putText(indicator, SB.strings.CONNECTED);
 
                   setTimeout(function() {
                     indicator.className = 'connecting';
-                    Switchboard.putText(indicator, Switchboard.strings.CONNECTIG);
+                    SB.putText(indicator, SB.strings.CONNECTIG);
                   }, 1000);
 
                   for(device in state) {
@@ -771,12 +772,12 @@ Switchboard = (function () {
 
                 else {
                   indicator.className = 'disconnected';
-                  Switchboard.putText(indicator, Switchboard.strings.DISCONNECTED);
+                  SB.putText(indicator, SB.strings.DISCONNECTED);
                 }
               }
             };
 
-            Switchboard.ajax.request(pollRequest);
+            SB.ajax.request(pollRequest);
           }, 10000);
         })();
       }
@@ -787,10 +788,10 @@ Switchboard = (function () {
             images,
             i = 0;
 
-        if(Switchboard.get(id)) {
-          container = Switchboard.get(id);
+        if(SB.get(id)) {
+          container = SB.get(id);
 
-          images = Switchboard.getByTag('img', container);
+          images = SB.getByTag('img', container);
 
           for(i = 0; i < images.length; i += 1) {
             if((images[i].getAttribute('data-src')) && (!images[i].src)) {
@@ -807,10 +808,10 @@ Switchboard = (function () {
             i = 0;
 
         if(elm) {
-          images = Switchboard.getByTag('img', elm);
+          images = SB.getByTag('img', elm);
 
           for(i = 0; i < images.length; i += 1) {
-            if((images[i].getAttribute('src')) && (Switchboard.hasClass(images[i], 'streaming'))) {
+            if((images[i].getAttribute('src')) && (SB.hasClass(images[i], 'streaming'))) {
               images[i].setAttribute('data-src', images[i].src);
               images[i].removeAttribute('src');
             }
@@ -821,24 +822,24 @@ Switchboard = (function () {
       lazyLoad(document.body.className);
 
       /* Clicking of navigation items */
-      Switchboard.event.add(header, 'click', function(e) {
-        var elm           = Switchboard.getTarget(e).parentNode,
+      SB.event.add(header, 'click', function(e) {
+        var elm           = SB.getTarget(e).parentNode,
             tagName       = elm.tagName.toLowerCase(),
-            newContent    = Switchboard.get(elm.className),
-            selectNav     = Switchboard.getByClass('selected', header, 'li')[0],
-            selectContent = Switchboard.getByClass('selected', body,   'section')[0];
+            newContent    = SB.get(elm.className),
+            selectNav     = SB.getByClass('selected', header, 'li')[0],
+            selectContent = SB.getByClass('selected', body,   'section')[0];
 
         if(tagName === 'li') {
           e.preventDefault();
 
           if(elm !== selectNav) {
-            Switchboard.removeClass(selectNav,     'selected');
-            Switchboard.removeClass(selectContent, 'selected');
+            SB.removeClass(selectNav,     'selected');
+            SB.removeClass(selectContent, 'selected');
 
             lazyLoad(elm.className);
 
-            Switchboard.addClass(elm,        'selected');
-            Switchboard.addClass(newContent, 'selected');
+            SB.addClass(elm,        'selected');
+            SB.addClass(newContent, 'selected');
 
             lazyUnLoad(selectContent);
           }
@@ -854,16 +855,16 @@ Switchboard = (function () {
           }
         }
 
-        else if(Switchboard.getTarget(e).id === 'indicator') {
-          if(Switchboard.hasClass(Switchboard.getTarget(e), 'disconnected')) {
+        else if(SB.getTarget(e).id === 'indicator') {
+          if(SB.hasClass(Switchboard.getTarget(e), 'disconnected')) {
             socketConnect();
           }
         }
       });
 
       /* Typical command executions */
-      Switchboard.event.add(body, 'click', function(e) {
-        var elm     = Switchboard.getTarget(e),
+      SB.event.add(body, 'click', function(e) {
+        var elm     = SB.getTarget(e),
             tagName = elm.tagName.toLowerCase(),
             command = '',
             ts      = new Date().getTime(),
@@ -890,18 +891,18 @@ Switchboard = (function () {
               param  : 'ts=' + ts,
               method : 'GET',
               onComplete : function () {
-                Switchboard.log(ajaxRequest.response);
+                SB.log(ajaxRequest.response);
               }
             };
 
-            Switchboard.ajax.request(ajaxRequest);
+            SB.ajax.request(ajaxRequest);
           }
         }
       });
 
       /* Form submissions - such as text */
-      Switchboard.event.add(body, 'submit', function(e) {
-        var elm  = Switchboard.getTarget(e),
+      SB.event.add(body, 'submit', function(e) {
+        var elm  = SB.getTarget(e),
             ts   = new Date().getTime(),
             text = '',
             type = '',
@@ -910,9 +911,9 @@ Switchboard = (function () {
 
         e.preventDefault();
 
-        text   = Switchboard.getByClass('text-input', elm, 'input')[0].value;
-        device = Switchboard.getByClass('text-input', elm, 'input')[0].name;
-        type   = Switchboard.getByClass('input-type', elm, 'input')[0].value;
+        text   = SB.getByClass('text-input', elm, 'input')[0].value;
+        device = SB.getByClass('text-input', elm, 'input')[0].name;
+        type   = SB.getByClass('input-type', elm, 'input')[0].value;
 
         if(socket) {
           if(checkConnection()) {
@@ -926,22 +927,18 @@ Switchboard = (function () {
             param      : device + '=' + type + '-' + text,
             method     : 'POST',
             onComplete : function () {
-              Switchboard.log(ajaxRequest.response);
+              SB.log(ajaxRequest.response);
             }
           };
 
-          Switchboard.ajax.request(ajaxRequest);
+          SB.ajax.request(ajaxRequest);
         }
       });
 
-      Switchboard.addClass(document.body, 'rich');
-
-      if (typeof(init) === 'function') {
-        init();
-      }
+      SB.addClass(document.body, 'rich');
     }
   };
-} ());
+}());
 
 if(document.addEventListener) {
   document.addEventListener('DOMContentLoaded', Switchboard.init, false);

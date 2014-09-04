@@ -7,7 +7,7 @@ exports.config = {
     serverIp     : '192.168.1.145',
     serverMac    : '00:00:00:00:00:00',
     theme        : 'dark',
-    language     : 'en-US',
+    language     : 'en',
     default      : 'welcome',
     macroPause   : 1000,
     pollMinutes  : 15,

@@ -26,20 +26,20 @@
 /**
  * @author brian@bevey.org
  * @fileoverview English translation file.
- * @note The en-US file is used as the default language in the case that a
- *       given string is not available.
+ * @note The en file is used as the default language in the case that a given
+ *       string is not available.
  */
 
 module.exports = (function () {
   'use strict';
 
   return {
-    version : 20140829,
+    version : 20140903,
 
     strings : function () {
       return {
         container : {
-          LANGUAGE     : "en-US",
+          LANGUAGE     : "en",
           APPNAME      : "SwitchBoard",
           CONNECTED    : "Connected",
           CONNECTING   : "Connecting",
