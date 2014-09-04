@@ -1,6 +1,6 @@
 
       <section id="{{DEVICE_ID}}" class="{{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
-        <h1>{{i18n_PUSHOVER}}</h1>
+        <h1>{{i18n_PUSHOVER}} <em>{{DEVICE_ACTIVE}}</em></h1>
         <div class="text">
           <form class="text-form" action="/" method="get">
             <fieldset>

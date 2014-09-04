@@ -1,6 +1,6 @@
 
       <section id="{{DEVICE_ID}}" class="{{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
-        <h1>{{i18n_SMARTTHINGS}}</h1>
+        <h1>{{i18n_SMARTTHINGS}} <em>{{DEVICE_ACTIVE}}</em></h1>
         <div class="installed">
           <ul class="sub-device-list">
             {{SMARTTHINGS_DYNAMIC}}

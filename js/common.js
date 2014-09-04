@@ -28,13 +28,15 @@ Switchboard = (function () {
   'use strict';
 
   return {
-    version : 20140829,
+    version : 20140903,
 
     state : {},
 
     parsers : {},
 
     templates : {},
+
+    strings : {},
 
     event : {
       list : [],
@@ -224,6 +226,27 @@ Switchboard = (function () {
       }
     },
 
+    /**
+     * Shortcut to document.getElementById
+     *
+     * @param {String} ID name to be searched for.
+     */
+    get : function (id) {
+      return document.getElementById(id);
+    },
+
+    /**
+     * Shortcut to document.getElementsByTagName
+     * @param {String} tagName Tag name to be searched for.
+     * @param {Object} parent Parent element to begin the search from.  If no
+     *                 element is specified, the document root will be used.
+     */
+    getByTag : function (tagName, parent) {
+      parent = parent || document;
+
+      return parent.getElementsByTagName(tagName);
+    },
+
    /**
     * Finds all elements with the given class name.  Optionally, a tag name can
     *  specified to further refine an element search.
@@ -237,7 +260,7 @@ Switchboard = (function () {
     *          criteria.
     * @note Uses native getElementsByClassName if available.
     */
-    getElementsByClassName : function (className, parent, tag) {
+    getByClass : function (className, parent, tag) {
       var elementsWithClass = [],
           children = [],
           i = 0,
@@ -268,7 +291,7 @@ Switchboard = (function () {
       }
 
       else {
-        children = parent.getElementsByTagName(tag);
+        children = Switchboard.getByTag(tag, parent);
 
         for (i in children) {
           if (Switchboard.hasClass(children[i], className)) {
@@ -477,12 +500,9 @@ Switchboard = (function () {
     *  If a global function of "init" is available, it will also be executed.
     */
     init : function () {
-      var header             = document.getElementsByTagName('header')[0],
-          body               = document.getElementsByTagName('main')[0],
-          textInputs         = Switchboard.getElementsByClassName('text-form', body, 'form'),
-          connectedString    = header.dataset.stringConnected,
-          connectingString   = header.dataset.stringConnecting,
-          disconnectedString = header.dataset.stringDisonnected,
+      var header     = Switchboard.getByTag('header')[0],
+          body       = Switchboard.getByTag('main')[0],
+          textInputs = Switchboard.getByClass('text-form', body, 'form'),
           lazyLoad,
           lazyUnLoad,
           templates,
@@ -494,11 +514,18 @@ Switchboard = (function () {
           socket,
           i;
 
+      Switchboard.strings = { ACTIVE       : body.dataset.stringActive,
+                              INACTIVE     : body.dataset.stringInactive,
+                              CONNECTED    : header.dataset.stringConnected,
+                              CONNECTING   : header.dataset.stringConnecting,
+                              DISCONNECTED : header.dataset.stringDisconnected };
+
       updateTemplate = function(state) {
-        var node        = document.getElementById(state.deviceId),
+        var node        = Switchboard.get(state.deviceId),
             parser      = Switchboard.parsers[state.typeClass],
             value       = state.value,
             deviceState = state.state,
+            deviceHeader,
             selected,
             markup,
             innerMarkup = document.createElement('div'),
@@ -510,22 +537,35 @@ Switchboard = (function () {
         Switchboard.log(state.deviceId + ' updated');
 
         if(node) {
-          markup    = templates[state.typeClass].markup;
-          selected  = Switchboard.hasClass(node, 'selected') ? ' selected' : '';
-          oldMarkup = node.innerHTML;
+          markup       = templates[state.typeClass].markup;
+          selected     = Switchboard.hasClass(node, 'selected') ? ' selected' : '';
+          oldMarkup    = node.cloneNode(true);
+          deviceHeader = Switchboard.getByTag('h1', oldMarkup)[0];
+          oldMarkup.removeChild(deviceHeader);
+          oldMarkup    = oldMarkup.innerHTML;
 
           if(parser) {
             markup = parser(state.deviceId, markup, deviceState, value, templates[state.typeClass].fragments);
           }
 
-          if((deviceState === 'ok') && (Switchboard.hasClass(node, 'device-off'))) {
-            Switchboard.removeClass(node, 'device-off');
-            Switchboard.addClass(node, 'device-on');
+          if(deviceState === 'ok') {
+            markup = markup.split('{{DEVICE_ACTIVE}}').join(Switchboard.strings.ACTIVE);
+
+            if(Switchboard.hasClass(node, 'device-off')) {
+              Switchboard.removeClass(node, 'device-off');
+              Switchboard.addClass(node, 'device-on');
+              Switchboard.putText(Switchboard.getByTag('em', Switchboard.getByTag('h1', node)[0])[0], Switchboard.strings.ACTIVE);
+            }
           }
 
-          else if((deviceState === 'err') && (Switchboard.hasClass(node, 'device-on'))) {
-            Switchboard.removeClass(node, 'device-on');
-            Switchboard.addClass(node, 'device-off');
+          else {
+            markup = markup.split('{{DEVICE_ACTIVE}}').join(Switchboard.strings.INACTIVE);
+
+            if(Switchboard.hasClass(node, 'device-on')) {
+              Switchboard.removeClass(node, 'device-on');
+              Switchboard.addClass(node, 'device-off');
+              Switchboard.putText(Switchboard.getByTag('em', Switchboard.getByTag('h1', node)[0])[0], Switchboard.strings.INACTIVE);
+            }
           }
 
           if(node && markup && state) {
@@ -552,7 +592,8 @@ Switchboard = (function () {
 
           if(markup) {
             innerMarkup.innerHTML = markup;
-            innerMarkup = innerMarkup.getElementsByTagName('section')[0];
+            innerMarkup = Switchboard.getByTag('section', innerMarkup)[0];
+            innerMarkup.removeChild(Switchboard.getByTag('h1', innerMarkup)[0]);
 
             if(innerMarkup.innerHTML !== oldMarkup) {
               node.outerHTML = markup;
@@ -564,11 +605,11 @@ Switchboard = (function () {
       buildIndicator = function (type) {
         var reconnect = true;
 
-        if(!document.getElementById('indicator')) {
+        if(!Switchboard.get('indicator')) {
           indicator = document.createElement('span');
           indicator.id = 'indicator';
           Switchboard.addClass(indicator, 'connecting');
-          Switchboard.putText(indicator, connectingString);
+          Switchboard.putText(indicator, Switchboard.strings.CONNECTING);
 
           header.appendChild(indicator);
 
@@ -587,7 +628,7 @@ Switchboard = (function () {
 
         Switchboard.event.add(socket, 'open', function(e) {
           indicator.className = 'connected';
-          Switchboard.putText(indicator, connectedString);
+          Switchboard.putText(indicator, Switchboard.strings.CONNECTED);
 
           if(reconnect) {
             socket.send('fetch state');
@@ -598,7 +639,7 @@ Switchboard = (function () {
 
         Switchboard.event.add(socket, 'close', function(e) {
           indicator.className = 'disconnected';
-          Switchboard.putText(indicator, disconnectedString);
+          Switchboard.putText(indicator, Switchboard.strings.DISCONNECTED);
 
           Switchboard.log('Disconnected from WebSocket');
         });
@@ -624,16 +665,16 @@ Switchboard = (function () {
                 window.focus();
 
                 if(message.deviceId) {
-                  newContent    = document.getElementById(message.deviceId);
-                  selectNav     = Switchboard.getElementsByClassName('selected', header, 'li')[0];
-                  selectContent = Switchboard.getElementsByClassName('selected', body,   'section')[0];
+                  newContent    = Switchboard.get(message.deviceId);
+                  selectNav     = Switchboard.getByClass('selected', header, 'li')[0];
+                  selectContent = Switchboard.getByClass('selected', body,   'section')[0];
 
                   Switchboard.removeClass(selectNav,     'selected');
                   Switchboard.removeClass(selectContent, 'selected');
 
                   lazyLoad(message.deviceId);
 
-                  Switchboard.addClass(Switchboard.getElementsByClassName(message.deviceId, header, 'li')[0], 'selected');
+                  Switchboard.addClass(Switchboard.getByClass(message.deviceId, header, 'li')[0], 'selected');
                   Switchboard.addClass(newContent, 'selected');
 
                   lazyUnLoad(selectContent);
@@ -716,11 +757,11 @@ Switchboard = (function () {
 
                 if(state) {
                   indicator.className = 'connected';
-                  Switchboard.putText(indicator, connectedString);
+                  Switchboard.putText(indicator, Switchboard.strings.CONNECTED);
 
                   setTimeout(function() {
                     indicator.className = 'connecting';
-                    Switchboard.putText(indicator, connectingString);
+                    Switchboard.putText(indicator, Switchboard.strings.CONNECTIG);
                   }, 1000);
 
                   for(device in state) {
@@ -730,7 +771,7 @@ Switchboard = (function () {
 
                 else {
                   indicator.className = 'disconnected';
-                  Switchboard.putText(indicator, disconnectedString);
+                  Switchboard.putText(indicator, Switchboard.strings.DISCONNECTED);
                 }
               }
             };
@@ -746,10 +787,10 @@ Switchboard = (function () {
             images,
             i = 0;
 
-        if(document.getElementById(id)) {
-          container = document.getElementById(id);
+        if(Switchboard.get(id)) {
+          container = Switchboard.get(id);
 
-          images = container.getElementsByTagName('img');
+          images = Switchboard.getByTag('img', container);
 
           for(i = 0; i < images.length; i += 1) {
             if((images[i].getAttribute('data-src')) && (!images[i].src)) {
@@ -766,7 +807,7 @@ Switchboard = (function () {
             i = 0;
 
         if(elm) {
-          images = elm.getElementsByTagName('img');
+          images = Switchboard.getByTag('img', elm);
 
           for(i = 0; i < images.length; i += 1) {
             if((images[i].getAttribute('src')) && (Switchboard.hasClass(images[i], 'streaming'))) {
@@ -783,9 +824,9 @@ Switchboard = (function () {
       Switchboard.event.add(header, 'click', function(e) {
         var elm           = Switchboard.getTarget(e).parentNode,
             tagName       = elm.tagName.toLowerCase(),
-            newContent    = document.getElementById(elm.className),
-            selectNav     = Switchboard.getElementsByClassName('selected', header, 'li')[0],
-            selectContent = Switchboard.getElementsByClassName('selected', body,   'section')[0];
+            newContent    = Switchboard.get(elm.className),
+            selectNav     = Switchboard.getByClass('selected', header, 'li')[0],
+            selectContent = Switchboard.getByClass('selected', body,   'section')[0];
 
         if(tagName === 'li') {
           e.preventDefault();
@@ -869,9 +910,9 @@ Switchboard = (function () {
 
         e.preventDefault();
 
-        text   = Switchboard.getElementsByClassName('text-input', elm, 'input')[0].value;
-        device = Switchboard.getElementsByClassName('text-input', elm, 'input')[0].name;
-        type   = Switchboard.getElementsByClassName('input-type', elm, 'input')[0].value;
+        text   = Switchboard.getByClass('text-input', elm, 'input')[0].value;
+        device = Switchboard.getByClass('text-input', elm, 'input')[0].name;
+        type   = Switchboard.getByClass('input-type', elm, 'input')[0].value;
 
         if(socket) {
           if(checkConnection()) {

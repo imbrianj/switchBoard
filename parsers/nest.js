@@ -72,9 +72,9 @@
         device = value.thermostat[i];
 
         if(typeof Switchboard === 'object') {
-          off  = Switchboard.getElementsByClassName(encodeName(device.label), document.getElementById(deviceId), 'li')[0];
-          heat = Switchboard.getElementsByClassName('fa-sun-o',    off, 'a')[0];
-          cool = Switchboard.getElementsByClassName('fa-asterisk', off, 'a')[0];
+          off  = Switchboard.getByClass(encodeName(device.label), Switchboard.get(deviceId), 'li')[0];
+          heat = Switchboard.getByClass('fa-sun-o',    off, 'a')[0];
+          cool = Switchboard.getByClass('fa-asterisk', off, 'a')[0];
 
           if((device.state === 'cool') && (!Switchboard.hasClass(cool, 'device-active'))) {
             Switchboard.addClass(cool,    'device-active');

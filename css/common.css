@@ -60,7 +60,7 @@ legend {
 }
 
 :focus {
-	outline: #000 dotted thin;
+	outline: #0078E7 dotted thin;
 }
 
 a,
@@ -302,7 +302,7 @@ form legend {
 header {
 	border-bottom: 1px solid #DDD;
 	clear: both;
-	padding: 1em 1em .5em 1em;
+	padding: 1em 1em 1px 1em;
 }
 
 header h1 {
@@ -879,6 +879,10 @@ header .selected a {
 		background: #000;
 		color: #444;
 	}
+}
+
+.theme-dark header {
+	padding-bottom: .5em;
 }
 
 .theme-dark header h1 a,

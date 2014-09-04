@@ -1,6 +1,6 @@
 
       <section id="{{DEVICE_ID}}" class="{{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
-        <h1>{{i18n_PANASONIC}}</h1>
+        <h1>{{i18n_PANASONIC}} <em>{{DEVICE_ACTIVE}}</em></h1>
         <div class="control-block">
           <div class="volume">
             <a href="/?{{DEVICE_ID}}=VolUp" class="fa fa-volume-up"><span>{{i18n_VOLUME_UP}}</span></a>

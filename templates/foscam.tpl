@@ -1,6 +1,6 @@
 
       <section id="{{DEVICE_ID}}" class="{{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
-        <h1>{{i18n_FOSCAM}}</h1>
+        <h1>{{i18n_FOSCAM}} <em>{{DEVICE_ACTIVE}}</em></h1>
         <div class="control-block">
           <div class="presets">
             <ol>

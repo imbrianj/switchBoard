@@ -44,8 +44,8 @@
     markup = markup.replace('{{DEVICE_STATE_OFF}}', stateOff);
 
     if(typeof Switchboard === 'object') {
-      arm    = Switchboard.getElementsByClassName('fa-lock',   document.getElementById(deviceId), 'a')[0];
-      disarm = Switchboard.getElementsByClassName('fa-unlock', document.getElementById(deviceId), 'a')[0];
+      arm    = Switchboard.getByClass('fa-lock',   Switchboard.get(deviceId), 'a')[0];
+      disarm = Switchboard.getByClass('fa-unlock', Switchboard.get(deviceId), 'a')[0];
 
       if((value === 'on') && (!Switchboard.hasClass(arm, 'device-on'))) {
         Switchboard.addClass(arm, 'device-active');
@@ -60,7 +60,7 @@
       }
 
       else {
-        if(Switchboard.hasClass(Switchboard.getElementsByClassName('selected', null, 'li')[0], deviceId)) {
+        if(Switchboard.hasClass(Switchboard.getByClass('selected', null, 'li')[0], deviceId)) {
           markup = markup.split('{{LAZY_LOAD_IMAGE}}').join('src');
         }
 
