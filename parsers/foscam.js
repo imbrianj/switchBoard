@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global module, console */
+/*global module, console, require */
 
 /**
  * Copyright (c) 2014 brian@bevey.org
@@ -26,36 +26,59 @@
 (function(exports){
   'use strict';
 
-  exports.foscam = function (deviceId, markup, state, value) {
-    var stateOn  = '',
-        stateOff = '',
+  exports.foscam = function (deviceId, markup, state, value, language) {
+    var stateOn   = '',
+        stateOff  = '',
+        status    = '',
         arm,
-        disarm;
+        disarm,
+        translate = function(message) {
+          var util;
+
+          if(typeof Switchboard === 'object') {
+            message = Switchboard.util.translate(message, 'foscam');
+          }
+
+          else {
+            util    = require(__dirname + '/../lib/sharedUtil').util;
+            message = util.translate(message, 'foscam', language);
+          }
+
+          return message;
+        };
 
     if(value === 'on') {
       stateOn = ' device-active';
+      status  = translate('CAMERA_ARMED');
     }
 
     else if(value === 'off') {
       stateOff = ' device-active';
+      status   = translate('CAMERA_DISARMED');
     }
 
     markup = markup.replace('{{DEVICE_STATE_ON}}',  stateOn);
     markup = markup.replace('{{DEVICE_STATE_OFF}}', stateOff);
+    markup = markup.replace('{{ARMED_STATUS}}',     status);
+    markup = markup.replace('{{DISARMED_STATUS}}',  status);
 
     if(typeof Switchboard === 'object') {
       arm    = Switchboard.getByClass('fa-lock',   Switchboard.get(deviceId), 'a')[0];
       disarm = Switchboard.getByClass('fa-unlock', Switchboard.get(deviceId), 'a')[0];
 
       if((value === 'on') && (!Switchboard.hasClass(arm, 'device-on'))) {
-        Switchboard.addClass(arm, 'device-active');
+        Switchboard.addClass(arm,       'device-active');
         Switchboard.removeClass(disarm, 'device-active');
+        Switchboard.putText(Switchboard.getByTag('em', arm)[0],    status);
+        Switchboard.putText(Switchboard.getByTag('em', disarm)[0], status);
         markup = '';
       }
 
       else if((value === 'off') && (!Switchboard.hasClass(disarm, 'device-on'))) {
         Switchboard.addClass(disarm, 'device-active');
         Switchboard.removeClass(arm, 'device-active');
+        Switchboard.putText(Switchboard.getByTag('em', arm)[0],    status);
+        Switchboard.putText(Switchboard.getByTag('em', disarm)[0], status);
         markup = '';
       }
 

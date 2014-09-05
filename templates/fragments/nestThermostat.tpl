@@ -1,7 +1,7 @@
 
                 <li class="thermostat subdevice {{SUB_DEVICE_ID}}{{DEVICE_STATE_OFF}}">
                   <dl>
-                    <dt>{{SUB_DEVICE_NAME}}</dt>
+                    <dt>{{SUB_DEVICE_NAME}} <em>{{SUB_DEVICE_STATUS}}</em></dt>
                     <dd class="control-block full icon">
                       <div class="mode">
                         <a href="/?{{DEVICE_ID}}=subdevice-mode-{{SUB_DEVICE_NAME}}-heat" class="fa fa-sun-o{{DEVICE_STATE_HEAT}}"><span>{{i18n_HEAT}}</span></a>

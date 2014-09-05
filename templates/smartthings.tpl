@@ -6,9 +6,9 @@
             {{SMARTTHINGS_DYNAMIC}}
           </ul>
           <ul class="sub-device-list">
-            <li><a href="/?smartthings=subdevice-mode-Home" class="fa fa-home{{DEVICE_STATE_HOME}}"><span>{{i18n_HOME}}</span></a></li>
-            <li><a href="/?smartthings=subdevice-mode-Away" class="fa fa-compass{{DEVICE_STATE_AWAY}}"><span>{{i18n_AWAY}}</span></a></li>
-            <li><a href="/?smartthings=subdevice-mode-Night" class="fa fa-moon-o{{DEVICE_STATE_NIGHT}}"><span>{{i18n_NIGHT}}</span></a></li>
+            <li><a href="/?smartthings=subdevice-mode-Home" class="fa fa-home{{DEVICE_STATE_HOME}}"><span>{{i18n_HOME}}</span> <em>{{HOME_STATUS}}</em></a></li>
+            <li><a href="/?smartthings=subdevice-mode-Away" class="fa fa-compass{{DEVICE_STATE_AWAY}}"><span>{{i18n_AWAY}}</span> <em>{{AWAY_STATUS}}</em></a></li>
+            <li><a href="/?smartthings=subdevice-mode-Night" class="fa fa-moon-o{{DEVICE_STATE_NIGHT}}"><span>{{i18n_NIGHT}}</span> <em>{{NIGHT_STATUS}}</em></a></li>
           </ul>
         </div>
       </section>

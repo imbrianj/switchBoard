@@ -80,6 +80,7 @@
             Switchboard.addClass(cool,    'device-active');
             Switchboard.removeClass(heat, 'device-active');
             Switchboard.removeClass(off,  'device-off');
+            Switchboard.putText(Switchboard.getByTag('em', off)[0], translate('COOL'));
             markup = '';
           }
 
@@ -87,6 +88,7 @@
             Switchboard.addClass(heat,    'device-active');
             Switchboard.removeClass(cool, 'device-active');
             Switchboard.removeClass(off,  'device-off');
+            Switchboard.putText(Switchboard.getByTag('em', off)[0], translate('HEAT'));
             markup = '';
           }
 
@@ -94,6 +96,7 @@
             Switchboard.addClass(off,     'device-off');
             Switchboard.removeClass(cool, 'device-active');
             Switchboard.removeClass(heat, 'device-active');
+            Switchboard.putText(Switchboard.getByTag('em', off)[0], translate('OFF'));
             markup = '';
           }
         }
@@ -107,14 +110,17 @@
         switch(device.state) {
           case 'cool' :
             thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_COOL}}').join(' device-active');
+            thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_STATUS}}').join(translate('COOL'));
           break;
 
           case 'heat' :
             thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_HEAT}}').join(' device-active');
+            thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_STATUS}}').join(translate('HEAT'));
           break;
 
           default :
             thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_OFF}}').join(' device-off');
+            thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_STATUS}}').join(translate('OFF'));
           break;
         }
 

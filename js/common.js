@@ -515,11 +515,13 @@ Switchboard = (function () {
           socket,
           i;
 
-      SB.strings = { ACTIVE       : body.dataset.stringActive,
-                     INACTIVE     : body.dataset.stringInactive,
-                     CONNECTED    : header.dataset.stringConnected,
+      SB.strings = { CONNECTED    : header.dataset.stringConnected,
                      CONNECTING   : header.dataset.stringConnecting,
-                     DISCONNECTED : header.dataset.stringDisconnected };
+                     DISCONNECTED : header.dataset.stringDisconnected,
+                     ACTIVE       : body.dataset.stringActive,
+                     INACTIVE     : body.dataset.stringInactive,
+                     ON           : body.dataset.stringOn,
+                     OFF          : body.dataset.stringOff };
 
       updateTemplate = function(state) {
         var node        = SB.get(state.deviceId),

@@ -26,7 +26,7 @@
 (function(exports){
   'use strict';
 
-  exports.smartthings = function (deviceId, markup, state, value, fragments) {
+  exports.smartthings = function (deviceId, markup, state, value, fragments, language) {
     var templateSwitch    = fragments.switch,
         templateLock      = fragments.lock,
         templateContact   = fragments.contact,
@@ -114,13 +114,29 @@
 
           if(device.state === 'on') {
             deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_STATE}}').join(' device-active');
+            deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_STATUS}}').join(translate('ACTIVE'));
           }
 
           else {
             deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_STATE}}').join('');
+            deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_STATUS}}').join(translate('INACTIVE'));
           }
 
           return deviceMarkup;
+        },
+        translate  = function(message) {
+          var util;
+
+          if(typeof Switchboard === 'object') {
+            message = Switchboard.util.translate(message, 'smartthings');
+          }
+
+          else {
+            util    = require(__dirname + '/../lib/sharedUtil').util;
+            message = util.translate(message, 'smartthings', language);
+          }
+
+          return message;
         };
 
     if((value) && (typeof value === 'object') && (typeof value.mode === 'string')) {
@@ -159,14 +175,17 @@
       switch(mode) {
         case 'Home' :
           markup = markup.split('{{DEVICE_STATE_HOME}}').join(' device-active');
+          markup = markup.split('{{HOME_STATUS}}').join(translate('ACTIVE'));
         break;
 
         case 'Away' :
           markup = markup.split('{{DEVICE_STATE_AWAY}}').join(' device-active');
+          markup = markup.split('{{AWAY_STATUS}}').join(translate('ACTIVE'));
         break;
 
         case 'Night' :
           markup = markup.split('{{DEVICE_STATE_NIGHT}}').join(' device-active');
+          markup = markup.split('{{NIGHT_STATUS}}').join(translate('ACTIVE'));
         break;
       }
     }
@@ -174,6 +193,9 @@
     markup = markup.split('{{DEVICE_STATE_HOME}}').join('');
     markup = markup.split('{{DEVICE_STATE_AWAY}}').join('');
     markup = markup.split('{{DEVICE_STATE_NIGHT}}').join('');
+    markup = markup.split('{{HOME_STATUS}}').join(translate('INACTIVE'));
+    markup = markup.split('{{AWAY_STATUS}}').join(translate('INACTIVE'));
+    markup = markup.split('{{NIGHT_STATUS}}').join(translate('INACTIVE'));
 
     return markup.replace('{{SMARTTHINGS_DYNAMIC}}', tempMarkup);
   };

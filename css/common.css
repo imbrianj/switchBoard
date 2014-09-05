@@ -465,10 +465,6 @@ section .state-ok .fa {
 	color: #0078E7;
 }
 
-section .text-block li .fa span {
-	display: none;
-}
-
 section .text-block li .name {
 	display: inline-block;
 	width: 3.5em;
@@ -529,6 +525,16 @@ section a {
 	-webkit-transition: all .1s ease-in-out;
 	transition: all .1s ease-in-out;
 	width: 1em;
+}
+
+section span em,
+section a em,
+section .text-block li .fa span {
+	display: block;
+	height: 0;
+	overflow: hidden;
+	text-indent: -999px;
+	width: 0;
 }
 
 section a span,
