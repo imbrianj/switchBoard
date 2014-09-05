@@ -126,7 +126,7 @@ module.exports = (function () {
           else {
             auth.url = response[0].url;
 
-            controller.auth = auth;
+            controller.config.auth = auth;
 
             cache = fs.createWriteStream(__dirname + '/../tmp/smartthingsAuth.json');
             cache.once('open', function() {
