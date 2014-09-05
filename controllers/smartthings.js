@@ -128,11 +128,12 @@ module.exports = (function () {
 
             controller.config.auth = auth;
 
-            cache = fs.createWriteStream(__dirname + '/../tmp/smartthingsAuth.json');
+            cache  = fs.createWriteStream(__dirname + '/../tmp/smartthingsAuth.json');
+
             cache.once('open', function() {
               console.log('\x1b[35m' + controller.config.title + '\x1b[0m: Auth data cached with URL');
 
-              that.oauthDeviceList(controller);
+              that.oauthDeviceList({ deviceId : controller.config.deviceId, auth : auth, groups : controller.config.groups });
 
               cache.write(JSON.stringify(auth));
             });
