@@ -57,10 +57,10 @@
       status   = translate('CAMERA_DISARMED');
     }
 
-    markup = markup.replace('{{DEVICE_STATE_ON}}',  stateOn);
-    markup = markup.replace('{{DEVICE_STATE_OFF}}', stateOff);
-    markup = markup.replace('{{ARMED_STATUS}}',     status);
-    markup = markup.replace('{{DISARMED_STATUS}}',  status);
+    markup = markup.split('{{DEVICE_STATE_ON}}').join(stateOn);
+    markup = markup.split('{{DEVICE_STATE_OFF}}').join(stateOff);
+    markup = markup.split('{{ARMED_STATUS}}').join(status);
+    markup = markup.split('{{DISARMED_STATUS}}').join(status);
 
     if(typeof Switchboard === 'object') {
       arm    = Switchboard.getByClass('fa-lock',   Switchboard.get(deviceId), 'a')[0];

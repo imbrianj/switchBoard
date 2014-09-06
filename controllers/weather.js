@@ -72,13 +72,14 @@ module.exports = (function () {
 
       weather.deviceId = config.device.deviceId;
       weather.zip      = config.device.zip;
+      weather.woeid    = config.device.woeid;
       weather.host     = config.host     || 'query.yahooapis.com';
-      weather.path     = config.path     || '/v1/public/yql?format=json&q=select * from weather.forecast where location=' + weather.zip;
+      weather.path     = config.path     || '/v1/public/yql?format=json&q=select * from weather.forecast where ' + (weather.woeid ? 'woeid=' + weather.woeid : 'location=' + weather.zip);
       weather.port     = config.port     || 443;
       weather.method   = config.method   || 'GET';
       weather.callback = config.callback || function () {};
 
-      if(weather.zip !== null) {
+      if((weather.zip !== null) || (weather.woeid !== null)) {
         console.log('\x1b[35m' + config.device.title + '\x1b[0m: Fetching device info');
 
         request = https.request(this.postPrepare(weather), function(response) {

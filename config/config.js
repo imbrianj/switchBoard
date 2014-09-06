@@ -122,7 +122,7 @@ exports.config = {
     stocks    : ['YHOO', 'AAPL', 'GOOG', 'TSLA'],
     // Not to be considered investment advice, but this shows how you can set
     // stock prices to be notified of.
-    limits    : { YHOO : { buy : 30,  sell : 40 },
+    limits    : { YHOO : { buy : 30,  sell : 43 },
                   TSLA : { buy : 150, sell : 250 } },
     // Means by which you should be notified (if the controllers for each are
     // properly configured).
@@ -133,7 +133,13 @@ exports.config = {
   weather : {
     typeClass : 'weather',
     title     : 'Weather',
+    // Zip isn't available everywhere - and is imprecise, but is very easy to
+    // recall and generally offers "good enough" precision.
     zip       : 98121,
+    // WOEID can be more specific to a zip - so this will be used if available.
+    // It's also available in places that don't have Zip codes.
+    // Find your location's WOEID from: http://woeid.factormystic.net/
+    woeid     : 12798963,
     disabled  : true
   },
 

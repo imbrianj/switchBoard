@@ -4,12 +4,12 @@
                     <dt>{{SUB_DEVICE_NAME}} <em>{{SUB_DEVICE_STATUS}}</em></dt>
                     <dd class="control-block full icon">
                       <div class="mode">
-                        <a href="/?{{DEVICE_ID}}=subdevice-mode-{{SUB_DEVICE_NAME}}-heat" class="fa fa-sun-o{{DEVICE_STATE_HEAT}}"><span>{{i18n_HEAT}}</span></a>
-                        <a href="/?{{DEVICE_ID}}=subdevice-mode-{{SUB_DEVICE_NAME}}-off" class="fa fa-power-off"><span>{{i18n_POWER_OFF}}</span></a>
-                        <a href="/?{{DEVICE_ID}}=subdevice-mode-{{SUB_DEVICE_NAME}}-cool" class="fa fa-asterisk{{DEVICE_STATE_COOL}}"><span>{{i18n_COOL}}</span></a>
+                        <a href="/?{{DEVICE_ID}}=subdevice-mode-{{SUB_DEVICE_NAME}}-heat" class="fa fa-sun-o{{DEVICE_STATE_HEAT}}" title="{{i18n_HEAT}}"><span>{{i18n_HEAT}}</span></a>
+                        <a href="/?{{DEVICE_ID}}=subdevice-mode-{{SUB_DEVICE_NAME}}-off" class="fa fa-power-off" title="{{i18n_POWER_OFF}}"><span>{{i18n_POWER_OFF}}</span></a>
+                        <a href="/?{{DEVICE_ID}}=subdevice-mode-{{SUB_DEVICE_NAME}}-cool" class="fa fa-asterisk{{DEVICE_STATE_COOL}}" title="{{i18n_COOL}}"><span>{{i18n_COOL}}</span></a>
                       </div>
                       <div class="navigation">
-                        <span class="fa fa-leaf{{DEVICE_STATE_LEAF}}"><span>{{i18n_LEAF}}</span></span>
+                        <span class="fa fa-leaf{{DEVICE_STATE_LEAF}}" title="{{i18n_LEAF}}"><span>{{i18n_LEAF}}</span></span>
                         <form class="text-form" action="/" method="get">
                           <fieldset>
                             <legend>{{i18n_SET_TEMPERATURE}}</legend>
@@ -21,8 +21,8 @@
                         </form>
                       </div>
                       <div class="presence">
-                        <a href="/?{{DEVICE_ID}}=Home" class="fa fa-home{{DEVICE_STATE_HOME}}"><span>{{i18n_HOME}}</span></a>
-                        <a href="/?{{DEVICE_ID}}=Away" class="fa fa-compass{{DEVICE_STATE_AWAY}}"><span>{{i18n_AWAY}}</span></a>
+                        <a href="/?{{DEVICE_ID}}=Home" class="fa fa-home{{DEVICE_STATE_HOME}}" title="{{i18n_HOME}}"><span>{{i18n_HOME}}</span></a>
+                        <a href="/?{{DEVICE_ID}}=Away" class="fa fa-compass{{DEVICE_STATE_AWAY}}" title="{{i18n_AWAY}}"><span>{{i18n_AWAY}}</span></a>
                       </div>
                     </dd>
                     <dd class="target">{{i18n_TARGET}}: {{SUB_DEVICE_TARGET}}&deg;</dd>
