@@ -364,6 +364,11 @@ section {
 	font-size: 300%;
 }
 
+.dashboard section {
+	clear: none;
+	display: inline-block;
+}
+
 section h1 {
 	height: 0;
 	overflow: hidden;
@@ -386,6 +391,11 @@ section .text-block h1 {
 section > div {
 	float: left;
 	width: 50%;
+}
+
+.dashboard section > div {
+	float: none;
+	width: 100%;
 }
 
 section .control-block .volume,
@@ -792,6 +802,10 @@ section.ps3 .media {
 	padding-top: 2.5em;
 }
 
+.dashboard section.ps3 .media {
+	padding-top: 0;
+}
+
 section.ps3 .media a {
 	width: 25%;
 }
@@ -850,6 +864,7 @@ section,
 	transition: opacity .5s ease-in-out;
 }
 
+.dashboard header,
 section {
 	display: none;
 	margin: 0 .5em;
@@ -858,6 +873,27 @@ section {
 body.rich .selected,
 section:target {
 	display: block;
+}
+
+.dashboard section h1 {
+	font-size: 50%;
+	height: auto;
+	overflow: visible;
+	text-indent: 0;
+}
+
+.dashboard section {
+	border: 1px solid #444;
+	margin: .25em;
+	padding: .25em;
+	vertical-align: middle;
+}
+
+.dashboard section
+.dashboard .selected,
+.dashboard body.rich .selected,
+.dashboard section:target {
+	display: inline-block;
 }
 
 header .selected a {
@@ -1066,7 +1102,8 @@ header .selected a {
 
 header:after,
 header ul:after,
-section .control-block:after {
+section .control-block:after,
+section .media:after {
 	clear: both;
 	content: '.';
 	display: block;
