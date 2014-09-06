@@ -92,26 +92,61 @@ module.exports = (function () {
     /**
      * Prepares and calls send() to request the current state.
      */
-    state : function (controller, config, callback) {
-      var denon = { device : {}, config : {} };
+    state : function (controller, config, callback, count) {
+      var deviceState    = require(__dirname + '/../lib/deviceState'),
+          that           = this,
+          denonState     = deviceState.getDeviceState(config.deviceId),
+          denon          = { device : {}, config : {} },
+          statusCommands = ['VOL_STATUS', 'INPUT_STATUS', 'ZONE3_STATUS'];
+          count          = count || 0;
+
+      if(typeof denonState === 'undefined') {
+        denonState = { value : { ZONE1 : {}, ZONE2 : {}, ZONE3 : {} } };
+      }
 
       callback                  = callback || function() {};
-      denon.command             = 'state';
       denon.device.deviceId     = controller.config.deviceId;
       denon.device.deviceIp     = controller.config.deviceIp;
-      denon.device.localTimeout = controller.config.localTimeout || config.localTimeout;
+      denon.device.localTimeout = controller.config.localTimeout || config.localTimeout;            
+      denon.command             = statusCommands[count];
 
       denon.callback = function (err, reply) {
+        var rex         = '';     
+
         if(reply) {
-          callback(denon.device.deviceId, null, 'ok');
+          if(rex = reply.toString().match(/(MV)([0-9]+)\r/)) {
+            denonState.value.ZONE1.volume = rex[2];
+          }
+
+          else if(rex = reply.toString().match(/(SI)([A-Z]+)\r/)) {
+            denonState.value.ZONE1.input = rex[2];
+          }
+
+          else if(rex = reply.toString().match(/(Z3)(ON|OFF)\r/)) {
+            denonState.value.ZONE3.power = rex[2];
+          }
+
+          else if(rex = reply.toString().match(/(Z3)([0-9]+)\r/)) {
+            denonState.value.ZONE3.volume = rex[2];
+          }   
+
         }
 
-        else if(err) {
+        else {
           callback(denon.device.deviceId, 'err');
+        }
+
+        if(count === statusCommands.length) {
+          callback(denon.device.deviceId, null, 'ok', denonState);
+        }
+
+        else {
+          that.state(controller, config, callback, (count += 1));
         }
       };
 
       this.send(denon);
+
     },
 
     send : function (config) {
