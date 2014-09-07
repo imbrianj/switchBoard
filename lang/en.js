@@ -92,7 +92,7 @@ module.exports = (function () {
           DENON        : "Denon",
           BLU_RAY      : "Blu-ray",
           CD           : "CD",
-          GAME         : "GAME",
+          GAME         : "Game",
           INPUT        : "Input",
           MUSIC_PLAYER : "Music Player",
           NETWORK      : "Network",
