@@ -291,5 +291,26 @@ exports.config = {
     devicePort : 8080,
     power      : 4,
     disabled   : true
+  },
+
+  /*
+   * Use your Raspberry Pi GPIO pins to control lighting and devices via 434Mhz
+   * RF.  See http://xkonni.github.io/raspberry-remote/ for more details.
+   */
+  rremote : {
+    typeClass  : 'rremote',
+    title      : 'Raspberry Remote',
+    system     : 11111,
+    subdevices : { 'Lights' : 1,
+                   'TV'     : 2,
+                   'LED'    : 3,
+                   'HDD'    : 4,
+                   'Power'  : 5 },
+    power      : { 'Lights' : 60,
+                   'TV'     : 60,
+                   'LED'    : 15,
+                   'HDD'    : 15,
+                   'Power'  : 60 },
+    disabled   : true
   }
 };

@@ -40,6 +40,7 @@ module.exports = (function () {
                 'tests/unit/controllers/pioneerTest.js',
                 'tests/unit/controllers/ps3Test.js',
                 'tests/unit/controllers/pushoverTest.js',
+                'tests/unit/controllers/raspberryRemoteTest.js',
                 'tests/unit/controllers/rokuTest.js',
                 'tests/unit/controllers/samsungTest.js',
                 'tests/unit/controllers/smartThingsTest.js',

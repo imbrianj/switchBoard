@@ -55,7 +55,7 @@
         translate  = function(message) {
           var util;
 
-          if(typeof Switchboard === 'object') {
+          if((typeof Switchboard === 'object') && (typeof Switchboard.util === 'object')) {
             message = Switchboard.util.translate(message, 'nest');
           }
 

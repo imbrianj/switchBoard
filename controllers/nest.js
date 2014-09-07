@@ -81,10 +81,10 @@ module.exports = (function () {
                       path    : config.path,
                       method  : config.method,
                       headers : {
-                        'Accept'                : 'application/json',
-                        'Accept-Charset'        : 'utf-8',
-                        'User-Agent'            : 'node-switchBoard',
-                        'Content-Type'          : 'application/x-www-form-urlencoded'
+                        'Accept'         : 'application/json',
+                        'Accept-Charset' : 'utf-8',
+                        'User-Agent'     : 'node-switchBoard',
+                        'Content-Type'   : 'application/x-www-form-urlencoded'
                       }
                     };
 
