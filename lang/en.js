@@ -90,12 +90,15 @@ module.exports = (function () {
         },
         denon : {
           DENON        : "Denon",
-          GAME         : "GAME",
-          TV           : "TV",
-          NETWORK      : "Network",
-          MUSIC_PLAYER : "Music Player",
+          BLU_RAY      : "Blu-ray",
           CD           : "CD",
-          BLU_RAY      : "Blu-ray"
+          GAME         : "GAME",
+          INPUT        : "Input",
+          MUSIC_PLAYER : "Music Player",
+          NETWORK      : "Network",
+          TV           : "TV",
+          VOLUME       : "Volume",
+          ZONE         : "Zone"
         },
         foscam : {
           FOSCAM          : "Foscam",

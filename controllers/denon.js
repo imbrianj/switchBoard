@@ -36,7 +36,7 @@ module.exports = (function () {
   return {
     version : 20140825,
 
-    inputs : ['command'],
+    inputs : ['command', 'list'],
 
     /**
      * Whitelist of available key codes to use.
@@ -104,14 +104,11 @@ module.exports = (function () {
         denonState = { value : { ZONE1 : {}, ZONE2 : {}, ZONE3 : {} } };
       }
 
-      callback                  = callback || function() {};
-      denon.device.deviceId     = controller.config.deviceId;
-      denon.device.deviceIp     = controller.config.deviceIp;
-      denon.device.localTimeout = controller.config.localTimeout || config.localTimeout;            
-      denon.command             = statusCommands[count];
+      callback      = callback || function() {};
+      denon.command = statusCommands[count];
 
       denon.callback = function (err, reply) {
-        var rex         = '';     
+        var rex = '';
 
         if(reply) {
           if(rex = reply.toString().match(/(MV)([0-9]+)\r/)) {
@@ -128,8 +125,7 @@ module.exports = (function () {
 
           else if(rex = reply.toString().match(/(Z3)([0-9]+)\r/)) {
             denonState.value.ZONE3.volume = rex[2];
-          }   
-
+          }
         }
 
         else {
@@ -146,7 +142,15 @@ module.exports = (function () {
       };
 
       this.send(denon);
+    },
 
+    /**
+     * Grab the latest state as soon as SwitchBoard starts up.
+     */
+    init : function (controller) {
+      var runCommand = require(__dirname + '/../lib/runCommand');
+
+      runCommand.runCommand(controller.config.deviceId, 'list', controller.config.deviceId);
     },
 
     send : function (config) {
@@ -160,11 +164,15 @@ module.exports = (function () {
       denon.callback   = config.callback                || function () {};
 
       if((Socket) && (denon.command)) {
-        if(denon.command !== 'state') {
+        if((denon.command !== 'state') && (denon.command !== 'list')) {
           Socket.write(denon.command + "\r");
         }
 
         denon.callback(null, 'ok');
+      }
+
+      else if(denon.command === 'list') {
+        this.state({}, denon, denon.callback);
       }
 
       else if(denon.command) {
@@ -189,7 +197,6 @@ module.exports = (function () {
 
         Socket.on('data', function(dataReply) {
           denon.callback(null, dataReply);
-          console.log(dataReply.toString().split("\r"));
         });
 
         Socket.once('end', function() {

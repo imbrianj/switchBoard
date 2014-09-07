@@ -38,4 +38,11 @@
             <li><a href="/?{{DEVICE_ID}}=Input_Bluray" class="fa fa-video-camera" title="{{i18n_BLU_RAY}}"><span>{{i18n_BLU_RAY}}</span></a></li>
           </ul>
         </div>
+        <div class"text-device-status">
+          <ul>
+            <li>{{i18n_VOLUME}}: {{DEVICE_VOLUME}}</li>
+            <li>{{i18n_INPUT}}: {{DEVICE_INPUT}}</li>
+            <li>{{i18n_ZONE}} 3: {{DEVICE_Z3_POWER}}</li>
+          </ul>
+        </div>
       </section>
