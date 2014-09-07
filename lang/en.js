@@ -192,6 +192,9 @@ module.exports = (function () {
         pushover : {
           PUSHOVER : "Pushover"
         },
+        raspberryRemote : {
+          RASPBERRY_REMOTE : 'Raspberry Remote'
+        },
         roku : {
           ROKU           : "Roku",
           BACKSPACE      : "Backspace",

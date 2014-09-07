@@ -25,22 +25,22 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview Unit test for parsers/foscam.js
+ * @fileoverview Unit test for parsers/denon.js
  */
 
-exports.foscamParserTest = {
+exports.denonParserTest = {
   parser : function (test) {
     'use strict';
 
-    var foscamParser = require(__dirname + '/../../../parsers/foscam'),
-        markup       = '<h1>Foo</h1> <span class="{{DEVICE_STATE_ON}}">On</span> <span class="{{DEVICE_STATE_OFF}}">Off</span>',
-        onMarkup     = foscamParser.foscam('dummy', markup, 'ok', 'on'),
-        offMarkup    = foscamParser.foscam('dummy', markup, 'ok', 'off');
+    var denonParser = require(__dirname + '/../../../parsers/denon'),
+        markup      = '<dl><dt>Foo</dt><dd>Vol: {{DEVICE_VOLUME}}</dd><dd>Input: {{DEVICE_INPUT}}</dd><dd>Power: {{DEVICE_Z3_POWER}}</dd></dl>',
+        goodMarkup  = denonParser.denon('dummy', markup, 'ok', { ZONE1 : { volume : 50, input : 3 }, ZONE3: { power : 'on' } }),
+        badMarkup   = denonParser.denon('dummy', markup, 'ok', null);
 
-    test.strictEqual(onMarkup.indexOf('{{'),  -1, 'All values replaced');
-    test.notStrictEqual(onMarkup.indexOf('<span class=" device-active">On</span> <span class="">Off</span>'),  -1, 'Passed markup validated');
-    test.strictEqual(offMarkup.indexOf('{{'), -1, 'All values replaced');
-    test.notStrictEqual(offMarkup.indexOf('<span class="">On</span> <span class=" device-active">Off</span>'), -1, 'Passed markup validated');
+    test.strictEqual(goodMarkup.indexOf('{{'),  -1, 'All values replaced');
+    test.notStrictEqual(goodMarkup.indexOf('<dl><dt>Foo</dt><dd>Vol: 50</dd><dd>Input: 3</dd><dd>Power: on</dd></dl>'), -1, 'Passed markup validated');
+    test.strictEqual(badMarkup.indexOf('{{'),   -1, 'All values replaced');
+    test.notStrictEqual(badMarkup.indexOf('<dl><dt>Foo</dt><dd>Vol: </dd><dd>Input: </dd><dd>Power: </dd></dl>'),       -1, 'Passed markup validated');
 
     test.done();
   }

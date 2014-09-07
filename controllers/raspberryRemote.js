@@ -32,9 +32,18 @@ module.exports = (function () {
    * @requires child_process, raspberry-remote
    */
   return {
-    version : 20140906,
+    version : 20140907,
 
     inputs : ['subdevice'],
+
+    /**
+     * Reference template fragment to be used by the parser.
+     */
+    fragments : function () {
+      var fs = require('fs');
+
+      return { switch : fs.readFileSync(__dirname + '/../templates/fragments/raspberryRemoteListSwitch.tpl').toString() };
+    },
 
     /**
      * When a requet to change a subdevice's state comes in, we parse through it
@@ -68,6 +77,28 @@ module.exports = (function () {
       }
 
       return params;
+    },
+
+    /**
+     * Grab the latest state as soon as SwitchBoard starts up.
+     *
+     * Since RaspberryRemote does not indicate state, we'll just need to load
+     * subdevice names to be populated.
+     */
+    init : function (controller, config) {
+      var deviceState = require(__dirname + '/../lib/deviceState'),
+          subdevices  = {},
+          i,
+          j           = 0;
+
+      for(i in controller.config.subdevices) {
+        subdevices[j] = { id    : controller.config.subdevices[i],
+                          label : i,
+                          type  : 'switch' };
+        j += 1;
+      }
+
+      deviceState.updateState(controller.config.deviceId, controller.config.typeClass, { state : 'ok', value : { devices : subdevices } });
     },
 
     send : function (config) {

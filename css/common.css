@@ -728,6 +728,7 @@ section .sub-device-list .sub-device-group {
 	margin: .1em 0;
 }
 
+section .sub-device-list h2,
 section .sub-device-group h2,
 section .sub-device-group dt {
 	font-size: 50%;

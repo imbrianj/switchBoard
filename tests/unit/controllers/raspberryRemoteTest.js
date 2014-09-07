@@ -29,6 +29,17 @@
  */
 
 exports.raspberryRemoteControllerTest = {
+  fragments : function(test) {
+    'use strict';
+
+    var raspberryRemoteController = require(__dirname + '/../../../controllers/raspberryRemote'),
+        fragments                 = raspberryRemoteController.fragments();
+
+    test.strictEqual(typeof fragments.switch, 'string', 'Fragment verified');
+
+    test.done();
+  },
+
   getDeviceParameters : function (test) {
     'use strict';
 

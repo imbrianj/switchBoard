@@ -33,6 +33,10 @@
       markup = markup.split('{{DEVICE_Z3_POWER}}').join(value.ZONE3.power);
     }
 
+    markup = markup.split('{{DEVICE_VOLUME}}').join('');
+    markup = markup.split('{{DEVICE_INPUT}}').join('');
+    markup = markup.split('{{DEVICE_Z3_POWER}}').join('');
+
     return markup;
   };
 })(typeof exports === 'undefined' ? this.Switchboard.parsers : exports);

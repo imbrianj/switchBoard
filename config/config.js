@@ -297,8 +297,8 @@ exports.config = {
    * Use your Raspberry Pi GPIO pins to control lighting and devices via 434Mhz
    * RF.  See http://xkonni.github.io/raspberry-remote/ for more details.
    */
-  rremote : {
-    typeClass  : 'rremote',
+  raspberryRemote : {
+    typeClass  : 'raspberryRemote',
     title      : 'Raspberry Remote',
     system     : 11111,
     subdevices : { 'Lights' : 1,
