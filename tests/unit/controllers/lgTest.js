@@ -50,11 +50,22 @@ exports.lgControllerTest = {
     'use strict';
 
     var lgController = require(__dirname + '/../../../controllers/lg'),
-        postConfig   = lgController.postPrepare({ deviceIp : '127.0.0.1', devicePort : '8080' });
+        postConfig   = lgController.postPrepare({ deviceIp : '127.0.0.1', devicePort : '8080' }),
+        pairConfig   = lgController.postPrepare({ deviceIp : '127.0.0.1', devicePort : '8080', command : 'pair' });
 
     test.deepEqual(postConfig, { host : '127.0.0.1',
                                  port : '8080',
                                  path : '/udap/api/command',
+                                 method : 'POST',
+                                 headers : { 'content-type'  : 'text/xml; charset=utf-8',
+                                             'accept'        : 'text/xml',
+                                             'cache-control' : 'no-cache',
+                                             'pragma'        : 'no-cache',
+                                             'user-agent'    : 'UDAP/2.0' } }, 'LG command validation');
+
+    test.deepEqual(pairConfig, { host : '127.0.0.1',
+                                 port : '8080',
+                                 path : '/udap/api/pairing',
                                  method : 'POST',
                                  headers : { 'content-type'  : 'text/xml; charset=utf-8',
                                              'accept'        : 'text/xml',

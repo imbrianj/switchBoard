@@ -119,7 +119,7 @@ module.exports = (function () {
      * Prepare a request for command execution.
      */
     postPrepare : function (lg) {
-      var path    = '/udap/api/command',
+      var path    = lg.command === 'pair' ? '/udap/api/pairing' : '/udap/api/command',
           method  = 'POST';
 
       return {
@@ -144,7 +144,7 @@ module.exports = (function () {
       response += '<?xml version="1.0" encoding="utf-8"?>';
       response += '<envelope>';
       response += '  <api type="pairing">';
-      response += '    <name>SwitchBoard</name>';
+      response += '    <name>hello</name>';
       response += '    <value>' + lg.pairKey + '</value>';
       response += '    <port>' + lg.devicePort + '</value>';
       response += '  </api>';
@@ -177,7 +177,7 @@ module.exports = (function () {
       var lg = { device : {}, config : {}};
 
       callback               = callback || function() {};
-      lg.command             = 'state';
+      lg.command             = 'pair';
       lg.device.deviceId     = controller.config.deviceId;
       lg.device.deviceIp     = controller.config.deviceIp;
       lg.device.pairKey      = controller.config.serverIp;
@@ -232,8 +232,14 @@ module.exports = (function () {
         }
       });
 
-      request.write(this.postPairData(lg));
-      request.write(this.postData(lg));
+      if(lg.command === 'pair') {
+        request.write(this.postPairData(lg));
+      }
+
+      else {
+        request.write(this.postData(lg));
+      }
+
       request.end();
 
       return dataReply;
