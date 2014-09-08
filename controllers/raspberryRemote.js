@@ -91,14 +91,20 @@ module.exports = (function () {
           i,
           j           = 0;
 
-      for(i in controller.config.subdevices) {
-        subdevices[j] = { id    : controller.config.subdevices[i],
-                          label : i,
-                          type  : 'switch' };
-        j += 1;
+      if(process.platform === 'linux') {
+        for(i in controller.config.subdevices) {
+          subdevices[j] = { id    : controller.config.subdevices[i],
+                            label : i,
+                            type  : 'switch' };
+          j += 1;
+        }
+
+        deviceState.updateState(controller.config.deviceId, controller.config.typeClass, { state : 'ok', value : { devices : subdevices } });
       }
 
-      deviceState.updateState(controller.config.deviceId, controller.config.typeClass, { state : 'ok', value : { devices : subdevices } });
+      else {
+        deviceState.updateState(controller.config.deviceId, controller.config.typeClass, { state : 'err', value : {} });
+      }
     },
 
     send : function (config) {
