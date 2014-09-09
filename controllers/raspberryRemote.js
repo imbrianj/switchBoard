@@ -32,7 +32,7 @@ module.exports = (function () {
    * @requires child_process, raspberry-remote
    */
   return {
-    version : 20140907,
+    version : 20140908,
 
     inputs : ['subdevice'],
 
@@ -58,21 +58,20 @@ module.exports = (function () {
           commandType = '',
           subdevice;
 
-      if(rremote.command.indexOf('on-') === 0) {
+      if(rremote.subdevice.indexOf('on-') === 0) {
         commandType = 'on';
       }
 
-      else if(rremote.command.indexOf('off-') === 0) {
+      else if(rremote.subdevice.indexOf('off-') === 0) {
         commandType = 'off';
       }
 
       if(commandType) {
-        subdevice   = rremote.command.replace(commandType + '-', '');
+        subdevice   = rremote.subdevice.replace(commandType + '-', '');
         subdevice   = rremote.subdevices[subdevice];
-        commandType = commandType === 'on' ? 1 : 0;
 
         if((rremote.system) && (subdevice) && (commandType)) {
-          params = [rremote.system, subdevice, commandType];
+          params = [rremote.system, subdevice, commandType === 'on' ? 1 : 0];
         }
       }
 
@@ -112,19 +111,21 @@ module.exports = (function () {
           rremote = {},
           execute;
 
-      rremote.command    = config.command;
+      rremote.subdevice  = config.subdevice;
       rremote.system     = config.device.system;
       rremote.subdevices = config.device.subdevices;
       rremote.callback   = config.callback || function () {};
 
-      if((rremote.command) && (rremote.system)) {
+      if((rremote.subdevice) && (rremote.system)) {
         rremote.parameters = this.getDeviceParameters(rremote);
 
-        execute = spawn('send', rremote.parameters);
+        if(rremote.parameters.length === 3) {
+          execute = spawn('send', rremote.parameters);
 
-        execute.once('close', function(code) {
-          rremote.callback(null, 'ok');
-        });
+          execute.once('close', function(code) {
+            rremote.callback(null, 'ok', true);
+          });
+        }
       }
     }
   };

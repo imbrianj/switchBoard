@@ -44,15 +44,15 @@ exports.raspberryRemoteControllerTest = {
     'use strict';
 
     var raspberryRemoteController = require(__dirname + '/../../../controllers/raspberryRemote'),
-        validCommand              = raspberryRemoteController.getDeviceParameters({ command    : 'on-Desk Lamp',
+        validCommand              = raspberryRemoteController.getDeviceParameters({ subdevice  : 'on-Desk Lamp',
                                                                                     subdevices : { 'Desk Lamp'  : 1,
                                                                                                    'Hall Light' : 2 },
                                                                                     system     : 111111 }),
-        invalidCommand            = raspberryRemoteController.getDeviceParameters({ command    : 'foo-Desk Lamp',
+        invalidCommand            = raspberryRemoteController.getDeviceParameters({ subdevice  : 'foo-Desk Lamp',
                                                                                     subdevices : { 'Desk Lamp'  : 1,
                                                                                                    'Hall Light' : 2 },
                                                                                     system     : 111111 }),
-        invalidDevice             = raspberryRemoteController.getDeviceParameters({ command    : 'off-NOT REAL',
+        invalidDevice             = raspberryRemoteController.getDeviceParameters({ subdevice  : 'off-NOT REAL',
                                                                                     subdevices : { 'Desk Lamp'  : 1,
                                                                                                    'Hall Light' : 2 },
                                                                                     system     : 111111 });
