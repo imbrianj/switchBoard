@@ -35,7 +35,7 @@ module.exports = (function () {
    *       sudo apt-get install mpg123
    */
   return {
-    version : 20140813,
+    version : 20140909,
 
     inputs  : ['text'],
 
@@ -96,6 +96,10 @@ module.exports = (function () {
 
             if((exists) && (mp3.execute)) {
               mpg123 = spawn(mp3.execute.command, mp3.execute.params);
+
+              mpg123.once('error', function(err) {
+                mp3.callback(err);
+              });
 
               mpg123.once('close', function(code) {
                 mp3.callback(null, 'ok');

@@ -35,7 +35,7 @@ Supported Devices/Services
 | Pioneer          | Testing     | Reportedly works, but unable to test                                            |
 | PS3              | Stable      | Uses GIMX to emulate PS3 controller ([see below](https://github.com/imbrianj/switchBoard#faq)). OSX not supported  |
 | Pushover         | Stable      | Requires purchased app and token / user key                                     |
-| Raspberry Remote | Testing     | Uses ([Raspberry Remote](https://xkonni.github.io/raspberry-remote/)) to control lighting. Only Linux is supported |
+| Raspberry Remote | Stable      | Uses ([Raspberry Remote](https://xkonni.github.io/raspberry-remote/)) to control lighting. Only Linux is supported |
 | Roku             | Stable      | Launch apps directly, text input and basic controls                             |
 | Samsung          | Stable      | Text input and basic controls                                                   |
 | SmartThings      | Stable      | Control devices and monitor real-time states. Requires [companion app](https://github.com/imbrianj/oauth_controller/blob/master/oauth_controller.groovy) |

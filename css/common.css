@@ -1031,7 +1031,7 @@ header .selected a {
 
 @media (max-width: 500px) {
 	header h1,
-	.sub-device-list h2 {
+	.nest .sub-device-list h2 {
 		display: none;
 	}
 

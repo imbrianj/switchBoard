@@ -37,7 +37,7 @@ module.exports = (function () {
    *       http://gimx.fr/wiki/index.php?title=Command_line#Linux_.2B_bluetooth_.2B_PS3
    */
   return {
-    version : 20140826,
+    version : 20140909,
 
     inputs  : ['command'],
 
@@ -162,6 +162,10 @@ module.exports = (function () {
             gimx.kill();
           });
         }
+
+        gimx.once('error', function(err) {
+          ps3.callback(err);
+        });
 
         gimx.once('close', function(code) {
           var deviceState;

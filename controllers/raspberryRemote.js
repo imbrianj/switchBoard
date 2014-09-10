@@ -32,7 +32,7 @@ module.exports = (function () {
    * @requires child_process, raspberry-remote
    */
   return {
-    version : 20140908,
+    version : 20140909,
 
     inputs : ['subdevice'],
 
@@ -109,7 +109,7 @@ module.exports = (function () {
     send : function (config) {
       var spawn   = require('child_process').spawn,
           rremote = {},
-          execute;
+          send;
 
       rremote.subdevice  = config.subdevice;
       rremote.system     = config.device.system;
@@ -120,9 +120,13 @@ module.exports = (function () {
         rremote.parameters = this.getDeviceParameters(rremote);
 
         if(rremote.parameters.length === 3) {
-          execute = spawn('send', rremote.parameters);
+          send = spawn('send', rremote.parameters);
 
-          execute.once('close', function(code) {
+          send.once('error', function(err) {
+            rremote.callback(err);
+          });
+
+          send.once('close', function(code) {
             rremote.callback(null, 'ok', true);
           });
         }

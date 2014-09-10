@@ -59,11 +59,11 @@ module.exports = (function () {
           if((controller.config.limits) && (stocks)) {
             for(stockName in controller.config.limits) {
               if((typeof controller.config.limits[stockName].sell !== 'undefined') && (stocks[stockName]) && (stocks[stockName].price >= controller.config.limits[stockName].sell)) {
-                message = message + translate('{{i18n_SELL}}', 'stocks', controllers.config.language).replace('{{LABEL}}', stocks[stockName].name).replace('{{PRICE}}', stocks[stockName].ask) + ' ';
+                message = message + translate.translate('{{i18n_SELL}}', 'stocks', controllers.config.language).replace('{{LABEL}}', stocks[stockName].name).replace('{{PRICE}}', stocks[stockName].ask) + ' ';
               }
 
               else if((typeof controller.config.limits[stockName].buy !== 'undefined') && (stocks[stockName]) && (stocks[stockName].price <= controller.config.limits[stockName].buy)) {
-                message = message + translate('{{i18n_BUY}}', 'stocks', controllers.config.language).replace('{{LABEL}}', stocks[stockName].name).replace('{{PRICE}}', stocks[stockName].ask) + ' ';
+                message = message + translate.translate('{{i18n_BUY}}', 'stocks', controllers.config.language).replace('{{LABEL}}', stocks[stockName].name).replace('{{PRICE}}', stocks[stockName].ask) + ' ';
               }
 
               else if(stocks[stockName]){

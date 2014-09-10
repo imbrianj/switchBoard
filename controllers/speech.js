@@ -35,7 +35,7 @@ module.exports = (function () {
    *       sudo apt-get install espeak
    */
   return {
-    version : 20140813,
+    version : 20140909,
 
     inputs  : ['text'],
 
@@ -112,6 +112,10 @@ module.exports = (function () {
       if(speech.platform) {
         if(speech.text && speech.execute) {
           speak = spawn(speech.execute.command, speech.execute.params);
+
+          speak.once('error', function(err) {
+            speech.callback(err);
+          });
 
           speak.once('close', function(code) {
               speech.callback(null, 'ok');
