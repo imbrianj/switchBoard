@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global module, console */
+/*global module, console, require */
 
 /**
  * Copyright (c) 2014 brian@bevey.org
@@ -26,16 +26,52 @@
 (function(exports){
   'use strict';
 
-  exports.denon = function (deviceId, markup, state, value) {
+  exports.denon = function (deviceId, markup, state, value, language) {
+    
+    var translate = function(message) {
+      var util;
+
+      if(typeof Switchboard === 'object') {
+        message = Switchboard.util.translate(message, 'denon');
+      }
+
+      else {
+        util    = require(__dirname + '/../lib/sharedUtil').util;
+        message = util.translate(message, 'denon', language);
+      }
+
+      return message;
+    };
+  
     if(value) {
-      markup = markup.split('{{DEVICE_VOLUME}}').join(value.ZONE1.volume);
-      markup = markup.split('{{DEVICE_INPUT}}').join(value.ZONE1.input);
-      markup = markup.split('{{DEVICE_Z3_POWER}}').join(value.ZONE3.power);
+      markup = markup.split('{{DEVICE_POWER}}').join(translate(value.power));
+      markup = markup.split('{{DEVICE_Z1_INPUT}}').join(translate(value.ZONE1.input));
+      markup = markup.split('{{DEVICE_Z1_POWER}}').join(translate(value.ZONE1.power));
+      markup = markup.split('{{DEVICE_Z1_MUTE}}').join(translate(value.ZONE1.mute));
+      markup = markup.split('{{DEVICE_Z1_MODE}}').join(translate(value.ZONE1.mode));
+      markup = markup.split('{{DEVICE_Z1_VOLUME}}').join(value.ZONE1.volume);
+      markup = markup.split('{{DEVICE_Z1_MAXVOLUME}}').join(value.ZONE1.maxvolume);
+      markup = markup.split('{{DEVICE_Z2_POWER}}').join(translate(value.ZONE2.power));
+      markup = markup.split('{{DEVICE_Z2_INPUT}}').join(translate(value.ZONE2.input));
+      markup = markup.split('{{DEVICE_Z2_VOLUME}}').join(value.ZONE2.volume);
+      markup = markup.split('{{DEVICE_Z3_POWER}}').join(translate(value.ZONE3.power));
+      markup = markup.split('{{DEVICE_Z3_INPUT}}').join(translate(value.ZONE3.input));
+      markup = markup.split('{{DEVICE_Z3_VOLUME}}').join(value.ZONE3.volume);
     }
 
-    markup = markup.split('{{DEVICE_VOLUME}}').join('');
-    markup = markup.split('{{DEVICE_INPUT}}').join('');
-    markup = markup.split('{{DEVICE_Z3_POWER}}').join('');
+      markup = markup.split('{{DEVICE_POWER}}').join('');
+      markup = markup.split('{{DEVICE_Z1_POWER}}').join('');
+      markup = markup.split('{{DEVICE_Z1_INPUT}}').join('');
+      markup = markup.split('{{DEVICE_Z1_MUTE}}').join('');
+      markup = markup.split('{{DEVICE_Z1_MODE}}').join('');
+      markup = markup.split('{{DEVICE_Z1_VOLUME}}').join('');
+      markup = markup.split('{{DEVICE_Z1_MAXVOLUME}}').join('');
+      markup = markup.split('{{DEVICE_Z2_POWER}}').join('');
+      markup = markup.split('{{DEVICE_Z2_INPUT}}').join('');
+      markup = markup.split('{{DEVICE_Z2_VOLUME}}').join('');
+      markup = markup.split('{{DEVICE_Z3_POWER}}').join('');
+      markup = markup.split('{{DEVICE_Z3_INPUT}}').join('');
+      markup = markup.split('{{DEVICE_Z3_VOLUME}}').join('');
 
     return markup;
   };

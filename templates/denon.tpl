@@ -40,9 +40,18 @@
         </div>
         <div class"text-device-status">
           <ul>
-            <li>{{i18n_VOLUME}}: {{DEVICE_VOLUME}}</li>
-            <li>{{i18n_INPUT}}: {{DEVICE_INPUT}}</li>
-            <li>{{i18n_ZONE}} 3: {{DEVICE_Z3_POWER}}</li>
+		    <li>{{i18n_POWER}}: {{DEVICE_POWER}}</li>
+		    <li>{{i18n_Z1}} ({{DEVICE_Z1_POWER}})</li>
+			<li>{{i18n_INPUT}}: {{DEVICE_Z1_INPUT}}</li>
+            <li>{{i18n_VOLUME}}: {{DEVICE_Z1_VOLUME}} MAX: {{DEVICE_Z1_MAXVOLUME}}</li>
+			<li>{{i18n_SOUNDMODE}}: {{DEVICE_Z1_MODE}}</li>
+			<li>{{i18n_MUTE}}: {{DEVICE_Z1_MUTE}}</li>
+			<li>{{i18n_Z2}} ({{DEVICE_Z2_POWER}})</li>
+			<li>{{i18n_INPUT}}: {{DEVICE_Z2_INPUT}}</li>
+			<li>{{i18n_VOLUME}}: {{DEVICE_Z2_VOLUME}}</li>
+			<li>{{i18n_Z3}} ({{DEVICE_Z3_POWER}})</li>
+			<li>{{i18n_INPUT}}: {{DEVICE_Z3_INPUT}}</li>
+			<li>{{i18n_VOLUME}}: {{DEVICE_Z3_VOLUME}}</li>
           </ul>
         </div>
       </section>

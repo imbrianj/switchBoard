@@ -26,15 +26,16 @@
 module.exports = (function () {
   'use strict';
 
-  var Socket = null;
+  var Socket   = null;
+  var response = '';
 
   /**
-   * @author markewest@gmail.com
+   * @author markewest@gmail.com, jfeiler87
    * @fileoverview Basic control of Denon x4000 Receiver
    * @requires net
    */
   return {
-    version : 20140825,
+    version : 20140910,
 
     inputs : ['command', 'list'],
 
@@ -47,7 +48,7 @@ module.exports = (function () {
      * Map inputted commands to the values the device or API is expecting.
      */
     hashTable : { 'POWER_STATUS'    : 'PW?',
-                  'POWERON'         : 'PWON',
+                  'POWERON'         : 'ZMON',
                   'POWEROFF'        : 'PWSTANDBY',
                   'VOL_STATUS'      : 'MV?',
                   'VOLUP'           : 'MVUP',
@@ -97,43 +98,96 @@ module.exports = (function () {
           that           = this,
           denonState     = deviceState.getDeviceState(config.deviceId),
           denon          = { device : {}, config : {} },
-          statusCommands = ['VOL_STATUS', 'INPUT_STATUS', 'ZONE3_STATUS'];
+          statusCommands = ['POWER_STATUS', 'MUTE_STATUS', 'ZONE1_STATUS', 'VOL_STATUS', 'INPUT_STATUS', 'SOUND_STATUS', 'ZONE2_STATUS', 'ZONE3_STATUS'];
           count          = count || 0;
 
       if(typeof denonState === 'undefined') {
         denonState = { value : { ZONE1 : {}, ZONE2 : {}, ZONE3 : {} } };
       }
 
-      callback      = callback || function() {};
-      denon.command = statusCommands[count];
+      callback                  = callback || function() {};
+      denon.device.deviceId     = controller.config.deviceId;
+      denon.device.deviceIp     = controller.config.deviceIp;
+      denon.device.localTimeout = controller.config.localTimeout || config.localTimeout;            
+      denon.command             = statusCommands[count];
 
       denon.callback = function (err, reply) {
         var rex = '';
 
-        if(reply) {
-          if(rex = reply.toString().match(/(MV)([0-9]+)\r/)) {
-            denonState.value.ZONE1.volume = rex[2];
+        for(var i in reply) { 
+
+          if(reply[i].match(/PW.+/)) {
+            if(rex = reply[i].match(/PW(ON|OFF|STANDBY)/)) {
+              denonState.value.power = rex[1];
+            }
+          }
+          
+          else if(reply[i].match(/MU.+/)) {
+            if(rex = reply[i].match(/MU(ON|OFF)/)) {
+              denonState.value.ZONE1.mute = rex[1];
+            }
           }
 
-          else if(rex = reply.toString().match(/(SI)([A-Z]+)\r/)) {
-            denonState.value.ZONE1.input = rex[2];
+          else if(reply[i].match(/ZM.+/)) {
+            if(rex = reply[i].match(/ZM(ON|OFF)/)) {
+              denonState.value.ZONE1.power = rex[1];
+            }
           }
 
-          else if(rex = reply.toString().match(/(Z3)(ON|OFF)\r/)) {
-            denonState.value.ZONE3.power = rex[2];
+          else if(reply[i].match(/MV.+/)) {
+            if(rex = reply[i].match(/MV([0-9]+)/)) {
+              denonState.value.ZONE1.volume = rex[1];
+            }
+            else if(rex = reply[i].match(/MVMAX.([0-9]+)/)) {
+              denonState.value.ZONE1.maxvolume = rex[1];
+            }
           }
 
-          else if(rex = reply.toString().match(/(Z3)([0-9]+)\r/)) {
-            denonState.value.ZONE3.volume = rex[2];
+          else if(reply[i].match(/SI.+/)) {
+            if(rex = reply[i].match(/SI(.+)/)) {
+              denonState.value.ZONE1.input = rex[1];
+            }
           }
+          
+          else if(reply[i].match(/MS.+/)) {
+            if(rex = reply[i].match(/MS(.+)/)) {
+              denonState.value.ZONE1.mode = rex[1];
+            }
+          }
+
+          else if(reply[i].match(/Z2.+/)) {
+            if(rex = reply[i].match(/Z2(ON|OFF)/)) {
+              denonState.value.ZONE2.power = rex[1];
+            }
+            else if(rex = reply[i].match(/Z2([0-9]+)/)) {
+              denonState.value.ZONE2.volume = rex[1];
+            }
+            else if(rex = reply[i].match(/Z2(.+)/)) {
+              denonState.value.ZONE2.input = rex[1];
+            }
+          }
+
+          else if(reply[i].match(/Z3.+/)) {
+            if(rex = reply[i].match(/Z3(ON|OFF)/)) {
+              denonState.value.ZONE3.power = rex[1];
+            }
+            else if(rex = reply[i].match(/Z3([0-9]+)/)) {
+              denonState.value.ZONE3.volume = rex[1];
+            }
+            else if(rex = reply[i].match(/Z3(.+)/)) {
+              denonState.value.ZONE3.input = rex[1];
+            }
+          }
+
         }
-
+/*
         else {
           callback(denon.device.deviceId, 'err');
         }
-
+*/
         if(count === statusCommands.length) {
           callback(denon.device.deviceId, null, 'ok', denonState);
+          if(response > 256) { response = ''; }
         }
 
         else {
@@ -154,8 +208,9 @@ module.exports = (function () {
     },
 
     send : function (config) {
-      var net    = require('net'),
-          denon  = {};
+      var net      = require('net'),
+          passover = '',
+          denon    = {};
 
       denon.deviceIp   = config.device.deviceIp;
       denon.timeout    = config.device.localTimeout     || config.config.localTimeout;
@@ -163,7 +218,7 @@ module.exports = (function () {
       denon.devicePort = config.devicePort              || 23;
       denon.callback   = config.callback                || function () {};
 
-      if((Socket) && (denon.command)) {
+      if((Socket) && (denon.command) && (!Socket.destroyed)) {
         if((denon.command !== 'state') && (denon.command !== 'list')) {
           Socket.write(denon.command + "\r");
         }
@@ -177,7 +232,6 @@ module.exports = (function () {
 
       else if(denon.command) {
         Socket = new net.Socket();
-
         Socket.connect(denon.devicePort, denon.deviceIp);
 
         Socket.once('connect', function() {
@@ -194,9 +248,11 @@ module.exports = (function () {
             denon.callback({ code : 'ETIMEDOUT' });
           });
         }
-
+        
         Socket.on('data', function(dataReply) {
-          denon.callback(null, dataReply);
+          response += dataReply;
+          passover = response.toString().split("\r");
+          denon.callback(null, passover);
         });
 
         Socket.once('end', function() {
@@ -204,8 +260,11 @@ module.exports = (function () {
         });
 
         Socket.once('error', function(err) {
+        var deviceState    = require(__dirname + '/../lib/deviceState'),
+            denonState     = deviceState.getDeviceState(config.deviceId);
+            
           if((err.code !== 'ETIMEDOUT') || (denon.command !== 'state')) {
-            denon.callback(err);
+            denon.callback(err, denonState);
           }
         });
       }
