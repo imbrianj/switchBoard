@@ -71,15 +71,29 @@ FAQ
 
 - Q. How can I configure my PS3?
 
-  You'll need to have your SwitchBoard device (computer, raspberry pi, etc.) *pretend* to be a PS3 controller (aka Sixaxis Controller) that communicates with the PS3 via Bluetooth.
+  You'll need to have your SwitchBoard device (computer, raspberry pi, etc.) pretend (aka spoofing) to be a PS3 controller (aka Sixaxis Controller) that communicates with the PS3 via Bluetooth.
 
    * You'll need a supported Bluetooth dongle that plugs into your device and communicates with the console (the CSR bluecore4-rom is recommended): http://gimx.fr/wiki/index.php?title=Bluetooth_dongle
    * [Install GIMX](https://github.com/matlo/GIMX/releases) version 2.0x+ (earlier versions won't work)
-   * Some [detailed instructions](http://gimx.fr/wiki/index.php?title=RPi) for installing on a Raspberry Pi
-   * Plug your Sixaxis into your PS3, press the controller's PS button to pair it.  Then, unplug the controller from the PS3 and plug into your SwitchBoard device.
-   * Note the Bluetooth addresses of both the PS3 controller and PS3 Bluetooth address.  You'll need the PS3 Bluetooth address in your config and you'll need the controller address to copy over to your dongle.
-     * Refer to the [detailed instruction for spoofing your Bluetooth dongle's MAC address](http://gimx.fr/wiki/index.php?title=Command_line#Linux_.2B_bluetooth_.2B_PS3).
-   * That's it!
+   * Refer to the [detailed instruction for spoofing your Bluetooth dongle's MAC address](http://gimx.fr/wiki/index.php?title=Command_line#Linux_.2B_bluetooth_.2B_PS3).
+   * Tips:
+     * The above instructions pressume you have plugged your Sixaxis into your PS3, pressed the controller's PS button to pair it. Then, unpluged the controller from the PS3 and pluged into your SwitchBoard device.
+     * Keep note of the Bluetooth addresses of both your PS3 controller (aka Current Bluetooth Device Address, or sixaxis_bt_address) and PS3 console (aka Current Bluetooth master, or ps3_bt_address).  You'll need the PS3 Bluetooth address in your config/config.js file and you'll need the controller address to copy over to your dongle
+
+   * Installing on the Raspberry Pi for a presistent server / controller accessible from any device on your network.
+      * ```wget https://github.com/matlo/GIMX/releases/download/v3.2/gimx_3.2-1_armhf.deb && sudo dpkg -i gimx_3.2-1_armhf.deb``` # install gimx
+      * Plug your PS3 controller (aka Sixaxis) into your PS3, press the controller's PS button to pair it.  Then, unplug the controller from the PS3 and plug into your Raspberry Pi.
+      * ```sixaddr```
+      * Should result in: 
+          Current Bluetooth master: 90:34:FC:F7:75:E3 # your ps3's MAC address, set this to be MAC address of your ps3 within config/config.js, remember to enable the device as well
+          Current Bluetooth Device Address: 04:98:F3:0C:FA:6B # save for later, you can disconnect the PS3 controller now
+      * ```hciconfig -a``` # With your dongle plugged in, this should reveal the active dongle.
+      * Take note of a line that looks like this which represents your dongle: ```hci0: Type: BR/EDR  Bus: USB```
+      * ```bdaddr -r -i hci0``` # Use the integer (in our case 0) from the hci0 output above, in this command, to set the MAC address of your dongle to that of the Sixaxis you saved earlier.
+      * Your Raspberry's dongle will now pretend to be the Siaxis controller.
+      * ```switchBoard -c config/config.js``` # power up your controller, hit the Raspberry Pi via your browser
+      * You should now see the PS3 tab, click on it, click on the power button (equivalent to the PS3's start button), and profit.
+      * [Reference instructions](http://gimx.fr/wiki/index.php?title=RPi) for installing on a Raspberry Pi
 
   Q. What is that dot in the top right?
 
