@@ -59,7 +59,7 @@ Supported Devices/Services
      * Keep note of the Bluetooth addresses of both your PS3 controller (aka Current Bluetooth Device Address, or sixaxis_bt_address) and PS3 console (aka Current Bluetooth master, or ps3_bt_address).  You'll need to add the PS3 Bluetooth address in your config/config.js file and you'll need the controller address to copy over to your dongle
 
 ### Controlling your PS3 -- via a Raspberry Pi set up as a presistent server
-- `cd switchBoard && npm update && sudo apt-get update && sudo apt-get upgrade && sudo apt-get clean all && sudo updatedb && sudo rpi-update && sudo poweroff` # Make sure your Raspberry Pi is up to date
+- `cd switchBoard && npm update && sudo apt-get update && sudo apt-get upgrade && sudo apt-get clean all && sudo rpi-update && sudo poweroff` # Make sure your Raspberry Pi is up to date
 - You'll need a supported Bluetooth dongle that plugs into your device and communicates with the console (the CSR bluecore4-rom is recommended): http://gimx.fr/wiki/index.php?title=Bluetooth_dongle
 - `wget https://github.com/matlo/GIMX/releases/download/v3.2/gimx_3.2-1_armhf.deb && sudo dpkg -i gimx_3.2-1_armhf.deb` # install gimx
 - Plug your PS3 controller (aka Sixaxis) into your PS3, press the controller's PS button to pair it.  Then, unplug the controller from the PS3 and plug into your Raspberry Pi.
