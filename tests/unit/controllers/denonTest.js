@@ -27,7 +27,7 @@
  * @author brian@bevey.org
  * @fileoverview Unit test for controllers/denon.js
  */
-
+/*
 exports.denonControllerTest = {
   hashTable : function (test) {
     'use strict';
@@ -44,3 +44,4 @@ exports.denonControllerTest = {
     test.done();
   }
 };
+*/
