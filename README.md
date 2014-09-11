@@ -37,7 +37,7 @@ Supported Devices/Services
 | Pioneer          | Testing     | Reportedly works, but unable to test                                            |
 | PS3              | Stable      | Uses GIMX to emulate PS3 controller ([see below](https://github.com/imbrianj/switchBoard#faq)). OSX not supported  |
 | Pushover         | Stable      | Requires purchased app and token / user key                                     |
-| Raspberry Remote | Stable      | Uses ([Raspberry Remote](https://xkonni.github.io/raspberry-remote/)) to control lighting. Only Linux is supported |
+| Raspberry Remote | Stable      | Uses [Raspberry Remote](https://xkonni.github.io/raspberry-remote/) to control lighting. Only Linux is supported |
 | Roku             | Stable      | Launch apps directly, text input and basic controls                             |
 | Samsung          | Stable      | Text input and basic controls                                                   |
 | SmartThings      | Stable      | Control devices and monitor real-time states. Requires [companion app](https://github.com/imbrianj/oauth_controller/blob/master/oauth_controller.groovy) |
@@ -64,7 +64,7 @@ Supported Devices/Services
 - `wget https://github.com/matlo/GIMX/releases/download/v3.2/gimx_3.2-1_armhf.deb && sudo dpkg -i gimx_3.2-1_armhf.deb` # install gimx
 - Plug your PS3 controller (aka Sixaxis) into your PS3, press the controller's PS button to pair it.  Then, unplug the controller from the PS3 and plug into your Raspberry Pi.
 - `sixaddr`
-- Should result in: 
+- Should result in:
 `Current Bluetooth master: 90:34:FC:F7:75:E3 # your PS3's Bluetooth address, set this to be MAC address of your ps3 within config/config.js, remember to enable the device as well
 Current Bluetooth Device Address: 04:98:F3:0C:FA:6B # save for later, you can disconnect the PS3 controller now`
 - `hciconfig -a` # With your dongle plugged in, this should reveal the active dongle.

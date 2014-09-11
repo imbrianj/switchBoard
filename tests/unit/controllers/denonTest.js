@@ -27,7 +27,7 @@
  * @author brian@bevey.org
  * @fileoverview Unit test for controllers/denon.js
  */
-/*
+
 exports.denonControllerTest = {
   hashTable : function (test) {
     'use strict';
@@ -37,11 +37,10 @@ exports.denonControllerTest = {
         volUp           = denonController.hashTable.VOLUP,
         volDown         = denonController.hashTable.VOLDOWN;
 
-    test.strictEqual(power,   'PWON',   'POWER_ON is mapped to PWON');
+    test.strictEqual(power,   'ZMON',   'POWER_ON is mapped to ZMON');
     test.strictEqual(volUp,   'MVUP',   'VOLUP is mapped to MVUP');
     test.strictEqual(volDown, 'MVDOWN', 'VOLDOWN is mapped to MVDOWN');
 
     test.done();
   }
 };
-*/
