@@ -46,7 +46,7 @@
       markup = markup.split('{{DEVICE_POWER}}').join(translate(value.power));
 
       if(value.ZONE1) {
-        markup = markup.split('{{DEVICE_Z1_INPUT}}').join(value.ZONE1.input);
+        markup = markup.split('{{DEVICE_Z1_INPUT}}').join(translate(value.ZONE1.input));
         markup = markup.split('{{DEVICE_Z1_POWER}}').join(translate(value.ZONE1.power));
         markup = markup.split('{{DEVICE_Z1_MUTE}}').join(translate(value.ZONE1.mute));
         markup = markup.split('{{DEVICE_Z1_MODE}}').join(translate(value.ZONE1.mode));
