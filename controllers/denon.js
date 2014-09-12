@@ -112,12 +112,17 @@ module.exports = (function () {
 
       denon.callback = function (err, reply, response) {
         var encodeName = require(__dirname + '/../lib/sharedUtil').util.encodeName,
-            rex        = '';
+            rex        = '',
+            state      = 'err';
 
         for(var i in reply) {
           if(reply[i].match(/PW.+/)) {
             if(rex = reply[i].match(/PW(ON|OFF|STANDBY)/)) {
               denonState.value.power = encodeName(rex[1]);
+
+              if(denonState.value.power === 'ON') {
+                state = 'ok';
+              }
             }
           }
 
@@ -180,7 +185,7 @@ module.exports = (function () {
         }
 
         if(count === statusCommands.length) {
-          callback(denon.device.deviceId, null, 'ok', denonState);
+          callback(denon.device.deviceId, null, state, denonState);
 
           if(response > 256) {
             response = '';

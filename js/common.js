@@ -391,9 +391,14 @@ Switchboard = (function () {
     },
 
     /**
-     * Stupid wrapper to ensure console.log exists before using it.
+     * Log messages.  If you pass a source and type (success, info or error),
+     * it will print to console with pretty colors.
      *
-     * @param {String} string String to be printed to console log.
+     * @param {String|Object} message Message to be printed to console log.
+     * @param {String} source Source of the log - a device or function worth
+     *         noting.
+     * @param {String} type Type of message to log - defines the color of the
+     *         text.  Can be "success", "info" or "error".
      */
     log : function (message, source, type) {
       var now   = new Date(),
@@ -423,6 +428,19 @@ Switchboard = (function () {
         else {
           console.log(message);
         }
+      }
+    },
+
+    /**
+     * Stupid wrapper to ensure navigator.vibrate exists before using it.
+     *
+     * @param {Int} duration Number of milliseconds to vibrate.
+     */
+    vibrate : function (duration) {
+      duration = duration || 5;
+
+      if((window.navigator) && (window.navigator.vibrate)) {
+        window.navigator.vibrate(duration);
       }
     },
 
@@ -656,6 +674,8 @@ Switchboard = (function () {
           indicator.className = 'connected';
           SB.putText(indicator, SB.strings.CONNECTED);
 
+          SB.log('Connected', 'WebSocket', 'success');
+
           if(reconnect) {
             socket.send('fetch state');
 
@@ -861,6 +881,8 @@ Switchboard = (function () {
             SB.removeClass(selectNav,     'selected');
             SB.removeClass(selectContent, 'selected');
 
+            SB.vibrate();
+
             lazyLoad(elm.className);
 
             SB.addClass(elm,        'selected');
@@ -903,6 +925,8 @@ Switchboard = (function () {
           e.preventDefault();
 
           command = elm.href;
+
+          SB.vibrate();
 
           if(socket) {
             if(checkConnection()) {

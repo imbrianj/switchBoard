@@ -526,14 +526,18 @@ section ul {
 	padding-left: 0;
 }
 
-section a {
-	display: block;
-	margin: 0 auto;
-	text-align: center;
+section a,
+section span {
 	-moz-transition: all .1s ease-in-out;
 	-o-transition: all .1s ease-in-out;
 	-webkit-transition: all .1s ease-in-out;
 	transition: all .1s ease-in-out;
+}
+
+section a {
+	display: block;
+	margin: 0 auto;
+	text-align: center;
 	width: 1em;
 }
 

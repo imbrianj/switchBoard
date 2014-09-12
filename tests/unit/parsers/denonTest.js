@@ -27,7 +27,7 @@
  * @author brian@bevey.org
  * @fileoverview Unit test for parsers/denon.js
  */
-/*
+
 exports.denonParserTest = {
   parser : function (test) {
     'use strict';
@@ -45,4 +45,3 @@ exports.denonParserTest = {
     test.done();
   }
 };
-*/

@@ -135,9 +135,7 @@ module.exports = (function () {
                   }
                 }
               }
-            }
 
-            if(travisData.status === 'ok') {
               travis.callback(null, travisData);
             }
 
