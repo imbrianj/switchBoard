@@ -28,7 +28,7 @@ Switchboard = (function () {
   'use strict';
 
   return {
-    version : 20140903,
+    version : 20140911,
 
     state : {},
 
@@ -395,11 +395,34 @@ Switchboard = (function () {
      *
      * @param {String} string String to be printed to console log.
      */
-    log : function (message) {
-      var now = new Date();
+    log : function (message, source, type) {
+      var now   = new Date(),
+          color = 'color: white';
 
-      if(typeof console === 'object' && typeof console.log === 'function') {
-        console.log(message + ' (' + now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes() + ')');
+      if((typeof console === 'object') && (typeof console.log === 'function')) {
+        if((source) && (typeof message !== 'object')) {
+          message = '%c' + source + '%c: ' + message + ' (' + now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes() + ')';
+
+          switch(type) {
+            case 'success' :
+              color = 'color: green';
+            break;
+
+            case 'info' :
+              color = 'color: aqua';
+            break;
+
+            case 'error' :
+              color = 'color: red';
+            break;
+          }
+
+          console.log(message, 'background: black; ' + color, 'background: black; color: white');
+        }
+
+        else {
+          console.log(message);
+        }
       }
     },
 
@@ -537,7 +560,7 @@ Switchboard = (function () {
 
         SB.state[state.deviceId] = state;
 
-        SB.log(state.deviceId + ' updated');
+        SB.log('updated', state.deviceId, 'success');
 
         if(node) {
           markup       = templates[state.typeClass].markup;
@@ -625,7 +648,7 @@ Switchboard = (function () {
       socketConnect = function () {
         var reconnect = buildIndicator();
 
-        SB.log('Connecting to WebSocket');
+        SB.log('Connecting', 'WebSocket', 'info');
 
         socket = new WebSocket('ws://' + window.location.host, 'echo-protocol');
 
@@ -636,7 +659,7 @@ Switchboard = (function () {
           if(reconnect) {
             socket.send('fetch state');
 
-            SB.log('Reconnected to WebSocket');
+            SB.log('Reconnected', 'WebSocket', 'success');
           }
         });
 
@@ -644,7 +667,7 @@ Switchboard = (function () {
           indicator.className = 'disconnected';
           SB.putText(indicator, SB.strings.DISCONNECTED);
 
-          SB.log('Disconnected from WebSocket');
+          SB.log('Disconnected', 'WebSocket', 'error');
         });
 
         SB.event.add(socket, 'message', function(e) {
@@ -695,7 +718,7 @@ Switchboard = (function () {
 
             // State objects have specific deviceIds associated.
             if((message[device]) && (message[device].deviceId)) {
-              SB.log('Received latest State');
+              SB.log('State', 'Received', 'success');
 
               for(device in message) {
                 updateTemplate(message[device]);
@@ -729,7 +752,7 @@ Switchboard = (function () {
 
       /* Otherwise, we'll poll for updates */
       else {
-        SB.log('WebSockets not supported - using polling');
+        SB.log('not supported - using polling', 'WebSockets', 'error');
 
         buildIndicator();
 
