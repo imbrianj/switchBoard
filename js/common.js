@@ -560,7 +560,7 @@ Switchboard = (function () {
 
         SB.state[state.deviceId] = state;
 
-        SB.log('updated', state.deviceId, 'success');
+        SB.log('Updated', state.deviceId, 'success');
 
         if(node) {
           markup       = templates[state.typeClass].markup;
@@ -718,7 +718,7 @@ Switchboard = (function () {
 
             // State objects have specific deviceIds associated.
             if((message[device]) && (message[device].deviceId)) {
-              SB.log('State', 'Received', 'success');
+              SB.log('Received', 'State', 'success');
 
               for(device in message) {
                 updateTemplate(message[device]);

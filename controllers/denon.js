@@ -34,7 +34,7 @@ module.exports = (function () {
    * @requires net
    */
   return {
-    version : 20140911,
+    version : 20140912,
 
     inputs : ['command', 'list'],
 
@@ -94,7 +94,6 @@ module.exports = (function () {
      */
     state : function (controller, config, callback, count) {
       var deviceState    = require(__dirname + '/../lib/deviceState'),
-          encodeName     = require(__dirname + '/../lib/sharedUtil').encodeName,
           that           = this,
           denonState     = deviceState.getDeviceState(config.deviceId),
           denon          = { device : {}, config : {} },
@@ -112,7 +111,8 @@ module.exports = (function () {
       denon.command             = statusCommands[count];
 
       denon.callback = function (err, reply, response) {
-        var rex = '';
+        var encodeName = require(__dirname + '/../lib/sharedUtil').util.encodeName,
+            rex        = '';
 
         for(var i in reply) {
           if(reply[i].match(/PW.+/)) {

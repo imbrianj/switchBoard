@@ -122,8 +122,8 @@ exports.config = {
     stocks    : ['YHOO', 'AAPL', 'GOOG', 'TSLA'],
     // Not to be considered investment advice, but this shows how you can set
     // stock prices to be notified of.
-    limits    : { YHOO : { buy : 30,  sell : 43 },
-                  TSLA : { buy : 150, sell : 250 } },
+    limits    : { YHOO : { buy : 30,  sell : 45 },
+                  TSLA : { buy : 200, sell : 350 } },
     // Means by which you should be notified (if the controllers for each are
     // properly configured).
     notify    : ['pushover', 'twilio', 'speech', 'mp3'],
