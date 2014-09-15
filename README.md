@@ -39,12 +39,12 @@ Supported Devices/Services
 | Pushover         | Stable      | Requires purchased app and token / user key                                     |
 | Raspberry Remote | Stable      | Uses [Raspberry Remote](https://xkonni.github.io/raspberry-remote/) to control lighting. Only Linux is supported |
 | Roku             | Stable      | Launch apps directly, text input and basic controls                             |
-| Samsung          | Stable      | Text input and basic controls                                                   |
+| Samsung SmartTV  | Stable      | Text input and basic controls                                                   |
 | SmartThings      | Stable      | Control devices and monitor real-time states. Requires [companion app](https://github.com/imbrianj/oauth_controller/blob/master/oauth_controller.groovy) |
 | SMS              | Stable      | Uses Twilio. Requires ID and token                                              |
 | Speech           | Stable      | Uses espeak for *nix, say on OSX.  Win not supported                            |
 | Stocks           | Stable      | Uses Yahoo Finance                                                              |
-| Travis           | Stable      |                                                                                 |
+| Travis CI        | Stable      |                                                                                 |
 | Weather          | Stable      | Uses Yahoo Weather                                                              |
 | XBMC             | Testing     | Basic controls work                                                             |
 
@@ -103,7 +103,7 @@ FAQ
 
   A. I want to make sure this works without any Internet access.  You need local LAN access, but nothing critical should be over the Internet.  Some services (stocks and weather) obviously require access, but they are not core to the functionality of the app.
 
-  Q. What is that dot in the top right?
+- Q. What is that dot in the top right?
 
   A. The dot indicates your connection state.  If you see it, congrats!  You're able to grab real-time info from SwitchBoard.  Your browser will attempt to connect via WebSockets for real-time updates.
 
@@ -120,6 +120,6 @@ FAQ
 
   A. Depends.  It's assumed that any device that's on your network is deemed white-listed.  This probably shouldn't be used on a large network with people you don't trust to screw with your TV. My goal is to provide the most security by keeping external connections to a minimum.  See "Q. Why aren't you using a seed-based JS library / referencing CSS from a CDN?"
 
-  Q. How can I access this if I'm away from my home?
+- Q. How can I access this if I'm away from my home?
 
-  A. I would strongly advise you to not just punch a hole in your firewall.  If your router supports VPN connections, it's a very safe option to configure your phone to connect to that before using SwitchBoard remotely.  If that's not possible or not conveneint, you may use [ngrok](https://ngrok.com/) to easily access SwitchBoard (at no cost) with no additional configuration.  If you choose ngrok, be sure to [configure a ppassword!](https://ngrok.com/usage)!
+  A. I would strongly advise you to not just punch a hole in your firewall.  If your router supports VPN connections, it's a very safe option to configure your phone to connect to that before using SwitchBoard remotely.  If that's not possible or not conveneint, you may use [ngrok](https://ngrok.com/) to easily access SwitchBoard (at no cost) with no additional configuration.  If you choose ngrok, be sure to [configure a ppassword!](https://ngrok.com/usage)
