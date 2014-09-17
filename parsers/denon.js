@@ -83,4 +83,4 @@
 
     return markup;
   };
-})(typeof exports === 'undefined' ? this.Switchboard.parsers : exports);
+})(typeof exports === 'undefined' ? this.Switchboard.spec.parsers : exports);

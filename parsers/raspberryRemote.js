@@ -81,4 +81,4 @@
 
     return markup.replace('{{RASPBERRY_REMOTE_DYNAMIC}}', tempMarkup);
   };
-})(typeof exports === 'undefined' ? this.Switchboard.parsers : exports);
+})(typeof exports === 'undefined' ? this.Switchboard.spec.parsers : exports);

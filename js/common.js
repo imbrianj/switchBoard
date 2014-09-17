@@ -28,15 +28,44 @@ Switchboard = (function () {
   'use strict';
 
   return {
-    version : 20140911,
+    version : 20140916,
 
-    state : {},
+   /**
+    * Stops event bubbling further.
+    *
+    * @param {Event} e Event to prevent from bubbling further.
+    */
+    cancelBubble : function (e) {
+      e = e || window.event;
 
-    parsers : {},
+      e.cancelBubble = true;
 
-    templates : {},
+      if (e.stopPropagation) {
+        e.stopPropagation();
+      }
+    },
 
-    strings : {},
+   /**
+    * Determines if an element is an ancestor to another element.
+    *
+    * @param {Object} child DOM element to check if it is an ancestor of the
+    *         ancestor element passed.
+    * @param {Object} ancestor DOM element of potential ancestor node to the
+    *         child element passed.
+    * @return {Boolean} true if the child is an ancestor of the ancestor
+    *          element passed - false, otherwise.
+    */
+    isChildOf : function (child, ancestor) {
+      if (ancestor === child) {
+        return false;
+      }
+
+      while (child && (child !== ancestor) && (child !== document.body)) {
+        child = child.parentNode;
+      }
+
+      return child === ancestor;
+    },
 
     event : {
       list : [],
@@ -353,6 +382,27 @@ Switchboard = (function () {
     },
 
    /**
+    * Sugar function to remove units of measure from a given string.
+    *
+    * @param {String} property Measurement property to have it's units removed.
+    * @return {Integer} Integer value of measurement entered - but without
+    *          units of measure.
+    */
+    stripUnits : function (property) {
+      var value = '';
+
+      if (typeof property === 'string') {
+        value = parseInt(property.replace(new RegExp('(%|px|em)'), ''), 10);
+      }
+
+      else {
+        value = property;
+      }
+
+      return value;
+    },
+
+   /**
     * Removes extra whitespace at the beginning or end of a given string.
     *
     * @param {String} string String of text that may have leading or trailing
@@ -537,36 +587,274 @@ Switchboard = (function () {
     },
 
    /**
-    * Initialization for Switchboard.  Executes the standard functions used.
-    *  If a global function of "init" is available, it will also be executed.
+    * Finds the current mouse position.
+    *
+    * @param {Event} e Mouse event.
+    * @return {Object} position Object containing:
+    *          {Integer} positionX Mouse offset on X-axis.
+    *          {Integer} positionY Mouse offset on Y-axis.
     */
-    init : function () {
-      var SB         = Switchboard,
-          header     = SB.getByTag('header')[0],
-          body       = SB.getByTag('main')[0],
-          textInputs = SB.getByClass('text-form', body, 'form'),
-          lazyLoad,
-          lazyUnLoad,
-          templates,
-          socketConnect,
-          checkConnection,
-          updateTemplate,
-          indicator,
-          buildIndicator,
-          socket,
-          i;
+    findMousePosition : function (e) {
+      var position;
 
-      SB.strings = { CONNECTED    : header.dataset.stringConnected,
-                     CONNECTING   : header.dataset.stringConnecting,
-                     DISCONNECTED : header.dataset.stringDisconnected,
-                     ACTIVE       : body.dataset.stringActive,
-                     INACTIVE     : body.dataset.stringInactive,
-                     ON           : body.dataset.stringOn,
-                     OFF          : body.dataset.stringOff };
+      if (e.touches && e.touches.length) {
+        position = {
+          positionX: e.touches[0].clientX,
+          positionY: e.touches[0].clientY
+        };
+      }
 
-      updateTemplate = function(state) {
-        var node        = SB.get(state.deviceId),
-            parser      = SB.parsers[state.typeClass],
+      else if (window.event) {
+        position = {
+          positionX: window.event.clientX,
+          positionY: window.event.clientY
+        };
+      }
+
+      else {
+        position = {
+          positionX: e.clientX,
+          positionY: e.clientY
+        };
+      }
+
+      return position;
+    },
+
+   /**
+    * Finds the computed value of a given CSS property.
+    *
+    * @param {Object} elm Element containing a CSS property.
+    * @param {String} property CSS property of the element to be found.
+    * @return {String} Computed CSS property value of the given element and
+    *          property type.
+    */
+    findStyle : function (elm, property) {
+      var styleValue = '';
+
+      if (elm.currentStyle) {
+        property = property.replace(/-\w/g, function (match) {
+          return match.charAt(1).toUpperCase();
+        });
+
+        styleValue = elm.currentStyle[property];
+      }
+
+      else if (window.getComputedStyle) {
+        styleValue = document.defaultView.getComputedStyle(elm, null).getPropertyValue(property);
+      }
+
+      else {
+        return 0;
+      }
+
+      if (styleValue) {
+        if ((styleValue.indexOf('px') !== -1) ||
+            (styleValue.indexOf('em') !== -1) ||
+            (styleValue.indexOf('%')  !== -1)) {
+          styleValue = Switchboard.stripUnits(styleValue);
+        }
+
+        if (property === 'opacity') {
+          styleValue = parseFloat(styleValue, 10);
+        }
+      }
+
+      return styleValue;
+    },
+
+   /**
+    * Finds where on the page the user has scrolled.
+    *
+    * @return {Object} Object containing:
+    *          {Integer} Pixel offset from the top of the page to the top of
+    *           the user's scrolled viewport.
+    *          {Integer} Pixel offset from the left edge of the user's scrolled
+    *           viewport.
+    */
+    findScroll : function () {
+      var position = 0;
+
+      if (typeof(window.pageYOffset) === 'number') {
+        position = {
+          positionX: window.pageXOffset,
+          positionY: window.pageYOffset
+        };
+      }
+
+      else if ((document.body) && (document.body.scrollTop)) {
+        position = {
+          positionX: document.body.scrollWidth,
+          positionY: document.body.scrollTop
+        };
+      }
+
+      else if ((document.documentElement) && (document.documentElement.scrollTop)) {
+        position = {
+          positionX: document.documentElement.scrollWidth,
+          positionY: document.documentElement.scrollTop
+        };
+      }
+
+      return position;
+    },
+
+   /**
+    * Creates a dragable element with optional drop points.
+    *
+    * @param {Object} drag Object containing:
+    *         {Object} elm Element to be movable.
+    *         {Object} dragElm Element that will act as the drag focus.  If
+    *          none is specified, it will default to drag.elm.
+    *         {Boolean} restrict true if the element should be restricted to
+    *          movement only within it's direct parent.
+    *         {Function} onStart Function to be executed when the element first
+    *          gets clicked.
+    *         {Function} onTween Function to be executed after each step in the
+    *          element's movement.
+    *         {Function} onComplete Function to be executed after the element
+    *          is done moving (mouseup).
+    */
+    clickDrag : function (drag) {
+      drag.dragElm    = drag.dragElm    || drag.elm;
+      drag.restrict   = drag.restrict   || false;
+      drag.onStart    = drag.onStart    || function () {};
+      drag.onTween    = drag.onTween    || function () {};
+      drag.onComplete = drag.onComplete || function () {};
+
+      var mover,
+          dropper,
+          start = (document.body.ontouchstart === undefined) ? 'mousedown' : 'touchstart',
+          move  = (document.body.ontouchmove  === undefined) ? 'mousemove' : 'touchmove',
+          end   = (document.body.ontouchend   === undefined) ? 'mouseup'   : 'touchend',
+          wrapperBorderOffsetX = Switchboard.findStyle(drag.elm.parentNode, 'border-left-width') + Switchboard.findStyle(drag.elm.parentNode, 'border-right-width'),
+          wrapperBorderOffsetY = Switchboard.findStyle(drag.elm.parentNode, 'border-top-width')  + Switchboard.findStyle(drag.elm.parentNode, 'border-bottom-width');
+
+      mover = function (e) {
+        if (Switchboard.hasClass(drag.elm, 'active')) {
+          Switchboard.cancelBubble(e);
+
+          if (e.preventDefault) {
+            e.preventDefault();
+          }
+
+          var position  = Switchboard.findMousePosition(e),
+              positionX = position.positionX,
+              positionY = position.positionY,
+              width     = drag.dragElm.offsetWidth,
+              height    = drag.dragElm.offsetHeight,
+              endX,
+              endY;
+
+          drag.newX = positionX - drag.clickOffsetX + drag.startOffsetX - (drag.startWidth  - Switchboard.findScroll().positionX);
+          drag.newY = positionY - drag.clickOffsetY + drag.startOffsetY - (drag.startHeight - Switchboard.findScroll().positionY);
+
+          if (drag.restrict) {
+            endX = drag.elm.parentNode.offsetWidth  - width  - wrapperBorderOffsetX;
+            endY = drag.elm.parentNode.offsetHeight - height - wrapperBorderOffsetY;
+
+            if (drag.newX > endX) {
+              drag.newX = endX;
+            }
+
+            if (drag.newX < 0) {
+              drag.newX = 0;
+            }
+
+            if (drag.newY > endY) {
+              drag.newY = endY;
+            }
+
+            if (drag.newY < 0) {
+              drag.newY = 0;
+            }
+          }
+
+          drag.elm.style.margin = 0;
+          drag.elm.style.left   = drag.newX + 'px';
+          drag.elm.style.top    = drag.newY + 'px';
+
+          drag.onTween(drag);
+
+          return false;
+        }
+      };
+
+      dropper = function () {
+        if (Switchboard.hasClass(drag.elm, 'active')) {
+          Switchboard.removeClass(drag.elm, 'active');
+
+          Switchboard.event.remove(document, 'mousemove', mover);
+          Switchboard.event.remove(document, 'mouseup',   dropper);
+
+          drag.onComplete(drag);
+        }
+      };
+
+      Switchboard.event.add(drag.dragElm, start, function (e) {
+        var startOffset = Switchboard.findMousePosition(e);
+
+        Switchboard.clickDrag.zindex = Switchboard.clickDrag.zindex || 1;
+
+        Switchboard.cancelBubble(e);
+        drag.clickOffsetX       = startOffset.positionX;
+        drag.clickOffsetY       = startOffset.positionY;
+        drag.startOffsetX       = drag.elm.offsetLeft;
+        drag.startOffsetY       = drag.elm.offsetTop;
+        drag.startWidth         = Switchboard.findScroll().positionX;
+        drag.startHeight        = Switchboard.findScroll().positionY;
+        drag.elm.style.zIndex   = Switchboard.clickDrag.zindex += 1;
+        drag.elm.style.margin   = 0;
+        drag.elm.style.bottom   = 'auto';
+        drag.elm.style.right    = 'auto';
+        drag.elm.style.position = 'absolute';
+        Switchboard.addClass(drag.elm, 'active');
+
+        drag.onStart();
+
+        if (e.preventDefault) {
+          e.preventDefault();
+        }
+
+        Switchboard.event.add(document, move, mover);
+        Switchboard.event.add(document, end,  dropper);
+
+        mover(e);
+      });
+    },
+
+   /**
+    * Contains non-boilerplate methods used for SwitchBoard in the context of
+    * Automation.
+    */
+    spec : {
+      state : {},
+
+      parsers : {},
+
+      templates : {},
+
+      strings : {},
+
+      socket : {},
+
+      uiComponents : {
+        header : {},
+        body : {},
+        indicator : {},
+        templates : []
+      },
+
+     /**
+      * Accepts a state object replaces the appropriate DOM className if able.
+      * If content has changed, the entire node will be replaced.
+      *
+      * @param {Object} state State object of a changed controller.
+      */
+      updateTemplate : function(state) {
+        var SB          = Switchboard,
+            node        = SB.get(state.deviceId),
+            parser      = SB.spec.parsers[state.typeClass],
             value       = state.value,
             deviceState = state.state,
             deviceHeader,
@@ -576,12 +864,12 @@ Switchboard = (function () {
             oldMarkup,
             i;
 
-        SB.state[state.deviceId] = state;
+        SB.spec.state[state.deviceId] = state;
 
         SB.log('Updated', state.deviceId, 'success');
 
         if(node) {
-          markup       = templates[state.typeClass].markup;
+          markup       = SB.spec.uiComponents.templates[state.typeClass].markup;
           selected     = SB.hasClass(node, 'selected') ? ' selected' : '';
           oldMarkup    = node.cloneNode(true);
           deviceHeader = SB.getByTag('h1', oldMarkup)[0];
@@ -589,26 +877,26 @@ Switchboard = (function () {
           oldMarkup    = oldMarkup.innerHTML;
 
           if(parser) {
-            markup = parser(state.deviceId, markup, deviceState, value, templates[state.typeClass].fragments);
+            markup = parser(state.deviceId, markup, deviceState, value, SB.spec.uiComponents.templates[state.typeClass].fragments);
           }
 
           if(deviceState === 'ok') {
-            markup = markup.split('{{DEVICE_ACTIVE}}').join(SB.strings.ACTIVE);
+            markup = markup.split('{{DEVICE_ACTIVE}}').join(SB.spec.strings.ACTIVE);
 
-            if(SB.hasClass(node, 'device-off')) {
+            if(SB.hasClass(node,   'device-off')) {
               SB.removeClass(node, 'device-off');
-              SB.addClass(node, 'device-on');
-              SB.putText(SB.getByTag('em', SB.getByTag('h1', node)[0])[0], SB.strings.ACTIVE);
+              SB.addClass(node,    'device-on');
+              SB.putText(SB.getByTag('em', SB.getByTag('h1', node)[0])[0], SB.spec.strings.ACTIVE);
             }
           }
 
           else {
-            markup = markup.split('{{DEVICE_ACTIVE}}').join(SB.strings.INACTIVE);
+            markup = markup.split('{{DEVICE_ACTIVE}}').join(SB.spec.strings.INACTIVE);
 
-            if(SB.hasClass(node, 'device-on')) {
+            if(SB.hasClass(node,   'device-on')) {
               SB.removeClass(node, 'device-on');
-              SB.addClass(node, 'device-off');
-              SB.putText(SB.getByTag('em', SB.getByTag('h1', node)[0])[0], SB.strings.INACTIVE);
+              SB.addClass(node,    'device-off');
+              SB.putText(SB.getByTag('em', SB.getByTag('h1', node)[0])[0], SB.spec.strings.INACTIVE);
             }
           }
 
@@ -640,57 +928,86 @@ Switchboard = (function () {
             innerMarkup.removeChild(SB.getByTag('h1', innerMarkup)[0]);
 
             if(innerMarkup.innerHTML !== oldMarkup) {
-              node.outerHTML = markup;
+              if(SB.getByClass('sliderBar', node, 'div')) {
+                node.outerHTML = markup;
+
+                SB.spec.sliderCreate(state.deviceId);
+              }
+
+              else {
+                node.outerHTML = markup;
+              }
             }
           }
         }
-      };
+      },
 
-      buildIndicator = function (type) {
-        var reconnect = true;
+      /**
+       * If the indicator has not yet been created, build it - and populate it
+       * with the appropriate text and append to the supplied header DOM node.
+       */
+      buildIndicator : function () {
+        var SB = Switchboard;
 
         if(!SB.get('indicator')) {
-          indicator = document.createElement('span');
-          indicator.id = 'indicator';
-          SB.addClass(indicator, 'connecting');
-          SB.putText(indicator, SB.strings.CONNECTING);
+          SB.spec.uiComponents.indicator = document.createElement('span');
+          SB.spec.uiComponents.indicator.id = 'indicator';
+          SB.addClass(SB.spec.uiComponents.indicator, 'connecting');
+          SB.putText(SB.spec.uiComponents.indicator, SB.spec.strings.CONNECTING);
 
-          header.appendChild(indicator);
+          SB.spec.uiComponents.header.appendChild(SB.spec.uiComponents.indicator);
+        }
+      },
 
-          reconnect = false;
+      /**
+       * If you have no connection indicator - or if it doesn't say we're
+       * connected, we should reconnect and grab the latest State.
+       */
+      checkConnection : function () {
+        var SB        = Switchboard,
+            connected = SB.spec.uiComponents.indicator && SB.hasClass(SB.spec.uiComponents.indicator, 'connected');
+
+        if(!connected) {
+          SB.spec.socket = SB.spec.socketConnect();
         }
 
-        return reconnect;
-      };
+        return connected;
+      },
 
-      socketConnect = function () {
-        var reconnect = buildIndicator();
+      /**
+       * If you have no connection indicator - or if it doesn't say we're
+       * connected, we should reconnect and grab the latest State.
+       */
+      socketConnect : function () {
+        var SB = Switchboard;
 
         SB.log('Connecting', 'WebSocket', 'info');
 
-        socket = new WebSocket('ws://' + window.location.host, 'echo-protocol');
+        SB.spec.socket = new WebSocket('ws://' + window.location.host, 'echo-protocol');
 
-        SB.event.add(socket, 'open', function(e) {
-          indicator.className = 'connected';
-          SB.putText(indicator, SB.strings.CONNECTED);
+        SB.event.add(SB.spec.socket, 'open', function(e) {
+          var reconnect = SB.spec.uiComponents.indicator.className === 'disconnected' ? true : false;
+
+          SB.spec.uiComponents.indicator.className = 'connected';
+          SB.putText(SB.spec.uiComponents.indicator, SB.spec.strings.CONNECTED);
 
           SB.log('Connected', 'WebSocket', 'success');
 
           if(reconnect) {
-            socket.send('fetch state');
+            SB.spec.socket.send('fetch state');
 
             SB.log('Reconnected', 'WebSocket', 'success');
           }
         });
 
-        SB.event.add(socket, 'close', function(e) {
-          indicator.className = 'disconnected';
-          SB.putText(indicator, SB.strings.DISCONNECTED);
+        SB.event.add(SB.spec.socket, 'close', function(e) {
+          SB.spec.uiComponents.indicator.className = 'disconnected';
+          SB.putText(SB.spec.uiComponents.indicator, SB.spec.strings.DISCONNECTED);
 
           SB.log('Disconnected', 'WebSocket', 'error');
         });
 
-        SB.event.add(socket, 'message', function(e) {
+        SB.event.add(SB.spec.socket, 'message', function(e) {
           var message = SB.decode(e.data),
               device  = {},
               notification;
@@ -712,25 +1029,25 @@ Switchboard = (function () {
 
                 if(message.deviceId) {
                   newContent    = SB.get(message.deviceId);
-                  selectNav     = SB.getByClass('selected', header, 'li')[0];
-                  selectContent = SB.getByClass('selected', body,   'section')[0];
+                  selectNav     = SB.getByClass('selected', SB.spec.uiComponents.header, 'li')[0];
+                  selectContent = SB.getByClass('selected', SB.spec.uiComponents.body,   'section')[0];
 
                   SB.removeClass(selectNav,     'selected');
                   SB.removeClass(selectContent, 'selected');
 
-                  lazyLoad(message.deviceId);
+                  SB.spec.lazyLoad(message.deviceId);
 
-                  SB.addClass(SB.getByClass(message.deviceId, header, 'li')[0], 'selected');
+                  SB.addClass(SB.getByClass(message.deviceId, SB.spec.uiComponents.header, 'li')[0], 'selected');
                   SB.addClass(newContent, 'selected');
 
-                  lazyUnLoad(selectContent);
+                  SB.spec.lazyUnLoad(selectContent);
                 }
               });
             }
           }
 
           else if(typeof message.deviceId === 'string') {
-            updateTemplate(message);
+            SB.spec.updateTemplate(message);
           }
 
           else if(typeof message === 'object') {
@@ -741,102 +1058,89 @@ Switchboard = (function () {
               SB.log('Received', 'State', 'success');
 
               for(device in message) {
-                updateTemplate(message[device]);
+                SB.spec.updateTemplate(message[device]);
               }
             }
 
             // Otherwise, you're grabbing the templates.
             else if((message[device]) && (message[device].markup)) {
-              templates = message;
+              SB.spec.uiComponents.templates = message;
             }
           }
         });
-      };
+      },
 
-      checkConnection = function () {
-        // If you have no connection indicator - or if it doesn't say we're
-        // connected, we should reconnect and grab the latest State.
-        var state = indicator && SB.hasClass(indicator, 'connected');
+      /**
+       * If WebSockets are not available, we'll do an XHR poll for current State
+       * data.
+       */
+      statePoller : function() {
+        var SB = Switchboard,
+            ajaxRequest;
 
-        if(!state) {
-          socketConnect();
-        }
-
-        return state;
-      };
-
-      /* If we support WebSockets, we'll grab updates as they happen */
-      if((typeof WebSocket === 'function') || (typeof WebSocket === 'object')) {
-        socketConnect();
-      }
-
-      /* Otherwise, we'll poll for updates */
-      else {
         SB.log('not supported - using polling', 'WebSockets', 'error');
 
-        buildIndicator();
+        // XHR, grab templates on init.
+        ajaxRequest = {
+          path   : '/templates/',
+          param  : 'ts=' + new Date().getTime(),
+          method : 'GET',
+          onComplete : function () {
+            SB.spec.uiComponents.templates = SB.decode(ajaxRequest.response);
+          }
+        };
 
-        (function() {
-          var ajaxRequest;
+        SB.ajax.request(ajaxRequest);
 
-          // XHR, grab templates on init.
-          ajaxRequest = {
-            path   : '/templates/',
+        // Set up our poller to continually grab device State.
+        setInterval(function() {
+          var pollRequest = {
+            path   : '/state/',
             param  : 'ts=' + new Date().getTime(),
             method : 'GET',
             onComplete : function () {
-              templates = SB.decode(ajaxRequest.response);
+              var state = SB.decode(pollRequest.response),
+                  device;
+
+              if(state) {
+                SB.spec.uiComponents.indicator.className = 'connected';
+                SB.putText(SB.spec.uiComponents.indicator, SB.spec.strings.CONNECTED);
+
+                setTimeout(function() {
+                  SB.spec.uiComponents.indicator.className = 'connecting';
+                  SB.putText(SB.spec.uiComponents.indicator, SB.spec.strings.CONNECTIG);
+                }, 1000);
+
+                for(device in state) {
+                  SB.spec.updateTemplate(state[device]);
+                }
+              }
+
+              else {
+                SB.spec.uiComponents.indicator.className = 'disconnected';
+                SB.putText(SB.spec.uiComponents.indicator, SB.spec.strings.DISCONNECTED);
+              }
             }
           };
 
-          SB.ajax.request(ajaxRequest);
+          SB.ajax.request(pollRequest);
+        }, 10000);
+      },
 
-          // Set up our poller to continually grab device State.
-          setInterval(function() {
-            var pollRequest = {
-              path   : '/state/',
-              param  : 'ts=' + new Date().getTime(),
-              method : 'GET',
-              onComplete : function () {
-                var state = SB.decode(pollRequest.response),
-                    device;
-
-                if(state) {
-                  indicator.className = 'connected';
-                  SB.putText(indicator, SB.strings.CONNECTED);
-
-                  setTimeout(function() {
-                    indicator.className = 'connecting';
-                    SB.putText(indicator, SB.strings.CONNECTIG);
-                  }, 1000);
-
-                  for(device in state) {
-                    updateTemplate(state[device]);
-                  }
-                }
-
-                else {
-                  indicator.className = 'disconnected';
-                  SB.putText(indicator, SB.strings.DISCONNECTED);
-                }
-              }
-            };
-
-            SB.ajax.request(pollRequest);
-          }, 10000);
-        })();
-      }
-
-      /* Lazyload of images */
-      lazyLoad = function(id) {
+      /**
+       * Lazy load images to lighten initial load.
+       *
+       * @param {String} id ID of the DOM node we want to lazy load images in.
+       */
+      lazyLoad : function(id) {
         var container,
             images,
             i = 0;
 
-        if(SB.get(id)) {
-          container = SB.get(id);
+        if(Switchboard.get(id)) {
+          container = Switchboard.get(id);
 
-          images = SB.getByTag('img', container);
+          images = Switchboard.getByTag('img', container);
 
           for(i = 0; i < images.length; i += 1) {
             if((images[i].getAttribute('data-src')) && (!images[i].src)) {
@@ -844,101 +1148,271 @@ Switchboard = (function () {
             }
           }
         }
-      };
+      },
 
-      /* Remove src attributes of streaming content to keep from wasting
-         bandwidth. */
-      lazyUnLoad = function(elm) {
+      /**
+       * As some images may be streaming (such as Foscam), we'll unload them
+       * when not in view to save bandwidth.
+       *
+       * @param {Object} elm DOM node that we want to remove image src
+       *                  attributes from.
+       */
+      lazyUnLoad : function(elm) {
         var images,
             i = 0;
 
         if(elm) {
-          images = SB.getByTag('img', elm);
+          images = Switchboard.getByTag('img', elm);
 
           for(i = 0; i < images.length; i += 1) {
-            if((images[i].getAttribute('src')) && (SB.hasClass(images[i], 'streaming'))) {
+            if((images[i].getAttribute('src')) && (Switchboard.hasClass(images[i], 'streaming'))) {
               images[i].setAttribute('data-src', images[i].src);
               images[i].removeAttribute('src');
             }
           }
         }
-      };
+      },
 
-      lazyLoad(document.body.className);
+      /**
+       * Simply find all text fields inside any controller.
+       */
+      findTextInputs : function() {
+        return Switchboard.spec.uiComponents.body.getElementsByTagName('input');
+      },
 
-      /* Clicking of navigation items */
-      SB.event.add(header, 'click', function(e) {
-        var elm           = SB.getTarget(e).parentNode,
-            tagName       = elm.tagName.toLowerCase(),
-            newContent    = SB.get(elm.className),
-            selectNav     = SB.getByClass('selected', header, 'li')[0],
-            selectContent = SB.getByClass('selected', body,   'section')[0];
+      /**
+       * Find all number input fields inside any controller.
+       */
+      findNumberInputs : function() {
+        var textInputs   = Switchboard.spec.findTextInputs(),
+            numberInputs = [],
+            i;
 
-        if(tagName === 'li') {
-          e.preventDefault();
-
-          if(elm !== selectNav) {
-            SB.removeClass(selectNav,     'selected');
-            SB.removeClass(selectContent, 'selected');
-
-            SB.vibrate();
-
-            lazyLoad(elm.className);
-
-            SB.addClass(elm,        'selected');
-            SB.addClass(newContent, 'selected');
-
-            lazyUnLoad(selectContent);
+        for(i = 0; i < textInputs.length; i += 1) {
+          if(textInputs[i].type === 'number') {
+            numberInputs.push(textInputs[i]);
           }
+        }
 
-          if(typeof Notification === 'function') {
-            if(Notification.permission !== 'denied') {
-              Notification.requestPermission(function(permission) {
-                if(Notification.permission !== permission) {
-                  Notification.permission = permission;
-                }
-              });
+        return numberInputs;
+      },
+
+      /**
+       * Converts the numerical value in a number input into an x-offset to
+       * correctly show the slider indicator in the correct position.
+       *
+       * @param {Object} slider DOM node of the slider indicator.
+       * @param {Object} numberInput DOM node of the number input form element.
+       * @return {Integer} Pixel offset of the slider's "left" value.
+       */
+      findSliderPosition : function(slider, numberInput) {
+        var sliderWidth,
+            min,
+            max,
+            currentVal,
+            offset = 0;
+
+        if(numberInput) {
+          sliderWidth = slider.parentNode.offsetWidth - slider.offsetWidth;
+          min         = parseInt(numberInput.min, 10);
+          max         = parseInt(numberInput.max, 10);
+          currentVal  = parseInt(numberInput.value, 10);
+          offset      = ((currentVal - min) * sliderWidth) / (max - min);
+          offset      = offset < sliderWidth ? offset : sliderWidth;
+          offset      = offset > 0 ? offset : 0;
+        }
+
+        return Math.round(offset);
+      },
+
+      /**
+       * Converts the slider offset value into a numerical value to correctly
+       * show inside the number input form element.
+       *
+       * @param {Object} slider DOM node of the slider indicator.
+       * @param {Object} numberInput DOM node of the number input form element.
+       * @param {Object} drag Drag object, passed in from the clickDrag
+       *                  method's callback.
+       * @return {Integer} Numerical value represented by the slider position.
+       */
+      findSliderValue : function(slider, numberInput, drag) {
+        var sliderWidth = slider.parentNode.offsetWidth - slider.offsetWidth,
+            min         = parseInt(numberInput.min, 10),
+            max         = parseInt(numberInput.max, 10),
+            offset      = drag.newX,
+            currentVal  = (((max - min) / sliderWidth) * offset) + min;
+
+        return Math.round(currentVal);
+      },
+
+      /**
+       * Creates all sliders for all numerical inputs - then create the required
+       * event handlers.
+       *
+       * @param {String} id ID of (optional) parent node to render.  If no
+       *                  parent ID is present, sliders for all controllers will
+       *                  be built.
+       */
+      sliderCreate : function(id) {
+        var SB           = Switchboard,
+            numberInputs = SB.spec.findNumberInputs(),
+            createSliderBar,
+            sliderBar,
+            slider,
+            buildSlider,
+            i;
+
+        createSliderBar = function(slider, numberInput) {
+          slider.style.left = SB.spec.findSliderPosition(slider, numberInput) + 'px';
+
+          SB.clickDrag({ elm      : slider,
+                         restrict : true,
+                         onTween  : function(drag) {
+                           numberInput.value = SB.spec.findSliderValue(slider, numberInput, drag);
+                         }
+                       });
+        };
+
+        for(i = 0; i < numberInputs.length; i += 1) {
+          if((numberInputs[i].type === 'number') && (numberInputs[i].min) && (numberInputs[i].max)) {
+            if((!id) || (SB.isChildOf(numberInputs[i], SB.get(id)))) {
+              sliderBar = document.createElement('div');
+              sliderBar.className = 'sliderBar';
+              slider    = document.createElement('span');
+              sliderBar.appendChild(slider);
+              numberInputs[i].parentNode.insertBefore(sliderBar, numberInputs[i].nextSibling);
+
+              if(id) {
+                createSliderBar(slider, numberInputs[i]);
+              }
+
+              else {
+                SB.event.add(window, 'load', function() {
+                  createSliderBar(slider, numberInputs[i]);
+                });
+              }
             }
           }
         }
 
-        else if(SB.getTarget(e).id === 'indicator') {
-          if(SB.hasClass(Switchboard.getTarget(e), 'disconnected')) {
-            socketConnect();
+        SB.event.add(window, 'resize', function(e) {
+          SB.spec.sliderSetWidths(numberInputs);
+        });
+
+        /* If you change the form value, we should change the slider position. */
+        SB.event.add(document.body, 'change', function(e) {
+          var elm = SB.getTarget(e),
+              slider;
+
+          if(SB.hasClass(elm.nextSibling, 'sliderBar')) {
+            slider = elm.nextSibling.getElementsByTagName('span')[0];
+            slider.style.left = SB.spec.findSliderPosition(slider, elm) + 'px';
+          }
+        });
+      },
+
+      /**
+       * Sets slider positions to the appropriate location.  Used when a form
+       * value changes or if the scroll bar changes width.
+       */
+      sliderSetWidths : function() {
+        var SB           = Switchboard,
+            numberInputs = SB.spec.findNumberInputs(),
+            slider,
+            i;
+
+        for(i = 0; i < numberInputs.length; i += 1) {
+          if(Switchboard.hasClass(numberInputs[i].nextSibling, 'sliderBar')) {
+            slider = numberInputs[i].nextSibling.getElementsByTagName('span')[0];
+
+            slider.style.left = Switchboard.spec.findSliderPosition(slider, numberInputs[i]) + 'px';
           }
         }
-      });
+      },
 
-      /* Typical command executions */
-      SB.event.add(body, 'click', function(e) {
-        var elm     = SB.getTarget(e),
-            tagName = elm.tagName.toLowerCase(),
-            command = '',
-            ts      = new Date().getTime(),
-            ajaxRequest;
+      /**
+       * Handles command execution.  If you support WebSockets and have an
+       * active connection, we'll use that.  If not, we'll use XHR.
+       */
+      command : function() {
+        Switchboard.event.add(Switchboard.spec.uiComponents.body, 'click', function(e) {
+          var SB      = Switchboard,
+              elm     = SB.getTarget(e),
+              tagName = elm.tagName.toLowerCase(),
+              command = '',
+              ts      = new Date().getTime(),
+              ajaxRequest;
 
-        elm = tagName === 'img'  ? elm.parentNode : elm;
-        elm = tagName === 'i'    ? elm.parentNode : elm;
-        elm = tagName === 'span' ? elm.parentNode : elm;
+          elm = tagName === 'img'  ? elm.parentNode : elm;
+          elm = tagName === 'i'    ? elm.parentNode : elm;
+          elm = tagName === 'span' ? elm.parentNode : elm;
 
-        if((elm.tagName.toLowerCase() === 'a') && (elm.rel != 'external')) {
+          if(elm.rel === 'external') {
+            e.preventDefault();
+
+            window.open(elm.href, '_blank').focus();
+          }
+
+          else if(elm.tagName.toLowerCase() === 'a') {
+            e.preventDefault();
+
+            command = elm.href;
+
+            SB.vibrate();
+
+            if(SB.spec.socket) {
+              if(SB.spec.checkConnection()) {
+                SB.spec.socket.send(elm.href);
+              }
+            }
+
+            else {
+              ajaxRequest = {
+                path   : command,
+                param  : 'ts=' + ts,
+                method : 'GET',
+                onComplete : function () {
+                  SB.log(ajaxRequest.response);
+                }
+              };
+
+              SB.ajax.request(ajaxRequest);
+            }
+          }
+        });
+      },
+
+      /**
+       * Handles form inputs.  If you support WebSockets and have an active
+       * connection, we'll use that.  If not, we'll use XHR.
+       */
+      formInput : function() {
+        Switchboard.event.add(Switchboard.spec.uiComponents.body, 'submit', function(e) {
+          var SB   = Switchboard,
+              elm  = SB.getTarget(e),
+              ts   = new Date().getTime(),
+              text = '',
+              type = '',
+              device,
+              ajaxRequest;
+
           e.preventDefault();
 
-          command = elm.href;
+          text   = SB.getByClass('text-input', elm, 'input')[0].value;
+          device = SB.getByClass('text-input', elm, 'input')[0].name;
+          type   = SB.getByClass('input-type', elm, 'input')[0].value;
 
-          SB.vibrate();
-
-          if(socket) {
-            if(checkConnection()) {
-              socket.send(elm.href);
+          if(SB.spec.socket) {
+            if(SB.spec.checkConnection()) {
+              SB.spec.socket.send('/?' + device + '=' + type + '-' + text);
             }
           }
 
           else {
             ajaxRequest = {
-              path   : command,
-              param  : 'ts=' + ts,
-              method : 'GET',
+              path       : '/',
+              param      : device + '=' + type + '-' + text,
+              method     : 'POST',
               onComplete : function () {
                 SB.log(ajaxRequest.response);
               }
@@ -946,43 +1420,97 @@ Switchboard = (function () {
 
             SB.ajax.request(ajaxRequest);
           }
-        }
-      });
+        });
+      },
 
-      /* Form submissions - such as text */
-      SB.event.add(body, 'submit', function(e) {
-        var elm  = SB.getTarget(e),
-            ts   = new Date().getTime(),
-            text = '',
-            type = '',
-            device,
-            ajaxRequest;
+      /**
+       * Handles navigation changes and changes to the connection indicator.
+       */
+      nav : function() {
+        Switchboard.event.add(Switchboard.spec.uiComponents.header, 'click', function(e) {
+          var SB            = Switchboard,
+              elm           = SB.getTarget(e).parentNode,
+              tagName       = elm.tagName.toLowerCase(),
+              newContent    = SB.get(elm.className),
+              selectNav     = SB.getByClass('selected', SB.spec.uiComponents.header, 'li')[0],
+              selectContent = SB.getByClass('selected', SB.spec.uiComponents.body,   'section')[0],
+              slider;
 
-        e.preventDefault();
+          if(tagName === 'li') {
+            e.preventDefault();
 
-        text   = SB.getByClass('text-input', elm, 'input')[0].value;
-        device = SB.getByClass('text-input', elm, 'input')[0].name;
-        type   = SB.getByClass('input-type', elm, 'input')[0].value;
+            if(elm !== selectNav) {
+              SB.removeClass(selectNav,     'selected');
+              SB.removeClass(selectContent, 'selected');
 
-        if(socket) {
-          if(checkConnection()) {
-            socket.send('/?' + device + '=' + type + '-' + text);
-          }
-        }
+              SB.vibrate();
 
-        else {
-          ajaxRequest = {
-            path       : '/',
-            param      : device + '=' + type + '-' + text,
-            method     : 'POST',
-            onComplete : function () {
-              SB.log(ajaxRequest.response);
+              SB.spec.lazyLoad(elm.className);
+
+              SB.addClass(elm,        'selected');
+              SB.addClass(newContent, 'selected');
+
+              SB.spec.sliderSetWidths();
+
+              SB.spec.lazyUnLoad(selectContent);
             }
-          };
 
-          SB.ajax.request(ajaxRequest);
-        }
-      });
+            if(typeof Notification === 'function') {
+              if(Notification.permission !== 'denied') {
+                Notification.requestPermission(function(permission) {
+                  if(Notification.permission !== permission) {
+                    Notification.permission = permission;
+                  }
+                });
+              }
+            }
+          }
+
+          else if(SB.getTarget(e).id === 'indicator') {
+            if(SB.hasClass(Switchboard.getTarget(e), 'disconnected')) {
+              SB.spec.socket = SB.spec.socketConnect();
+            }
+          }
+        });
+      }
+    },
+
+   /**
+    * Initialization for Switchboard.  Executes the standard functions used.
+    *  If a global function of "init" is available, it will also be executed.
+    */
+    init : function () {
+      var SB = Switchboard,
+          i;
+
+      SB.spec.uiComponents.header     = SB.getByTag('header')[0];
+      SB.spec.uiComponents.body       = SB.getByTag('main')[0];
+      SB.spec.buildIndicator();
+
+      SB.spec.strings = { CONNECTED    : SB.spec.uiComponents.header.dataset.stringConnected,
+                          CONNECTING   : SB.spec.uiComponents.header.dataset.stringConnecting,
+                          DISCONNECTED : SB.spec.uiComponents.header.dataset.stringDisconnected,
+                          ACTIVE       : SB.spec.uiComponents.body.dataset.stringActive,
+                          INACTIVE     : SB.spec.uiComponents.body.dataset.stringInactive,
+                          ON           : SB.spec.uiComponents.body.dataset.stringOn,
+                          OFF          : SB.spec.uiComponents.body.dataset.stringOff };
+
+      /* If we support WebSockets, we'll grab updates as they happen */
+      if((typeof WebSocket === 'function') || (typeof WebSocket === 'object')) {
+        SB.spec.socketConnect();
+      }
+
+      /* Otherwise, we'll poll for updates */
+      else {
+        SB.spec.statePoller();
+      }
+
+      SB.spec.lazyLoad(document.body.className);
+
+      SB.spec.sliderCreate();
+      SB.spec.command();
+      SB.spec.formInput();
+      SB.spec.nav();
 
       SB.addClass(document.body, 'rich');
     }
