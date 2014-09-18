@@ -28,7 +28,7 @@ Switchboard = (function () {
   'use strict';
 
   return {
-    version : 20140916,
+    version : 20140917,
 
    /**
     * Stops event bubbling further.
@@ -931,7 +931,7 @@ Switchboard = (function () {
               if(SB.getByClass('sliderBar', node, 'div')) {
                 node.outerHTML = markup;
 
-                SB.spec.sliderCreate(state.deviceId);
+                SB.spec.buildSliders(state.deviceId);
               }
 
               else {
@@ -1230,13 +1230,13 @@ Switchboard = (function () {
        * show inside the number input form element.
        *
        * @param {Object} slider DOM node of the slider indicator.
-       * @param {Object} numberInput DOM node of the number input form element.
        * @param {Object} drag Drag object, passed in from the clickDrag
        *                  method's callback.
        * @return {Integer} Numerical value represented by the slider position.
        */
-      findSliderValue : function(slider, numberInput, drag) {
-        var sliderWidth = slider.parentNode.offsetWidth - slider.offsetWidth,
+      findSliderValue : function(slider, drag) {
+        var numberInput = slider.parentNode.previousSibling,
+            sliderWidth = slider.parentNode.offsetWidth - slider.offsetWidth,
             min         = parseInt(numberInput.min, 10),
             max         = parseInt(numberInput.max, 10),
             offset      = drag.newX,
@@ -1253,46 +1253,48 @@ Switchboard = (function () {
        *                  parent ID is present, sliders for all controllers will
        *                  be built.
        */
-      sliderCreate : function(id) {
+      buildSliders : function(id) {
         var SB           = Switchboard,
             numberInputs = SB.spec.findNumberInputs(),
-            createSliderBar,
-            sliderBar,
-            slider,
-            buildSlider,
+            buildSliderBar,
             i;
 
-        createSliderBar = function(slider, numberInput) {
+        buildSliderBar = function(slider, numberInput) {
           slider.style.left = SB.spec.findSliderPosition(slider, numberInput) + 'px';
 
           SB.clickDrag({ elm      : slider,
                          restrict : true,
                          onTween  : function(drag) {
-                           numberInput.value = SB.spec.findSliderValue(slider, numberInput, drag);
+                           numberInput.value = SB.spec.findSliderValue(slider, drag);
                          }
                        });
         };
 
         for(i = 0; i < numberInputs.length; i += 1) {
-          if((numberInputs[i].type === 'number') && (numberInputs[i].min) && (numberInputs[i].max)) {
-            if((!id) || (SB.isChildOf(numberInputs[i], SB.get(id)))) {
-              sliderBar = document.createElement('div');
-              sliderBar.className = 'sliderBar';
-              slider    = document.createElement('span');
-              sliderBar.appendChild(slider);
-              numberInputs[i].parentNode.insertBefore(sliderBar, numberInputs[i].nextSibling);
+          (function(numberInput) {
+            var sliderBar,
+                slider;
 
-              if(id) {
-                createSliderBar(slider, numberInputs[i]);
-              }
+            if((numberInput.type === 'number') && (numberInput.min) && (numberInput.max)) {
+              if((!id) || (SB.isChildOf(numberInput, SB.get(id)))) {
+                sliderBar           = document.createElement('div');
+                sliderBar.className = 'sliderBar';
+                slider              = document.createElement('span');
+                sliderBar.appendChild(slider);
+                numberInput.parentNode.insertBefore(sliderBar, numberInput.nextSibling);
 
-              else {
-                SB.event.add(window, 'load', function() {
-                  createSliderBar(slider, numberInputs[i]);
-                });
+                if(id) {
+                  buildSliderBar(slider, numberInput);
+                }
+
+                else {
+                  SB.event.add(window, 'load', function() {
+                    buildSliderBar(slider, numberInput);
+                  });
+                }
               }
             }
-          }
+          }(numberInputs[i]));
         }
 
         SB.event.add(window, 'resize', function(e) {
@@ -1507,7 +1509,7 @@ Switchboard = (function () {
 
       SB.spec.lazyLoad(document.body.className);
 
-      SB.spec.sliderCreate();
+      SB.spec.buildSliders();
       SB.spec.command();
       SB.spec.formInput();
       SB.spec.nav();
