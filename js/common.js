@@ -1257,17 +1257,39 @@ Switchboard = (function () {
         var SB           = Switchboard,
             numberInputs = SB.spec.findNumberInputs(),
             buildSliderBar,
+            changeForm,
             i;
 
         buildSliderBar = function(slider, numberInput) {
           slider.style.left = SB.spec.findSliderPosition(slider, numberInput) + 'px';
 
-          SB.clickDrag({ elm      : slider,
-                         restrict : true,
-                         onTween  : function(drag) {
+          SB.clickDrag({ elm        : slider,
+                         restrict   : true,
+                         onTween    : function(drag) {
                            numberInput.value = SB.spec.findSliderValue(slider, drag);
+                         },
+                         onComplete : function(drag) {
+                           changeForm(numberInput);
                          }
                        });
+        };
+
+        changeForm = function(elm) {
+          var form = elm.parentNode,
+              slider;
+
+          if(SB.hasClass(elm.nextSibling, 'sliderBar')) {
+            slider = elm.nextSibling.getElementsByTagName('span')[0];
+            slider.style.left = SB.spec.findSliderPosition(slider, elm) + 'px';
+
+            while((form !== document) && (form.tagName.toLowerCase() !== 'form')) {
+              form = form.parentNode;
+            }
+
+            if(form.tagName.toLowerCase() === 'form') {
+              Switchboard.spec.sendInput(form);
+            }
+          }
         };
 
         for(i = 0; i < numberInputs.length; i += 1) {
@@ -1303,13 +1325,7 @@ Switchboard = (function () {
 
         /* If you change the form value, we should change the slider position. */
         SB.event.add(document.body, 'change', function(e) {
-          var elm = SB.getTarget(e),
-              slider;
-
-          if(SB.hasClass(elm.nextSibling, 'sliderBar')) {
-            slider = elm.nextSibling.getElementsByTagName('span')[0];
-            slider.style.left = SB.spec.findSliderPosition(slider, elm) + 'px';
-          }
+          changeForm(SB.getTarget(e));
         });
       },
 
@@ -1332,89 +1348,32 @@ Switchboard = (function () {
         }
       },
 
-      /**
+      /*
        * Handles command execution.  If you support WebSockets and have an
        * active connection, we'll use that.  If not, we'll use XHR.
        */
-      command : function() {
-        Switchboard.event.add(Switchboard.spec.uiComponents.body, 'click', function(e) {
-          var SB      = Switchboard,
-              elm     = SB.getTarget(e),
-              tagName = elm.tagName.toLowerCase(),
-              command = '',
-              ts      = new Date().getTime(),
-              ajaxRequest;
+      sendCommand : function(elm) {
+        var SB      = Switchboard,
+            command = '',
+            ts      = new Date().getTime(),
+            ajaxRequest;
 
-          elm = tagName === 'img'  ? elm.parentNode : elm;
-          elm = tagName === 'i'    ? elm.parentNode : elm;
-          elm = tagName === 'span' ? elm.parentNode : elm;
+        if(elm.tagName.toLowerCase() === 'a') {
+          command = elm.href;
 
-          if(elm.rel === 'external') {
-            e.preventDefault();
-
-            window.open(elm.href, '_blank').focus();
-          }
-
-          else if(elm.tagName.toLowerCase() === 'a') {
-            e.preventDefault();
-
-            command = elm.href;
-
-            SB.vibrate();
-
-            if(SB.spec.socket) {
-              if(SB.spec.checkConnection()) {
-                SB.spec.socket.send(elm.href);
-              }
-            }
-
-            else {
-              ajaxRequest = {
-                path   : command,
-                param  : 'ts=' + ts,
-                method : 'GET',
-                onComplete : function () {
-                  SB.log(ajaxRequest.response);
-                }
-              };
-
-              SB.ajax.request(ajaxRequest);
-            }
-          }
-        });
-      },
-
-      /**
-       * Handles form inputs.  If you support WebSockets and have an active
-       * connection, we'll use that.  If not, we'll use XHR.
-       */
-      formInput : function() {
-        Switchboard.event.add(Switchboard.spec.uiComponents.body, 'submit', function(e) {
-          var SB   = Switchboard,
-              elm  = SB.getTarget(e),
-              ts   = new Date().getTime(),
-              text = '',
-              type = '',
-              device,
-              ajaxRequest;
-
-          e.preventDefault();
-
-          text   = SB.getByClass('text-input', elm, 'input')[0].value;
-          device = SB.getByClass('text-input', elm, 'input')[0].name;
-          type   = SB.getByClass('input-type', elm, 'input')[0].value;
+          SB.vibrate();
 
           if(SB.spec.socket) {
             if(SB.spec.checkConnection()) {
-              SB.spec.socket.send('/?' + device + '=' + type + '-' + text);
+              SB.spec.socket.send(elm.href);
             }
           }
 
           else {
             ajaxRequest = {
-              path       : '/',
-              param      : device + '=' + type + '-' + text,
-              method     : 'POST',
+              path   : command,
+              param  : 'ts=' + ts,
+              method : 'GET',
               onComplete : function () {
                 SB.log(ajaxRequest.response);
               }
@@ -1422,6 +1381,83 @@ Switchboard = (function () {
 
             SB.ajax.request(ajaxRequest);
           }
+        }
+      },
+
+      /**
+       * Builds event handler to delegate click events for standard commands.
+       */
+      command : function() {
+        Switchboard.event.add(Switchboard.spec.uiComponents.body, 'click', function(e) {
+          var SB      = Switchboard,
+              elm     = SB.getTarget(e),
+              tagName = elm.tagName.toLowerCase();
+
+          elm = tagName === 'img'  ? elm.parentNode : elm;
+          elm = tagName === 'i'    ? elm.parentNode : elm;
+          elm = tagName === 'span' ? elm.parentNode : elm;
+
+          if(elm.tagName.toLowerCase() === 'a') {
+            e.preventDefault();
+
+            if(elm.rel === 'external') {
+              window.open(elm.href, '_blank').focus();
+            }
+
+            else {
+              SB.spec.sendCommand(elm);
+            }
+          }
+        });
+      },
+
+      /*
+       * Handles text and number input execution.  If you support WebSockets and
+       * have an active connection, we'll use that.  If not, we'll use XHR.
+       */
+      sendInput : function(elm) {
+        var SB   = Switchboard,
+            ts   = new Date().getTime(),
+            text = '',
+            type = '',
+            device,
+            ajaxRequest;
+
+        text   = SB.getByTag('input', elm, 'input')[0].value;
+        device = SB.getByTag('input', elm, 'input')[0].name;
+        type   = SB.getByClass('input-type', elm, 'input')[0].value;
+
+        if(SB.spec.socket) {
+          if(SB.spec.checkConnection()) {
+            SB.spec.socket.send('/?' + device + '=' + type + '-' + text);
+          }
+        }
+
+        else {
+          ajaxRequest = {
+            path       : '/',
+            param      : device + '=' + type + '-' + text,
+            method     : 'POST',
+            onComplete : function () {
+              SB.log(ajaxRequest.response);
+            }
+          };
+
+          SB.ajax.request(ajaxRequest);
+        }
+      },
+
+      /**
+       * Builds event handler to delegate form submission events for text and
+       * number inputs.
+       */
+      formInput : function() {
+        Switchboard.event.add(Switchboard.spec.uiComponents.body, 'submit', function(e) {
+          var elm = Switchboard.getTarget(e);
+
+          e.preventDefault();
+
+          Switchboard.spec.sendInput(elm);
         });
       },
 
@@ -1485,8 +1521,8 @@ Switchboard = (function () {
       var SB = Switchboard,
           i;
 
-      SB.spec.uiComponents.header     = SB.getByTag('header')[0];
-      SB.spec.uiComponents.body       = SB.getByTag('main')[0];
+      SB.spec.uiComponents.header = SB.getByTag('header')[0];
+      SB.spec.uiComponents.body   = SB.getByTag('main')[0];
       SB.spec.buildIndicator();
 
       SB.spec.strings = { CONNECTED    : SB.spec.uiComponents.header.dataset.stringConnected,
