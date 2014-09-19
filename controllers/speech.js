@@ -123,12 +123,12 @@ module.exports = (function () {
         }
 
         else {
-          speak.callback('No text specified');
+          speech.callback('No text specified');
         }
       }
 
       else {
-        speak.callback('Text to speech is not supported on your platform!');
+        speech.callback('Text to speech is not supported on your platform!');
       }
     }
   };
