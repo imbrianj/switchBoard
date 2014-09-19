@@ -305,6 +305,7 @@ form legend {
 	border-radius: 1em;
 	font-size: 25%;
 	height: 2em;
+	margin: 3em 0;
 	position: relative;
 	width: 100%;
 }
@@ -322,6 +323,10 @@ form legend {
 	-webkit-transition: none;
 	transition: none;
 	width: 2em;
+}
+
+.sliderBar ~ button[type="submit"]:first-of-type {
+	display: none;
 }
 
 header {
