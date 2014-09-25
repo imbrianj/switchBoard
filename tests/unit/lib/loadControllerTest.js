@@ -39,7 +39,7 @@ exports.loadControllerTest = {
                              title     : 'TEST samsung' },
         controller       = loadController.loadControllerFile(controllerConfig, 'samsung', { config : { language : 'en' } });
 
-    test.strictEqual(controller.controller.keymap.length, 242, 'Controller file loaded');
+    test.strictEqual(controller.controller.keymap.length, 243, 'Controller file loaded');
     test.notStrictEqual(controller.markup.indexOf('control-block'), -1, 'Controller markup loaded');
 
     test.done();

@@ -838,6 +838,10 @@ Switchboard = (function () {
 
       socket : {},
 
+      commandIssued    : null,
+      commandDelay     : 1500,
+      commandIteration : 0,
+
       uiComponents : {
         header : {},
         body : {},
@@ -1352,26 +1356,23 @@ Switchboard = (function () {
        * Handles command execution.  If you support WebSockets and have an
        * active connection, we'll use that.  If not, we'll use XHR.
        */
-      sendCommand : function(elm) {
-        var SB      = Switchboard,
-            command = '',
-            ts      = new Date().getTime(),
+      sendCommand : function() {
+        var SB = Switchboard,
+            ts = new Date().getTime(),
             ajaxRequest;
 
-        if(elm.tagName.toLowerCase() === 'a') {
-          command = elm.href;
-
+        if(SB.spec.commandIssued) {
           SB.vibrate();
 
           if(SB.spec.socket) {
             if(SB.spec.checkConnection()) {
-              SB.spec.socket.send(elm.href);
+              SB.spec.socket.send(SB.spec.commandIssued);
             }
           }
 
           else {
             ajaxRequest = {
-              path   : command,
+              path   : SB.spec.commandIssued,
               param  : 'ts=' + ts,
               method : 'GET',
               onComplete : function () {
@@ -1381,6 +1382,18 @@ Switchboard = (function () {
 
             SB.ajax.request(ajaxRequest);
           }
+
+          if(SB.spec.commandIteration > 3) {
+            SB.spec.commandDelay = 1000;
+          }
+
+          if(SB.spec.commandIteration > 10) {
+            SB.spec.commandDelay = 750;
+          }
+
+          SB.spec.commandIteration += 1;
+
+          setTimeout(SB.spec.sendCommand, SB.spec.commandDelay);
         }
       },
 
@@ -1388,7 +1401,7 @@ Switchboard = (function () {
        * Builds event handler to delegate click events for standard commands.
        */
       command : function() {
-        Switchboard.event.add(Switchboard.spec.uiComponents.body, 'click', function(e) {
+        Switchboard.event.add(Switchboard.spec.uiComponents.body, 'mousedown', function(e) {
           var SB      = Switchboard,
               elm     = SB.getTarget(e),
               tagName = elm.tagName.toLowerCase();
@@ -1398,16 +1411,26 @@ Switchboard = (function () {
           elm = tagName === 'span' ? elm.parentNode : elm;
 
           if(elm.tagName.toLowerCase() === 'a') {
-            e.preventDefault();
-
             if(elm.rel === 'external') {
               window.open(elm.href, '_blank').focus();
             }
 
             else {
-              SB.spec.sendCommand(elm);
+              SB.spec.commandIssued = elm.href;
+
+              SB.spec.sendCommand();
             }
           }
+        });
+
+        Switchboard.event.add(Switchboard.spec.uiComponents.body, 'mouseup', function(e) {
+          Switchboard.spec.commandIssued    = null;
+          Switchboard.spec.commandDelay     = 1500;
+          Switchboard.spec.commandIteration = 0;
+        });
+
+        Switchboard.event.add(Switchboard.spec.uiComponents.body, 'click', function(e) {
+          e.preventDefault();
         });
       },
 
