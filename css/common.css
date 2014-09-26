@@ -305,7 +305,7 @@ form legend {
 	border-radius: 1em;
 	font-size: 25%;
 	height: 2em;
-	margin: 3em 0;
+	margin: 3em 0 0 0;
 	position: relative;
 	width: 100%;
 }
@@ -568,6 +568,8 @@ section a {
 	display: block;
 	margin: 0 auto;
 	text-align: center;
+	-webkit-user-select: none;
+	-webkit-touch-callout: none;
 	width: 1em;
 }
 
@@ -1036,6 +1038,10 @@ header .selected a {
 		font-size: 250%;
 	}
 
+	.sliderBar {
+		font-size: 40%;
+	}
+
 	section > div {
 		clear: both;
 		float: none;
@@ -1111,6 +1117,10 @@ header .selected a {
 		font-size: 300%;
 	}
 
+	.sliderBar {
+		font-size: 33.333%;
+	}
+
 	section > div {
 		float: left;
 		width: 50%;
@@ -1130,6 +1140,10 @@ header .selected a {
 @media (min-width: 1000px) {
 	section {
 		font-size: 400%;
+	}
+
+	.sliderBar {
+		font-size: 25%;
 	}
 
 	section .installed .sub-device-group,

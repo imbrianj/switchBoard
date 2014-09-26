@@ -1401,35 +1401,51 @@ Switchboard = (function () {
        * Builds event handler to delegate click events for standard commands.
        */
       command : function() {
-        Switchboard.event.add(Switchboard.spec.uiComponents.body, 'mousedown', function(e) {
-          var SB      = Switchboard,
-              elm     = SB.getTarget(e),
-              tagName = elm.tagName.toLowerCase();
+        var SB          = Switchboard,
+            fireCommand = function(e) {
+              var elm     = SB.getTarget(e),
+                  tagName = elm.tagName.toLowerCase();
 
-          elm = tagName === 'img'  ? elm.parentNode : elm;
-          elm = tagName === 'i'    ? elm.parentNode : elm;
-          elm = tagName === 'span' ? elm.parentNode : elm;
+              elm = tagName === 'img'  ? elm.parentNode : elm;
+              elm = tagName === 'i'    ? elm.parentNode : elm;
+              elm = tagName === 'span' ? elm.parentNode : elm;
 
-          if(elm.tagName.toLowerCase() === 'a') {
-            if(elm.rel === 'external') {
-              window.open(elm.href, '_blank').focus();
-            }
+              if(elm.tagName.toLowerCase() === 'a') {
+                if(elm.rel === 'external') {
+                  window.open(elm.href, '_blank').focus();
+                }
 
-            else {
-              SB.spec.commandIssued = elm.href;
+                else {
+                  SB.spec.commandIssued = elm.href;
 
-              SB.spec.sendCommand();
-            }
-          }
+                  SB.spec.sendCommand();
+                }
+              }
+            },
+            stopCommand     = function() {
+              SB.spec.commandIssued    = null;
+              SB.spec.commandDelay     = 1500;
+              SB.spec.commandIteration = 0;
+            };
+
+        SB.event.add(SB.spec.uiComponents.body, 'mousedown', function(e) {
+          fireCommand(e);
+        });
+
+        SB.event.add(SB.spec.uiComponents.body, 'touchstart', function(e) {
+          e.preventDefault();
+          fireCommand(e);
         });
 
         Switchboard.event.add(Switchboard.spec.uiComponents.body, 'mouseup', function(e) {
-          Switchboard.spec.commandIssued    = null;
-          Switchboard.spec.commandDelay     = 1500;
-          Switchboard.spec.commandIteration = 0;
+          stopCommand();
         });
 
-        Switchboard.event.add(Switchboard.spec.uiComponents.body, 'click', function(e) {
+        SB.event.add(SB.spec.uiComponents.body, 'touchend', function(e) {
+          stopCommand();
+        });
+
+        SB.event.add(SB.spec.uiComponents.body, 'click', function(e) {
           e.preventDefault();
         });
       },
