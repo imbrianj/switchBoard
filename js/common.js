@@ -28,7 +28,7 @@ Switchboard = (function () {
   'use strict';
 
   return {
-    version : 20140917,
+    version : 20140926,
 
    /**
     * Stops event bubbling further.
@@ -1270,7 +1270,10 @@ Switchboard = (function () {
           SB.clickDrag({ elm        : slider,
                          restrict   : true,
                          onTween    : function(drag) {
-                           numberInput.value = SB.spec.findSliderValue(slider, drag);
+                           var value = SB.spec.findSliderValue(slider, drag);
+
+                           numberInput.value = value;
+                           slider.setAttribute('aria-valuenow', value);
                          },
                          onComplete : function(drag) {
                            changeForm(numberInput);
@@ -1306,6 +1309,10 @@ Switchboard = (function () {
                 sliderBar           = document.createElement('div');
                 sliderBar.className = 'sliderBar';
                 slider              = document.createElement('span');
+                slider.setAttribute('role',          'slider');
+                slider.setAttribute('aria-valuenow', numberInput.value);
+                slider.setAttribute('aria-valuemin', numberInput.min);
+                slider.setAttribute('aria-valuemax', numberInput.max);
                 sliderBar.appendChild(slider);
                 numberInput.parentNode.insertBefore(sliderBar, numberInput.nextSibling);
 
@@ -1366,6 +1373,7 @@ Switchboard = (function () {
 
           if(SB.spec.socket) {
             if(SB.spec.checkConnection()) {
+              SB.log('Issued', 'Command', 'success');
               SB.spec.socket.send(SB.spec.commandIssued);
             }
           }
@@ -1402,15 +1410,25 @@ Switchboard = (function () {
        */
       command : function() {
         var SB          = Switchboard,
-            fireCommand = function(e) {
-              var elm     = SB.getTarget(e),
-                  tagName = elm.tagName.toLowerCase();
+            findCommand = function(e) {
+              var elm      = SB.getTarget(e),
+                  tagName  = elm.tagName.toLowerCase(),
+                  validElm = null;
 
               elm = tagName === 'img'  ? elm.parentNode : elm;
               elm = tagName === 'i'    ? elm.parentNode : elm;
               elm = tagName === 'span' ? elm.parentNode : elm;
 
               if(elm.tagName.toLowerCase() === 'a') {
+                validElm = elm;
+              }
+
+              return validElm;
+            },
+            fireCommand = function(e) {
+              var elm = findCommand(e);
+
+              if(elm) {
                 if(elm.rel === 'external') {
                   window.open(elm.href, '_blank').focus();
                 }
@@ -1422,7 +1440,7 @@ Switchboard = (function () {
                 }
               }
             },
-            stopCommand     = function() {
+            stopCommand = function() {
               SB.spec.commandIssued    = null;
               SB.spec.commandDelay     = 1500;
               SB.spec.commandIteration = 0;
@@ -1433,11 +1451,13 @@ Switchboard = (function () {
         });
 
         SB.event.add(SB.spec.uiComponents.body, 'touchstart', function(e) {
-          e.preventDefault();
-          fireCommand(e);
+          if(findCommand(e)) {
+            e.preventDefault();
+            fireCommand(e);
+          }
         });
 
-        Switchboard.event.add(Switchboard.spec.uiComponents.body, 'mouseup', function(e) {
+        SB.event.add(SB.spec.uiComponents.body, 'mouseup', function(e) {
           stopCommand();
         });
 

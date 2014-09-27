@@ -568,7 +568,6 @@ section a {
 	display: block;
 	margin: 0 auto;
 	text-align: center;
-	-webkit-user-select: none;
 	-webkit-touch-callout: none;
 	width: 1em;
 }
