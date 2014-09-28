@@ -1,4 +1,4 @@
-/*global alert, document, window, ActiveXObject, init, console, XMLHttpRequest, Switchboard, Notification */
+/*global document, window, ActiveXObject, init, console, XMLHttpRequest, Switchboard, Notification */
 /*jslint white: true, evil: true */
 /*jshint -W020 */
 
