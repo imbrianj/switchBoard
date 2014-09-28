@@ -28,7 +28,7 @@ Switchboard = (function () {
   'use strict';
 
   return {
-    version : 20140926,
+    version : 20140927,
 
    /**
     * Stops event bubbling further.
@@ -156,9 +156,9 @@ Switchboard = (function () {
 
         var i = Switchboard.event.list.length - 1;
 
-        for (i; i >= 0 ; i -= 1) {
+        for (i; i >= 0; i -= 1) {
           if (Switchboard.event.list[i]) {
-            if ((Switchboard.event.list[i]) && ((Switchboard.event.list[i][0] === elm) || (elm === document))) {
+            if ((Switchboard.event.list[i][0] === elm) || (elm === document)) {
               Switchboard.event.remove(Switchboard.event.list[i][0], Switchboard.event.list[i][1], Switchboard.event.list[i][2]);
             }
           }
@@ -838,10 +838,6 @@ Switchboard = (function () {
 
       socket : {},
 
-      commandIssued    : null,
-      commandDelay     : 1500,
-      commandIteration : 0,
-
       uiComponents : {
         header : {},
         body : {},
@@ -933,6 +929,8 @@ Switchboard = (function () {
 
             if(innerMarkup.innerHTML !== oldMarkup) {
               if(SB.getByClass('sliderBar', node, 'div')) {
+                SB.event.removeAll(SB.getByClass('sliderBar', node, 'div')[0].getElementsByTagName('span')[0]);
+
                 node.outerHTML = markup;
 
                 SB.spec.buildSliders(state.deviceId);
@@ -972,7 +970,8 @@ Switchboard = (function () {
             connected = SB.spec.uiComponents.indicator && SB.hasClass(SB.spec.uiComponents.indicator, 'connected');
 
         if(!connected) {
-          SB.spec.socket = SB.spec.socketConnect();
+          SB.spec.socketConnect();
+          connected = SB.spec.uiComponents.indicator && SB.hasClass(SB.spec.uiComponents.indicator, 'connected');
         }
 
         return connected;
@@ -1310,6 +1309,7 @@ Switchboard = (function () {
                 sliderBar.className = 'sliderBar';
                 slider              = document.createElement('span');
                 slider.setAttribute('role',          'slider');
+                slider.setAttribute('tabindex',      0);
                 slider.setAttribute('aria-valuenow', numberInput.value);
                 slider.setAttribute('aria-valuemin', numberInput.min);
                 slider.setAttribute('aria-valuemax', numberInput.max);
@@ -1330,14 +1330,49 @@ Switchboard = (function () {
           }(numberInputs[i]));
         }
 
-        SB.event.add(window, 'resize', function(e) {
-          SB.spec.sliderSetWidths(numberInputs);
-        });
+        if(!id) {
+          SB.event.add(window, 'keydown', function(e) {
+            var elm      = SB.getTarget(e),
+                numInput = elm.parentNode.previousSibling,
+                newVal   = null;
 
-        /* If you change the form value, we should change the slider position. */
-        SB.event.add(document.body, 'change', function(e) {
-          changeForm(SB.getTarget(e));
-        });
+            if(SB.hasClass(elm.parentNode, 'sliderBar')) {
+              e.preventDefault();
+
+              if((e.keyCode === 38) || (e.keyCode === 39)) {
+                newVal = parseInt(numInput.value, 10) + 1;
+                newVal = newVal <= numInput.max ? newVal : numInput.max;
+              }
+
+              else if((e.keyCode === 37) || (e.keyCode === 40)) {
+                newVal = parseInt(numInput.value, 10) - 1;
+                newVal = newVal >= numInput.min ? newVal : numInput.min;
+              }
+
+              if((newVal) && (newVal >= numInput.min) && (newVal <= numInput.max)) {
+                numInput.value = newVal;
+              }
+            }
+          });
+
+          SB.event.add(window, 'keyup', function(e) {
+            var elm      = SB.getTarget(e),
+                numInput = elm.parentNode.previousSibling;
+
+            if(SB.hasClass(elm.parentNode, 'sliderBar')) {
+              changeForm(numInput);
+            }
+          });
+
+          SB.event.add(window, 'resize', function(e) {
+            SB.spec.sliderSetWidths(numberInputs);
+          });
+
+          /* If you change the form value, we should change the slider position. */
+          SB.event.add(document.body, 'change', function(e) {
+            changeForm(SB.getTarget(e));
+          });
+        }
       },
 
       /**
@@ -1359,58 +1394,13 @@ Switchboard = (function () {
         }
       },
 
-      /*
-       * Handles command execution.  If you support WebSockets and have an
-       * active connection, we'll use that.  If not, we'll use XHR.
-       */
-      sendCommand : function() {
-        var SB = Switchboard,
-            ts = new Date().getTime(),
-            ajaxRequest;
-
-        if(SB.spec.commandIssued) {
-          SB.vibrate();
-
-          if(SB.spec.socket) {
-            if(SB.spec.checkConnection()) {
-              SB.log('Issued', 'Command', 'success');
-              SB.spec.socket.send(SB.spec.commandIssued);
-            }
-          }
-
-          else {
-            ajaxRequest = {
-              path   : SB.spec.commandIssued,
-              param  : 'ts=' + ts,
-              method : 'GET',
-              onComplete : function () {
-                SB.log(ajaxRequest.response);
-              }
-            };
-
-            SB.ajax.request(ajaxRequest);
-          }
-
-          if(SB.spec.commandIteration > 3) {
-            SB.spec.commandDelay = 1000;
-          }
-
-          if(SB.spec.commandIteration > 10) {
-            SB.spec.commandDelay = 750;
-          }
-
-          SB.spec.commandIteration += 1;
-
-          setTimeout(SB.spec.sendCommand, SB.spec.commandDelay);
-        }
-      },
-
       /**
        * Builds event handler to delegate click events for standard commands.
        */
       command : function() {
-        var SB          = Switchboard,
-            findCommand = function(e) {
+        var SB            = Switchboard,
+            commandIssued = null,
+            findCommand   = function(e) {
               var elm      = SB.getTarget(e),
                   tagName  = elm.tagName.toLowerCase(),
                   validElm = null;
@@ -1425,47 +1415,54 @@ Switchboard = (function () {
 
               return validElm;
             },
-            fireCommand = function(e) {
+            fireCommand   = function(e) {
               var elm = findCommand(e);
 
               if(elm) {
+                e.preventDefault();
+
                 if(elm.rel === 'external') {
                   window.open(elm.href, '_blank').focus();
                 }
 
                 else {
-                  SB.spec.commandIssued = elm.href;
+                  commandIssued = elm.href;
 
-                  SB.spec.sendCommand();
+                  sendCommand();
                 }
               }
             },
-            stopCommand = function() {
-              SB.spec.commandIssued    = null;
-              SB.spec.commandDelay     = 1500;
-              SB.spec.commandIteration = 0;
+            sendCommand   = function() {
+              var ts = new Date().getTime(),
+                  ajaxRequest;
+
+              if(commandIssued) {
+                SB.vibrate();
+
+                if(SB.spec.socket) {
+                  if(SB.spec.checkConnection()) {
+                    SB.log('Issued', 'Command', 'success');
+                    SB.spec.socket.send(commandIssued);
+                  }
+                }
+
+                else {
+                  ajaxRequest = {
+                    path   : commandIssued,
+                    param  : 'ts=' + ts,
+                    method : 'GET',
+                    onComplete : function () {
+                      SB.log(ajaxRequest.response);
+                    }
+                  };
+
+                  SB.ajax.request(ajaxRequest);
+                }
+              }
             };
 
-        SB.event.add(SB.spec.uiComponents.body, 'mousedown', function(e) {
-          fireCommand(e);
-        });
-
-        SB.event.add(SB.spec.uiComponents.body, 'touchstart', function(e) {
-          if(findCommand(e)) {
-            e.preventDefault();
-            fireCommand(e);
-          }
-        });
-
-        SB.event.add(SB.spec.uiComponents.body, 'mouseup', function(e) {
-          stopCommand();
-        });
-
-        SB.event.add(SB.spec.uiComponents.body, 'touchend', function(e) {
-          stopCommand();
-        });
-
         SB.event.add(SB.spec.uiComponents.body, 'click', function(e) {
+          fireCommand(e);
           e.preventDefault();
         });
       },
@@ -1565,7 +1562,7 @@ Switchboard = (function () {
 
           else if(SB.getTarget(e).id === 'indicator') {
             if(SB.hasClass(Switchboard.getTarget(e), 'disconnected')) {
-              SB.spec.socket = SB.spec.socketConnect();
+              SB.spec.socketConnect();
             }
           }
         });
