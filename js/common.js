@@ -1,4 +1,4 @@
-/*global document, window, ActiveXObject, init, console, XMLHttpRequest, Switchboard, Notification */
+/*global alert, document, window, ActiveXObject, init, console, XMLHttpRequest, Switchboard, Notification */
 /*jslint white: true, evil: true */
 /*jshint -W020 */
 
@@ -838,10 +838,6 @@ Switchboard = (function () {
 
       socket : {},
 
-      commandIssued    : null,
-      commandDelay     : 1500,
-      commandIteration : 0,
-
       uiComponents : {
         header : {},
         body : {},
@@ -973,6 +969,7 @@ Switchboard = (function () {
 
         if(!connected) {
           SB.spec.socket = SB.spec.socketConnect();
+          connected      = SB.spec.uiComponents.indicator && SB.hasClass(SB.spec.uiComponents.indicator, 'connected');
         }
 
         return connected;
@@ -1359,58 +1356,19 @@ Switchboard = (function () {
         }
       },
 
-      /*
-       * Handles command execution.  If you support WebSockets and have an
-       * active connection, we'll use that.  If not, we'll use XHR.
-       */
-      sendCommand : function() {
-        var SB = Switchboard,
-            ts = new Date().getTime(),
-            ajaxRequest;
-
-        if(SB.spec.commandIssued) {
-          SB.vibrate();
-
-          if(SB.spec.socket) {
-            if(SB.spec.checkConnection()) {
-              SB.log('Issued', 'Command', 'success');
-              SB.spec.socket.send(SB.spec.commandIssued);
-            }
-          }
-
-          else {
-            ajaxRequest = {
-              path   : SB.spec.commandIssued,
-              param  : 'ts=' + ts,
-              method : 'GET',
-              onComplete : function () {
-                SB.log(ajaxRequest.response);
-              }
-            };
-
-            SB.ajax.request(ajaxRequest);
-          }
-
-          if(SB.spec.commandIteration > 3) {
-            SB.spec.commandDelay = 1000;
-          }
-
-          if(SB.spec.commandIteration > 10) {
-            SB.spec.commandDelay = 750;
-          }
-
-          SB.spec.commandIteration += 1;
-
-          setTimeout(SB.spec.sendCommand, SB.spec.commandDelay);
-        }
-      },
-
       /**
        * Builds event handler to delegate click events for standard commands.
        */
       command : function() {
-        var SB          = Switchboard,
-            findCommand = function(e) {
+        var SB               = Switchboard,
+            commandIssued    = null,
+            commandIteration = 0,
+            commandDelay     = 750,
+            interrupt        = false,
+            touchStartX      = 0,
+            touchStartY      = 0,
+            touchThreshold   = 5,
+            findCommand      = function(e) {
               var elm      = SB.getTarget(e),
                   tagName  = elm.tagName.toLowerCase(),
                   validElm = null;
@@ -1425,47 +1383,116 @@ Switchboard = (function () {
 
               return validElm;
             },
-            fireCommand = function(e) {
+            fireCommand      = function(e) {
               var elm = findCommand(e);
 
-              if(elm) {
+              if((elm) && (!interrupt)) {
+                e.preventDefault();
+
                 if(elm.rel === 'external') {
                   window.open(elm.href, '_blank').focus();
                 }
 
                 else {
-                  SB.spec.commandIssued = elm.href;
+                  commandIssued = elm.href;
 
-                  SB.spec.sendCommand();
+                  sendCommand();
                 }
               }
             },
-            stopCommand = function() {
-              SB.spec.commandIssued    = null;
-              SB.spec.commandDelay     = 1500;
-              SB.spec.commandIteration = 0;
+            stopCommand      = function() {
+              commandIssued    = null;
+              commandDelay     = 750;
+              commandIteration = 0;
+              interrupt        = true;
+              touchStartX      = 0;
+              touchStartY      = 0;
+            },
+            sendCommand      = function() {
+              var ts = new Date().getTime(),
+                  ajaxRequest;
+
+              if((commandIssued) && (!interrupt)) {
+                SB.vibrate();
+
+                if(SB.spec.socket) {
+                  if(SB.spec.checkConnection()) {
+                    SB.log('Issued', 'Command', 'success');
+                    SB.spec.socket.send(commandIssued);
+                  }
+                }
+
+                else {
+                  ajaxRequest = {
+                    path   : commandIssued,
+                    param  : 'ts=' + ts,
+                    method : 'GET',
+                    onComplete : function () {
+                      SB.log(ajaxRequest.response);
+                    }
+                  };
+
+                  SB.ajax.request(ajaxRequest);
+                }
+
+                if(commandIteration > 3) {
+                  commandDelay = 650;
+                }
+
+                if(commandIteration > 10) {
+                  commandDelay = 500;
+                }
+
+                commandIteration += 1;
+
+                setTimeout(sendCommand, commandDelay);
+              }
             };
 
-        SB.event.add(SB.spec.uiComponents.body, 'mousedown', function(e) {
-          fireCommand(e);
-        });
+        if(1) { //'ontouchstart' in document.documentElement) {
+          SB.log('Enabled', 'Touch Events', 'info');
 
-        SB.event.add(SB.spec.uiComponents.body, 'touchstart', function(e) {
-          if(findCommand(e)) {
-            e.preventDefault();
+          SB.event.add(SB.spec.uiComponents.body, 'touchstart', function(e) {
+            if(findCommand(e)) {
+              interrupt   = false;
+              touchStartX = parseInt(e.changedTouches[0].clientX, 10);
+              touchStartY = parseInt(e.changedTouches[0].clientY, 10);
+
+              // Wait 100ms to determine if you're scrolling.
+              setTimeout(function() {
+                e.preventDefault();
+
+                fireCommand(e);
+              }, 150);
+            }
+          });
+
+          SB.event.add(SB.spec.uiComponents.body, 'touchend', function(e) {
+            stopCommand();
+          });
+
+          SB.event.add(SB.spec.uiComponents.body, 'touchmove', function(e) {
+            if((Math.abs(parseInt(e.changedTouches[0].clientX, 10) - touchStartX) > touchThreshold) || (Math.abs(parseInt(e.changedTouches[0].clientY, 10) - touchStartY) > touchThreshold)) {
+              stopCommand();
+            }
+          });
+        }
+
+        else {
+          SB.log('Disabled', 'Touch Events', 'info');
+
+          SB.event.add(SB.spec.uiComponents.body, 'mousedown', function(e) {
+            interrupt = false;
             fireCommand(e);
-          }
-        });
+          });
 
-        SB.event.add(SB.spec.uiComponents.body, 'mouseup', function(e) {
-          stopCommand();
-        });
-
-        SB.event.add(SB.spec.uiComponents.body, 'touchend', function(e) {
-          stopCommand();
-        });
+          SB.event.add(SB.spec.uiComponents.body, 'mouseup', function(e) {
+            stopCommand();
+          });
+        }
 
         SB.event.add(SB.spec.uiComponents.body, 'click', function(e) {
+          interrupt = false;
           e.preventDefault();
         });
       },
