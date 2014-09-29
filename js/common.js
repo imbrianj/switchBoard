@@ -255,6 +255,22 @@ Switchboard = (function () {
       }
     },
 
+   /**
+    * Sugar function used to set the passed element to the currently focused
+    * element.
+    *
+    * @param {Object} elm Element to be focused.
+    */
+    setFocus : function (elm) {
+      if(typeof elm.setActive === 'function') {
+        elm.setActive();
+      }
+
+      else if(typeof elm.focus === 'function') {
+        elm.focus();
+      }
+    },
+
     /**
      * Shortcut to document.getElementById
      *
@@ -928,7 +944,7 @@ Switchboard = (function () {
             innerMarkup.removeChild(SB.getByTag('h1', innerMarkup)[0]);
 
             if(innerMarkup.innerHTML !== oldMarkup) {
-              if(SB.getByClass('sliderBar', node, 'div')) {
+              if(SB.getByClass('sliderBar', node, 'div')[0]) {
                 SB.event.removeAll(SB.getByClass('sliderBar', node, 'div')[0].getElementsByTagName('span')[0]);
 
                 node.outerHTML = markup;
@@ -1337,8 +1353,6 @@ Switchboard = (function () {
                 newVal   = null;
 
             if(SB.hasClass(elm.parentNode, 'sliderBar')) {
-              e.preventDefault();
-
               if((e.keyCode === 38) || (e.keyCode === 39)) {
                 newVal = parseInt(numInput.value, 10) + 1;
                 newVal = newVal <= numInput.max ? newVal : numInput.max;
@@ -1350,6 +1364,8 @@ Switchboard = (function () {
               }
 
               if((newVal) && (newVal >= numInput.min) && (newVal <= numInput.max)) {
+                e.preventDefault();
+
                 numInput.value = newVal;
               }
             }

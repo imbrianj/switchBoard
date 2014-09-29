@@ -221,7 +221,7 @@ module.exports = (function () {
       denon.devicePort = config.devicePort              || 23;
       denon.callback   = config.callback                || function () {};
 
-      if((Socket) && (denon.command) && (!Socket.destroyed)) {
+      if((Socket) && (!Socket.destroyed) && (denon.command)) {
         if((denon.command !== 'state') && (denon.command !== 'list')) {
           Socket.write(denon.command + "\r");
         }
@@ -263,8 +263,8 @@ module.exports = (function () {
         });
 
         Socket.once('error', function(err) {
-        var deviceState = require(__dirname + '/../lib/deviceState'),
-            denonState  = deviceState.getDeviceState(config.deviceId);
+          var deviceState = require(__dirname + '/../lib/deviceState'),
+              denonState  = deviceState.getDeviceState(config.deviceId);
 
           if((err.code !== 'ETIMEDOUT') || (denon.command !== 'state')) {
             denon.callback(err, denonState);
