@@ -1364,6 +1364,8 @@ Switchboard = (function () {
             commandIssued    = null,
             commandIteration = 0,
             commandDelay     = 750,
+            tapped           = false,
+            touched          = false,
             interrupt        = false,
             touchStartX      = 0,
             touchStartY      = 0,
@@ -1405,6 +1407,8 @@ Switchboard = (function () {
               commandDelay     = 750;
               commandIteration = 0;
               interrupt        = true;
+              tapped           = false;
+              touched          = false;
               touchStartX      = 0;
               touchStartY      = 0;
             },
@@ -1449,10 +1453,14 @@ Switchboard = (function () {
               }
             };
 
-        if(1) { //'ontouchstart' in document.documentElement) {
+        if('ontouchstart' in document.documentElement) {
           SB.log('Enabled', 'Touch Events', 'info');
 
           SB.event.add(SB.spec.uiComponents.body, 'touchstart', function(e) {
+            // For quick taps of commands, we need to set a flag.
+            tapped  = true;
+            touched = true;
+
             if(findCommand(e)) {
               interrupt   = false;
               touchStartX = parseInt(e.changedTouches[0].clientX, 10);
@@ -1462,12 +1470,25 @@ Switchboard = (function () {
               setTimeout(function() {
                 e.preventDefault();
 
+                // And unset that flag so we know not to run this again on
+                // touchend.
+                tapped = false;
+
                 fireCommand(e);
               }, 150);
             }
           });
 
+          SB.event.add(SB.spec.uiComponents.body, 'contextmenu', function(e) {
+            e.preventDefault();
+          });
+
           SB.event.add(SB.spec.uiComponents.body, 'touchend', function(e) {
+            // If you've only quickly tapped a command, we don't need to wait.
+            if(tapped) {
+              fireCommand(e);
+            }
+
             stopCommand();
           });
 
@@ -1476,20 +1497,22 @@ Switchboard = (function () {
               stopCommand();
             }
           });
-        }
 
-        else {
-          SB.log('Disabled', 'Touch Events', 'info');
-
-          SB.event.add(SB.spec.uiComponents.body, 'mousedown', function(e) {
-            interrupt = false;
-            fireCommand(e);
-          });
-
-          SB.event.add(SB.spec.uiComponents.body, 'mouseup', function(e) {
+          SB.event.add(SB.spec.uiComponents.body, 'touchcancel', function(e) {
             stopCommand();
           });
         }
+
+        SB.event.add(SB.spec.uiComponents.body, 'mousedown', function(e) {
+          if(touched === false) {
+            interrupt = false;
+            fireCommand(e);
+          }
+        });
+
+        SB.event.add(SB.spec.uiComponents.body, 'mouseup', function(e) {
+          stopCommand();
+        });
 
         SB.event.add(SB.spec.uiComponents.body, 'click', function(e) {
           interrupt = false;
