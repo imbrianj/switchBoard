@@ -28,7 +28,7 @@ Switchboard = (function () {
   'use strict';
 
   return {
-    version : 20140927,
+    version : 20140929,
 
    /**
     * Stops event bubbling further.
@@ -1414,9 +1414,17 @@ Switchboard = (function () {
        * Builds event handler to delegate click events for standard commands.
        */
       command : function() {
-        var SB            = Switchboard,
-            commandIssued = null,
-            findCommand   = function(e) {
+        var SB               = Switchboard,
+            commandIssued    = null,
+            commandIteration = 0,
+            commandDelay     = 750,
+            tapped           = false,
+            touched          = false,
+            interrupt        = false,
+            touchStartX      = 0,
+            touchStartY      = 0,
+            touchThreshold   = 5,
+            findCommand      = function(e) {
               var elm      = SB.getTarget(e),
                   tagName  = elm.tagName.toLowerCase(),
                   validElm = null;
@@ -1431,10 +1439,11 @@ Switchboard = (function () {
 
               return validElm;
             },
-            fireCommand   = function(e) {
+
+            fireCommand      = function(e) {
               var elm = findCommand(e);
 
-              if(elm) {
+              if((elm) && (!interrupt)) {
                 e.preventDefault();
 
                 if(elm.rel === 'external') {
@@ -1448,11 +1457,21 @@ Switchboard = (function () {
                 }
               }
             },
-            sendCommand   = function() {
+            stopCommand      = function() {
+              commandIssued    = null;
+              commandDelay     = 750;
+              commandIteration = 0;
+              interrupt        = true;
+              tapped           = false;
+              touched          = false;
+              touchStartX      = 0;
+              touchStartY      = 0;
+            },
+            sendCommand      = function() {
               var ts = new Date().getTime(),
                   ajaxRequest;
 
-              if(commandIssued) {
+              if((commandIssued) && (!interrupt)) {
                 SB.vibrate();
 
                 if(SB.spec.socket) {
@@ -1474,11 +1493,81 @@ Switchboard = (function () {
 
                   SB.ajax.request(ajaxRequest);
                 }
+
+                if(commandIteration > 3) {
+                  commandDelay = 650;
+                }
+
+                if(commandIteration > 10) {
+                  commandDelay = 500;
+                }
+
+                commandIteration += 1;
+
+                setTimeout(sendCommand, commandDelay);
               }
             };
 
+        if('ontouchstart' in document.documentElement) {
+          SB.log('Enabled', 'Touch Events', 'info');
+
+          SB.event.add(SB.spec.uiComponents.body, 'touchstart', function(e) {
+            // For quick taps of commands, we need to set a flag.
+            tapped  = true;
+            touched = true;
+
+            if(findCommand(e)) {
+              interrupt   = false;
+              touchStartX = parseInt(e.changedTouches[0].clientX, 10);
+              touchStartY = parseInt(e.changedTouches[0].clientY, 10);
+
+              // Wait 100ms to determine if you're scrolling.
+              setTimeout(function() {
+                e.preventDefault();
+
+                // And unset that flag so we know not to run this again on
+                // touchend.
+                tapped = false;
+
+                fireCommand(e);
+              }, 150);
+            }
+          });
+
+          SB.event.add(SB.spec.uiComponents.body, 'contextmenu', function(e) {
+            e.preventDefault();
+          });
+
+          SB.event.add(SB.spec.uiComponents.body, 'touchend', function(e) {
+            // If you've only quickly tapped a command, we don't need to wait.
+            if(tapped) {
+              fireCommand(e);
+            }
+
+            stopCommand();
+          });
+
+          SB.event.add(SB.spec.uiComponents.body, 'touchmove', function(e) {
+            if((Math.abs(parseInt(e.changedTouches[0].clientX, 10) - touchStartX) > touchThreshold) || (Math.abs(parseInt(e.changedTouches[0].clientY, 10) - touchStartY) > touchThreshold)) {
+              stopCommand();
+            }
+          });
+
+          SB.event.add(SB.spec.uiComponents.body, 'touchcancel', function(e) {
+            stopCommand();
+          });
+        }
+
+        SB.event.add(SB.spec.uiComponents.body, 'mousedown', function(e) {
+          if(touched === false) {
+            interrupt = false;
+            fireCommand(e);
+          }
+        });
+
         SB.event.add(SB.spec.uiComponents.body, 'click', function(e) {
-          fireCommand(e);
+          interrupt = false;
+
           e.preventDefault();
         });
       },
