@@ -1,57 +1,143 @@
 
       <section id="{{DEVICE_ID}}" class="{{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
         <h1>{{i18n_DENON}} <em>{{DEVICE_ACTIVE}}</em></h1>
-        <div class="control-block">
-          <div class="control">
-            <ul>
-              <li><a href="/?{{DEVICE_ID}}=PowerOn" class="fa fa-power-off power-on" title="{{i18n_POWER_ON}}"><span>{{i18n_POWER_ON}}</span></a></li>
-              <li><a href="/?{{DEVICE_ID}}=PowerOff" class="fa fa-power-off power-off" title="{{i18n_POWER_OFF}}"><span>{{i18n_POWER_OFF}}</span></a></li>
-              <li><a href="/?{{DEVICE_ID}}=Select" class="fa fa-th" title="{{i18n_SELECT}}"><span>{{i18n_SELECT}}</span></a></li>
-              <li><a href="/?{{DEVICE_ID}}=Start" class="fa fa-sign-in" title="{{i18n_START}}"><span>{{i18n_START}}</span></a></li>
-            </ul>
-          </div>
-          <div class="navigation">
-            <a href="/?{{DEVICE_ID}}=Menu_Up" class="fa fa-arrow-up" title="{{i18n_UP}}"><span>{{i18n_UP}}</span></a>
-            <a href="/?{{DEVICE_ID}}=Menu_Left" class="fa fa-arrow-left" title="{{i18n_LEFT}}"><span>{{i18n_LEFT}}</span></a>
-            <a href="/?{{DEVICE_ID}}=Menu_Return" class="fa-stack" title="{{i18n_ENTER}}">
-              <i class="fa fa-square-o fa-stack-2x"></i>
-              <i class="fa fa-level-up fa-rotate-90"></i>
-              <span>{{i18n_ENTER}}</span>
-            </a>
-            <a href="/?{{DEVICE_ID}}=Menu_Right" class="fa fa-arrow-right" title="{{i18n_RIGHT}}"><span>{{i18n_RIGHT}}</span></a>
-            <a href="/?{{DEVICE_ID}}=Menu_Down" class="fa fa-arrow-down" title="{{i18n_DOWN}}"><span>{{i18n_DOWN}}</span></a>
-          </div>
-          <div class="volume">
-            <a href="/?{{DEVICE_ID}}=VolUp" class="fa fa-volume-up" title="{{i18n_VOLUME_UP}}"><span>{{i18n_VOLUME_UP}}</span></a>
-            <a href="/?{{DEVICE_ID}}=VolDown" class="fa fa-volume-down" title="{{i18n_VOLUME_DOWN}}"><span>{{i18n_VOLUME_DOWN}}</span></a>
-            <a href="/?{{DEVICE_ID}}=Mute" class="fa fa-volume-off" title="{{i18n_MUTE}}"><span>{{i18n_MUTE}}</span></a>
-          </div>
-        </div>
-        <div class="shortcuts">
-          <ul>
-            <li><a href="/?{{DEVICE_ID}}=Menu" class="fa fa-list-ul" title="{{i18n_MENU}}"><span>{{i18n_MENU}}</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=Input_Game" class="fa fa-gamepad" title="{{i18n_GAME}}"><span>{{i18n_GAME}}</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=Input_TV" class="fa fa-desktop" title="{{i18n_TV}}"><span>{{i18n_TV}}</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=Input_Network" class="fa fa-globe" title="{{i18n_NETWORK}}"><span>{{i18n_NETWORK}}</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=Input_MPlayer" class="fa fa-file-audio-o" title="{{i18n_MUSIC_PLAYER}}"><span>{{i18n_MUSIC_PLAYER}}</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=Input_CD" class="fa fa-music" title="{{i18n_CD}}"><span>{{i18n_CD}}</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=Input_Bluray" class="fa fa-video-camera" title="{{i18n_BLU_RAY}}"><span>{{i18n_BLU_RAY}}</span></a></li>
-          </ul>
-        </div>
-        <div class="text-device-status">
-          <ul>
-            <li>{{i18n_POWER}}: {{DEVICE_POWER}}</li>
-            <li>{{i18n_Z1}} ({{DEVICE_Z1_POWER}})</li>
-            <li>{{i18n_INPUT}}: {{DEVICE_Z1_INPUT}}</li>
-            <li>{{i18n_VOLUME}}: {{DEVICE_Z1_VOLUME}} MAX: {{DEVICE_Z1_MAXVOLUME}}</li>
-            <li>{{i18n_SOUNDMODE}}: {{DEVICE_Z1_MODE}}</li>
-            <li>{{i18n_MUTE}}: {{DEVICE_Z1_MUTE}}</li>
-            <li>{{i18n_Z2}} ({{DEVICE_Z2_POWER}})</li>
-            <li>{{i18n_INPUT}}: {{DEVICE_Z2_INPUT}}</li>
-            <li>{{i18n_VOLUME}}: {{DEVICE_Z2_VOLUME}}</li>
-            <li>{{i18n_Z3}} ({{DEVICE_Z3_POWER}})</li>
-            <li>{{i18n_INPUT}}: {{DEVICE_Z3_INPUT}}</li>
-            <li>{{i18n_VOLUME}}: {{DEVICE_Z3_VOLUME}}</li>
-          </ul>
-        </div>
+		
+		<div class="zone">
+			<h3>{{i18n_Z1}} ({{DEVICE_Z1_POWER}})</h3>
+			<ul>
+				<li class="zinput">{{DEVICE_Z1_INPUT}}</li>
+				<li>{{DEVICE_Z1_MODE}}</li>
+				<div class="text">
+					<form class="text-form" id="speech-input-form" action="/" method="get">
+						<fieldset>
+							<legend>Text Input</legend>
+							<label for="{{DEVICE_ID}}-text-input">Text Input:</label>
+							<input id="{{DEVICE_ID}}-text-input" class="text-input" type="number" max="{{DEVICE_Z1_MAXVOLUME}}" min="0" name="{{DEVICE_ID}}" value="{{DEVICE_Z1_VOLUME}}" required />
+							<input class="input-type" type="hidden" value="text" name="type" />
+							<button type="submit" class="button">Submit</button>
+					</fieldset>
+					</form>
+				</div>
+				<li>
+					<div class="button">
+						<a href="/?{{DEVICE_ID}}=Zone1_On" class="fa fa-power-off" title="Z1_ON"><span>Z1_ON</span></a>
+					</div>
+				</li>
+				<li>
+					<div class="button">
+						<a href="/?{{DEVICE_ID}}=Zone1_Off" class="fa fa-times-circle-o" title="Z1_OFF"><span>Z1_OFF</span></a>
+					</div>	
+				</li>
+				<li class="topmenu">
+					<div class="button">
+						<a href="" class="fa fa-sign-in"><span>{{i18n_INPUT}}</span></a>
+						<ul>
+							<li class="submenu"><a href="/?{{DEVICE_ID}}=Input_Bluray">{{i18n_BD}}</a></li>
+							<li class="submenu"><a href="/?{{DEVICE_ID}}=Input_Mplayer">{{i18n_MPLAY}}</a></li>
+							<li class="submenu"><a href="/?{{DEVICE_ID}}=Input_CD">{{i18n_CD}}</a></li>
+							<li class="submenu"><a href="/?{{DEVICE_ID}}=Input_DVD">{{i18n_DVD}}</a></li>
+							<li class="submenu"><a href="/?{{DEVICE_ID}}=Input_Game">{{i18n_GAME}}</a></li>
+							<li class="submenu"><a href="/?{{DEVICE_ID}}=Input_Network">{{i18n_NET}}</a></li>
+							<li class="submenu"><a href="/?{{DEVICE_ID}}=Input_TV">{{i18n_SAT_CBL}}</a></li>
+						</ul>
+					</div>
+				</li>
+				<li class="topmenu">
+					<div class="button">
+						<a href="" class="fa fa-music"><span>{{i18n_SOUNDMODE}}</span></a>
+						<ul>
+							<li class="submenu"><a href="/?{{DEVICE_ID}}=Sound_Movie">{{i18n_MOVIE}}</a></li>
+							<li class="submenu"><a href="/?{{DEVICE_ID}}=Sound_MCHStereo">{{i18n_MUSIC}}</a></li>
+							<li class="submenu"><a href="/?{{DEVICE_ID}}=Sound_Movie">{{i18n_GAME}}</a></li>
+							<li class="submenu"><a href="/?{{DEVICE_ID}}=Sound_Pure">{{i18n_PURE_DIRECT}}</a></li>
+						</ul>
+					</div>
+				</li>
+			</ul>			
+		</div>
+		
+		<div class="zone">
+			<h3>{{i18n_Z3}} ({{DEVICE_Z3_POWER}})</h3>
+			<ul>
+				<li class="zinput">{{DEVICE_Z3_INPUT}}</li>
+				<div class="text">
+					<form class="text-form" id="speech-input-form" action="/" method="get">
+						<fieldset>
+							<legend>Text Input</legend>
+							<label for="{{DEVICE_ID}}-text-input">Text Input:</label>
+							<input id="{{DEVICE_ID}}-text-input" class="text-input" type="number" max="100" min="0" name="{{DEVICE_ID}}" value="{{DEVICE_Z3_VOLUME}}" required />
+							<input class="input-type" type="hidden" value="text" name="type" />
+							<button type="submit" class="button">Submit</button>
+					</fieldset>
+					</form>
+				</div>
+				<li>
+					<div class="button">
+						<a href="/?{{DEVICE_ID}}=Zone3_On" class="fa fa-power-off" title="Z3_ON"><span>Z3_ON</span></a>
+					</div>
+				</li>
+				<li>
+					<div class="button">
+						<a href="/?{{DEVICE_ID}}n=Zone3_Off" class="fa fa-times-circle-o" title="Z3_OFF"><span>Z3_OFF</span></a>
+					</div>	
+				</li>
+				<li class="topmenu">
+					<div class="button">
+						<a href="" class="fa fa-sign-in"><span>{{i18n_INPUT}}</span></a>
+						<ul>
+							<li class="submenu"><a href="/?{{DEVICE_ID}}=Input_Bluray">{{i18n_BD}}</a></li>
+							<li class="submenu"><a href="/?{{DEVICE_ID}}=Input_Mplayer">{{i18n_MPLAY}}</a></li>
+							<li class="submenu"><a href="/?{{DEVICE_ID}}=Input_CD">{{i18n_CD}}</a></li>
+							<li class="submenu"><a href="/?{{DEVICE_ID}}=Input_DVD">{{i18n_DVD}}</a></li>
+							<li class="submenu"><a href="/?{{DEVICE_ID}}=Input_Game">{{i18n_GAME}}</a></li>
+							<li class="submenu"><a href="/?{{DEVICE_ID}}=Input_Network">{{i18n_NET}}</a></li>
+							<li class="submenu"><a href="/?{{DEVICE_ID}}=Input_TV">{{i18n_SAT_CBL}}</a></li>
+						</ul>
+					</div>
+				</li>	
+			</ul>			
+		</div>
+		
+		<div class="zone">
+			<h3>{{i18n_Z2}} ({{DEVICE_Z2_POWER}})</h3>
+			<ul>
+				<li class="zinput">{{DEVICE_Z2_INPUT}}</li>
+				<div class="text">
+					<form class="text-form" id="speech-input-form" action="/" method="get">
+						<fieldset>
+							<legend>Text Input</legend>
+							<label for="{{DEVICE_ID}}-text-input">Text Input:</label>
+							<input id="{{DEVICE_ID}}-text-input" class="text-input" type="number" max="80" min="0" name="{{DEVICE_ID}}" value="{{DEVICE_Z2_VOLUME}}" required />
+							<input class="input-type" type="hidden" value="text" name="type" />
+							<button type="submit" class="button">Submit</button>
+					</fieldset>
+					</form>
+				</div>
+				<li>
+					<div class="button">
+						<a href="/?{{DEVICE_ID}}=Zone2_On" class="fa fa-power-off" title="Z2_ON"><span>Z2_ON</span></a>
+					</div>
+				</li>
+				<li>
+					<div class="button">
+						<a href="/?{{DEVICE_ID}}=Zone2_Off" class="fa fa-times-circle-o" title="Z2_OFF"><span>Z2_OFF</span></a>
+					</div>
+				</li>
+				<li class="topmenu">
+					<div class="button">
+						<a href="" class="fa fa-sign-in"><span>{{i18n_INPUT}}</span></a>
+						<ul>
+							<li class="submenu"><a href="/?{{DEVICE_ID}}=Input_Bluray">{{i18n_BD}}</a></li>
+							<li class="submenu"><a href="/?{{DEVICE_ID}}=Input_Mplayer">{{i18n_MPLAY}}</a></li>
+							<li class="submenu"><a href="/?{{DEVICE_ID}}=Input_CD">{{i18n_CD}}</a></li>
+							<li class="submenu"><a href="/?{{DEVICE_ID}}=Input_DVD">{{i18n_DVD}}</a></li>
+							<li class="submenu"><a href="/?{{DEVICE_ID}}=Input_Game">{{i18n_GAME}}</a></li>
+							<li class="submenu"><a href="/?{{DEVICE_ID}}=Input_Network">{{i18n_NET}}</a></li>
+							<li class="submenu"><a href="/?{{DEVICE_ID}}=Input_TV">{{i18n_SAT_CBL}}</a></li>
+						</ul>
+					</div>
+				</li>	
+			</ul>			
+		</div>
+		
       </section>
