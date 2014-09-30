@@ -221,6 +221,11 @@ module.exports = (function () {
       denon.devicePort = config.devicePort              || 23;
       denon.callback   = config.callback                || function () {};
 
+      if((Socket) && (denon.text)) {
+        console.log("MV" + denon.text);
+        Socket.write("MV" + denon.text + "\r");       
+      }
+
       if((Socket) && (!Socket.destroyed) && (denon.command)) {
         if((denon.command !== 'state') && (denon.command !== 'list')) {
           Socket.write(denon.command + "\r");
