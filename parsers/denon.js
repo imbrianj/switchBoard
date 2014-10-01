@@ -30,8 +30,8 @@
     var translate = function(message) {
       var util;
 
-      if(typeof Switchboard === 'object') {
-        message = Switchboard.util.translate(message, 'denon');
+      if(typeof SB === 'object') {
+        message = SB.util.translate(message, 'denon');
       }
 
       else {
@@ -83,4 +83,4 @@
 
     return markup;
   };
-})(typeof exports === 'undefined' ? this.Switchboard.spec.parsers : exports);
+})(typeof exports === 'undefined' ? this.SB.spec.parsers : exports);

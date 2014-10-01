@@ -34,8 +34,8 @@
         encodeName = function(name) {
           var util;
 
-          if(typeof Switchboard === 'object') {
-            name = Switchboard.util.encodeName(name);
+          if(typeof SB === 'object') {
+            name = SB.util.encodeName(name);
           }
 
           else {
@@ -57,8 +57,8 @@
         translate  = function(message) {
           var util;
 
-          if((typeof Switchboard === 'object') && (typeof Switchboard.util === 'object')) {
-            message = Switchboard.util.translate(message, 'raspberryRemote');
+          if((typeof SB === 'object') && (typeof SB.util === 'object')) {
+            message = SB.util.translate(message, 'raspberryRemote');
           }
 
           else {
@@ -81,4 +81,4 @@
 
     return markup.replace('{{RASPBERRY_REMOTE_DYNAMIC}}', tempMarkup);
   };
-})(typeof exports === 'undefined' ? this.Switchboard.spec.parsers : exports);
+})(typeof exports === 'undefined' ? this.SB.spec.parsers : exports);

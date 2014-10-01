@@ -459,7 +459,9 @@ module.exports = (function () {
 
     send : function (config) {
       var https       = require('https'),
+          fs          = require('fs'),
           nest        = {},
+          that        = this,
           postRequest = '',
           dataReply   = '',
           request;
@@ -508,7 +510,25 @@ module.exports = (function () {
             else if(dataReply) {
               nestData = JSON.parse(dataReply);
 
-              nest.callback(null, nestData);
+              if(nestData.cmd === 'REINIT_STATE') {
+                fs.exists('tmp/nestAuth.json', function(exists) {
+                  if(exists) {
+                    fs.unlink('tmp/nestAuth.json', function(err) {
+                      if(err) {
+                        nest.callback('Failed to remove expired auth');
+                      }
+
+                      else {
+                        nest.callback('Expired auth removed');
+                      }
+                    });
+                  }
+                });
+              }
+
+              else {
+                nest.callback(null, nestData);
+              }
             }
 
             else {

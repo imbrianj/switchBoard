@@ -222,8 +222,7 @@ module.exports = (function () {
       denon.callback   = config.callback                || function () {};
 
       if((Socket) && (denon.text)) {
-        console.log("MV" + denon.text);
-        Socket.write("MV" + denon.text + "\r");       
+        Socket.write("MV" + denon.text + "\r");
       }
 
       if((Socket) && (!Socket.destroyed) && (denon.command)) {

@@ -24,7 +24,7 @@ module.exports = function(grunt) {
           console     : true,
           State       : true,
           __dirname   : true,
-          Switchboard : true,
+          SB          : true,
           exports     : true,
           process     : true,
           setTimeout  : true,

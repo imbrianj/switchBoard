@@ -652,8 +652,8 @@ section .navigation a {
 section .navigation .fa-arrow-up,
 section .navigation .fa-arrow-down {
 	clear: both;
+	display: block;
 	float: none;
-	width: 100%;
 }
 
 section .navigation .fa-arrow-left,

@@ -36,8 +36,8 @@
     translate  = function(message) {
       var util;
 
-      if((typeof Switchboard === 'object') && (typeof Switchboard.util === 'object')) {
-        message = Switchboard.util.translate(message, 'weather');
+      if((typeof SB === 'object') && (typeof SB.util === 'object')) {
+        message = SB.util.translate(message, 'weather');
       }
 
       else {
@@ -157,4 +157,4 @@
 
     return markup.replace('{{WEATHER_DYNAMIC}}', tempMarkup);
   };
-})(typeof exports === 'undefined' ? this.Switchboard.spec.parsers : exports);
+})(typeof exports === 'undefined' ? this.SB.spec.parsers : exports);

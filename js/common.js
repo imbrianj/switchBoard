@@ -1,4 +1,4 @@
-/*global document, window, ActiveXObject, init, console, XMLHttpRequest, Switchboard, Notification */
+/*global document, window, ActiveXObject, init, console, XMLHttpRequest, SB, Notification */
 /*jslint white: true, evil: true */
 /*jshint -W020 */
 
@@ -24,11 +24,11 @@
  * IN THE SOFTWARE.
  */
 
-Switchboard = (function () {
+SB = (function () {
   'use strict';
 
   return {
-    version : 20140929,
+    version : 20140930,
 
    /**
     * Stops event bubbling further.
@@ -81,8 +81,8 @@ Switchboard = (function () {
       *         is triggered.
       * @param {Boolean} capture true if the event should be registered as a
       *         capturing listener.  Defaults to false.
-      * @note All events are added to the Switchboard.event.list array for
-      *        access outside this function.
+      * @note All events are added to the SB.event.list array for access outside
+      *        this function.
       */
       add : function (elm, event, action, capture) {
         capture = capture || false;
@@ -99,7 +99,7 @@ Switchboard = (function () {
           elm['on' + event] = action;
         }
 
-        Switchboard.event.list.push([elm, event, action]);
+        SB.event.list.push([elm, event, action]);
       },
 
      /**
@@ -112,8 +112,7 @@ Switchboard = (function () {
       *         and event.
       * @param {Boolean} capture true if the event was registered as a
       *         capturing listener.  Defaults to false.
-      * @note Automatically removes the event from the Switchboard.event.list
-      *        array.
+      * @note Automatically removes the event from the SB.event.list array
       */
       remove : function (elm, event, action, capture) {
         capture = capture || false;
@@ -132,13 +131,13 @@ Switchboard = (function () {
           elm['on' + event] = null;
         }
 
-        for (i; i < Switchboard.event.list.length; i += 1) {
-          if (Switchboard.event.list[i]) {
-            if ((Switchboard.event.list[i]) &&
-                (Switchboard.event.list[i][0] === elm) &&
-                (Switchboard.event.list[i][1] === event) &&
-                (Switchboard.event.list[i][2] === action)) {
-              Switchboard.event.list.splice(i, 1);
+        for (i; i < SB.event.list.length; i += 1) {
+          if (SB.event.list[i]) {
+            if ((SB.event.list[i]) &&
+                (SB.event.list[i][0] === elm) &&
+                (SB.event.list[i][1] === event) &&
+                (SB.event.list[i][2] === action)) {
+              SB.event.list.splice(i, 1);
 
               break;
             }
@@ -148,18 +147,18 @@ Switchboard = (function () {
 
      /**
       * Loops through all registered events (referencing the
-      *  Switchboard.event.list array) and removes all events.  This should
-      *  only be executed onunload to prevent documented IE6 memory leaks.
+      *  SB.event.list array) and removes all events.  This should only be
+      *  executed onunload to prevent documented IE6 memory leaks.
       */
       removeAll : function (elm) {
         elm = elm || document;
 
-        var i = Switchboard.event.list.length - 1;
+        var i = SB.event.list.length - 1;
 
         for (i; i >= 0; i -= 1) {
-          if (Switchboard.event.list[i]) {
-            if ((Switchboard.event.list[i][0] === elm) || (elm === document)) {
-              Switchboard.event.remove(Switchboard.event.list[i][0], Switchboard.event.list[i][1], Switchboard.event.list[i][2]);
+          if (SB.event.list[i]) {
+            if ((SB.event.list[i][0] === elm) || (elm === document)) {
+              SB.event.remove(SB.event.list[i][0], SB.event.list[i][1], SB.event.list[i][2]);
             }
           }
         }
@@ -209,7 +208,7 @@ Switchboard = (function () {
     * @param {String} className Class name being checked.
     */
     hasClass : function (elm, className) {
-      return Switchboard.hasAttribute(elm, 'className', className) ? true : false;
+      return SB.hasAttribute(elm, 'className', className) ? true : false;
     },
 
    /**
@@ -220,8 +219,8 @@ Switchboard = (function () {
     * @param {String} className Class name to be applied.
     */
     addClass : function (elm, className) {
-      if (!Switchboard.hasClass(elm, className)) {
-        elm.className = Switchboard.trim(elm.className + ' ' + className);
+      if (!SB.hasClass(elm, className)) {
+        elm.className = SB.trim(elm.className + ' ' + className);
       }
     },
 
@@ -232,9 +231,9 @@ Switchboard = (function () {
     * @param {String} className Class name to be removed.
     */
     removeClass : function (elm, className) {
-      if (Switchboard.hasClass(elm, className)) {
+      if (SB.hasClass(elm, className)) {
         elm.className = elm.className.replace(new RegExp('(\\s|^)' + className + '(\\s|$)'), ' ');
-        elm.className = Switchboard.trim(elm.className);
+        elm.className = SB.trim(elm.className);
       }
     },
 
@@ -246,12 +245,12 @@ Switchboard = (function () {
     * @param {String} className Class Name to be toggled.
     */
     toggleClass : function (elm, className) {
-      if (!Switchboard.hasClass(elm, className)) {
-        Switchboard.addClass(elm, className);
+      if (!SB.hasClass(elm, className)) {
+        SB.addClass(elm, className);
       }
 
       else {
-        Switchboard.removeClass(elm, className);
+        SB.removeClass(elm, className);
       }
     },
 
@@ -336,10 +335,10 @@ Switchboard = (function () {
       }
 
       else {
-        children = Switchboard.getByTag(tag, parent);
+        children = SB.getByTag(tag, parent);
 
         for (i in children) {
-          if (Switchboard.hasClass(children[i], className)) {
+          if (SB.hasClass(children[i], className)) {
             elementsWithClass[j] = children[i];
             j += 1;
           }
@@ -544,7 +543,7 @@ Switchboard = (function () {
               }
 
               else if (ajaxRequest.onComplete.childNodes[0]) {
-                Switchboard.putText(ajaxRequest.onComplete, ajaxRequest.response);
+                SB.putText(ajaxRequest.onComplete, ajaxRequest.response);
               }
             break;
 
@@ -584,7 +583,7 @@ Switchboard = (function () {
 
         request.setRequestHeader('rest', 'true');
 
-        Switchboard.event.add(request, 'readystatechange', function () {
+        SB.event.add(request, 'readystatechange', function () {
           if (request.readyState === 4) {
             if (request.status === 200) {
               ajaxRequest.response = request.responseText;
@@ -668,7 +667,7 @@ Switchboard = (function () {
         if ((styleValue.indexOf('px') !== -1) ||
             (styleValue.indexOf('em') !== -1) ||
             (styleValue.indexOf('%')  !== -1)) {
-          styleValue = Switchboard.stripUnits(styleValue);
+          styleValue = SB.stripUnits(styleValue);
         }
 
         if (property === 'opacity') {
@@ -743,18 +742,18 @@ Switchboard = (function () {
           start = (document.body.ontouchstart === undefined) ? 'mousedown' : 'touchstart',
           move  = (document.body.ontouchmove  === undefined) ? 'mousemove' : 'touchmove',
           end   = (document.body.ontouchend   === undefined) ? 'mouseup'   : 'touchend',
-          wrapperBorderOffsetX = Switchboard.findStyle(drag.elm.parentNode, 'border-left-width') + Switchboard.findStyle(drag.elm.parentNode, 'border-right-width'),
-          wrapperBorderOffsetY = Switchboard.findStyle(drag.elm.parentNode, 'border-top-width')  + Switchboard.findStyle(drag.elm.parentNode, 'border-bottom-width');
+          wrapperBorderOffsetX = SB.findStyle(drag.elm.parentNode, 'border-left-width') + SB.findStyle(drag.elm.parentNode, 'border-right-width'),
+          wrapperBorderOffsetY = SB.findStyle(drag.elm.parentNode, 'border-top-width')  + SB.findStyle(drag.elm.parentNode, 'border-bottom-width');
 
       mover = function (e) {
-        if (Switchboard.hasClass(drag.elm, 'active')) {
-          Switchboard.cancelBubble(e);
+        if (SB.hasClass(drag.elm, 'active')) {
+          SB.cancelBubble(e);
 
           if (e.preventDefault) {
             e.preventDefault();
           }
 
-          var position  = Switchboard.findMousePosition(e),
+          var position  = SB.findMousePosition(e),
               positionX = position.positionX,
               positionY = position.positionY,
               width     = drag.dragElm.offsetWidth,
@@ -762,8 +761,8 @@ Switchboard = (function () {
               endX,
               endY;
 
-          drag.newX = positionX - drag.clickOffsetX + drag.startOffsetX - (drag.startWidth  - Switchboard.findScroll().positionX);
-          drag.newY = positionY - drag.clickOffsetY + drag.startOffsetY - (drag.startHeight - Switchboard.findScroll().positionY);
+          drag.newX = positionX - drag.clickOffsetX + drag.startOffsetX - (drag.startWidth  - SB.findScroll().positionX);
+          drag.newY = positionY - drag.clickOffsetY + drag.startOffsetY - (drag.startHeight - SB.findScroll().positionY);
 
           if (drag.restrict) {
             endX = drag.elm.parentNode.offsetWidth  - width  - wrapperBorderOffsetX;
@@ -797,34 +796,34 @@ Switchboard = (function () {
       };
 
       dropper = function () {
-        if (Switchboard.hasClass(drag.elm, 'active')) {
-          Switchboard.removeClass(drag.elm, 'active');
+        if (SB.hasClass(drag.elm, 'active')) {
+          SB.removeClass(drag.elm, 'active');
 
-          Switchboard.event.remove(document, 'mousemove', mover);
-          Switchboard.event.remove(document, 'mouseup',   dropper);
+          SB.event.remove(document, 'mousemove', mover);
+          SB.event.remove(document, 'mouseup',   dropper);
 
           drag.onComplete(drag);
         }
       };
 
-      Switchboard.event.add(drag.dragElm, start, function (e) {
-        var startOffset = Switchboard.findMousePosition(e);
+      SB.event.add(drag.dragElm, start, function (e) {
+        var startOffset = SB.findMousePosition(e);
 
-        Switchboard.clickDrag.zindex = Switchboard.clickDrag.zindex || 1;
+        SB.clickDrag.zindex = SB.clickDrag.zindex || 1;
 
-        Switchboard.cancelBubble(e);
+        SB.cancelBubble(e);
         drag.clickOffsetX       = startOffset.positionX;
         drag.clickOffsetY       = startOffset.positionY;
         drag.startOffsetX       = drag.elm.offsetLeft;
         drag.startOffsetY       = drag.elm.offsetTop;
-        drag.startWidth         = Switchboard.findScroll().positionX;
-        drag.startHeight        = Switchboard.findScroll().positionY;
-        drag.elm.style.zIndex   = Switchboard.clickDrag.zindex += 1;
+        drag.startWidth         = SB.findScroll().positionX;
+        drag.startHeight        = SB.findScroll().positionY;
+        drag.elm.style.zIndex   = SB.clickDrag.zindex += 1;
         drag.elm.style.margin   = 0;
         drag.elm.style.bottom   = 'auto';
         drag.elm.style.right    = 'auto';
         drag.elm.style.position = 'absolute';
-        Switchboard.addClass(drag.elm, 'active');
+        SB.addClass(drag.elm, 'active');
 
         drag.onStart();
 
@@ -832,8 +831,8 @@ Switchboard = (function () {
           e.preventDefault();
         }
 
-        Switchboard.event.add(document, move, mover);
-        Switchboard.event.add(document, end,  dropper);
+        SB.event.add(document, move, mover);
+        SB.event.add(document, end,  dropper);
 
         mover(e);
       });
@@ -868,8 +867,7 @@ Switchboard = (function () {
       * @param {Object} state State object of a changed controller.
       */
       updateTemplate : function(state) {
-        var SB          = Switchboard,
-            node        = SB.get(state.deviceId),
+        var node        = SB.get(state.deviceId),
             parser      = SB.spec.parsers[state.typeClass],
             value       = state.value,
             deviceState = state.state,
@@ -916,7 +914,7 @@ Switchboard = (function () {
             }
           }
 
-          if(node && markup && state) {
+          if((node) && (markup) && (state)) {
             markup = markup.split('{{DEVICE_ID}}').join(state.deviceId);
             markup = markup.split('{{DEVICE_TYPE}}').join(state.typeClass);
             markup = markup.split('{{DEVICE_SELECTED}}').join(selected);
@@ -965,15 +963,16 @@ Switchboard = (function () {
        * with the appropriate text and append to the supplied header DOM node.
        */
       buildIndicator : function () {
-        var SB = Switchboard;
+        var indicator;
 
         if(!SB.get('indicator')) {
-          SB.spec.uiComponents.indicator = document.createElement('span');
-          SB.spec.uiComponents.indicator.id = 'indicator';
-          SB.addClass(SB.spec.uiComponents.indicator, 'connecting');
-          SB.putText(SB.spec.uiComponents.indicator, SB.spec.strings.CONNECTING);
+          indicator = document.createElement('span');
+          indicator.id = 'indicator';
+          SB.addClass(indicator, 'connecting');
+          SB.putText(indicator, SB.spec.strings.CONNECTING);
 
-          SB.spec.uiComponents.header.appendChild(SB.spec.uiComponents.indicator);
+          SB.spec.uiComponents.indicator = indicator;
+          SB.spec.uiComponents.header.appendChild(indicator);
         }
       },
 
@@ -982,8 +981,7 @@ Switchboard = (function () {
        * connected, we should reconnect and grab the latest State.
        */
       checkConnection : function () {
-        var SB        = Switchboard,
-            connected = SB.spec.uiComponents.indicator && SB.hasClass(SB.spec.uiComponents.indicator, 'connected');
+        var connected = SB.spec.uiComponents.indicator && SB.hasClass(SB.spec.uiComponents.indicator, 'connected');
 
         if(!connected) {
           SB.spec.socketConnect();
@@ -998,8 +996,6 @@ Switchboard = (function () {
        * connected, we should reconnect and grab the latest State.
        */
       socketConnect : function () {
-        var SB = Switchboard;
-
         SB.log('Connecting', 'WebSocket', 'info');
 
         SB.spec.socket = new WebSocket('ws://' + window.location.host, 'echo-protocol');
@@ -1094,8 +1090,7 @@ Switchboard = (function () {
        * data.
        */
       statePoller : function() {
-        var SB = Switchboard,
-            ajaxRequest;
+        var ajaxRequest;
 
         SB.log('not supported - using polling', 'WebSockets', 'error');
 
@@ -1156,10 +1151,10 @@ Switchboard = (function () {
             images,
             i = 0;
 
-        if(Switchboard.get(id)) {
-          container = Switchboard.get(id);
+        if(SB.get(id)) {
+          container = SB.get(id);
 
-          images = Switchboard.getByTag('img', container);
+          images = SB.getByTag('img', container);
 
           for(i = 0; i < images.length; i += 1) {
             if((images[i].getAttribute('data-src')) && (!images[i].src)) {
@@ -1181,10 +1176,10 @@ Switchboard = (function () {
             i = 0;
 
         if(elm) {
-          images = Switchboard.getByTag('img', elm);
+          images = SB.getByTag('img', elm);
 
           for(i = 0; i < images.length; i += 1) {
-            if((images[i].getAttribute('src')) && (Switchboard.hasClass(images[i], 'streaming'))) {
+            if((images[i].getAttribute('src')) && (SB.hasClass(images[i], 'streaming'))) {
               images[i].setAttribute('data-src', images[i].src);
               images[i].removeAttribute('src');
             }
@@ -1196,14 +1191,14 @@ Switchboard = (function () {
        * Simply find all text fields inside any controller.
        */
       findTextInputs : function() {
-        return Switchboard.spec.uiComponents.body.getElementsByTagName('input');
+        return SB.spec.uiComponents.body.getElementsByTagName('input');
       },
 
       /**
        * Find all number input fields inside any controller.
        */
       findNumberInputs : function() {
-        var textInputs   = Switchboard.spec.findTextInputs(),
+        var textInputs   = SB.spec.findTextInputs(),
             numberInputs = [],
             i;
 
@@ -1273,8 +1268,7 @@ Switchboard = (function () {
        *                  be built.
        */
       buildSliders : function(id) {
-        var SB           = Switchboard,
-            numberInputs = SB.spec.findNumberInputs(),
+        var numberInputs = SB.spec.findNumberInputs(),
             buildSliderBar,
             changeForm,
             i;
@@ -1309,7 +1303,7 @@ Switchboard = (function () {
             }
 
             if(form.tagName.toLowerCase() === 'form') {
-              Switchboard.spec.sendInput(form);
+              SB.spec.sendInput(form);
             }
           }
         };
@@ -1396,16 +1390,15 @@ Switchboard = (function () {
        * value changes or if the scroll bar changes width.
        */
       sliderSetWidths : function() {
-        var SB           = Switchboard,
-            numberInputs = SB.spec.findNumberInputs(),
+        var numberInputs = SB.spec.findNumberInputs(),
             slider,
             i;
 
         for(i = 0; i < numberInputs.length; i += 1) {
-          if(Switchboard.hasClass(numberInputs[i].nextSibling, 'sliderBar')) {
+          if(SB.hasClass(numberInputs[i].nextSibling, 'sliderBar')) {
             slider = numberInputs[i].nextSibling.getElementsByTagName('span')[0];
 
-            slider.style.left = Switchboard.spec.findSliderPosition(slider, numberInputs[i]) + 'px';
+            slider.style.left = SB.spec.findSliderPosition(slider, numberInputs[i]) + 'px';
           }
         }
       },
@@ -1414,8 +1407,7 @@ Switchboard = (function () {
        * Builds event handler to delegate click events for standard commands.
        */
       command : function() {
-        var SB               = Switchboard,
-            commandIssued    = null,
+        var commandIssued    = null,
             commandIteration = 0,
             commandDelay     = 750,
             tapped           = false,
@@ -1444,8 +1436,6 @@ Switchboard = (function () {
               var elm = findCommand(e);
 
               if((elm) && (!interrupt)) {
-                e.preventDefault();
-
                 if(elm.rel === 'external') {
                   window.open(elm.href, '_blank').focus();
                 }
@@ -1457,7 +1447,7 @@ Switchboard = (function () {
                 }
               }
             },
-            stopCommand      = function() {
+            stopCommand      = function(e) {
               commandIssued    = null;
               commandDelay     = 750;
               commandIteration = 0;
@@ -1523,8 +1513,6 @@ Switchboard = (function () {
 
               // Wait 100ms to determine if you're scrolling.
               setTimeout(function() {
-                e.preventDefault();
-
                 // And unset that flag so we know not to run this again on
                 // touchend.
                 tapped = false;
@@ -1544,17 +1532,17 @@ Switchboard = (function () {
               fireCommand(e);
             }
 
-            stopCommand();
+            stopCommand(e);
           });
 
           SB.event.add(SB.spec.uiComponents.body, 'touchmove', function(e) {
             if((Math.abs(parseInt(e.changedTouches[0].clientX, 10) - touchStartX) > touchThreshold) || (Math.abs(parseInt(e.changedTouches[0].clientY, 10) - touchStartY) > touchThreshold)) {
-              stopCommand();
+              stopCommand(e);
             }
           });
 
           SB.event.add(SB.spec.uiComponents.body, 'touchcancel', function(e) {
-            stopCommand();
+            stopCommand(e);
           });
         }
 
@@ -1565,9 +1553,11 @@ Switchboard = (function () {
           }
         });
 
-        SB.event.add(SB.spec.uiComponents.body, 'click', function(e) {
-          interrupt = false;
+        SB.event.add(SB.spec.uiComponents.body, 'mouseup', function(e) {
+          stopCommand(e);
+        });
 
+        SB.event.add(SB.spec.uiComponents.body, 'click', function(e) {
           e.preventDefault();
         });
       },
@@ -1577,8 +1567,7 @@ Switchboard = (function () {
        * have an active connection, we'll use that.  If not, we'll use XHR.
        */
       sendInput : function(elm) {
-        var SB   = Switchboard,
-            ts   = new Date().getTime(),
+        var ts   = new Date().getTime(),
             text = '',
             type = '',
             device,
@@ -1613,12 +1602,12 @@ Switchboard = (function () {
        * number inputs.
        */
       formInput : function() {
-        Switchboard.event.add(Switchboard.spec.uiComponents.body, 'submit', function(e) {
-          var elm = Switchboard.getTarget(e);
+        SB.event.add(SB.spec.uiComponents.body, 'submit', function(e) {
+          var elm = SB.getTarget(e);
 
           e.preventDefault();
 
-          Switchboard.spec.sendInput(elm);
+          SB.spec.sendInput(elm);
         });
       },
 
@@ -1626,9 +1615,8 @@ Switchboard = (function () {
        * Handles navigation changes and changes to the connection indicator.
        */
       nav : function() {
-        Switchboard.event.add(Switchboard.spec.uiComponents.header, 'click', function(e) {
-          var SB            = Switchboard,
-              elm           = SB.getTarget(e).parentNode,
+        SB.event.add(SB.spec.uiComponents.header, 'click', function(e) {
+          var elm           = SB.getTarget(e).parentNode,
               tagName       = elm.tagName.toLowerCase(),
               newContent    = SB.get(elm.className),
               selectNav     = SB.getByClass('selected', SB.spec.uiComponents.header, 'li')[0],
@@ -1666,7 +1654,7 @@ Switchboard = (function () {
           }
 
           else if(SB.getTarget(e).id === 'indicator') {
-            if(SB.hasClass(Switchboard.getTarget(e), 'disconnected')) {
+            if(SB.hasClass(SB.getTarget(e), 'disconnected')) {
               SB.spec.socketConnect();
             }
           }
@@ -1675,24 +1663,27 @@ Switchboard = (function () {
     },
 
    /**
-    * Initialization for Switchboard.  Executes the standard functions used.
+    * Initialization for SB.  Executes the standard functions used.
     *  If a global function of "init" is available, it will also be executed.
     */
     init : function () {
-      var SB = Switchboard,
-          i;
+      var headerData,
+          bodyData;
 
       SB.spec.uiComponents.header = SB.getByTag('header')[0];
       SB.spec.uiComponents.body   = SB.getByTag('main')[0];
       SB.spec.buildIndicator();
 
-      SB.spec.strings = { CONNECTED    : SB.spec.uiComponents.header.dataset.stringConnected,
-                          CONNECTING   : SB.spec.uiComponents.header.dataset.stringConnecting,
-                          DISCONNECTED : SB.spec.uiComponents.header.dataset.stringDisconnected,
-                          ACTIVE       : SB.spec.uiComponents.body.dataset.stringActive,
-                          INACTIVE     : SB.spec.uiComponents.body.dataset.stringInactive,
-                          ON           : SB.spec.uiComponents.body.dataset.stringOn,
-                          OFF          : SB.spec.uiComponents.body.dataset.stringOff };
+      headerData = SB.spec.uiComponents.header.dataset;
+      bodyData   = SB.spec.uiComponents.body.dataset;
+
+      SB.spec.strings = { CONNECTED    : headerData.stringConnected,
+                          CONNECTING   : headerData.stringConnecting,
+                          DISCONNECTED : headerData.stringDisconnected,
+                          ACTIVE       : bodyData.stringActive,
+                          INACTIVE     : bodyData.stringInactive,
+                          ON           : bodyData.stringOn,
+                          OFF          : bodyData.stringOff };
 
       /* If we support WebSockets, we'll grab updates as they happen */
       if((typeof WebSocket === 'function') || (typeof WebSocket === 'object')) {
@@ -1717,19 +1708,19 @@ Switchboard = (function () {
 }());
 
 if(document.addEventListener) {
-  document.addEventListener('DOMContentLoaded', Switchboard.init, false);
+  document.addEventListener('DOMContentLoaded', SB.init, false);
 }
 
-Switchboard.event.add(window, 'load', function () {
+SB.event.add(window, 'load', function () {
   'use strict';
 
   if(!document.addEventListener) {
-    Switchboard.init();
+    SB.init();
   }
 });
 
-Switchboard.event.add(window, 'unload', function () {
+SB.event.add(window, 'unload', function () {
   'use strict';
 
-  Switchboard.event.removeAll();
+  SB.event.removeAll();
 });

@@ -41,8 +41,8 @@
         encodeName = function(name) {
           var util;
 
-          if(typeof Switchboard === 'object') {
-            name = Switchboard.util.encodeName(name);
+          if(typeof SB === 'object') {
+            name = SB.util.encodeName(name);
           }
 
           else {
@@ -55,8 +55,8 @@
         translate  = function(message) {
           var util;
 
-          if((typeof Switchboard === 'object') && (typeof Switchboard.util === 'object')) {
-            message = Switchboard.util.translate(message, 'nest');
+          if((typeof SB === 'object') && (typeof SB.util === 'object')) {
+            message = SB.util.translate(message, 'nest');
           }
 
           else {
@@ -71,32 +71,32 @@
       for(i in value.thermostat) {
         device = value.thermostat[i];
 
-        if(typeof Switchboard === 'object') {
-          off  = Switchboard.getByClass(encodeName(device.label), Switchboard.get(deviceId), 'li')[0];
-          heat = Switchboard.getByClass('fa-sun-o',    off, 'a')[0];
-          cool = Switchboard.getByClass('fa-asterisk', off, 'a')[0];
+        if(typeof SB === 'object') {
+          off  = SB.getByClass(encodeName(device.label), SB.get(deviceId), 'li')[0];
+          heat = SB.getByClass('fa-sun-o',    off, 'a')[0];
+          cool = SB.getByClass('fa-asterisk', off, 'a')[0];
 
-          if((device.state === 'cool') && (!Switchboard.hasClass(cool, 'device-active'))) {
-            Switchboard.addClass(cool,    'device-active');
-            Switchboard.removeClass(heat, 'device-active');
-            Switchboard.removeClass(off,  'device-off');
-            Switchboard.putText(Switchboard.getByTag('em', off)[0], translate('COOL'));
+          if((device.state === 'cool') && (!SB.hasClass(cool, 'device-active'))) {
+            SB.addClass(cool,    'device-active');
+            SB.removeClass(heat, 'device-active');
+            SB.removeClass(off,  'device-off');
+            SB.putText(SB.getByTag('em', off)[0], translate('COOL'));
             markup = '';
           }
 
-          else if((device.state === 'heat') && (!Switchboard.hasClass(heat, 'device-active'))) {
-            Switchboard.addClass(heat,    'device-active');
-            Switchboard.removeClass(cool, 'device-active');
-            Switchboard.removeClass(off,  'device-off');
-            Switchboard.putText(Switchboard.getByTag('em', off)[0], translate('HEAT'));
+          else if((device.state === 'heat') && (!SB.hasClass(heat, 'device-active'))) {
+            SB.addClass(heat,    'device-active');
+            SB.removeClass(cool, 'device-active');
+            SB.removeClass(off,  'device-off');
+            SB.putText(SB.getByTag('em', off)[0], translate('HEAT'));
             markup = '';
           }
 
-          else if((device.state === 'off') && (!Switchboard.hasClass(off, 'device-off'))) {
-            Switchboard.addClass(off,     'device-off');
-            Switchboard.removeClass(cool, 'device-active');
-            Switchboard.removeClass(heat, 'device-active');
-            Switchboard.putText(Switchboard.getByTag('em', off)[0], translate('OFF'));
+          else if((device.state === 'off') && (!SB.hasClass(off, 'device-off'))) {
+            SB.addClass(off,     'device-off');
+            SB.removeClass(cool, 'device-active');
+            SB.removeClass(heat, 'device-active');
+            SB.putText(SB.getByTag('em', off)[0], translate('OFF'));
             markup = '';
           }
         }
@@ -188,4 +188,4 @@
 
     return markup;
   };
-})(typeof exports === 'undefined' ? this.Switchboard.spec.parsers : exports);
+})(typeof exports === 'undefined' ? this.SB.spec.parsers : exports);

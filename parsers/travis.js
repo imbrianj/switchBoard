@@ -66,4 +66,4 @@
 
     return markup;
   };
-})(typeof exports === 'undefined' ? this.Switchboard.spec.parsers : exports);
+})(typeof exports === 'undefined' ? this.SB.spec.parsers : exports);

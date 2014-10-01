@@ -35,8 +35,8 @@
         translate = function(message) {
           var util;
 
-          if((typeof Switchboard === 'object') && (typeof Switchboard.util === 'object')) {
-            message = Switchboard.util.translate(message, 'foscam');
+          if((typeof SB === 'object') && (typeof SB.util === 'object')) {
+            message = SB.util.translate(message, 'foscam');
           }
 
           else {
@@ -62,28 +62,28 @@
     markup = markup.split('{{ARMED_STATUS}}').join(status);
     markup = markup.split('{{DISARMED_STATUS}}').join(status);
 
-    if(typeof Switchboard === 'object') {
-      arm    = Switchboard.getByClass('fa-lock',   Switchboard.get(deviceId), 'a')[0];
-      disarm = Switchboard.getByClass('fa-unlock', Switchboard.get(deviceId), 'a')[0];
+    if(typeof SB === 'object') {
+      arm    = SB.getByClass('fa-lock',   SB.get(deviceId), 'a')[0];
+      disarm = SB.getByClass('fa-unlock', SB.get(deviceId), 'a')[0];
 
-      if((value === 'on') && (!Switchboard.hasClass(arm, 'device-on'))) {
-        Switchboard.addClass(arm,       'device-active');
-        Switchboard.removeClass(disarm, 'device-active');
-        Switchboard.putText(Switchboard.getByTag('em', arm)[0],    status);
-        Switchboard.putText(Switchboard.getByTag('em', disarm)[0], status);
+      if((value === 'on') && (!SB.hasClass(arm, 'device-on'))) {
+        SB.addClass(arm,       'device-active');
+        SB.removeClass(disarm, 'device-active');
+        SB.putText(SB.getByTag('em', arm)[0],    status);
+        SB.putText(SB.getByTag('em', disarm)[0], status);
         markup = '';
       }
 
-      else if((value === 'off') && (!Switchboard.hasClass(disarm, 'device-on'))) {
-        Switchboard.addClass(disarm, 'device-active');
-        Switchboard.removeClass(arm, 'device-active');
-        Switchboard.putText(Switchboard.getByTag('em', arm)[0],    status);
-        Switchboard.putText(Switchboard.getByTag('em', disarm)[0], status);
+      else if((value === 'off') && (!SB.hasClass(disarm, 'device-on'))) {
+        SB.addClass(disarm, 'device-active');
+        SB.removeClass(arm, 'device-active');
+        SB.putText(SB.getByTag('em', arm)[0],    status);
+        SB.putText(SB.getByTag('em', disarm)[0], status);
         markup = '';
       }
 
       else {
-        if(Switchboard.hasClass(Switchboard.getByClass('selected', null, 'li')[0], deviceId)) {
+        if(SB.hasClass(SB.getByClass('selected', null, 'li')[0], deviceId)) {
           markup = markup.split('{{LAZY_LOAD_IMAGE}}').join('src');
         }
 
@@ -95,4 +95,4 @@
 
     return markup;
   };
-})(typeof exports === 'undefined' ? this.Switchboard.spec.parsers : exports);
+})(typeof exports === 'undefined' ? this.SB.spec.parsers : exports);

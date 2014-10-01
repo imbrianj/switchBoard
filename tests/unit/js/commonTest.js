@@ -38,8 +38,8 @@ exports.commonTest = {
     var common = require(__dirname + '/../../../js/common'),
         mock   = { className : 'foo', bar : 'baz' };
 
-    test.strictEqual(Switchboard.hasAttribute(mock, 'bar', 'baz'),  true,  'Attribute exists');
-    test.strictEqual(Switchboard.hasAttribute(mock, 'bar', 'bang'), false, 'Attribute does not exists');
+    test.strictEqual(SB.hasAttribute(mock, 'bar', 'baz'),  true,  'Attribute exists');
+    test.strictEqual(SB.hasAttribute(mock, 'bar', 'bang'), false, 'Attribute does not exists');
 
     test.done();
   },
@@ -50,8 +50,8 @@ exports.commonTest = {
     var common = require(__dirname + '/../../../js/common'),
         mock   = { className : 'foo' };
 
-    test.strictEqual(Switchboard.hasClass(mock, 'foo'), true,  'Class name exists');
-    test.strictEqual(Switchboard.hasClass(mock, 'bar'), false, 'Class name does not exist');
+    test.strictEqual(SB.hasClass(mock, 'foo'), true,  'Class name exists');
+    test.strictEqual(SB.hasClass(mock, 'bar'), false, 'Class name does not exist');
 
     test.done();
   },
@@ -62,7 +62,7 @@ exports.commonTest = {
     var common = require(__dirname + '/../../../js/common'),
         mock   = {className : 'foo'};
 
-    Switchboard.addClass(mock, 'bar');
+    SB.addClass(mock, 'bar');
 
     test.strictEqual(mock.className, 'foo bar', 'New class name should have been added');
 
@@ -75,7 +75,7 @@ exports.commonTest = {
     var common = require(__dirname + '/../../../js/common'),
         mock   = {className : 'foo bar'};
 
-    Switchboard.removeClass(mock, 'foo');
+    SB.removeClass(mock, 'foo');
 
     test.strictEqual(mock.className, 'bar', 'Class name should have been removed');
 
@@ -88,11 +88,11 @@ exports.commonTest = {
     var common = require(__dirname + '/../../../js/common'),
         mock   = {className : 'foo bar'};
 
-    Switchboard.toggleClass(mock, 'bar');
+    SB.toggleClass(mock, 'bar');
 
     test.strictEqual(mock.className, 'foo', 'Class name should have been removed');
 
-    Switchboard.toggleClass(mock, 'bar');
+    SB.toggleClass(mock, 'bar');
 
     test.strictEqual(mock.className, 'foo bar', 'Class name should have been added');
 
@@ -104,7 +104,7 @@ exports.commonTest = {
 
     var common = require(__dirname + '/../../../js/common');
 
-    test.strictEqual(Switchboard.trim('   Testing   '), 'Testing', 'Trim should remove extra whitespace');
+    test.strictEqual(SB.trim('   Testing   '), 'Testing', 'Trim should remove extra whitespace');
     test.done();
   },
 
@@ -113,7 +113,7 @@ exports.commonTest = {
 
     var common  = require(__dirname + '/../../../js/common'),
         mock    = '{"foo":{"bar":"test","baz":"bang"}}',
-        decoded = Switchboard.decode(mock);
+        decoded = SB.decode(mock);
 
     test.strictEqual(decoded.foo.baz, 'bang', 'Decode should turn string JSON into an object');
 

@@ -46,8 +46,8 @@
         encodeName = function(name) {
           var util;
 
-          if(typeof Switchboard === 'object') {
-            name = Switchboard.util.encodeName(name);
+          if(typeof SB === 'object') {
+            name = SB.util.encodeName(name);
           }
 
           else {
@@ -127,8 +127,8 @@
         translate  = function(message) {
           var util;
 
-          if((typeof Switchboard === 'object') && (typeof Switchboard.util === 'object')) {
-            message = Switchboard.util.translate(message, 'smartthings');
+          if((typeof SB === 'object') && (typeof SB.util === 'object')) {
+            message = SB.util.translate(message, 'smartthings');
           }
 
           else {
@@ -199,4 +199,4 @@
 
     return markup.replace('{{SMARTTHINGS_DYNAMIC}}', tempMarkup);
   };
-})(typeof exports === 'undefined' ? this.Switchboard.spec.parsers : exports);
+})(typeof exports === 'undefined' ? this.SB.spec.parsers : exports);
