@@ -95,7 +95,7 @@ module.exports = (function () {
                           city,
                           i = 0;
 
-                      if(dataReply) {
+                      if((dataReply) && (dataReply.query)) {
                         dataReply = JSON.parse(dataReply);
                         city      = dataReply.query.results.channel;
 

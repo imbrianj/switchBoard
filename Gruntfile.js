@@ -4,7 +4,7 @@ module.exports = function(grunt) {
 
     banner : { comment : '/* <%= grunt.template.today("yyyymmdd") %> */\n' },
 
-    jsFiles : ['config/*.js', 'lib/*.js', 'controllers/*.js', 'parsers/*.js', 'events/*.js', 'js/common.js', 'lang/*.js', 'tests/**/*Test.js', 'app.js'],
+    jsFiles : ['config/*.js', 'lib/*.js', 'controllers/*.js', 'parsers/*.js', 'events/*.js', 'js/common.js', 'js/switchBoard.js', 'lang/*.js', 'tests/**/*Test.js', 'app.js'],
 
     jshint : {
       files : '<%= jsFiles %>',
@@ -49,7 +49,7 @@ module.exports = function(grunt) {
 
     uglify : {
       options : { banner : '<%= banner.comment %>' },
-      dist : { files : { 'js/common.min.js' : ['js/common.js', 'parsers/*', 'lib/sharedUtil.js'] } }
+      dist : { files : { 'js/common.min.js' : ['js/common.js', 'js/switchBoard.js', 'parsers/*', 'lib/sharedUtil.js'] } }
     },
 
     concat: {
