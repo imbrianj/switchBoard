@@ -530,7 +530,7 @@ module.exports = (function () {
                         var deviceState     = require(__dirname + '/../lib/deviceState'),
                             smartthingsData = {};
 
-                        if(dataReply) {
+                        if((dataReply) && (dataReply.indexOf('<!doctype html>') !== 0)) {
                           smartthingsData = JSON.parse(dataReply);
 
                           smartthingsData.groups = config.device.groups;

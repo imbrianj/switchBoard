@@ -151,8 +151,11 @@
     }
 
     else {
-      markup     = markup.replace('{{WEATHER_CURRENT}}', translate('UNAVAILABLE'));
-      tempMarkup = value;
+      markup = markup.replace('{{WEATHER_CURRENT}}', translate('UNAVAILABLE'));
+
+      if(typeof value === 'string') {
+        tempMarkup = value;
+      }
     }
 
     return markup.replace('{{WEATHER_DYNAMIC}}', tempMarkup);

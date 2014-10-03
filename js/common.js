@@ -28,7 +28,7 @@ SB = (function () {
   'use strict';
 
   return {
-    version : 20140930,
+    version : 20141002,
 
    /**
     * Stops event bubbling further.
@@ -842,7 +842,7 @@ SB = (function () {
     * Initialization for SB.  Executes the standard functions used.
     */
     init : function () {
-      if(SB.spec.init) {
+      if((SB.spec) && (SB.spec.init)) {
         SB.spec.init();
       }
 

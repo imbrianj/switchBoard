@@ -33,6 +33,8 @@ SB.spec = (function () {
   'use strict';
 
   return {
+    version : 20141002,
+
     state : {},
 
     parsers : {},

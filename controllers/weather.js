@@ -92,33 +92,43 @@ module.exports = (function () {
                     response.once('end', function() {
                       var deviceState = require(__dirname + '/../lib/deviceState'),
                           weatherData = {},
-                          city,
-                          i = 0;
+                          city;
 
-                      if((dataReply) && (dataReply.query)) {
+                      if(dataReply) {
                         dataReply = JSON.parse(dataReply);
-                        city      = dataReply.query.results.channel;
 
-                        if(city.title.indexOf('Error') !== -1) {
-                          deviceState.updateState(weather.deviceId, 'weather', { state : 'err', value : city.title });
+                        if((dataReply.query) && (dataReply.query.results)) {
+                          city = dataReply.query.results.channel;
+
+                          if(city.title.indexOf('Error') !== -1) {
+                            deviceState.updateState(weather.deviceId, 'weather', { state : 'err', value : city.title });
+                          }
+
+                          else {
+                            weatherData = { 'city'     : city.location.city,
+                                            'temp'     : city.item.condition.temp,
+                                            'text'     : city.item.condition.text,
+                                            'humidity' : city.atmosphere.humidity,
+                                            'sunrise'  : city.astronomy.sunrise,
+                                            'sunset'   : city.astronomy.sunset,
+                                            'code'     : city.item.condition.code,
+                                            'forecast' : city.item.forecast
+                                          };
+
+                            deviceState.updateState(weather.deviceId, 'weather', { state : 'ok', value : weatherData });
+                          }
+
+                          weather.callback(null, weatherData);
                         }
 
                         else {
-                          weatherData = { 'city'     : city.location.city,
-                                          'temp'     : city.item.condition.temp,
-                                          'text'     : city.item.condition.text,
-                                          'humidity' : city.atmosphere.humidity,
-                                          'sunrise'  : city.astronomy.sunrise,
-                                          'sunset'   : city.astronomy.sunset,
-                                          'code'     : city.item.condition.code,
-                                          'forecast' : city.item.forecast
-                                        };
-
-                          deviceState.updateState(weather.deviceId, 'weather', { state : 'ok', value : weatherData });
+                          weather.callback('No data returned from API');
                         }
                       }
 
-                      weather.callback(null, weatherData);
+                      else {
+                        weather.callback('No data returned from API');
+                      }
                     });
                   });
 
