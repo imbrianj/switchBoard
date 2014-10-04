@@ -94,6 +94,7 @@ module.exports = (function () {
      */
     state : function (controller, config, callback, count) {
       var deviceState    = require(__dirname + '/../lib/deviceState'),
+          translate      = require(__dirname + '/../lib/translate').translate,
           that           = this,
           denonState     = deviceState.getDeviceState(config.deviceId),
           denon          = { device : {}, config : {} },
@@ -118,23 +119,23 @@ module.exports = (function () {
         for(var i in reply) {
           if(reply[i].match(/PW.+/)) {
             if(rex = reply[i].match(/PW(ON|OFF|STANDBY)/)) {
-              denonState.value.power = encodeName(rex[1]);
-
-              if(denonState.value.power === 'ON') {
+              if(encodeName(rex[1]) === 'ON') {
                 state = 'ok';
               }
+
+              denonState.value.power = translate(encodeName(rex[1]), 'denon', config.language);
             }
           }
 
           else if(reply[i].match(/MU.+/)) {
             if(rex = reply[i].match(/MU(ON|OFF)/)) {
-              denonState.value.ZONE1.mute = encodeName(rex[1]);
+              denonState.value.ZONE1.mute = translate(encodeName(rex[1]), 'denon', config.language);
             }
           }
 
           else if(reply[i].match(/ZM.+/)) {
             if(rex = reply[i].match(/ZM(ON|OFF)/)) {
-              denonState.value.ZONE1.power = encodeName(rex[1]);
+              denonState.value.ZONE1.power = translate(encodeName(rex[1]), 'denon', config.language);
             }
           }
 
@@ -149,37 +150,37 @@ module.exports = (function () {
 
           else if(reply[i].match(/SI.+/)) {
             if(rex = reply[i].match(/SI(.+)/)) {
-              denonState.value.ZONE1.input = encodeName(rex[1]);
+              denonState.value.ZONE1.input = translate(encodeName(rex[1]), 'denon', config.language);
             }
           }
 
           else if(reply[i].match(/MS.+/)) {
             if(rex = reply[i].match(/MS(.+)/)) {
-              denonState.value.ZONE1.mode = encodeName(rex[1]);
+              denonState.value.ZONE1.mode = translate(encodeName(rex[1]), 'denon', config.language);
             }
           }
 
           else if(reply[i].match(/Z2.+/)) {
             if(rex = reply[i].match(/Z2(ON|OFF)/)) {
-              denonState.value.ZONE2.power = encodeName(rex[1]);
+              denonState.value.ZONE2.power = translate(encodeName(rex[1]), 'denon', config.language);
             }
             else if(rex = reply[i].match(/Z2([0-9]+)/)) {
               denonState.value.ZONE2.volume = rex[1];
             }
             else if(rex = reply[i].match(/Z2(.+)/)) {
-              denonState.value.ZONE2.input = encodeName(rex[1]);
+              denonState.value.ZONE2.input = translate(encodeName(rex[1]), 'denon', config.language);
             }
           }
 
           else if(reply[i].match(/Z3.+/)) {
             if(rex = reply[i].match(/Z3(ON|OFF)/)) {
-              denonState.value.ZONE3.power = encodeName(rex[1]);
+              denonState.value.ZONE3.power = translate(encodeName(rex[1]), 'denon', config.language);
             }
             else if(rex = reply[i].match(/Z3([0-9]+)/)) {
-              denonState.value.ZONE3.volume = encodeName(rex[1]);
+              denonState.value.ZONE3.volume = rex[1];
             }
             else if(rex = reply[i].match(/Z3(.+)/)) {
-              denonState.value.ZONE3.input = encodeName(rex[1]);
+              denonState.value.ZONE3.input = translate(encodeName(rex[1]), 'denon', config.language);
             }
           }
         }
@@ -219,6 +220,7 @@ module.exports = (function () {
       denon.timeout    = config.device.localTimeout     || config.config.localTimeout;
       denon.command    = this.hashTable[config.command] || '';
       denon.devicePort = config.devicePort              || 23;
+      denon.language   = config.config.language;
       denon.callback   = config.callback                || function () {};
 
       if((Socket) && (denon.text)) {
