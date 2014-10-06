@@ -27,42 +27,27 @@
   'use strict';
 
   exports.denon = function (deviceId, markup, state, value, language) {
-    var translate = function(message) {
-      var util;
-
-      if(typeof SB === 'object') {
-        message = SB.util.translate(message, 'denon');
-      }
-
-      else {
-        util    = require(__dirname + '/../lib/sharedUtil').util;
-        message = util.translate(message, 'denon', language);
-      }
-
-      return message;
-    };
-
     if(value) {
-      markup = markup.split('{{DEVICE_POWER}}').join(translate(value.power));
+      markup = markup.split('{{DEVICE_POWER}}').join(value.power);
 
       if(value.ZONE1) {
-        markup = markup.split('{{DEVICE_Z1_INPUT}}').join(translate(value.ZONE1.input));
-        markup = markup.split('{{DEVICE_Z1_POWER}}').join(translate(value.ZONE1.power));
-        markup = markup.split('{{DEVICE_Z1_MUTE}}').join(translate(value.ZONE1.mute));
-        markup = markup.split('{{DEVICE_Z1_MODE}}').join(translate(value.ZONE1.mode));
+        markup = markup.split('{{DEVICE_Z1_INPUT}}').join(value.ZONE1.input);
+        markup = markup.split('{{DEVICE_Z1_POWER}}').join(value.ZONE1.power);
+        markup = markup.split('{{DEVICE_Z1_MUTE}}').join(value.ZONE1.mute);
+        markup = markup.split('{{DEVICE_Z1_MODE}}').join(value.ZONE1.mode);
         markup = markup.split('{{DEVICE_Z1_VOLUME}}').join(value.ZONE1.volume);
         markup = markup.split('{{DEVICE_Z1_MAXVOLUME}}').join(value.ZONE1.maxvolume);
       }
 
       if(value.ZONE2) {
-        markup = markup.split('{{DEVICE_Z2_POWER}}').join(translate(value.ZONE2.power));
-        markup = markup.split('{{DEVICE_Z2_INPUT}}').join(translate(value.ZONE2.input));
+        markup = markup.split('{{DEVICE_Z2_POWER}}').join(value.ZONE2.power);
+        markup = markup.split('{{DEVICE_Z2_INPUT}}').join(value.ZONE2.input);
         markup = markup.split('{{DEVICE_Z2_VOLUME}}').join(value.ZONE2.volume);
       }
 
       if(value.ZONE3) {
-        markup = markup.split('{{DEVICE_Z3_POWER}}').join(translate(value.ZONE3.power));
-        markup = markup.split('{{DEVICE_Z3_INPUT}}').join(translate(value.ZONE3.input));
+        markup = markup.split('{{DEVICE_Z3_POWER}}').join(value.ZONE3.power);
+        markup = markup.split('{{DEVICE_Z3_INPUT}}').join(value.ZONE3.input);
         markup = markup.split('{{DEVICE_Z3_VOLUME}}').join(value.ZONE3.volume);
       }
     }
