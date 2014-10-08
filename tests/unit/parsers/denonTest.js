@@ -38,7 +38,7 @@ exports.denonParserTest = {
         badMarkup   = denonParser.denon('dummy', markup, 'ok', null);
 
     test.strictEqual(goodMarkup.indexOf('{{'),  -1, 'All values replaced');
-    test.notStrictEqual(goodMarkup.indexOf('<dl><dt>Foo</dt><dd>Vol: 50</dd><dd>Input: 3</dd><dd>Power: On</dd></dl>'), -1, 'Passed markup validated');
+    test.notStrictEqual(goodMarkup.indexOf('<dl><dt>Foo</dt><dd>Vol: 50</dd><dd>Input: 3</dd><dd>Power: on</dd></dl>'), -1, 'Passed markup validated');
     test.strictEqual(badMarkup.indexOf('{{'),   -1, 'All values replaced');
     test.notStrictEqual(badMarkup.indexOf('<dl><dt>Foo</dt><dd>Vol: </dd><dd>Input: </dd><dd>Power: </dd></dl>'),       -1, 'Passed markup validated');
 
