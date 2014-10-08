@@ -7,14 +7,14 @@
             <li class="zinput">{{DEVICE_Z1_INPUT}}</li>
             <li>{{DEVICE_Z1_MODE}}</li>
             <div class="text">
-              <form class="text-form" id="speech-input-form" action="/" method="get">
+              <form class="text-form" action="/" method="get">
                 <fieldset>
-                  <legend>Text Input</legend>
-                  <label for="{{DEVICE_ID}}-text-input">Text Input:</label>
-                  <input id="{{DEVICE_ID}}-text-input" class="text-input" type="number" max="{{DEVICE_Z1_MAXVOLUME}}" min="0" name="{{DEVICE_ID}}" value="{{DEVICE_Z1_VOLUME}}" required />
+                  <legend>{{i18n_VOLUME}}</legend>
+                  <label for="{{DEVICE_ID}}-z1-input">{{i18n_VOLUME}}:</label>
+                  <input id="{{DEVICE_ID}}-z1-input" class="text-input" type="number" max="{{DEVICE_Z1_MAXVOLUME}}" min="0" name="{{DEVICE_ID}}" value="{{DEVICE_Z1_VOLUME}}" required />
                   <input class="input-type" type="hidden" value="subdevice-zone1" name="type" />
-                  <button type="submit" class="button">Submit</button>
-              </fieldset>
+                  <button type="submit" class="button">{{i18n_SUBMIT}}</button>
+                </fieldset>
               </form>
             </div>
             <li>
@@ -60,14 +60,14 @@
           <ul>
             <li class="zinput">{{DEVICE_Z3_INPUT}}</li>
             <div class="text">
-              <form class="text-form" id="speech-input-form" action="/" method="get">
+              <form class="text-form" action="/" method="get">
                 <fieldset>
-                  <legend>Text Input</legend>
-                  <label for="{{DEVICE_ID}}-text-input">Text Input:</label>
-                  <input id="{{DEVICE_ID}}-text-input" class="text-input" type="number" max="100" min="0" name="{{DEVICE_ID}}" value="{{DEVICE_Z3_VOLUME}}" required />
+                  <legend>{{i18n_VOLUME}}</legend>
+                  <label for="{{DEVICE_ID}}-z3-input">{{i18n_VOLUME}}:</label>
+                  <input id="{{DEVICE_ID}}-z3-input" class="text-input" type="number" max="100" min="0" name="{{DEVICE_ID}}" value="{{DEVICE_Z3_VOLUME}}" required />
                   <input class="input-type" type="hidden" value="subdevice-zone3" name="type" />
-                  <button type="submit" class="button">Submit</button>
-              </fieldset>
+                  <button type="submit" class="button">{{i18n_SUBMIT}}</button>
+                </fieldset>
               </form>
             </div>
             <li>
@@ -102,14 +102,14 @@
           <ul>
             <li class="zinput">{{DEVICE_Z2_INPUT}}</li>
             <div class="text">
-              <form class="text-form" id="speech-input-form" action="/" method="get">
+              <form class="text-form" action="/" method="get">
                 <fieldset>
-                  <legend>Text Input</legend>
-                  <label for="{{DEVICE_ID}}-text-input">Text Input:</label>
-                  <input id="{{DEVICE_ID}}-text-input" class="text-input" type="number" max="80" min="0" name="{{DEVICE_ID}}" value="{{DEVICE_Z2_VOLUME}}" required />
+                  <legend>{{i18n_VOLUME}}</legend>
+                  <label for="{{DEVICE_ID}}-z2-input">{{i18n_VOLUME}}:</label>
+                  <input id="{{DEVICE_ID}}-z2-input" class="text-input" type="number" max="80" min="0" name="{{DEVICE_ID}}" value="{{DEVICE_Z2_VOLUME}}" required />
                   <input class="input-type" type="hidden" value="subdevice-zone2" name="type" />
-                  <button type="submit" class="button">Submit</button>
-              </fieldset>
+                  <button type="submit" class="button">{{i18n_SUBMIT}}</button>
+                </fieldset>
               </form>
             </div>
             <li>

@@ -36,7 +36,7 @@ module.exports = (function () {
   return {
     version : 20140912,
 
-    inputs : ['command', 'list', 'text', 'subdevice'],
+    inputs : ['command', 'list', 'subdevice'],
 
     /**
      * Whitelist of available key codes to use.
@@ -239,7 +239,7 @@ module.exports = (function () {
           else if (rex = denon.subdevice.match(/zone3-([0-9]+)/)) {
             Socket.write("Z3" + rex[1] + "\r");
           }
-        
+
       }
 
       if((Socket) && (!Socket.destroyed) && (denon.command)) {

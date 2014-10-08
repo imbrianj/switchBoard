@@ -2,7 +2,7 @@
       <section id="{{DEVICE_ID}}" class="{{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
         <h1>{{i18n_SPEECH}} <em>{{DEVICE_ACTIVE}}</em></h1>
         <div class="text">
-          <form class="text-form" id="speech-input-form" action="/" method="get">
+          <form class="text-form" action="/" method="get">
             <fieldset>
               <legend>Text Input</legend>
               <label for="{{DEVICE_ID}}-text-input">Text Input:</label>
