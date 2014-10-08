@@ -727,8 +727,10 @@ SB.spec = (function () {
         });
 
         SB.event.add(SB.spec.uiComponents.body, 'touchmove', function(e) {
-          if((Math.abs(parseInt(e.changedTouches[0].clientX, 10) - touchStartX) > touchThreshold) || (Math.abs(parseInt(e.changedTouches[0].clientY, 10) - touchStartY) > touchThreshold)) {
-            stopCommand(e);
+          if(touched) {
+            if((Math.abs(parseInt(e.changedTouches[0].clientX, 10) - touchStartX) > touchThreshold) || (Math.abs(parseInt(e.changedTouches[0].clientY, 10) - touchStartY) > touchThreshold)) {
+              stopCommand(e);
+            }
           }
         });
 
