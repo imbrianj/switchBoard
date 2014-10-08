@@ -36,7 +36,7 @@ module.exports = (function () {
   return {
     version : 20140912,
 
-    inputs : ['command', 'list'],
+    inputs : ['command', 'list', 'text', 'subdevice'],
 
     /**
      * Whitelist of available key codes to use.
@@ -110,7 +110,7 @@ module.exports = (function () {
       denon.device.localTimeout = controller.config.localTimeout || config.localTimeout;
       denon.command             = statusCommands[count];
 
-      denon.callback = function (err, reply, response) {
+      denon.callback = function (err, reply) {
         var sharedUtil = require(__dirname + '/../lib/sharedUtil').util,
             translate  = sharedUtil.translate,
             encodeName = sharedUtil.encodeName,
@@ -193,10 +193,6 @@ module.exports = (function () {
 
         if(count === statusCommands.length) {
           callback(denon.device.deviceId, null, state, denonState);
-
-          if(response > 256) {
-            response = '';
-          }
         }
 
         else {
@@ -219,18 +215,31 @@ module.exports = (function () {
     send : function (config) {
       var net      = require('net'),
           passover = '',
-          denon    = {},
-          response;
+          denon    = {};
 
       denon.deviceIp   = config.device.deviceIp;
+      denon.subdevice  = config.subdevice               || '';
       denon.timeout    = config.device.localTimeout     || config.config.localTimeout;
       denon.command    = this.hashTable[config.command] || '';
       denon.devicePort = config.devicePort              || 23;
       denon.language   = config.config.language;
       denon.callback   = config.callback                || function () {};
 
-      if((Socket) && (denon.text)) {
-        Socket.write("MV" + denon.text + "\r");
+      if((Socket) && (denon.subdevice)) {
+        var rex = '';
+
+          if (rex = denon.subdevice.match(/zone1-([0-9]+)/)) {
+            Socket.write("MV" + rex[1] + "\r");
+          }
+
+          else if (rex = denon.subdevice.match(/zone2-([0-9]+)/)) {
+            Socket.write("Z2" + rex[1] + "\r");
+          }
+
+          else if (rex = denon.subdevice.match(/zone3-([0-9]+)/)) {
+            Socket.write("Z3" + rex[1] + "\r");
+          }
+        
       }
 
       if((Socket) && (!Socket.destroyed) && (denon.command)) {
@@ -265,9 +274,10 @@ module.exports = (function () {
         }
 
         Socket.on('data', function(dataReply) {
+          var response = '';
           response += dataReply;
           passover = response.toString().split("\r");
-          denon.callback(null, passover, response);
+          denon.callback(null, passover);
         });
 
         Socket.once('end', function() {
