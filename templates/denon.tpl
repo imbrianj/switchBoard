@@ -12,7 +12,7 @@
                   <legend>Text Input</legend>
                   <label for="{{DEVICE_ID}}-text-input">Text Input:</label>
                   <input id="{{DEVICE_ID}}-text-input" class="text-input" type="number" max="{{DEVICE_Z1_MAXVOLUME}}" min="0" name="{{DEVICE_ID}}" value="{{DEVICE_Z1_VOLUME}}" required />
-                  <input class="input-type" type="hidden" value="text" name="type" />
+                  <input class="input-type" type="hidden" value="subdevice-zone1" name="type" />
                   <button type="submit" class="button">Submit</button>
               </fieldset>
               </form>
@@ -65,7 +65,7 @@
                   <legend>Text Input</legend>
                   <label for="{{DEVICE_ID}}-text-input">Text Input:</label>
                   <input id="{{DEVICE_ID}}-text-input" class="text-input" type="number" max="100" min="0" name="{{DEVICE_ID}}" value="{{DEVICE_Z3_VOLUME}}" required />
-                  <input class="input-type" type="hidden" value="text" name="type" />
+                  <input class="input-type" type="hidden" value="subdevice-zone3" name="type" />
                   <button type="submit" class="button">Submit</button>
               </fieldset>
               </form>
@@ -77,7 +77,7 @@
             </li>
             <li>
               <div class="button">
-                <a href="/?{{DEVICE_ID}}n=Zone3_Off" class="fa fa-times-circle-o" title="Z3_OFF"><span>Z3_OFF</span></a>
+                <a href="/?{{DEVICE_ID}}=Zone3_Off" class="fa fa-times-circle-o" title="Z3_OFF"><span>Z3_OFF</span></a>
               </div>
             </li>
             <li class="topmenu">
@@ -107,7 +107,7 @@
                   <legend>Text Input</legend>
                   <label for="{{DEVICE_ID}}-text-input">Text Input:</label>
                   <input id="{{DEVICE_ID}}-text-input" class="text-input" type="number" max="80" min="0" name="{{DEVICE_ID}}" value="{{DEVICE_Z2_VOLUME}}" required />
-                  <input class="input-type" type="hidden" value="text" name="type" />
+                  <input class="input-type" type="hidden" value="subdevice-zone2" name="type" />
                   <button type="submit" class="button">Submit</button>
               </fieldset>
               </form>
