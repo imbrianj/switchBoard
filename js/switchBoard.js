@@ -1,4 +1,4 @@
-/*global alert, document, window, ActiveXObject, init, console, XMLHttpRequest, SB, Notification */
+/*global document, window, ActiveXObject, init, console, XMLHttpRequest, SB, Notification */
 /*jslint white: true, evil: true */
 /*jshint -W020 */
 
@@ -33,7 +33,7 @@ SB.spec = (function () {
   'use strict';
 
   return {
-    version : 20141002,
+    version : 20141008,
 
     state : {},
 
@@ -533,12 +533,14 @@ SB.spec = (function () {
       }
 
       if(!id) {
-        SB.event.add(window, 'keydown', function(e) {
-          var elm      = SB.getTarget(e),
-              numInput = elm.parentNode.previousSibling,
-              newVal   = null;
+        SB.event.add(SB.spec.uiComponents.body, 'keydown', function(e) {
+          var elm    = SB.getTarget(e),
+              newVal = null,
+              numInput;
 
           if(SB.hasClass(elm.parentNode, 'sliderBar')) {
+            numInput = elm.parentNode.previousSibling;
+
             if((e.keyCode === 38) || (e.keyCode === 39)) {
               newVal = parseInt(numInput.value, 10) + 1;
               newVal = newVal <= numInput.max ? newVal : numInput.max;
@@ -557,12 +559,12 @@ SB.spec = (function () {
           }
         });
 
-        SB.event.add(window, 'keyup', function(e) {
-          var elm      = SB.getTarget(e),
-              numInput = elm.parentNode.previousSibling;
+        SB.event.add(SB.spec.uiComponents.body, 'keyup', function(e) {
+          var elm = SB.getTarget(e),
+              numInput;
 
           if(SB.hasClass(elm.parentNode, 'sliderBar')) {
-            changeForm(numInput);
+            changeForm(elm.parentNode.previousSibling);
           }
         });
 
@@ -571,7 +573,7 @@ SB.spec = (function () {
         });
 
         /* If you change the form value, we should change the slider position. */
-        SB.event.add(document.body, 'change', function(e) {
+        SB.event.add(SB.spec.uiComponents.body, 'change', function(e) {
           changeForm(SB.getTarget(e));
         });
       }
@@ -623,7 +625,6 @@ SB.spec = (function () {
 
             return validElm;
           },
-
           fireCommand      = function(e) {
             var elm = findCommand(e);
 
@@ -755,7 +756,9 @@ SB.spec = (function () {
       });
 
       SB.event.add(SB.spec.uiComponents.body, 'click', function(e) {
-        e.preventDefault();
+        if(findCommand(e)) {
+          e.preventDefault();
+        }
       });
     },
 
@@ -776,6 +779,8 @@ SB.spec = (function () {
 
       if(SB.spec.socket) {
         if(SB.spec.checkConnection()) {
+          SB.log('Issued', 'Text Command', 'success');
+
           SB.spec.socket.send('/?' + device + '=' + type + '-' + text);
         }
       }
