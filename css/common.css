@@ -60,7 +60,7 @@ legend {
 }
 
 :focus {
-	outline: #000 dotted thin;
+	outline: #0078E7 dotted thin;
 }
 
 a,
@@ -101,6 +101,10 @@ body {
 ol,
 ul {
 	list-style: none;
+}
+
+.fa {
+	text-align: center;
 }
 
 /* Copy button styling from purecss.io */
@@ -295,10 +299,40 @@ form legend {
 	}
 }
 
+.sliderBar {
+	background: #0078E7;
+	background: #444;
+	border-radius: 1em;
+	font-size: 25%;
+	height: 2em;
+	margin: 3em 0 0 0;
+	position: relative;
+	width: 100%;
+}
+
+.sliderBar span {
+	background: #000;
+	border-radius: 50%;
+	box-shadow: inset -2px -2px 1px #286EA0, inset -2px 2px 1px #286EA0, inset 2px -2px 1px #286EA0, inset 2px 2px 1px #286EA0;
+	cursor: pointer;
+	display: block;
+	height: 2em;
+	position: absolute;
+	-moz-transition: none;
+	-o-transition: none;
+	-webkit-transition: none;
+	transition: none;
+	width: 2em;
+}
+
+.sliderBar ~ button[type="submit"]:first-of-type {
+	display: none;
+}
+
 header {
 	border-bottom: 1px solid #DDD;
 	clear: both;
-	padding: 1em 1em .5em 1em;
+	padding: 1em 1em 1px 1em;
 }
 
 header h1 {
@@ -332,14 +366,14 @@ header ul li a {
 }
 
 header #indicator {
-	border-radius: .5em;
-	height: 1em;
+	border-radius: 50%;
+	height: 1.2em;
 	overflow: hidden;
 	position: absolute;
 	right: 1em;
 	text-indent: -999px;
 	top: 1em;
-	width: 1em;
+	width: 1.2em;
 }
 
 header .disconnected {
@@ -360,12 +394,20 @@ section {
 	font-size: 300%;
 }
 
+.dashboard section {
+	clear: none;
+	display: inline-block;
+}
+
 section h1 {
-	display: none;
+	height: 0;
+	overflow: hidden;
+	text-indent: -999px;
 }
 
 section .text-block h1 {
-	display: block;
+	height: auto;
+	text-indent: 0;
 }
 
 .device-off {
@@ -379,6 +421,11 @@ section .text-block h1 {
 section > div {
 	float: left;
 	width: 50%;
+}
+
+.dashboard section > div {
+	float: none;
+	width: 100%;
 }
 
 section .control-block .volume,
@@ -398,6 +445,12 @@ section .control-block .presence {
 section .control-block .navigation {
 	float: left;
 	width: 70%;
+}
+
+section .text-control li {
+	display: inline-block;
+	font-size: 50%;
+	width: 22%;
 }
 
 section .text,
@@ -452,10 +505,6 @@ section .state-ok .fa {
 	color: #0078E7;
 }
 
-section .text-block li .fa span {
-	display: none;
-}
-
 section .text-block li .name {
 	display: inline-block;
 	width: 3.5em;
@@ -466,7 +515,7 @@ section .installed-list {
 	float: none;
 	margin: 0 auto;
 	text-align: center;
-	width: 90%;
+	width: 100%;
 }
 
 section .installed .sub-device-list li {
@@ -507,15 +556,33 @@ section ul {
 	padding-left: 0;
 }
 
-section a {
-	display: block;
-	margin: 0 auto;
-	text-align: center;
+section a,
+section span {
 	-moz-transition: all .1s ease-in-out;
 	-o-transition: all .1s ease-in-out;
 	-webkit-transition: all .1s ease-in-out;
 	transition: all .1s ease-in-out;
+}
+
+section a {
+	display: block;
+	margin: 0 auto;
+	text-align: center;
+	-moz-touch-callout: none;
+	-ms-touch-callout: none;
+	-webkit-touch-callout: none;
+	touch-callout: none;
 	width: 1em;
+}
+
+section span em,
+section a em,
+section .text-block li .fa span {
+	display: block;
+	height: 0;
+	overflow: hidden;
+	text-indent: -999px;
+	width: 0;
 }
 
 section a span,
@@ -585,8 +652,8 @@ section .navigation a {
 section .navigation .fa-arrow-up,
 section .navigation .fa-arrow-down {
 	clear: both;
+	display: block;
 	float: none;
-	width: 100%;
 }
 
 section .navigation .fa-arrow-left,
@@ -699,6 +766,7 @@ section .sub-device-list .sub-device-group {
 	margin: .1em 0;
 }
 
+section .sub-device-list h2,
 section .sub-device-group h2,
 section .sub-device-group dt {
 	font-size: 50%;
@@ -725,9 +793,9 @@ section .sub-device-list li dl dd.icon {
 .device-active .fa:before,
 .fa.device-active:before {
 	text-shadow: -2px -2px 1px #286EA0,
-               -2px 2px 1px #286EA0,
-               2px -2px 1px #286EA0,
-               2px 2px 1px #286EA0;
+							 -2px 2px 1px #286EA0,
+							 2px -2px 1px #286EA0,
+							 2px 2px 1px #286EA0;
 	-moz-transition: text-shadow .1s ease-in-out;
 	-o-transition: text-shadow .1s ease-in-out;
 	-webkit-transition: text-shadow .1s ease-in-out;
@@ -739,9 +807,9 @@ section .sub-device-list li dl dd.icon {
 .device-active.co .fa:before,
 .device-active.batt .fa:before {
 	text-shadow: -2px -2px 1px #F00,
-               -2px 2px 1px #F00,
-               2px -2px 1px #F00,
-               2px 2px 1px #F00;
+							 -2px 2px 1px #F00,
+							 2px -2px 1px #F00,
+							 2px 2px 1px #F00;
 }
 
 .device-active.smoke .smoke,
@@ -762,6 +830,8 @@ a.device-active:hover:before {
 	}
 }
 
+section.denon.device-on .power-on,
+section.denon.device-off .power-off,
 section.ps3.device-on .power-on,
 section.ps3.device-off .power-off {
 	display: none;
@@ -769,6 +839,10 @@ section.ps3.device-off .power-off {
 
 section.ps3 .media {
 	padding-top: 2.5em;
+}
+
+.dashboard section.ps3 .media {
+	padding-top: 0;
 }
 
 section.ps3 .media a {
@@ -790,6 +864,7 @@ section.nest .control-block .navigation a {
 
 section.nest .sub-device-list .sub-device-group,
 section.nest .sub-device-list .sub-device-group li {
+	box-sizing: border-box;
 	max-width: 100%;
 	width: 100%;
 }
@@ -808,8 +883,24 @@ section.nest .text-device-status .text-device-status li {
 	max-width: 22%;
 }
 
+.nest .sliderBar {
+	background: -moz-linear-gradient(left, #0078E7 0, #F00 100%);
+	background: -webkit-linear-gradient(left, #0078E7 0, #F00 100%);
+	background: -o-linear-gradient(left, #0078E7 0, #F00 100%);
+	background: -ms-linear-gradient(left, #0078E7 0, #F00 100%);
+	background: linear-gradient(to right, #0078E7 0, #F00 100%);
+}
+
 section.weather li span.fa {
 	min-width: 1em;
+}
+
+section.denon .numeric-controls {
+	clear: left;
+}
+
+section.pioneer .text-control li a {
+	text-align: right;
 }
 
 section,
@@ -820,13 +911,36 @@ section,
 	transition: opacity .5s ease-in-out;
 }
 
+.dashboard header,
 section {
 	display: none;
+	margin: 0 .5em;
 }
 
 body.rich .selected,
 section:target {
 	display: block;
+}
+
+.dashboard section h1 {
+	font-size: 50%;
+	height: auto;
+	overflow: visible;
+	text-indent: 0;
+}
+
+.dashboard section {
+	border: 1px solid #444;
+	margin: .25em;
+	padding: .25em;
+	vertical-align: middle;
+}
+
+.dashboard section
+.dashboard .selected,
+.dashboard body.rich .selected,
+.dashboard section:target {
+	display: inline-block;
 }
 
 header .selected a {
@@ -857,6 +971,10 @@ header .selected a {
 		background: #000;
 		color: #444;
 	}
+}
+
+.theme-dark header {
+	padding-bottom: .5em;
 }
 
 .theme-dark header h1 a,
@@ -922,6 +1040,10 @@ header .selected a {
 		font-size: 250%;
 	}
 
+	.sliderBar {
+		font-size: 40%;
+	}
+
 	section > div {
 		clear: both;
 		float: none;
@@ -942,6 +1064,10 @@ header .selected a {
 		padding-top: 1em;
 	}
 
+	section .shortcuts {
+		padding-top: 0;
+	}
+
 	section.nest .sub-device-list .sub-device-group {
 		max-width: 90%;
 		width: 90%;
@@ -955,7 +1081,7 @@ header .selected a {
 
 @media (max-width: 500px) {
 	header h1,
-	.sub-device-list h2 {
+	.nest .sub-device-list h2 {
 		display: none;
 	}
 
@@ -993,6 +1119,10 @@ header .selected a {
 		font-size: 300%;
 	}
 
+	.sliderBar {
+		font-size: 33.333%;
+	}
+
 	section > div {
 		float: left;
 		width: 50%;
@@ -1014,6 +1144,10 @@ header .selected a {
 		font-size: 400%;
 	}
 
+	.sliderBar {
+		font-size: 25%;
+	}
+
 	section .installed .sub-device-group,
 	section .installed .sub-device-group li,
 	section .installed-list li {
@@ -1027,7 +1161,8 @@ header .selected a {
 
 header:after,
 header ul:after,
-section .control-block:after {
+section .control-block:after,
+section .media:after {
 	clear: both;
 	content: '.';
 	display: block;
