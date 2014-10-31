@@ -73,11 +73,38 @@ module.exports = function(grunt) {
     }
   });
 
+  grunt.registerTask('translation', function() {
+    var master = require(__dirname + '/lang/en').strings(),
+        langs  = ['es-CO'],
+        lang,
+        group,
+        string,
+        i      = 0;
+
+    for(i; i < langs.length; i += 1) {
+      lang = require(__dirname + '/lang/' + langs[i]).strings();
+
+      for(group in master) {
+        if(lang[group]) {
+          for(string in master[group]) {
+            if(!lang[group][string]) {
+              console.log('Missing String Translation: ' + langs[i] + ': ' + group + ': ' + string);
+            }
+          }
+        }
+
+        else {
+          console.log('Missing Device Translation: ' + langs[i] + ': ' + group);
+        }
+      }
+    }
+  });
+
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.registerTask('default', ['concat', 'cssmin', 'jshint', 'nodeunit', 'uglify']);
+  grunt.registerTask('default', ['concat', 'cssmin', 'jshint', 'nodeunit', 'uglify', 'translation']);
 };

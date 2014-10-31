@@ -347,6 +347,9 @@ module.exports = (function () {
           CONFIGURE : "Open up the config/config.js file which contains a series of standard device types.  Find any device that looks like one you'd like configured and plug in your relevant information.  For anything that's maybe not super obvious, there should be ample comments to help guide you.  While you're in there, you may also want to mark the \"welcome\" device as disabled: true to prevent this message from showing up anymore.",
           SUPPORT   : "Stuck?  Have questions?  Something go wrong or have any suggestions?  Feel free to <a href=\"https://github.com/imbrianj/switchBoard/issues/new\" rel=\"external\">file a ticket</a> or send me an email at <a href=\"mailto:brian@bevey.org\" rel=\"external\">brian@bevey.org</a>."
         },
+        wemo : {
+          WEMO : "Wemo"
+        },
         xbmc : {
           XBMC : "XBMC"
         }

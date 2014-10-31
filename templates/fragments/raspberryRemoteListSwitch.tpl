@@ -1,2 +1,0 @@
-
-                <li><h2>{{SUB_DEVICE_NAME}}</h2><a href="/?{{DEVICE_ID}}=subdevice-on-{{SUB_DEVICE_ID}}" class="fa fa-lightbulb-o device-active" title="{{SUB_DEVICE_NAME}}"><span>{{i18n_ON}}</span></a> <a href="/?{{DEVICE_ID}}=subdevice-off-{{SUB_DEVICE_ID}}" class="fa fa-lightbulb-o" title="{{SUB_DEVICE_NAME}}"><span>{{i18n_OFF}}</span></a></li>

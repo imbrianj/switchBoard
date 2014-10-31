@@ -312,5 +312,15 @@ exports.config = {
                    'HDD'    : 15,
                    'Power'  : 60 },
     disabled   : true
+  },
+
+  wemo : {
+    typeClass  : 'wemo',
+    title      : 'Wemo',
+    subdevices : { 'Light' : '192.168.1.83',
+                   'Fan'   : '192.168.1.84' },
+    power      : { 'Light' : 15,
+                   'Fan'   : 10 },
+    disabled   : false
   }
 };

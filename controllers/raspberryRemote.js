@@ -32,7 +32,7 @@ module.exports = (function () {
    * @requires child_process, raspberry-remote
    */
   return {
-    version : 20140909,
+    version : 20141026,
 
     inputs : ['subdevice'],
 
@@ -42,7 +42,7 @@ module.exports = (function () {
     fragments : function () {
       var fs = require('fs');
 
-      return { switch : fs.readFileSync(__dirname + '/../templates/fragments/raspberryRemoteListSwitch.tpl').toString() };
+      return { switch : fs.readFileSync(__dirname + '/../templates/fragments/raspberryRemote.tpl').toString() };
     },
 
     /**
