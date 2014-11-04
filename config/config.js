@@ -122,7 +122,7 @@ exports.config = {
     stocks    : ['YHOO', 'AAPL', 'GOOG', 'TSLA'],
     // Not to be considered investment advice, but this shows how you can set
     // stock prices to be notified of.
-    limits    : { YHOO : { buy : 30,  sell : 45 },
+    limits    : { YHOO : { buy : 30,  sell : 55 },
                   TSLA : { buy : 200, sell : 350 } },
     // Means by which you should be notified (if the controllers for each are
     // properly configured).
@@ -317,10 +317,8 @@ exports.config = {
   wemo : {
     typeClass  : 'wemo',
     title      : 'Wemo',
-    subdevices : { 'Light' : '192.168.1.83',
-                   'Fan'   : '192.168.1.84' },
-    power      : { 'Light' : 15,
-                   'Fan'   : 10 },
-    disabled   : false
+    subdevices : { 'Light' : '192.168.1.83' },
+    power      : { 'Light' : 15 },
+    disabled   : true
   }
 };
