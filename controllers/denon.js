@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global State, module, require, console */
+/*global module, require, console */
 
 /**
  * Copyright (c) 2014 markewest@gmail.com

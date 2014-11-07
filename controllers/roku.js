@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global State, module, setTimeout, require, console */
+/*global module, setTimeout, require, console */
 
 /**
  * Copyright (c) 2014 brian@bevey.org
