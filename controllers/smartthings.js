@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global State, module, require, console */
+/*global module, require, console */
 
 /**
  * Copyright (c) 2014 brian@bevey.org
@@ -225,16 +225,29 @@ module.exports = (function () {
             }
 
             // These are commonly secondary sensors for a given device.
-            if(device.values.temperature) {
+            if((device.values.temperature) || (device.values.vibrate)) {
               // If you have a proper state, temp is peripheral sensor.
               if(subDevices[i].state) {
                 subDevices[i].peripheral = subDevices[i].peripheral || {};
-                subDevices[i].peripheral.temp = device.values.temperature.value;
+
+                if(device.values.temperature) {
+                  subDevices[i].peripheral.temp = device.values.temperature.value;
+                }
+
+                if(device.values.vibrate) {
+                  subDevices[i].peripheral.temp = device.values.temperature.value;
+                }
               }
 
               // If you have no proper state, you're just a temperature sensor.
               else {
-                subDevices[i].state = device.values.temperature.value;
+                if(device.values.temperature) {
+                  subDevices[i].state = device.values.temperature.value;
+                }
+
+                if(device.values.vibrate) {
+                  subDevices[i].state = device.values.vibrate.value;
+                }
               }
             }
           }
@@ -332,6 +345,10 @@ module.exports = (function () {
         commandType = 'temp';
       }
 
+      else if(command.indexOf('state-vibrate-') === 0) {
+        commandType = 'vibrate';
+      }
+
       else if(command.indexOf('state-contact-') === 0) {
         commandType = 'contact';
       }
@@ -386,7 +403,16 @@ module.exports = (function () {
           subDevice = subDevices[i];
 
           if(subDevice.label === command) {
-            subDevices[i].state = value;
+            // If you have a proper state, vibrate is peripheral sensor.
+            if((commandType === 'vibrate') && (subDevice.state)) {
+              subDevices[i].peripheral = subDevices[i].peripheral || {};
+              subDevices[i].peripheral.vibrate = value;
+            }
+
+            // If you have no proper state, you're just a temperature sensor.
+            else {
+              subDevices[i].state = value;
+            }
 
             deviceState.updateState(config.device.deviceId, 'smartthings', { state : 'ok', value : { devices : subDevices, mode : smartThingsState.value.mode, groups : config.device.groups } });
           }

@@ -77,7 +77,8 @@
         getDeviceMarkup = function(device, markup) {
           var deviceTemplate = '',
               deviceMarkup   = '',
-              peripheral     = '';
+              temp           = '',
+              vibrate        = '';
 
           switch(device.type) {
             case 'switch' :
@@ -106,19 +107,23 @@
           }
 
           if((device.peripheral) && (device.peripheral.temp)) {
-            peripheral = ' (' + device.peripheral.temp + '&deg;)';
+            temp = ' (' + device.peripheral.temp + '&deg;)';
+          }
+
+          if((device.peripheral) && (device.peripheral.vibrate === 'on')) {
+            vibrate = ' device-vibrate';
           }
 
           deviceMarkup = deviceTemplate.split('{{SUB_DEVICE_ID}}').join(device.label.split(' ').join('+'));
-          deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_NAME}}').join(device.label + peripheral);
+          deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_NAME}}').join(device.label + temp);
 
           if(device.state === 'on') {
-            deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_STATE}}').join(' device-active');
+            deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_STATE}}').join(' device-active' + vibrate);
             deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_STATUS}}').join(translate('ACTIVE'));
           }
 
           else {
-            deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_STATE}}').join('');
+            deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_STATE}}').join(vibrate);
             deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_STATUS}}').join(translate('INACTIVE'));
           }
 
