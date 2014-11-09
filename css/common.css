@@ -824,97 +824,79 @@ a.device-active:hover:before {
 
 @-moz-keyframes vibrate {
   0% {
-    -moz-animation-timing-function: linear;
-    -moz-transform: rotate(0deg);
+    -moz-transform: rotate(0deg) translate(0, 0);
   }
 
   20% {
-    -moz-animation-timing-function: linear;
-    -moz-transform: rotate(-2deg);
+    -moz-transform: rotate(-5deg) translate(2px, -2px);
   }
 
   40% {
-    -moz-animation-timing-function: linear;
-    -moz-transform: rotate(2deg);
+    -moz-transform: rotate(3deg) translate(-1px, 0);
   }
 
   60% {
-    -moz-animation-timing-function: linear;
-    -moz-transform: rotate(-1deg);
+    -moz-transform: rotate(-2deg) translate(0, 2px);
   }
 
   80% {
-    -moz-animation-timing-function: linear;
-    -moz-transform: rotate(0deg);
+    -moz-transform: rotate(5deg) translate(-2px, 1px);
   }
 
   100% {
-    -moz-animation-timing-function: linear;
-    -moz-transform: rotate(-2deg);
+    -moz-transform: rotate(-4deg) translate(1px, 2px);
   }
 }
 
 @-webkit-keyframes vibrate {
   0% {
-    -webkit-animation-timing-function: linear;
-    -webkit-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg) translate(0, 0);
   }
 
   20% {
-    -webkit-animation-timing-function: linear;
-    -webkit-transform: rotate(-2deg);
+    -webkit-transform: rotate(-5deg) translate(2px, -2px);
   }
 
   40% {
-    -webkit-animation-timing-function: linear;
-    -webkit-transform: rotate(2deg);
+    -webkit-transform: rotate(3deg) translate(-1px, 0);
   }
 
   60% {
-    -webkit-animation-timing-function: linear;
-    -webkit-transform: rotate(-1deg);
+    -webkit-transform: rotate(-2deg) translate(0, 2px);
   }
 
   80% {
-    -webkit-animation-timing-function: linear;
-    -webkit-transform: rotate(0deg);
+    -webkit-transform: rotate(5deg) translate(-2px, 1px);
   }
 
   100% {
-    -webkit-animation-timing-function: linear;
-    -webkit-transform: rotate(-2deg);
+    -webkit-transform: rotate(-4deg) translate(1px, 2px);
   }
 }
 
 @keyframes vibrate {
 	0% {
-		animation-timing-function: linear;
-		transform: rotate(0deg);
+		transform: rotate(0deg) translate(0, 0);
 	}
 
 	20% {
-		animation-timing-function: linear;
-		transform: rotate(-2deg);
+		transform: rotate(-5deg) translate(2px, -2px);
 	}
 
 	40% {
-		animation-timing-function: linear;
-		transform: rotate(2deg);
+		transform: rotate(3deg) translate(-1px, 0);
 	}
 
 	60% {
-		animation-timing-function: linear;
-		transform: rotate(-1deg);
+		transform: rotate(-2deg) translate(0, 2px);
 	}
 
 	80% {
-		animation-timing-function: linear;
-		transform: rotate(0deg);
+		transform: rotate(5deg) translate(-2px, 1px);
 	}
 
 	100% {
-		animation-timing-function: linear;
-		transform: rotate(-2deg);
+		transform: rotate(-4deg) translate(1px, 2px);
 	}
 }
 
@@ -928,6 +910,12 @@ a.device-active:hover:before {
 	-moz-animation-name: vibrate;
 	-webkit-animation-name: vibrate;
 	animation-name: vibrate;
+	-moz-animation-timing-function: linear;
+	-webkit-animation-timing-function: linear;
+	animation-timing-function: linear;
+	-moz-transform-origin: 50% 50%;
+	-webkit-transform-origin: 50% 50%;
+	transform-origin: 50% 50%;
 	-moz-transition: all 2s ease-in-out;
 	-o-transition: all 2s ease-in-out;
 	-webkit-transition: all 2s ease-in-out;
