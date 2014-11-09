@@ -49,6 +49,7 @@ module.exports = (function () {
                 'tests/unit/controllers/stocksTest.js',
                 'tests/unit/controllers/travisTest.js',
                 'tests/unit/controllers/weatherTest.js',
+                'tests/unit/controllers/wemo.js',
                 'tests/unit/controllers/xbmcTest.js',
                 'tests/unit/events/scheduleTest.js',
                 'tests/unit/lib/deviceStateTest.js',
@@ -65,5 +66,6 @@ module.exports = (function () {
                 'tests/unit/parsers/stocksTest.js',
                 'tests/unit/parsers/travisTest.js',
                 'tests/unit/parsers/weatherTest.js',
+                'tests/unit/parsers/wemo.js',
                 'tests/unit/js/commonTest.js']);
 }());

@@ -317,8 +317,14 @@ exports.config = {
   wemo : {
     typeClass  : 'wemo',
     title      : 'Wemo',
-    subdevices : { 'Light' : '192.168.1.83' },
-    power      : { 'Light' : 15 },
+    subdevices : { 'Desk Lamp' : '192.168.1.9',
+                   'Fan'       : '192.168.1.10' },
+    // You may group your devices together for display by using the group name
+    // you'd like shown as the object name.  Devices within that group should
+    // be the same name as you give them in as subdevices above.
+    groups     : { 'Office' : ['Desk Lamp', 'Fan'] },
+    power      : { 'Desk Lamp' : 15,
+                   'Fan'       : 20 },
     disabled   : true
   }
 };

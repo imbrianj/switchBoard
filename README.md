@@ -45,6 +45,7 @@ Supported Devices/Services
 | Speech           | Stable      | Uses espeak for *nix, say on OSX.  Win not supported                            |
 | Stocks           | Stable      | Uses Yahoo Finance                                                              |
 | Travis CI        | Stable      |                                                                                 |
+| Belkin Wemo      | Testing     | New controller and still in testing                                             |
 | Weather          | Stable      | Uses Yahoo Weather                                                              |
 | XBMC             | Testing     | Basic controls work                                                             |
 

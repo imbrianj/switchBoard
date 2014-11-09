@@ -918,7 +918,7 @@ a.device-active:hover:before {
 	}
 }
 
-.device-vibrate {
+.device-vibrate.fa:before {
 	-moz-animation-duration: .2s;
 	-webkit-animation-duration: .2s;
 	animation-duration: .2s;
