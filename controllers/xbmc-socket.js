@@ -36,7 +36,7 @@ module.exports = (function () {
    *       http://wiki.xbmc.org/index.php?title=JSON-RPC_API/Examples
    */
   return {
-    version : 20140928,
+    version : 20141009,
 
     inputs  : ['command', 'text'],
 
@@ -104,8 +104,7 @@ module.exports = (function () {
     send : function (config) {
       var net         = require('net'),
           xbmc        = {},
-          that        = this,
-          response;
+          that        = this;
 
       xbmc.deviceIp   = config.device.deviceIp;
       xbmc.devicePort = config.device.devicePort;
@@ -117,7 +116,7 @@ module.exports = (function () {
 
       if((Socket) && (!Socket.destroyed) && (xbmc.command)) {
         if(xbmc.command !== 'state') {
-          Socket.write(that.postData(xbmc.command));
+          Socket.write(that.postData(xbmc));
         }
 
         xbmc.callback(null, 'ok');
@@ -129,7 +128,7 @@ module.exports = (function () {
 
         Socket.once('connect', function() {
           if(xbmc.command) {
-            Socket.write(that.postData(xbmc.command));
+            Socket.write(that.postData(xbmc));
           }
 
           xbmc.callback(null, 'ok');
@@ -143,9 +142,16 @@ module.exports = (function () {
         }
 
         Socket.on('data', function(dataReply) {
-          response += dataReply;
+          var reply   = JSON.parse(dataReply.toString()),
+              current = '';
 
-          xbmc.callback(null, response);
+          if((reply) && (reply.method)) {
+            if(reply.method === 'GUI.OnScreensaverActivated') {
+              current = 'SCREENSAVER';
+            }
+          }
+
+          xbmc.callback(null, current);
         });
 
         Socket.once('end', function() {
