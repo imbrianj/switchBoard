@@ -66,7 +66,7 @@ module.exports = (function () {
 
             for(subDevice in reply.protect) {
               if(reply.protect[subDevice].smoke !== 'ok') {
-                tempMessage = translate('{{i18n_SMOKE_DETECTED}}', 'nest', controllers.config.language).replace('{{LABEL}}', reply.protect[subDevice].label);
+                tempMessage = translate.translate('{{i18n_SMOKE_DETECTED}}', 'nest', controllers.config.language).replace('{{LABEL}}', reply.protect[subDevice].label);
 
                 if(message) {
                   message = message + ' ';
@@ -78,7 +78,7 @@ module.exports = (function () {
               }
 
               if(reply.protect[subDevice].co !== 'ok') {
-                tempMessage = translate('{{i18n_CO_DETECTED}}', 'nest', controllers.config.language).replace('{{LABEL}}', reply.protect[subDevice].label);
+                tempMessage = translate.translate('{{i18n_CO_DETECTED}}', 'nest', controllers.config.language).replace('{{LABEL}}', reply.protect[subDevice].label);
 
                 if(message) {
                   message = message + ' ';
