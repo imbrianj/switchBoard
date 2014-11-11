@@ -47,7 +47,7 @@ Supported Devices/Services
 | Travis CI        | Stable      |                                                                                 |
 | Belkin Wemo      | Testing     | New controller and still in testing                                             |
 | Weather          | Stable      | Uses Yahoo Weather                                                              |
-| XBMC             | Testing     | Basic controls work                                                             |
+| XBMC             | Testing     | Basic controls work - testing display of current media                          |
 
 ### Controlling your PS3 -- General instructions
 

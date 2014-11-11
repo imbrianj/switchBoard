@@ -28,44 +28,18 @@
  * @fileoverview Unit test for controllers/xbmc.js
  */
 
-State = {};
-
 exports.xbmcControllerTest = {
-  postPrepare : function (test) {
-    'use strict';
-
-    var xbmcController = require(__dirname + '/../../../controllers/xbmc'),
-        commandRequest = xbmcController.postPrepare({ deviceIp    : '123.456.789.101',
-                                                      devicePort  : '8080',
-                                                      command     : 'TEST',
-                                                      method      : 'POST',
-                                                      postRequest : 'This is 21 bytes long'});
-
-    test.deepEqual(commandRequest, { host    : '123.456.789.101',
-                                     port    : '8080',
-                                     path    : '/jsonrpc?TEST',
-                                     method  : 'POST',
-                                     headers : {
-                                       'Accept'         : 'application/json',
-                                       'Accept-Charset' : 'utf-8',
-                                       'User-Agent'     : 'node-switchBoard',
-                                       'Content-Type'   : 'application/json',
-                                       'Content-Length' : 21
-                                     }
-                                   }, 'XBMC command validation');
-
-    test.done();
-  },
-
   postData : function (test) {
     'use strict';
 
     var xbmcController = require(__dirname + '/../../../controllers/xbmc'),
-        commandRequest = xbmcController.postData({ command : 'Input.Left' }),
-        textRequest    = xbmcController.postData({ command : 'Input.SendText', text : 'This is entered text' });
+        commandRequest = xbmcController.postData({ command : 'Left' }),
+        textRequest    = xbmcController.postData({ text : 'This is entered text' }),
+        listRequest    = xbmcController.postData({ list : true, player : 1 });
 
-    test.strictEqual(commandRequest, '{"id":1,"jsonrpc":"2.0","method":"Input.Left"}',                                                           'XBMC command validation');
-    test.strictEqual(textRequest,    '{"id":0,"jsonrpc":"2.0","method":"Input.SendText","params":{"text":"This is entered text","done":false}}', 'XBMC text input validation');
+    test.strictEqual(commandRequest, '{"id":1,"jsonrpc":"2.0","method":"Input.Left"}',                                                                                              'XBMC command validation');
+    test.strictEqual(textRequest,    '{"id":0,"jsonrpc":"2.0","method":"Input.SendText","params":{"text":"This is entered text","done":false}}',                                    'XBMC text input validation');
+    test.strictEqual(listRequest,    '{"id":"VideoGetItem","jsonrpc":"2.0","method":"Player.GetItem","params":{"properties":["title","album","artist","showtitle"],"playerid":1}}', 'XBMC list command validation');
 
     test.done();
   }

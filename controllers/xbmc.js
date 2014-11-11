@@ -26,17 +26,19 @@
 module.exports = (function () {
   'use strict';
 
+  var Socket = null;
+
   /**
    * @author brian@bevey.org
-   * @fileoverview Basic control of XBMC
-   * @requires http
+   * @fileoverview Basic control of XBMC (aka Kodi)
+   * @requires net
    * @note Refernce docs:
    *       http://wiki.xbmc.org/index.php?title=JSON-RPC_API/Examples
    */
   return {
-    version : 20140824,
+    version : 20141110,
 
-    inputs  : ['command', 'text'],
+    inputs  : ['command', 'text', 'list'],
 
     /**
      * Whitelist of available key codes to use.
@@ -54,41 +56,27 @@ module.exports = (function () {
                   'SELECT'   : 'Select',
                   'BACK'     : 'Back',
                   'POWEROFF' : 'Shutdown' },
-    /**
-     * Prepare a request for command execution.
-     */
-    postPrepare : function (config) {
-      var request = { host    : config.deviceIp,
-                      port    : config.devicePort,
-                      path    : '/jsonrpc?' + config.command,
-                      method  : config.method,
-                      headers : {
-                        'Accept'         : 'application/json',
-                        'Accept-Charset' : 'utf-8',
-                        'User-Agent'     : 'node-switchBoard',
-                        'Content-Type'   : 'application/json'
-                      }
-                    };
-
-      if(config.postRequest) {
-        request.headers['Content-Length'] = config.postRequest.length;
-      }
-
-      return request;
-    },
 
     /**
-     * Prepare the POST data to be sent.
+     * Prepare the JSON data to be sent via socket connection.
      */
     postData : function (xbmc) {
       var value;
 
       value = { id      : xbmc.appId || 1,
                 jsonrpc : '2.0',
-                method  : xbmc.command };
+                method  : 'Input.' + xbmc.command };
+
+      if(xbmc.list) {
+        value.method = 'Player.GetItem';
+        value.params = { properties : ['title', 'album', 'artist', 'showtitle'],
+                         playerid   : xbmc.player };
+        value.id     = 'VideoGetItem';
+      }
 
       if(xbmc.text) {
         value.id = 0;
+        value.method = 'Input.SendText';
         value.params = { text : xbmc.text, done : false };
       }
 
@@ -122,56 +110,92 @@ module.exports = (function () {
     },
 
     send : function (config) {
-      var http        = require('http'),
+      var net         = require('net'),
+          sharedUtil  = require(__dirname + '/../lib/sharedUtil').util,
           xbmc        = {},
-          dataReply   = '',
-          request;
+          that        = this;
 
       xbmc.deviceIp   = config.device.deviceIp;
       xbmc.devicePort = config.device.devicePort;
+      xbmc.player     = config.player                  || '';
+      xbmc.list       = config.list                    || '';
       xbmc.command    = this.hashTable[config.command] || '';
       xbmc.text       = config.text                    || '';
-      xbmc.devicePort = config.devicePort              || 8080;
-      xbmc.method     = config.method                  || 'POST';
+      xbmc.devicePort = config.devicePort              || 9090;
       xbmc.callback   = config.callback                || function () {};
 
-      if(xbmc.text) {
-        xbmc.command = 'SendText';
+      if((Socket) && (!Socket.destroyed) && (xbmc.command)) {
+        if(xbmc.command !== 'state') {
+          Socket.write(that.postData(xbmc));
+        }
+
+        xbmc.callback(null, 'ok');
       }
 
-      if(xbmc.command === 'state') {
-        xbmc.command = 'Player.GetActivePlayers';
+      else if(xbmc.command) {
+        Socket = new net.Socket();
+        Socket.connect(xbmc.devicePort, xbmc.deviceIp);
+
+        Socket.once('connect', function() {
+          if(xbmc.command) {
+            Socket.write(that.postData(xbmc));
+          }
+
+          xbmc.callback(null, 'ok');
+        });
+
+        if(xbmc.command === 'state') {
+          Socket.setTimeout(xbmc.timeout, function() {
+            Socket.destroy();
+            xbmc.callback({ code : 'ETIMEDOUT' });
+          });
+        }
+
+        Socket.on('data', function(dataReply) {
+          var reply   = JSON.parse(dataReply.toString()),
+              current = '';
+
+          if(reply) {
+            // We know you're watching a video.  Now we need to send a request
+            // for what the video title is.
+            if((reply.params) && (reply.params.data) && (reply.params.data.player) && (reply.params.data.player.playerid)) {
+              config.list   = true;
+              config.player = reply.params.data.player.playerid;
+
+              that.send(config);
+            }
+
+            // This should now have the video title.
+            if((reply.result) && (reply.result.item)) {
+              // First try to grab the official title.  Otherwise, the filename.
+              // Failing that, we'll revert to generic "Movie".
+              current = reply.result.item.title || reply.result.item.label || sharedUtil.translate('MOVIE', 'xbmc', config.language);
+            }
+
+            // Catch other methods - such as screensaver.
+            else if(reply.method) {
+              if(reply.method === 'GUI.OnScreensaverActivated') {
+                current = sharedUtil.translate('SCREENSAVER', 'xbmc', config.language);
+              }
+            }
+
+            xbmc.callback(null, { current : current });
+          }
+        });
+
+        Socket.once('end', function() {
+          Socket = null;
+        });
+
+        Socket.once('error', function(err) {
+          var deviceState = require(__dirname + '/../lib/deviceState'),
+              xbmcState   = deviceState.getDeviceState(config.deviceId);
+
+          if((err.code !== 'ETIMEDOUT') || (xbmc.command !== 'state')) {
+            xbmc.callback(err, xbmcState);
+          }
+        });
       }
-
-      else {
-        xbmc.command = 'Input.' + xbmc.command;
-      }
-
-      if(xbmc.method === 'POST') {
-        xbmc.postRequest = this.postData(xbmc);
-      }
-
-      request = http.request(this.postPrepare(xbmc), function(response) {
-                  response.on('data', function(response) {
-                    dataReply += response;
-                  });
-
-                  response.once('end', function() {
-                    xbmc.callback(null, dataReply);
-                  });
-                });
-
-      request.once('error', function(err) {
-        xbmc.callback(err);
-      });
-
-      if(xbmc.method === 'POST') {
-        request.write(xbmc.postRequest);
-      }
-
-      request.end();
-
-      return dataReply;
     }
   };
 }());

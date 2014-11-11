@@ -66,6 +66,7 @@ module.exports = (function () {
                 'tests/unit/parsers/stocksTest.js',
                 'tests/unit/parsers/travisTest.js',
                 'tests/unit/parsers/weatherTest.js',
-                'tests/unit/parsers/wemo.js',
+                'tests/unit/parsers/wemoTest.js',
+                'tests/unit/parsers/xbmcTest.js',
                 'tests/unit/js/commonTest.js']);
 }());

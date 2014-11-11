@@ -757,6 +757,11 @@ section .preview-image img {
 	min-height: 200px;
 }
 
+section .current {
+	font-size: 50%;
+	text-align: center;
+}
+
 section .sub-device-list .sub-device-group {
 	border: 1px solid #444;
 	-moz-border-radius: 3px;
