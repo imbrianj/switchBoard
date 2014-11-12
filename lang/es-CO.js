@@ -355,7 +355,9 @@ module.exports = (function () {
           WEMO : "Wemo"
         },
         xbmc : {
-          XBMC : "XBMC"
+          XBMC : "XBMC",
+          MOVIE       : "Película",
+          SCREENSAVER : "Protector de pantalla"
         }
       };
     }
