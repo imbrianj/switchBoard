@@ -1,4 +1,4 @@
-/*global document, window, ActiveXObject, init, console, XMLHttpRequest, SB, Notification, SpeechSynthesisUtterance */
+/*global document, window, ActiveXObject, XMLHttpRequest, SB, Notification, SpeechSynthesisUtterance */
 /*jslint white: true, evil: true */
 /*jshint -W020 */
 

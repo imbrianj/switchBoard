@@ -1,4 +1,4 @@
-/*global document, window, ActiveXObject, init, console, XMLHttpRequest, SB, Notification */
+/*global document, window, console, SB */
 /*jslint white: true, evil: true */
 /*jshint -W020 */
 
