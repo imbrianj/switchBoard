@@ -33,14 +33,14 @@ exports.xbmcParserTest = {
     'use strict';
 
     var xbmcParser = require(__dirname + '/../../../parsers/xbmc'),
-        markup     = '<h1>Foo</h1> <div>{{DEVICE_CURRENT}}</div>',
+        markup     = '<h1>Foo</h1> <div>{{XBMC_DYNAMIC}}</div>',
         value      = { current : 'Some Value' },
-        goodMarkup = xbmcParser.xbmc('dummy', markup, 'ok', value),
-        noValue    = xbmcParser.xbmc('dummy', markup, 'ok', null);
+        goodMarkup = xbmcParser.xbmc('dummy', markup, 'ok', value, { current : '<h5>{{DEVICE_CURRENT}}</h5>'}),
+        noValue    = xbmcParser.xbmc('dummy', markup, 'ok', null,  { current : '<h5>{{DEVICE_CURRENT}}</h5>'});
 
     test.strictEqual(goodMarkup.indexOf('{{'), -1, 'All values replaced');
 
-    test.strictEqual(goodMarkup, '<h1>Foo</h1> <div>Some Value</div>', 'Passed markup validation 1');
+    test.strictEqual(goodMarkup, '<h1>Foo</h1> <div><h5>Some Value</h5></div>', 'Passed markup validation 1');
     test.strictEqual(noValue.indexOf('{{'), -1,                        'All values replaced');
     test.strictEqual(noValue,    '<h1>Foo</h1> <div></div>',           'Passed markup validated 2');
 

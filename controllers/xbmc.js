@@ -36,7 +36,7 @@ module.exports = (function () {
    *       http://wiki.xbmc.org/index.php?title=JSON-RPC_API/Examples
    */
   return {
-    version : 20141110,
+    version : 20141111,
 
     inputs  : ['command', 'text', 'list'],
 
@@ -56,6 +56,15 @@ module.exports = (function () {
                   'SELECT'   : 'Select',
                   'BACK'     : 'Back',
                   'POWEROFF' : 'Shutdown' },
+
+    /**
+     * Reference template fragments to be used by the parser.
+     */
+    fragments : function () {
+      var fs = require('fs');
+
+      return { current : fs.readFileSync(__dirname + '/../templates/fragments/xbmc.tpl').toString() };
+    },
 
     /**
      * Prepare the JSON data to be sent via socket connection.

@@ -121,6 +121,14 @@ FAQ
 
   A. Depends.  It's assumed that any device that's on your network is deemed white-listed.  This probably shouldn't be used on a large network with people you don't trust to screw with your TV. My goal is to provide the most security by keeping external connections to a minimum.  See "Q. Why aren't you using a seed-based JS library / referencing CSS from a CDN?"
 
+- Q. Why don't you use SmartThings or another third party system to do all this integration?
+
+  A. Most other systems are cloud-based.  This means that if you wanted to change your thermostat, you'd have to send a request to SmartThings, then it'd send a request to Nest.  I wanted to reduce that lag - but I also wanted to gain more control.  By having SwitchBoard do the integration, we can keep things local and we can do actions those cloud-based solutions cannot.  Want to poll every 5 seconds?  You'd be a jerk - but you can.  Additionally, I wanted to support hardware that isn't supported on other systems.  The Pi is capable of any TCP commands (Rest or Sockets) - but can also interface with Bluetooth, GPIO and any native Unix command.  This ability allows the PS3, text-to-speech and MP3 capabilities.
+
+- Q. Does SwitchBoard have a REST API?
+
+  A. Kind of.  For simplicity, everything is going through GET.  Allowing a browser to simply hit a URL has it's advantages - but if there's interest in adhering to the true spirit of REST, I can change to the correct PUT, POST, DELETE commands where appropriate.
+
 - Q. How can I access this if I'm away from my home?
 
   A. I would strongly advise you to not just punch a hole in your firewall.  If your router supports VPN connections, it's a very safe option to configure your phone to connect to that before using SwitchBoard remotely.  If that's not possible or not conveneint, you may use [ngrok](https://ngrok.com/) to easily access SwitchBoard (at no cost) with no additional configuration.  If you choose ngrok, be sure to [configure a ppassword!](https://ngrok.com/usage)

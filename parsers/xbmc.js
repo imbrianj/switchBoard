@@ -27,12 +27,13 @@
   'use strict';
 
   exports.xbmc = function (deviceId, markup, state, value, fragments) {
-    var current = '';
+    var templateCurrent = fragments.current,
+        current         = '';
 
     if((value) && (value.current)) {
-      current = value.current;
+      current = fragments.current.split('{{DEVICE_CURRENT}}').join(value.current);
     }
 
-    return markup.replace('{{DEVICE_CURRENT}}', current);
+    return markup.replace('{{XBMC_DYNAMIC}}', current);
   };
 })(typeof exports === 'undefined' ? this.SB.spec.parsers : exports);
