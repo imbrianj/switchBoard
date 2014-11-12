@@ -33,7 +33,7 @@ SB.spec = (function () {
   'use strict';
 
   return {
-    version : 20141008,
+    version : 20141111,
 
     state : {},
 
@@ -220,19 +220,14 @@ SB.spec = (function () {
             notification;
 
         if(typeof message.title === 'string') {
-          if(typeof Notification === 'function') {
-            notification = new Notification(message.title, message.options);
+          SB.speak(message.options.body);
+          notification = SB.notify(message.title, message.options);
 
-            setTimeout(function() {
-              notification.close();
-            }, 10000);
-
+          if(notification) {
             SB.event.add(notification, 'click', function(e) {
               var newContent,
                   selectNav,
                   selectContent;
-
-              window.focus();
 
               if(message.deviceId) {
                 newContent    = SB.get(message.deviceId);
@@ -844,15 +839,7 @@ SB.spec = (function () {
             SB.spec.lazyUnLoad(selectContent);
           }
 
-          if(typeof Notification === 'function') {
-            if(Notification.permission !== 'denied') {
-              Notification.requestPermission(function(permission) {
-                if(Notification.permission !== permission) {
-                  Notification.permission = permission;
-                }
-              });
-            }
-          }
+          SB.notifyAsk();
         }
 
         else if(SB.getTarget(e).id === 'indicator') {

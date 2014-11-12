@@ -1,4 +1,4 @@
-/*global document, window, ActiveXObject, init, console, XMLHttpRequest, SB, Notification */
+/*global document, window, ActiveXObject, init, console, XMLHttpRequest, SB, Notification, SpeechSynthesisUtterance */
 /*jslint white: true, evil: true */
 /*jshint -W020 */
 
@@ -28,7 +28,7 @@ SB = (function () {
   'use strict';
 
   return {
-    version : 20141002,
+    version : 20141111,
 
    /**
     * Stops event bubbling further.
@@ -506,6 +506,80 @@ SB = (function () {
 
       if((window.navigator) && (window.navigator.vibrate)) {
         window.navigator.vibrate(duration);
+      }
+
+      else {
+        SB.log('Not supported', 'Vibrate', 'error');
+      }
+    },
+
+    /**
+     * Stupid wrapper to ensure Notification exists before using it.  If it does
+     * exist, but it doesn't look like you've granted permission, we'll try to
+     * get permission.  As permission can only be asked from a user action,
+     * we'll break it into a separate method so we can call it directly as well.
+     *
+     * @param {String} string Phrase you'd like popped up in a notification box.
+     * @param {Object} options
+     */
+    notify : function (string, options) {
+      var notification;
+
+      if(typeof Notification === 'function') {
+        if(Notification.permission === 'granted') {
+          notification = new Notification(string, options);
+
+          setTimeout(function() {
+            notification.close();
+          }, 10000);
+
+          SB.event.add(notification, 'click', function(e) {
+            window.focus();
+          });
+        }
+
+        else {
+          SB.notifyAsk();
+        }
+      }
+
+      return notification;
+    },
+
+    /**
+     * Stupid wrapper to ensure Notification exists before using it.  If it does
+     * exist, but it doesn't look like you've granted permission, we'll try to
+     * get permission.  As permission can only be asked from a user action,
+     * we'll break it into a separate method so we can call it directly as well.
+     * If you've explicitly denied permission, we'll honor that and not ask.
+     */
+    notifyAsk : function () {
+      if(Notification.permission !== 'denied') {
+        Notification.requestPermission(function(permission) {
+          if(Notification.permission !== permission) {
+            Notification.permission = permission;
+          }
+        });
+      }
+    },
+
+    /**
+     * Stupid wrapper to ensure your browser supports text to speech before
+     * using it.
+     *
+     * @param {String} string Phrase you'd like read aloud on the client.
+     */
+    speak : function (string) {
+      var message;
+
+      if(window.speechSynthesis) {
+        message = new SpeechSynthesisUtterance(string);
+
+        window.speechSynthesis.speak(message);
+      }
+
+      else {
+        SB.log('Not supported', 'Speak', 'error');
       }
     },
 
