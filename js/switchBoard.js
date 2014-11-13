@@ -227,7 +227,6 @@ SB.spec = (function () {
 
         // If you have a title, you're a Desktop Notification.
         else if(typeof message.title === 'string') {
-          SB.speak(message.options.body);
           notification = SB.notify(message.title, message.options);
 
           if(notification) {
