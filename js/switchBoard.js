@@ -219,7 +219,14 @@ SB.spec = (function () {
             device  = {},
             notification;
 
-        if(typeof message.title === 'string') {
+        if(typeof message.speech === 'string') {
+          if(message.speech) {
+            SB.speak(message.speech);
+          }
+        }
+
+        // If you have a title, you're a Desktop Notification.
+        else if(typeof message.title === 'string') {
           SB.speak(message.options.body);
           notification = SB.notify(message.title, message.options);
 
@@ -248,6 +255,7 @@ SB.spec = (function () {
           }
         }
 
+        // If you havea  deviceId, you're an update to a controller state.
         else if(typeof message.deviceId === 'string') {
           SB.spec.updateTemplate(message);
         }
