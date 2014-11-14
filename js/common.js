@@ -28,7 +28,7 @@ SB = (function () {
   'use strict';
 
   return {
-    version : 20141111,
+    version : 20141112,
 
    /**
     * Stops event bubbling further.

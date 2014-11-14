@@ -367,13 +367,13 @@ header ul li a {
 
 header #indicator {
 	border-radius: 50%;
-	height: 1.2em;
+	height: 1.5em;
 	overflow: hidden;
 	position: absolute;
-	right: 1em;
+	right: .5em;
 	text-indent: -999px;
-	top: 1em;
-	width: 1.2em;
+	top: .5em;
+	width: 1.5em;
 }
 
 header .disconnected {
@@ -1022,7 +1022,7 @@ section {
 	margin: 0 .5em;
 }
 
-body.rich .selected,
+body.rich section.selected,
 section:target {
 	display: block;
 }
@@ -1042,8 +1042,8 @@ section:target {
 }
 
 .dashboard section
-.dashboard .selected,
-.dashboard body.rich .selected,
+.dashboard section.selected,
+.dashboard body.rich section.selected,
 .dashboard section:target {
 	display: inline-block;
 }
