@@ -328,11 +328,11 @@ module.exports = (function () {
         },
         stocks : {
           STOCKS  : "Mercado de valores",
-          BUY     : "El valor de {{LABEL}} esta por debajo de {{PRICE}}. ¿Considere una compra?",
+          BUY     : "El valor de {{LABEL}} esta por debajo de ${{PRICE}}. ¿Considere una compra?",
           LOSS    : "Perdida",
           GAIN    : "Ganancia",
           NEUTRAL : "Neutral",
-          SELL    : "El valor de {{LABEL}} se ha incrementado mas de {{PRICE}}.  ¿Considere una venta?"
+          SELL    : "El valor de {{LABEL}} se ha incrementado mas de ${{PRICE}}.  ¿Considere una venta?"
         },
         travis : {
           TRAVIS        : "Travis",

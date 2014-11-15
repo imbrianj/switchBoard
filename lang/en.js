@@ -324,11 +324,11 @@ module.exports = (function () {
         },
         stocks : {
           STOCKS  : "Stocks",
-          BUY     : "Your {{LABEL}} stock is low at {{PRICE}}.  Think about buying?",
+          BUY     : "Your {{LABEL}} stock is low at ${{PRICE}}.  Think about buying?",
           LOSS    : "Loss",
           GAIN    : "Gain",
           NEUTRAL : "Neutral",
-          SELL    : "Your {{LABEL}} stock is doing well at {{PRICE}}.  Think about selling?"
+          SELL    : "Your {{LABEL}} stock is doing well at ${{PRICE}}.  Think about selling?"
         },
         travis : {
           TRAVIS        : "Travis",
