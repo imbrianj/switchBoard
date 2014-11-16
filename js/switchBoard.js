@@ -221,7 +221,7 @@ SB.spec = (function () {
 
         if(typeof message.speech === 'string') {
           if(message.speech) {
-            SB.speak(message.speech);
+            SB.speak(message.speech, message.language);
           }
         }
 

@@ -569,11 +569,13 @@ SB = (function () {
      *
      * @param {String} string Phrase you'd like read aloud on the client.
      */
-    speak : function (string) {
+    speak : function (string, lang) {
       var message;
 
       if(window.speechSynthesis) {
-        message = new SpeechSynthesisUtterance(string);
+        message = new SpeechSynthesisUtterance();
+        message.text = string;
+        message.lang = lang || 'en-US';
 
         window.speechSynthesis.speak(message);
       }
