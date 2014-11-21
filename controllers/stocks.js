@@ -150,13 +150,16 @@ module.exports = (function () {
                           for(i in data.query.results.results.tbody.tr) {
                             stock = data.query.results.results.tbody.tr[i];
 
-                            stockData[stock.td[0].span.a.content] = { 'name'             : stock.td[0].span.a.content,
-                                                                      'price'            : stock.td[2].span.span.content,
-                                                                      'dayChangeValue'   : stock.td[3].span.span.content,
-                                                                      'dayChangePercent' : stock.td[4].span.span.content,
-                                                                      'dayLow'           : stock.td[5].span.span.content,
-                                                                      'dayHigh'          : stock.td[6].span.span.content
-                                                                    };
+
+                            if(stock.td[0].class.indexOf('col-symbol') !== -1) {
+                              stockData[stock.td[0].span.a.content] = { 'name'             : stock.td[0].span.a.content,
+                                                                        'price'            : stock.td[2].class.indexOf('col-price')           !== -1 ? stock.td[2].span.span.content : '',
+                                                                        'dayChangeValue'   : stock.td[3].class.indexOf('col-change')          !== -1 ? stock.td[3].span.span.content : '',
+                                                                        'dayChangePercent' : stock.td[4].class.indexOf('col-percent_change')  !== -1 ? stock.td[4].span.span.content : '',
+                                                                        'dayLow'           : stock.td[5].class.indexOf('col-day_low')         !== -1 ? stock.td[5].span.span.content : '',
+                                                                        'dayHigh'          : stock.td[6].class.indexOf('col-day_high')        !== -1 ? stock.td[6].span.span.content : ''
+                                                                      };
+                            }
                           }
                         }
 

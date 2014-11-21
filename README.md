@@ -131,4 +131,4 @@ FAQ
 
 - Q. How can I access this if I'm away from my home?
 
-  A. I would strongly advise you to not just punch a hole in your firewall.  If your router supports VPN connections, it's a very safe option to configure your phone to connect to that before using SwitchBoard remotely.  If that's not possible or not conveneint, you may use [ngrok](https://ngrok.com/) to easily access SwitchBoard (at no cost) with no additional configuration.  If you choose ngrok, be sure to [configure a ppassword!](https://ngrok.com/usage)
+  A. I would strongly advise you to not just punch a hole in your firewall.  If your router supports VPN connections, it's a very safe option to configure your phone to connect to that before using SwitchBoard remotely.  If that's not possible or not conveneint, you may use [ngrok](https://ngrok.com/) to easily access SwitchBoard (at no cost) with no additional configuration.  If you choose ngrok, be sure to [configure a password!](https://ngrok.com/usage)
