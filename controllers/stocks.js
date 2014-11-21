@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic stocks information, courtesy of Yahoo.
    */
   return {
-    version : 20140813,
+    version : 20141120,
 
     inputs  : ['list'],
 
@@ -118,9 +118,9 @@ module.exports = (function () {
           request;
 
       stocks.deviceId = config.device.deviceId;
-      stocks.stocks   = config.device.stocks ? config.device.stocks.join('","') : null;
+      stocks.stocks   = config.device.stocks ? config.device.stocks.join(',') : null;
       stocks.host     = config.host     || 'query.yahooapis.com';
-      stocks.path     = config.path     || '/v1/public/yql?format=json&env=http://datatables.org/alltables.env&q=select symbol, LastTradePriceOnly, AskRealtime, BidRealtime, Change, DaysLow, DaysHigh, YearLow, YearHigh, ChangeinPercent, Change from yahoo.finance.quotes where symbol in ("' + stocks.stocks + '")';
+      stocks.path     = config.path     || '/v1/public/yql?format=json&env=http://datatables.org/alltables.env&q=SELECT * FROM data.html.cssselect WHERE url="http://finance.yahoo.com/quotes/' + stocks.stocks + '" AND css=".yfi-quotes-table tbody"';
       stocks.port     = config.port     || 443;
       stocks.method   = config.method   || 'GET';
       stocks.callback = config.callback || function () {};
@@ -146,21 +146,17 @@ module.exports = (function () {
                       if(dataReply) {
                         data = JSON.parse(dataReply);
 
-                        if(data && data.query && data.query.results && data.query.results.quote) {
-                          for(i in data.query.results.quote) {
-                            stock = data.query.results.quote[i];
+                        if(data && data.query && data.query.results && data.query.results.results && data.query.results.results.tbody && data.query.results.results.tbody.tr) {
+                          for(i in data.query.results.results.tbody.tr) {
+                            stock = data.query.results.results.tbody.tr[i];
 
-                            stockData[stock.symbol] = { 'name'             : stock.symbol,
-                                                        'price'            : stock.LastTradePriceOnly,
-                                                        'ask'              : stock.AskRealtime,
-                                                        'bid'              : stock.BidRealtime,
-                                                        'dayHigh'          : stock.DaysHigh,
-                                                        'dayLow'           : stock.DaysLow,
-                                                        'yearHigh'         : stock.YearHigh,
-                                                        'yearLow'          : stock.YearLow,
-                                                        'dayChangePercent' : stock.ChangeinPercent,
-                                                        'dayChangeValue'   : stock.Change
-                                                      };
+                            stockData[stock.td[0].span.a.content] = { 'name'             : stock.td[0].span.a.content,
+                                                                      'price'            : stock.td[2].span.span.content,
+                                                                      'dayChangeValue'   : stock.td[3].span.span.content,
+                                                                      'dayChangePercent' : stock.td[4].span.span.content,
+                                                                      'dayLow'           : stock.td[5].span.span.content,
+                                                                      'dayHigh'          : stock.td[6].span.span.content
+                                                                    };
                           }
                         }
 
