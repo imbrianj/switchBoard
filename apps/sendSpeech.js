@@ -25,22 +25,18 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview Simple script to fire when the given device executes a
- *               presumed good command.
+ * @fileoverview When a speech command is issued for a local text-to-speech, we
+ *               can also send a broadcast via WebSockets for all capable
+ *               clients to also read the message aloud.
  */
 
 module.exports = (function () {
   'use strict';
 
   return {
-    version : 20141115,
+    version : 20141128,
 
-    /**
-     * When a speech command is issued for a local text-to-speech, we can also
-     * send a broadcast via WebSockets for all capable clients to also read the
-     * message aloud.
-     */
-    fire : function(device, command, controllers) {
+    sendSpeech : function(device, command, controllers, values) {
       var notify = require(__dirname + '/../lib/notify');
 
       notify.sendSpeech(command.replace('text-', ''), controllers.config.language);

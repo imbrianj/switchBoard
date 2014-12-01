@@ -1,4 +1,4 @@
-/*global document, window, ActiveXObject, XMLHttpRequest, SB, Notification, SpeechSynthesisUtterance */
+/*global document, window, ActiveXObject, XMLHttpRequest, SB, Notification, SpeechSynthesisUtterance, webkitSpeechRecognition */
 /*jslint white: true, evil: true */
 /*jshint -W020 */
 
@@ -28,7 +28,7 @@ SB = (function () {
   'use strict';
 
   return {
-    version : 20141112,
+    version : 20141130,
 
    /**
     * Stops event bubbling further.
@@ -522,8 +522,9 @@ SB = (function () {
      * @param {String} string Phrase you'd like popped up in a notification box.
      * @param {Object} options
      */
-    notify : function (string, options) {
-      var notification;
+    notify : function (string, options, callback) {
+      var notification,
+          click;
 
       if(typeof Notification === 'function') {
         if(Notification.permission === 'granted') {
@@ -531,11 +532,16 @@ SB = (function () {
 
           setTimeout(function() {
             notification.close();
+            SB.event.remove(notification, 'click', click);
           }, 10000);
 
-          SB.event.add(notification, 'click', function(e) {
+          click = function(e) {
             window.focus();
-          });
+            callback(e);
+            SB.event.remove(notification, 'click', click);
+          };
+
+          SB.event.add(notification, 'click', click);
         }
 
         else {
@@ -568,6 +574,7 @@ SB = (function () {
      * using it.
      *
      * @param {String} string Phrase you'd like read aloud on the client.
+     * @param {String} lang Language code text is formatted in.
      */
     speak : function (string, lang) {
       var message;
@@ -582,6 +589,34 @@ SB = (function () {
 
       else {
         SB.log('Not supported', 'Speak', 'error');
+      }
+    },
+
+    /**
+     * Stupid wrapper to ensure your browser supports speech to text before
+     * using it.
+     *
+     * @param {Function} callback Callback function that will accept the
+     *         transcribed text and the confidence percentage.
+     */
+    transcribe : function (callback) {
+      var transcribe,
+          process;
+
+      if ('webkitSpeechRecognition' in window) {
+        transcribe = new webkitSpeechRecognition();
+
+        process = function(e) {
+          callback(e.results[0][0].transcript, e.results[0][0].confidence);
+
+          SB.event.remove(document, 'result', process);
+        };
+
+        SB.event.add(transcribe, 'result', process);
+      }
+
+      else {
+        SB.log('Not supported', 'Transcribe', 'error');
       }
     },
 

@@ -33,7 +33,7 @@ SB.spec = (function () {
   'use strict';
 
   return {
-    version : 20141112,
+    version : 20141130,
 
     state : {},
 
@@ -169,15 +169,14 @@ SB.spec = (function () {
     },
 
     /**
-     * If you have no connection indicator - or if it doesn't say we're
-     * connected, we should reconnect and grab the latest State.
+     * If you have no connection, we should reconnect and grab the latest State.
      */
     checkConnection : function () {
-      var connected = SB.spec.uiComponents.indicator && SB.hasClass(SB.spec.uiComponents.indicator, 'connected');
+      var connected = SB.spec.socket.readyState <= 1;
 
       if(!connected) {
         SB.spec.socketConnect();
-        connected = SB.spec.uiComponents.indicator && SB.hasClass(SB.spec.uiComponents.indicator, 'connected');
+        connected = SB.spec.socket.readyState <= 1;
       }
 
       return connected;
@@ -188,11 +187,16 @@ SB.spec = (function () {
      * connected, we should reconnect and grab the latest State.
      */
     socketConnect : function () {
+      var open,
+          message,
+          close,
+          cleanup;
+
       SB.log('Connecting', 'WebSocket', 'info');
 
       SB.spec.socket = new WebSocket('ws://' + window.location.host, 'echo-protocol');
 
-      SB.event.add(SB.spec.socket, 'open', function(e) {
+      open = function(e) {
         var reconnect = SB.spec.uiComponents.indicator.className === 'disconnected' ? true : false;
 
         SB.spec.uiComponents.indicator.className = 'connected';
@@ -205,19 +209,15 @@ SB.spec = (function () {
 
           SB.log('Reconnected', 'WebSocket', 'success');
         }
-      });
 
-      SB.event.add(SB.spec.socket, 'close', function(e) {
-        SB.spec.uiComponents.indicator.className = 'disconnected';
-        SB.putText(SB.spec.uiComponents.indicator, SB.spec.strings.DISCONNECTED);
+        SB.event.add(SB.spec.socket, 'close',   close);
+      };
 
-        SB.log('Disconnected', 'WebSocket', 'error');
-      });
-
-      SB.event.add(SB.spec.socket, 'message', function(e) {
+      message = function(e) {
         var message = SB.decode(e.data),
             device  = {},
-            notification;
+            notification,
+            notify;
 
         if(typeof message.speech === 'string') {
           if(message.speech) {
@@ -227,34 +227,32 @@ SB.spec = (function () {
 
         // If you have a title, you're a Desktop Notification.
         else if(typeof message.title === 'string') {
-          notification = SB.notify(message.title, message.options);
+          notify = function(e) {
+            var newContent,
+                selectNav,
+                selectContent;
 
-          if(notification) {
-            SB.event.add(notification, 'click', function(e) {
-              var newContent,
-                  selectNav,
-                  selectContent;
+            if(message.deviceId) {
+              newContent    = SB.get(message.deviceId);
+              selectNav     = SB.getByClass('selected', SB.spec.uiComponents.header, 'li')[0];
+              selectContent = SB.getByClass('selected', SB.spec.uiComponents.body,   'section')[0];
 
-              if(message.deviceId) {
-                newContent    = SB.get(message.deviceId);
-                selectNav     = SB.getByClass('selected', SB.spec.uiComponents.header, 'li')[0];
-                selectContent = SB.getByClass('selected', SB.spec.uiComponents.body,   'section')[0];
+              SB.removeClass(selectNav,     'selected');
+              SB.removeClass(selectContent, 'selected');
 
-                SB.removeClass(selectNav,     'selected');
-                SB.removeClass(selectContent, 'selected');
+              SB.spec.lazyLoad(message.deviceId);
 
-                SB.spec.lazyLoad(message.deviceId);
+              SB.addClass(SB.getByClass(message.deviceId, SB.spec.uiComponents.header, 'li')[0], 'selected');
+              SB.addClass(newContent, 'selected');
 
-                SB.addClass(SB.getByClass(message.deviceId, SB.spec.uiComponents.header, 'li')[0], 'selected');
-                SB.addClass(newContent, 'selected');
+              SB.spec.lazyUnLoad(selectContent);
+            }
+          };
 
-                SB.spec.lazyUnLoad(selectContent);
-              }
-            });
-          }
+          notification = SB.notify(message.title, message.options, notify);
         }
 
-        // If you havea  deviceId, you're an update to a controller state.
+        // If you have a deviceId, you're an update to a controller state.
         else if(typeof message.deviceId === 'string') {
           SB.spec.updateTemplate(message);
         }
@@ -276,7 +274,40 @@ SB.spec = (function () {
             SB.spec.uiComponents.templates = message;
           }
         }
-      });
+      };
+
+      close = function(e) {
+        var reconnect;
+
+        SB.event.remove(SB.spec.socket, 'close', close);
+
+        SB.spec.uiComponents.indicator.className = 'disconnected';
+        SB.putText(SB.spec.uiComponents.indicator, SB.spec.strings.DISCONNECTED);
+
+        reconnect = function(i) {
+          if(SB.spec.socket.readyState === 3) {
+            SB.spec.socketConnect();
+
+            setInterval(function() {
+              reconnect(i + 1);
+            }, 10000);
+          }
+        };
+
+        reconnect(0);
+
+        SB.log('Disconnected', 'WebSocket', 'error');
+      };
+
+      cleanup = function() {
+        SB.event.remove(SB.spec.socket, 'open',    open);
+        SB.event.remove(SB.spec.socket, 'message', message);
+        SB.event.remove(SB.spec.socket, 'close',   cleanup);
+      };
+
+      SB.event.add(SB.spec.socket, 'open',    open);
+      SB.event.add(SB.spec.socket, 'message', message);
+      SB.event.add(SB.spec.socket, 'close',   cleanup);
     },
 
     /**

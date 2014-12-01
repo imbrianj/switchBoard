@@ -25,15 +25,14 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview Simple script to fire when the given device executes a
- *               presumed good command.
+ * @fileoverview Announce when the camera is armed.
  */
 
 module.exports = (function () {
   'use strict';
 
   return {
-    version : 20140901,
+    version : 20141130,
 
     /**
      * When the foscam is armed or disarmed, we want to wait a very short time
@@ -43,23 +42,15 @@ module.exports = (function () {
      * If you have a speech controller set up, give a verbal confirmation that
      * the camera has been armed or disarmed.
      */
-    fire : function(device, command, controllers) {
+    announceFoscam : function(device, command, controllers, values) {
       var runCommand = require(__dirname + '/../lib/runCommand'),
           translate  = require(__dirname + '/../lib/translate'),
           message    = '',
           deviceId;
 
       if((command === 'ALARM_ON') || (command === 'ALARM_OFF')) {
-        // We want to grab the state from the source of truth (the actual
-        // device), but we need to wait a short time for it to register.
-        setTimeout(function() {
-            console.log('\x1b[35m' + controllers[device].config.title + '\x1b[0m: Fetching alarm state');
-
-            runCommand.runCommand(device, 'state', 'single', false);
-        }, 250);
-
         for(deviceId in controllers) {
-          if((deviceId !== 'config') && (controllers[deviceId].config.typeClass === 'speech')) {
+          if(deviceId !== 'config') {
             if(command === 'ALARM_ON') {
               message = translate.translate('{{i18n_CAMERA_ARMED}}', 'foscam', controllers.config.language);
             }
@@ -69,7 +60,6 @@ module.exports = (function () {
             }
 
             runCommand.runCommand(deviceId, 'text-' + message);
-            break;
           }
         }
       }

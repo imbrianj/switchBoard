@@ -2,12 +2,12 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
-    banner : { comment : '/* <%= grunt.template.today("yyyymmdd") %> */\n' },
+    banner  : { comment : '/* <%= grunt.template.today("yyyymmdd") %> */\n' },
 
-    jsFiles : ['config/*.js', 'lib/*.js', 'controllers/*.js', 'parsers/*.js', 'events/*.js', 'js/common.js', 'js/switchBoard.js', 'lang/*.js', 'tests/**/*Test.js', 'app.js'],
+    jsFiles : ['config/*.js', 'apps/*.js', 'controllers/*.js', 'lib/*.js', 'parsers/*.js', 'pollers/*.js', 'js/common.js', 'js/switchBoard.js', 'lang/*.js', 'tests/**/*Test.js', 'app.js'],
 
-    jshint : {
-      files : '<%= jsFiles %>',
+    jshint  : {
+      files   : '<%= jsFiles %>',
       options : {
         undef    : true,
         eqnull   : true,
@@ -20,6 +20,7 @@ module.exports = function(grunt) {
         bitwise  : true,
         strict   : true,
         nonew    : true,
+        newcap   : false,
         globals  : {
           console     : true,
           State       : true,
@@ -49,12 +50,12 @@ module.exports = function(grunt) {
 
     uglify : {
       options : { banner : '<%= banner.comment %>' },
-      dist : { files : { 'js/common.min.js' : ['js/common.js', 'js/switchBoard.js', 'parsers/*', 'lib/sharedUtil.js'] } }
+      dist    : { files : { 'js/common.min.js' : ['js/common.js', 'js/switchBoard.js', 'parsers/*', 'lib/sharedUtil.js'] } }
     },
 
     concat: {
       css: {
-        src : ['css/common.css', 'css/font-awesome.css'],
+        src  : ['css/common.css', 'css/font-awesome.css'],
         dest : 'css/combo.min.css'
       }
     },
@@ -62,7 +63,7 @@ module.exports = function(grunt) {
     cssmin : {
       options : { banner : '<%= banner.comment %>' },
       css : {
-        src : 'css/combo.min.css',
+        src  : 'css/combo.min.css',
         dest : 'css/combo.min.css'
       }
     },

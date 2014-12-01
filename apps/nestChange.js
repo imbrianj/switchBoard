@@ -25,45 +25,27 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview Simple script to fire on interval.
+ * @fileoverview When a command is issued to the Nest, we'll want to wait a
+ *               short while, then explicitly grab the state from the API to
+ *               ensure the state is correct.
  */
 
 module.exports = (function () {
   'use strict';
 
   return {
-    version : 20140826,
+    version : 20141130,
 
-    /**
-     * Gets called from lib/schedule and calls the appropriate methods from
-     * controllers at the intervals expected.  For long intervals, they will
-     * "poll", for short intervals, they will grab "state".
-     */
-    fire : function(controllers, type) {
-      var runCommand = require(__dirname + '/../lib/runCommand'),
-          deviceId;
+    nestChange : function(device, command, controllers, values) {
+      var runCommand = require(__dirname + '/../lib/runCommand');
 
-      for(deviceId in controllers) {
-        if(deviceId !== 'config') {
-          // If the long poller fired this, we'll only run for controllers that
-          // have "poll".
-          if(type === 'long') {
-            if((controllers[deviceId].controller) && (controllers[deviceId].controller.inputs.indexOf('poll') !== -1)) {
-              runCommand.runCommand(deviceId, 'poll', 'single', false);
-            }
-          }
-
-          // If the short poller fired this, we'll only run for controllers that
-          // have "state".
-          else if(type === 'short') {
-            if((controllers[deviceId].controller) && (controllers[deviceId].controller.inputs.indexOf('state') !== -1)) {
-              runCommand.runCommand(deviceId, 'state', 'single', false);
-            }
-          }
-        }
+      if(command !== 'LIST') {
+        // We want to grab the state from the source of truth (the actual
+        // API), but we need to wait a short time for it to register.
+        setTimeout(function() {
+            runCommand.runCommand(device, 'list', device, false);
+        }, 1000);
       }
-
-      return true;
     }
   };
 }());

@@ -29,10 +29,10 @@
  */
 
 exports.scheduleTest = {
-  getDirectory : function (test) {
+  fire : function (test) {
     'use strict';
 
-    var schedule   = require(__dirname + '/../../../events/schedule'),
+    var schedule   = require(__dirname + '/../../../lib/schedule'),
         controller = { weather : { config : { typeClass : 'weather' },
                                    event  : { fire : function(deviceType, source, controllers) {
                                                        console.log('This should print');

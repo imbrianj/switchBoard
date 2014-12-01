@@ -147,9 +147,10 @@ exports.smartthingsControllerTest = {
                                  peripheral : { temp: 72 } } } };
 
     var smartthingsController = require(__dirname + '/../../../controllers/smartthings'),
+        callback              = function(err, state) { State.FOO.value = state; },
         smartthings           = { device : { deviceId : 'FOO' } },
-        switchState           = smartthingsController.getDevicePath('state-switch-Test Switch-on', smartthings),
-        contactState          = smartthingsController.getDevicePath('state-contact-Test Door-on', smartthings);
+        switchState           = smartthingsController.getDevicePath('state-switch-Test Switch-on', smartthings, callback),
+        contactState          = smartthingsController.getDevicePath('state-contact-Test Door-on',  smartthings, callback);
 
     test.strictEqual(State.FOO.value.devices[0].state, 'on', 'The first device should now be on');
     test.strictEqual(State.FOO.value.devices[1].state, 'on', 'The second device should now be open');

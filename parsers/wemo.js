@@ -107,7 +107,7 @@
         };
 
     if((value) && (value.devices)) {
-      // You want to display SmartThings devices in groups.
+      // You want to display Wemo devices in groups.
       if(value.groups) {
         for(i in value.groups) {
           tempMarkup      = tempMarkup + templateGroup;

@@ -32,29 +32,17 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20140901,
+    version : 20141130,
 
     /**
-     * On poll, check the Travis build state.  If the latest build is failing,
-     * send a Desktop Notification.  As build failures are not always terrible
-     * (such as a pending pull request), we don't want to send an annoying
-     * notification via SMS, push or text.
+     * On long interval, poll the SmartThings API just to sync state.  This is
+     * largely unnecessary, as state is sent through normal use via API
+     * callbacks, but this will ensure things are current.
      */
-    poll : function(deviceId, command, controllers) {
-      var runCommand = require(__dirname + '/../lib/runCommand'),
-          translate  = require(__dirname + '/../lib/translate'),
-          notify,
-          callback;
+    poll : function(deviceId, controllers) {
+      var runCommand  = require(__dirname + '/../lib/runCommand');
 
-      callback = function(err, travis) {
-        if((travis) && (travis[0]) && (travis[0].state === 'finished') && (travis[0].status === 'err')) {
-          notify = require(__dirname + '/../lib/notify');
-
-          notify.sendNotification(null, translate.translate('{{i18n_BUILD_FAILURE}}', 'travis', controllers.config.language), deviceId);
-        }
-      };
-
-      runCommand.runCommand(deviceId, 'list', deviceId, false, callback);
+      runCommand.runCommand(deviceId, 'list', deviceId);
     }
   };
 }());

@@ -110,6 +110,7 @@ exports.config = {
     title          : 'Speech',
     voice          : 'female',
     disabledMarkup : false,
+    apps           : { 'Send' : { id : 'sendSpeech' } },
     disabled       : true
   },
 
@@ -124,9 +125,8 @@ exports.config = {
     // stock prices to be notified of.
     limits    : { YHOO : { buy : 30,  sell : 55 },
                   TSLA : { buy : 200, sell : 350 } },
-    // Means by which you should be notified (if the controllers for each are
-    // properly configured).
-    notify    : ['pushover', 'twilio', 'speech', 'mp3'],
+    apps      : { 'Notify' : { id            : 'announceStocks',
+                               controllerIds : ['pushover', 'sms', 'speech', 'mp3'] } },
     disabled  : true
   },
 
@@ -156,6 +156,8 @@ exports.config = {
     username  : 'user',
     password  : 'password',
     power     : 6,
+    apps      : { 'Announce' : { id            : 'announceFoscam',
+                                 controllerIds : ['speech'] } },
     disabled  : true
   },
 
@@ -244,7 +246,7 @@ exports.config = {
     // be the same name as you give them in SmartThings.
     groups         : { 'Bedroom'          : ['Bedroom Lamps', 'Bedroom Switch'],
                        'Office'           : ['Office Switch'],
-                       'Hallway'          : ['Hall Light'],
+                       'Hallway'          : ['Hall Light', 'Front Door'],
                        'Living Room'      : ['Living Room Lamp', 'Chandelier'],
                        'Kitchen'          : ['Kitchen Light', 'Dining Lights'] },
     power          : { 'Bedroom Lamps'    : 30,
@@ -254,6 +256,10 @@ exports.config = {
                        'Chandelier'       : 120,
                        'Kitchen Light'    : 30,
                        'Dining Lights'    : 120 },
+    apps           : { 'Announce'         : { id            : 'announcePresence',
+                                              presence      : ['Brian', 'Goblin'],
+                                              controllerIds : ['speech'] }
+                     },
     disabledMarkup : false,
     disabled       : true
   },
@@ -263,9 +269,10 @@ exports.config = {
     title     : 'Nest',
     username  : 'user@example.com',
     password  : 'password',
-    // Notifications are for Nest Protect alarms.
-    notify    : ['pushover', 'twilio', 'speech'],
-    power     : { 'Living Room' : 3000 },
+    power     : { 'Living Room'   : 3000 },
+    apps      : { 'Protect Alarm' : { id            : 'announceNest',
+                                      controllerIds : ['pushover', 'sms', 'speech'] }
+                },
     disabled  : true
   },
 
@@ -274,6 +281,7 @@ exports.config = {
     title          : 'Travis',
     travisOwner    : 'imbrianj',
     travisRepo     : 'switchBoard',
+    apps           : { 'Announce' : { id : 'announceTravis' } },
     disabledMarkup : true,
     disabled       : true
   },
@@ -322,7 +330,7 @@ exports.config = {
     // You may group your devices together for display by using the group name
     // you'd like shown as the object name.  Devices within that group should
     // be the same name as you give them in as subdevices above.
-    groups     : { 'Office' : ['Desk Lamp', 'Fan'] },
+    groups     : { 'Office'    : ['Desk Lamp', 'Fan'] },
     power      : { 'Desk Lamp' : 15,
                    'Fan'       : 20 },
     disabled   : true

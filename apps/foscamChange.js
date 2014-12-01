@@ -25,24 +25,28 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview Simple script to fire for each scheduled interval.
+ * @fileoverview When the foscam is armed or disarmed, we want to wait a very
+ *               short time to allow the new setting to be registered on the
+ *               device - then grab the new state instead of waiting for the
+ *               next scheduled state.
  */
 
 module.exports = (function () {
   'use strict';
 
   return {
-    version : 20140816,
+    version : 20141130,
 
-    /**
-     * On long interval, poll the Yahoo Weather API for the latest report.
-     */
-    poll : function(deviceId, command, controllers) {
-      var runCommand  = require(__dirname + '/../lib/runCommand'),
-          deviceState = require(__dirname + '/../lib/deviceState'),
-          controller  = controllers[deviceId];
+    nestChange : function(device, command, controllers, values) {
+      var runCommand = require(__dirname + '/../lib/runCommand');
 
-      runCommand.runCommand(deviceId, 'list', deviceId);
+      // We want to grab the state from the source of truth (the actual
+      // device), but we need to wait a short time for it to register.
+      setTimeout(function() {
+          console.log('\x1b[35m' + controllers[device].config.title + '\x1b[0m: Fetching alarm state');
+
+          runCommand.runCommand(device, 'state', 'single', false);
+      }, 250);
     }
   };
 }());

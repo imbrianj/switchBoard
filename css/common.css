@@ -369,7 +369,7 @@ header #indicator {
 	border-radius: 50%;
 	height: 1.5em;
 	overflow: hidden;
-	position: absolute;
+	position: fixed;
 	right: .5em;
 	text-indent: -999px;
 	top: .5em;

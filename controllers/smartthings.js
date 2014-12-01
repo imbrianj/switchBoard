@@ -160,7 +160,7 @@ module.exports = (function () {
 
     /**
      * When we get a full API response from SmartThings (during every poll and
-     * every SwitchBoard commadn), we'll parse through it and set the new state
+     * every SwitchBoard command), we'll parse through it and set the new state
      * of the world.
      */
     updateState : function (smartthings, response) {
@@ -288,7 +288,7 @@ module.exports = (function () {
      * request and determine which device has changed to which state based on
      * the device path provided.
      */
-    getDevicePath : function(command, config) {
+    getDevicePath : function(command, config, callback) {
       var deviceState      = require(__dirname + '/../lib/deviceState'),
           smartThingsState = deviceState.getDeviceState(config.device.deviceId),
           subDevices       = {},
@@ -330,7 +330,7 @@ module.exports = (function () {
       else if(command.indexOf('state-mode-') === 0) {
         command = command.replace('state-mode-', '');
 
-        deviceState.updateState(config.device.deviceId, 'smartthings', { state : 'ok', value : { devices : subDevices, mode : command, groups : config.device.groups } });
+        callback(null, { devices : subDevices, mode : smartThingsState.value.mode, groups : config.device.groups });
       }
 
       else if(command.indexOf('state-switch-') === 0) {
@@ -387,7 +387,7 @@ module.exports = (function () {
                 subDevices[i].state = value;
               }
 
-              deviceState.updateState(config.device.deviceId, 'smartthings', { state : 'ok', value : { devices : subDevices, mode : smartThingsState.value.mode, groups : config.device.groups } });
+              callback(null, { devices : subDevices, mode : smartThingsState.value.mode, groups : config.device.groups });
             }
           }
         }
@@ -414,7 +414,7 @@ module.exports = (function () {
               subDevices[i].state = value;
             }
 
-            deviceState.updateState(config.device.deviceId, 'smartthings', { state : 'ok', value : { devices : subDevices, mode : smartThingsState.value.mode, groups : config.device.groups } });
+            callback(null, { devices : subDevices, mode : smartThingsState.value.mode, groups : config.device.groups });
           }
         }
       }
@@ -539,7 +539,7 @@ module.exports = (function () {
         }
 
         if(smartthings.command) {
-          request.path = this.getDevicePath(smartthings.command, config);
+          request.path = this.getDevicePath(smartthings.command, config, smartthings.callback);
         }
 
         if(smartthings.list) {
