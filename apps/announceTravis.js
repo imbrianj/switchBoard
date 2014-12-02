@@ -35,9 +35,9 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20141128,
+    version : 20141201,
 
-    announceTravis : function(device, command, controllers, values) {
+    announceTravis : function(device, command, controllers, values, config) {
       var notify,
           translate;
 

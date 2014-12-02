@@ -42,7 +42,7 @@ module.exports = (function () {
     poll : function(deviceId, controllers) {
       var runCommand  = require(__dirname + '/../lib/runCommand');
 
-      runCommand.runCommand(deviceId, 'list', deviceId);
+      runCommand.runCommand(deviceId, 'list');
     }
   };
 }());

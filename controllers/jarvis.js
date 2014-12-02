@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global State, module, require, console */
+/*global module, require, console */
 
 /**
  * Copyright (c) 2014 brian@bevey.org
@@ -23,23 +23,27 @@
  * IN THE SOFTWARE.
  */
 
-/**
- * @author brian@bevey.org
- * @fileoverview When a speech command is issued for a local text-to-speech, we
- *               can also send a broadcast via WebSockets for all capable
- *               clients to also read the message aloud.
- */
-
 module.exports = (function () {
   'use strict';
 
+  /**
+   * @author brian@bevey.org
+   * @fileoverview Fake controller for Jarvis.  This basically just runs the
+   *               callback, which will include apps to do a number of simple
+   *               tasks.
+   */
   return {
     version : 20141201,
 
-    sendSpeech : function(device, command, controllers, values, config) {
-      var notify = require(__dirname + '/../lib/notify');
+    inputs  : ['text'],
 
-      notify.sendSpeech(command.replace('text-', ''), controllers.config.language);
+    send : function (config) {
+      var jarvis;
+
+      jarvis.text     = config.text     || '';
+      jarvis.callback = config.callback || function () {};
+
+      jarvis.callback(null, 'ok');
     }
   };
 }());

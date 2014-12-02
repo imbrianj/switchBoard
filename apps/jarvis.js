@@ -25,9 +25,7 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview When a speech command is issued for a local text-to-speech, we
- *               can also send a broadcast via WebSockets for all capable
- *               clients to also read the message aloud.
+ * @fileoverview Execute Jarvis commands.
  */
 
 module.exports = (function () {
@@ -36,10 +34,13 @@ module.exports = (function () {
   return {
     version : 20141201,
 
-    sendSpeech : function(device, command, controllers, values, config) {
-      var notify = require(__dirname + '/../lib/notify');
+    jarvis : function(device, command, controllers, values, config) {
+      var runCommand = require(__dirname + '/../lib/runCommand'),
+          translate  = require(__dirname + '/../lib/translate'),
+          message    = '',
+          value,
+          deviceId;
 
-      notify.sendSpeech(command.replace('text-', ''), controllers.config.language);
     }
   };
 }());

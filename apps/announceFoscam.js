@@ -32,17 +32,9 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20141130,
+    version : 20141201,
 
-    /**
-     * When the foscam is armed or disarmed, we want to wait a very short time
-     * to allow the new setting to be registered on the device - then grab the
-     * new state instead of waiting for the next scheduled state.
-     *
-     * If you have a speech controller set up, give a verbal confirmation that
-     * the camera has been armed or disarmed.
-     */
-    announceFoscam : function(device, command, controllers, values) {
+    announceFoscam : function(device, command, controllers, values, config) {
       var runCommand = require(__dirname + '/../lib/runCommand'),
           translate  = require(__dirname + '/../lib/translate'),
           message    = '',

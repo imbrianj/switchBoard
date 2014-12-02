@@ -10,7 +10,7 @@ exports.config = {
     language     : 'en',
     default      : 'welcome',
     macroPause   : 1000,
-    pollMinutes  : 15,
+    pollMinutes  : 5,
     pollSeconds  : 15,
     localTimeout : 1000
   },
@@ -109,8 +109,8 @@ exports.config = {
     typeClass      : 'speech',
     title          : 'Speech',
     voice          : 'female',
-    disabledMarkup : false,
     apps           : { 'Send' : { id : 'sendSpeech' } },
+    disabledMarkup : false,
     disabled       : true
   },
 
@@ -123,10 +123,10 @@ exports.config = {
     stocks    : ['YHOO', 'AAPL', 'GOOG', 'TSLA'],
     // Not to be considered investment advice, but this shows how you can set
     // stock prices to be notified of.
-    limits    : { YHOO : { buy : 30,  sell : 55 },
-                  TSLA : { buy : 200, sell : 350 } },
     apps      : { 'Notify' : { id            : 'announceStocks',
-                               controllerIds : ['pushover', 'sms', 'speech', 'mp3'] } },
+                               limits        : { YHOO : { buy : 30,  sell : 55 },
+                                                 TSLA : { buy : 200, sell : 350 } },
+                               controllerIds : ['pushover', 'speech', 'mp3'] } },
     disabled  : true
   },
 
@@ -270,7 +270,11 @@ exports.config = {
     username  : 'user@example.com',
     password  : 'password',
     power     : { 'Living Room'   : 3000 },
-    apps      : { 'Protect Alarm' : { id            : 'announceNest',
+    apps      : { 'Window Open'   : { id            : 'windowOpen',
+                                      thermostats   : ['Living Room'],
+                                      controllerIds : ['smartthings'],
+                                      contact       : ['Balcony Door', 'Office Window', 'Bedroom Window', 'Dining Room Window', 'Living Room Window'] },
+                  'Protect Alarm' : { id            : 'announceNest',
                                       controllerIds : ['pushover', 'sms', 'speech'] }
                 },
     disabled  : true
@@ -334,5 +338,13 @@ exports.config = {
     power      : { 'Desk Lamp' : 15,
                    'Fan'       : 20 },
     disabled   : true
+  },
+
+  jarvis : {
+    typeClass : 'jarvis',
+    title     : 'Jarvis',
+    apps      : { 'Jarvis' : { id            : 'jarvis',
+                               controllerIds : ['samsung', 'roku', 'ps3', 'panasonic', 'lg', 'pioneer', 'denon', 'speech', 'stocks', 'weather', 'foscam', 'mp3', 'sms', 'pushover', 'smartthings', 'nest', 'switchBoardCI', 'xbmc', 'raspberryRemote', 'wemo'] } },
+    disabled  : true
   }
 };

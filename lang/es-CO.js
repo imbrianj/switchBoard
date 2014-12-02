@@ -210,6 +210,9 @@ module.exports = (function () {
           PRESET          : "Configurar",
           TAKE            : "Tomar"
         },
+        jarvis : {
+          JARVIS : "Jarvis"
+        },
         lg : {
           LG       : "LG",
           EXTERNAL : "Externo",

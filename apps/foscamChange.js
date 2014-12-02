@@ -35,9 +35,9 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20141130,
+    version : 20141201,
 
-    nestChange : function(device, command, controllers, values) {
+    nestChange : function(device, command, controllers, values, config) {
       var runCommand = require(__dirname + '/../lib/runCommand');
 
       // We want to grab the state from the source of truth (the actual

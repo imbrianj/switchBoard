@@ -32,9 +32,9 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20141128,
+    version : 20141201,
 
-    announcePresence : function(device, command, controllers, values) {
+    announcePresence : function(device, command, controllers, values, config) {
       var runCommand = require(__dirname + '/../lib/runCommand'),
           translate  = require(__dirname + '/../lib/translate'),
           message    = '',

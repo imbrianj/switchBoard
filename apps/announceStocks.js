@@ -33,32 +33,30 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20141128,
+    version : 20141201,
 
-    announceStocks : function(device, command, controllers, values) {
+    announceStocks : function(device, command, controllers, values, config) {
       var deviceState = require(__dirname + '/../lib/deviceState'),
           translate   = require(__dirname + '/../lib/translate'),
           runCommand  = require(__dirname + '/../lib/runCommand'),
           controller  = controllers[device],
+          message     = '',
           stockName,
-          message,
           notify,
           deviceId;
 
-      deviceState.updateState(device, 'stocks', { state : 'ok', value : values.stocks });
-
-      if((controller.config.limits) && (values.stocks)) {
-        for(stockName in controller.config.limits) {
-          if((typeof controller.config.limits[stockName].sell !== 'undefined') && (values.stocks[stockName]) && (values.stocks[stockName].price >= controller.config.limits[stockName].sell)) {
-            message = message + translate.translate('{{i18n_SELL}}', 'stocks', controllers.config.language).replace('{{LABEL}}', values.stocks[stockName].name).replace('{{PRICE}}', values.stocks[stockName].price) + ' ';
+      if((config.limits) && (values.value)) {
+        for(stockName in config.limits) {
+          if((typeof config.limits[stockName].sell !== 'undefined') && (values.value[stockName]) && (values.value[stockName].price >= config.limits[stockName].sell)) {
+            message = message + translate.translate('{{i18n_SELL}}', 'stocks', controllers.config.language).replace('{{LABEL}}', values.value[stockName].name).replace('{{PRICE}}', values.value[stockName].price) + ' ';
           }
 
-          else if((typeof controller.config.limits[stockName].buy !== 'undefined') && (values.stocks[stockName]) && (values.stocks[stockName].price <= controller.config.limits[stockName].buy)) {
-            message = message + translate.translate('{{i18n_BUY}}', 'stocks', controllers.config.language).replace('{{LABEL}}', values.stocks[stockName].name).replace('{{PRICE}}', values.stocks[stockName].price) + ' ';
+          else if((typeof config.limits[stockName].buy !== 'undefined') && (values.value[stockName]) && (values.value[stockName].price <= config.limits[stockName].buy)) {
+            message = message + translate.translate('{{i18n_BUY}}', 'stocks', controllers.config.language).replace('{{LABEL}}', values.value[stockName].name).replace('{{PRICE}}', values.value[stockName].price) + ' ';
           }
 
-          else if(values.stocks[stockName]){
-            console.log('\x1b[35mSchedule\x1b[0m: ' + values.stocks[stockName].name + ' is at ' + values.stocks[stockName].price + ' - within range');
+          else if(values.value[stockName]){
+            console.log('\x1b[35mSchedule\x1b[0m: ' + values.value[stockName].name + ' is at ' + values.value[stockName].price + ' - within range');
           }
 
           else {
@@ -67,7 +65,7 @@ module.exports = (function () {
         }
       }
 
-      if((message) && (controller.config.notify)) {
+      if(message) {
         console.log('\x1b[35mSchedule\x1b[0m: ' + message);
 
         notify = require(__dirname + '/../lib/notify');
@@ -75,13 +73,13 @@ module.exports = (function () {
         notify.sendNotification(null, message, device);
 
         for(deviceId in controllers) {
-          if(deviceId !== 'config') {
+          if((deviceId !== 'config') && (deviceId !== device)) {
             if(controllers[deviceId].typeClass === 'mp3') {
-              runCommand.runCommand(deviceId, 'text-cash', 'single', false);
+              runCommand.runCommand(deviceId, 'text-cash');
             }
 
             else {
-              runCommand.runCommand(deviceId, 'text-' + message, 'single', false);
+              runCommand.runCommand(deviceId, 'text-' + message);
             }
           }
         }

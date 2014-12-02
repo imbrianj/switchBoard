@@ -41,7 +41,7 @@ module.exports = (function () {
       var runCommand = require(__dirname + '/../lib/runCommand');
 
       if(controllers[deviceId].controller.stocksOpen({ device : { deviceId : deviceId, title : controllers[deviceId].config.title } })) {
-        runCommand.runCommand(deviceId, 'list', deviceId);
+        runCommand.runCommand(deviceId, 'list');
       }
     }
   };
