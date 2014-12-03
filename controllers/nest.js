@@ -218,7 +218,7 @@ module.exports = (function () {
             auth.expire = new Date(response.expires_in).getTime();
             controller.config.auth = auth;
 
-            cache = fs.createWriteStream(__dirname + '/../tmp/nestAuth.json');
+            cache = fs.createWriteStream(__dirname + '/../cache/nestAuth.json');
             cache.once('open', function() {
               console.log('\x1b[35m' + controller.config.title + '\x1b[0m: Auth data cached with URL');
 
@@ -419,10 +419,10 @@ module.exports = (function () {
           expired = true;
 
       if(typeof controller.config.username !== 'undefined' && controller.config.password !== 'undefined') {
-        fs.exists(__dirname + '/../tmp/nestAuth.json', function(fileExists) {
+        fs.exists(__dirname + '/../cache/nestAuth.json', function(fileExists) {
           // If we have a presumed good auth token, we can populate the device list.
           if(fileExists) {
-            fs.readFile(__dirname + '/../tmp/nestAuth.json', function(err, auth) {
+            fs.readFile(__dirname + '/../cache/nestAuth.json', function(err, auth) {
               var runCommand  = require(__dirname + '/../lib/runCommand');
 
               if(auth.toString()) {
@@ -511,9 +511,9 @@ module.exports = (function () {
               nestData = JSON.parse(dataReply);
 
               if(nestData.cmd === 'REINIT_STATE') {
-                fs.exists('tmp/nestAuth.json', function(exists) {
+                fs.exists('cache/nestAuth.json', function(exists) {
                   if(exists) {
-                    fs.unlink('tmp/nestAuth.json', function(err) {
+                    fs.unlink('cache/nestAuth.json', function(err) {
                       if(err) {
                         nest.callback('Failed to remove expired auth');
                       }

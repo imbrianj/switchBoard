@@ -101,11 +101,33 @@ module.exports = function(grunt) {
     }
   });
 
+  grunt.registerTask('freshenManifest', function() {
+    var fs           = require('fs'),
+        done         = this.async();
+        rawManifest  = fs.readFileSync(__dirname + '/cache.manifest').toString(),
+        parts        = rawManifest.split("\n"),
+        now          = new Date(),
+        dateStamp    = now.toISOString().slice(0, 10).replace(/-/g, ""),
+        manifest     = rawManifest,
+        manifestFile = fs.createWriteStream(__dirname + '/cache.manifest');
+
+    parts[1] = '#' + dateStamp;
+
+    manifest = parts.join("\n");
+
+    manifestFile.write(manifest);
+    manifestFile.end();
+
+    console.log('Updated cache manifest');
+
+    done();
+  });
+
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.registerTask('default', ['concat', 'cssmin', 'jshint', 'nodeunit', 'uglify', 'translation']);
+  grunt.registerTask('default', ['concat', 'cssmin', 'jshint', 'nodeunit', 'uglify', 'translation', 'freshenManifest']);
 };

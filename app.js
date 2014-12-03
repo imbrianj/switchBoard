@@ -63,7 +63,7 @@ if(controllers) {
   server = http.createServer(function(request, response) {
     'use strict';
 
-    // Some commands can be accepted via POST - such as text inputs.
+    // Accept commands via POST as well.
     if(request.method === 'POST') {
       console.log('\x1b[36mPOST command received\x1b[0m');
 

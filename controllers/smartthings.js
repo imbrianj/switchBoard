@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic control of SmartThings endpoint.
    */
   return {
-    version : 20140813,
+    version : 20141202,
 
     inputs  : ['list', 'subdevice'],
 
@@ -128,7 +128,7 @@ module.exports = (function () {
 
             controller.config.auth = auth;
 
-            cache = fs.createWriteStream(__dirname + '/../tmp/smartthingsAuth.json');
+            cache = fs.createWriteStream(__dirname + '/../cache/smartthingsAuth.json');
 
             cache.once('open', function() {
               console.log('\x1b[35m' + controller.config.title + '\x1b[0m: Auth data cached with URL');
@@ -467,10 +467,10 @@ module.exports = (function () {
           groups = config.groups || {};
 
       if(typeof controller.config.clientId !== 'undefined' && controller.config.clientSecret !== 'undefined') {
-        fs.exists(__dirname + '/../tmp/smartthingsAuth.json', function(fileExists) {
+        fs.exists(__dirname + '/../cache/smartthingsAuth.json', function(fileExists) {
           // If we have a presumed good auth token, we can populate the device list.
           if(fileExists) {
-            fs.readFile(__dirname + '/../tmp/smartthingsAuth.json', function(err, auth) {
+            fs.readFile(__dirname + '/../cache/smartthingsAuth.json', function(err, auth) {
               var runCommand  = require(__dirname + '/../lib/runCommand');
 
               if(auth.toString()) {
