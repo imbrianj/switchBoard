@@ -329,6 +329,54 @@ form legend {
 	display: none;
 }
 
+@-moz-keyframes breath {
+	0% {
+		-moz-box-shadow: none;
+		box-shadow: none;
+	}
+
+	50% {
+		-moz-box-shadow: 0 0 15px 5px #286EA0;
+		box-shadow: 0 0 15px 5px #286EA0;
+	}
+
+	100% {
+		-moz-box-shadow: none;
+		box-shadow: none;
+	}
+}
+
+@-webkit-keyframes breath {
+	0% {
+		-webkit-box-shadow: none;
+		box-shadow: none;
+	}
+
+	50% {
+		-webkit-box-shadow: 0 0 15px 5px #286EA0;
+		box-shadow: 0 0 15px 5px #286EA0;
+	}
+
+	100% {
+		-webkit-box-shadow: none;
+		box-shadow: none;
+	}
+}
+
+@keyframes breath {
+	0% {
+		box-shadow: none;
+	}
+
+	50% {
+		box-shadow: 0 0 15px 5px #286EA0;
+	}
+
+	100% {
+		box-shadow: none;
+	}
+}
+
 header {
 	border-bottom: 1px solid #DDD;
 	clear: both;
@@ -379,6 +427,15 @@ header #indicator {
 header .disconnected {
 	background: #F00;
 	cursor: pointer;
+	-moz-animation-duration: 6s;
+	-moz-animation-iteration-count: infinite;
+	-moz-animation-name: breath;
+	-webkit-animation-duration: 6s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-name: breath;
+	animation-duration: 6s;
+	animation-iteration-count: infinite;
+	animation-name: breath;
 }
 
 header .connecting {

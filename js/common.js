@@ -28,7 +28,7 @@ SB = (function () {
   'use strict';
 
   return {
-    version : 20141130,
+    version : 20141203,
 
    /**
     * Stops event bubbling further.
@@ -208,7 +208,13 @@ SB = (function () {
     * @param {String} className Class name being checked.
     */
     hasClass : function (elm, className) {
-      return SB.hasAttribute(elm, 'className', className) ? true : false;
+      var hasClass = false;
+
+      if((elm) && (elm.className)) {
+        hasClass = SB.hasAttribute(elm, 'className', className) ? true : false;
+      }
+
+      return hasClass;
     },
 
    /**
@@ -219,8 +225,10 @@ SB = (function () {
     * @param {String} className Class name to be applied.
     */
     addClass : function (elm, className) {
-      if (!SB.hasClass(elm, className)) {
-        elm.className = SB.trim(elm.className + ' ' + className);
+      if((elm) && (className)) {
+        if (!SB.hasClass(elm, className)) {
+          elm.className = SB.trim(elm.className + ' ' + className);
+        }
       }
     },
 

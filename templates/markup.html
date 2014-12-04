@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{i18n_LANGUAGE}}" xmlns="http://www.w3.org/1999/html" class="theme-{{THEME}}" manifest="/cache.manifest">
+<html lang="{{i18n_LANGUAGE}}" xmlns="http://www.w3.org/1999/html" class="theme-{{THEME}}"{{APP_CACHING}}>
   <head>
     <title>{{i18n_APPNAME}}</title>
     <link rel="stylesheet" href="css/combo.min.css" />
@@ -30,6 +30,6 @@
     <main data-string-on="{{i18n_ON}}" data-string-off="{{i18n_OFF}}" data-string-active="{{i18n_ACTIVE}}" data-string-inactive="{{i18n_INACTIVE}}">
       {{DEVICE_INTERFACES}}
     </main>
-    <script type="text/javascript" src="js/common.min.js"></script>
+    <script type="text/javascript" src="js/combo.min.js"></script>
   </body>
 </html>

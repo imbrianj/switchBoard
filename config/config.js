@@ -6,6 +6,8 @@ exports.config = {
     serverPort   : 8080,
     serverIp     : '192.168.1.145',
     serverMac    : '00:00:00:00:00:00',
+    appCaching   : true,
+    delegate     : ['jarvis'],
     theme        : 'dark',
     language     : 'en',
     default      : 'welcome',

@@ -79,7 +79,7 @@ SB.spec = (function () {
         selected     = SB.hasClass(node, 'selected') ? ' selected' : '';
         oldMarkup    = node.cloneNode(true);
         deviceHeader = SB.getByTag('h1', oldMarkup)[0];
-        oldMarkup.removeChild(deviceHeader);
+        deviceHeader.parentNode.removeChild(deviceHeader);
         oldMarkup    = oldMarkup.innerHTML;
 
         if(parser) {
@@ -131,7 +131,8 @@ SB.spec = (function () {
         if(markup) {
           innerMarkup.innerHTML = markup;
           innerMarkup = SB.getByTag('section', innerMarkup)[0];
-          innerMarkup.removeChild(SB.getByTag('h1', innerMarkup)[0]);
+          deviceHeader = SB.getByTag('h1', innerMarkup)[0];
+          deviceHeader.parentNode.removeChild(deviceHeader);
 
           if(innerMarkup.innerHTML !== oldMarkup) {
             if(SB.getByClass('sliderBar', node, 'div')[0]) {
@@ -187,14 +188,25 @@ SB.spec = (function () {
      * connected, we should reconnect and grab the latest State.
      */
     socketConnect : function () {
-      var open,
+      var reconnect,
+          open,
           message,
+          error,
           close,
           cleanup;
 
       SB.log('Connecting', 'WebSocket', 'info');
 
       SB.spec.socket = new WebSocket('ws://' + window.location.host, 'echo-protocol');
+
+      reconnect = function(type) {
+        SB.spec.uiComponents.indicator.className = 'disconnected';
+        SB.putText(SB.spec.uiComponents.indicator, SB.spec.strings.DISCONNECTED);
+
+        setTimeout(function() {
+          SB.spec.socketConnect();
+        }, 10000);
+      };
 
       open = function(e) {
         var reconnect = SB.spec.uiComponents.indicator.className === 'disconnected' ? true : false;
@@ -210,7 +222,7 @@ SB.spec = (function () {
           SB.log('Reconnected', 'WebSocket', 'success');
         }
 
-        SB.event.add(SB.spec.socket, 'close',   close);
+        SB.event.add(SB.spec.socket, 'close', close);
       };
 
       message = function(e) {
@@ -277,36 +289,31 @@ SB.spec = (function () {
       };
 
       close = function(e) {
-        var reconnect;
-
         SB.event.remove(SB.spec.socket, 'close', close);
 
-        SB.spec.uiComponents.indicator.className = 'disconnected';
-        SB.putText(SB.spec.uiComponents.indicator, SB.spec.strings.DISCONNECTED);
-
-        reconnect = function(i) {
-          if(SB.spec.socket.readyState === 3) {
-            SB.spec.socketConnect();
-
-            setInterval(function() {
-              reconnect(i + 1);
-            }, 10000);
-          }
-        };
-
-        reconnect(0);
-
         SB.log('Disconnected', 'WebSocket', 'error');
+
+        reconnect();
+      };
+
+      error = function(e) {
+        SB.event.remove(SB.spec.socket, 'error', close);
+
+        SB.log('Error', 'WebSocket', 'error');
+
+        reconnect();
       };
 
       cleanup = function() {
         SB.event.remove(SB.spec.socket, 'open',    open);
         SB.event.remove(SB.spec.socket, 'message', message);
+        SB.event.remove(SB.spec.socket, 'error',   error);
         SB.event.remove(SB.spec.socket, 'close',   cleanup);
       };
 
       SB.event.add(SB.spec.socket, 'open',    open);
       SB.event.add(SB.spec.socket, 'message', message);
+      SB.event.add(SB.spec.socket, 'error',   error);
       SB.event.add(SB.spec.socket, 'close',   cleanup);
     },
 

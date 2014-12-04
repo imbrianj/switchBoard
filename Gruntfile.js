@@ -50,7 +50,7 @@ module.exports = function(grunt) {
 
     uglify : {
       options : { banner : '<%= banner.comment %>' },
-      dist    : { files : { 'js/common.min.js' : ['js/common.js', 'js/switchBoard.js', 'parsers/*', 'lib/sharedUtil.js'] } }
+      dist    : { files : { 'js/combo.min.js' : ['js/common.js', 'js/switchBoard.js', 'parsers/*', 'lib/sharedUtil.js'] } }
     },
 
     concat: {
@@ -104,14 +104,14 @@ module.exports = function(grunt) {
   grunt.registerTask('freshenManifest', function() {
     var fs           = require('fs'),
         done         = this.async();
-        rawManifest  = fs.readFileSync(__dirname + '/cache.manifest').toString(),
+        rawManifest  = fs.readFileSync(__dirname + '/manifest.appcache').toString(),
         parts        = rawManifest.split("\n"),
         now          = new Date(),
-        dateStamp    = now.toISOString().slice(0, 10).replace(/-/g, ""),
+        dateStamp    = now.toLocaleString(),
         manifest     = rawManifest,
-        manifestFile = fs.createWriteStream(__dirname + '/cache.manifest');
+        manifestFile = fs.createWriteStream(__dirname + '/manifest.appcache');
 
-    parts[1] = '#' + dateStamp;
+    parts[1] = '# ' + dateStamp;
 
     manifest = parts.join("\n");
 
