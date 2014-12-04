@@ -80,7 +80,8 @@ module.exports = function(grunt) {
         lang,
         group,
         string,
-        i      = 0;
+        i      = 0,
+        found  = 0;
 
     for(i; i < langs.length; i += 1) {
       lang = require(__dirname + '/lang/' + langs[i]).strings();
@@ -89,15 +90,23 @@ module.exports = function(grunt) {
         if(lang[group]) {
           for(string in master[group]) {
             if(!lang[group][string]) {
-              console.log('Missing String Translation: ' + langs[i] + ': ' + group + ': ' + string);
+              found += 1;
+
+              console.log('\x1b[31mTranslation\x1b[0m: Missing ' + string + ' for ' + group + ' in ' + langs[i]);
             }
           }
         }
 
         else {
-          console.log('Missing Device Translation: ' + langs[i] + ': ' + group);
+          found += 1;
+
+          console.log('\x1b[31mTranslation\x1b[0m: Missing ' + group + ' for ' + langs[i]);
         }
       }
+    }
+
+    if(found === 0) {
+      console.log('\x1b[32mTranslation\x1b[0m: All strings translated');
     }
   });
 
@@ -118,7 +127,7 @@ module.exports = function(grunt) {
     manifestFile.write(manifest);
     manifestFile.end();
 
-    console.log('Updated cache manifest');
+    console.log('\x1b[32mApp Cache\x1b[0m: Cache manifest updated');
 
     done();
   });

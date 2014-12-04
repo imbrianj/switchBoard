@@ -199,7 +199,7 @@ SB.spec = (function () {
 
       SB.spec.socket = new WebSocket('ws://' + window.location.host, 'echo-protocol');
 
-      reconnect = function(type) {
+      reconnect = function() {
         SB.spec.uiComponents.indicator.className = 'disconnected';
         SB.putText(SB.spec.uiComponents.indicator, SB.spec.strings.DISCONNECTED);
 
@@ -209,14 +209,14 @@ SB.spec = (function () {
       };
 
       open = function(e) {
-        var reconnect = SB.spec.uiComponents.indicator.className === 'disconnected' ? true : false;
+        var reconnected = SB.spec.uiComponents.indicator.className === 'disconnected' ? true : false;
 
         SB.spec.uiComponents.indicator.className = 'connected';
         SB.putText(SB.spec.uiComponents.indicator, SB.spec.strings.CONNECTED);
 
         SB.log('Connected', 'WebSocket', 'success');
 
-        if(reconnect) {
+        if(reconnected) {
           SB.spec.socket.send('fetch state');
 
           SB.log('Reconnected', 'WebSocket', 'success');
