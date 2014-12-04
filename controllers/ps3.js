@@ -37,7 +37,7 @@ module.exports = (function () {
    *       http://gimx.fr/wiki/index.php?title=Command_line#Linux_.2B_bluetooth_.2B_PS3
    */
   return {
-    version : 20140909,
+    version : 20141203,
 
     inputs  : ['command'],
 
@@ -87,12 +87,20 @@ module.exports = (function () {
           case 'CIRCLE'   :
           case 'CROSS'    :
           case 'SQUARE'   :
+          case 'L1'       :
+          case 'L2'       :
+          case 'R1'       :
+          case 'R2'       :
             execute.command = 'gimx';
 
             execute.params.push('--dst');
             execute.params.push(serviceIP + ':' + servicePort);
             execute.params.push('--event');
             execute.params.push(command.toLowerCase() + '(' + value + ')');
+          break;
+
+          default :
+            execute = '';
           break;
         }
       }
@@ -146,7 +154,7 @@ module.exports = (function () {
 
       ps3.execute = this.translateCommand(ps3.command, ps3.deviceMac, ps3.serviceIp, ps3.servicePort, ps3.platform, ps3.revert);
 
-      if(ps3.execute) {
+      if((ps3.execute) && (ps3.execute.command) && (ps3.execute.params)) {
         gimx = spawn(ps3.execute.command, ps3.execute.params);
 
         // The Gimx service will run for quite a while, so we need to execute the

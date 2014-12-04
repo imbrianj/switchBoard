@@ -38,7 +38,7 @@ module.exports = (function () {
     inputs  : ['text'],
 
     send : function (config) {
-      var jarvis;
+      var jarvis = {};
 
       jarvis.text     = config.text     || '';
       jarvis.callback = config.callback || function () {};
