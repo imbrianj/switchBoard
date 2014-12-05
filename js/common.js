@@ -28,7 +28,7 @@ SB = (function () {
   'use strict';
 
   return {
-    version : 20141203,
+    version : 20141204,
 
    /**
     * Stops event bubbling further.
@@ -584,14 +584,26 @@ SB = (function () {
      * @param {String} string Phrase you'd like read aloud on the client.
      * @param {String} lang Language code text is formatted in.
      */
-    speak : function (string, lang) {
-      var message;
+    speak : function (string, lang, voice) {
+      var message,
+          voices;
 
       if(window.speechSynthesis) {
-        message = new SpeechSynthesisUtterance();
-        message.text = string;
-        message.lang = lang || 'en-US';
+        message       = new SpeechSynthesisUtterance();
+        voices        = window.speechSynthesis.getVoices();
+        message.text  = string;
+        message.lang  = lang  || 'en-US';
 
+        // iOS / OSX support more unique voices
+        if((voices) && (voices[10]) && (voices[10].name === 'Alex')) {
+          message.voice = voices[10];
+
+          if(voice === 'female') {
+            message.voice = voices[30];
+          }
+        }
+
+        // Some platforms support only the system default.
         window.speechSynthesis.speak(message);
       }
 

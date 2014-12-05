@@ -33,7 +33,7 @@ SB.spec = (function () {
   'use strict';
 
   return {
-    version : 20141130,
+    version : 20141204,
 
     state : {},
 
@@ -233,7 +233,7 @@ SB.spec = (function () {
 
         if(typeof message.speech === 'string') {
           if(message.speech) {
-            SB.speak(message.speech, message.language);
+            SB.speak(message.speech, message.language, message.voice);
           }
         }
 

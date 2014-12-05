@@ -34,12 +34,17 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20141201,
+    version : 20141204,
 
     sendSpeech : function(device, command, controllers, values, config) {
-      var notify = require(__dirname + '/../lib/notify');
+      var notify = require(__dirname + '/../lib/notify'),
+          voice  = 'male';
 
-      notify.sendSpeech(command.replace('text-', ''), controllers.config.language);
+      if(controllers[device].config.typeClass === 'speech') {
+        voice = controllers[device].config.voice;
+      }
+
+      notify.sendSpeech(command.replace('text-', ''), controllers.config.language, voice);
     }
   };
 }());

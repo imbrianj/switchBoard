@@ -110,7 +110,7 @@ exports.config = {
   speech : {
     typeClass      : 'speech',
     title          : 'Speech',
-    voice          : 'female',
+    voice          : 'male',
     apps           : { 'Send' : { id : 'sendSpeech' } },
     disabledMarkup : false,
     disabled       : true
