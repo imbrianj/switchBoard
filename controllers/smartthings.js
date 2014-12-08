@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic control of SmartThings endpoint.
    */
   return {
-    version : 20141202,
+    version : 20141206,
 
     inputs  : ['list', 'subdevice'],
 
@@ -509,7 +509,6 @@ module.exports = (function () {
     send : function (config) {
       var https       = require('https'),
           smartthings = {},
-          devices     = {},
           request     = {},
           dataReply   = '',
           that        = this;
@@ -542,19 +541,14 @@ module.exports = (function () {
           request.path = this.getDevicePath(smartthings.command, config, smartthings.callback);
         }
 
-        if(smartthings.list) {
-          this.oauthDeviceList(smartthings);
-        }
-
-        else if(request.path) {
+        if(request.path) {
           request = https.request(request, function(response) {
                       response.on('data', function(response) {
                         dataReply += response;
                       });
 
                       response.once('end', function() {
-                        var deviceState     = require(__dirname + '/../lib/deviceState'),
-                            smartthingsData = {};
+                        var smartthingsData = {};
 
                         if((dataReply) && (dataReply.indexOf('<') !== 0)) {
                           smartthingsData = JSON.parse(dataReply);

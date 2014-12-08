@@ -33,17 +33,135 @@ module.exports = (function () {
    *               tasks.
    */
   return {
-    version : 20141201,
+    version : 20141207,
 
-    inputs  : ['text'],
+    inputs  : ['command', 'text'],
+
+    /**
+     * Whitelist of available emotion key codes to use.
+     */
+    keymap  : ['HAPPY', 'PLAYFUL', 'EXCITED', 'LOVE', 'SAD', 'ANGRY', 'SCARED', 'STRESSED', 'MISCHIEVOUS', 'SLEEPING', 'INDIFFERENT'],
+
+    /**
+     * Randomly select an emoji that fits the mood.
+     */
+    getEmojiType : function (command) {
+      var emojis;
+
+      switch(command) {
+        case 'ANGRY'       :
+          emojis = ['😡', '😠', '😫', '😣'];
+        break;
+
+        case 'EXCITED'     :
+          emojis = ['😋', '😆', '😂', '😁'];
+        break;
+
+        case 'HAPPY'       :
+          emojis = ['😄', '😃', '😀', '😊', '😉', '😎', '😋', '😆', '😁', '😛', '😝', '😜'];
+        break;
+
+        case 'INDIFFERENT' :
+          emojis = ['😑', '😏', '😶', '😐', '😒', '😌'];
+        break;
+
+        case 'LOVE'        :
+          emojis = ['😍', '😘', '😚', '😗', '😙', '😏', '😇', '😆']; // ''' Comments to fix Atoms syntax highlighter
+        break;
+
+        case 'MISCHIEVOUS' :
+          emojis = ['😜', '😝', '😏', '😇', '😈', '😎', '😋', '😛', '😝', '😜'];
+        break;
+
+        case 'PLAYFUL'     :
+          emojis = ['😏', '😎', '😋', '😆', '😛', '😝', '😜']; // '''
+        break;
+
+        case 'SAD'         :
+          emojis = ['😕', '😧', '😟', '😖', '😨', '😥', '😪', '😭', '😢', '😞', '😔']; // '''
+        break;
+
+        case 'SCARED'      :
+          emojis = ['😕', '😮', '😧', '😦', '😟', '😲', '😵', '😱']; // '''
+        break;
+
+        case 'SLEEPING'    :
+          emojis = ['😴'];
+        break;
+
+        case 'STRESSED'    :
+          emojis = ['😕', '😧', '😦', '😟', '😲', '😵', '😖', '😱', '😨', '😫', '😩', '😓', '😥'];
+        break;
+
+        default            :
+          emojis = [command];
+        break;
+      }
+
+      return emojis[Math.floor(Math.random() * emojis.length)];
+    },
+
+    /**
+     * Random and rare classes should be applied that will have Jarvis have
+     * simple animations.
+     */
+    getActionType : function (personality) {
+      var random  = Math.random(),
+          actions = ['bounce', 'roll', 'shrink', 'walk'],
+          action  = '';
+
+      if(personality > random) {
+        // At a rare random event, Jarvis should have some added personality.
+        if((random - 0.75) > 0.2) {
+          action = actions[Math.floor(Math.random() * actions.length)];
+        }
+      }
+
+      return action;
+    },
+
+    /**
+     * Jarvis should default to being happy and active.
+     */
+    init : function (controller, config) {
+      var runCommand = require(__dirname + '/../lib/runCommand');
+
+      runCommand.runCommand(controller.config.deviceId, 'HAPPY', controller.config.deviceId);
+    },
+
+    state : function (controller, config, callback) {
+      var runCommand  = require(__dirname + '/../lib/runCommand'),
+          deviceState = require(__dirname + '/../lib/deviceState'),
+          jarvisState = deviceState.getDeviceState(controller.config.deviceId),
+          personality = (controller.config.personality / 100) || 0.5,
+          random      = Math.random(),
+          jarvis      = {};
+
+      if((jarvisState) && (jarvisState.value) && (personality > random)) {
+        // At a rare random event, Jarvis should have some added personality.
+        if(((random - 0.75) > 0.2) && (jarvisState.value.description !== 'SLEEPING')) {
+          jarvisState.value.description = 'MISCHIEVOUS';
+        }
+
+        runCommand.runCommand(controller.config.deviceId, jarvisState.value.description, controller.config.deviceId);
+      }
+    },
 
     send : function (config) {
-      var jarvis = {};
+      var jarvis = {},
+          value,
+          action;
 
-      jarvis.text     = config.text     || '';
-      jarvis.callback = config.callback || function () {};
+      jarvis.command     = config.command     || '';
+      jarvis.personality = config.personality || 0.5;
+      jarvis.callback    = config.callback    || function () {};
 
-      jarvis.callback(null, 'ok');
+      value  = this.getEmojiType(jarvis.command);
+      action = this.getActionType(jarvis.personality);
+
+      if((value) && (jarvis.command)) {
+        jarvis.callback(null, { emoji : value, description : jarvis.command, action : action });
+      }
     }
   };
 }());

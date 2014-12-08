@@ -118,18 +118,31 @@ module.exports = function(grunt) {
         now          = new Date(),
         dateStamp    = now.toLocaleString(),
         manifest     = rawManifest,
-        manifestFile = fs.createWriteStream(__dirname + '/manifest.appcache');
+        manifestFile = {};
 
     parts[1] = '# ' + dateStamp;
 
     manifest = parts.join("\n");
 
-    manifestFile.write(manifest);
-    manifestFile.end();
+    if((parts.length > 3) && (manifest)) {
+      manifestFile = fs.writeFile(__dirname + '/manifest.appcache', manifest, function(err) {
+        if(err) {
+          console.log('\x1b[31mApp Cache\x1b[0m: Cache manifest unable to be updated');
+        }
 
-    console.log('\x1b[32mApp Cache\x1b[0m: Cache manifest updated');
+        else {
+          console.log('\x1b[32mApp Cache\x1b[0m: Cache manifest updated');
+        }
 
-    done();
+        done();
+      });
+    }
+
+    else {
+      console.log('\x1b[31mApp Cache\x1b[0m: Cache manifest unable to be read');
+
+      done();
+    }
   });
 
   grunt.loadNpmTasks('grunt-contrib-jshint');

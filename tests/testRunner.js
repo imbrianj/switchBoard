@@ -59,6 +59,7 @@ module.exports = (function () {
                 'tests/unit/lib/staticAssetsTest.js',
                 'tests/unit/parsers/denonTest.js',
                 'tests/unit/parsers/foscamTest.js',
+                'tests/unit/parsers/jarvisTest.js',
                 'tests/unit/parsers/nestTest.js',
                 'tests/unit/parsers/raspberryRemoteTest.js',
                 'tests/unit/parsers/rokuTest.js',

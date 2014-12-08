@@ -32,7 +32,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20141201,
+    version : 20141207,
 
     jarvis : function(device, command, controllers, values, config) {
       var runCommand = require(__dirname + '/../lib/runCommand'),
@@ -41,6 +41,9 @@ module.exports = (function () {
           value,
           deviceId;
 
+      if(command.indexOf('text-') === 0) {
+
+      }
     }
   };
 }());

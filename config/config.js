@@ -343,10 +343,11 @@ exports.config = {
   },
 
   jarvis : {
-    typeClass : 'jarvis',
-    title     : 'Jarvis',
-    apps      : { 'Jarvis' : { id            : 'jarvis',
-                               controllerIds : ['samsung', 'roku', 'ps3', 'panasonic', 'lg', 'pioneer', 'denon', 'speech', 'stocks', 'weather', 'foscam', 'mp3', 'sms', 'pushover', 'smartthings', 'nest', 'switchBoardCI', 'xbmc', 'raspberryRemote', 'wemo'] } },
-    disabled  : true
+    typeClass   : 'jarvis',
+    title       : 'Jarvis',
+    personality : 80,
+    apps        : { 'Jarvis' : { id            : 'jarvis',
+                                 controllerIds : ['samsung', 'roku', 'ps3', 'panasonic', 'lg', 'pioneer', 'denon', 'speech', 'stocks', 'weather', 'foscam', 'mp3', 'sms', 'pushover', 'smartthings', 'nest', 'switchBoardCI', 'xbmc', 'raspberryRemote', 'wemo'] } },
+    disabled    : false
   }
 };

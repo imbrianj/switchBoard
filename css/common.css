@@ -804,6 +804,17 @@ section .media a.blue {
 
 section .preview-image {
 	background: #000 no-repeat url(../images/loading.gif) center;
+	position: relative;
+}
+
+section .preview-image:after {
+	content: '';
+	display: block;
+	height: 100%;
+	left: 0;
+	position: absolute;
+	top: 0;
+	width: 100%;
 }
 
 section .preview-image img {
@@ -812,6 +823,23 @@ section .preview-image img {
 	margin: 0 auto;
 	max-width: 100%;
 	min-height: 200px;
+}
+
+section .emoji {
+	float: none;
+	margin: 0 auto;
+	overflow: hidden;
+	padding: 1em 0;
+	text-align: center;
+	width: 50%;
+}
+
+section .emoji span {
+	display: block;
+	/* Emoji size can't be adjusted by font-size */
+	-moz-transform: scale(2);
+	-webkit-transform: scale(2);
+	transform: scale(2);
 }
 
 section .current {
