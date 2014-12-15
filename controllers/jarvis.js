@@ -33,14 +33,14 @@ module.exports = (function () {
    *               tasks.
    */
   return {
-    version : 20141207,
+    version : 20141214,
 
     inputs  : ['command', 'text'],
 
     /**
      * Whitelist of available emotion key codes to use.
      */
-    keymap  : ['HAPPY', 'PLAYFUL', 'EXCITED', 'LOVE', 'SAD', 'ANGRY', 'SCARED', 'STRESSED', 'MISCHIEVOUS', 'SLEEPING', 'INDIFFERENT'],
+    keymap  : ['ANGRY', 'EXCITED', 'HAPPY', 'INDIFFERENT', 'LOVE', 'PLAYFUL', 'SAD', 'SCARED', 'SLEEP', 'STRESSED'],
 
     /**
      * Randomly select an emoji that fits the mood.
@@ -58,23 +58,19 @@ module.exports = (function () {
         break;
 
         case 'HAPPY'       :
-          emojis = ['😄', '😃', '😀', '😊', '😉', '😎', '😋', '😆', '😁', '😛', '😝', '😜'];
+          emojis = ['😄', '😃', '😀', '😊', '😉', '😎', '😋', '😆', '😁', '😛', '😝', '😜']; // '
         break;
 
         case 'INDIFFERENT' :
-          emojis = ['😑', '😏', '😶', '😐', '😒', '😌'];
+          emojis = ['😑', '😶', '😐', '😒', '😌']; // '
         break;
 
         case 'LOVE'        :
-          emojis = ['😍', '😘', '😚', '😗', '😙', '😏', '😇', '😆']; // ''' Comments to fix Atoms syntax highlighter
-        break;
-
-        case 'MISCHIEVOUS' :
-          emojis = ['😜', '😝', '😏', '😇', '😈', '😎', '😋', '😛', '😝', '😜'];
+          emojis = ['😍', '😘', '😚', '😗', '😙', '😏', '😇', '😆']; // ' Comments to fix Atoms syntax highlighter
         break;
 
         case 'PLAYFUL'     :
-          emojis = ['😏', '😎', '😋', '😆', '😛', '😝', '😜']; // '''
+          emojis = ['😜', '😝', '😏', '😇', '😈', '😎', '😋', '😛', '😝', '😜', '😏', '😎', '😋', '😆', '😛', '😝', '😜']; // ''''''
         break;
 
         case 'SAD'         :
@@ -82,10 +78,10 @@ module.exports = (function () {
         break;
 
         case 'SCARED'      :
-          emojis = ['😕', '😮', '😧', '😦', '😟', '😲', '😵', '😱']; // '''
+          emojis = ['😕', '😮', '😧', '😦', '😟', '😲', '😵', '😱']; // '
         break;
 
-        case 'SLEEPING'    :
+        case 'SLEEP'       :
           emojis = ['😴'];
         break;
 
@@ -153,6 +149,7 @@ module.exports = (function () {
           action;
 
       jarvis.command     = config.command     || '';
+      jarvis.text        = config.text        || '';
       jarvis.personality = config.personality || 0.5;
       jarvis.callback    = config.callback    || function () {};
 
@@ -161,6 +158,10 @@ module.exports = (function () {
 
       if((value) && (jarvis.command)) {
         jarvis.callback(null, { emoji : value, description : jarvis.command, action : action });
+      }
+
+      if(jarvis.text) {
+        jarvis.callback(null, jarvis.text, true);
       }
     }
   };

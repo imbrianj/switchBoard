@@ -57,6 +57,17 @@ exports.runCommandTest = {
     test.done();
   },
 
+  macroCommands : function (test) {
+    'use strict';
+
+    var runCommand = require(__dirname + '/../../../lib/runCommand'),
+        macro      = runCommand.macroCommands('something');
+
+    test.strictEqual(macro, false, 'Bad macros should return false');
+
+    test.done();
+  },
+
   stripTypePrefix : function(test) {
     'use strict';
 

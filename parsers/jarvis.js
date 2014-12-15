@@ -27,14 +27,32 @@
   'use strict';
 
   exports.jarvis = function (deviceId, markup, state, value, language) {
-    var action = '';
+    var action = '',
+        container;
 
-    if(value.action) {
-      action = ' class="' + value.action + '"';
+    if(typeof SB === 'object') {
+      container = SB.getByTag('span', SB.get(deviceId))[0];
+
+      if(container) {
+        SB.putText(container, value.emoji);
+
+        if(value.action) {
+          container.className = value.action;
+        }
+      }
+
+      markup = '';
     }
 
-    markup = markup.split('{{JARVIS_ACTION}}').join(action);
+    else {
+      if(value.action) {
+        action = ' class="' + value.action + '"';
+      }
 
-    return markup.split('{{JARVIS_DYNAMIC}}').join(value.emoji);
+      markup = markup.split('{{JARVIS_ACTION}}').join(action);
+      markup = markup.split('{{JARVIS_DYNAMIC}}').join(value.emoji);
+    }
+
+    return markup;
   };
 })(typeof exports === 'undefined' ? this.SB.spec.parsers : exports);
