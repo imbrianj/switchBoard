@@ -248,7 +248,7 @@ module.exports = (function () {
                            "Háblame mas duro!",
                            "Perdón, Dave.  No voy a poder hacer eso",
                            "No me dan ganas de hacerlo",
-                           "No tengo ni idea de lo que me dices",
+                           "No tengo ni idea de lo que dices",
                            "No oigo",
                            "Hágalo usted",
                            "No",
