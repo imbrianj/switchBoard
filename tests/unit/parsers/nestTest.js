@@ -34,28 +34,34 @@ exports.nestParserTest = {
 
     var nestParser  = require(__dirname + '/../../../parsers/nest'),
         markup      = '<h1>Foo</h1> <div>{{NEST_DYNAMIC}}</div>',
-        value       = { presence   : 'on',
-                        thermostat : { foo  : { label : 'TEST1', temp : 77, target : 76, humidity : 30, state : 'cool' },
-                                       bar  : { label : 'TEST2', temp : 80, target : 79, humidity : 25, state : 'off' },
-                                       baz  : { label : 'TEST3', temp : 70, target : 73, humidity : 20, state : 'heat' } },
-                        protect    : { foo  : { label : 'TEST4', smoke : 'err', co : 'ok',  battery : 'ok' },
-                                       bar  : { label : 'TEST5', smoke : 'ok',  co : 'err', battery : 'ok' },
-                                       baz  : { label : 'TEST6', smoke : 'ok',  co : 'ok',  battery : 'err' },
-                                       bif  : { label : 'TEST7', smoke : 'err', co : 'err',  battery : 'err' },
-                                       bang : { label : 'TEST8', smoke : 'ok',  co : 'ok',  battery : 'ok' } }
+        value       = { presence : 'on',
+                        devices  : {
+                          0 : { label : 'TEST1', temp : 77, target : 76, humidity : 30, state : 'cool', type : 'thermostat' },
+                          1 : { label : 'TEST2', temp : 80, target : 79, humidity : 25, state : 'off',  type : 'thermostat' },
+                          2 : { label : 'TEST3', temp : 70, target : 73, humidity : 20, state : 'heat', type : 'thermostat' },
+                          3 : { label : 'TEST4', smoke : 'err', co : 'ok',   battery : 'ok',  type : 'protect' },
+                          4 : { label : 'TEST5', smoke : 'ok',  co : 'err',  battery : 'ok',  type : 'protect' },
+                          5 : { label : 'TEST6', smoke : 'ok',  co : 'ok',   battery : 'err', type : 'protect' },
+                          6 : { label : 'TEST7', smoke : 'err', co : 'err',  battery : 'err', type : 'protect' },
+                          7 : { label : 'TEST8', smoke : 'ok',  co : 'ok',   battery : 'ok',  type : 'protect' }
+                        }
                       },
-        valueTherm  = { presence   : 'on',
-                        thermostat : { foo  : { label : 'TEST1', temp : 77, target : 76, humidity : 30, state : 'cool' },
-                                       bar  : { label : 'TEST2', temp : 80, target : 79, humidity : 25, state : 'off' },
-                                       baz  : { label : 'TEST3', temp : 70, target : 73, humidity : 20, state : 'heat' } }
-                     },
-        valueSmoke  = { presence   : 'on',
-                        protect    : { foo  : { label : 'TEST4', smoke : 'err', co : 'ok',  battery : 'ok' },
-                                                      bar  : { label : 'TEST5', smoke : 'ok',  co : 'err', battery : 'ok' },
-                                                      baz  : { label : 'TEST6', smoke : 'ok',  co : 'ok',  battery : 'err' },
-                                                      bif  : { label : 'TEST7', smoke : 'err', co : 'err',  battery : 'err' },
-                                                      bang : { label : 'TEST8', smoke : 'ok',  co : 'ok',  battery : 'ok' } }
-                     },
+        valueTherm  = { presence : 'on',
+                        devices  : {
+                          0 : { label : 'TEST1', temp : 77, target : 76, humidity : 30, state : 'cool', type : 'thermostat' },
+                          1 : { label : 'TEST2', temp : 80, target : 79, humidity : 25, state : 'off',  type : 'thermostat' },
+                          2 : { label : 'TEST3', temp : 70, target : 73, humidity : 20, state : 'heat', type : 'thermostat' }
+                        }
+                      },
+        valueSmoke  = { presence : 'on',
+                        devices  : {
+                          0 : { label : 'TEST4', smoke : 'err', co : 'ok',  battery : 'ok',  type : 'protect' },
+                          1 : { label : 'TEST5', smoke : 'ok',  co : 'err', battery : 'ok',  type : 'protect' },
+                          2 : { label : 'TEST6', smoke : 'ok',  co : 'ok',  battery : 'err', type : 'protect' },
+                          3 : { label : 'TEST7', smoke : 'err', co : 'err', battery : 'err', type : 'protect' },
+                          4 : { label : 'TEST8', smoke : 'ok',  co : 'ok',  battery : 'ok',  type : 'protect' }
+                        }
+                      },
         fragments   = { thermostat : '<li><dl><dt>{{SUB_DEVICE_NAME}}</dt><dd>Temp: {{SUB_DEVICE_TEMP}}</dd><dd>Target: {{SUB_DEVICE_TARGET}}</dd><dd>Humidity: {{SUB_DEVICE_HUMIDITY}}</dd><dd class="cool{{DEVICE_STATE_COOL}}">Cool</dd><dd class="heat{{DEVICE_STATE_HEAT}}">Heat</dd><dd class="heat{{DEVICE_STATE_OFF}}">Off</dd></dl></li>',
                         protect    : '<li class="{{SUB_DEVICE_STATE}}"><dl><dt>{{SUB_DEVICE_NAME}}</dt><dd>Smoke: {{SUB_DEVICE_SMOKE}}</dd><dd>CO: {{SUB_DEVICE_CO}}</dd><dd>Batt: {{SUB_DEVICE_BATT}}</dd></dl></li>',
                         group      : '<li class="{{SUB_DEVICE_CLASS}}"><h4>{{SUB_DEVICE_NAME}}</h4><ul>{{SUB_DEVICE_LIST}}</ul></li>' },

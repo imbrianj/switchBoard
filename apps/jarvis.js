@@ -334,7 +334,7 @@ module.exports = (function () {
       };
 
       smartThingsMood = function(command, controllers) {
-        var mood = 'HAPPY',
+        var mood,
             device,
             deviceId;
 
@@ -362,7 +362,7 @@ module.exports = (function () {
           break;
         }
 
-        if(deviceId) {
+        if((deviceId) && (mood)) {
           runCommand.runCommand(deviceId, mood);
         }
       };

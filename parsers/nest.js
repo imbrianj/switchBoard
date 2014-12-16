@@ -68,107 +68,108 @@
         };
 
     if(value) {
-      for(i in value.thermostat) {
-        device = value.thermostat[i];
+      for(i in value.devices) {
+        device = value.devices[i];
 
-        if(typeof SB === 'object') {
-          off  = SB.getByClass(encodeName(device.label), SB.get(deviceId), 'li')[0];
-          heat = SB.getByClass('fa-sun-o',    off, 'a')[0];
-          cool = SB.getByClass('fa-asterisk', off, 'a')[0];
+        if(device.type === 'thermostat') {
+          if(typeof SB === 'object') {
+            off  = SB.getByClass(encodeName(device.label), SB.get(deviceId), 'li')[0];
+            heat = SB.getByClass('fa-sun-o',    off, 'a')[0];
+            cool = SB.getByClass('fa-asterisk', off, 'a')[0];
 
-          if((device.state === 'cool') && (!SB.hasClass(cool, 'device-active'))) {
-            SB.addClass(cool,    'device-active');
-            SB.removeClass(heat, 'device-active');
-            SB.removeClass(off,  'device-off');
-            SB.putText(SB.getByTag('em', off)[0], translate('COOL'));
-            markup = '';
+            if((device.state === 'cool') && (!SB.hasClass(cool, 'device-active'))) {
+              SB.addClass(cool,    'device-active');
+              SB.removeClass(heat, 'device-active');
+              SB.removeClass(off,  'device-off');
+              SB.putText(SB.getByTag('em', off)[0], translate('COOL'));
+              markup = '';
+            }
+
+            else if((device.state === 'heat') && (!SB.hasClass(heat, 'device-active'))) {
+              SB.addClass(heat,    'device-active');
+              SB.removeClass(cool, 'device-active');
+              SB.removeClass(off,  'device-off');
+              SB.putText(SB.getByTag('em', off)[0], translate('HEAT'));
+              markup = '';
+            }
+
+            else if((device.state === 'off') && (!SB.hasClass(off, 'device-off'))) {
+              SB.addClass(off,     'device-off');
+              SB.removeClass(cool, 'device-active');
+              SB.removeClass(heat, 'device-active');
+              SB.putText(SB.getByTag('em', off)[0], translate('OFF'));
+              markup = '';
+            }
           }
 
-          else if((device.state === 'heat') && (!SB.hasClass(heat, 'device-active'))) {
-            SB.addClass(heat,    'device-active');
-            SB.removeClass(cool, 'device-active');
-            SB.removeClass(off,  'device-off');
-            SB.putText(SB.getByTag('em', off)[0], translate('HEAT'));
-            markup = '';
+          thermostatMarkup = thermostatMarkup + templateThermostat.split('{{SUB_DEVICE_ID}}').join(encodeName(device.label));
+          thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_NAME}}').join(device.label);
+          thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_TEMP}}').join(Math.round(device.temp));
+          thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_TARGET}}').join(Math.round(device.target));
+          thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_HUMIDITY}}').join(Math.round(device.humidity));
+
+          switch(device.state) {
+            case 'cool' :
+              thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_COOL}}').join(' device-active');
+              thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_STATUS}}').join(translate('COOL'));
+            break;
+
+            case 'heat' :
+              thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_HEAT}}').join(' device-active');
+              thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_STATUS}}').join(translate('HEAT'));
+            break;
+
+            default :
+              thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_OFF}}').join(' device-off');
+              thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_STATUS}}').join(translate('OFF'));
+            break;
           }
 
-          else if((device.state === 'off') && (!SB.hasClass(off, 'device-off'))) {
-            SB.addClass(off,     'device-off');
-            SB.removeClass(cool, 'device-active');
-            SB.removeClass(heat, 'device-active');
-            SB.putText(SB.getByTag('em', off)[0], translate('OFF'));
-            markup = '';
+          if(device.leaf === true) {
+            thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_LEAF}}').join(' device-active');
           }
+
+          if((value.presence) && (value.presence === 'on')) {
+            thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_HOME}}').join(' device-active');
+          }
+
+          else {
+            thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_AWAY}}').join(' device-active');
+          }
+
+          thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_COOL}}').join('');
+          thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_HEAT}}').join('');
+          thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_OFF}}').join('');
+          thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_LEAF}}').join('');
+          thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_HOME}}').join('');
+          thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_AWAY}}').join('');
         }
 
-        thermostatMarkup = thermostatMarkup + templateThermostat.split('{{SUB_DEVICE_ID}}').join(encodeName(device.label));
-        thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_NAME}}').join(device.label);
-        thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_TEMP}}').join(Math.round(device.temp));
-        thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_TARGET}}').join(Math.round(device.target));
-        thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_HUMIDITY}}').join(Math.round(device.humidity));
+        else if(device.type === 'protect') {
+          stateClass = '';
 
-        switch(device.state) {
-          case 'cool' :
-            thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_COOL}}').join(' device-active');
-            thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_STATUS}}').join(translate('COOL'));
-          break;
+          if(device.smoke !== 'ok') {
+            stateClass = stateClass + 'smoke ';
+          }
 
-          case 'heat' :
-            thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_HEAT}}').join(' device-active');
-            thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_STATUS}}').join(translate('HEAT'));
-          break;
+          if(device.co !== 'ok') {
+            stateClass = stateClass + 'co ';
+          }
 
-          default :
-            thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_OFF}}').join(' device-off');
-            thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_STATUS}}').join(translate('OFF'));
-          break;
+          if(device.battery !== 'ok') {
+            stateClass = stateClass + 'batt ';
+          }
+
+          if(stateClass) {
+            stateClass = stateClass + 'device-active';
+          }
+
+          protectMarkup = protectMarkup + templateProtect.split('{{SUB_DEVICE_STATE}}').join(stateClass);
+          protectMarkup = protectMarkup.split('{{SUB_DEVICE_NAME}}').join(device.label);
+          protectMarkup = protectMarkup.split('{{SUB_DEVICE_SMOKE}}').join(device.smoke);
+          protectMarkup = protectMarkup.split('{{SUB_DEVICE_CO}}').join(device.co);
+          protectMarkup = protectMarkup.split('{{SUB_DEVICE_BATT}}').join(device.battery);
         }
-
-        if(device.leaf === true) {
-          thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_LEAF}}').join(' device-active');
-        }
-
-        if((value.presence) && (value.presence === 'on')) {
-          thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_HOME}}').join(' device-active');
-        }
-
-        else {
-          thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_AWAY}}').join(' device-active');
-        }
-
-        thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_COOL}}').join('');
-        thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_HEAT}}').join('');
-        thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_OFF}}').join('');
-        thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_LEAF}}').join('');
-        thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_HOME}}').join('');
-        thermostatMarkup = thermostatMarkup.split('{{DEVICE_STATE_AWAY}}').join('');
-      }
-
-      for(i in value.protect) {
-        stateClass = '';
-        device     = value.protect[i];
-
-        if(device.smoke !== 'ok') {
-          stateClass = stateClass + 'smoke ';
-        }
-
-        if(device.co !== 'ok') {
-          stateClass = stateClass + 'co ';
-        }
-
-        if(device.battery !== 'ok') {
-          stateClass = stateClass + 'batt ';
-        }
-
-        if(stateClass) {
-          stateClass = stateClass + 'device-active';
-        }
-
-        protectMarkup = protectMarkup + templateProtect.split('{{SUB_DEVICE_STATE}}').join(stateClass);
-        protectMarkup = protectMarkup.split('{{SUB_DEVICE_NAME}}').join(device.label);
-        protectMarkup = protectMarkup.split('{{SUB_DEVICE_SMOKE}}').join(device.smoke);
-        protectMarkup = protectMarkup.split('{{SUB_DEVICE_CO}}').join(device.co);
-        protectMarkup = protectMarkup.split('{{SUB_DEVICE_BATT}}').join(device.battery);
       }
 
       if(thermostatMarkup) {
