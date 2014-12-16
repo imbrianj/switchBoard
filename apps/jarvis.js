@@ -32,7 +32,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20141214,
+    version : 20141215,
 
     jarvis : function(device, command, controllers, values, config) {
       var translate  = require(__dirname + '/../lib/translate'),
@@ -325,7 +325,7 @@ module.exports = (function () {
                 commands[keyword].action = 'subdevice-' + commands[keyword].action.toLowerCase() + '-' + commands[keyword].subDevice;
               }
 
-              runCommand.runCommand(commands[keyword].device, commands[keyword].action, 'single');
+              runCommand.runCommand(commands[keyword].device, commands[keyword].action);
             }
           }
         }
@@ -382,7 +382,7 @@ module.exports = (function () {
 
         for(deviceId in controllers) {
           if(deviceId !== 'config') {
-            if(controllers[deviceId].typeClass === 'speech') {
+            if(controllers[deviceId].config.typeClass === 'speech') {
               runCommand.runCommand(deviceId, 'text-' + utterance);
 
               break;

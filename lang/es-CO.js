@@ -211,6 +211,7 @@ module.exports = (function () {
           TAKE            : "Tomar"
         },
         jarvis : {
+          JARVIS       : "Jarvis",
           ARM          : "Armar",
           CAMERA       : "Cámara",
           CHANNEL_DOWN : "Canal Previo",
@@ -220,7 +221,6 @@ module.exports = (function () {
           DOWN         : "Bajar",
           ENTER        : "Entrar",
           HEAT         : "Calentar",
-          JARVIS       : "Jarvis",
           LEFT         : "Izquierda",
           OFF          : "Apagar",
           ON           : "Prender",

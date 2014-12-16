@@ -136,7 +136,7 @@ module.exports = (function () {
       if((jarvisState) && (jarvisState.value) && (personality > random)) {
         // At a rare random event, Jarvis should have some added personality.
         if(((random - 0.75) > 0.2) && (jarvisState.value.description !== 'SLEEPING')) {
-          jarvisState.value.description = 'MISCHIEVOUS';
+          jarvisState.value.description = 'PLAYFUL';
         }
 
         runCommand.runCommand(controller.config.deviceId, jarvisState.value.description, controller.config.deviceId);
