@@ -388,7 +388,7 @@ module.exports = (function () {
         value       = value[1];
         subdevice   = this.findSubDevices(command, subDevices);
 
-        if((subdevice) && (subdevice[0].type === 'thermostat')) {
+        if((subdevice) && (subdevice[0]) && (subdevice[0].type === 'thermostat')) {
           switch(commandType) {
             case 'mode' :
               if((value === 'off') || (value === 'heat') || (value === 'cool')) {

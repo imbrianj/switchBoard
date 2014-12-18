@@ -28,7 +28,7 @@ SB = (function () {
   'use strict';
 
   return {
-    version : 20141204,
+    version : 20141217,
 
    /**
     * Stops event bubbling further.
@@ -510,7 +510,7 @@ SB = (function () {
      * @param {Int} duration Number of milliseconds to vibrate.
      */
     vibrate : function (duration) {
-      duration = duration || 5;
+      duration = duration || 20;
 
       if((window.navigator) && (window.navigator.vibrate)) {
         window.navigator.vibrate(duration);
@@ -568,12 +568,14 @@ SB = (function () {
      * If you've explicitly denied permission, we'll honor that and not ask.
      */
     notifyAsk : function () {
-      if(Notification.permission !== 'denied') {
-        Notification.requestPermission(function(permission) {
-          if(Notification.permission !== permission) {
-            Notification.permission = permission;
-          }
-        });
+      if(typeof Notification === 'function') {
+        if(Notification.permission !== 'denied') {
+          Notification.requestPermission(function(permission) {
+            if(Notification.permission !== permission) {
+              Notification.permission = permission;
+            }
+          });
+        }
       }
     },
 

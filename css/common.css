@@ -827,6 +827,7 @@ section .preview-image img {
 
 section .emoji {
 	float: none;
+	font-size: 90%;
 	margin: 0 auto;
 	overflow: hidden;
 	padding: 1em 0;

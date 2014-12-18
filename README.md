@@ -26,29 +26,29 @@ Download the source, edit config/config.js to reflect your node server IP, desir
 Supported Devices/Services
 ---
 
-| Name             | Status      | Notes                                                                           |
-|------------------|-------------|---------------------------------------------------------------------------------|
-| Denon            | Testing     | New controller and still in testing                                             |
+| Name             | Status      | Notes                                                                            |
+|------------------|-------------|----------------------------------------------------------------------------------|
+| Denon            | Testing     | New controller and still in testing                                              |
 | Foscam           | Stable      | Works with FI8910W (if you have another version that this does not work with, let me know and I can add support).  Arm, Disarm, Go to presets, etc. *INSECURE* Exposes camera credentials to users |
-| Jarvis           | Development | A simple interface for all devices that react to natural inputs.  New and buggy |
-| LG TVs           | Development | Still need work on authentication                                               |
-| MP3              | Stable      | Works on *nix with mpg123 or OSX with afplay. Win not supported                 |
-| Nest             | Stable      | Works with Nest thermostat and Protect smoke / co detectors                     |
-| Panasonic        | Stable      | Text input and basic controls                                                   |
-| Pioneer          | Testing     | Reportedly works, but unable to test                                            |
+| Jarvis           | Development | A simple interface for all devices that reacts to natural inputs.  New and buggy |
+| LG TVs           | Development | Still need work on authentication                                                |
+| MP3              | Stable      | Works on *nix with mpg123 or OSX with afplay. Win not supported                  |
+| Nest             | Stable      | Works with Nest thermostat and Protect smoke / co detectors                      |
+| Panasonic        | Stable      | Text input and basic controls                                                    |
+| Pioneer          | Testing     | Reportedly works, but unable to test                                             |
 | PS3              | Stable      | Uses GIMX to emulate PS3 controller ([see below](https://github.com/imbrianj/switchBoard#faq)). OSX not supported  |
-| Pushover         | Stable      | Requires purchased app and token / user key                                     |
+| Pushover         | Stable      | Requires purchased app and token / user key                                      |
 | Raspberry Remote | Stable      | Uses [Raspberry Remote](https://xkonni.github.io/raspberry-remote/) to control lighting. Only Linux is supported |
-| Roku             | Stable      | Launch apps directly, text input and basic controls                             |
-| Samsung SmartTV  | Stable      | Text input and basic controls                                                   |
+| Roku             | Stable      | Launch apps directly, text input and basic controls                              |
+| Samsung SmartTV  | Stable      | Text input and basic controls                                                    |
 | SmartThings      | Stable      | Control devices and monitor real-time states. Requires [companion app](https://github.com/imbrianj/oauth_controller/blob/master/oauth_controller.groovy) |
-| SMS              | Stable      | Uses Twilio. Requires ID and token                                              |
-| Speech           | Stable      | Uses espeak for *nix, say on OSX.  Win not supported                            |
-| Stocks           | Stable      | Uses Yahoo Finance                                                              |
-| Travis CI        | Stable      |                                                                                 |
-| Belkin Wemo      | Testing     | New controller and still in testing                                             |
-| Weather          | Stable      | Uses Yahoo Weather                                                              |
-| XBMC             | Testing     | Basic controls work - testing display of current media                          |
+| SMS              | Stable      | Uses Twilio. Requires ID and token                                               |
+| Speech           | Stable      | Uses espeak for *nix, say on OSX.  Win not supported                             |
+| Stocks           | Stable      | Uses Yahoo Finance                                                               |
+| Travis CI        | Stable      |                                                                                  |
+| Belkin Wemo      | Testing     | New controller and still in testing                                              |
+| Weather          | Stable      | Uses Yahoo Weather                                                               |
+| XBMC             | Testing     | Basic controls work - testing display of current media                           |
 
 ### Controlling your PS3 -- General instructions
 

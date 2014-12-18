@@ -31,8 +31,10 @@
 module.exports = (function () {
   'use strict';
 
+  var mood = {};
+
   return {
-    version : 20141215,
+    version : 20141218,
 
     jarvis : function(device, command, controllers, values, config) {
       var translate  = require(__dirname + '/../lib/translate'),
@@ -41,6 +43,7 @@ module.exports = (function () {
           utterance  = translate.findSynonyms('jarvis', controllers.config.language),
           message    = '',
           text       = '',
+          emotion    = '',
           speak,
           getGenericDevices,
           getSubDevices,
@@ -135,7 +138,7 @@ module.exports = (function () {
       };
 
       getVerbs = function(language) {
-        var codes = ['ON', 'OFF', 'TOGGLE', 'UP', 'DOWN', 'LEFT', 'RIGHT', 'ENTER', 'ARM', 'DISARM'];
+        var codes = ['ON', 'OFF', 'HEAT', 'COOL', 'TOGGLE', 'UP', 'DOWN', 'LEFT', 'RIGHT', 'ENTER', 'ARM', 'DISARM'];
 
         return findKeywords(codes, language);
       };
@@ -322,6 +325,11 @@ module.exports = (function () {
           for(keyword in commands) {
             if((commands[keyword].device) && (commands[keyword].action)) {
               if(commands[keyword].subDevice) {
+                if((commands[keyword].action === 'Cool') || (commands[keyword].action === 'Heat') || (commands[keyword].action === 'Off')) {
+                  commands[keyword].subDevice = commands[keyword].subDevice + '-' + commands[keyword].action.toLowerCase();
+                  commands[keyword].action    = 'mode';
+                }
+
                 commands[keyword].action = 'subdevice-' + commands[keyword].action.toLowerCase() + '-' + commands[keyword].subDevice;
               }
 
@@ -333,37 +341,57 @@ module.exports = (function () {
         return acted;
       };
 
-      smartThingsMood = function(command, controllers) {
-        var mood,
-            device,
-            deviceId;
+      smartThingsMood = function(command, values, controllers) {
+        var newEmotion;
 
-        for(device in controllers) {
-          if(device !== 'config') {
-            if(controllers[device].config.typeClass === 'jarvis') {
-              deviceId = device;
-
+        if((values) && (values.mode)) {
+          if(mood.mode !== values.mode) {
+            switch(values.mode) {
+              case 'Home' :
+                mood.emotion = 'HAPPY';
+                mood.mode    = values.mode;
               break;
+
+              case 'Away' :
+                mood.emotion = 'INDIFFERENT';
+                mood.mode    = values.mode;
+              break;
+
+              case 'Night' :
+                mood.emotion = 'SLEEP';
+                mood.mode    = values.mode;
+              break;
+            }
+
+            if(emotion) {
+              runCommand.runCommand(deviceId, mood.emotion);
             }
           }
         }
 
-        switch(command) {
-          case 'subdevice-mode-Away' :
-            mood = 'INDIFFERENT';
-          break;
+        else {
+          switch(command) {
+            case 'subdevice-mode-Away' :
+              newEmotion = 'INDIFFERENT';
+              mood.mode  = 'Away';
+            break;
 
-          case 'subdevice-mode-Night' :
-            mood = 'SLEEP';
-          break;
+            case 'subdevice-mode-Night' :
+              newEmotion = 'SLEEP';
+              mood.mode  = 'Night';
+            break;
 
-          case 'subdevice-mode-Home' :
-            mood = 'HAPPY';
-          break;
-        }
+            case 'subdevice-mode-Home' :
+              newEmotion = 'HAPPY';
+              mood.mode  = 'Home';
+            break;
+          }
 
-        if((deviceId) && (mood)) {
-          runCommand.runCommand(deviceId, mood);
+          if((deviceId) && (newEmotion)) {
+            mood.emotion = newEmotion;
+
+            runCommand.runCommand(deviceId, mood.emotion);
+          }
         }
       };
 
@@ -380,10 +408,10 @@ module.exports = (function () {
           utterance = utterance.NEGATIVE[Math.floor(Math.random() * utterance.NEGATIVE.length)];
         }
 
-        for(deviceId in controllers) {
-          if(deviceId !== 'config') {
-            if(controllers[deviceId].config.typeClass === 'speech') {
-              runCommand.runCommand(deviceId, 'text-' + utterance);
+        for(device in controllers) {
+          if(device !== 'config') {
+            if(controllers[device].config.typeClass === 'speech') {
+              runCommand.runCommand(device, 'text-' + utterance);
 
               break;
             }
@@ -392,7 +420,7 @@ module.exports = (function () {
       }
 
       else if((controllers[device].config) && (controllers[device].config.typeClass === 'smartthings')) {
-        smartThingsMood(command, controllers);
+        smartThingsMood(command, values, controllers);
       }
     }
   };
