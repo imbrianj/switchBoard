@@ -342,7 +342,19 @@ module.exports = (function () {
       };
 
       smartThingsMood = function(command, values, controllers) {
-        var newEmotion;
+        var newEmotion,
+            device,
+            jarvisId;
+
+        for(device in controllers) {
+          if(device !== 'config') {
+            if(controllers[device].config.typeClass === 'jarvis') {
+              jarvisId = device;
+
+              break;
+            }
+          }
+        }
 
         if((values) && (values.mode)) {
           if(mood.mode !== values.mode) {
@@ -364,7 +376,7 @@ module.exports = (function () {
             }
 
             if(emotion) {
-              runCommand.runCommand(deviceId, mood.emotion);
+              runCommand.runCommand(jarvisId, mood.emotion);
             }
           }
         }
@@ -387,10 +399,10 @@ module.exports = (function () {
             break;
           }
 
-          if((deviceId) && (newEmotion)) {
+          if((jarvisId) && (newEmotion)) {
             mood.emotion = newEmotion;
 
-            runCommand.runCommand(deviceId, mood.emotion);
+            runCommand.runCommand(jarvisId, mood.emotion);
           }
         }
       };
