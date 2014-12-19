@@ -1328,6 +1328,10 @@ header .selected a {
 	section.nest .sub-device-list .sub-device-group {
 		max-width: 100%;
 	}
+
+	section .emoji span {
+		font-size: 80%;
+	}
 }
 
 @media (min-width: 1000px) {
@@ -1347,6 +1351,10 @@ header .selected a {
 
 	section.nest .text-device-status .text-device-status li {
 		max-width: 22%;
+	}
+
+	section .emoji span {
+		font-size: 60%;
 	}
 }
 

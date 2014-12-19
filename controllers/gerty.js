@@ -28,12 +28,12 @@ module.exports = (function () {
 
   /**
    * @author brian@bevey.org
-   * @fileoverview Fake controller for Jarvis.  This basically just runs the
+   * @fileoverview Fake controller for Gerty.  This basically just runs the
    *               callback, which will include apps to do a number of simple
    *               tasks.
    */
   return {
-    version : 20141214,
+    version : 20141218,
 
     inputs  : ['command', 'text'],
 
@@ -54,11 +54,11 @@ module.exports = (function () {
         break;
 
         case 'EXCITED'     :
-          emojis = ['😋', '😆', '😂', '😁'];
+          emojis = ['😋', '😂', '😁'];
         break;
 
         case 'HAPPY'       :
-          emojis = ['😄', '😃', '😀', '😊', '😉', '😎', '😋', '😆', '😁', '😛', '😝', '😜']; // '
+          emojis = ['😄', '😃', '😀', '😊', '😉', '😎', '😋', '😁', '😛', '😝', '😜']; // '
         break;
 
         case 'INDIFFERENT' :
@@ -66,7 +66,7 @@ module.exports = (function () {
         break;
 
         case 'LOVE'        :
-          emojis = ['😍', '😘', '😚', '😗', '😙', '😏', '😇', '😆']; // ' Comments to fix Atoms syntax highlighter
+          emojis = ['😍', '😘', '😚', '😗', '😙', '😏', '😇']; // ' Comments to fix Atoms syntax highlighter
         break;
 
         case 'PLAYFUL'     :
@@ -98,7 +98,7 @@ module.exports = (function () {
     },
 
     /**
-     * Random and rare classes should be applied that will have Jarvis have
+     * Random and rare classes should be applied that will have Gerty have
      * simple animations.
      */
     getActionType : function (personality) {
@@ -107,7 +107,7 @@ module.exports = (function () {
           action  = '';
 
       if(personality > random) {
-        // At a rare random event, Jarvis should have some added personality.
+        // At a rare random event, Gerty should have some added personality.
         if((random - 0.75) > 0.2) {
           action = actions[Math.floor(Math.random() * actions.length)];
         }
@@ -117,7 +117,7 @@ module.exports = (function () {
     },
 
     /**
-     * Jarvis should default to being happy and active.
+     * Gerty should default to being happy and active.
      */
     init : function (controller, config) {
       var runCommand = require(__dirname + '/../lib/runCommand');
@@ -128,40 +128,40 @@ module.exports = (function () {
     state : function (controller, config, callback) {
       var runCommand  = require(__dirname + '/../lib/runCommand'),
           deviceState = require(__dirname + '/../lib/deviceState'),
-          jarvisState = deviceState.getDeviceState(controller.config.deviceId),
+          gertyState = deviceState.getDeviceState(controller.config.deviceId),
           personality = (controller.config.personality / 100) || 0.5,
           random      = Math.random(),
-          jarvis      = {};
+          gerty      = {};
 
-      if((jarvisState) && (jarvisState.value) && (personality > random)) {
-        // At a rare random event, Jarvis should have some added personality.
-        if(((random - 0.75) > 0.2) && (jarvisState.value.description !== 'SLEEPING')) {
-          jarvisState.value.description = 'PLAYFUL';
+      if((gertyState) && (gertyState.value) && (personality > random)) {
+        // At a rare random event, Gerty should have some added personality.
+        if(((random - 0.75) > 0.2) && (gertyState.value.description !== 'SLEEPING')) {
+          gertyState.value.description = 'PLAYFUL';
         }
 
-        runCommand.runCommand(controller.config.deviceId, jarvisState.value.description, controller.config.deviceId);
+        runCommand.runCommand(controller.config.deviceId, gertyState.value.description, controller.config.deviceId);
       }
     },
 
     send : function (config) {
-      var jarvis = {},
+      var gerty = {},
           value,
           action;
 
-      jarvis.command     = config.command     || '';
-      jarvis.text        = config.text        || '';
-      jarvis.personality = config.personality || 0.5;
-      jarvis.callback    = config.callback    || function () {};
+      gerty.command     = config.command     || '';
+      gerty.text        = config.text        || '';
+      gerty.personality = config.personality || 0.5;
+      gerty.callback    = config.callback    || function () {};
 
-      value  = this.getEmojiType(jarvis.command);
-      action = this.getActionType(jarvis.personality);
+      value  = this.getEmojiType(gerty.command);
+      action = this.getActionType(gerty.personality);
 
-      if((value) && (jarvis.command)) {
-        jarvis.callback(null, { emoji : value, description : jarvis.command, action : action });
+      if((value) && (gerty.command)) {
+        gerty.callback(null, { emoji : value, description : gerty.command, action : action });
       }
 
-      if(jarvis.text) {
-        jarvis.callback(null, jarvis.text, true);
+      if(gerty.text) {
+        gerty.callback(null, gerty.text, true);
       }
     }
   };

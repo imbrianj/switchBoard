@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global module, String, require, console, Switchboard */
+/*global alert,module, console, require */
 
 /**
  * Copyright (c) 2014 brian@bevey.org
@@ -23,21 +23,36 @@
  * IN THE SOFTWARE.
  */
 
-/**
- * @author brian@bevey.org
- * @fileoverview Unit test for parsers/jarvis.js
- */
+(function(exports){
+  'use strict';
 
-exports.jarvisParserTest = {
-  parser : function (test) {
-    'use strict';
+  exports.gerty = function (deviceId, markup, state, value, language) {
+    var action = '',
+        container;
 
-    var jarvisParser = require(__dirname + '/../../../parsers/jarvis'),
-        markup       = '<h1>Foo</h1> <span>{{JARVIS_DYNAMIC}}</span>',
-        smile        = jarvisParser.jarvis('dummy', markup, 'ok', 'happy');
+    if(typeof SB === 'object') {
+      container = SB.getByTag('span', SB.get(deviceId))[0];
 
-    test.strictEqual(smile.indexOf('{{'), -1, 'All values replaced');
+      if(container) {
+        SB.putText(container, value.emoji);
 
-    test.done();
-  }
-};
+        if(value.action) {
+          container.className = value.action;
+        }
+      }
+
+      markup = '';
+    }
+
+    else {
+      if(value.action) {
+        action = ' class="' + value.action + '"';
+      }
+
+      markup = markup.split('{{GERTY_ACTION}}').join(action);
+      markup = markup.split('{{GERTY_DYNAMIC}}').join(value.emoji);
+    }
+
+    return markup;
+  };
+})(typeof exports === 'undefined' ? this.SB.spec.parsers : exports);

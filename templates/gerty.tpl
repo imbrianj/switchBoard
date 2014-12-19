@@ -1,6 +1,6 @@
 
       <section id="{{DEVICE_ID}}" class="{{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
-        <h1>{{i18n_JARVIS}} <em>{{DEVICE_ACTIVE}}</em></h1>
+        <h1>{{i18n_GERTY}} <em>{{DEVICE_ACTIVE}}</em></h1>
         <div class="text">
           <form class="text-form" action="/" method="get">
             <fieldset>
@@ -12,5 +12,5 @@
             </fieldset>
           </form>
         </div>
-        <div class="emoji"><span{{JARVIS_ACTION}}>{{JARVIS_DYNAMIC}}</span></div>
+        <div class="emoji"><span{{GERTY_ACTION}}>{{GERTY_DYNAMIC}}</span></div>
       </section>

@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global alert,module, console, require */
+/*global module, String, require, console, Switchboard */
 
 /**
  * Copyright (c) 2014 brian@bevey.org
@@ -23,36 +23,21 @@
  * IN THE SOFTWARE.
  */
 
-(function(exports){
-  'use strict';
+/**
+ * @author brian@bevey.org
+ * @fileoverview Unit test for parsers/gerty.js
+ */
 
-  exports.jarvis = function (deviceId, markup, state, value, language) {
-    var action = '',
-        container;
+exports.gertyParserTest = {
+  parser : function (test) {
+    'use strict';
 
-    if(typeof SB === 'object') {
-      container = SB.getByTag('span', SB.get(deviceId))[0];
+    var gertyParser = require(__dirname + '/../../../parsers/gerty'),
+        markup       = '<h1>Foo</h1> <span>{{GERTY_DYNAMIC}}</span>',
+        smile        = gertyParser.gerty('dummy', markup, 'ok', 'happy');
 
-      if(container) {
-        SB.putText(container, value.emoji);
+    test.strictEqual(smile.indexOf('{{'), -1, 'All values replaced');
 
-        if(value.action) {
-          container.className = value.action;
-        }
-      }
-
-      markup = '';
-    }
-
-    else {
-      if(value.action) {
-        action = ' class="' + value.action + '"';
-      }
-
-      markup = markup.split('{{JARVIS_ACTION}}').join(action);
-      markup = markup.split('{{JARVIS_DYNAMIC}}').join(value.emoji);
-    }
-
-    return markup;
-  };
-})(typeof exports === 'undefined' ? this.SB.spec.parsers : exports);
+    test.done();
+  }
+};

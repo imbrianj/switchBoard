@@ -210,8 +210,8 @@ module.exports = (function () {
           PRESET          : "Configurar",
           TAKE            : "Tomar"
         },
-        jarvis : {
-          JARVIS       : "Jarvis",
+        gerty : {
+          GERTY        : "Gerty",
           ARM          : "Armar",
           CAMERA       : "Cámara",
           CHANNEL_DOWN : "Canal Previo",

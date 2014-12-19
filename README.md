@@ -30,7 +30,7 @@ Supported Devices/Services
 |------------------|-------------|----------------------------------------------------------------------------------|
 | Denon            | Testing     | New controller and still in testing                                              |
 | Foscam           | Stable      | Works with FI8910W (if you have another version that this does not work with, let me know and I can add support).  Arm, Disarm, Go to presets, etc. *INSECURE* Exposes camera credentials to users |
-| Jarvis           | Development | A simple interface for all devices that reacts to natural inputs.  New and buggy |
+| Gerty            | Development | A simple interface for all devices that reacts to natural inputs.  New and buggy |
 | LG TVs           | Development | Still need work on authentication                                                |
 | MP3              | Stable      | Works on *nix with mpg123 or OSX with afplay. Win not supported                  |
 | Nest             | Stable      | Works with Nest thermostat and Protect smoke / co detectors                      |

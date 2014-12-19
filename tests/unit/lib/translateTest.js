@@ -34,7 +34,7 @@ exports.translateTest = {
 
     var translate = require('../../../lib/translate');
 
-    test.deepEqual(translate.findSynonyms('jarvis', 'en').SAD, ['Sad', 'Bummed', 'Upset', 'Depressed'], 'Found Synonyms');
+    test.deepEqual(translate.findSynonyms('gerty', 'en').SAD, ['Sad', 'Bummed', 'Upset', 'Depressed'], 'Found Synonyms');
 
     test.done();
   },

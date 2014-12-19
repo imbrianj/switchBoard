@@ -330,7 +330,9 @@ module.exports = (function () {
       else if(command.indexOf('state-mode-') === 0) {
         command = command.replace('state-mode-', '');
 
-        callback(null, { devices : subDevices, mode : smartThingsState.value.mode, groups : config.device.groups });
+        if((command === 'Home') || (command === 'Away') || (command === 'Night')) {
+          callback(null, { devices : subDevices, mode : command, groups : config.device.groups });
+        }
       }
 
       else if(command.indexOf('state-switch-') === 0) {
@@ -557,7 +559,7 @@ module.exports = (function () {
 
                           that.updateState(smartthings, smartthingsData);
 
-                          smartthings.callback(null, dataReply, true);
+                          smartthings.callback(null, smartthingsData, true);
                         }
 
                         else {

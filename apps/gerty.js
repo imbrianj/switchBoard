@@ -25,25 +25,24 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview Execute Jarvis commands.
+ * @fileoverview Execute Gerty commands.
  */
 
 module.exports = (function () {
   'use strict';
 
-  var mood = {};
+  var mood = { mode : 'Home', emotion : 'HAPPY' };
 
   return {
     version : 20141218,
 
-    jarvis : function(device, command, controllers, values, config) {
+    gerty : function(device, command, controllers, values, config) {
       var translate  = require(__dirname + '/../lib/translate'),
           runCommand = require(__dirname + '/../lib/runCommand'),
           deviceState = require(__dirname + '/../lib/deviceState'),
-          utterance  = translate.findSynonyms('jarvis', controllers.config.language),
+          utterance  = translate.findSynonyms('gerty', controllers.config.language),
           message    = '',
           text       = '',
-          emotion    = '',
           speak,
           getGenericDevices,
           getSubDevices,
@@ -125,7 +124,7 @@ module.exports = (function () {
             i         = 0;
 
         for(i; i < codes.length; i += 1) {
-          strings[codes[i]] = translate.translate('{{i18n_' + codes[i] + '}}', 'jarvis', language);
+          strings[codes[i]] = translate.translate('{{i18n_' + codes[i] + '}}', 'gerty', language);
         }
 
         return strings;
@@ -144,7 +143,7 @@ module.exports = (function () {
       };
 
       setEmotion = function(text, device, language) {
-        var synonyms   = translate.findSynonyms('jarvis', language),
+        var synonyms   = translate.findSynonyms('gerty', language),
             keyword    = '',
             command    = '',
             i;
@@ -344,70 +343,85 @@ module.exports = (function () {
       smartThingsMood = function(command, values, controllers) {
         var newEmotion,
             device,
-            jarvisId;
+            gertyId,
+            value;
+
+        if((values) && (values.value)) {
+          value = values.value;
+        }
 
         for(device in controllers) {
           if(device !== 'config') {
-            if(controllers[device].config.typeClass === 'jarvis') {
-              jarvisId = device;
+            if(controllers[device].config.typeClass === 'gerty') {
+              gertyId = device;
 
               break;
             }
           }
         }
 
-        if((values) && (values.mode)) {
-          if(mood.mode !== values.mode) {
-            switch(values.mode) {
+        // We'll have a populated value object with current mode if it's called
+        // from the SmartThings poller.
+        if((value) && (value.mode)) {
+          if(mood.mode !== value.mode) {
+            switch(value.mode) {
               case 'Home' :
-                mood.emotion = 'HAPPY';
-                mood.mode    = values.mode;
+                newEmotion = 'HAPPY';
+                mood.mode  = value.mode;
               break;
 
               case 'Away' :
-                mood.emotion = 'INDIFFERENT';
-                mood.mode    = values.mode;
+                newEmotion = 'INDIFFERENT';
+                mood.mode  = value.mode;
               break;
 
               case 'Night' :
-                mood.emotion = 'SLEEP';
-                mood.mode    = values.mode;
+                newEmotion = 'SLEEP';
+                mood.mode  = value.mode;
               break;
             }
 
-            if(emotion) {
-              runCommand.runCommand(jarvisId, mood.emotion);
+            if(newEmotion) {
+              mood.emotion = newEmotion;
+
+              runCommand.runCommand(gertyId, mood.emotion);
             }
           }
         }
 
+        // Otherwise, we'll assume it's a request from within Switchboard
+        // requesting a mode change - or SmartThings sending an updated state
+        // change.
         else {
           switch(command) {
             case 'subdevice-mode-Away' :
+            case 'subdevice-state-mode-Away' :
               newEmotion = 'INDIFFERENT';
               mood.mode  = 'Away';
             break;
 
             case 'subdevice-mode-Night' :
+            case 'subdevice-state-mode-Night' :
               newEmotion = 'SLEEP';
               mood.mode  = 'Night';
             break;
 
             case 'subdevice-mode-Home' :
+            case 'subdevice-state-mode-Home' :
               newEmotion = 'HAPPY';
               mood.mode  = 'Home';
             break;
           }
 
-          if((jarvisId) && (newEmotion)) {
+          if((gertyId) && (newEmotion)) {
             mood.emotion = newEmotion;
 
-            runCommand.runCommand(jarvisId, mood.emotion);
+            runCommand.runCommand(gertyId, mood.emotion);
           }
         }
       };
 
-      if((controllers[device].config) && (controllers[device].config.typeClass === 'jarvis') && (command.indexOf('text-') === 0)) {
+      if((controllers[device].config) && (controllers[device].config.typeClass === 'gerty') && (command.indexOf('text-') === 0)) {
         text = command.replace('text-', '').toUpperCase();
 
         setEmotion(text, device, controllers.config.language);

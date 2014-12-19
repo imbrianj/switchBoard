@@ -7,7 +7,7 @@ exports.config = {
     serverIp     : '192.168.1.145',
     serverMac    : '00:00:00:00:00:00',
     appCaching   : true,
-    delegate     : ['jarvis'],
+    delegate     : ['gerty'],
     theme        : 'dark',
     language     : 'en',
     default      : 'welcome',
@@ -342,16 +342,16 @@ exports.config = {
     disabled   : true
   },
 
-  jarvis : {
-    typeClass   : 'jarvis',
-    title       : 'Jarvis',
+  gerty : {
+    typeClass   : 'gerty',
+    title       : 'Gerty',
     personality : 80,
-    apps        : { 'Jarvis' : { id            : 'jarvis',
-                                 macros        : { 'Watch A Movie' : 'ps3=PowerOn,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,Left;samsung=sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,HDMI4,sleep,DOWN,sleep,ENTER,sleep,sleep,sleep,sleep,sleep,sleep,ENTER',
-                                                   'Goodnight'     : 'smartthings=subdevice-mode-Night',
-                                                   'Goodbye'       : 'smartthings=subdevice-mode-Away;nest=Away',
-                                                   'Welcome Home'  : 'smartthings=subdevice-mode-Home;nest=Home' },
-                                 controllerIds : ['samsung', 'roku', 'ps3', 'panasonic', 'lg', 'pioneer', 'denon', 'speech', 'stocks', 'weather', 'foscam', 'mp3', 'sms', 'pushover', 'smartthings', 'nest', 'switchBoardCI', 'xbmc', 'raspberryRemote', 'wemo'] } },
+    apps        : { 'Gerty' : { id            : 'gerty',
+                                macros        : { 'Watch A Movie' : 'ps3=PowerOn,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,Circle,sleep,sleep,Left;samsung=sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,HDMI4,sleep,DOWN,sleep,ENTER,sleep,sleep,sleep,sleep,sleep,sleep,ENTER',
+                                                  'Goodnight'     : 'smartthings=subdevice-mode-Night',
+                                                  'Goodbye'       : 'smartthings=subdevice-mode-Away;nest=Away',
+                                                  'Welcome Home'  : 'smartthings=subdevice-mode-Home;nest=Home' },
+                                controllerIds : ['samsung', 'roku', 'ps3', 'panasonic', 'lg', 'pioneer', 'denon', 'speech', 'stocks', 'weather', 'foscam', 'mp3', 'sms', 'pushover', 'smartthings', 'nest', 'switchBoardCI', 'xbmc', 'raspberryRemote', 'wemo'] } },
     disabled    : true
   }
 };

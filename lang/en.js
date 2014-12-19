@@ -206,7 +206,8 @@ module.exports = (function () {
           PRESET          : "Preset",
           TAKE            : "Take"
         },
-        jarvis : {
+        gerty : {
+          GERTY        : "Gerty",
           ARM          : "Arm",
           CAMERA       : "Camera",
           CHANNEL_DOWN : "Channel Down",
@@ -216,7 +217,6 @@ module.exports = (function () {
           DOWN         : "Down",
           ENTER        : "Enter",
           HEAT         : "Heat",
-          JARVIS       : "Jarvis",
           LEFT         : "Left",
           OFF          : "Off",
           ON           : "On",
