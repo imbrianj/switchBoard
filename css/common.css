@@ -843,6 +843,74 @@ section .emoji span {
 	transform: scale(2);
 }
 
+@-moz-keyframes bounce {
+
+}
+
+@-webkit-keyframes bounce {
+
+}
+
+@keyframes bounce {
+
+}
+
+@-moz-keyframes roll {
+
+}
+
+@-webkit-keyframes roll {
+
+}
+
+@keyframes roll {
+
+}
+
+@-moz-keyframes shrink {
+
+}
+
+@-webkit-keyframes shrink {
+
+}
+
+@keyframes shrink {
+
+}
+
+@-moz-keyframes walk {
+
+}
+
+@-webkit-keyframes walk {
+
+}
+
+@keyframes walk {
+
+}
+
+@-moz-keyframes shake {
+
+}
+
+@-webkit-keyframes shake {
+
+}
+
+@keyframes shake {
+
+}
+
+section .emoji .bounce,
+section .emoji .roll,
+section .emoji .shrink,
+section .emoji .walk,
+section .emoji .shake {
+
+}
+
 section .current {
 	font-size: 50%;
 	text-align: center;

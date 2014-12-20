@@ -28,7 +28,7 @@ Supported Devices/Services
 
 | Name             | Status      | Notes                                                                            |
 |------------------|-------------|----------------------------------------------------------------------------------|
-| Denon            | Testing     | New controller and still in testing                                              |
+| Denon            | Stable      | New controller and still in testing                                              |
 | Foscam           | Stable      | Works with FI8910W (if you have another version that this does not work with, let me know and I can add support).  Arm, Disarm, Go to presets, etc. *INSECURE* Exposes camera credentials to users |
 | Gerty            | Development | A simple interface for all devices that reacts to natural inputs.  New and buggy |
 | LG TVs           | Development | Still need work on authentication                                                |
@@ -46,9 +46,9 @@ Supported Devices/Services
 | Speech           | Stable      | Uses espeak for *nix, say on OSX.  Win not supported                             |
 | Stocks           | Stable      | Uses Yahoo Finance                                                               |
 | Travis CI        | Stable      |                                                                                  |
-| Belkin Wemo      | Testing     | New controller and still in testing                                              |
+| Belkin Wemo      | Stable      | New controller and still in testing                                              |
 | Weather          | Stable      | Uses Yahoo Weather                                                               |
-| XBMC             | Testing     | Basic controls work - testing display of current media                           |
+| XBMC             | Stable      | Basic controls work                                                              |
 
 ### Controlling your PS3 -- General instructions
 

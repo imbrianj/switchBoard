@@ -33,7 +33,7 @@ module.exports = (function () {
    *               tasks.
    */
   return {
-    version : 20141218,
+    version : 20141219,
 
     inputs  : ['command', 'text'],
 
@@ -58,7 +58,7 @@ module.exports = (function () {
         break;
 
         case 'HAPPY'       :
-          emojis = ['😄', '😃', '😀', '😊', '😉', '😎', '😋', '😁', '😛', '😝', '😜']; // '
+          emojis = ['😄', '😃', '😀', '😊', '😉', '😎', '😋', '😁', '😛', '😝', '😜']; // ' Comments to fix Atoms syntax highlighter on Linux
         break;
 
         case 'INDIFFERENT' :
@@ -66,7 +66,7 @@ module.exports = (function () {
         break;
 
         case 'LOVE'        :
-          emojis = ['😍', '😘', '😚', '😗', '😙', '😏', '😇']; // ' Comments to fix Atoms syntax highlighter
+          emojis = ['😍', '😘', '😚', '😗', '😙', '😏', '😇']; // '
         break;
 
         case 'PLAYFUL'     :
@@ -103,7 +103,7 @@ module.exports = (function () {
      */
     getActionType : function (personality) {
       var random  = Math.random(),
-          actions = ['bounce', 'roll', 'shrink', 'walk'],
+          actions = ['bounce', 'roll', 'shrink', 'walk', 'shake'],
           action  = '';
 
       if(personality > random) {

@@ -33,7 +33,7 @@ module.exports = (function () {
    * @requires xml2js, http, fs, request, path
    */
   return {
-    version : 20140903,
+    version : 20141219,
 
     inputs  : ['command', 'text', 'list', 'launch'],
 
@@ -239,29 +239,21 @@ module.exports = (function () {
       roku.devicePort = config.devicePort              || 8060;
       roku.callback   = config.callback                || function () {};
 
-      if(roku.command === 'state') {
-        this.state( { config : { deviceId : config.device.deviceId,
-                                 deviceIp : roku.deviceIp,
-                                 device   : { title : config.device.title } } });
-      }
-
-      else {
-        request = http.request(this.postPrepare(roku), function(response) {
-                    response.on('data', function(response) {
-                      dataReply += response;
-                    });
-
-                    response.once('end', function() {
-                      roku.callback(null, dataReply);
-                    });
+      request = http.request(this.postPrepare(roku), function(response) {
+                  response.on('data', function(response) {
+                    dataReply += response;
                   });
 
-        request.once('error', function(err) {
-          roku.callback(err);
-        });
+                  response.once('end', function() {
+                    roku.callback(null, dataReply);
+                  });
+                });
 
-        request.end();
-      }
+      request.once('error', function(err) {
+        roku.callback(err);
+      });
+
+      request.end();
     }
   };
 }());

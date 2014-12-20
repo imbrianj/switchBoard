@@ -36,7 +36,7 @@ module.exports = (function () {
    *       http://wiki.xbmc.org/index.php?title=JSON-RPC_API/Examples
    */
   return {
-    version : 20141111,
+    version : 20141219,
 
     inputs  : ['command', 'text', 'list'],
 
@@ -128,20 +128,21 @@ module.exports = (function () {
       xbmc.devicePort = config.device.devicePort;
       xbmc.player     = config.player                  || '';
       xbmc.list       = config.list                    || '';
+      xbmc.state      = config.command === 'state';
       xbmc.command    = this.hashTable[config.command] || '';
       xbmc.text       = config.text                    || '';
       xbmc.devicePort = config.devicePort              || 9090;
       xbmc.callback   = config.callback                || function () {};
 
       if((Socket) && (!Socket.destroyed) && (xbmc.command)) {
-        if(xbmc.command !== 'state') {
+        if(!xbmc.state) {
           Socket.write(that.postData(xbmc));
         }
 
         xbmc.callback(null, 'ok');
       }
 
-      else if(xbmc.command) {
+      else if((xbmc.command) || (xbmc.state)) {
         Socket = new net.Socket();
         Socket.connect(xbmc.devicePort, xbmc.deviceIp);
 
@@ -153,9 +154,10 @@ module.exports = (function () {
           xbmc.callback(null, 'ok');
         });
 
-        if(xbmc.command === 'state') {
+        if(xbmc.state) {
           Socket.setTimeout(xbmc.timeout, function() {
             Socket.destroy();
+
             xbmc.callback({ code : 'ETIMEDOUT' });
           });
         }
@@ -200,7 +202,7 @@ module.exports = (function () {
           var deviceState = require(__dirname + '/../lib/deviceState'),
               xbmcState   = deviceState.getDeviceState(config.deviceId);
 
-          if((err.code !== 'ETIMEDOUT') || (xbmc.command !== 'state')) {
+          if((err.code !== 'ETIMEDOUT') || (!xbmc.state)) {
             xbmc.callback(err, xbmcState);
           }
         });
