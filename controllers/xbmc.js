@@ -195,7 +195,12 @@ module.exports = (function () {
         });
 
         Socket.once('end', function() {
+          var deviceState = require(__dirname + '/../lib/deviceState'),
+              xbmcState   = deviceState.getDeviceState(config.deviceId);
+
           Socket = null;
+
+          xbmc.callback({ code : 'ETIMEDOUT' }, xbmcState);
         });
 
         Socket.once('error', function(err) {

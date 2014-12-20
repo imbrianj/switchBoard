@@ -133,7 +133,7 @@ module.exports = (function () {
       samsung.remoteName  = config.remoteName          || 'SwitchBoard Remote';
       samsung.callback    = config.callback            || function() {};
 
-      if((Socket) && (!Socket.destroyed) && ((samsung.command) || (samsung.text))) {
+      if((Socket) && (!Socket.destroyed) && (!samsung.state) && ((samsung.command) || (samsung.text))) {
         if(!samsung.state) {
           Socket.write(that.chunkTwo(samsung));
         }
@@ -154,16 +154,18 @@ module.exports = (function () {
           samsung.callback(null, 'ok');
         });
 
-        if(Socket.state) {
-          Socket.setTimeout(Socket.timeout, function() {
+        if(samsung.state) {
+          Socket.setTimeout(samsung.timeout, function() {
             Socket.destroy();
 
-            Socket.callback({ code : 'ETIMEDOUT' });
+            samsung.callback({ code : 'ETIMEDOUT' });
           });
         }
 
         Socket.once('end', function() {
           Socket = null;
+
+          samsung.callback({ code : 'ETIMEDOUT' });
         });
 
         Socket.once('error', function(err) {
