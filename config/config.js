@@ -260,7 +260,8 @@ exports.config = {
                        'Dining Lights'    : 120 },
     apps           : { 'Announce'         : { id            : 'announcePresence',
                                               presence      : ['Brian', 'Goblin'],
-                                              controllerIds : ['speech'] }
+                                              controllerIds : ['speech'],
+                                              disabled      : true }
                      },
     disabledMarkup : false,
     disabled       : true

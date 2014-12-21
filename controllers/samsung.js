@@ -26,8 +26,6 @@
 module.exports = (function () {
   'use strict';
 
-  var Socket = null;
-
   /**
    * @author brian@bevey.org
    * @fileoverview Basic control of Samsung SmartTVs from 2011 onward.
@@ -36,7 +34,7 @@ module.exports = (function () {
    *       http://forum.samygo.tv/viewtopic.php?f=12&t=1792
    */
   return {
-    version : 20141219,
+    version : 20140819,
 
     inputs  : ['command', 'text'],
 
@@ -118,14 +116,14 @@ module.exports = (function () {
     send : function (config) {
       var net             = require('net'),
           samsung         = {},
-          that            = this;
+          that            = this,
+          client          = new net.Socket();
 
       samsung.deviceIp    = config.device.deviceIp;
       samsung.serverIp    = config.config.serverIp;
       samsung.serverMac   = config.config.serverMac;
       samsung.timeout     = config.device.localTimeout || config.config.localTimeout;
       samsung.command     = config.command             || '';
-      samsung.state       = config.command === 'state';
       samsung.text        = config.text                || '';
       samsung.devicePort  = config.devicePort          || 55000;
       samsung.appString   = config.appString           || 'iphone..iapp.samsung';
@@ -133,50 +131,31 @@ module.exports = (function () {
       samsung.remoteName  = config.remoteName          || 'SwitchBoard Remote';
       samsung.callback    = config.callback            || function() {};
 
-      if((Socket) && (!Socket.destroyed) && (!samsung.state) && ((samsung.command) || (samsung.text))) {
-        if(!samsung.state) {
-          Socket.write(that.chunkTwo(samsung));
+      client.connect(samsung.devicePort, samsung.deviceIp);
+
+      client.once('connect', function() {
+        if((samsung.command) || (samsung.text)) {
+          client.write(that.chunkOne(samsung));
+          client.write(that.chunkTwo(samsung));
         }
+
+        client.end();
 
         samsung.callback(null, 'ok');
-      }
+      });
 
-      else if((samsung.command) || (samsung.text) || (samsung.state)) {
-        Socket = new net.Socket();
-        Socket.connect(samsung.devicePort, samsung.deviceIp);
-
-        Socket.once('connect', function() {
-          if((samsung.command) || (samsung.text)) {
-            Socket.write(that.chunkOne(samsung));
-            Socket.write(that.chunkTwo(samsung));
-          }
-
-          samsung.callback(null, 'ok');
-        });
-
-        if(samsung.state) {
-          Socket.setTimeout(samsung.timeout, function() {
-            Socket.destroy();
-
-            samsung.callback({ code : 'ETIMEDOUT' });
-          });
-        }
-
-        Socket.once('end', function() {
-          Socket = null;
-
+      if(samsung.command === 'state') {
+        client.setTimeout(samsung.timeout, function() {
+          client.destroy();
           samsung.callback({ code : 'ETIMEDOUT' });
         });
-
-        Socket.once('error', function(err) {
-          var deviceState  = require(__dirname + '/../lib/deviceState'),
-              samsungState = deviceState.getDeviceState(config.deviceId);
-
-          if((err.code !== 'ETIMEDOUT') || (!samsung.state)) {
-            samsung.callback(err, samsungState);
-          }
-        });
       }
+
+      client.once('error', function(err) {
+        if((err.code !== 'ETIMEDOUT') || (samsung.command !== 'state')) {
+          samsung.callback(err);
+        }
+      });
     }
   };
 }());
