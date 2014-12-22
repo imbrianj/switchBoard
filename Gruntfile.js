@@ -145,11 +145,43 @@ module.exports = function(grunt) {
     }
   });
 
+  grunt.registerTask('install-precommit', function() {
+    var fs   = require('fs'),
+        done = this.async(),
+        hook;
+
+    hook  = '#!/bin/bash\n';
+    hook += '\n';
+    hook += 'grunt\n';
+    hook += 'RETVAL=$?\n';
+    hook += '\n';
+    hook += 'if [ $RETVAL -ne 0 ]\n';
+    hook += 'then\n';
+    hook += '  echo -e "\\e[31mGit Precommit\\e[0m: Ran into an issue"\n';
+    hook += '  exit 1\n';
+    hook += 'else\n';
+    hook += '  echo -e "\\e[32mGit Precommit\\e[0m: Finished without error"\n';
+    hook += 'fi';
+
+    fs.writeFile(__dirname + '/.git/hooks/pre-commit', hook, function(err) {
+      if(err) {
+        console.log('\x1b[31mGit Precommit\x1b[0m: Hook failed to generate');
+      }
+
+      else {
+        fs.chmodSync(__dirname + '/.git/hooks/pre-commit', '755');
+        console.log('\x1b[32mGit Precommit\x1b[0m: Hook generated');
+      }
+
+      done();
+    });
+  });
+
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.registerTask('default', ['concat', 'cssmin', 'jshint', 'nodeunit', 'uglify', 'translation', 'freshenManifest']);
+  grunt.registerTask('default', ['concat', 'cssmin', 'jshint', 'nodeunit', 'uglify', 'translation', 'install-precommit', 'freshenManifest']);
 };
