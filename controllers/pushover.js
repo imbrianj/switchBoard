@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic control of Pushover notification API.
    */
   return {
-    version : 20140813,
+    version : 20141221,
 
     inputs  : ['text'],
 
@@ -106,9 +106,7 @@ module.exports = (function () {
         pushover.callback(err);
       });
 
-      request.write(pushover.postRequest);
-
-      request.end();
+      request.end(pushover.postRequest);
     }
   };
 }());

@@ -32,7 +32,7 @@ module.exports = (function () {
    * @requires http, xml2js
    */
   return {
-    version : 201401108,
+    version : 20141221,
 
     inputs  : ['subdevice'],
 
@@ -245,9 +245,7 @@ module.exports = (function () {
         }
       });
 
-      request.write(this.postData(wemo));
-
-      request.end();
+      request.end(this.postData(wemo));
 
       return dataReply;
     }

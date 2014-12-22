@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic control of Twilio text messaging API.
    */
   return {
-    version : 20140813,
+    version : 20141221,
 
     inputs  : ['text'],
 
@@ -109,9 +109,7 @@ module.exports = (function () {
         sms.callback(err);
       });
 
-      request.write(sms.postRequest);
-
-      request.end();
+      request.end(sms.postRequest);
     }
   };
 }());

@@ -34,7 +34,7 @@ module.exports = (function () {
    *       http://forum.loxone.com/enen/software/4876-lg-tv-http-control.html#post32692
    */
   return {
-    version : 20140824,
+    version : 20141221,
 
     inputs  : ['command'],
 
@@ -233,14 +233,12 @@ module.exports = (function () {
       });
 
       if(lg.command === 'pair') {
-        request.write(this.postPairData(lg));
+        request.end(this.postPairData(lg));
       }
 
       else {
-        request.write(this.postData(lg));
+        request.end(this.postData(lg));
       }
-
-      request.end();
 
       return dataReply;
     }

@@ -34,7 +34,7 @@ module.exports = (function () {
    *       http://cocoontech.com/forums/topic/21266-panasonic-viera-plasma-ip-control/page-2
    */
   return {
-    version : 20140813,
+    version : 20141221,
 
     inputs  : ['command', 'text'],
 
@@ -161,8 +161,7 @@ module.exports = (function () {
         }
       });
 
-      request.write(this.postData(panasonic));
-      request.end();
+      request.end(this.postData(panasonic));
 
       return dataReply;
     }
