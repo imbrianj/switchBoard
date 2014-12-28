@@ -263,29 +263,33 @@ module.exports = (function () {
 
           // "topaz" contains only smoke detectors.
           for(i in response.topaz) {
-            nest.devices[response.topaz[i].serial_number]         = {};
-            nest.devices[response.topaz[i].serial_number].serial  = response.topaz[i].serial_number;
-            nest.devices[response.topaz[i].serial_number].smoke   = response.topaz[i].smoke_status         === 0 ? 'ok' : 'err';
-            nest.devices[response.topaz[i].serial_number].co      = response.topaz[i].co_status            === 0 ? 'ok' : 'err';
-            nest.devices[response.topaz[i].serial_number].battery = response.topaz[i].battery_health_state === 0 ? 'ok' : 'err';
-            nest.devices[response.topaz[i].serial_number].label   = that.findLabel(response.topaz[i].where_id, config.language);
-            nest.devices[response.topaz[i].serial_number].type    = 'protect';
+            if((response.topaz[i]) && (response.topaz[i].serial_number)) {
+              nest.devices[response.topaz[i].serial_number]         = {};
+              nest.devices[response.topaz[i].serial_number].serial  = response.topaz[i].serial_number;
+              nest.devices[response.topaz[i].serial_number].smoke   = response.topaz[i].smoke_status         === 0 ? 'ok' : 'err';
+              nest.devices[response.topaz[i].serial_number].co      = response.topaz[i].co_status            === 0 ? 'ok' : 'err';
+              nest.devices[response.topaz[i].serial_number].battery = response.topaz[i].battery_health_state === 0 ? 'ok' : 'err';
+              nest.devices[response.topaz[i].serial_number].label   = that.findLabel(response.topaz[i].where_id, config.language);
+              nest.devices[response.topaz[i].serial_number].type    = 'protect';
+            }
           }
 
           // "device" contains only thermostats.
           for(i in response.device) {
-            nest.devices[response.device[i].serial_number]              = {};
-            nest.devices[response.device[i].serial_number].serial       = response.device[i].serial_number;
-            nest.devices[response.device[i].serial_number].state        = response.shared[response.device[i].serial_number].target_temperature_type;
-            nest.devices[response.device[i].serial_number].active       = response.shared[response.device[i].serial_number].hvac_heater_state ? 'heat' : response.shared[response.device[i].serial_number].hvac_ac_state ? 'cool' : 'off';
-            nest.devices[response.device[i].serial_number].fanMode      = response.device[i].fan_mode;
-            nest.devices[response.device[i].serial_number].humidity     = response.device[i].current_humidity;
-            nest.devices[response.device[i].serial_number].temp         = that.cToF(response.shared[response.device[i].serial_number].current_temperature);
-            nest.devices[response.device[i].serial_number].target       = that.cToF(response.shared[response.device[i].serial_number].target_temperature);
-            nest.devices[response.device[i].serial_number].timeToTarget = response.device[i].time_to_target;
-            nest.devices[response.device[i].serial_number].leaf         = response.device[i].leaf;
-            nest.devices[response.device[i].serial_number].label        = that.findLabel(response.device[i].where_id);
-            nest.devices[response.device[i].serial_number].type         = 'thermostat';
+            if((response.device[i]) && (response.device[i].serial_number)) {
+              nest.devices[response.device[i].serial_number]              = {};
+              nest.devices[response.device[i].serial_number].serial       = response.device[i].serial_number;
+              nest.devices[response.device[i].serial_number].state        = response.shared[response.device[i].serial_number].target_temperature_type;
+              nest.devices[response.device[i].serial_number].active       = response.shared[response.device[i].serial_number].hvac_heater_state ? 'heat' : response.shared[response.device[i].serial_number].hvac_ac_state ? 'cool' : 'off';
+              nest.devices[response.device[i].serial_number].fanMode      = response.device[i].fan_mode;
+              nest.devices[response.device[i].serial_number].humidity     = response.device[i].current_humidity;
+              nest.devices[response.device[i].serial_number].temp         = that.cToF(response.shared[response.device[i].serial_number].current_temperature);
+              nest.devices[response.device[i].serial_number].target       = that.cToF(response.shared[response.device[i].serial_number].target_temperature);
+              nest.devices[response.device[i].serial_number].timeToTarget = response.device[i].time_to_target;
+              nest.devices[response.device[i].serial_number].leaf         = response.device[i].leaf;
+              nest.devices[response.device[i].serial_number].label        = that.findLabel(response.device[i].where_id);
+              nest.devices[response.device[i].serial_number].type         = 'thermostat';
+            }
           }
 
           callback(null, nest);
