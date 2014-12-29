@@ -33,7 +33,7 @@ SB.spec = (function () {
   'use strict';
 
   return {
-    version : 20141204,
+    version : 20141226,
 
     state : {},
 
@@ -650,6 +650,14 @@ SB.spec = (function () {
           touchStartX      = 0,
           touchStartY      = 0,
           touchThreshold   = 5,
+          transcribe       = null,
+          transcribeParse  = function(text) {
+            var device = commandIssued;
+
+            SB.vibrate();
+            SB.spec.sendTextInput(text, device, 'text');
+            stopCommand();
+          },
           findCommand      = function(e) {
             var elm      = SB.getTarget(e),
                 tagName  = elm.tagName.toLowerCase(),
@@ -665,10 +673,18 @@ SB.spec = (function () {
 
             return validElm;
           },
-          fireCommand      = function(e) {
+          fireCommand      = function(e, speech) {
             var elm = findCommand(e);
 
-            if((elm) && (!interrupt)) {
+            if(speech) {
+              SB.vibrate();
+
+              commandIssued = SB.getTarget(e).parentNode.parentNode.id;
+              transcribe = SB.transcribe(transcribeParse);
+              transcribe.start();
+            }
+
+            else if((elm) && (!interrupt)) {
               if(elm.rel === 'external') {
                 window.open(elm.href, '_blank').focus();
               }
@@ -759,8 +775,9 @@ SB.spec = (function () {
         });
 
         SB.event.add(SB.spec.uiComponents.body, 'touchend', function(e) {
-          // If you've only quickly tapped a command, we don't need to wait.
-          if(tapped) {
+          // Emoji touch events are cancelled after speech recognition - which
+          // requires lifting your finger to accept the dialog.
+          if(!SB.hasClass(SB.getTarget(e).parentNode, 'emoji') && (tapped)) {
             fireCommand(e);
           }
 
@@ -781,7 +798,11 @@ SB.spec = (function () {
       }
 
       SB.event.add(SB.spec.uiComponents.body, 'mousedown', function(e) {
-        if((touched === false) && (tapped === false)) {
+        if(SB.hasClass(SB.getTarget(e).parentNode, 'emoji')) {
+          fireCommand(e, true);
+        }
+
+        else if((touched === false) && (tapped === false)) {
           interrupt = false;
 
           fireCommand(e);
@@ -792,7 +813,9 @@ SB.spec = (function () {
       });
 
       SB.event.add(SB.spec.uiComponents.body, 'mouseup', function(e) {
-        stopCommand(e);
+        if(!SB.hasClass(SB.getTarget(e).parentNode, 'emoji')) {
+          stopCommand(e);
+        }
       });
 
       SB.event.add(SB.spec.uiComponents.body, 'click', function(e) {
@@ -803,19 +826,30 @@ SB.spec = (function () {
     },
 
     /*
-     * Handles text and number input execution.  If you support WebSockets and
-     * have an active connection, we'll use that.  If not, we'll use XHR.
+     * Accepts form inputs for text and numbers - grabs the values required and
+     * passes them along for submission.
      */
     sendInput : function(elm) {
-      var ts   = new Date().getTime(),
-          text = '',
+      var text = '',
           type = '',
-          device,
-          ajaxRequest;
+          device;
 
       text   = SB.getByTag('input', elm, 'input')[0].value;
       device = SB.getByTag('input', elm, 'input')[0].name;
       type   = SB.getByClass('input-type', elm, 'input')[0].value;
+
+      SB.spec.sendTextInput(text, device, type);
+    },
+
+    /*
+     * Handles text and number input execution.  If you support WebSockets and
+     * have an active connection, we'll use that.  If not, we'll use XHR.
+     */
+    sendTextInput : function(text, device, type) {
+      var ts = new Date().getTime(),
+          ajaxRequest;
+
+      type = type || 'text';
 
       if(SB.spec.socket) {
         if(SB.spec.checkConnection()) {
@@ -828,7 +862,7 @@ SB.spec = (function () {
       else {
         ajaxRequest = {
           path       : '/',
-          param      : device + '=' + type + '-' + text,
+          param      : device + '=' + type + '-' + text + '&ts=' + ts,
           method     : 'POST',
           onComplete : function () {
             SB.log(ajaxRequest.response);

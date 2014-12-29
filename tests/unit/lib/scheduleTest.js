@@ -33,18 +33,9 @@ exports.scheduleTest = {
     'use strict';
 
     var schedule   = require(__dirname + '/../../../lib/schedule'),
-        controller = { weather : { config : { typeClass : 'weather' },
-                                   event  : { fire : function(deviceType, source, controllers) {
-                                                       console.log('This should print');
-                                                     } } },
-                       config  : { config : { thisShouldnt : 'execute' },
-                                   event  : { fire : function(deviceType, source, controllers) {
-                                                       console.log('This should NOT print');
-                                                     } } },
-                       foo     : { config : { thisShouldnt : 'execute' },
-                                   event  : { fire : function(deviceType, source, controllers) {
-                                                       console.log('This should NOT print');
-                                                     } } } };
+        controller = { weather : { config : { typeClass    : 'weather' } },
+                       config  : { config : { thisShouldnt : 'execute' } },
+                       foo     : { config : { thisShouldnt : 'execute' } } };
 
     test.strictEqual(schedule.fire(controller), true, 'Schedule shouldnt choke on config or a poorly configured controller');
 

@@ -28,7 +28,7 @@ SB = (function () {
   'use strict';
 
   return {
-    version : 20141217,
+    version : 20141226,
 
    /**
     * Stops event bubbling further.
@@ -626,6 +626,8 @@ SB = (function () {
           process;
 
       if ('webkitSpeechRecognition' in window) {
+        SB.log('Supported', 'Transcribe', 'info');
+
         transcribe = new webkitSpeechRecognition();
 
         process = function(e) {
@@ -640,6 +642,8 @@ SB = (function () {
       else {
         SB.log('Not supported', 'Transcribe', 'error');
       }
+
+      return transcribe;
     },
 
     ajax : {
