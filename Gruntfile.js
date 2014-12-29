@@ -42,7 +42,6 @@ module.exports = function(grunt) {
          mock client objects that would otherwise be picked up in
          tests/unit/parsers/ */
       all : ['tests/unit/controllers/*Test.js',
-             'tests/unit/events/*Test.js',
              'tests/unit/lib/*Test.js',
              'tests/unit/parsers/*Test.js',
              'tests/unit/js/*Test.js']
@@ -148,32 +147,43 @@ module.exports = function(grunt) {
   grunt.registerTask('install-precommit', function() {
     var fs   = require('fs'),
         done = this.async(),
+        file = __dirname + '/.git/hooks/pre-commit',
         hook;
 
-    hook  = '#!/bin/bash\n';
-    hook += '\n';
-    hook += 'grunt\n';
-    hook += 'RETVAL=$?\n';
-    hook += '\n';
-    hook += 'if [ $RETVAL -ne 0 ]\n';
-    hook += 'then\n';
-    hook += '  echo -e "\\e[31mGit Precommit\\e[0m: Ran into an issue"\n';
-    hook += '  exit 1\n';
-    hook += 'else\n';
-    hook += '  echo -e "\\e[32mGit Precommit\\e[0m: Finished without error"\n';
-    hook += 'fi';
+    fs.exists(file, function(exists) {
+      if(!exists) {
+        hook  = '#!/bin/bash\n';
+        hook += '\n';
+        hook += 'grunt\n';
+        hook += 'RETVAL=$?\n';
+        hook += '\n';
+        hook += 'if [ $RETVAL -ne 0 ]\n';
+        hook += 'then\n';
+        hook += '  echo -e "\\e[31mGit Precommit\\e[0m: Ran into an issue"\n';
+        hook += '  exit 1\n';
+        hook += 'else\n';
+        hook += '  echo -e "\\e[32mGit Precommit\\e[0m: Finished without error"\n';
+        hook += 'fi';
 
-    fs.writeFile(__dirname + '/.git/hooks/pre-commit', hook, function(err) {
-      if(err) {
-        console.log('\x1b[31mGit Precommit\x1b[0m: Hook failed to generate');
+        fs.writeFile(file, hook, function(err) {
+          if(err) {
+            console.log('\x1b[31mGit Precommit\x1b[0m: Hook failed to generate');
+          }
+
+          else {
+            fs.chmodSync(file, '755');
+            console.log('\x1b[32mGit Precommit\x1b[0m: Hook generated');
+          }
+
+          done();
+        });
       }
 
       else {
-        fs.chmodSync(__dirname + '/.git/hooks/pre-commit', '755');
-        console.log('\x1b[32mGit Precommit\x1b[0m: Hook generated');
-      }
+        console.log('\x1b[32mGit Precommit\x1b[0m: File already exists');
 
-      done();
+        done();
+      }
     });
   });
 
