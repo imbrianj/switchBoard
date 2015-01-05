@@ -36,7 +36,7 @@ exports.rokuParserTest = {
         markup     = '<h1>Foo</h1> <div>{{ROKU_DYNAMIC}}</div>',
         value      = { foo : { id : 'TESTID', cache : 'TESTCACHE', name : 'TESTNAME' },
                        bar : { id : 'TEST2',  cache : 'CACHE2',    name : 'BAR TEST' } },
-        fragments  = { list : '<span>{{APP_ID}}</span> <em>{{APP_IMG}}</em> <span>{{APP_NAME}}</span.' },
+        fragments  = { list : '<span>{{APP_ID}}</span> <em>{{APP_IMG}}</em> <span>{{APP_NAME}}</span>' },
         goodMarkup = rokuParser.roku('dummy', markup, 'ok', value, fragments),
         noValue    = rokuParser.roku('dummy', markup, 'ok', null,  fragments);
 

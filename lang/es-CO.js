@@ -212,6 +212,7 @@ module.exports = (function () {
         },
         gerty : {
           GERTY        : "Gerty",
+          AND          : "Y",
           ARM          : "Armar",
           CAMERA       : "Cámara",
           CHANNEL_DOWN : "Canal Previo",
@@ -402,6 +403,9 @@ module.exports = (function () {
           GAIN    : "Ganancia",
           NEUTRAL : "Neutral",
           SELL    : "El valor de {{LABEL}} se ha incrementado mas de ${{PRICE}}.  ¿Considere una venta?"
+        },
+        traffic : {
+          TRAFFIC : "Tráfico"
         },
         travis : {
           TRAVIS        : "Travis",

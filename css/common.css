@@ -568,7 +568,8 @@ section .text-block li .name {
 }
 
 section .installed,
-section .installed-list {
+section .installed-list,
+section .image-list {
 	float: none;
 	margin: 0 auto;
 	text-align: center;
@@ -584,7 +585,8 @@ section .installed .sub-device-list li {
 
 section .installed .sub-device-group,
 section .installed .sub-device-group li,
-section .installed-list li {
+section .installed-list li,
+section .image-list li {
 	display: inline-block;
 	margin: .1em .5%;
 	max-width: 30%;
@@ -592,7 +594,9 @@ section .installed-list li {
 	width: 500px;
 }
 
-section .installed-list li {
+section .installed-list li,
+section .image-list li {
+	max-width: 100%;
 	width: auto;
 }
 
@@ -605,6 +609,11 @@ section .installed-list li img {
 	max-height: 150px;
 	max-width: 100%;
 	width: 250px;
+}
+
+section .image-list li img {
+	max-height: 250px;
+	max-width: 100%;
 }
 
 section ol,

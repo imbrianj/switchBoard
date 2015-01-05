@@ -11,7 +11,7 @@ exports.config = {
     theme        : 'dark',
     language     : 'en',
     default      : 'welcome',
-    macroPause   : 1000,
+    macroPause   : 1500,
     pollMinutes  : 5,
     pollSeconds  : 15,
     localTimeout : 1000
@@ -161,6 +161,33 @@ exports.config = {
     apps      : { 'Announce' : { id            : 'announceFoscam',
                                  controllerIds : ['speech'] } },
     disabled  : true
+  },
+
+  /*
+   * Most states have a DOT site with available traffic cams.  Drop in the
+   * actual image URL and title for each that you're interested in.  Some images
+   * will already include some sort of cache-busting suffix - be sure to omit
+   * that.  SwitchBoard will automatically append a unique cache bust param for
+   * every request.
+   *
+   * You can use this site to look up any local webcams to use:
+   * http://www.leonardsworlds.com/traffic/traffic_camera_directory.htm
+   * Simply right click on any standard .jpg image and "copy image URL".
+   */
+  traffic : {
+    typeClass : 'traffic',
+    title     : 'Traffic Cams',
+    cameras   : [{ title : 'I-5 &amp; Denny',           image : 'http://images.wsdot.wa.gov/nw/005vc16645.jpg' },
+                 { title : 'I-5 &amp; Pine',            image : 'http://images.wsdot.wa.gov/nw/005vc16607.jpg' },
+                 { title : 'I-5 &amp; Mercer',          image : 'http://images.wsdot.wa.gov/nw/005vc16702.jpg' },
+                 { title : 'I-5 &amp; Northgate',       image : 'http://images.wsdot.wa.gov/nw/005vc17277.jpg' },
+                 { title : 'I-5 &amp; Roanoke',         image : 'http://images.wsdot.wa.gov/nw/005vc16802.jpg' },
+                 { title : 'I-5 &amp; Yesler',          image : 'http://images.wsdot.wa.gov/nw/005vc16508.jpg' },
+                 { title : '99 &amp; S King',           image : 'http://images.wsdot.wa.gov/nw/099vc03072.jpg' },
+                 { title : 'Elliot &amp; Broad',        image : 'http://www.seattle.gov/trafficcams/images/Elliott_Broad.jpg' },
+                 { title : 'Stewart, Yale &amp; Denny', image : 'http://www.seattle.gov/trafficcams/images/Yale_Denny.jpg' },
+                 { title : '15th &amp; Emerson',        image : 'http://www.seattle.gov/trafficcams/images/15W_Emerson.jpg' }],
+    disabled  : false
   },
 
   /*

@@ -45,6 +45,7 @@ Supported Devices/Services
 | SMS              | Stable      | Uses Twilio. Requires ID and token                                               |
 | Speech           | Stable      | Uses espeak for *nix, say on OSX.  Win not supported                             |
 | Stocks           | Stable      | Uses Yahoo Finance                                                               |
+| Traffic Cams     | Testing     | View multiple traffic webcams.                                                   |
 | Travis CI        | Stable      |                                                                                  |
 | Belkin Wemo      | Stable      | New controller and still in testing                                              |
 | Weather          | Stable      | Uses Yahoo Weather                                                               |
