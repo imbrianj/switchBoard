@@ -28,8 +28,6 @@
  * @fileoverview Unit test for controllers/nest.js
  */
 
-State = {};
-
 exports.nestControllerTest = {
   fragments : function(test) {
     'use strict';

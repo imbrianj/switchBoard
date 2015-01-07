@@ -33,7 +33,7 @@ Supported Devices/Services
 | Gerty            | Development | A simple interface for all devices that reacts to natural inputs.  New and buggy |
 | LG TVs           | Development | Still need work on authentication                                                |
 | MP3              | Stable      | Works on *nix with mpg123 or OSX with afplay. Win not supported                  |
-| Nest             | Stable      | Works with Nest thermostat and Protect smoke / co detectors                      |
+| Nest             | Stable      | Works with Nest thermostat and Protect smoke / CO detectors                      |
 | Panasonic        | Stable      | Text input and basic controls                                                    |
 | Pioneer          | Testing     | Reportedly works, but unable to test                                             |
 | PS3              | Stable      | Uses GIMX to emulate PS3 controller ([see below](https://github.com/imbrianj/switchBoard#faq)). OSX not supported  |
@@ -45,7 +45,7 @@ Supported Devices/Services
 | SMS              | Stable      | Uses Twilio. Requires ID and token                                               |
 | Speech           | Stable      | Uses espeak for *nix, say on OSX.  Win not supported                             |
 | Stocks           | Stable      | Uses Yahoo Finance                                                               |
-| Traffic Cams     | Testing     | View multiple traffic webcams.                                                   |
+| Traffic Cams     | Testing     | View multiple traffic webcams                                                    |
 | Travis CI        | Stable      |                                                                                  |
 | Belkin Wemo      | Stable      | New controller and still in testing                                              |
 | Weather          | Stable      | Uses Yahoo Weather                                                               |
@@ -88,7 +88,7 @@ Thank you to [the people that sorted out how to write to the Samsung TVs](http:/
 
 Thank you to [Matlo from GIMX](http://blog.gimx.fr/) for his huge help in getting the PS3 control working.
 
-Thank you to the [group that documented the Panasonic interface](http://cocoontech.com/forums/topic/21266-panasonic-viera-plasma-ip-control/page-2) that I've ported to node:
+Thank you to the [group that documented the Panasonic interface](http://cocoontech.com/forums/topic/21266-panasonic-viera-plasma-ip-control/page-2) that I've ported to node.
 
 Thank you to [everyone that helped shed some light](http://forum.loxone.com/enen/software/4876-lg-tv-http-control.html#post32692) on LG develpment
 
@@ -133,4 +133,4 @@ FAQ
 
 - Q. How can I access this if I'm away from my home?
 
-  A. I would strongly advise you to not just punch a hole in your firewall.  If your router supports VPN connections, it's a very safe option to configure your phone to connect to that before using SwitchBoard remotely.  If that's not possible or not conveneint, you may use [ngrok](https://ngrok.com/) to easily access SwitchBoard (at no cost) with no additional configuration.  If you choose ngrok, be sure to [configure a password!](https://ngrok.com/usage)
+  A. I would strongly advise you to not just punch a hole in your firewall.  If your router supports VPN connections, it's a very safe option to configure your phone to connect to that before using SwitchBoard remotely.  If that's not possible or not convenient, you may use [ngrok](https://ngrok.com/) to easily access SwitchBoard (at no cost) with no additional configuration.  If you choose ngrok, be sure to [configure a password!](https://ngrok.com/usage)
