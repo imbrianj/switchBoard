@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global module, require */
+/*global module, require, console */
 
 /**
  * Copyright (c) 2014 brian@bevey.org
@@ -25,24 +25,51 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview Simple script to fire for each scheduled interval.
+ * @fileoverview Execute Gerty commands based on weather.
  */
 
 module.exports = (function () {
   'use strict';
 
   return {
-    version : 20141130,
+    weather : function(state, command) {
+      var excited     = 0,
+          comfortable = 0,
+          temp,
+          weather;
 
-    /**
-     * On long interval, poll the SmartThings API just to sync state.  This is
-     * largely unnecessary, as state is sent through normal use via API
-     * callbacks, but this will ensure things are current.
-     */
-    poll : function(deviceId, controllers) {
-      var runCommand  = require(__dirname + '/../lib/runCommand');
+      if(state.value) {
+        temp    = parseFloat(state.value.temp);
+        weather = parseFloat(state.value.code);
 
-      runCommand.runCommand(deviceId, 'list');
+        // This is a good temperature range for me.
+        if((temp > 60) && (temp < 75)) {
+          comfortable += 5;
+        }
+
+        // As it gets colder, I get less comfortable.
+        else if(temp < 55) {
+          comfortable += ((temp - 55) / 5);
+        }
+
+        // But as it gets hotter, I tend to get less comfortable faster.
+        else if(temp > 80) {
+          comfortable += ((80 - temp) / 3);
+        }
+
+        // All types of rain are a bum out.
+        if(((weather > 8) && (weather < 14)) || (weather === 40)) {
+          excited     += -1;
+          comfortable += -2;
+        }
+
+        // ...but I like snow!
+        if(((weather > 4) && (weather < 9)) || ((weather > 40) && (weather < 44)) || (weather === 46)) {
+          excited = 5;
+        }
+      }
+
+      return { excited : excited, comfortable : comfortable };
     }
   };
 }());

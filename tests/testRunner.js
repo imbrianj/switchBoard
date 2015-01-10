@@ -31,7 +31,17 @@
 module.exports = (function () {
   var reporter = require('nodeunit').reporters.default;
 
-  reporter.run(['tests/unit/controllers/denonTest.js',
+  reporter.run(['tests/unit/apps/gerty/entertainmentTest.js',
+                'tests/unit/apps/gerty/languageTest.js',
+                'tests/unit/apps/gerty/moodTest.js',
+                'tests/unit/apps/gerty/nestTest.js',
+                'tests/unit/apps/gerty/smartthingsTest.js',
+                'tests/unit/apps/gerty/stereoTest.js',
+                'tests/unit/apps/gerty/stocksTest.js',
+                'tests/unit/apps/gerty/travisTest.js',
+                'tests/unit/apps/gerty/tvTest.js',
+                'tests/unit/apps/gerty/weatherTest.js',
+                'tests/unit/controllers/denonTest.js',
                 'tests/unit/controllers/foscamTest.js',
                 'tests/unit/controllers/lgTest.js',
                 'tests/unit/controllers/mp3Test.js',

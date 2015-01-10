@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global module, require */
+/*global module, String, require, console */
 
 /**
  * Copyright (c) 2014 brian@bevey.org
@@ -25,24 +25,20 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview Simple script to fire for each scheduled interval.
+ * @fileoverview Unit test for apps/gerty/tv.js
  */
 
-module.exports = (function () {
-  'use strict';
+exports.tvTest = {
+  tv : function (test) {
+    'use strict';
 
-  return {
-    version : 20141130,
+    var tv        = require(__dirname + '/../../../../apps/gerty/tv'),
+        deviceOn  = tv.tv({ state : 'ok' }),
+        deviceOff = tv.tv({ state : 'err' });
 
-    /**
-     * On long interval, poll the SmartThings API just to sync state.  This is
-     * largely unnecessary, as state is sent through normal use via API
-     * callbacks, but this will ensure things are current.
-     */
-    poll : function(deviceId, controllers) {
-      var runCommand  = require(__dirname + '/../lib/runCommand');
+    test.deepEqual(deviceOn,  { entertained : 3 }, 'You should feel entertained');
+    test.deepEqual(deviceOff, { entertained : 0 }, 'You should feel bored');
 
-      runCommand.runCommand(deviceId, 'list');
-    }
-  };
-}());
+    test.done();
+  }
+};

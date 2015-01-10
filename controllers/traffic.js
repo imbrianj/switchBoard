@@ -31,7 +31,7 @@ module.exports = (function () {
    * @fileoverview Basic control of traffic cams from around the web.
    */
   return {
-    version : 20150104,
+    version : 20150110,
 
     inputs : ['list'],
 
@@ -66,7 +66,7 @@ module.exports = (function () {
         cameras[i] = { title : traffic.cameras[i].title, image : traffic.cameras[i].image + '?' + now };
       }
 
-      traffic.callback(null, cameras);
+      traffic.callback(null, cameras, true);
     }
   };
 }());

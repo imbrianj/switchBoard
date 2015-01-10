@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global module, require */
+/*global module, String, require, console */
 
 /**
  * Copyright (c) 2014 brian@bevey.org
@@ -25,24 +25,20 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview Simple script to fire for each scheduled interval.
+ * @fileoverview Unit test for apps/gerty/travis.js
  */
 
-module.exports = (function () {
-  'use strict';
+exports.travisTest = {
+  travis : function (test) {
+    'use strict';
 
-  return {
-    version : 20141130,
+    var travis     = require(__dirname + '/../../../../apps/gerty/travis'),
+        deviceOk   = travis.travis({ values : { value : [{ status : 'ok' },  { status : 'err' }] } }),
+        deviceFail = travis.travis({ values : { value : [{ status : 'err' }, { status : 'ok' }] } });
 
-    /**
-     * On long interval, poll the SmartThings API just to sync state.  This is
-     * largely unnecessary, as state is sent through normal use via API
-     * callbacks, but this will ensure things are current.
-     */
-    poll : function(deviceId, controllers) {
-      var runCommand  = require(__dirname + '/../lib/runCommand');
+    test.deepEqual(deviceOk,   { scared : 0 },  'All is well in the world (or at least the latest build)');
+    test.deepEqual(deviceFail, { scared : -3 }, 'It\'s broken!');
 
-      runCommand.runCommand(deviceId, 'list');
-    }
-  };
-}());
+    test.done();
+  }
+};

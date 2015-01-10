@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global module, require */
+/*global module, String, require, console */
 
 /**
  * Copyright (c) 2014 brian@bevey.org
@@ -25,24 +25,22 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview Simple script to fire for each scheduled interval.
+ * @fileoverview Unit test for apps/gerty/weather.js
  */
 
-module.exports = (function () {
-  'use strict';
+exports.weatherTest = {
+  weather : function (test) {
+    'use strict';
 
-  return {
-    version : 20141130,
+    var weather    = require(__dirname + '/../../../../apps/gerty/weather'),
+        deviceHot  = weather.weather({ value : { temp : 100, code : 40 } }),
+        deviceNice = weather.weather({ value : { temp : 70,  code : 26 } }),
+        deviceSnow = weather.weather({ value : { temp : 30,  code : 46 } });
 
-    /**
-     * On long interval, poll the SmartThings API just to sync state.  This is
-     * largely unnecessary, as state is sent through normal use via API
-     * callbacks, but this will ensure things are current.
-     */
-    poll : function(deviceId, controllers) {
-      var runCommand  = require(__dirname + '/../lib/runCommand');
+    test.deepEqual(deviceHot,  { excited: -1, comfortable: -8.666666666666668 },  'This is just miserable weather');
+    test.deepEqual(deviceNice, { excited: 0,  comfortable: 5 },                   'Sunny.  Comfy, but not too exciting');
+    test.deepEqual(deviceSnow, { excited: 5,  comfortable: -5 },                  'Snowing!  Not comfy, but pretty exciting');
 
-      runCommand.runCommand(deviceId, 'list');
-    }
-  };
-}());
+    test.done();
+  }
+};

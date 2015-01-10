@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global State, module, require, console */
+/*global module, require */
 
 /**
  * Copyright (c) 2014 brian@bevey.org

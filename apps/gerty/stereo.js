@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global module, require */
+/*global module, require, console */
 
 /**
  * Copyright (c) 2014 brian@bevey.org
@@ -25,24 +25,17 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview Simple script to fire for each scheduled interval.
+ * @fileoverview Execute Gerty commands based on stereo devices.
  */
 
 module.exports = (function () {
   'use strict';
 
   return {
-    version : 20141130,
+    stereo : function(state, command) {
+      var entertained = state.state === 'err' ? 0 : 1;
 
-    /**
-     * On long interval, poll the SmartThings API just to sync state.  This is
-     * largely unnecessary, as state is sent through normal use via API
-     * callbacks, but this will ensure things are current.
-     */
-    poll : function(deviceId, controllers) {
-      var runCommand  = require(__dirname + '/../lib/runCommand');
-
-      runCommand.runCommand(deviceId, 'list');
+      return { entertained : entertained };
     }
   };
 }());

@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global module, require */
+/*global module, require, console */
 
 /**
  * Copyright (c) 2014 brian@bevey.org
@@ -25,24 +25,23 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview Simple script to fire for each scheduled interval.
+ * @fileoverview Execute Gerty commands based on Travis CI.
  */
 
 module.exports = (function () {
   'use strict';
 
   return {
-    version : 20141130,
+    travis : function(state, command) {
+      var scared = 0;
 
-    /**
-     * On long interval, poll the SmartThings API just to sync state.  This is
-     * largely unnecessary, as state is sent through normal use via API
-     * callbacks, but this will ensure things are current.
-     */
-    poll : function(deviceId, controllers) {
-      var runCommand  = require(__dirname + '/../lib/runCommand');
+      if((state.values) && (state.values.value) && (state.values.value.length)) {
+        if(state.values.value[0].status === 'err') {
+          scared = -3;
+        }
+      }
 
-      runCommand.runCommand(deviceId, 'list');
+      return { scared : scared };
     }
   };
 }());

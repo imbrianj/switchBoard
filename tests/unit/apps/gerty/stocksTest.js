@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global module, require */
+/*global module, String, require, console */
 
 /**
  * Copyright (c) 2014 brian@bevey.org
@@ -25,24 +25,22 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview Simple script to fire for each scheduled interval.
+ * @fileoverview Unit test for apps/gerty/stocks.js
  */
 
-module.exports = (function () {
-  'use strict';
+exports.stocksTest = {
+  stocks : function (test) {
+    'use strict';
 
-  return {
-    version : 20141130,
+    var stocks     = require(__dirname + '/../../../../apps/gerty/stocks'),
+        deviceGood = stocks.stocks({ value : { 'STOCK1' : { dayChangePercent : '5%' },  'STOCK2' : { dayChangePercent : '7%' } } }),
+        deviceOk   = stocks.stocks({ value : { 'STOCK1' : { dayChangePercent : '3%' },  'STOCK2' : { dayChangePercent : '1%' } } }),
+        deviceBad  = stocks.stocks({ value : { 'STOCK1' : { dayChangePercent : '-5%' }, 'STOCK2' : { dayChangePercent : '-7%' } } });
 
-    /**
-     * On long interval, poll the SmartThings API just to sync state.  This is
-     * largely unnecessary, as state is sent through normal use via API
-     * callbacks, but this will ensure things are current.
-     */
-    poll : function(deviceId, controllers) {
-      var runCommand  = require(__dirname + '/../lib/runCommand');
+    test.deepEqual(deviceGood, { excited: 5,  scared: 0 },  'Your stocks are doing well');
+    test.deepEqual(deviceOk,   { excited: 2,  scared: 0 },  'Your stocks are doing ok');
+    test.deepEqual(deviceBad,  { excited: -5, scared: -5 }, 'Your stocks are doing pretty bad');
 
-      runCommand.runCommand(deviceId, 'list');
-    }
-  };
-}());
+    test.done();
+  }
+};

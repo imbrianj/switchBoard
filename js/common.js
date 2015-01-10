@@ -585,6 +585,7 @@ SB = (function () {
      *
      * @param {String} string Phrase you'd like read aloud on the client.
      * @param {String} lang Language code text is formatted in.
+     * @param {String} voice "male" or "female"
      */
     speak : function (string, lang, voice) {
       var message,
