@@ -66,7 +66,7 @@ module.exports = (function () {
         cameras[i] = { title : traffic.cameras[i].title, image : traffic.cameras[i].image + '?' + now };
       }
 
-      traffic.callback(null, cameras, true);
+      traffic.callback(null, cameras);
     }
   };
 }());
