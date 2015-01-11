@@ -32,7 +32,7 @@ module.exports = (function () {
    * @requires querystring, fs, https
    */
   return {
-    version : 20141215,
+    version : 20150110,
 
     inputs : ['command', 'text', 'list', 'subdevice'],
 
@@ -352,25 +352,25 @@ module.exports = (function () {
 
       if(command === 'HOME') {
         config.host = config.auth.url;
-        config.path = '/v2/put/structure.' + subDevices.structure;
+        config.path = '/v2/put/structure.' + nestState.value.structure;
         config.args = { away : false, away_timestamp : new Date().getTime(), away_setter : 0 };
       }
 
       if(command === 'AWAY') {
         config.host = config.auth.url;
-        config.path = '/v2/put/structure.' + subDevices.structure;
+        config.path = '/v2/put/structure.' + nestState.value.structure;
         config.args = { away : true, away_timestamp : new Date().getTime(), away_setter : 0 };
       }
 
       else if(command === 'FAN_ON') {
         config.host = config.auth.url;
-        config.path = '/v2/put/structure.' + subDevices.structure;
+        config.path = '/v2/put/structure.' + nestState.value.structure;
         config.args = { fan_mode : 'on' };
       }
 
       else if(command === 'FAN_AUTO') {
         config.host = config.auth.url;
-        config.path = '/v2/put/structure.' + subDevices.structure;
+        config.path = '/v2/put/structure.' + nestState.value.structure;
         config.args = { fan_mode : 'auto' };
       }
 

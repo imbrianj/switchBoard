@@ -75,6 +75,7 @@
       if(subDevices) {
         for(i in subDevices) {
           tempMarkup = tempMarkup + getDeviceMarkup(subDevices[i]);
+          tempMarkup = tempMarkup.split('{{SUB_DEVICE_CLASS}}').join(subDevices[i].className || 'fa-lightbulb-o');
         }
       }
     }

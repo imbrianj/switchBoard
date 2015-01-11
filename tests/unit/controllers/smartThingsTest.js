@@ -37,13 +37,9 @@ exports.smartthingsControllerTest = {
     var smartthingsController = require(__dirname + '/../../../controllers/smartthings'),
         fragments             = smartthingsController.fragments();
 
-    test.strictEqual(typeof fragments.group,    'string', 'Group fragment verified');
-    test.strictEqual(typeof fragments.lock,     'string', 'Lock fragment verified');
-    test.strictEqual(typeof fragments.switch,   'string', 'Switch fragment verified');
-    test.strictEqual(typeof fragments.contact,  'string', 'Contact fragment verified');
-    test.strictEqual(typeof fragments.water,    'string', 'Water fragment verified');
-    test.strictEqual(typeof fragments.motion,   'string', 'Motion fragment verified');
-    test.strictEqual(typeof fragments.presence, 'string', 'Presence fragment verified');
+    test.strictEqual(typeof fragments.group,  'string', 'Group fragment verified');
+    test.strictEqual(typeof fragments.action, 'string', 'Action fragment verified');
+    test.strictEqual(typeof fragments.static, 'string', 'Static fragment verified');
 
     test.done();
   },

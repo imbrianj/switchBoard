@@ -84,13 +84,11 @@ For details about each device's specific requirements for installation, refer to
 
 Credit
 ---
-Thank you to [the people that sorted out how to write to the Samsung TVs](http://forum.samygo.tv/viewtopic.php?f=12&t=1792) and paving the way for me to port this to node.
+Thank you to [Matlo from GIMX](http://blog.gimx.fr/) for his huge help in getting the PS3 control working.  If you use the PS3 functionality and enjoy it, consider a donation to his project.
 
-Thank you to [Matlo from GIMX](http://blog.gimx.fr/) for his huge help in getting the PS3 control working.
+Nearly every controller was inspired by hard work from others.  Trolling forums and seeing people's proof of concept code made many of them possible.  For each controller file, a relevant link to the given forum/blog/post/article/page is available in a comment at the top.
 
-Thank you to the [group that documented the Panasonic interface](http://cocoontech.com/forums/topic/21266-panasonic-viera-plasma-ip-control/page-2) that I've ported to node.
-
-Thank you to [everyone that helped shed some light](http://forum.loxone.com/enen/software/4876-lg-tv-http-control.html#post32692) on LG develpment
+MP3 sounds were taken from [freesound.org](http://freesound.org/).  Specific attributions for each file are in the [attribution.txt](mp3/attribution.txt).
 
 Also thanks to purecss.io and fontawesome.io for their assets.
 
@@ -114,10 +112,11 @@ FAQ
 
   The colors indicate:
 
-   * Red - Disonnected
+   * Red - Disconnected - and attempting to reconnect - or waiting to reconnect
    * Gray - Attempting to connect - or waiting to connect
    * Blue - Connected
    * No indicator - Either your browser doesn't support WebSockets, XHR or something bad happened.
+   * Gray and Blue - XHR polling leaves the icon as gray, then will briefly flashes blue when it's grabbed the latest data.
 
 - Q. How secure is this?
 

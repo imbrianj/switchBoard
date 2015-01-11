@@ -179,7 +179,7 @@ exports.config = {
                  { title : 'Elliot &amp; Broad',        image : 'http://www.seattle.gov/trafficcams/images/Elliott_Broad.jpg' },
                  { title : 'Stewart, Yale &amp; Denny', image : 'http://www.seattle.gov/trafficcams/images/Yale_Denny.jpg' },
                  { title : '15th &amp; Emerson',        image : 'http://www.seattle.gov/trafficcams/images/15W_Emerson.jpg' }],
-    disabled  : false
+    disabled  : true
   },
 
   /*
@@ -275,6 +275,7 @@ exports.config = {
                                               controllerIds : ['speech'],
                                               disabled      : true }
                      },
+    className      : { Goblin : 'fa-female' },
     disabledMarkup : false,
     disabled       : true
   },
@@ -331,6 +332,7 @@ exports.config = {
                    'LED'    : 3,
                    'HDD'    : 4,
                    'Power'  : 5 },
+    className  : { TV : 'fa-desktop' },
     disabled   : true
   },
 

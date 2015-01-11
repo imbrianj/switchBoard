@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic control of SmartThings endpoint.
    */
   return {
-    version : 20141206,
+    version : 20150110,
 
     inputs  : ['list', 'subdevice'],
 
@@ -42,13 +42,9 @@ module.exports = (function () {
     fragments : function () {
       var fs = require('fs');
 
-      return { group    : fs.readFileSync(__dirname + '/../templates/fragments/smartthingsGroups.tpl').toString(),
-               lock     : fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListLock.tpl').toString(),
-               switch   : fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListSwitch.tpl').toString(),
-               contact  : fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListContact.tpl').toString(),
-               water    : fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListWater.tpl').toString(),
-               motion   : fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListMotion.tpl').toString(),
-               presence : fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListPresence.tpl').toString() };
+      return { group  : fs.readFileSync(__dirname + '/../templates/fragments/smartthingsGroups.tpl').toString(),
+               action : fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListAction.tpl').toString(),
+               static : fs.readFileSync(__dirname + '/../templates/fragments/smartthingsListStatic.tpl').toString() };
     },
 
     /**
@@ -133,7 +129,7 @@ module.exports = (function () {
             cache.once('open', function() {
               console.log('\x1b[35m' + controller.config.title + '\x1b[0m: Auth data cached with URL');
 
-              that.oauthDeviceList({ deviceId : controller.config.deviceId, auth : auth, groups : controller.config.groups });
+              that.oauthDeviceList({ deviceId : controller.config.deviceId, auth : auth, groups : controller.config.groups, className : controller.config.className });
 
               cache.write(JSON.stringify(auth));
             });
@@ -153,7 +149,7 @@ module.exports = (function () {
       delete config.list;
       config.deviceId = config.deviceId;
       config.path     = config.path || config.auth.url + '/list';
-      config.device   = { auth : config.auth, deviceId : config.deviceId, groups : config.groups };
+      config.device   = { auth : config.auth, deviceId : config.deviceId, groups : config.groups, className : config.className };
 
       this.send(config);
     },
@@ -183,6 +179,10 @@ module.exports = (function () {
               id    : device.id,
               label : device.label
             };
+
+            if((smartthings.className) && (smartthings.className[device.label])) {
+              subDevices[i].className = smartthings.className[device.label];
+            }
 
             // SmartThings supports multi-role devices - meaning a single device
             // may report temp as well as be a contact sensor.  For now, we're
@@ -464,16 +464,15 @@ module.exports = (function () {
      * print out a friendly message with a link for you to finish the setup.
      */
     init : function (controller, config) {
-      var fs     = require('fs'),
-          auth   = {},
-          groups = config.groups || {};
+      var fs   = require('fs'),
+          auth = {};
 
       if(typeof controller.config.clientId !== 'undefined' && controller.config.clientSecret !== 'undefined') {
         fs.exists(__dirname + '/../cache/smartthingsAuth.json', function(fileExists) {
           // If we have a presumed good auth token, we can populate the device list.
           if(fileExists) {
             fs.readFile(__dirname + '/../cache/smartthingsAuth.json', function(err, auth) {
-              var runCommand  = require(__dirname + '/../lib/runCommand');
+              var runCommand = require(__dirname + '/../lib/runCommand');
 
               if(auth.toString()) {
                 controller.config.auth = JSON.parse(auth.toString());
@@ -515,18 +514,19 @@ module.exports = (function () {
           dataReply   = '',
           that        = this;
 
-      config.device        = config.device          || {};
-      smartthings.deviceId = config.device.deviceId || '';
-      smartthings.title    = config.device.title    || '';
-      smartthings.auth     = config.device.auth     || '';
-      smartthings.groups   = config.device.groups   || {};
-      smartthings.command  = config.subdevice       || '';
-      smartthings.list     = config.list            || '';
-      smartthings.host     = config.host            || 'graph.api.smartthings.com';
-      smartthings.port     = config.port            || 443;
-      smartthings.path     = config.path            || '';
-      smartthings.method   = config.method          || 'GET';
-      smartthings.callback = config.callback        || function() {};
+      config.device         = config.device           || {};
+      smartthings.deviceId  = config.device.deviceId  || '';
+      smartthings.title     = config.device.title     || '';
+      smartthings.auth      = config.device.auth      || '';
+      smartthings.groups    = config.device.groups    || {};
+      smartthings.className = config.device.className || {};
+      smartthings.command   = config.subdevice        || '';
+      smartthings.list      = config.list             || '';
+      smartthings.host      = config.host             || 'graph.api.smartthings.com';
+      smartthings.port      = config.port             || 443;
+      smartthings.path      = config.path             || '';
+      smartthings.method    = config.method           || 'GET';
+      smartthings.callback  = config.callback         || function() {};
 
       if(smartthings.list) {
         this.oauthDeviceList(smartthings);
@@ -555,7 +555,8 @@ module.exports = (function () {
                         if((dataReply) && (dataReply.indexOf('<') !== 0)) {
                           smartthingsData = JSON.parse(dataReply);
 
-                          smartthingsData.groups = config.device.groups;
+                          smartthingsData.groups    = config.device.groups;
+                          smartthingsData.className = config.device.className;
 
                           that.updateState(smartthings, smartthingsData);
 

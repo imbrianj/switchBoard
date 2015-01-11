@@ -32,7 +32,7 @@ module.exports = (function () {
    * @requires child_process, raspberry-remote
    */
   return {
-    version : 20141026,
+    version : 20150110,
 
     inputs : ['subdevice'],
 
@@ -87,14 +87,22 @@ module.exports = (function () {
     init : function (controller, config) {
       var deviceState = require(__dirname + '/../lib/deviceState'),
           subdevices  = {},
+          className   = '',
           i,
           j           = 0;
 
       if(process.platform === 'linux') {
         for(i in controller.config.subdevices) {
-          subdevices[j] = { id    : controller.config.subdevices[i],
-                            label : i,
-                            type  : 'switch' };
+          className = '';
+
+          if((controller.config.className) && (controller.config.className[i])) {
+            className = controller.config.className[i];
+          }
+
+          subdevices[j] = { id        : controller.config.subdevices[i],
+                            label     : i,
+                            type      : 'switch',
+                            className : className };
           j += 1;
         }
 

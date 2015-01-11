@@ -27,19 +27,15 @@
   'use strict';
 
   exports.smartthings = function (deviceId, markup, state, value, fragments, language) {
-    var templateSwitch    = fragments.switch,
-        templateLock      = fragments.lock,
-        templateContact   = fragments.contact,
-        templateWater     = fragments.water,
-        templateMotion    = fragments.motion,
-        templatePresence  = fragments.presence,
-        templateGroup     = fragments.group,
-        i                 = 0,
-        j                 = 0,
-        tempMarkup        = '',
-        deviceMarkup      = '',
-        mode              = '',
-        subDeviceMarkup   = '',
+    var templateAction  = fragments.action,
+        templateStatic  = fragments.static,
+        templateGroup   = fragments.group,
+        i               = 0,
+        j               = 0,
+        tempMarkup      = '',
+        deviceMarkup    = '',
+        mode            = '',
+        subDeviceMarkup = '',
         subDevice,
         subDevices,
         subDeviceGroup,
@@ -77,32 +73,39 @@
         getDeviceMarkup = function(device, markup) {
           var deviceTemplate = '',
               deviceMarkup   = '',
+              deviceClass    = '',
               temp           = '',
               vibrate        = '';
 
           switch(device.type) {
             case 'switch' :
-              deviceTemplate = templateSwitch;
+              deviceTemplate = templateAction;
+              deviceClass    = 'fa-lightbulb-o';
             break;
 
             case 'lock' :
-              deviceTemplate = templateLock;
+              deviceTemplate = templateAction;
+              deviceClass    = 'fa-unlock-alt';
             break;
 
             case 'contact' :
-              deviceTemplate = templateContact;
+              deviceTemplate = templateStatic;
+              deviceClass    = 'fa-folder-open-o';
             break;
 
             case 'water' :
-              deviceTemplate = templateWater;
+              deviceTemplate = templateStatic;
+              deviceClass    = 'fa-tint';
             break;
 
             case 'motion' :
-              deviceTemplate = templateMotion;
+              deviceTemplate = templateStatic;
+              deviceClass    = 'fa-paw';
             break;
 
             case 'presence' :
-              deviceTemplate = templatePresence;
+              deviceTemplate = templateStatic;
+              deviceClass    = 'fa-male';
             break;
           }
 
@@ -114,17 +117,20 @@
             vibrate = ' device-vibrate';
           }
 
-          deviceMarkup = deviceTemplate.split('{{SUB_DEVICE_ID}}').join(device.label.split(' ').join('+'));
-          deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_NAME}}').join(device.label + temp);
+          if(deviceTemplate) {
+            deviceMarkup = deviceTemplate.split('{{SUB_DEVICE_ID}}').join(device.label.split(' ').join('+'));
+            deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_NAME}}').join(device.label + temp);
+            deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_CLASS}}').join(device.className || deviceClass);
 
-          if(device.state === 'on') {
-            deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_STATE}}').join(' device-active' + vibrate);
-            deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_STATUS}}').join(translate('ACTIVE'));
-          }
+            if(device.state === 'on') {
+              deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_STATE}}').join(' device-active' + vibrate);
+              deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_STATUS}}').join(translate('ACTIVE'));
+            }
 
-          else {
-            deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_STATE}}').join(vibrate);
-            deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_STATUS}}').join(translate('INACTIVE'));
+            else {
+              deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_STATE}}').join(vibrate);
+              deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_STATUS}}').join(translate('INACTIVE'));
+            }
           }
 
           return deviceMarkup;
