@@ -35,15 +35,11 @@ SB.spec = (function () {
   return {
     version : 20141226,
 
-    state : {},
-
-    parsers : {},
-
+    state     : {},
+    parsers   : {},
     templates : {},
-
-    strings : {},
-
-    socket : {},
+    strings   : {},
+    socket    : {},
 
     uiComponents : {
       header : {},
@@ -176,7 +172,7 @@ SB.spec = (function () {
       var connected = SB.spec.socket.readyState <= 1;
 
       if(!connected) {
-        SB.spec.socketConnect();
+        SB.spec.socketConnect(0);
         connected = SB.spec.socket.readyState <= 1;
       }
 
@@ -187,7 +183,7 @@ SB.spec = (function () {
      * If you have no connection indicator - or if it doesn't say we're
      * connected, we should reconnect and grab the latest State.
      */
-    socketConnect : function () {
+    socketConnect : function (i) {
       var reconnect,
           open,
           message,
@@ -195,18 +191,27 @@ SB.spec = (function () {
           close,
           cleanup;
 
-      SB.log('Connecting', 'WebSocket', 'info');
+      if((!SB.spec.socket.readyState) || (SB.spec.socket.readyState === 3)) {
+        SB.log('Connecting', 'WebSocket', 'info');
 
-      SB.spec.socket = new WebSocket('ws://' + window.location.host, 'echo-protocol');
+        SB.spec.socket = new WebSocket('ws://' + window.location.host, 'echo-protocol');
 
-      reconnect = function() {
-        SB.spec.uiComponents.indicator.className = 'disconnected';
-        SB.putText(SB.spec.uiComponents.indicator, SB.spec.strings.DISCONNECTED);
+        i += 1;
 
-        setTimeout(function() {
-          SB.spec.socketConnect();
-        }, 10000);
-      };
+        reconnect = function() {
+          // If everyone gets booted at the same time, we want to make sure they
+          // have some variance in their reconnection times.
+          var delay = Math.round(Math.min(Math.max((i * (Math.random() * 15)), 10), 60));
+
+          SB.log('Retrying in ' + delay + 's', 'WebSocket', 'info');
+          SB.spec.uiComponents.indicator.className = 'disconnected';
+          SB.putText(SB.spec.uiComponents.indicator, SB.spec.strings.DISCONNECTED);
+
+          setTimeout(function() {
+            SB.spec.socketConnect(i);
+          }, delay * 1000);
+        };
+      }
 
       open = function(e) {
         var reconnected = SB.spec.uiComponents.indicator.className === 'disconnected' ? true : false;
@@ -923,7 +928,7 @@ SB.spec = (function () {
 
         else if(SB.getTarget(e).id === 'indicator') {
           if(SB.hasClass(SB.getTarget(e), 'disconnected')) {
-            SB.spec.socketConnect();
+            SB.spec.socketConnect(0);
           }
         }
       });
@@ -953,7 +958,7 @@ SB.spec = (function () {
 
       /* If we support WebSockets, we'll grab updates as they happen */
       if((typeof WebSocket === 'function') || (typeof WebSocket === 'object')) {
-        SB.spec.socketConnect();
+        SB.spec.socketConnect(0);
       }
 
       /* Otherwise, we'll poll for updates */

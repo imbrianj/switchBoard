@@ -37,6 +37,8 @@ module.exports = (function () {
           social      = 0,
           temp        = 0,
           temps       = 0,
+          present     = 0,
+          presence    = 0,
           device,
           deviceId;
 
@@ -67,12 +69,14 @@ module.exports = (function () {
 
           if(device.type === 'presence') {
             if(device.state === 'on') {
-              social += 2;
+              present += 5;
             }
 
             else {
-              social -= 2;
+              present -= 5;
             }
+
+            presence += 1;
           }
         }
       }
@@ -94,6 +98,10 @@ module.exports = (function () {
         else if(temp > 80) {
           comfortable += ((80 - temp) / 3);
         }
+      }
+
+      if(present) {
+        social += (present / presence);
       }
 
       return { social : social, comfortable : comfortable };

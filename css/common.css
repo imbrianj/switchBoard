@@ -1818,7 +1818,8 @@ header .selected a {
 
 	section .installed .sub-device-group,
 	section .installed .sub-device-group li,
-	section .installed-list li {
+	section .installed-list li,
+	section .image-list li {
 		max-width: 45%;
 	}
 
@@ -1874,6 +1875,10 @@ header .selected a {
 	section.nest .text-device-status .text-device-status li {
 		max-width: 40%;
 	}
+
+	section .image-list li {
+		max-width: 100%;
+	}
 }
 
 @media (min-width: 650px) {
@@ -1892,7 +1897,8 @@ header .selected a {
 
 	section .installed .sub-device-group,
 	section .installed .sub-device-group li,
-	section .installed-list li {
+	section .installed-list li,
+	section .image-list li {
 		max-width: 45%;
 	}
 
@@ -1916,7 +1922,8 @@ header .selected a {
 
 	section .installed .sub-device-group,
 	section .installed .sub-device-group li,
-	section .installed-list li {
+	section .installed-list li,
+	section .image-list li {
 		max-width: 30%;
 	}
 
