@@ -54,11 +54,11 @@ module.exports = (function () {
         break;
 
         case 'EXCITED'     :
-          emojis = ['😋', '😂', '😁'];
+          emojis = ['😋', '😂', '😁']; // ' Comments to fix Atoms syntax highlighter on Linux
         break;
 
         case 'HAPPY'       :
-          emojis = ['😄', '😃', '😀', '😊', '😉', '😎', '😋', '😁', '😛', '😝', '😜']; // ' Comments to fix Atoms syntax highlighter on Linux
+          emojis = ['😄', '😃', '😀', '😊', '😉', '😎', '😋', '😁', '😛', '😝', '😜']; // '''
         break;
 
         case 'INDIFFERENT' :
@@ -74,7 +74,7 @@ module.exports = (function () {
         break;
 
         case 'SAD'         :
-          emojis = ['😕', '😧', '😟', '😖', '😥', '😪', '😭', '😢', '😞', '😔']; // '
+          emojis = ['😕', '😧', '😟', '😖', '😥', '😪', '😭', '😢', '😞', '😔'];
         break;
 
         case 'SCARED'      :
@@ -102,15 +102,13 @@ module.exports = (function () {
      * simple animations.
      */
     getActionType : function (personality) {
-      var random  = Math.random(),
-          actions = ['bounce', 'roll', 'shrink', 'walk', 'shake'],
+      var random  = Math.random() * 1000,
+          actions = ['bounce', 'roll', 'shrink', 'shake'],
           action  = '';
 
-      if(personality > random) {
-        // At a rare random event, Gerty should have some added personality.
-        if((random - 0.75) > 0.2) {
-          action = actions[Math.floor(Math.random() * actions.length)];
-        }
+      // At a rare random event, Gerty should have some added personality.
+      if((personality > random) && (random % 2)) {
+        action = actions[Math.floor(Math.random() * actions.length)];
       }
 
       return action;
@@ -148,10 +146,10 @@ module.exports = (function () {
           value,
           action;
 
-      gerty.command     = config.command     || '';
-      gerty.text        = config.text        || '';
-      gerty.personality = config.personality || 0.5;
-      gerty.callback    = config.callback    || function () {};
+      gerty.command     = config.command            || '';
+      gerty.text        = config.text               || '';
+      gerty.personality = config.device.personality || 0.5;
+      gerty.callback    = config.callback           || function () {};
 
       value  = this.getEmojiType(gerty.command);
       action = this.getActionType(gerty.personality);
