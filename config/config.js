@@ -265,15 +265,24 @@ exports.config = {
     // You may group your devices together for display by using the group name
     // you'd like shown as the object name.  Devices within that group should
     // be the same name as you give them in SmartThings.
-    groups         : { 'Bedroom'          : ['Bedroom Lamps', 'Bedroom Switch'],
-                       'Office'           : ['Office Switch'],
-                       'Hallway'          : ['Hall Light', 'Front Door'],
-                       'Living Room'      : ['Living Room Lamp', 'Chandelier'],
-                       'Kitchen'          : ['Kitchen Light', 'Dining Lights'] },
-    apps           : { 'Announce'         : { id            : 'announcePresence',
-                                              presence      : ['Brian', 'Goblin'],
-                                              controllerIds : ['speech'],
-                                              disabled      : true }
+    groups         : { 'Bedroom'           : ['Bedroom Lamps', 'Bedroom Switch'],
+                       'Office'            : ['Office Switch'],
+                       'Hallway'           : ['Hall Light', 'Front Door'],
+                       'Living Room'       : ['Living Room Lamp', 'Chandelier'],
+                       'Kitchen'           : ['Kitchen Light', 'Dining Lights'] },
+    apps           : { 'Announce'          : { id            : 'announcePresence',
+                                               presence      : ['Brian', 'Goblin'],
+                                               controllerIds : ['speech'],
+                                               disabled      : true },
+                       'Announce Moisture' : { id            : 'announceMoisture',
+                                               controllerIds : [],
+                                               disabled      : true },
+                       'Mode Change'       : { id            : 'smartthingsModeChange',
+                                               controllerIds : [],
+                                               Away          : 'nest=Away;foscam=Preset1,Sleep,Sleep,Alarm_On',
+                                               Night         : 'nest=Home;foscam=Alarm_Off,Preset3',
+                                               Home          : 'nest=Home;foscam=Alarm_Off,Preset3',
+                                               disabled      : true }
                      },
     className      : { Goblin : 'fa-female' },
     disabledMarkup : false,
