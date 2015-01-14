@@ -43,6 +43,7 @@ module.exports = (function () {
                 'tests/unit/apps/gerty/weatherTest.js',
                 'tests/unit/controllers/denonTest.js',
                 'tests/unit/controllers/foscamTest.js',
+                'tests/unit/controllers/gertyTest.js',
                 'tests/unit/controllers/lgTest.js',
                 'tests/unit/controllers/mp3Test.js',
                 'tests/unit/controllers/nestTest.js',

@@ -341,7 +341,7 @@ exports.config = {
                    'LED'    : 3,
                    'HDD'    : 4,
                    'Power'  : 5 },
-    className  : { TV : 'fa-desktop' },
+    className  : { 'TV'     : 'fa-desktop' },
     disabled   : true
   },
 
@@ -354,6 +354,7 @@ exports.config = {
     // you'd like shown as the object name.  Devices within that group should
     // be the same name as you give them in as subdevices above.
     groups     : { 'Office'    : ['Desk Lamp', 'Fan'] },
+    className  : { 'Fan'       : 'fa-asterisk' },
     disabled   : true
   },
 

@@ -101,14 +101,17 @@ module.exports = (function () {
      * Random and rare classes should be applied that will have Gerty have
      * simple animations.
      */
-    getActionType : function (personality) {
+    getActionType : function (personality, command) {
       var random  = Math.random() * 1000,
           actions = ['bounce', 'roll', 'shrink', 'shake'],
           action  = '';
 
-      // At a rare random event, Gerty should have some added personality.
-      if((personality > random) && (random % 2)) {
-        action = actions[Math.floor(Math.random() * actions.length)];
+      // If you're asleep, you shouldn't be very active.
+      if(command !== 'SLEEP') {
+        // At a rare random event, Gerty should have some added personality.
+        if((personality > random) && (random % 2)) {
+          action = actions[Math.floor(Math.random() * actions.length)];
+        }
       }
 
       return action;
@@ -152,7 +155,7 @@ module.exports = (function () {
       gerty.callback    = config.callback           || function () {};
 
       value  = this.getEmojiType(gerty.command);
-      action = this.getActionType(gerty.personality);
+      action = this.getActionType(gerty.personality, gerty.command);
 
       if((value) && (gerty.command)) {
         gerty.callback(null, { emoji : value, description : gerty.command, action : action });

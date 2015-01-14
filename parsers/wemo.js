@@ -73,6 +73,7 @@
 
           deviceMarkup = templateSwitch.split('{{SUB_DEVICE_ID}}').join(device.label.split(' ').join('+'));
           deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_NAME}}').join(device.label);
+          deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_CLASS}}').join(device.className || 'fa-lightbulb-o');
 
           if(device.state === 'on') {
             deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_STATE}}').join(' device-active');

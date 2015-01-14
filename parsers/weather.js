@@ -140,6 +140,8 @@
     if((value) && (value.code)) {
       markup = markup.replace('{{WEATHER_ICON}}', translateCode(value.code));
       markup = markup.replace('{{WEATHER_CURRENT}}', value.city + ' ' + translate('CURRENT') + ': ' + value.temp + '&deg; ' + value.text);
+      markup = markup.replace('{{WEATHER_SUNRISE}}', value.sunrise);
+      markup = markup.replace('{{WEATHER_SUNSET}}', value.sunset);
 
       for(i in value.forecast) {
         tempMarkup = tempMarkup + template.split('{{WEATHER_ICON}}').join(translateCode(value.forecast[i].code));

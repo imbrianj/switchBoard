@@ -32,7 +32,7 @@ module.exports = (function () {
    * @requires http, xml2js
    */
   return {
-    version : 20141221,
+    version : 20150113,
 
     inputs  : ['subdevice'],
 
@@ -125,6 +125,10 @@ module.exports = (function () {
           value.devices[count] = { label : wemoKeys[count],
                                    state : 'err',
                                    type  : 'switch' };
+
+          if((controller.config.className) && (controller.config.className[wemoKeys[count]])) {
+            value.devices[count].className = controller.config.className[wemoKeys[count]];
+          }
 
           if((!err) && (reply)) {
             parser.parseString(reply, function(err, reply) {
