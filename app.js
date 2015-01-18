@@ -31,7 +31,7 @@
 
 State = {};
 
-var version         = 20140626,
+var version         = 20150118,
     http            = require('http'),
     url             = require('url'),
     path            = require('path'),
