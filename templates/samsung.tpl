@@ -34,7 +34,7 @@
             <li><a href="/?{{DEVICE_ID}}=Menu" class="fa fa-list-ul" title="{{i18n_MENU}}"><span>{{i18n_MENU}}</span></a></li>
             <li><a href="/?{{DEVICE_ID}}=Exit" class="fa fa-sign-out" title="{{i18n_EXIT}}"><span>{{i18n_EXIT}}</span></a></li>
             <li><a href="/?{{DEVICE_ID}}=Return" class="fa fa-undo" title="{{i18n_RETURN}}"><span>{{i18n_RETURN}}</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=Tools,Enter,Down,Enter,Down,Enter" class="fa fa-link" title="{{i18n_CEC_SPEAKERS}}"><span>{{i18n_CEC_SPEAKERS}}</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=HDMI4,Down,Enter" class="fa fa-link" title="{{i18n_CEC_SPEAKERS}}"><span>{{i18n_CEC_SPEAKERS}}</span></a></li>
           </ul>
         </div>
         <div class="text">

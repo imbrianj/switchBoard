@@ -98,6 +98,10 @@ if(controllers) {
     'use strict';
 
     console.log('\x1b[36mListening on port ' + settings.config.config.serverPort + '\x1b[0m');
+
+    if(settings.config.config.appCaching === true) {
+      staticAssets.freshenManifest();
+    }
   });
 
   // Or you're connecting with Web Sockets

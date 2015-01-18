@@ -110,41 +110,6 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('freshenManifest', function() {
-    var fs           = require('fs'),
-        done         = this.async();
-        rawManifest  = fs.readFileSync(__dirname + '/manifest.appcache').toString(),
-        parts        = rawManifest.split("\n"),
-        now          = new Date(),
-        dateStamp    = now.toLocaleString(),
-        manifest     = rawManifest,
-        manifestFile = {};
-
-    parts[1] = '# ' + dateStamp;
-
-    manifest = parts.join("\n");
-
-    if((parts.length > 3) && (manifest)) {
-      manifestFile = fs.writeFile(__dirname + '/manifest.appcache', manifest, function(err) {
-        if(err) {
-          console.log('\x1b[31mApp Cache\x1b[0m: Cache manifest unable to be updated');
-        }
-
-        else {
-          console.log('\x1b[32mApp Cache\x1b[0m: Cache manifest updated');
-        }
-
-        done();
-      });
-    }
-
-    else {
-      console.log('\x1b[31mApp Cache\x1b[0m: Cache manifest unable to be read');
-
-      done();
-    }
-  });
-
   grunt.registerTask('install-precommit', function() {
     var fs   = require('fs'),
         done = this.async(),
@@ -194,5 +159,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.registerTask('default', ['concat', 'cssmin', 'jshint', 'nodeunit', 'uglify', 'translation', 'install-precommit', 'freshenManifest']);
+  grunt.registerTask('default', ['concat', 'cssmin', 'jshint', 'nodeunit', 'uglify', 'translation', 'install-precommit']);
 };
