@@ -90,7 +90,7 @@
 
             case 'contact' :
               deviceTemplate = templateStatic;
-              deviceClass    = 'fa-folder-open-o';
+              deviceClass    = 'fa-columns';
             break;
 
             case 'water' :
