@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic control of SmartThings endpoint.
    */
   return {
-    version : 20150110,
+    version : 20150130,
 
     inputs  : ['list', 'subdevice'],
 
@@ -77,9 +77,7 @@ module.exports = (function () {
             authData = {},
             cache;
 
-        if(!err) {
-          response = JSON.parse(response);
-
+        if((!err) && (response)) {
           if(response.error) {
             console.log('\x1b[31m' + deviceConfig.title + '\x1b[0m: ' + response.error_description);
           }
@@ -113,8 +111,6 @@ module.exports = (function () {
             cache;
 
         if(!err) {
-          response = JSON.parse(response);
-
           if(response.error) {
             console.log('\x1b[31m' + controller.config.title + '\x1b[0m: ' + response.message);
           }

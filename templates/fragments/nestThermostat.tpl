@@ -14,7 +14,7 @@
                           <fieldset>
                             <legend>{{i18n_SET_TEMPERATURE}}</legend>
                             <label for="nest-{{SUB_DEVICE_ID}}-target">{{i18n_TARGET_TEMPERATURE}}:</label>
-                            <input id="nest-{{SUB_DEVICE_ID}}-target" class="text-input" type="number" max="100" min="50" name="{{DEVICE_ID}}" value="{{SUB_DEVICE_TARGET}}" required />
+                            <input id="nest-{{SUB_DEVICE_ID}}-target" class="text-input" type="number" max="90" min="50" name="{{DEVICE_ID}}" value="{{SUB_DEVICE_TARGET}}" required />
                             <input class="input-type" type="hidden" value="subdevice-temp-{{SUB_DEVICE_NAME}}" name="type" />
                             <button type="submit" class="button">{{i18n_SUBMIT}}</button>
                           </fieldset>

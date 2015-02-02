@@ -73,32 +73,38 @@
 
         if(device.type === 'thermostat') {
           if(typeof SB === 'object') {
-            off  = SB.getByClass(encodeName(device.label), SB.get(deviceId), 'li')[0];
-            heat = SB.getByClass('fa-sun-o',    off, 'a')[0];
-            cool = SB.getByClass('fa-asterisk', off, 'a')[0];
+            if(SB.getByClass(encodeName(device.label), SB.get(deviceId), 'li')[0]) {
+              off  = SB.getByClass(encodeName(device.label), SB.get(deviceId), 'li')[0];
+              heat = SB.getByClass('fa-sun-o',    off, 'a')[0];
+              cool = SB.getByClass('fa-asterisk', off, 'a')[0];
 
-            if((device.state === 'cool') && (!SB.hasClass(cool, 'device-active'))) {
-              SB.addClass(cool,    'device-active');
-              SB.removeClass(heat, 'device-active');
-              SB.removeClass(off,  'device-off');
-              SB.putText(SB.getByTag('em', off)[0], translate('COOL'));
-              markup = '';
+              if((device.state === 'cool') && (!SB.hasClass(cool, 'device-active'))) {
+                SB.addClass(cool,    'device-active');
+                SB.removeClass(heat, 'device-active');
+                SB.removeClass(off,  'device-off');
+                SB.putText(SB.getByTag('em', off)[0], translate('COOL'));
+                markup = '';
+              }
+
+              else if((device.state === 'heat') && (!SB.hasClass(heat, 'device-active'))) {
+                SB.addClass(heat,    'device-active');
+                SB.removeClass(cool, 'device-active');
+                SB.removeClass(off,  'device-off');
+                SB.putText(SB.getByTag('em', off)[0], translate('HEAT'));
+                markup = '';
+              }
+
+              else if((device.state === 'off') && (!SB.hasClass(off, 'device-off'))) {
+                SB.addClass(off,     'device-off');
+                SB.removeClass(cool, 'device-active');
+                SB.removeClass(heat, 'device-active');
+                SB.putText(SB.getByTag('em', off)[0], translate('OFF'));
+                markup = '';
+              }
             }
 
-            else if((device.state === 'heat') && (!SB.hasClass(heat, 'device-active'))) {
-              SB.addClass(heat,    'device-active');
-              SB.removeClass(cool, 'device-active');
-              SB.removeClass(off,  'device-off');
-              SB.putText(SB.getByTag('em', off)[0], translate('HEAT'));
-              markup = '';
-            }
-
-            else if((device.state === 'off') && (!SB.hasClass(off, 'device-off'))) {
-              SB.addClass(off,     'device-off');
-              SB.removeClass(cool, 'device-active');
-              SB.removeClass(heat, 'device-active');
-              SB.putText(SB.getByTag('em', off)[0], translate('OFF'));
-              markup = '';
+            else {
+              SB.spec.buildSliders(deviceId);
             }
           }
 

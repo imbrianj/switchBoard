@@ -32,7 +32,7 @@ module.exports = (function () {
    * @requires querystring, fs, https
    */
   return {
-    version : 20150110,
+    version : 20150130,
 
     inputs : ['command', 'text', 'list', 'subdevice'],
 
@@ -403,7 +403,7 @@ module.exports = (function () {
 
             case 'temp' :
               if(!isNaN(value)) {
-                if((value >= 50) && (value <= 100)) {
+                if((value >= 50) && (value <= 90)) {
                   config.path = '/v2/put/shared.' + subdevice[0].serial;
                   config.args = { target_change_pending : true, target_temperature : this.fToC(value) };
                 }

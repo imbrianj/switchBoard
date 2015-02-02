@@ -28,7 +28,7 @@ SB = (function () {
   'use strict';
 
   return {
-    version : 20141226,
+    version : 20150201,
 
    /**
     * Stops event bubbling further.
@@ -278,21 +278,21 @@ SB = (function () {
       }
     },
 
-    /**
-     * Shortcut to document.getElementById
-     *
-     * @param {String} ID name to be searched for.
-     */
+   /**
+    * Shortcut to document.getElementById
+    *
+    * @param {String} ID name to be searched for.
+    */
     get : function (id) {
       return document.getElementById(id);
     },
 
-    /**
-     * Shortcut to document.getElementsByTagName
-     * @param {String} tagName Tag name to be searched for.
-     * @param {Object} parent Parent element to begin the search from.  If no
-     *                 element is specified, the document root will be used.
-     */
+   /**
+    * Shortcut to document.getElementsByTagName
+    * @param {String} tagName Tag name to be searched for.
+    * @param {Object} parent Parent element to begin the search from.  If no
+    *                 element is specified, the document root will be used.
+    */
     getByTag : function (tagName, parent) {
       parent = parent || document;
 
@@ -439,15 +439,15 @@ SB = (function () {
       return string.toString().replace(/^\s\s*/, '').replace(/\s\s*$/, '');
     },
 
-    /**
-     * Accepts a string of JSON and returns a native Javascript object.
-     *
-     * @param {String} string String of JSON code to be decoded to an object.
-     * @return {Object} Native Javascript object.
-     * @note Uses eval() if JSON.parse is not available, so as to support older
-     *        browsers.  This is dangerous if you do not trust your source of
-     *        the JSON string.
-     */
+   /**
+    * Accepts a string of JSON and returns a native Javascript object.
+    *
+    * @param {String} string String of JSON code to be decoded to an object.
+    * @return {Object} Native Javascript object.
+    * @note Uses eval() if JSON.parse is not available, so as to support older
+    *        browsers.  This is dangerous if you do not trust your source of
+    *        the JSON string.
+    */
     decode : function (json) {
       var reply = '';
 
@@ -463,16 +463,16 @@ SB = (function () {
       return reply;
     },
 
-    /**
-     * Log messages.  If you pass a source and type (success, info or error),
-     * it will print to console with pretty colors.
-     *
-     * @param {String|Object} message Message to be printed to console log.
-     * @param {String} source Source of the log - a device or function worth
-     *         noting.
-     * @param {String} type Type of message to log - defines the color of the
-     *         text.  Can be "success", "info" or "error".
-     */
+   /**
+    * Log messages.  If you pass a source and type (success, info or error),
+    * it will print to console with pretty colors.
+    *
+    * @param {String|Object} message Message to be printed to console log.
+    * @param {String} source Source of the log - a device or function worth
+    *         noting.
+    * @param {String} type Type of message to log - defines the color of the
+    *         text.  Can be "success", "info" or "error".
+    */
     log : function (message, source, type) {
       var now   = new Date(),
           color = 'color: white';
@@ -504,11 +504,11 @@ SB = (function () {
       }
     },
 
-    /**
-     * Stupid wrapper to ensure navigator.vibrate exists before using it.
-     *
-     * @param {Int} duration Number of milliseconds to vibrate.
-     */
+   /**
+    * Stupid wrapper to ensure navigator.vibrate exists before using it.
+    *
+    * @param {Int} duration Number of milliseconds to vibrate.
+    */
     vibrate : function (duration) {
       duration = duration || 20;
 
@@ -521,15 +521,15 @@ SB = (function () {
       }
     },
 
-    /**
-     * Stupid wrapper to ensure Notification exists before using it.  If it does
-     * exist, but it doesn't look like you've granted permission, we'll try to
-     * get permission.  As permission can only be asked from a user action,
-     * we'll break it into a separate method so we can call it directly as well.
-     *
-     * @param {String} string Phrase you'd like popped up in a notification box.
-     * @param {Object} options
-     */
+   /**
+    * Stupid wrapper to ensure Notification exists before using it.  If it does
+    * exist, but it doesn't look like you've granted permission, we'll try to
+    * get permission.  As permission can only be asked from a user action,
+    * we'll break it into a separate method so we can call it directly as well.
+    *
+    * @param {String} string Phrase you'd like popped up in a notification box.
+    * @param {Object} options
+    */
     notify : function (string, options, callback) {
       var notification,
           click;
@@ -560,13 +560,13 @@ SB = (function () {
       return notification;
     },
 
-    /**
-     * Stupid wrapper to ensure Notification exists before using it.  If it does
-     * exist, but it doesn't look like you've granted permission, we'll try to
-     * get permission.  As permission can only be asked from a user action,
-     * we'll break it into a separate method so we can call it directly as well.
-     * If you've explicitly denied permission, we'll honor that and not ask.
-     */
+   /**
+    * Stupid wrapper to ensure Notification exists before using it.  If it does
+    * exist, but it doesn't look like you've granted permission, we'll try to
+    * get permission.  As permission can only be asked from a user action,
+    * we'll break it into a separate method so we can call it directly as well.
+    * If you've explicitly denied permission, we'll honor that and not ask.
+    */
     notifyAsk : function () {
       if(typeof Notification === 'function') {
         if(Notification.permission !== 'denied') {
@@ -579,14 +579,14 @@ SB = (function () {
       }
     },
 
-    /**
-     * Stupid wrapper to ensure your browser supports text to speech before
-     * using it.
-     *
-     * @param {String} string Phrase you'd like read aloud on the client.
-     * @param {String} lang Language code text is formatted in.
-     * @param {String} voice "male" or "female"
-     */
+   /**
+    * Stupid wrapper to ensure your browser supports text to speech before
+    * using it.
+    *
+    * @param {String} string Phrase you'd like read aloud on the client.
+    * @param {String} lang Language code text is formatted in.
+    * @param {String} voice "male" or "female"
+    */
     speak : function (string, lang, voice) {
       var message,
           voices;
@@ -615,13 +615,13 @@ SB = (function () {
       }
     },
 
-    /**
-     * Stupid wrapper to ensure your browser supports speech to text before
-     * using it.
-     *
-     * @param {Function} callback Callback function that will accept the
-     *         transcribed text and the confidence percentage.
-     */
+   /**
+    * Stupid wrapper to ensure your browser supports speech to text before
+    * using it.
+    *
+    * @param {Function} callback Callback function that will accept the
+    *         transcribed text and the confidence percentage.
+    */
     transcribe : function (callback) {
       var transcribe,
           process;

@@ -86,7 +86,7 @@ module.exports = (function () {
 
         // This is a good temperature range for me.
         if((temp > 60) && (temp < 75)) {
-          comfortable += 5;
+          comfortable += 4;
         }
 
         // As it gets colder, I get less comfortable.
