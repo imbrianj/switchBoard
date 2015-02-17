@@ -266,7 +266,7 @@ exports.config = {
     // You may group your devices together for display by using the group name
     // you'd like shown as the object name.  Devices within that group should
     // be the same name as you give them in SmartThings.
-    groups         : { 'Bedroom'           : ['Bedroom Lamps', 'Bedroom Switch'],
+    groups         : { 'Bedroom'           : ['Bedroom Lamps', 'Bedroom Switch', 'Bedroom Window'],
                        'Office'            : ['Office Switch'],
                        'Hallway'           : ['Hall Light', 'Front Door'],
                        'Living Room'       : ['Living Room Lamp', 'Chandelier'],
@@ -277,6 +277,14 @@ exports.config = {
                                                disabled      : true },
                        'Announce Moisture' : { id            : 'announceMoisture',
                                                controllerIds : [],
+                                               disabled      : true },
+                       'Window Open'       : { id            : 'windowOpen',
+                                               contact       : ['Bedroom Window'],
+                                               thermostat    : ['Living Room'],
+                                               controllerIds : ['nest', 'pushover', 'speech'],
+                                               message       : { 'heat' : 'Window open and heat is still on.',
+                                                                 'cool' : 'Window open and AC is still on.',
+                                                                 'off'  : 'Window still open.  Thermostat turned off.'},
                                                disabled      : true },
                        'Mode Change'       : { id            : 'smartthingsModeChange',
                                                controllerIds : [],
@@ -297,8 +305,11 @@ exports.config = {
     password  : 'password',
     apps      : { 'Window Open'   : { id            : 'windowOpen',
                                       thermostats   : ['Living Room'],
-                                      controllerIds : ['smartthings'],
-                                      contact       : ['Balcony Door', 'Office Window', 'Bedroom Window', 'Dining Room Window', 'Living Room Window'] },
+                                      contact       : ['Balcony Door', 'Office Window', 'Bedroom Window', 'Dining Room Window', 'Living Room Window'],
+                                      controllerIds : ['smartthings', 'pushover', 'speech'],
+                                      message       : { 'heat' : 'Window open and heat is still on.',
+                                                        'cool' : 'Window open and AC is still on.',
+                                                        'off'  : 'Window still open.  Thermostat turned off.'} },
                   'Protect Alarm' : { id            : 'announceNest',
                                       controllerIds : ['pushover', 'sms', 'speech'] }
                 },
