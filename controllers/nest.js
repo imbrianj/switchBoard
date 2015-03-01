@@ -350,36 +350,38 @@ module.exports = (function () {
         subDevices = JSON.parse(JSON.stringify(nestState.value.devices));
       }
 
-      if(command === 'HOME') {
-        config.host = config.auth.url;
-        config.path = '/v2/put/structure.' + nestState.value.structure;
-        config.args = { away : false, away_timestamp : new Date().getTime(), away_setter : 0 };
-      }
+      if(nestState.value) {
+        if(command === 'HOME') {
+          config.host = config.auth.url;
+          config.path = '/v2/put/structure.' + nestState.value.structure;
+          config.args = { away : false, away_timestamp : new Date().getTime(), away_setter : 0 };
+        }
 
-      if(command === 'AWAY') {
-        config.host = config.auth.url;
-        config.path = '/v2/put/structure.' + nestState.value.structure;
-        config.args = { away : true, away_timestamp : new Date().getTime(), away_setter : 0 };
-      }
+        if(command === 'AWAY') {
+          config.host = config.auth.url;
+          config.path = '/v2/put/structure.' + nestState.value.structure;
+          config.args = { away : true, away_timestamp : new Date().getTime(), away_setter : 0 };
+        }
 
-      else if(command === 'FAN_ON') {
-        config.host = config.auth.url;
-        config.path = '/v2/put/structure.' + nestState.value.structure;
-        config.args = { fan_mode : 'on' };
-      }
+        else if(command === 'FAN_ON') {
+          config.host = config.auth.url;
+          config.path = '/v2/put/structure.' + nestState.value.structure;
+          config.args = { fan_mode : 'on' };
+        }
 
-      else if(command === 'FAN_AUTO') {
-        config.host = config.auth.url;
-        config.path = '/v2/put/structure.' + nestState.value.structure;
-        config.args = { fan_mode : 'auto' };
-      }
+        else if(command === 'FAN_AUTO') {
+          config.host = config.auth.url;
+          config.path = '/v2/put/structure.' + nestState.value.structure;
+          config.args = { fan_mode : 'auto' };
+        }
 
-      else if(subdevice.indexOf('mode-') === 0) {
-        commandType = 'mode';
-      }
+        else if(subdevice.indexOf('mode-') === 0) {
+          commandType = 'mode';
+        }
 
-      else if(subdevice.indexOf('temp-') === 0) {
-        commandType = 'temp';
+        else if(subdevice.indexOf('temp-') === 0) {
+          commandType = 'temp';
+        }
       }
 
       if(commandType) {
@@ -514,8 +516,8 @@ module.exports = (function () {
             var deviceState = require(__dirname + '/../lib/deviceState'),
                 nestData    = {};
 
-            if(dataReply.indexOf('<html>redirect to') === 0) {
-              nest.callback('API redirected');
+            if(dataReply.indexOf('<') === 0) {
+              nest.callback('API returned an unexpected value');
             }
 
             else if(dataReply) {
