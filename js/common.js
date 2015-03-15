@@ -1,4 +1,4 @@
-/*global document, window, ActiveXObject, XMLHttpRequest, SB, Notification, SpeechSynthesisUtterance, webkitSpeechRecognition */
+/*global document, window, ActiveXObject, XMLHttpRequest, SB, localStorage, Notification, SpeechSynthesisUtterance, webkitSpeechRecognition */
 /*jslint white: true, evil: true */
 /*jshint -W020 */
 
@@ -28,7 +28,7 @@ SB = (function () {
   'use strict';
 
   return {
-    version : 20150201,
+    version : 20150314,
 
    /**
     * Stops event bubbling further.
@@ -645,6 +645,35 @@ SB = (function () {
       }
 
       return transcribe;
+    },
+
+    /**
+     * Stupid wrapper to ensure your browser supports local storage before using
+     * it.
+     *
+     * @param {String} key Key to write value to - or read value from local
+     *         storage.
+     * @param {String} value Value to be written to local storage.  If none is
+     *         provided, the currently stored value will be returned.
+     */
+    storage : function (key, value) {
+      var newValue;
+
+      if(key) {
+        if(typeof localStorage !== 'undefined') {
+          if(value !== undefined) {
+            localStorage.setItem(key, value);
+          }
+
+          newValue = localStorage.getItem(key);
+        }
+
+        else {
+          SB.log('Not supported', 'Local Storage', 'error');
+        }
+      }
+
+      return newValue;
     },
 
     ajax : {

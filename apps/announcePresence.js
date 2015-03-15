@@ -32,11 +32,12 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20141201,
+    version : 20150314,
 
     announcePresence : function(device, command, controllers, values, config) {
       var runCommand = require(__dirname + '/../lib/runCommand'),
           translate  = require(__dirname + '/../lib/translate'),
+          notify     = require(__dirname + '/../lib/notify'),
           message    = '',
           value,
           deviceId;
@@ -56,6 +57,8 @@ module.exports = (function () {
         }
 
         if(message) {
+          notify.sendNotification(null, message, device);
+
           for(deviceId in controllers) {
             if((deviceId !== 'config') && (deviceId !== device)) {
               runCommand.runCommand(deviceId, 'text-' + message);

@@ -33,16 +33,16 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20141201,
+    version : 20150314,
 
     announceStocks : function(device, command, controllers, values, config) {
       var deviceState = require(__dirname + '/../lib/deviceState'),
           translate   = require(__dirname + '/../lib/translate'),
           runCommand  = require(__dirname + '/../lib/runCommand'),
+          notify      = require(__dirname + '/../lib/notify'),
           controller  = controllers[device],
           message     = '',
           stockName,
-          notify,
           deviceId;
 
       if((config.limits) && (values.value)) {
@@ -67,8 +67,6 @@ module.exports = (function () {
 
       if(message) {
         console.log('\x1b[35mSchedule\x1b[0m: ' + message);
-
-        notify = require(__dirname + '/../lib/notify');
 
         notify.sendNotification(null, message, device);
 

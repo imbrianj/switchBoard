@@ -33,7 +33,7 @@ SB.spec = (function () {
   'use strict';
 
   return {
-    version : 20141226,
+    version : 20150314,
 
     state     : {},
     parsers   : {},
@@ -48,12 +48,43 @@ SB.spec = (function () {
       templates : []
     },
 
-   /**
-    * Accepts a state object replaces the appropriate DOM className if able.
-    * If content has changed, the entire node will be replaced.
-    *
-    * @param {Object} state State object of a changed controller.
-    */
+    /**
+     * Selects the given nav item.
+     *
+     * @param {String} selected Name of the new tab that should be selected.
+     */
+    navChange : function(selected) {
+      var newNav        = SB.getByClass(selected, SB.spec.uiComponents.header, 'li')[0],
+          newContent    = SB.get(selected),
+          selectNav     = SB.getByClass('selected', SB.spec.uiComponents.header, 'li')[0],
+          selectContent = SB.getByClass('selected', SB.spec.uiComponents.body,   'section')[0],
+          slider;
+
+      if((newNav) && (!SB.hasClass('selected', newNav))) {
+        SB.removeClass(selectNav,     'selected');
+        SB.removeClass(selectContent, 'selected');
+
+        SB.vibrate();
+
+        SB.spec.lazyLoad(selected);
+
+        SB.storage('selected', selected);
+
+        SB.addClass(newNav,     'selected');
+        SB.addClass(newContent, 'selected');
+
+        SB.spec.sliderSetWidths();
+
+        SB.spec.lazyUnLoad(selectContent);
+      }
+    },
+
+    /**
+     * Accepts a state object replaces the appropriate DOM className if able.
+     * If content has changed, the entire node will be replaced.
+     *
+     * @param {Object} state State object of a changed controller.
+     */
     updateTemplate : function(state) {
       var node        = SB.get(state.deviceId),
           parser      = SB.spec.parsers[state.typeClass],
@@ -244,25 +275,9 @@ SB.spec = (function () {
 
         // If you have a title, you're a Desktop Notification.
         else if(typeof message.title === 'string') {
-          notify = function(e) {
-            var newContent,
-                selectNav,
-                selectContent;
-
+          notify = function() {
             if(message.deviceId) {
-              newContent    = SB.get(message.deviceId);
-              selectNav     = SB.getByClass('selected', SB.spec.uiComponents.header, 'li')[0];
-              selectContent = SB.getByClass('selected', SB.spec.uiComponents.body,   'section')[0];
-
-              SB.removeClass(selectNav,     'selected');
-              SB.removeClass(selectContent, 'selected');
-
-              SB.spec.lazyLoad(message.deviceId);
-
-              SB.addClass(SB.getByClass(message.deviceId, SB.spec.uiComponents.header, 'li')[0], 'selected');
-              SB.addClass(newContent, 'selected');
-
-              SB.spec.lazyUnLoad(selectContent);
+              SB.spec.navChange(message.deviceId);
             }
           };
 
@@ -830,7 +845,7 @@ SB.spec = (function () {
       });
     },
 
-    /*
+    /**
      * Accepts form inputs for text and numbers - grabs the values required and
      * passes them along for submission.
      */
@@ -846,7 +861,7 @@ SB.spec = (function () {
       SB.spec.sendTextInput(text, device, type);
     },
 
-    /*
+    /**
      * Handles text and number input execution.  If you support WebSockets and
      * have an active connection, we'll use that.  If not, we'll use XHR.
      */
@@ -897,31 +912,13 @@ SB.spec = (function () {
      */
     nav : function() {
       SB.event.add(SB.spec.uiComponents.header, 'click', function(e) {
-        var elm           = SB.getTarget(e).parentNode,
-            tagName       = elm.tagName.toLowerCase(),
-            newContent    = SB.get(elm.className),
-            selectNav     = SB.getByClass('selected', SB.spec.uiComponents.header, 'li')[0],
-            selectContent = SB.getByClass('selected', SB.spec.uiComponents.body,   'section')[0],
-            slider;
+        var elm     = SB.getTarget(e).parentNode,
+            tagName = elm.tagName.toLowerCase();
 
         if(tagName === 'li') {
           e.preventDefault();
 
-          if(elm !== selectNav) {
-            SB.removeClass(selectNav,     'selected');
-            SB.removeClass(selectContent, 'selected');
-
-            SB.vibrate();
-
-            SB.spec.lazyLoad(elm.className);
-
-            SB.addClass(elm,        'selected');
-            SB.addClass(newContent, 'selected');
-
-            SB.spec.sliderSetWidths();
-
-            SB.spec.lazyUnLoad(selectContent);
-          }
+          SB.spec.navChange(elm.className);
 
           SB.notifyAsk();
         }
@@ -938,7 +935,8 @@ SB.spec = (function () {
      * Initialization for SB.  Executes the standard functions used.
      */
     init : function() {
-      var headerData,
+      var active = SB.storage('selected'),
+          headerData,
           bodyData;
 
       SB.spec.uiComponents.header = SB.getByTag('header')[0];
@@ -955,6 +953,10 @@ SB.spec = (function () {
                           INACTIVE     : bodyData.stringInactive,
                           ON           : bodyData.stringOn,
                           OFF          : bodyData.stringOff };
+
+      if(active) {
+        SB.spec.navChange(active);
+      }
 
       /* If we support WebSockets, we'll grab updates as they happen */
       if((typeof WebSocket === 'function') || (typeof WebSocket === 'object')) {

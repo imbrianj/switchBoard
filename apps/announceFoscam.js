@@ -32,25 +32,28 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20141201,
+    version : 20150314,
 
     announceFoscam : function(device, command, controllers, values, config) {
       var runCommand = require(__dirname + '/../lib/runCommand'),
           translate  = require(__dirname + '/../lib/translate'),
+          notify     = require(__dirname + '/../lib/notify'),
           message    = '',
           deviceId;
 
       if((command === 'ALARM_ON') || (command === 'ALARM_OFF')) {
+        if(command === 'ALARM_ON') {
+          message = translate.translate('{{i18n_CAMERA_ARMED}}', 'foscam', controllers.config.language);
+        }
+
+        else if(command === 'ALARM_OFF') {
+          message = translate.translate('{{i18n_CAMERA_DISARMED}}', 'foscam', controllers.config.language);
+        }
+
+        notify.sendNotification(null, message, device);
+
         for(deviceId in controllers) {
           if(deviceId !== 'config') {
-            if(command === 'ALARM_ON') {
-              message = translate.translate('{{i18n_CAMERA_ARMED}}', 'foscam', controllers.config.language);
-            }
-
-            else if(command === 'ALARM_OFF') {
-              message = translate.translate('{{i18n_CAMERA_DISARMED}}', 'foscam', controllers.config.language);
-            }
-
             runCommand.runCommand(deviceId, 'text-' + message);
           }
         }
