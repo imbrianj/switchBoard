@@ -60,11 +60,9 @@ SB.spec = (function () {
           selectContent = SB.getByClass('selected', SB.spec.uiComponents.body,   'section')[0],
           slider;
 
-      if((newNav) && (!SB.hasClass('selected', newNav))) {
+      if((newNav) && (!SB.hasClass(newNav, 'selected'))) {
         SB.removeClass(selectNav,     'selected');
         SB.removeClass(selectContent, 'selected');
-
-        SB.vibrate();
 
         SB.spec.lazyLoad(selected);
 
@@ -920,6 +918,7 @@ SB.spec = (function () {
 
           SB.spec.navChange(elm.className);
 
+          SB.vibrate();
           SB.notifyAsk();
         }
 
