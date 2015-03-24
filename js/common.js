@@ -1,4 +1,4 @@
-/*global document, window, ActiveXObject, init, console, XMLHttpRequest, SB, Notification */
+/*global document, window, ActiveXObject, XMLHttpRequest, SB, localStorage, Notification, SpeechSynthesisUtterance, webkitSpeechRecognition */
 /*jslint white: true, evil: true */
 /*jshint -W020 */
 
@@ -28,7 +28,7 @@ SB = (function () {
   'use strict';
 
   return {
-    version : 20141002,
+    version : 20150314,
 
    /**
     * Stops event bubbling further.
@@ -208,7 +208,13 @@ SB = (function () {
     * @param {String} className Class name being checked.
     */
     hasClass : function (elm, className) {
-      return SB.hasAttribute(elm, 'className', className) ? true : false;
+      var hasClass = false;
+
+      if((elm) && (elm.className)) {
+        hasClass = SB.hasAttribute(elm, 'className', className) ? true : false;
+      }
+
+      return hasClass;
     },
 
    /**
@@ -219,8 +225,10 @@ SB = (function () {
     * @param {String} className Class name to be applied.
     */
     addClass : function (elm, className) {
-      if (!SB.hasClass(elm, className)) {
-        elm.className = SB.trim(elm.className + ' ' + className);
+      if((elm) && (className)) {
+        if (!SB.hasClass(elm, className)) {
+          elm.className = SB.trim(elm.className + ' ' + className);
+        }
       }
     },
 
@@ -270,21 +278,21 @@ SB = (function () {
       }
     },
 
-    /**
-     * Shortcut to document.getElementById
-     *
-     * @param {String} ID name to be searched for.
-     */
+   /**
+    * Shortcut to document.getElementById
+    *
+    * @param {String} ID name to be searched for.
+    */
     get : function (id) {
       return document.getElementById(id);
     },
 
-    /**
-     * Shortcut to document.getElementsByTagName
-     * @param {String} tagName Tag name to be searched for.
-     * @param {Object} parent Parent element to begin the search from.  If no
-     *                 element is specified, the document root will be used.
-     */
+   /**
+    * Shortcut to document.getElementsByTagName
+    * @param {String} tagName Tag name to be searched for.
+    * @param {Object} parent Parent element to begin the search from.  If no
+    *                 element is specified, the document root will be used.
+    */
     getByTag : function (tagName, parent) {
       parent = parent || document;
 
@@ -431,15 +439,15 @@ SB = (function () {
       return string.toString().replace(/^\s\s*/, '').replace(/\s\s*$/, '');
     },
 
-    /**
-     * Accepts a string of JSON and returns a native Javascript object.
-     *
-     * @param {String} string String of JSON code to be decoded to an object.
-     * @return {Object} Native Javascript object.
-     * @note Uses eval() if JSON.parse is not available, so as to support older
-     *        browsers.  This is dangerous if you do not trust your source of
-     *        the JSON string.
-     */
+   /**
+    * Accepts a string of JSON and returns a native Javascript object.
+    *
+    * @param {String} string String of JSON code to be decoded to an object.
+    * @return {Object} Native Javascript object.
+    * @note Uses eval() if JSON.parse is not available, so as to support older
+    *        browsers.  This is dangerous if you do not trust your source of
+    *        the JSON string.
+    */
     decode : function (json) {
       var reply = '';
 
@@ -455,16 +463,16 @@ SB = (function () {
       return reply;
     },
 
-    /**
-     * Log messages.  If you pass a source and type (success, info or error),
-     * it will print to console with pretty colors.
-     *
-     * @param {String|Object} message Message to be printed to console log.
-     * @param {String} source Source of the log - a device or function worth
-     *         noting.
-     * @param {String} type Type of message to log - defines the color of the
-     *         text.  Can be "success", "info" or "error".
-     */
+   /**
+    * Log messages.  If you pass a source and type (success, info or error),
+    * it will print to console with pretty colors.
+    *
+    * @param {String|Object} message Message to be printed to console log.
+    * @param {String} source Source of the log - a device or function worth
+    *         noting.
+    * @param {String} type Type of message to log - defines the color of the
+    *         text.  Can be "success", "info" or "error".
+    */
     log : function (message, source, type) {
       var now   = new Date(),
           color = 'color: white';
@@ -496,17 +504,176 @@ SB = (function () {
       }
     },
 
-    /**
-     * Stupid wrapper to ensure navigator.vibrate exists before using it.
-     *
-     * @param {Int} duration Number of milliseconds to vibrate.
-     */
+   /**
+    * Stupid wrapper to ensure navigator.vibrate exists before using it.
+    *
+    * @param {Int} duration Number of milliseconds to vibrate.
+    */
     vibrate : function (duration) {
-      duration = duration || 5;
+      duration = duration || 20;
 
       if((window.navigator) && (window.navigator.vibrate)) {
         window.navigator.vibrate(duration);
       }
+
+      else {
+        SB.log('Not supported', 'Vibrate', 'error');
+      }
+    },
+
+   /**
+    * Stupid wrapper to ensure Notification exists before using it.  If it does
+    * exist, but it doesn't look like you've granted permission, we'll try to
+    * get permission.  As permission can only be asked from a user action,
+    * we'll break it into a separate method so we can call it directly as well.
+    *
+    * @param {String} string Phrase you'd like popped up in a notification box.
+    * @param {Object} options
+    */
+    notify : function (string, options, callback) {
+      var notification,
+          click;
+
+      if(typeof Notification === 'function') {
+        if(Notification.permission === 'granted') {
+          notification = new Notification(string, options);
+
+          setTimeout(function() {
+            notification.close();
+            SB.event.remove(notification, 'click', click);
+          }, 10000);
+
+          click = function(e) {
+            window.focus();
+            callback(e);
+            SB.event.remove(notification, 'click', click);
+          };
+
+          SB.event.add(notification, 'click', click);
+        }
+
+        else {
+          SB.notifyAsk();
+        }
+      }
+
+      return notification;
+    },
+
+   /**
+    * Stupid wrapper to ensure Notification exists before using it.  If it does
+    * exist, but it doesn't look like you've granted permission, we'll try to
+    * get permission.  As permission can only be asked from a user action,
+    * we'll break it into a separate method so we can call it directly as well.
+    * If you've explicitly denied permission, we'll honor that and not ask.
+    */
+    notifyAsk : function () {
+      if(typeof Notification === 'function') {
+        if(Notification.permission !== 'denied') {
+          Notification.requestPermission(function(permission) {
+            if(Notification.permission !== permission) {
+              Notification.permission = permission;
+            }
+          });
+        }
+      }
+    },
+
+   /**
+    * Stupid wrapper to ensure your browser supports text to speech before
+    * using it.
+    *
+    * @param {String} string Phrase you'd like read aloud on the client.
+    * @param {String} lang Language code text is formatted in.
+    * @param {String} voice "male" or "female"
+    */
+    speak : function (string, lang, voice) {
+      var message,
+          voices;
+
+      if(window.speechSynthesis) {
+        message       = new SpeechSynthesisUtterance();
+        voices        = window.speechSynthesis.getVoices();
+        message.text  = string;
+        message.lang  = lang  || 'en-US';
+
+        // iOS / OSX support more unique voices
+        if((voices) && (voices[10]) && (voices[10].name === 'Alex')) {
+          message.voice = voices[10];
+
+          if(voice === 'female') {
+            message.voice = voices[30];
+          }
+        }
+
+        // Some platforms support only the system default.
+        window.speechSynthesis.speak(message);
+      }
+
+      else {
+        SB.log('Not supported', 'Speak', 'error');
+      }
+    },
+
+   /**
+    * Stupid wrapper to ensure your browser supports speech to text before
+    * using it.
+    *
+    * @param {Function} callback Callback function that will accept the
+    *         transcribed text and the confidence percentage.
+    */
+    transcribe : function (callback) {
+      var transcribe,
+          process;
+
+      if ('webkitSpeechRecognition' in window) {
+        SB.log('Supported', 'Transcribe', 'info');
+
+        transcribe = new webkitSpeechRecognition();
+
+        process = function(e) {
+          callback(e.results[0][0].transcript, e.results[0][0].confidence);
+
+          SB.event.remove(document, 'result', process);
+        };
+
+        SB.event.add(transcribe, 'result', process);
+      }
+
+      else {
+        SB.log('Not supported', 'Transcribe', 'error');
+      }
+
+      return transcribe;
+    },
+
+    /**
+     * Stupid wrapper to ensure your browser supports local storage before using
+     * it.
+     *
+     * @param {String} key Key to write value to - or read value from local
+     *         storage.
+     * @param {String} value Value to be written to local storage.  If none is
+     *         provided, the currently stored value will be returned.
+     */
+    storage : function (key, value) {
+      var newValue;
+
+      if(key) {
+        if(typeof localStorage !== 'undefined') {
+          if(value !== undefined) {
+            localStorage.setItem(key, value);
+          }
+
+          newValue = localStorage.getItem(key);
+        }
+
+        else {
+          SB.log('Not supported', 'Local Storage', 'error');
+        }
+      }
+
+      return newValue;
     },
 
     ajax : {

@@ -1,4 +1,4 @@
-/*global document, window, ActiveXObject, init, console, XMLHttpRequest, SB, Notification */
+/*global document, window, console, SB */
 /*jslint white: true, evil: true */
 /*jshint -W020 */
 
@@ -33,17 +33,13 @@ SB.spec = (function () {
   'use strict';
 
   return {
-    version : 20141008,
+    version : 20150314,
 
-    state : {},
-
-    parsers : {},
-
+    state     : {},
+    parsers   : {},
     templates : {},
-
-    strings : {},
-
-    socket : {},
+    strings   : {},
+    socket    : {},
 
     uiComponents : {
       header : {},
@@ -52,12 +48,41 @@ SB.spec = (function () {
       templates : []
     },
 
-   /**
-    * Accepts a state object replaces the appropriate DOM className if able.
-    * If content has changed, the entire node will be replaced.
-    *
-    * @param {Object} state State object of a changed controller.
-    */
+    /**
+     * Selects the given nav item.
+     *
+     * @param {String} selected Name of the new tab that should be selected.
+     */
+    navChange : function(selected) {
+      var newNav        = SB.getByClass(selected, SB.spec.uiComponents.header, 'li')[0],
+          newContent    = SB.get(selected),
+          selectNav     = SB.getByClass('selected', SB.spec.uiComponents.header, 'li')[0],
+          selectContent = SB.getByClass('selected', SB.spec.uiComponents.body,   'section')[0],
+          slider;
+
+      if((newNav) && (!SB.hasClass(newNav, 'selected'))) {
+        SB.removeClass(selectNav,     'selected');
+        SB.removeClass(selectContent, 'selected');
+
+        SB.spec.lazyLoad(selected);
+
+        SB.storage('selected', selected);
+
+        SB.addClass(newNav,     'selected');
+        SB.addClass(newContent, 'selected');
+
+        SB.spec.sliderSetWidths();
+
+        SB.spec.lazyUnLoad(selectContent);
+      }
+    },
+
+    /**
+     * Accepts a state object replaces the appropriate DOM className if able.
+     * If content has changed, the entire node will be replaced.
+     *
+     * @param {Object} state State object of a changed controller.
+     */
     updateTemplate : function(state) {
       var node        = SB.get(state.deviceId),
           parser      = SB.spec.parsers[state.typeClass],
@@ -79,7 +104,7 @@ SB.spec = (function () {
         selected     = SB.hasClass(node, 'selected') ? ' selected' : '';
         oldMarkup    = node.cloneNode(true);
         deviceHeader = SB.getByTag('h1', oldMarkup)[0];
-        oldMarkup.removeChild(deviceHeader);
+        deviceHeader.parentNode.removeChild(deviceHeader);
         oldMarkup    = oldMarkup.innerHTML;
 
         if(parser) {
@@ -131,7 +156,8 @@ SB.spec = (function () {
         if(markup) {
           innerMarkup.innerHTML = markup;
           innerMarkup = SB.getByTag('section', innerMarkup)[0];
-          innerMarkup.removeChild(SB.getByTag('h1', innerMarkup)[0]);
+          deviceHeader = SB.getByTag('h1', innerMarkup)[0];
+          deviceHeader.parentNode.removeChild(deviceHeader);
 
           if(innerMarkup.innerHTML !== oldMarkup) {
             if(SB.getByClass('sliderBar', node, 'div')[0]) {
@@ -169,15 +195,14 @@ SB.spec = (function () {
     },
 
     /**
-     * If you have no connection indicator - or if it doesn't say we're
-     * connected, we should reconnect and grab the latest State.
+     * If you have no connection, we should reconnect and grab the latest State.
      */
     checkConnection : function () {
-      var connected = SB.spec.uiComponents.indicator && SB.hasClass(SB.spec.uiComponents.indicator, 'connected');
+      var connected = SB.spec.socket.readyState <= 1;
 
       if(!connected) {
-        SB.spec.socketConnect();
-        connected = SB.spec.uiComponents.indicator && SB.hasClass(SB.spec.uiComponents.indicator, 'connected');
+        SB.spec.socketConnect(0);
+        connected = SB.spec.socket.readyState <= 1;
       }
 
       return connected;
@@ -187,72 +212,77 @@ SB.spec = (function () {
      * If you have no connection indicator - or if it doesn't say we're
      * connected, we should reconnect and grab the latest State.
      */
-    socketConnect : function () {
-      SB.log('Connecting', 'WebSocket', 'info');
+    socketConnect : function (i) {
+      var reconnect,
+          open,
+          message,
+          error,
+          close,
+          cleanup;
 
-//      SB.spec.socket = new WebSocket('ws://' + window.location.host, 'echo-protocol');
+      if((!SB.spec.socket.readyState) || (SB.spec.socket.readyState === 3)) {
+        SB.log('Connecting', 'WebSocket', 'info');
 
-      SB.event.add(SB.spec.socket, 'open', function(e) {
-        var reconnect = SB.spec.uiComponents.indicator.className === 'disconnected' ? true : false;
+//        SB.spec.socket = new WebSocket('ws://' + window.location.host, 'echo-protocol');
+
+        i += 1;
+
+        reconnect = function() {
+          // If everyone gets booted at the same time, we want to make sure they
+          // have some variance in their reconnection times.
+          var delay = Math.round(Math.min(Math.max((i * (Math.random() * 15)), 10), 60));
+
+          SB.log('Retrying in ' + delay + 's', 'WebSocket', 'info');
+          SB.spec.uiComponents.indicator.className = 'disconnected';
+          SB.putText(SB.spec.uiComponents.indicator, SB.spec.strings.DISCONNECTED);
+
+          setTimeout(function() {
+            SB.spec.socketConnect(i);
+          }, delay * 1000);
+        };
+      }
+
+      open = function(e) {
+        var reconnected = SB.spec.uiComponents.indicator.className === 'disconnected' ? true : false;
 
         SB.spec.uiComponents.indicator.className = 'connected';
         SB.putText(SB.spec.uiComponents.indicator, SB.spec.strings.CONNECTED);
 
         SB.log('Connected', 'WebSocket', 'success');
 
-        if(reconnect) {
+        if(reconnected) {
           SB.spec.socket.send('fetch state');
 
           SB.log('Reconnected', 'WebSocket', 'success');
         }
-      });
 
-      SB.event.add(SB.spec.socket, 'close', function(e) {
-        SB.spec.uiComponents.indicator.className = 'disconnected';
-        SB.putText(SB.spec.uiComponents.indicator, SB.spec.strings.DISCONNECTED);
+        SB.event.add(SB.spec.socket, 'close', close);
+      };
 
-        SB.log('Disconnected', 'WebSocket', 'error');
-      });
-
-      SB.event.add(SB.spec.socket, 'message', function(e) {
+      message = function(e) {
         var message = SB.decode(e.data),
             device  = {},
-            notification;
+            notification,
+            notify;
 
-        if(typeof message.title === 'string') {
-          if(typeof Notification === 'function') {
-            notification = new Notification(message.title, message.options);
-
-            setTimeout(function() {
-              notification.close();
-            }, 10000);
-
-            SB.event.add(notification, 'click', function(e) {
-              var newContent,
-                  selectNav,
-                  selectContent;
-
-              window.focus();
-
-              if(message.deviceId) {
-                newContent    = SB.get(message.deviceId);
-                selectNav     = SB.getByClass('selected', SB.spec.uiComponents.header, 'li')[0];
-                selectContent = SB.getByClass('selected', SB.spec.uiComponents.body,   'section')[0];
-
-                SB.removeClass(selectNav,     'selected');
-                SB.removeClass(selectContent, 'selected');
-
-                SB.spec.lazyLoad(message.deviceId);
-
-                SB.addClass(SB.getByClass(message.deviceId, SB.spec.uiComponents.header, 'li')[0], 'selected');
-                SB.addClass(newContent, 'selected');
-
-                SB.spec.lazyUnLoad(selectContent);
-              }
-            });
+        if(typeof message.speech === 'string') {
+          if(message.speech) {
+            SB.speak(message.speech, message.language, message.voice);
           }
         }
 
+        // If you have a title, you're a Desktop Notification.
+        else if(typeof message.title === 'string') {
+          notify = function() {
+            if(message.deviceId) {
+              SB.spec.navChange(message.deviceId);
+            }
+          };
+
+          notification = SB.notify(message.title, message.options, notify);
+        }
+
+        // If you have a deviceId, you're an update to a controller state.
         else if(typeof message.deviceId === 'string') {
           SB.spec.updateTemplate(message);
         }
@@ -274,7 +304,35 @@ SB.spec = (function () {
             SB.spec.uiComponents.templates = message;
           }
         }
-      });
+      };
+
+      close = function(e) {
+        SB.event.remove(SB.spec.socket, 'close', close);
+
+        SB.log('Disconnected', 'WebSocket', 'error');
+
+        reconnect();
+      };
+
+      error = function(e) {
+        SB.event.remove(SB.spec.socket, 'error', close);
+
+        SB.log('Error', 'WebSocket', 'error');
+
+        reconnect();
+      };
+
+      cleanup = function() {
+        SB.event.remove(SB.spec.socket, 'open',    open);
+        SB.event.remove(SB.spec.socket, 'message', message);
+        SB.event.remove(SB.spec.socket, 'error',   error);
+        SB.event.remove(SB.spec.socket, 'close',   cleanup);
+      };
+
+      SB.event.add(SB.spec.socket, 'open',    open);
+      SB.event.add(SB.spec.socket, 'message', message);
+      SB.event.add(SB.spec.socket, 'error',   error);
+      SB.event.add(SB.spec.socket, 'close',   cleanup);
     },
 
     /**
@@ -329,7 +387,7 @@ SB.spec = (function () {
           }
         };
 
-        SB.ajax.request(pollRequest);
+//        SB.ajax.request(pollRequest);
       }, 10000);
     },
 
@@ -610,6 +668,14 @@ SB.spec = (function () {
           touchStartX      = 0,
           touchStartY      = 0,
           touchThreshold   = 5,
+          transcribe       = null,
+          transcribeParse  = function(text) {
+            var device = commandIssued;
+
+            SB.vibrate();
+            SB.spec.sendTextInput(text, device, 'text');
+            stopCommand();
+          },
           findCommand      = function(e) {
             var elm      = SB.getTarget(e),
                 tagName  = elm.tagName.toLowerCase(),
@@ -625,10 +691,18 @@ SB.spec = (function () {
 
             return validElm;
           },
-          fireCommand      = function(e) {
+          fireCommand      = function(e, speech) {
             var elm = findCommand(e);
 
-            if((elm) && (!interrupt)) {
+            if(speech) {
+              SB.vibrate();
+
+              commandIssued = SB.getTarget(e).parentNode.parentNode.id;
+              transcribe = SB.transcribe(transcribeParse);
+              transcribe.start();
+            }
+
+            else if((elm) && (!interrupt)) {
               if(elm.rel === 'external') {
                 window.open(elm.href, '_blank').focus();
               }
@@ -719,8 +793,9 @@ SB.spec = (function () {
         });
 
         SB.event.add(SB.spec.uiComponents.body, 'touchend', function(e) {
-          // If you've only quickly tapped a command, we don't need to wait.
-          if(tapped) {
+          // Emoji touch events are cancelled after speech recognition - which
+          // requires lifting your finger to accept the dialog.
+          if(!SB.hasClass(SB.getTarget(e).parentNode, 'emoji') && (tapped)) {
             fireCommand(e);
           }
 
@@ -741,7 +816,11 @@ SB.spec = (function () {
       }
 
       SB.event.add(SB.spec.uiComponents.body, 'mousedown', function(e) {
-        if((touched === false) && (tapped === false)) {
+        if(SB.hasClass(SB.getTarget(e).parentNode, 'emoji')) {
+          fireCommand(e, true);
+        }
+
+        else if((touched === false) && (tapped === false)) {
           interrupt = false;
 
           fireCommand(e);
@@ -752,7 +831,9 @@ SB.spec = (function () {
       });
 
       SB.event.add(SB.spec.uiComponents.body, 'mouseup', function(e) {
-        stopCommand(e);
+        if(!SB.hasClass(SB.getTarget(e).parentNode, 'emoji')) {
+          stopCommand(e);
+        }
       });
 
       SB.event.add(SB.spec.uiComponents.body, 'click', function(e) {
@@ -762,20 +843,31 @@ SB.spec = (function () {
       });
     },
 
-    /*
-     * Handles text and number input execution.  If you support WebSockets and
-     * have an active connection, we'll use that.  If not, we'll use XHR.
+    /**
+     * Accepts form inputs for text and numbers - grabs the values required and
+     * passes them along for submission.
      */
     sendInput : function(elm) {
-      var ts   = new Date().getTime(),
-          text = '',
+      var text = '',
           type = '',
-          device,
-          ajaxRequest;
+          device;
 
       text   = SB.getByTag('input', elm, 'input')[0].value;
       device = SB.getByTag('input', elm, 'input')[0].name;
       type   = SB.getByClass('input-type', elm, 'input')[0].value;
+
+      SB.spec.sendTextInput(text, device, type);
+    },
+
+    /**
+     * Handles text and number input execution.  If you support WebSockets and
+     * have an active connection, we'll use that.  If not, we'll use XHR.
+     */
+    sendTextInput : function(text, device, type) {
+      var ts = new Date().getTime(),
+          ajaxRequest;
+
+      type = type || 'text';
 
       if(SB.spec.socket) {
         if(SB.spec.checkConnection()) {
@@ -788,14 +880,14 @@ SB.spec = (function () {
       else {
         ajaxRequest = {
           path       : '/',
-          param      : device + '=' + type + '-' + text,
+          param      : device + '=' + type + '-' + text + '&ts=' + ts,
           method     : 'POST',
           onComplete : function () {
             SB.log(ajaxRequest.response);
           }
         };
 
-//        SB.ajax.request(ajaxRequest);
+        SB.ajax.request(ajaxRequest);
       }
     },
 
@@ -818,46 +910,21 @@ SB.spec = (function () {
      */
     nav : function() {
       SB.event.add(SB.spec.uiComponents.header, 'click', function(e) {
-        var elm           = SB.getTarget(e).parentNode,
-            tagName       = elm.tagName.toLowerCase(),
-            newContent    = SB.get(elm.className),
-            selectNav     = SB.getByClass('selected', SB.spec.uiComponents.header, 'li')[0],
-            selectContent = SB.getByClass('selected', SB.spec.uiComponents.body,   'section')[0],
-            slider;
+        var elm     = SB.getTarget(e).parentNode,
+            tagName = elm.tagName.toLowerCase();
 
         if(tagName === 'li') {
           e.preventDefault();
 
-          if(elm !== selectNav) {
-            SB.removeClass(selectNav,     'selected');
-            SB.removeClass(selectContent, 'selected');
+          SB.spec.navChange(elm.className);
 
-            SB.vibrate();
-
-            SB.spec.lazyLoad(elm.className);
-
-            SB.addClass(elm,        'selected');
-            SB.addClass(newContent, 'selected');
-
-            SB.spec.sliderSetWidths();
-
-            SB.spec.lazyUnLoad(selectContent);
-          }
-
-          if(typeof Notification === 'function') {
-            if(Notification.permission !== 'denied') {
-              Notification.requestPermission(function(permission) {
-                if(Notification.permission !== permission) {
-                  Notification.permission = permission;
-                }
-              });
-            }
-          }
+          SB.vibrate();
+          SB.notifyAsk();
         }
 
         else if(SB.getTarget(e).id === 'indicator') {
           if(SB.hasClass(SB.getTarget(e), 'disconnected')) {
-            SB.spec.socketConnect();
+            SB.spec.socketConnect(0);
           }
         }
       });
@@ -867,7 +934,8 @@ SB.spec = (function () {
      * Initialization for SB.  Executes the standard functions used.
      */
     init : function() {
-      var headerData,
+      var active = SB.storage('selected'),
+          headerData,
           bodyData;
 
       SB.spec.uiComponents.header = SB.getByTag('header')[0];
@@ -885,9 +953,13 @@ SB.spec = (function () {
                           ON           : bodyData.stringOn,
                           OFF          : bodyData.stringOff };
 
+      if(active) {
+        SB.spec.navChange(active);
+      }
+
       /* If we support WebSockets, we'll grab updates as they happen */
       if((typeof WebSocket === 'function') || (typeof WebSocket === 'object')) {
-        SB.spec.socketConnect();
+        SB.spec.socketConnect(0);
       }
 
       /* Otherwise, we'll poll for updates */

@@ -1,21 +1,24 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html" class="theme-dark">
+<html lang="en" xmlns="http://www.w3.org/1999/html" class="theme-dark" manifest="/manifest.appcache">
   <head>
     <title>SwitchBoard</title>
     <link rel="stylesheet" href="css/combo.min.css" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="icon" sizes="192x192" href="images/icons/apple-touch-icon.png" />
     <link rel="apple-touch-icon" href="images/icons/apple-touch-icon.png" />
     <meta http-equiv="cache-control" content="no-cache" />
     <meta http-equiv="pragma" content="no-cache" />
-    <meta http-equiv="content-language" content="en-US" />
+    <meta http-equiv="content-language" content="en" />
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta name="description" content="SwitchBoard is a universal remote and home automation system" />
     <meta name="keywords" content="SwitchBoard, home automation, network, remote control" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   </head>
   <body>
-    <a href="https://github.com/imbrianj/switchBoard"><img alt="Fork me on GitHub" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" style="position: absolute; top: 0; right: 0; border: 0;"></a>
-    <header>
+    <header data-string-inactive="Inactive" data-string-connected="Connected" data-string-connecting="Connecting" data-string-disconnected="Disconnected">
       <h1><a href="/">SwitchBoard</a></h1>
       <nav>
         <ul>
@@ -27,8 +30,11 @@
           <li class="roku"><a href="#roku">Roku</a></li>
           <li class="xbmc"><a href="#xbmc">XBMC</a></li>
           <li class="foscam"><a href="#foscam">Camera</a></li>
+          <li class="traffic"><a href="#traffic">Traffic Cams</a></li>
           <li class="stocks"><a href="#stocks">Stocks</a></li>
           <li class="weather"><a href="#weather">Weather</a></li>
+          <li class="switchBoardCI"><a href="#switchBoardCI">Travis</a></li>
+          <li class="gerty"><a href="#gerty">Gerty</a></li>
         </ul>
       </nav>
     </header>
@@ -45,7 +51,7 @@
               <ul>
 
                 <li><span class="fa fa-male device-active"><span>Brian</span></span></li>
-                <li><span class="fa fa-male"><span>Goblin</span></span></li>
+                <li><span class="fa fa-female"><span>Goblin</span></span></li>
               </ul>
             </li>
             <li class="sub-device-group group-bedroom">
@@ -54,7 +60,7 @@
 
                 <li><a href="/?smartthings=subdevice-toggle-Bedroom+Lamps" class="fa fa-lightbulb-o"><span>Bedroom Lamps</span></a></li>
                 <li><a href="/?smartthings=subdevice-toggle-Bedroom+Switch" class="fa fa-lightbulb-o"><span>Bedroom Switch</span></a></li>
-                <li><span class="fa fa-folder-open-o"><span>Bedroom Window</span></span></li>
+                <li><span class="fa fa-columns"><span>Bedroom Window</span></span></li>
               </ul>
             </li>
             <li class="sub-device-group group-office">
@@ -62,8 +68,8 @@
               <ul>
 
                 <li><a href="/?smartthings=subdevice-toggle-Office+Switch" class="fa fa-lightbulb-o device-active"><span>Office Switch</span></a></li>
-                <li><span class="fa fa-folder-open-o"><span>Office Window</span></span></li>
-                <li><span class="fa fa-folder-open-o device-active"><span>Office Door (65&deg;)</span></span></li>
+                <li><span class="fa fa-columns"><span>Office Window</span></span></li>
+                <li><span class="fa fa-columns device-active"><span>Office Door (65&deg;)</span></span></li>
               </ul>
             </li>
             <li class="sub-device-group group-hallway">
@@ -71,7 +77,7 @@
               <ul>
 
                 <li><a href="/?smartthings=subdevice-toggle-Hall+Light" class="fa fa-lightbulb-o"><span>Hall Light</span></a></li>
-                <li><span class="fa fa-folder-open-o"><span>Front Door (70&deg;)</span></span></li>
+                <li><span class="fa fa-columns device-vibrate"><span>Front Door (70&deg;)</span></span></li>
                 <li><span class="fa fa-tint"><span>Laundry Room Moisture</span></span></li>
               </ul>
             </li>
@@ -81,8 +87,8 @@
 
                 <li><a href="/?smartthings=subdevice-toggle-Living+Room+Switch" class="fa fa-lightbulb-o"><span>Living Room Switch</span></a></li>
                 <li><a href="/?smartthings=subdevice-toggle-Living+Room+Lamp" class="fa fa-lightbulb-o"><span>Living Room Lamp</span></a></li>
-                <li><span class="fa fa-folder-open-o"><span>Living Room Window</span></span></li>
-                <li><span class="fa fa-folder-open-o"><span>Balcony Door (75&deg;)</span></span></li>
+                <li><span class="fa fa-columns"><span>Living Room Window</span></span></li>
+                <li><span class="fa fa-columns"><span>Balcony Door (75&deg;)</span></span></li>
                 <li><span class="fa fa-paw device-active"><span>Living Room Motion</span></span></li>
               </ul>
             </li>
@@ -93,7 +99,7 @@
                 <li><a href="/?smartthings=subdevice-toggle-Kitchen+Light" class="fa fa-lightbulb-o"><span>Kitchen Light</span></a></li>
                 <li><a href="/?smartthings=subdevice-toggle-Dining+Lights" class="fa fa-lightbulb-o device-active"><span>Dining Lights</span></a></li>
                 <li><a href="/?smartthings=subdevice-toggle-Chandelier" class="fa fa-lightbulb-o"><span>Chandelier</span></a></li>
-                <li><span class="fa fa-folder-open-o"><span>Dining Room Window</span></span></li>
+                <li><span class="fa fa-columns"><span>Dining Room Window</span></span></li>
               </ul>
             </li>
           </ul>
@@ -123,6 +129,7 @@
                         <a href="/?nest=subdevice-mode-Living Room-cool" class="fa fa-asterisk device-active"><span>Cool</span></a>
                       </div>
                       <div class="navigation">
+                        <span class="fa fa-leaf device-active" title="Leaf"><span>Leaf</span></span>
                         <form class="text-form" action="/" method="get">
                           <fieldset>
                             <legend>Set Temperature</legend>
@@ -439,33 +446,89 @@
           <img data-src="images/foscam/placeholder.jpg" alt="foscam Preview" class="streaming" />
         </div>
       </section>
-
-      <section id="stocks" class="stocks device-on">
-        <h1>Stocks</h1>
-        <div class="text-block">
+      <section id="traffic" class="traffic device-on">
+        <h1>Traffic <em>Active</em></h1>
+        <div class="image-list">
           <ul>
 
-            <li class="gain"><span class="fa fa-arrow-up"><span>Gain</span></span><span class="name">YHOO</span> <span class="price">38.075</span> <span class="change">(+0.285 +0.75%)</li>
-            <li class="loss"><span class="fa fa-arrow-down"><span>Loss</span></span><span class="name">JWN</span> <span class="price">69.94</span> <span class="change">(-0.27 -0.38%)</li>
-            <li class="loss"><span class="fa fa-arrow-down"><span>Loss</span></span><span class="name">TSLA</span> <span class="price">261.606</span> <span class="change">(-0.134 -0.05%)</li>
+            <li><img data-src="http://images.wsdot.wa.gov/nw/005vc16645.jpg?1426466734109" alt="I-5 &amp; Denny" title="I-5 &amp; Denny" /></li>
+            <li><img data-src="http://images.wsdot.wa.gov/nw/005vc16607.jpg?1426466734109" alt="I-5 &amp; Pine" title="I-5 &amp; Pine" /></li>
+            <li><img data-src="http://images.wsdot.wa.gov/nw/005vc16702.jpg?1426466734109" alt="I-5 &amp; Mercer" title="I-5 &amp; Mercer" /></li>
+            <li><img data-src="http://images.wsdot.wa.gov/nw/005vc17277.jpg?1426466734109" alt="I-5 &amp; Northgate" title="I-5 &amp; Northgate" /></li>
+            <li><img data-src="http://images.wsdot.wa.gov/nw/005vc16802.jpg?1426466734109" alt="I-5 &amp; Roanoke" title="I-5 &amp; Roanoke" /></li>
+            <li><img data-src="http://images.wsdot.wa.gov/nw/005vc16508.jpg?1426466734109" alt="I-5 &amp; Yesler" title="I-5 &amp; Yesler" /></li>
+            <li><img data-src="http://images.wsdot.wa.gov/nw/099vc03072.jpg?1426466734109" alt="99 &amp; S King" title="99 &amp; S King" /></li>
+            <li><img data-src="http://images.wsdot.wa.gov/nw/099vc03015.jpg?1426466734109" alt="99 &amp; Atlantic" title="99 &amp; Atlantic" /></li>
+            <li><img data-src="http://www.seattle.gov/trafficcams/images/Western_Elliott.jpg?1426466734109" alt="Western &amp; Elliott" title="Western &amp; Elliott" /></li>
+            <li><img data-src="http://www.seattle.gov/trafficcams/images/1_Stewart.jpg?1426466734109" alt="1st &amp; Stewart" title="1st &amp; Stewart" /></li>
+            <li><img data-src="http://www.seattle.gov/trafficcams/images/2_Stewart.jpg?1426466734109" alt="2nd &amp; Stewart" title="2nd &amp; Stewart" /></li>
+            <li><img data-src="http://www.seattle.gov/trafficcams/images/1_Denny.jpg?1426466734109" alt="1st &amp; Denny" title="1st &amp; Denny" /></li>
+            <li><img data-src="http://www.seattle.gov/trafficcams/images/SR99_King_SB.jpg?1426466734109" alt="Viaduct Southbound" title="Viaduct Southbound" /></li>
+            <li><img data-src="http://www.seattle.gov/trafficcams/images/SR99_King_NB.jpg?1426466734109" alt="Viaduct Northbound" title="Viaduct Northbound" /></li>
+            <li><img data-src="http://www.seattle.gov/trafficcams/images/Elliott_Broad.jpg?1426466734109" alt="Elliot &amp; Broad" title="Elliot &amp; Broad" /></li>
+            <li><img data-src="http://www.seattle.gov/trafficcams/images/Yale_Denny.jpg?1426466734109" alt="Stewart, Yale &amp; Denny" title="Stewart, Yale &amp; Denny" /></li>
+            <li><img data-src="http://www.seattle.gov/trafficcams/images/15W_Emerson.jpg?1426466734109" alt="15th &amp; Emerson" title="15th &amp; Emerson" /></li>
+            <li><img data-src="http://archive.king5.com/weather/images/core/webcam/seatac.jpg?1426466734109" alt="SeaTac Airport" title="SeaTac Airport" /></li>
           </ul>
         </div>
       </section>
-      <section id="weather" class="weather device-on">
-        <h1>Weather</h1>
+      <section id="stocks" class="stocks device-off" data-string-loss="Loss" data-string-neutral="Neutral" data-string-gain="Gain">
+        <h1>Stocks <em>Inactive</em></h1>
         <div class="text-block">
-          <h2><span class="fa fa-sun-o"></span> Seattle Current Weather: 72&deg; Fair</h2>
           <ul>
 
-            <li><span class="fa fa-sun-o"></span> Wed: Sunny 83&deg;/62&deg;</li>
-            <li><span class="fa fa-cloud"></span> Thu: Partly Cloudy 77&deg;/59&deg;</li>
-            <li><span class="fa fa-cloud"></span> Fri: Cloudy 69&deg;/55&deg;</li>
-            <li><span class="fa fa-tint"></span> Sat: Rain 68&deg;/55&deg;</li>
-            <li><span class="fa fa-cloud"></span> Sun: Partly Cloudy 71&deg;/55&deg;</li>
+            <li class="loss"><span class="fa fa-arrow-down" title="Loss"><span>Loss</span></span> <span class="name">YHOO</span> <span class="price">42.87</span> <span class="change">(-0.08 -0.19%)</li>
+            <li class="gain"><span class="fa fa-arrow-up" title="Gain"><span>Gain</span></span> <span class="name">JWN</span> <span class="price">80.36</span> <span class="change">(+0.08 +0.10%)</li>
+            <li class="loss"><span class="fa fa-arrow-down" title="Loss"><span>Loss</span></span> <span class="name">TSLA</span> <span class="price">188.68</span> <span class="change">(-2.39 -1.25%)</li>
+            <li class="loss"><span class="fa fa-arrow-down" title="Loss"><span>Loss</span></span> <span class="name">SCTY</span> <span class="price">48.39</span> <span class="change">(-1.31 -2.64%)</li>
+            <li class="loss"><span class="fa fa-arrow-down" title="Loss"><span>Loss</span></span> <span class="name">Z</span> <span class="price">105.49</span> <span class="change">(-2.51 -2.32%)</li>
+            <li class="loss"><span class="fa fa-arrow-down" title="Loss"><span>Loss</span></span> <span class="name">BABA</span> <span class="price">81.86</span> <span class="change">(-0.06 -0.07%)</li>
+            <li class="loss"><span class="fa fa-arrow-down" title="Loss"><span>Loss</span></span> <span class="name">GOOG</span> <span class="price">547.32</span> <span class="change">(-8.19 -1.47%)</li>
+            <li class="gain"><span class="fa fa-arrow-up" title="Gain"><span>Gain</span></span> <span class="name">GLD</span> <span class="price">110.88</span> <span class="change">(+0.16 +0.14%)</li>
           </ul>
         </div>
+      </section>
+      <section id="weather" class="weather device-on" data-string-current="Current Weather" data-string-unavailable="Weather data unavailable">
+        <h1>Weather <em>Active</em></h1>
+        <div class="text-block">
+          <h2><span class="fa fa-tint"></span> Seattle Current Weather: 48&deg; Rain (7:22 am/7:13 pm)</h2>
+          <ul>
+
+            <li><span class="fa fa-tint"></span> Sun: Rain 50&deg;/45&deg;</li>
+            <li><span class="fa fa-cloud"></span> Mon: Partly Cloudy 58&deg;/43&deg;</li>
+            <li><span class="fa fa-tint"></span> Tue: Showers 57&deg;/48&deg;</li>
+            <li><span class="fa fa-tint"></span> Wed: Showers 60&deg;/46&deg;</li>
+            <li><span class="fa fa-bolt"></span> Thu: PM Showers 62&deg;/49&deg;</li>
+          </ul>
+        </div>
+      </section>
+      <section id="switchBoardCI" class="travis device-on">
+        <h1>Travis <em>Active</em></h1>
+        <div class="text-block">
+          <ul>
+
+            <li class="state-ok"><span class="fa fa-check"><span>Build Status: ok</span></span> <a href="http://travis-ci.org/imbrianj/switchBoard/builds/54466781" class="state-ok" rel="external">Fix delegated apps.  Add local storage to remember the last device you had selected and switch to it when revisiting.  Use desktop notifications more now that android is supporting them. (46s)</a></li>
+            <li class="state-ok"><span class="fa fa-check"><span>Build Status: ok</span></span> <a href="http://travis-ci.org/imbrianj/switchBoard/builds/52674473" class="state-ok" rel="external">Better protection against bad Nest data.  Update appcache for changes to fontawesome. (49s)</a></li>
+            <li class="state-ok"><span class="fa fa-check"><span>Build Status: ok</span></span> <a href="http://travis-ci.org/imbrianj/switchBoard/builds/51045705" class="state-ok" rel="external">Add an app that integrates SmartThings and Nest to turn the thermostat off if a window is opened (and youre wasting power).  First sends you a message - then waits a predetermined amount of time (defaults to 60s), then turns it off. (41s)</a></li>
+          </ul>
+        </div>
+      </section>
+      <section id="gerty" class="gerty device-on">
+        <h1>Gerty <em>Active</em></h1>
+        <div class="text">
+          <form class="text-form" action="/" method="get">
+            <fieldset>
+              <legend>Text Input</legend>
+              <label for="gerty-text-input">Text Input:</label>
+              <input id="gerty-text-input" class="text-input" type="text" name="gerty" placeholder="Text Input" required />
+              <input class="input-type" type="hidden" value="text" name="type" />
+              <button type="submit" class="button">Submit</button>
+            </fieldset>
+          </form>
+        </div>
+        <div class="emoji"><span class="roll">😉</span></div>
       </section>
     </main>
-    <script type="text/javascript" src="js/common.min.js"></script>
+    <script type="text/javascript" src="js/combo.min.js"></script>
   </body>
 </html>
