@@ -46,7 +46,7 @@ module.exports = (function () {
           delay       = config.delay || 60,
           notify,
           checkState,
-          status      = { thermostat : [], contact : [] };
+          status;
 
       notify = function(message) {
         var deviceId;
