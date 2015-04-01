@@ -218,12 +218,13 @@ SB.spec = (function () {
           message,
           error,
           close,
-          cleanup;
+          cleanup,
+          protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
 
       if((!SB.spec.socket.readyState) || (SB.spec.socket.readyState === 3)) {
         SB.log('Connecting', 'WebSocket', 'info');
 
-        SB.spec.socket = new WebSocket('ws://' + window.location.host, 'echo-protocol');
+        SB.spec.socket = new WebSocket(protocol + '://' + window.location.host, 'echo-protocol');
 
         i += 1;
 

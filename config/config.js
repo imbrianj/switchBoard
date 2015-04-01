@@ -14,7 +14,17 @@ exports.config = {
     macroPause   : 1500,
     pollMinutes  : 5,
     pollSeconds  : 15,
-    localTimeout : 1000
+    localTimeout : 1000,
+    // Your SSL key and SCR will be generated for you.  If you want to use one
+    // you've manually created, drop "ssl.key" and "ssl.csr" into /cache/.
+    ssl          : {
+      country  : 'US',
+      state    : 'Washington',
+      city     : 'Seattle',
+      org      : 'Switchboard',
+      name     : 'Switchboard',
+      disabled : true
+    }
   },
 
   // Be sure to mark the "disabled" to true to remove the welcome message.
@@ -290,6 +300,12 @@ exports.config = {
                                                Away          : 'nest=Away;foscam=Preset1,Sleep,Sleep,Alarm_On',
                                                Night         : 'nest=Home;foscam=Alarm_Off,Preset3',
                                                Home          : 'nest=Home;foscam=Alarm_Off,Preset3',
+                                               disabled      : true },
+                       'Door Knock'        : { id            : 'smartthingsDoorKnock',
+                                               door          : 'Front Door',
+                                               message       : 'Someone is at the front door',
+                                               delay         : 5,
+                                               controllerIds : ['pushover', 'sms', 'speech'],
                                                disabled      : true }
                      },
     className      : { Goblin : 'fa-female' },

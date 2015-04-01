@@ -31,8 +31,10 @@
 
 State = {};
 
-var version         = 20150118,
+var version         = 20150331,
+    fs              = require('fs'),
     http            = require('http'),
+    https           = require('https'),
     url             = require('url'),
     path            = require('path'),
     nopt            = require('nopt'),
@@ -47,7 +49,10 @@ var version         = 20150118,
     controllers,
     server,
     wsServer,
-    settings;
+    settings,
+    options,
+    connection,
+    startup;
 
 if(parsed.config) {
   settings = require(parsed.config);
@@ -59,8 +64,21 @@ else {
 
 controllers = loadController.loadController(settings.config);
 
+if(settings.config.config.ssl.disabled !== true) {
+  if((fs.existsSync('cache/key.pem')) && (fs.existsSync('cache/server.crt'))) {
+    options = {
+      key  : fs.readFileSync('cache/key.pem'),
+      cert : fs.readFileSync('cache/server.crt')
+    };
+  }
+
+  else if(process.platform === 'linux') {
+    staticAssets.buildCerts(settings.config.config.ssl);
+  }
+}
+
 if(controllers) {
-  server = http.createServer(function(request, response) {
+  connection = function(request, response) {
     'use strict';
 
     // Accept commands via POST as well.
@@ -94,7 +112,9 @@ if(controllers) {
 
       request.resume();
     }
-  }).listen(settings.config.config.serverPort, function() {
+  };
+
+  startup = function() {
     'use strict';
 
     console.log('\x1b[36mListening on port ' + settings.config.config.serverPort + '\x1b[0m');
@@ -102,7 +122,17 @@ if(controllers) {
     if(settings.config.config.appCaching === true) {
       staticAssets.freshenManifest();
     }
-  });
+  };
+
+  if(options) {
+    console.log('\x1b[36mSSL\x1b[0m: Enabled');
+    server = https.createServer(options, connection).listen(settings.config.config.serverPort, startup);
+  }
+
+  else {
+    console.log('\x1b[31mSSL\x1b[0m: Disabled');
+    server = http.createServer(connection).listen(settings.config.config.serverPort, startup);
+  }
 
   // Or you're connecting with Web Sockets
   wsServer = new webSocketServer({ httpServer : server }, 'echo-protocol');
