@@ -1,5 +1,5 @@
 /*global document, window, ActiveXObject, XMLHttpRequest, SB, localStorage, Notification, SpeechSynthesisUtterance, webkitSpeechRecognition */
-/*jslint white: true, evil: true */
+/*jslint white: true */
 /*jshint -W020 */
 
 /**
@@ -444,20 +444,12 @@ SB = (function () {
     *
     * @param {String} string String of JSON code to be decoded to an object.
     * @return {Object} Native Javascript object.
-    * @note Uses eval() if JSON.parse is not available, so as to support older
-    *        browsers.  This is dangerous if you do not trust your source of
-    *        the JSON string.
     */
     decode : function (json) {
       var reply = '';
 
       if (typeof JSON === 'object') {
         reply = JSON.parse(json);
-      }
-
-      else {
-        // This is terrible.  Evil, in fact.
-        reply = eval('(' + json + ')');
       }
 
       return reply;

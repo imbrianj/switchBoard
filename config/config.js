@@ -385,6 +385,22 @@ exports.config = {
     disabled   : true
   },
 
+  /*
+   * ActiveBuilding is a condo community portal.  We can poll their leaderboard
+   * display to find out if you have any packages to be picked up.
+   *
+   * You will need to find the "appId" and "communityId" associated with your
+   * unit.  Ask our concierge or building manager for more information.
+   */
+  activeBuilding : {
+    typeClass   : 'activeBuilding',
+    title       : 'Packages',
+    appId       : '12345',
+    communityId : '1234',
+    unitNumber  : '123',
+    disabled    : true
+  },
+
   gerty : {
     typeClass   : 'gerty',
     title       : 'Gerty',

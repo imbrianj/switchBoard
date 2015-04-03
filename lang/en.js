@@ -88,6 +88,12 @@ module.exports = (function () {
           VOLUME_DOWN    : "Volume Down",
           YELLOW         : "Yellow"
         },
+        activeBuilding : {
+          AND             : "and",
+          NO_PACKAGES     : "No packages available.",
+          PLURAL_PACKAGES : "You have packages from: {SENDERS}",
+          SINGLE_PACKAGE  : "You have a package from: {SENDERS}"
+        },
         denon : {
           DENON             : "Denon",
           AAC_DOLBY_EX      : "AAC + Dolby EX",
