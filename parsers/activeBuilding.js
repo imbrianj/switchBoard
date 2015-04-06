@@ -28,6 +28,8 @@
 
   exports.activeBuilding = function (deviceId, markup, state, value, language) {
     var tempMarkup = '',
+        status     = '',
+        icon       = '',
         senders    = '',
         i          = 0,
         translate  = function(message) {
@@ -62,19 +64,27 @@
     }
 
     if(i === 0) {
+      status     = 'err';
+      icon       = 'times';
       tempMarkup = translate('NO_PACKAGES');
     }
 
     else if(i === 1) {
+      status     = 'ok';
+      icon       = 'tag';
       tempMarkup = translate('SINGLE_PACKAGE');
     }
 
     else if(i > 1) {
+      status     = 'ok';
+      icon       = 'tags';
       tempMarkup = translate('PLURAL_PACKAGES');
     }
 
     tempMarkup = tempMarkup.split('{SENDERS}').join(senders);
 
+    markup = markup.replace('{{ACTIVEBUILDING_STATE}}', status);
+    markup = markup.replace('{{ACTIVEBUILDING_ICON}}', icon);
     markup = markup.replace('{{ACTIVEBUILDING_DYNAMIC}}', tempMarkup);
 
     return markup;

@@ -25,25 +25,21 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview Unit test for parsers/activeBuilding.js
+ * @fileoverview Unit test for apps/gerty/stocks.js
  */
 
-exports.activeBuildingParserTest = {
-  parser : function (test) {
+exports.stocksTest = {
+  stocks : function (test) {
     'use strict';
 
-    var activeBuildingParser = require(__dirname + '/../../../parsers/activeBuilding'),
-        markup               = '<h1>Foo</h1> <div>{{ACTIVEBUILDING_DYNAMIC}}</div>',
-        singleMarkup         = activeBuildingParser.activeBuilding('dummy', markup, 'ok', ['USPS'], 'en'),
-        pluralMarkup         = activeBuildingParser.activeBuilding('dummy', markup, 'ok', ['FedEx', 'Dry Cleaning'], 'en'),
-        badMarkup            = activeBuildingParser.activeBuilding('dummy', markup, 'ok', null,  'en');
+    var activeBuilding = require(__dirname + '/../../../../apps/gerty/activeBuilding'),
+        deviceGood     = activeBuilding.activeBuilding({ value : ['USPS', 'UPS', 'Dry Cleaning']}),
+        deviceOk       = activeBuilding.activeBuilding({ value : ['USPS']}),
+        deviceBad      = activeBuilding.activeBuilding({ value : []});
 
-    test.strictEqual(singleMarkup.indexOf('{{'), -1, 'All values replaced');
-    test.strictEqual(singleMarkup, '<h1>Foo</h1> <div>You have a package from: USPS</div>',               'Passed markup validated');
-    test.strictEqual(pluralMarkup.indexOf('{{'), -1, 'All values replaced');
-    test.strictEqual(pluralMarkup, '<h1>Foo</h1> <div>You have packages from: FedEx and Dry Cleaning</div>', 'Passed markup validated');
-    test.strictEqual(badMarkup.indexOf('{{'),    -1, 'All values replaced');
-    test.strictEqual(badMarkup, '<h1>Foo</h1> <div>No packages available.</div>',                         'Passed markup validated');
+    test.deepEqual(deviceGood, { excited: 6 }, 'How exciting.  You have several packages');
+    test.deepEqual(deviceOk,   { excited: 2 }, 'You have one package waiting');
+    test.deepEqual(deviceBad,  { excited: 0 }, 'Nothing special here');
 
     test.done();
   }

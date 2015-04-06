@@ -398,6 +398,7 @@ exports.config = {
     appId       : '12345',
     communityId : '1234',
     unitNumber  : '123',
+    apps        : { 'Announce' : { id : 'announceActiveBuilding' } },
     disabled    : true
   },
 
@@ -410,7 +411,7 @@ exports.config = {
                                                   'Goodnight'     : 'smartthings=subdevice-mode-Night',
                                                   'Goodbye'       : 'smartthings=subdevice-mode-Away;nest=Away',
                                                   'Welcome Home'  : 'smartthings=subdevice-mode-Home;nest=Home' },
-                                controllerIds : ['samsung', 'roku', 'ps3', 'panasonic', 'lg', 'pioneer', 'denon', 'speech', 'stocks', 'weather', 'foscam', 'mp3', 'sms', 'pushover', 'smartthings', 'nest', 'switchBoardCI', 'xbmc', 'raspberryRemote', 'wemo'] } },
+                                controllerIds : ['samsung', 'roku', 'ps3', 'panasonic', 'lg', 'pioneer', 'denon', 'speech', 'stocks', 'weather', 'foscam', 'mp3', 'sms', 'pushover', 'smartthings', 'nest', 'switchBoardCI', 'xbmc', 'raspberryRemote', 'wemo', 'activeBuilding'] } },
     disabled    : true
   }
 };
