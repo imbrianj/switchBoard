@@ -35,26 +35,32 @@ module.exports = (function () {
     version : 20150314,
 
     announceFoscam : function(device, command, controllers, values, config) {
-      var runCommand = require(__dirname + '/../lib/runCommand'),
-          translate  = require(__dirname + '/../lib/translate'),
-          notify     = require(__dirname + '/../lib/notify'),
-          message    = '',
+      var runCommand   = require(__dirname + '/../lib/runCommand'),
+          translate    = require(__dirname + '/../lib/translate'),
+          deviceState  = require(__dirname + '/../lib/deviceState'),
+          notify       = require(__dirname + '/../lib/notify'),
+          currentState = deviceState.getDeviceState(device),
+          message      = '',
           deviceId;
 
-      if((command === 'ALARM_ON') || (command === 'ALARM_OFF')) {
-        if(command === 'ALARM_ON') {
-          message = translate.translate('{{i18n_CAMERA_ARMED}}', 'foscam', controllers.config.language);
-        }
+      if((currentState) && (currentState.value)) {
+        if((command === 'ALARM_ON') || (command === 'ALARM_OFF')) {
+          if((command === 'ALARM_ON') && (currentState.value === 'off')) {
+            message = translate.translate('{{i18n_CAMERA_ARMED}}', 'foscam', controllers.config.language);
+          }
 
-        else if(command === 'ALARM_OFF') {
-          message = translate.translate('{{i18n_CAMERA_DISARMED}}', 'foscam', controllers.config.language);
-        }
+          else if((command === 'ALARM_OFF') && (currentState.value === 'on')) {
+            message = translate.translate('{{i18n_CAMERA_DISARMED}}', 'foscam', controllers.config.language);
+          }
 
-        notify.sendNotification(null, message, device);
+          if(message) {
+            notify.sendNotification(null, message, device);
 
-        for(deviceId in controllers) {
-          if(deviceId !== 'config') {
-            runCommand.runCommand(deviceId, 'text-' + message);
+            for(deviceId in controllers) {
+              if(deviceId !== 'config') {
+                runCommand.runCommand(deviceId, 'text-' + message);
+              }
+            }
           }
         }
       }

@@ -33,7 +33,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150110,
+    version : 20150411,
 
     /**
      * Based on the different mood criteria (social, entertained, comfortable,
@@ -56,11 +56,11 @@ module.exports = (function () {
           mood.emotion = 'INDIFFERENT';
         }
 
-        if(mood.comfortable < 0) {
+        if(mood.comfortable < 1) {
           mood.emotion = 'SAD';
         }
 
-        if((mood.excited < 0) && (mood.entertained < 0)) {
+        if((mood.excited < 1) && (mood.entertained < 1)) {
           mood.emotion = 'INDIFFERENT';
         }
 
@@ -72,11 +72,11 @@ module.exports = (function () {
           mood.emotion = 'SCARED';
         }
 
-        if(mood.entertained > 5) {
+        if(mood.entertained > 4) {
           mood.emotion = 'PLAYFUL';
         }
 
-        if(mood.excited > 5) {
+        if(mood.excited > 4) {
           mood.emotion = 'EXCITED';
         }
 
