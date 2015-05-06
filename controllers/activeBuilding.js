@@ -96,6 +96,7 @@ module.exports = (function () {
                           for(i; i < dataReply.length; i += 1) {
                             if(dataReply[i].unit === activeBuilding.unitNumber) {
                               switch(dataReply[i].typeName) {
+                                case 'Bag'          :
                                 case 'Dry Cleaning' :
                                 case 'Envelope'     :
                                 case 'FedEx'        :

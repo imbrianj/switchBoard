@@ -31,7 +31,7 @@ exports.config = {
   welcome : {
     typeClass : 'welcome',
     title     : 'Welcome!',
-    disabled  : false,
+    disabled  : false
   },
 
   samsung : {
