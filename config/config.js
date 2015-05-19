@@ -398,7 +398,8 @@ exports.config = {
     appId       : '12345',
     communityId : '1234',
     unitNumber  : '123',
-    apps        : { 'Announce' : { id : 'announceActiveBuilding' } },
+    apps        : { 'Announce' : { id            : 'announceActiveBuilding',
+                                   controllerIds : ['speech'] } },
     disabled    : true
   },
 

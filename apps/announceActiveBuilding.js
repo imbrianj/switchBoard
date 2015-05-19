@@ -35,20 +35,28 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150405,
+    version : 20150518,
+
+    translate : function(token, lang) {
+      var translate = require(__dirname + '/../lib/translate');
+
+      return translate.translate('{{i18n_' + token + '}}', 'activeBuilding', lang);
+    },
 
     announceActiveBuilding : function(device, command, controllers, values, config) {
       var notify,
-          translate,
+          runCommand,
+          lang    = controllers.config.language,
           senders = '',
           message = '',
-          i       = 0;
+          i       = 0,
+          deviceId;
 
-      if(values) {
-        for(i; i < values.length; i += 1) {
-          if(i > 0) {
-            if (i === values.length - 1) {
-              senders = senders + ' ' + translate('AND') + ' ';
+      if((values) && (values.value)) {
+        for(i; i < values.value.length; i += 1) {
+          if(i) {
+            if (i === (values.value.length - 1)) {
+              senders = senders + ' ' + this.translate('AND', lang) + ' ';
             }
 
             else {
@@ -56,26 +64,30 @@ module.exports = (function () {
             }
           }
 
-          senders = senders + values[i];
+          senders = senders + values.value[i];
         }
 
         if(senders) {
-          notify    = require(__dirname + '/../lib/notify');
-          translate = require(__dirname + '/../lib/translate');
+          notify     = require(__dirname + '/../lib/notify');
+          runCommand = require(__dirname + '/../lib/runCommand');
 
           if(i === 1) {
-            message = translate('SINGLE_PACKAGE');
+            message = this.translate('SINGLE_PACKAGE', lang);
           }
 
           else if(i > 1) {
-            message = translate('PLURAL_PACKAGES');
+            message = this.translate('PLURAL_PACKAGES', lang);
           }
-
-          message = translate.translate('{{' + message + '}}', 'activeBuilding', controllers.config.language);
 
           message = message.split('{SENDERS}').join(senders);
 
           notify.sendNotification(null, message, device);
+
+          for(deviceId in controllers) {
+            if(deviceId !== 'config') {
+              runCommand.runCommand(deviceId, 'text-' + message);
+            }
+          }
         }
       }
     }
