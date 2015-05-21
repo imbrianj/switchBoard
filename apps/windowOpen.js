@@ -35,34 +35,18 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150216,
+    version : 20150520,
 
     governor : false,
 
     windowOpen : function(device, command, controllers, values, config) {
-      var deviceState = require(__dirname + '/../lib/deviceState'),
+      var notify      = require(__dirname + '/../lib/notify'),
+          deviceState = require(__dirname + '/../lib/deviceState'),
           runCommand  = require(__dirname + '/../lib/runCommand'),
           that        = this,
           delay       = config.delay || 60,
-          notify,
           checkState,
           status;
-
-      notify = function(message) {
-        var deviceId;
-
-        for(deviceId in controllers) {
-          if(controllers[deviceId].config) {
-            switch(controllers[deviceId].config.typeClass) {
-              case 'pushover' :
-              case 'sms'      :
-              case 'speech'   :
-                runCommand.runCommand(deviceId, 'text-' + message);
-              break;
-            }
-          }
-        }
-      };
 
       checkState = function() {
         var deviceId,
@@ -112,7 +96,7 @@ module.exports = (function () {
       if((this.governor === false) && (status.thermostat.length) && (status.contact.length)) {
         this.governor = true;
 
-        notify(config.message[status.thermostat[0].state]);
+        notify.notify(config.message[status.thermostat[0].state], controllers);
 
         setTimeout(function() {
           var status = checkState(),
@@ -120,7 +104,7 @@ module.exports = (function () {
               i;
 
           if(status.thermostat.length && status.contact.length) {
-            notify(config.message.off);
+            notify.notify(config.message.off, controllers);
 
             for(deviceId in controllers) {
               if(controllers[deviceId].config) {

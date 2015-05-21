@@ -35,7 +35,9 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150518,
+    version : 20150520,
+
+    packages : [],
 
     translate : function(token, lang) {
       var translate = require(__dirname + '/../lib/translate');
@@ -44,48 +46,57 @@ module.exports = (function () {
     },
 
     announceActiveBuilding : function(device, command, controllers, values, config) {
-      var notify,
+      var deviceState         = require(__dirname + '/../lib/deviceState'),
+          activeBuildingState = deviceState.getDeviceState(device),
+          notify,
           runCommand,
-          lang    = controllers.config.language,
-          senders = '',
-          message = '',
-          i       = 0,
+          lang                = controllers.config.language,
+          senders             = '',
+          message             = '',
+          i                   = 0,
+          packages            = [],
           deviceId;
 
       if((values) && (values.value)) {
-        for(i; i < values.value.length; i += 1) {
-          if(i) {
-            if (i === (values.value.length - 1)) {
-              senders = senders + ' ' + this.translate('AND', lang) + ' ';
+        packages = values.value;
+
+        if(JSON.stringify(this.packages) !== JSON.stringify(packages)) {
+          for(i; i < values.value.length; i += 1) {
+            if(i) {
+              if (i === (values.value.length - 1)) {
+                senders = senders + ' ' + this.translate('AND', lang) + ' ';
+              }
+
+              else {
+                senders = senders + ', ';
+              }
             }
 
-            else {
-              senders = senders + ', ';
+            senders = senders + values.value[i];
+          }
+
+          if(senders) {
+            this.packages = packages;
+
+            notify        = require(__dirname + '/../lib/notify');
+            runCommand    = require(__dirname + '/../lib/runCommand');
+
+            if(i === 1) {
+              message = this.translate('SINGLE_PACKAGE', lang);
             }
-          }
 
-          senders = senders + values.value[i];
-        }
+            else if(i > 1) {
+              message = this.translate('PLURAL_PACKAGES', lang);
+            }
 
-        if(senders) {
-          notify     = require(__dirname + '/../lib/notify');
-          runCommand = require(__dirname + '/../lib/runCommand');
+            message = message.split('{SENDERS}').join(senders);
 
-          if(i === 1) {
-            message = this.translate('SINGLE_PACKAGE', lang);
-          }
+            notify.sendNotification(null, message, device);
 
-          else if(i > 1) {
-            message = this.translate('PLURAL_PACKAGES', lang);
-          }
-
-          message = message.split('{SENDERS}').join(senders);
-
-          notify.sendNotification(null, message, device);
-
-          for(deviceId in controllers) {
-            if(deviceId !== 'config') {
-              runCommand.runCommand(deviceId, 'text-' + message);
+            for(deviceId in controllers) {
+              if(deviceId !== 'config') {
+                runCommand.runCommand(deviceId, 'text-' + message);
+              }
             }
           }
         }
