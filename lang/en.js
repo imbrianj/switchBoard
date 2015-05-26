@@ -91,8 +91,8 @@ module.exports = (function () {
         activeBuilding : {
           AND             : "and",
           NO_PACKAGES     : "No packages available.",
-          PLURAL_PACKAGES : "You have packages from: {SENDERS}",
-          SINGLE_PACKAGE  : "You have a package from: {SENDERS}"
+          PLURAL_PACKAGES : "You have packages from: {{SENDERS}}",
+          SINGLE_PACKAGE  : "You have a package from: {{SENDERS}}"
         },
         denon : {
           DENON             : "Denon",
@@ -395,6 +395,7 @@ module.exports = (function () {
           SMARTTHINGS    : "SmartThings",
           ARRIVED        : "{{LABEL}} has just arrived",
           AWAY           : "Away",
+          DOOR_KNOCK     : "Someone is at the {{LABEL}}",
           HOME           : "Home",
           LEFT           : "{{LABEL}} has just left",
           NIGHT          : "Night",

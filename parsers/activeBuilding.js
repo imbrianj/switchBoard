@@ -81,7 +81,7 @@
       tempMarkup = translate('PLURAL_PACKAGES');
     }
 
-    tempMarkup = tempMarkup.split('{SENDERS}').join(senders);
+    tempMarkup = tempMarkup.split('{{SENDERS}}').join(senders);
 
     markup = markup.replace('{{ACTIVEBUILDING_STATE}}', status);
     markup = markup.replace('{{ACTIVEBUILDING_ICON}}', icon);

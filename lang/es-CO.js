@@ -95,8 +95,8 @@ module.exports = (function () {
         activeBuilding : {
           AND             : "y",
           NO_PACKAGES     : "No han llegado paquetes.",
-          PLURAL_PACKAGES : "Llegaron paquetes enviados por: {SENDERS}",
-          SINGLE_PACKAGE  : "Llego un paquete enviado por: {SENDERS}"
+          PLURAL_PACKAGES : "Llegaron paquetes enviados por: {{SENDERS}}",
+          SINGLE_PACKAGE  : "Llego un paquete enviado por: {{SENDERS}}"
         },
         denon : {
           DENON             : "Denon",
@@ -391,6 +391,7 @@ module.exports = (function () {
           SMARTTHINGS    : "SmartThings",
           ARRIVED        : "{{LABEL}} acabo de llegar",
           AWAY           : "Por fuera",
+          DOOR_KNOCK     : "Alguien está en la {{LABEL}}",
           HOME           : "En Casa",
           LEFT           : "{{LABEL}} acabo de salir",
           NIGHT          : "Night",
