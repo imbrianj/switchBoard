@@ -33,15 +33,13 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150314,
+    version : 20150525,
 
     announceStocks : function(device, command, controllers, values, config) {
-      var deviceState = require(__dirname + '/../lib/deviceState'),
-          translate   = require(__dirname + '/../lib/translate'),
-          runCommand  = require(__dirname + '/../lib/runCommand'),
-          notify      = require(__dirname + '/../lib/notify'),
-          controller  = controllers[device],
-          message     = '',
+      var translate  = require(__dirname + '/../lib/translate'),
+          runCommand = require(__dirname + '/../lib/runCommand'),
+          notify     = require(__dirname + '/../lib/notify'),
+          message    = '',
           stockName,
           deviceId;
 
@@ -69,16 +67,12 @@ module.exports = (function () {
         console.log('\x1b[35mSchedule\x1b[0m: ' + message);
 
         notify.sendNotification(null, message, device);
+        notify.notify(message, controllers);
 
         for(deviceId in controllers) {
-          if((deviceId !== 'config') && (deviceId !== device)) {
-            if(controllers[deviceId].typeClass === 'mp3') {
-              runCommand.runCommand(deviceId, 'text-cash');
-            }
-
-            else {
-              runCommand.runCommand(deviceId, 'text-' + message);
-            }
+          if((deviceId !== 'config') && (controllers[deviceId].typeClass === 'mp3')) {
+            runCommand.runCommand(deviceId, 'text-cash');
+            break;
           }
         }
       }

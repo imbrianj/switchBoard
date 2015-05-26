@@ -35,7 +35,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150520,
+    version : 20150525,
 
     packages : [],
 
@@ -92,12 +92,7 @@ module.exports = (function () {
             message = message.split('{SENDERS}').join(senders);
 
             notify.sendNotification(null, message, device);
-
-            for(deviceId in controllers) {
-              if(deviceId !== 'config') {
-                runCommand.runCommand(deviceId, 'text-' + message);
-              }
-            }
+            notify.notify(message, controllers);
           }
         }
       }

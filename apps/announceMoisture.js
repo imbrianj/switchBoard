@@ -33,7 +33,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150314,
+    version : 20150525,
 
     announceMoisture : function(device, command, controllers, values, config) {
       var runCommand = require(__dirname + '/../lib/runCommand'),
@@ -53,14 +53,9 @@ module.exports = (function () {
           message = translate.translate('{{i18n_WATER_DETECTED}}', 'smartthings', controllers.config.language).replace('{{LABEL}}', command);
         }
 
-        notify.sendNotification(null, message, device);
-
         if(message) {
-          for(deviceId in controllers) {
-            if(deviceId !== 'config') {
-              runCommand.runCommand(deviceId, 'text-' + message);
-            }
-          }
+          notify.sendNotification(null, message, device);
+          notify.notify(message, controllers);
         }
       }
     }

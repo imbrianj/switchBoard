@@ -35,7 +35,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20141201,
+    version : 20150525,
 
     announceNest : function(device, command, controllers, values, config) {
       var runCommand  = require(__dirname + '/../lib/runCommand'),
@@ -75,11 +75,7 @@ module.exports = (function () {
         }
 
         if(message) {
-          for(deviceId in controllers) {
-            if((deviceId !== 'config') && (deviceId !== device)) {
-              runCommand.runCommand(deviceId, 'text-' + message);
-            }
-          }
+          notify.notify(message, controllers);
         }
       }
     }

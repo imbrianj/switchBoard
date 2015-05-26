@@ -32,7 +32,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150314,
+    version : 20150525,
 
     announceFoscam : function(device, command, controllers, values, config) {
       var runCommand   = require(__dirname + '/../lib/runCommand'),
@@ -55,12 +55,7 @@ module.exports = (function () {
 
           if(message) {
             notify.sendNotification(null, message, device);
-
-            for(deviceId in controllers) {
-              if(deviceId !== 'config') {
-                runCommand.runCommand(deviceId, 'text-' + message);
-              }
-            }
+            notify.notify(message, controllers);
           }
         }
       }
