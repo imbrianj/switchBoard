@@ -35,7 +35,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150525,
+    version : 20150526,
 
     packages : [],
 
@@ -89,7 +89,7 @@ module.exports = (function () {
               message = this.translate('PLURAL_PACKAGES', lang);
             }
 
-            message = message.split('{SENDERS}').join(senders);
+            message = message.split('{{SENDERS}}').join(senders);
 
             notify.sendNotification(null, message, device);
             notify.notify(message, controllers);

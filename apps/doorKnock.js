@@ -34,18 +34,16 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150525,
+    version : 20150526,
 
     lastEvents : { knock : 0, open : 0, close: 0 },
 
     doorKnock : function(device, command, controllers, values, config) {
-      var now     = new Date().getTime(),
-          that    = this,
-          trigger = false;
+      var now  = new Date().getTime(),
+          that = this;
 
       if(command === 'subdevice-state-vibrate-' + config.vibrate + '-on') {
         this.lastEvents.knock = now;
-        trigger = true;
       }
 
       else if(command === 'subdevice-state-contact-' + config.contact + '-on') {
@@ -56,7 +54,7 @@ module.exports = (function () {
         this.lastEvents.close = now;
       }
 
-      if((trigger) && (this.lastEvents.knock) && (!this.lastEvents.open)) {
+      if(now === this.lastEvents.knock) {
         setTimeout(function() {
           var notify     = require(__dirname + '/../lib/notify'),
               translate  = require(__dirname + '/../lib/translate'),
@@ -64,7 +62,9 @@ module.exports = (function () {
               message    = '',
               deviceId;
 
-          if((that.lastEvents.open <= that.lastEvents.close) && (Math.abs(that.lastEvents.knock - that.lastEvents.open) > config.delay)) {
+          if((that.lastEvents.open <= that.lastEvents.close) &&
+             (Math.abs(that.lastEvents.knock - that.lastEvents.open)  > (config.delay * 1000)) &&
+             (Math.abs(that.lastEvents.knock - that.lastEvents.close) > (config.delay * 1000))) {
             message = translate.translate('{{i18n_DOOR_KNOCK}}', 'smartthings', controllers.config.language).split('{{LABEL}}').join(config.contact);
 
             notify.sendNotification(null, message, device);
@@ -77,8 +77,6 @@ module.exports = (function () {
               }
             }
           }
-
-          that.lastEvents = { knock : 0, open : 0, close : 0 };
         }, config.delay * 1000);
       }
     }
