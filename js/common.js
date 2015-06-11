@@ -1,4 +1,4 @@
-/*global document, window, ActiveXObject, XMLHttpRequest, SB, localStorage, Notification, SpeechSynthesisUtterance, webkitSpeechRecognition */
+/*global SB, document, window, ActiveXObject, XMLHttpRequest, localStorage, Notification, Audio, SpeechSynthesisUtterance, webkitSpeechRecognition */
 /*jslint white: true */
 /*jshint -W020 */
 
@@ -28,7 +28,7 @@ SB = (function () {
   'use strict';
 
   return {
-    version : 20150314,
+    version : 20150610,
 
    /**
     * Stops event bubbling further.
@@ -567,6 +567,25 @@ SB = (function () {
               Notification.permission = permission;
             }
           });
+        }
+      }
+    },
+
+    sound : {
+      sounds : {},
+
+      /**
+       * Plays the audio file in the provided path.
+       *
+       * @param {String} string Path of the audio file to be played.
+       */
+      play : function (path) {
+        if(typeof Audio === 'function') {
+          if(!SB.sound.sounds[path]) {
+            SB.sound.sounds[path] = new Audio(path);
+          }
+
+          SB.sound.sounds[path].play();
         }
       }
     },

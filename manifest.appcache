@@ -10,6 +10,16 @@ CACHE:
 /fonts/fontawesome-webfont.ttf
 /fonts/fontawesome-webfont.woff
 /fonts/fontawesome-webfont.woff2
+/mp3/bike.mp3
+/mp3/boxing.mp3
+/mp3/cash.mp3
+/mp3/chimes.mp3
+/mp3/church.mp3
+/mp3/dingDing.mp3
+/mp3/doorbell.mp3
+/mp3/magic.mp3
+/mp3/rooster.mp3
+/mp3/songBell.mp3
 
 NETWORK:
 *

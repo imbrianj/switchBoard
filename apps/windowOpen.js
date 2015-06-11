@@ -78,7 +78,7 @@ module.exports = (function () {
               for(subDeviceId in currentDevice.value.devices) {
                 subDevice = currentDevice.value.devices[subDeviceId];
 
-                if((config.contact.indexOf(subDevice.label)) && (subDevice.type === 'contact') && (subDevice.state === 'on')) {
+                if((config.contact.indexOf(subDevice.label) !== -1) && (subDevice.type === 'contact') && (subDevice.state === 'on')) {
                   status.contact.push(subDeviceId);
                 }
               }

@@ -1,4 +1,4 @@
-/*global document, window, console, SB */
+/*global SB, document, window, console */
 /*jslint white: true, evil: true */
 /*jshint -W020 */
 
@@ -33,7 +33,7 @@ SB.spec = (function () {
   'use strict';
 
   return {
-    version : 20150314,
+    version : 20150610,
 
     state     : {},
     parsers   : {},
@@ -268,8 +268,14 @@ SB.spec = (function () {
 
         if(typeof message.speech === 'string') {
           if(message.speech) {
+            SB.log(message.speech, 'Speech', 'success');
             SB.speak(message.speech, message.language, message.voice);
           }
+        }
+
+        else if(typeof message.sound === 'string') {
+          SB.log(message.sound, 'Sound', 'success');
+          SB.sound.play('/mp3/' + message.sound + '.mp3');
         }
 
         // If you have a title, you're a Desktop Notification.

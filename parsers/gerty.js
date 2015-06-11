@@ -37,8 +37,10 @@
         SB.putText(container, value.emoji);
 
         if(value.action) {
-          container.className = value.action;
+          action = value.action;
         }
+
+        container.className = action;
       }
 
       markup = '';

@@ -34,7 +34,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150526,
+    version : 20150610,
 
     lastEvents : { knock : 0, open : 0, close: 0 },
 
@@ -69,6 +69,7 @@ module.exports = (function () {
 
             notify.sendNotification(null, message, device);
             notify.notify(message, controllers);
+            notify.sendSound('doorbell');
 
             for(deviceId in controllers) {
               if((controllers[deviceId].config) && (controllers[deviceId].config.typeClass === 'mp3')) {

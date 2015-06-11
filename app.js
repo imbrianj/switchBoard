@@ -26,7 +26,7 @@
 /**
  * @author brian@bevey.org
  * @fileoverview Interface for various hardware controllers.
- * @requires http, url, path, nopt, websocket
+ * @requires fs, http, https, url, path, nopt, websocket
  */
 
 State = {};
