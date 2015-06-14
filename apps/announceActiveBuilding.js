@@ -34,10 +34,10 @@
 module.exports = (function () {
   'use strict';
 
-  return {
-    version : 20150526,
+  var ActiveBuildingPackages = {};
 
-    packages : [],
+  return {
+    version : 20150613,
 
     translate : function(token, lang) {
       var translate = require(__dirname + '/../lib/translate');
@@ -60,7 +60,7 @@ module.exports = (function () {
       if((values) && (values.value)) {
         packages = values.value;
 
-        if(JSON.stringify(this.packages) !== JSON.stringify(packages)) {
+        if(JSON.stringify(ActiveBuildingPackages[device]) !== JSON.stringify(packages)) {
           for(i; i < values.value.length; i += 1) {
             if(i) {
               if (i === (values.value.length - 1)) {
@@ -76,10 +76,10 @@ module.exports = (function () {
           }
 
           if(senders) {
-            this.packages = packages;
+            ActiveBuildingPackages[device] = packages;
 
-            notify        = require(__dirname + '/../lib/notify');
-            runCommand    = require(__dirname + '/../lib/runCommand');
+            notify     = require(__dirname + '/../lib/notify');
+            runCommand = require(__dirname + '/../lib/runCommand');
 
             if(i === 1) {
               message = this.translate('SINGLE_PACKAGE', lang);

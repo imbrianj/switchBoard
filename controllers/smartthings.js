@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic control of SmartThings endpoint.
    */
   return {
-    version : 20150130,
+    version : 20150613,
 
     inputs  : ['list', 'subdevice'],
 
@@ -548,15 +548,22 @@ module.exports = (function () {
                       response.once('end', function() {
                         var smartthingsData = {};
 
-                        if((dataReply) && (dataReply.indexOf('<') !== 0)) {
-                          smartthingsData = JSON.parse(dataReply);
+                        if(dataReply) {
 
-                          smartthingsData.groups    = config.device.groups;
-                          smartthingsData.className = config.device.className;
+                          try {
+                            smartthingsData = JSON.parse(dataReply);
 
-                          that.updateState(smartthings, smartthingsData);
+                            smartthingsData.groups    = config.device.groups;
+                            smartthingsData.className = config.device.className;
 
-                          smartthings.callback(null, smartthingsData, true);
+                            that.updateState(smartthings, smartthingsData);
+
+                            smartthings.callback(null, smartthingsData, true);
+                          }
+
+                          catch (err) {
+                            smartthings.callback('Invalid data returned from API');
+                          }
                         }
 
                         else {

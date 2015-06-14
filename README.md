@@ -28,7 +28,7 @@ Supported Devices/Services
 
 | Name             | Status      | Notes                                                                            |
 |------------------|-------------|----------------------------------------------------------------------------------|
-| ActiveBuilding   | Development | Checks for arrived packages to be picked up from your concierge                  |
+| ActiveBuilding   | Stable      | Checks for arrived packages to be picked up from your concierge                  |
 | Denon            | Stable      | New controller and still in testing                                              |
 | Foscam           | Stable      | Works with FI8910W (if you have another version that this does not work with, let me know and I can add support).  Arm, Disarm, Go to presets, etc. *INSECURE* Exposes camera credentials to users |
 | Gerty            | Testing     | A simple interface for all devices that reacts to natural inputs.  New and buggy |

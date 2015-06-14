@@ -32,7 +32,7 @@ module.exports = (function () {
    * @requires querystring, fs, https
    */
   return {
-    version : 20150130,
+    version : 20150613,
 
     inputs : ['command', 'text', 'list', 'subdevice'],
 
@@ -516,36 +516,40 @@ module.exports = (function () {
             var deviceState = require(__dirname + '/../lib/deviceState'),
                 nestData    = {};
 
-            if(dataReply.indexOf('<') === 0) {
-              nest.callback('API returned an unexpected value');
-            }
+            if(dataReply) {
+              try {
+                nestData = JSON.parse(dataReply);
 
-            else if(dataReply) {
-              nestData = JSON.parse(dataReply);
+                if(nestData.cmd === 'REINIT_STATE') {
+                  fs.exists('cache/nestAuth.json', function(exists) {
+                    if(exists) {
+                      fs.unlink('cache/nestAuth.json', function(err) {
+                        if(err) {
+                          nest.callback('Failed to remove expired auth');
+                        }
 
-              if(nestData.cmd === 'REINIT_STATE') {
-                fs.exists('cache/nestAuth.json', function(exists) {
-                  if(exists) {
-                    fs.unlink('cache/nestAuth.json', function(err) {
-                      if(err) {
-                        nest.callback('Failed to remove expired auth');
-                      }
+                        else {
+                          nest.callback('Expired auth removed');
+                        }
+                      });
+                    }
+                  });
+                }
 
-                      else {
-                        nest.callback('Expired auth removed');
-                      }
-                    });
-                  }
-                });
+                else {
+                  nest.callback(null, nestData);
+                }
               }
 
-              else {
-                nest.callback(null, nestData);
+              catch (err) {
+                nest.callback('Invalid data returned from API');
+
+                nest.callback(null, '');
               }
             }
 
             else {
-              console.log('\x1b[31m' + config.device.title + '\x1b[0m: No data returned from API');
+              nest.callback('No data returned from API');
 
               nest.callback(null, '');
             }
