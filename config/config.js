@@ -159,8 +159,9 @@ exports.config = {
     deviceIp  : '192.168.1.7',
     username  : 'user',
     password  : 'password',
-    apps      : { 'Announce' : { id            : 'announceFoscam',
-                                 controllerIds : ['speech'] } },
+    apps      : { 'Announce'      : { id            : 'announceFoscam',
+                                      controllerIds : ['speech'] },
+                  'Foscam Change' : { id            : 'foscamChange' } },
     disabled  : true
   },
 
@@ -263,7 +264,7 @@ exports.config = {
    * Click "Save", then "Publish" in the upper right.
    *
    * On initial startup of SwitchBoard with this configuration, you'll be
-   * propted in the command line for a URL to generate the security token used.
+   * prompted in the command line for a URL to generate the security token used.
    * Simply visit the URL, grant the permissions you desire and click
    * "Authorize".
    */
@@ -280,6 +281,7 @@ exports.config = {
                        'Hallway'           : ['Hall Light', 'Front Door'],
                        'Living Room'       : ['Living Room Lamp', 'Chandelier'],
                        'Kitchen'           : ['Kitchen Light', 'Dining Lights'] },
+    /*
     apps           : { 'Announce'          : { id            : 'announcePresence',
                                                presence      : ['Brian', 'Goblin'],
                                                controllerIds : ['speech'],
@@ -308,6 +310,7 @@ exports.config = {
                                                controllerIds : ['pushover', 'sms', 'speech', 'mp3'],
                                                disabled      : true }
                      },
+    */
     className      : { Goblin : 'fa-female' },
     disabledMarkup : false,
     disabled       : true
@@ -318,7 +321,9 @@ exports.config = {
     title     : 'Nest',
     username  : 'user@example.com',
     password  : 'password',
-    apps      : { 'Window Open'   : { id            : 'windowOpen',
+    apps      : { 'Nest Change'   : { id            : 'nestChange' },
+/*
+                  'Window Open'   : { id            : 'windowOpen',
                                       thermostats   : ['Living Room'],
                                       contact       : ['Balcony Door', 'Office Window', 'Bedroom Window', 'Dining Room Window', 'Living Room Window'],
                                       controllerIds : ['smartthings', 'pushover', 'speech'],
@@ -327,6 +332,7 @@ exports.config = {
                                                         'off'  : 'Window still open.  Thermostat turned off.'} },
                   'Protect Alarm' : { id            : 'announceNest',
                                       controllerIds : ['pushover', 'sms', 'speech'] }
+*/
                 },
     disabled  : true
   },

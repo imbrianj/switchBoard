@@ -549,7 +549,6 @@ module.exports = (function () {
                         var smartthingsData = {};
 
                         if(dataReply) {
-
                           try {
                             smartthingsData = JSON.parse(dataReply);
 

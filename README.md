@@ -14,6 +14,7 @@ http://imbrianj.github.io/switchBoard/
 Setup
 ---
 ###Easy
+- You'll need to install node.js.  You can grab it from the [Node.js website](https://nodejs.org/download/)
 - `npm install -g git+https://github.com/imbrianj/switchBoard.git`
 - Add a config file anywhere on the device you want to run the app on. See the [default](config/config.js) file for examples
 - Run `switchBoard -c yournewconfigfile`

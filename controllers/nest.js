@@ -32,7 +32,7 @@ module.exports = (function () {
    * @requires querystring, fs, https
    */
   return {
-    version : 20150613,
+    version : 20150615,
 
     inputs : ['command', 'text', 'list', 'subdevice'],
 
@@ -541,15 +541,13 @@ module.exports = (function () {
                 }
               }
 
-              catch (err) {
-                nest.callback('Invalid data returned from API');
-
-                nest.callback(null, '');
+              catch(err) {
+                nest.callback('API returned an unexpected value');
               }
             }
 
             else {
-              nest.callback('No data returned from API');
+              console.log('\x1b[31m' + config.device.title + '\x1b[0m: No data returned from API');
 
               nest.callback(null, '');
             }
