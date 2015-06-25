@@ -40,7 +40,8 @@ module.exports = (function () {
           gertyRunCommand = require(__dirname + '/gerty/runCommand'),
           gertyMood       = require(__dirname + '/gerty/mood'),
           utterance       = translate.findSynonyms('gerty', controllers.config.language),
-          text            = '';
+          text            = '',
+          acted           = false;
 
       // If it's a command explicitly sent to Gerty to act on.
       if((controllers[device]) && (controllers[device].config) && (controllers[device].config.typeClass === 'gerty') && (command.indexOf('text-') === 0)) {
@@ -48,12 +49,18 @@ module.exports = (function () {
 
         gertyMood.setEmotion(text, device, controllers.config.language);
 
-        if(gertyRunCommand.setDevice(text, controllers, device, config.macros, controllers.config.language)) {
+        acted = gertyRunCommand.setDevice(text, controllers, device, config.macros, controllers.config.language);
+
+        if(acted === true) {
           utterance = utterance.AFFIRMATIVE[Math.floor(Math.random() * utterance.AFFIRMATIVE.length)];
         }
 
-        else {
+        else if(acted === false) {
           utterance = utterance.NEGATIVE[Math.floor(Math.random() * utterance.NEGATIVE.length)];
+        }
+
+        else {
+          utterance = acted || '';
         }
 
         for(device in controllers) {

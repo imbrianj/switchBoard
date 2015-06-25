@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic weather information, courtesy of Yahoo.
    */
   return {
-    version : 20140813,
+    version : 20150624,
 
     inputs  : ['list'],
 
@@ -64,8 +64,58 @@ module.exports = (function () {
       runCommand.runCommand(controller.config.deviceId, 'list', controller.config.deviceId);
     },
 
+    /**
+     * Accept a plain-text time ("7:52 pm") and find the unix timestamp for that
+     * time on the current day.
+     */
+    formatTime : function (time) {
+      var hour   = time.split(':')[0],
+          minute = time.split(':')[1].split(' ')[0],
+          ampm   = time.split(' ')[1];
+
+      hour = ampm === 'pm' ? (hour + 12) : hour;
+
+      return { hour : hour, minute : minute };
+    },
+
+    /**
+     * Accept sunrise and sunset times as deliverd from the API - and determine
+     * what the current sun phase is.  Can either be "Day" or "Night".
+     */
+    findSunPhase : function (sunriseRaw, sunsetRaw) {
+      var sunrise = this.formatTime(sunriseRaw),
+          sunset  = this.formatTime(sunsetRaw),
+          now     = new Date(),
+          unixNow = now.getTime(),
+          year    = now.getFullYear(),
+          month   = now.getMonth(),
+          date    = now.getDate(),
+          state   = '';
+
+      sunrise.unix = new Date(year, month, date, sunrise.hour, sunrise.minute);
+      sunset.unix  = new Date(year, month, date, sunrise.hour, sunrise.minute);
+
+      // The sun hasn't come up yet.
+      if(sunrise.unix > unixNow) {
+        state = 'Night';
+      }
+
+      // The sun has come up - but has not gone down.
+      else if(sunset.unix > unixNow) {
+        state = 'Day';
+      }
+
+      // The sun has gone down.
+      else {
+        state = 'Night';
+      }
+
+      return state;
+    },
+
     send : function (config) {
-      var https     = require('https'),
+      var that      = this,
+          https     = require('https'),
           weather   = {},
           dataReply = '',
           request;
@@ -112,7 +162,8 @@ module.exports = (function () {
                                             'sunrise'  : city.astronomy.sunrise,
                                             'sunset'   : city.astronomy.sunset,
                                             'code'     : city.item.condition.code,
-                                            'forecast' : city.item.forecast
+                                            'forecast' : city.item.forecast,
+                                            'phase'    : that.findSunPhase(city.astronomy.sunrise, city.astronomy.sunset)
                                           };
 
                             deviceState.updateState(weather.deviceId, 'weather', { state : 'ok', value : weatherData });
