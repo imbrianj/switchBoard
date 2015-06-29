@@ -47,6 +47,9 @@ module.exports = (function () {
         },
         common : {
           ACTIVE         : "Active",
+          AIR_CONDITION  : "air conditioner",
+          AND            : "and",
+          ARE            : "are",
           BACK           : "Back",
           BLUE           : "Blue",
           CANCEL         : "Cancel",
@@ -59,8 +62,12 @@ module.exports = (function () {
           FILE_NOT_FOUND : "File not found",
           GREEN          : "Green",
           HDMI           : "HDMI",
+          HEAT           : "heat",
           HOME           : "Home",
+          HVAC_OFF       : "{{WINDOW}} open; {{HVAC}} turned off.",
+          HVAC_ON        : "{{WINDOW}} open and {{HVAC}} is on.",
           INACTIVE       : "Inactive",
+          IS             : "is",
           LEFT           : "Left",
           MENU           : "Menu",
           MUTE           : "Mute",
@@ -89,7 +96,6 @@ module.exports = (function () {
           YELLOW         : "Yellow"
         },
         activeBuilding : {
-          AND             : "and",
           NO_PACKAGES     : "No packages available.",
           PLURAL_PACKAGES : "You have packages from: {{SENDERS}}",
           SINGLE_PACKAGE  : "You have a package from: {{SENDERS}}"
@@ -399,6 +405,10 @@ module.exports = (function () {
           HOME           : "Home",
           LEFT           : "{{LABEL}} has just left",
           NIGHT          : "Night",
+          NOBODY_HOME    : "Set to Away - nobody is home",
+          SOMEBODY_HOME  : "Set to Home - {{PEOPLE}} {{PLURAL}} home",
+          SUNSET         : "Set to {{SUNSET}} - sun has gone down",
+          SUNRISE        : "Set to {{SUNRISE}} - sun has come up",
           WATER_DETECTED : "{{LABEL}} has detected water!"
         },
         sms : {

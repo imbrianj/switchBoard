@@ -51,6 +51,7 @@ module.exports = (function () {
         },
         common : {
           ACTIVE         : "Activo",
+          AND            : "y",
           BACK           : "De Vuelta",
           BLUE           : "Azul",
           CANCEL         : "Cancelar",
@@ -93,7 +94,6 @@ module.exports = (function () {
           YELLOW         : "Amarillo"
         },
         activeBuilding : {
-          AND             : "y",
           NO_PACKAGES     : "No han llegado paquetes.",
           PLURAL_PACKAGES : "Llegaron paquetes enviados por: {{SENDERS}}",
           SINGLE_PACKAGE  : "Llego un paquete enviado por: {{SENDERS}}"
