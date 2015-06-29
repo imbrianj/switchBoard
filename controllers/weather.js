@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic weather information, courtesy of Yahoo.
    */
   return {
-    version : 20150624,
+    version : 20150628,
 
     inputs  : ['list'],
 
@@ -69,8 +69,8 @@ module.exports = (function () {
      * time on the current day.
      */
     formatTime : function (time) {
-      var hour   = time.split(':')[0],
-          minute = time.split(':')[1].split(' ')[0],
+      var hour   = parseInt(time.split(':')[0], 10),
+          minute = parseInt(time.split(':')[1].split(' ')[0], 10),
           ampm   = time.split(' ')[1];
 
       hour = ampm === 'pm' ? (hour + 12) : hour;
@@ -92,8 +92,8 @@ module.exports = (function () {
           date    = now.getDate(),
           state   = '';
 
-      sunrise.unix = new Date(year, month, date, sunrise.hour, sunrise.minute);
-      sunset.unix  = new Date(year, month, date, sunrise.hour, sunrise.minute);
+      sunrise.unix = new Date(year, month, date, sunrise.hour, sunrise.minute).getTime();
+      sunset.unix  = new Date(year, month, date, sunset.hour,  sunset.minute).getTime();
 
       // The sun hasn't come up yet.
       if(sunrise.unix > unixNow) {
