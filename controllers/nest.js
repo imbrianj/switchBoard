@@ -514,12 +514,18 @@ module.exports = (function () {
 
           response.once('end', function() {
             var deviceState = require(__dirname + '/../lib/deviceState'),
-                nestData    = {};
+                nestData    = null;
 
             if(dataReply) {
               try {
                 nestData = JSON.parse(dataReply);
+              }
 
+              catch(err) {
+                nest.callback('API returned an unexpected value');
+              }
+
+              if(nestData) {
                 if(nestData.cmd === 'REINIT_STATE') {
                   fs.exists('cache/nestAuth.json', function(exists) {
                     if(exists) {
@@ -539,10 +545,6 @@ module.exports = (function () {
                 else {
                   nest.callback(null, nestData);
                 }
-              }
-
-              catch(err) {
-                nest.callback('API returned an unexpected value');
               }
             }
 

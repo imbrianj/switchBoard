@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic control of SmartThings endpoint.
    */
   return {
-    version : 20150613,
+    version : 20150628,
 
     inputs  : ['list', 'subdevice'],
 
@@ -156,11 +156,12 @@ module.exports = (function () {
      * of the world.
      */
     updateState : function (smartthings, response) {
-      var subDevices  = {},
-          deviceState = require(__dirname + '/../lib/deviceState'),
-          state       = 'err',
-          mode        = '',
-          i           = 0,
+      var subDevices      = {},
+          smartthingsData = {},
+          deviceState     = require(__dirname + '/../lib/deviceState'),
+          state           = 'err',
+          mode            = '',
+          i               = 0,
           device;
 
       if((response) && (response.mode) && (response.devices)) {
@@ -249,8 +250,11 @@ module.exports = (function () {
           }
         }
 
-        deviceState.updateState(smartthings.deviceId, 'smartthings', { state : state, value : { devices : subDevices, mode : mode, groups : response.groups } });
+        smartthingsData = { state : state, value : { devices : subDevices, mode : mode, groups : response.groups } };
+        deviceState.updateState(smartthings.deviceId, 'smartthings', smartthingsData);
       }
+
+      return smartthingsData;
     },
 
     /**
@@ -546,22 +550,24 @@ module.exports = (function () {
                       });
 
                       response.once('end', function() {
-                        var smartthingsData = {};
+                        var smartthingsData = null;
 
                         if(dataReply) {
                           try {
                             smartthingsData = JSON.parse(dataReply);
-
-                            smartthingsData.groups    = config.device.groups;
-                            smartthingsData.className = config.device.className;
-
-                            that.updateState(smartthings, smartthingsData);
-
-                            smartthings.callback(null, smartthingsData, true);
                           }
 
                           catch (err) {
                             smartthings.callback('Invalid data returned from API');
+                          }
+
+                          if(smartthingsData) {
+                            smartthingsData.groups    = config.device.groups;
+                            smartthingsData.className = config.device.className;
+
+                            smartthingsData = that.updateState(smartthings, smartthingsData);
+
+                            smartthings.callback(null, smartthingsData, true);
                           }
                         }
 
