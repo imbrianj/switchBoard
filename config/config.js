@@ -144,8 +144,14 @@ exports.config = {
     // It's also available in places that don't have Zip codes.
     // Find your location's WOEID from: http://woeid.factormystic.net/
     woeid     : 12798963,
-    apps      : { 'Sun Phase' : { id      : 'sunPhase',
-                                  macros  : { 'sunset' : 'smartthings=subdevice-mode-Night' } } },
+    apps      : { 'Sun Phase' : { id            : 'sunPhase',
+                                  macros        : { 'sunset' : 'smartthings=subdevice-mode-Night' },
+                                  dayMode       : 'Home',
+                                  // I personally don't like Night mode to
+                                  // trigger automatically, so I stick with
+                                  // Home.
+                                  nightMode     : 'Home',
+                                  controllerIds : ['smartthings'] } },
     disabled  : true
   },
 
@@ -295,9 +301,6 @@ exports.config = {
                                                contact       : ['Bedroom Window'],
                                                thermostat    : ['Living Room'],
                                                controllerIds : ['nest', 'pushover', 'speech'],
-                                               message       : { 'heat' : 'Window open and heat is still on.',
-                                                                 'cool' : 'Window open and AC is still on.',
-                                                                 'off'  : 'Window still open.  Thermostat turned off.'},
                                                disabled      : true },
                        'Mode Change'       : { id            : 'smartthingsModeChange',
                                                controllerIds : [],
@@ -310,7 +313,14 @@ exports.config = {
                                                vibrate       : 'Front Door',
                                                delay         : 5,
                                                controllerIds : ['pushover', 'sms', 'speech', 'mp3'],
-                                               disabled      : true }
+                                               disabled      : true },
+                       'Presence Mode'     : { id            : 'presenceMode',
+                                               dayMode       : 'Home',
+                                               // I personally don't like Night
+                                               // mode to trigger automatically,
+                                               // so I stick with Home.
+                                               nightMode     : 'Home',
+                                               controllerIds : ['weather'] }
                      },
     */
     className      : { Goblin : 'fa-female' },
@@ -324,17 +334,14 @@ exports.config = {
     username  : 'user@example.com',
     password  : 'password',
     apps      : { 'Nest Change'   : { id            : 'nestChange' },
-/*
+    /*
                   'Window Open'   : { id            : 'windowOpen',
                                       thermostats   : ['Living Room'],
                                       contact       : ['Balcony Door', 'Office Window', 'Bedroom Window', 'Dining Room Window', 'Living Room Window'],
-                                      controllerIds : ['smartthings', 'pushover', 'speech'],
-                                      message       : { 'heat' : 'Window open and heat is still on.',
-                                                        'cool' : 'Window open and AC is still on.',
-                                                        'off'  : 'Window still open.  Thermostat turned off.'} },
+                                      controllerIds : ['smartthings', 'pushover', 'speech'] },
                   'Protect Alarm' : { id            : 'announceNest',
                                       controllerIds : ['pushover', 'sms', 'speech'] }
-*/
+    */
                 },
     disabled  : true
   },

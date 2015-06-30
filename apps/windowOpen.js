@@ -35,9 +35,30 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150520,
+    version : 20150627,
 
     governor : false,
+
+    translate : function(token, lang) {
+      var translate = require(__dirname + '/../lib/translate');
+
+      return translate.translate('{{i18n_' + token + '}}', 'smartthings', lang);
+    },
+
+    formatMessage : function(contact, state, lang) {
+      var sharedUtil = require(__dirname + '/../lib/sharedUtil').util,
+          windows    = '',
+          type       = '',
+          message    = '';
+
+      windows = sharedUtil.arrayList(contact, 'smartthings', lang);
+      type    = this.translate(state === 'heat' ? 'HEAT' : 'AIR_CONDITION', lang);
+      message = this.translate('HVAC_ON', lang);
+      message = message.split('{{WINDOW}}').join(windows);
+      message = message.split('{{HVAC}}').join(type);
+
+      return message;
+    },
 
     windowOpen : function(device, command, controllers, values, config) {
       var notify      = require(__dirname + '/../lib/notify'),
@@ -46,6 +67,7 @@ module.exports = (function () {
           that        = this,
           delay       = config.delay || 60,
           checkState,
+          message     = '',
           status;
 
       checkState = function() {
@@ -54,7 +76,9 @@ module.exports = (function () {
             status        = { thermostat : [], contact : [] },
             subDeviceId,
             subDevice,
-            i;
+            windows       = '',
+            type          = '',
+            i             = 0;
 
         for(deviceId in controllers) {
           if((controllers[deviceId].config) && (controllers[deviceId].config.typeClass === 'nest')) {
@@ -79,7 +103,7 @@ module.exports = (function () {
                 subDevice = currentDevice.value.devices[subDeviceId];
 
                 if((config.contact.indexOf(subDevice.label) !== -1) && (subDevice.type === 'contact') && (subDevice.state === 'on')) {
-                  status.contact.push(subDeviceId);
+                  status.contact.push(subDevice.label);
                 }
               }
             }
@@ -96,7 +120,9 @@ module.exports = (function () {
       if((this.governor === false) && (status.thermostat.length) && (status.contact.length)) {
         this.governor = true;
 
-        notify.notify(config.message[status.thermostat[0].state], controllers);
+        message = that.formatMessage(status.contact, status.thermostat[0].state, controllers.config.language);
+        notify.notify(message, controllers);
+        notify.sendNotification(null, message, device);
 
         setTimeout(function() {
           var status = checkState(),
@@ -104,14 +130,16 @@ module.exports = (function () {
               i;
 
           if(status.thermostat.length && status.contact.length) {
-            notify.notify(config.message.off, controllers);
-
             for(deviceId in controllers) {
               if(controllers[deviceId].config) {
                 if(controllers[deviceId].config.typeClass === 'nest') {
-                  for(i = 0; i < status.thermostat.length; i += 1) {
+                  for(i; i < status.thermostat.length; i += 1) {
                     runCommand.runCommand(deviceId, 'subdevice-mode-' + status.thermostat[i].label + '-off');
                   }
+
+                  message = that.formatMessage(status.contact, status.thermostat[0].state, controllers.config.language);
+                  notify.notify(message, controllers);
+                  notify.sendNotification(null, message, device);
                 }
               }
             }

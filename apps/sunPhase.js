@@ -25,29 +25,69 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview Execute specified macros based on sunset or sunrise.
+ * @fileoverview Execute specified macros and SmartThings mode changes based on
+ *               sunset or sunrise.
  */
 
 module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150624,
+    version : 20150628,
 
     lastState : null,
 
+    translate : function(token, lang) {
+      var translate = require(__dirname + '/../lib/translate');
+
+      return translate.translate('{{i18n_' + token + '}}', 'weather', lang);
+    },
+
     sunPhase : function(device, command, controllers, values, config) {
-      var state = values.phase,
+      var state    = values.value.phase,
+          runCommand,
+          notify,
+          deviceState,
+          smartthingsState,
           newPhase = '',
+          newMode  = '',
           rawMacro,
           macro,
-          runCommand;
+          deviceId,
+          message  = '';
+
+      if(!this.lastState) {
+        this.lastState = state;
+      }
 
       if(state !== this.lastState) {
         this.lastState = state;
-        runCommand     = require(__dirname + '/../../lib/runCommand');
+        runCommand     = require(__dirname + '/../lib/runCommand');
+        notify         = require(__dirname + '/../lib/notify');
         newPhase       = state === 'Day' ? 'Sunrise' : 'Sunset';
+        newMode        = state === 'Day' ? config.dayMode : config.nightMode;
         rawMacro       = config.macros[newPhase].split(';');
+
+        for(deviceId in controllers) {
+          if((controllers[deviceId].config) && (controllers[deviceId].config.typeClass === 'smartthings')) {
+            deviceState      = require(__dirname + '/../lib/deviceState');
+            smartthingsState = deviceState.getDeviceState(deviceId);
+
+            if((smartthingsState) &&
+               (smartthingsState.value) &&
+               (smartthingsState.value.mode !== 'Away') &&
+               (smartthingsState.value.mode !== newMode)) {
+              runCommand.runCommand(deviceId, 'subdevice-mode-' + newMode);
+
+              message = this.translate(newPhase.toUpperCase(), controllers.config.language);
+              message = message.split('{{SUNSET}}').join(config.nightMode);
+              message = message.split('{{SUNRISE}}').join(config.dayMode);
+
+              notify.notify(message, controllers);
+              notify.sendNotification(null, message, device);
+            }
+          }
+        }
 
         for(macro in rawMacro) {
           runCommand.macroCommands(rawMacro[macro]);
