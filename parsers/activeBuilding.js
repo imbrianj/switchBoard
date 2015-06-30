@@ -31,7 +31,6 @@
         status     = '',
         icon       = '',
         senders    = '',
-        i          = 0,
         translate  = function(message) {
           var util;
 
@@ -45,37 +44,40 @@
           }
 
           return message;
-        };
+        },
+        arrayList  = function(elms) {
+          var message = '',
+              util;
 
-    if((state) && (value)) {
-      for(i; i < value.length; i += 1) {
-        if(i > 0) {
-          if (i === value.length - 1) {
-            senders = senders + ' ' + translate('AND') + ' ';
+          if((typeof SB === 'object') && (typeof SB.util === 'object')) {
+            message = SB.util.arrayList(elms, 'activeBuilding', language);
           }
 
           else {
-            senders = senders + ', ';
+            util    = require(__dirname + '/../lib/sharedUtil').util;
+            message = util.arrayList(elms, 'activeBuilding', language);
           }
-        }
 
-        senders = senders + value[i];
-      }
+          return message;
+        };
+
+    if((state) && (value)) {
+      senders = arrayList(value);
     }
 
-    if(i === 0) {
+    if((!value || value.length === 0)) {
       status     = 'err';
       icon       = 'times';
       tempMarkup = translate('NO_PACKAGES');
     }
 
-    else if(i === 1) {
+    else if(value.length === 1) {
       status     = 'ok';
       icon       = 'tag';
       tempMarkup = translate('SINGLE_PACKAGE');
     }
 
-    else if(i > 1) {
+    else if(value.length > 1) {
       status     = 'ok';
       icon       = 'tags';
       tempMarkup = translate('PLURAL_PACKAGES');

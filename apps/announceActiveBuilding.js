@@ -37,7 +37,7 @@ module.exports = (function () {
   var ActiveBuildingPackages = {};
 
   return {
-    version : 20150613,
+    version : 20150627,
 
     translate : function(token, lang) {
       var translate = require(__dirname + '/../lib/translate');
@@ -46,7 +46,8 @@ module.exports = (function () {
     },
 
     announceActiveBuilding : function(device, command, controllers, values, config) {
-      var deviceState         = require(__dirname + '/../lib/deviceState'),
+      var sharedUtil          = require(__dirname + '/../lib/sharedUtil').util,
+          deviceState         = require(__dirname + '/../lib/deviceState'),
           activeBuildingState = deviceState.getDeviceState(device),
           notify,
           runCommand,
@@ -61,19 +62,7 @@ module.exports = (function () {
         packages = values.value;
 
         if(JSON.stringify(ActiveBuildingPackages[device]) !== JSON.stringify(packages)) {
-          for(i; i < values.value.length; i += 1) {
-            if(i) {
-              if (i === (values.value.length - 1)) {
-                senders = senders + ' ' + this.translate('AND', lang) + ' ';
-              }
-
-              else {
-                senders = senders + ', ';
-              }
-            }
-
-            senders = senders + values.value[i];
-          }
+          senders = sharedUtil.arrayList(values.value, 'activeBuilding', lang);
 
           if(senders) {
             ActiveBuildingPackages[device] = packages;

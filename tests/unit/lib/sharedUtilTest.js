@@ -50,5 +50,17 @@ exports.sharedUtilTest = {
     test.strictEqual(util.util.translate('THERMOSTAT', 'nest', 'en'), 'Thermostat', 'Token translated');
 
     test.done();
+  },
+
+  arrayList : function (test) {
+    'use strict';
+
+    var util = require(__dirname + '/../../../lib/sharedUtil');
+
+    test.strictEqual(util.util.arrayList(['One', 'Two', 'Three'], 'nest', 'en'), 'One, Two and Three', 'Long list');
+    test.strictEqual(util.util.arrayList(['One', 'Two'],          'nest', 'en'), 'One and Two',       'Short list');
+    test.strictEqual(util.util.arrayList(['One'],                 'nest', 'en'), 'One',                'Single item');
+
+    test.done();
   }
 };
