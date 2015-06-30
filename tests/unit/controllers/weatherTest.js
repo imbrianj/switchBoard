@@ -56,5 +56,15 @@ exports.weatherControllerTest = {
     test.deepEqual(testData, { host : 'TEST-host', port : '443', path : '/TEST/', method : 'GET' }, 'Additional params are filtered out.');
 
     test.done();
+  },
+
+  formatTime : function (test) {
+    'use strict';
+
+    var weatherController = require(__dirname + '/../../../controllers/weather');
+
+    test.deepEqual(weatherController.formatTime('4:22 pm'), { hour : '16', minute : '22' });
+
+    test.done();
   }
 };
