@@ -34,13 +34,14 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150610,
+    version : 20150626,
 
     lastEvents : { knock : 0, open : 0, close: 0 },
 
     doorKnock : function(device, command, controllers, values, config) {
-      var now  = new Date().getTime(),
-          that = this;
+      var now   = new Date().getTime(),
+          delay = config.delay || 5,
+          that  = this;
 
       if(command === 'subdevice-state-vibrate-' + config.vibrate + '-on') {
         this.lastEvents.knock = now;
@@ -78,7 +79,7 @@ module.exports = (function () {
               }
             }
           }
-        }, config.delay * 1000);
+        }, delay * 1000);
       }
     }
   };
