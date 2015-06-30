@@ -42,24 +42,28 @@ module.exports = (function () {
       if(state.value) {
         // Collect an average of all current sotck movement for the day.
         for(stock in state.value) {
-          change += parseFloat(state.value[stock].dayChangePercent.replace('%', ''));
-          i      += 1;
+          if(state.value[stock].dayChangePercent) {
+            change += parseFloat(state.value[stock].dayChangePercent.replace('%', ''));
+            i      += 1;
+          }
         }
 
-        excited = change / i;
+        if(i) {
+          excited = change / i;
 
-        if(excited < 0) {
-          scared = excited;
-        }
+          if(excited < 0) {
+            scared = excited;
+          }
 
-        // We'll limit the amount of excitement (or lack thereof).
-        if(excited > 5) {
-          excited = 5;
-        }
+          // We'll limit the amount of excitement (or lack thereof).
+          if(excited > 5) {
+            excited = 5;
+          }
 
-        else if(excited < -5) {
-          excited = -5;
-          scared  = -5;
+          else if(excited < -5) {
+            excited = -5;
+            scared  = -5;
+          }
         }
       }
 
