@@ -407,8 +407,6 @@ module.exports = (function () {
           NIGHT          : "Night",
           NOBODY_HOME    : "Set to Away - nobody is home",
           SOMEBODY_HOME  : "Set to Home - {{PEOPLE}} {{PLURAL}} home",
-          SUNSET         : "Set to {{SUNSET}} - sun has gone down",
-          SUNRISE        : "Set to {{SUNRISE}} - sun has come up",
           WATER_DETECTED : "{{LABEL}} has detected water!"
         },
         sms : {
@@ -436,6 +434,8 @@ module.exports = (function () {
         weather : {
           WEATHER     : "Weather",
           CURRENT     : "Current Weather",
+          SUNSET      : "Set to {{SUNSET}} - sun has gone down",
+          SUNRISE     : "Set to {{SUNRISE}} - sun has come up",
           UNAVAILABLE : "Weather data unavailable"
         },
         welcome : {
