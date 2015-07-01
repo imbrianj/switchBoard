@@ -71,6 +71,7 @@ module.exports = (function () {
                 'tests/unit/lib/runCommandTest.js',
                 'tests/unit/lib/scheduleTest.js',
                 'tests/unit/lib/staticAssetsTest.js',
+                'test/unit/lib/translateTest.js',
                 'tests/unit/parsers/activeBuildingTest.js',
                 'tests/unit/parsers/denonTest.js',
                 'tests/unit/parsers/foscamTest.js',

@@ -50,6 +50,7 @@ module.exports = (function () {
           DISCONNECTED : "Desconectado"
         },
         common : {
+          ACTIVE         : "Activo",
           AIR_CONDITION  : "aire acondicionado",
           AND            : "y",
           ARE            : "están",
@@ -68,7 +69,7 @@ module.exports = (function () {
           HEAT           : "calor",
           HOME           : "A Casa",
           HVAC_OFF       : "{{WINDOW}} abierta; {{HVAC}} apagado.",
-          HVAC_ON        : "{{WINDOW}} abierta and {{HVAC}} prendido.",
+          HVAC_ON        : "{{WINDOW}} abierta y {{HVAC}} prendido.",
           INACTIVE       : "Inactivo",
           IS             : "es",
           LEFT           : "Izquierda",
@@ -402,8 +403,6 @@ module.exports = (function () {
           NIGHT          : "Noche",
           NOBODY_HOME    : "Estatus por fuera - no hay nadie en casa",
           SOMEBODY_HOME  : "Estatus en casa - {{PEOPLE}} {{PLURAL}} en casa",
-          SUNSET         : "Estatus {{SUNSET}} - ha atardecido",
-          SUNRISE        : "Estatus {{SUNRISE}} - ha amanecido",
           WATER_DETECTED : "¡{{LABEL}} detecto agua!"
         },
         sms : {
@@ -431,6 +430,8 @@ module.exports = (function () {
         weather : {
           WEATHER     : "Tiempo",
           CURRENT     : "Tiempo actual",
+          SUNSET      : "Estatus {{SUNSET}} - ha atardecido",
+          SUNRISE     : "Estatus {{SUNRISE}} - ha amanecido",
           UNAVAILABLE : "No se encontró el tiempo actual"
         },
         welcome : {
@@ -452,4 +453,3 @@ module.exports = (function () {
     }
   };
 }());
-

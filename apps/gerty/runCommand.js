@@ -32,7 +32,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150110,
+    version : 20150625,
 
     /**
      * Takes inputted spoken text and tries to derive the intended devices and
@@ -212,6 +212,14 @@ module.exports = (function () {
           }
         }
       }
+
+// Search for common phrases
+// "What time is it?"
+// "What's the date?"
+// "How's the weather?"
+// "Do I need a coat?"
+// "How are my stocks?"
+// "How are you doing?"
 
       if((devices[0].device) && (commands[0].action)) {
         // If we have more commands than devices, there's probably some
