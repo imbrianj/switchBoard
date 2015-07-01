@@ -98,7 +98,7 @@ Contact
 ---
 If you have questions, comments or want to complain, email me at brian@bevey.org
 
-If you require more immediate assistance, you can join [#switchboard on irc.freenode.net](http://webchat.freenode.net/?channels=switchboard)
+If you require more immediate assistance, you can join [##switchboard on irc.freenode.net](http://webchat.freenode.net/?channels=#%23switchboard)
 
 FAQ
 ---
