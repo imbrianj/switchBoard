@@ -50,8 +50,9 @@ module.exports = (function () {
           DISCONNECTED : "Desconectado"
         },
         common : {
-          ACTIVE         : "Activo",
+          AIR_CONDITION  : "aire acondicionado",
           AND            : "y",
+          ARE            : "están",
           BACK           : "De Vuelta",
           BLUE           : "Azul",
           CANCEL         : "Cancelar",
@@ -64,8 +65,12 @@ module.exports = (function () {
           FILE_NOT_FOUND : "Archivo No Encontrado",
           GREEN          : "Verde",
           HDMI           : "HDMI",
+          HEAT           : "calor",
           HOME           : "A Casa",
+          HVAC_OFF       : "{{WINDOW}} abierta; {{HVAC}} apagado.",
+          HVAC_ON        : "{{WINDOW}} abierta and {{HVAC}} prendido.",
           INACTIVE       : "Inactivo",
+          IS             : "es",
           LEFT           : "Izquierda",
           MENU           : "Menú",
           MUTE           : "Silenciar",
@@ -394,7 +399,11 @@ module.exports = (function () {
           DOOR_KNOCK     : "Alguien está en la {{LABEL}}",
           HOME           : "En Casa",
           LEFT           : "{{LABEL}} acabo de salir",
-          NIGHT          : "Night",
+          NIGHT          : "Noche",
+          NOBODY_HOME    : "Estatus por fuera - no hay nadie en casa",
+          SOMEBODY_HOME  : "Estatus en casa - {{PEOPLE}} {{PLURAL}} en casa",
+          SUNSET         : "Estatus {{SUNSET}} - ha atardecido",
+          SUNRISE        : "Estatus {{SUNRISE}} - ha amanecido",
           WATER_DETECTED : "¡{{LABEL}} detecto agua!"
         },
         sms : {
@@ -443,3 +452,4 @@ module.exports = (function () {
     }
   };
 }());
+
