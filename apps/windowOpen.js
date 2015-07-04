@@ -35,7 +35,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150627,
+    version : 20150703,
 
     governor : false,
 
@@ -45,7 +45,7 @@ module.exports = (function () {
       return translate.translate('{{i18n_' + token + '}}', 'smartthings', lang);
     },
 
-    formatMessage : function(contact, state, lang) {
+    formatMessage : function(messageType, contact, state, lang) {
       var sharedUtil = require(__dirname + '/../lib/sharedUtil').util,
           windows    = '',
           type       = '',
@@ -53,7 +53,7 @@ module.exports = (function () {
 
       windows = sharedUtil.arrayList(contact, 'smartthings', lang);
       type    = this.translate(state === 'heat' ? 'HEAT' : 'AIR_CONDITION', lang);
-      message = this.translate('HVAC_ON', lang);
+      message = messageType === 'warn' ? this.translate('HVAC_ON', lang) : this.translate('HVAC_OFF', lang);
       message = message.split('{{WINDOW}}').join(windows);
       message = message.split('{{HVAC}}').join(type);
 
@@ -120,14 +120,14 @@ module.exports = (function () {
       if((this.governor === false) && (status.thermostat.length) && (status.contact.length)) {
         this.governor = true;
 
-        message = that.formatMessage(status.contact, status.thermostat[0].state, controllers.config.language);
+        message = that.formatMessage('warn', status.contact, status.thermostat[0].state, controllers.config.language);
         notify.notify(message, controllers);
         notify.sendNotification(null, message, device);
 
         setTimeout(function() {
           var status = checkState(),
               deviceId,
-              i;
+              i      = 0;
 
           if(status.thermostat.length && status.contact.length) {
             for(deviceId in controllers) {
@@ -137,7 +137,7 @@ module.exports = (function () {
                     runCommand.runCommand(deviceId, 'subdevice-mode-' + status.thermostat[i].label + '-off');
                   }
 
-                  message = that.formatMessage(status.contact, status.thermostat[0].state, controllers.config.language);
+                  message = that.formatMessage('off', status.contact, status.thermostat[0].state, controllers.config.language);
                   notify.notify(message, controllers);
                   notify.sendNotification(null, message, device);
                 }
