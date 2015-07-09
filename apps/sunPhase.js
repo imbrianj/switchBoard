@@ -44,7 +44,7 @@ module.exports = (function () {
     },
 
     sunPhase : function(device, command, controllers, values, config) {
-      var state    = values.value.phase,
+      var state    = values.value ? values.value.phase : null,
           runCommand,
           notify,
           deviceState,
