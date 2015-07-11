@@ -37,7 +37,7 @@ module.exports = (function () {
   var ActiveBuildingPackages = {};
 
   return {
-    version : 20150627,
+    version : 20150710,
 
     translate : function(token, lang) {
       var translate = require(__dirname + '/../lib/translate');
@@ -54,7 +54,6 @@ module.exports = (function () {
           lang                = controllers.config.language,
           senders             = '',
           message             = '',
-          i                   = 0,
           packages            = [],
           deviceId;
 
@@ -70,11 +69,11 @@ module.exports = (function () {
             notify     = require(__dirname + '/../lib/notify');
             runCommand = require(__dirname + '/../lib/runCommand');
 
-            if(i === 1) {
+            if(packages.length === 1) {
               message = this.translate('SINGLE_PACKAGE', lang);
             }
 
-            else if(i > 1) {
+            else if(packages.length > 1) {
               message = this.translate('PLURAL_PACKAGES', lang);
             }
 

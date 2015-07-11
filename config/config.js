@@ -405,7 +405,7 @@ exports.config = {
    * display to find out if you have any packages to be picked up.
    *
    * You will need to find the "appId" and "communityId" associated with your
-   * unit.  Ask our concierge or building manager for more information.
+   * unit.  Ask your concierge or building manager for more information.
    */
   activeBuilding : {
     typeClass   : 'activeBuilding',
