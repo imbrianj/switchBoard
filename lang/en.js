@@ -96,6 +96,7 @@ module.exports = (function () {
           YELLOW         : "Yellow"
         },
         activeBuilding : {
+          ACTIVEBUILDING  : "Active Building",
           NO_PACKAGES     : "No packages available.",
           PLURAL_PACKAGES : "You have packages from: {{SENDERS}}",
           SINGLE_PACKAGE  : "You have a package from: {{SENDERS}}"

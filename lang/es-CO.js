@@ -100,6 +100,7 @@ module.exports = (function () {
           YELLOW         : "Amarillo"
         },
         activeBuilding : {
+          ACTIVEBUILDING  : "Active Building",
           NO_PACKAGES     : "No han llegado paquetes.",
           PLURAL_PACKAGES : "Llegaron paquetes enviados por: {{SENDERS}}",
           SINGLE_PACKAGE  : "Llego un paquete enviado por: {{SENDERS}}"
