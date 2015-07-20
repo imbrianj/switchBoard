@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic stocks information, courtesy of Yahoo.
    */
   return {
-    version : 20141121,
+    version : 20150717,
 
     inputs  : ['list'],
 
@@ -144,7 +144,13 @@ module.exports = (function () {
                           i = 0;
 
                       if(dataReply) {
-                        data = JSON.parse(dataReply);
+                        try {
+                          data = JSON.parse(dataReply);
+                        }
+
+                        catch(err) {
+                          stocks.callback('API returned an unexpected value');
+                        }
 
                         if(data && data.query && data.query.results && data.query.results.quote) {
                           for(i in data.query.results.quote) {
@@ -178,8 +184,6 @@ module.exports = (function () {
         });
 
         request.end();
-
-        return dataReply;
       }
 
       else {

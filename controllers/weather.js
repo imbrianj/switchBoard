@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic weather information, courtesy of Yahoo.
    */
   return {
-    version : 20150628,
+    version : 20150717,
 
     inputs  : ['list'],
 
@@ -142,13 +142,20 @@ module.exports = (function () {
                     response.once('end', function() {
                       var deviceState = require(__dirname + '/../lib/deviceState'),
                           weatherData = {},
+                          data,
                           city;
 
                       if(dataReply) {
-                        dataReply = JSON.parse(dataReply);
+                        try {
+                          data = JSON.parse(dataReply);
+                        }
 
-                        if((dataReply.query) && (dataReply.query.results)) {
-                          city = dataReply.query.results.channel;
+                        catch(err) {
+                          weather.callback('API returned an unexpected value');
+                        }
+
+                        if((data.query) && (data.query.results)) {
+                          city = data.query.results.channel;
 
                           if(city.title.indexOf('Error') !== -1) {
                             deviceState.updateState(weather.deviceId, 'weather', { state : 'err', value : city.title });
@@ -188,8 +195,6 @@ module.exports = (function () {
         });
 
         request.end();
-
-        return dataReply;
       }
 
       else {
