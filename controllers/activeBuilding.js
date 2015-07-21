@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic weather information, courtesy of Yahoo.
    */
   return {
-    version : 20150401,
+    version : 20150720,
 
     inputs : ['list'],
 
@@ -96,6 +96,7 @@ module.exports = (function () {
                           for(i; i < dataReply.length; i += 1) {
                             if(dataReply[i].unit === activeBuilding.unitNumber) {
                               switch(dataReply[i].typeName) {
+                                case 'Amazon'       :
                                 case 'Bag'          :
                                 case 'Dry Cleaning' :
                                 case 'Envelope'     :
