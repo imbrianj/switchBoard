@@ -88,7 +88,7 @@ module.exports = (function () {
               for(subDeviceId in currentDevice.value.devices) {
                 subDevice = currentDevice.value.devices[subDeviceId];
 
-                if((config.thermostat.indexOf(subDevice.label) !== -1) && (subDevice.type === 'thermostat') && (subDevice.state !== 'off')) {
+                if((config.thermostat.indexOf(subDevice.label) !== -1) && (subDevice.type === 'thermostat') && (subDevice.state !== 'off') && (currentDevice.state !== 'err')) {
                   status.thermostat.push({ label : subDevice.label, state : subDevice.state });
                 }
               }
