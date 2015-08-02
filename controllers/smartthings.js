@@ -69,9 +69,10 @@ module.exports = (function () {
      */
     oauthCode : function (oauthCode, deviceId, deviceConfig, config) {
       var smartthings = {},
-          that        = this;
+          that        = this,
+          ssl         = config.ssl.disabled === false ? 'https' : 'http';
 
-      smartthings.path     = deviceConfig.path || '/oauth/token?grant_type=authorization_code&client_id=' + deviceConfig.clientId + '&client_secret=' + deviceConfig.clientSecret + '&redirect_uri=http://' + config.serverIp + ':' + config.serverPort + '/oauth/' + deviceId + '&code=' + oauthCode + '&scope=app';
+      smartthings.path     = deviceConfig.path || '/oauth/token?grant_type=authorization_code&client_id=' + deviceConfig.clientId + '&client_secret=' + deviceConfig.clientSecret + '&redirect_uri=' + ssl + '://' + config.serverIp + ':' + config.serverPort + '/oauth/' + deviceId + '&code=' + oauthCode + '&scope=app';
       smartthings.callback = function(err, response) {
         var fs       = require('fs'),
             authData = {},
@@ -465,7 +466,8 @@ module.exports = (function () {
      */
     init : function (controller, config) {
       var fs   = require('fs'),
-          auth = {};
+          auth = {},
+          ssl  = config.ssl.disabled === false ? 'https' : 'http';
 
       if(typeof controller.config.clientId !== 'undefined' && controller.config.clientSecret !== 'undefined') {
         fs.exists(__dirname + '/../cache/smartthingsAuth.json', function(fileExists) {
@@ -498,7 +500,7 @@ module.exports = (function () {
             console.log('\x1b[31mWARNING\x1b[0m: ' + controller.config.title + ': Attempting to load controller that requires');
             console.log('\x1b[31mWARNING\x1b[0m: additional OAuth configuration!');
             console.log('\x1b[31mWARNING\x1b[0m: Visit this URL to authenticate:');
-            console.log('https://graph.api.smartthings.com/oauth/authorize?response_type=code&client_id=' + controller.config.clientId + '&redirect_uri=http://' + config.serverIp + ':' + config.serverPort + '/oauth/' + controller.config.deviceId + '&scope=app');
+            console.log('https://graph.api.smartthings.com/oauth/authorize?response_type=code&client_id=' + controller.config.clientId + '&redirect_uri=' + ssl + '://' + config.serverIp + ':' + config.serverPort + '/oauth/' + controller.config.deviceId + '&scope=app');
             console.log('\x1b[31m=====================================================================\x1b[0m');
           }
         });
@@ -565,7 +567,17 @@ module.exports = (function () {
                             smartthingsData.groups    = config.device.groups;
                             smartthingsData.className = config.device.className;
 
-                            smartthingsData = that.updateState(smartthings, smartthingsData);
+                            // If we have a full device list, we should try and
+                            // get a filtered data set.
+                            if(smartthingsData.devices) {
+                              smartthingsData = that.updateState(smartthings, smartthingsData);
+                            }
+
+                            // Otherwise, it's probably auth data - let's just
+                            // pass that to the callback to handle.
+                            else {
+                              that.updateState(smartthings, smartthingsData);
+                            }
 
                             smartthings.callback(null, smartthingsData, true);
                           }
