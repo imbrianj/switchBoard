@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic control of SmartThings endpoint.
    */
   return {
-    version : 20150628,
+    version : 20150802,
 
     inputs  : ['list', 'subdevice'],
 

@@ -37,7 +37,7 @@ module.exports = (function () {
   var ActiveBuildingPackages = {};
 
   return {
-    version : 20150710,
+    version : 20150803,
 
     translate : function(token, lang) {
       var translate = require(__dirname + '/../lib/translate');
@@ -63,9 +63,9 @@ module.exports = (function () {
         if(JSON.stringify(ActiveBuildingPackages[device]) !== JSON.stringify(packages)) {
           senders = sharedUtil.arrayList(values.value, 'activeBuilding', lang);
 
-          if(senders) {
-            ActiveBuildingPackages[device] = packages;
+          ActiveBuildingPackages[device] = packages;
 
+          if(senders) {
             notify     = require(__dirname + '/../lib/notify');
             runCommand = require(__dirname + '/../lib/runCommand');
 

@@ -425,6 +425,7 @@ exports.config = {
     apps        : { 'Gerty' : { id            : 'gerty',
                                 macros        : { 'Watch A Movie' : 'ps3=PowerOn,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,Circle,sleep,sleep,Left;samsung=sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,HDMI4,sleep,DOWN,sleep,ENTER,sleep,sleep,sleep,sleep,ENTER',
                                                   'Goodnight'     : 'smartthings=subdevice-mode-Night',
+                                                  'Good Night'    : 'smartthings=subdevice-mode-Night',
                                                   'Goodbye'       : 'smartthings=subdevice-mode-Away;nest=Away',
                                                   'Welcome Home'  : 'smartthings=subdevice-mode-Home;nest=Home' },
                                 controllerIds : ['samsung', 'roku', 'ps3', 'panasonic', 'lg', 'pioneer', 'denon', 'speech', 'stocks', 'weather', 'foscam', 'mp3', 'sms', 'pushover', 'smartthings', 'nest', 'switchBoardCI', 'xbmc', 'raspberryRemote', 'wemo', 'activeBuilding'] } },
