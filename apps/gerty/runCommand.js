@@ -32,7 +32,54 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150625,
+    version : 20150808,
+
+    /**
+     * Take in a typeClass and return the type of device it's categorized as.
+     */
+    findDeviceType : function(typeClass) {
+      var deviceType = '';
+
+      switch(typeClass) {
+        case 'smartthings' :
+          deviceType = 'smartthings';
+        break;
+
+        case 'nest' :
+          deviceType = 'nest';
+        break;
+
+        case 'samsung'   :
+        case 'lg'        :
+        case 'panasonic' :
+          deviceType = 'tv';
+        break;
+
+        case 'pioneer' :
+        case 'denon'   :
+          deviceType = 'stereo';
+        break;
+
+        case 'ps3'  :
+        case 'xbmc' :
+          deviceType = 'entertainment';
+        break;
+
+        case 'stocks' :
+          deviceType = 'stocks';
+        break;
+
+        case 'weather' :
+          deviceType = 'weather';
+        break;
+
+        case 'travis' :
+          deviceType = 'travis';
+        break;
+      }
+
+      return deviceType;
+    },
 
     /**
      * Takes inputted spoken text and tries to derive the intended devices and
@@ -113,17 +160,19 @@ module.exports = (function () {
 
         for(keyword in genericTerms) {
           // Check for generic names "TV", "Stereo", "Playstation", etc.
-          if(genericTerms[keyword] === text[i]) {
-            devices[j].device    = genericDevices[genericTerms[keyword]];
-            devices[j].typeClass = controllers[genericDevices[genericTerms[keyword]]].typeClass;
+          if(genericTerms[keyword].toUpperCase() === text[i]) {
+            if(controllers[genericDevices[genericTerms[keyword].toUpperCase()]]) {
+              devices[j].device    = genericDevices[genericTerms[keyword].toUpperCase()];
+              devices[j].typeClass = controllers[genericDevices[genericTerms[keyword].toUpperCase()]].config.typeClass;
 
-            // When we have a pair of action + command, we can start looking
-            // for our next command.
-            if((commands[j].action) && (devices[j].device)) {
-              j += 1;
+              // When we have a pair of action + command, we can start looking
+              // for our next command.
+              if((commands[j].action) && (devices[j].device)) {
+                j += 1;
 
-              commands[j] = { action : null, implied : false };
-              devices[j]  = { device : null, typeClass : null, subDevice : null };
+                commands[j] = { action : null, implied : false };
+                devices[j]  = { device : null, typeClass : null, subDevice : null };
+              }
             }
           }
         }
@@ -258,6 +307,21 @@ module.exports = (function () {
                 commands[i].action = 'subdevice-' + commands[i].action.toLowerCase() + '-' + devices[i].subDevice;
               }
 
+              switch(this.findDeviceType(devices[i].typeClass)) {
+                case 'tv'            :
+                case 'entertainment' :
+                case 'stereo'        :
+                  switch(commands[i].action.toUpperCase()) {
+                    case 'OFF' :
+                      commands[i].action = 'PowerOff';
+                    break;
+
+                    case 'ON' :
+                      commands[i].action = 'PowerOn';
+                    break;
+                  }
+                break;
+              }
               runCommand.runCommand(devices[i].device, commands[i].action);
             }
           }
@@ -285,43 +349,7 @@ module.exports = (function () {
         deviceType = null;
 
         if(device !== 'config') {
-          switch(controllers[device].config.typeClass) {
-            case 'smartthings' :
-              deviceType = 'smartthings';
-            break;
-
-            case 'nest' :
-              deviceType = 'nest';
-            break;
-
-            case 'samsung'   :
-            case 'lg'        :
-            case 'panasonic' :
-              deviceType = 'tv';
-            break;
-
-            case 'pioneer' :
-            case 'denon'   :
-              deviceType = 'stereo';
-            break;
-
-            case 'ps3'  :
-            case 'xbmc' :
-              deviceType = 'entertainment';
-            break;
-
-            case 'stocks' :
-              deviceType = 'stocks';
-            break;
-
-            case 'weather' :
-              deviceType = 'weather';
-            break;
-
-            case 'travis' :
-              deviceType = 'travis';
-            break;
-          }
+          deviceType = this.findDeviceType(controllers[device].config.typeClass);
 
           if(deviceType) {
             state         = deviceState.getDeviceState(device);

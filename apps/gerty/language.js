@@ -33,19 +33,21 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150110,
+    version : 20150808,
 
     /**
      * Some devices can be assumed - if you say "TV" and only have one TV
      * configured, we don't need to require you to use the proper name.
      */
     getGenericDevices : function(controllers) {
-      var genericTypes = { tv      : ['samsung', 'panasonic', 'lg'],
-                           stereo  : ['denon', 'pioneer'],
-                           camera  : ['foscam'],
-                           ps3     : ['ps3'],
-                           stocks  : ['stocks'],
-                           weather : ['weather'] },
+      var genericTypes = { tv          : ['samsung', 'panasonic', 'lg'],
+                           television  : ['samsung', 'panasonic', 'lg'],
+                           stereo      : ['denon', 'pioneer'],
+                           camera      : ['foscam'],
+                           ps3         : ['ps3'],
+                           playstation : ['ps3'],
+                           stocks      : ['stocks'],
+                           weather     : ['weather'] },
           unique       = {},
           notUnique    = {},
           generic,
