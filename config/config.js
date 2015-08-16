@@ -315,6 +315,8 @@ exports.config = {
                                                controllerIds : ['pushover', 'sms', 'speech', 'mp3'],
                                                disabled      : true },
                        'Presence Mode'     : { id            : 'presenceMode',
+                                               presence      : ['Brian', 'Goblin'],
+                                               delay         : 10,
                                                dayMode       : 'Home',
                                                // I personally don't like Night
                                                // mode to trigger automatically,

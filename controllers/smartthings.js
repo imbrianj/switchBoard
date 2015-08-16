@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic control of SmartThings endpoint.
    */
   return {
-    version : 20150802,
+    version : 20150816,
 
     inputs  : ['list', 'subdevice'],
 
@@ -172,7 +172,7 @@ module.exports = (function () {
         for(i; i < response.devices.length; i += 1) {
           device = response.devices[i];
 
-          if(device.values) {
+          if((device.values) && (device.id) && (device.label)) {
             subDevices[i] = {
               id    : device.id,
               label : device.label

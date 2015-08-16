@@ -32,7 +32,7 @@ Supported Devices/Services
 | ActiveBuilding   | Stable      | Checks for arrived packages to be picked up from your concierge                  |
 | Denon            | Stable      | New controller and still in testing                                              |
 | Foscam           | Stable      | Works with FI8910W (if you have another version that this does not work with, let me know and I can add support).  Arm, Disarm, Go to presets, etc. *INSECURE* Exposes camera credentials to users |
-| Gerty            | Testing     | A simple interface for all devices that reacts to natural inputs.  New and buggy |
+| Gerty            | Stable      | A simple interface for all devices that reacts to natural inputs.  New and buggy |
 | LG TVs           | Development | Still need work on authentication                                                |
 | MP3              | Stable      | Works on *nix with mpg123 or OSX with afplay. Win not supported                  |
 | Nest             | Stable      | Works with Nest thermostat and Protect smoke / CO detectors                      |
@@ -134,4 +134,4 @@ FAQ
 
 - Q. How can I access this if I'm away from my home?
 
-  A. I would strongly advise you to not just punch a hole in your firewall.  If your router supports VPN connections, it's a very safe option to configure your phone to connect to that before using SwitchBoard remotely.  If that's not possible or not convenient, you may use [ngrok](https://ngrok.com/) to easily access SwitchBoard (at no cost) with no additional configuration.  If you choose ngrok, be sure to [configure a password!](https://ngrok.com/usage)
+  A. I would strongly advise you to not just punch a hole in your firewall.  If your router supports VPN connections, it's a very safe option to configure your phone to connect to that before using SwitchBoard remotely.  If that's not possible or not convenient, you may use [ngrok](https://ngrok.com/) to easily access SwitchBoard (at no cost) with no additional configuration.  If you choose ngrok, be sure to [configure a password!](https://ngrok.com/usage#auth)

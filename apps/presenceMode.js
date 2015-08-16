@@ -32,7 +32,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150628,
+    version : 20150813,
 
     stillAway : true,
 
@@ -42,12 +42,12 @@ module.exports = (function () {
       return translate.translate('{{i18n_' + token + '}}', 'smartthings', lang);
     },
 
-    isPresent : function(devices) {
+    isPresent : function(devices, presence) {
       var present = [],
           subdevice;
 
       for(subdevice in devices) {
-        if((devices[subdevice].type === 'presence') && (devices[subdevice].state === 'on')) {
+        if((devices[subdevice].type === 'presence') && (devices[subdevice].state === 'on') && (presence) && (presence.indexOf(devices[subdevice].label) !== -1)) {
           present.push(devices[subdevice].label);
         }
       }
@@ -88,11 +88,12 @@ module.exports = (function () {
           deviceId,
           weatherState,
           present      = [],
-          delay        = config.delay || 10;
+          delay        = config.delay    || 10,
+          presence     = config.presence || [];
 
       if(command.indexOf('subdevice-state-presence-') === 0) {
         if((values.value) && (values.value.devices)) {
-          present = this.isPresent(values.value.devices);
+          present = this.isPresent(values.value.devices, presence);
 
           if(present.length === 0) {
             // Only mark "Away" based on a presence sensor going off.

@@ -32,13 +32,14 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150525,
+    version : 20150813,
 
     announcePresence : function(device, command, controllers, values, config) {
       var runCommand = require(__dirname + '/../lib/runCommand'),
           translate  = require(__dirname + '/../lib/translate'),
           notify     = require(__dirname + '/../lib/notify'),
           message    = '',
+          presence   = config.presence || [],
           value,
           deviceId;
 
@@ -48,17 +49,19 @@ module.exports = (function () {
         command = value[0];
         value   = value[1];
 
-        if(value === 'on') {
-          message = translate.translate('{{i18n_ARRIVED}}', 'smartthings', controllers.config.language).replace('{{LABEL}}', command);
-        }
+        if(presence.indexOf(command) !== -1) {
+          if(value === 'on') {
+            message = translate.translate('{{i18n_ARRIVED}}', 'smartthings', controllers.config.language).replace('{{LABEL}}', command);
+          }
 
-        else if(value === 'off') {
-          message = translate.translate('{{i18n_LEFT}}', 'smartthings', controllers.config.language).replace('{{LABEL}}', command);
-        }
+          else if(value === 'off') {
+            message = translate.translate('{{i18n_LEFT}}', 'smartthings', controllers.config.language).replace('{{LABEL}}', command);
+          }
 
-        if(message) {
-          notify.sendNotification(null, message, device);
-          notify.notify(message, controllers);
+          if(message) {
+            notify.sendNotification(null, message, device);
+            notify.notify(message, controllers);
+          }
         }
       }
     }
