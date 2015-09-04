@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic weather information, courtesy of Yahoo.
    */
   return {
-    version : 20150720,
+    version : 20150904,
 
     inputs : ['list'],
 
@@ -116,6 +116,8 @@ module.exports = (function () {
                               j += 1;
                             }
                           }
+
+                          activeBuildingData.sort();
 
                           activeBuilding.callback(null, activeBuildingData);
                         }
