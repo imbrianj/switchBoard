@@ -112,27 +112,39 @@ module.exports = (function () {
 
           response.once('end', function() {
             var deviceState = require(__dirname + '/../lib/deviceState'),
+                data        = null,
                 travisData  = [],
                 i           = 0;
 
-            // Stupid check to see if it's JSON and not HTML.
-            if((dataReply) && (dataReply[0] === '[')) {
-              dataReply = JSON.parse(dataReply);
+            if(dataReply) {
+              try {
+                data = JSON.parse(dataReply);
+              }
 
-              for(i; i < dataReply.length; i += 1) {
+              catch(err) {
+                travis.callback('Invalid data returned from API');
+              }
+            }
+
+            if(data) {
+              for(i; i < data.length; i += 1) {
                 if(i < travis.maxCount) {
-                  travisData[i] = { 'label'       : that.encodeMessage(dataReply[i].message),
-                                    'url'         : 'http://travis-ci.org/' + travis.owner + '/' + travis.repo + '/builds/' + dataReply[i].id,
-                                    'status'      : dataReply[i].result === 0 ? 'ok' : 'err',
-                                    'duration'    : dataReply[i].duration,
-                                    'state'       : dataReply[i].state
+                  travisData[i] = { 'label'       : that.encodeMessage(data[i].message),
+                                    'url'         : 'http://travis-ci.org/' + travis.owner + '/' + travis.repo + '/builds/' + data[i].id,
+                                    'status'      : data[i].result === 0 ? 'ok' : 'err',
+                                    'duration'    : data[i].duration,
+                                    'state'       : data[i].state
                                   };
 
-                  if((i === (dataReply.length - 1)) || (i === (travis.maxCount - 1))) {
+                  if((i === (data.length - 1)) || (i === (travis.maxCount - 1))) {
                     travisData.status = travisData[0].status;
 
                     deviceState.updateState(travis.deviceId, 'travis', { state : travisData.status, value : travisData });
                   }
+                }
+
+                else {
+                  break;
                 }
               }
 

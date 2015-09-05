@@ -31,6 +31,17 @@
 State = {};
 
 exports.sharedUtilTest = {
+  stripTags : function (test) {
+    'use strict';
+
+    var util = require(__dirname + '/../../../lib/sharedUtil');
+
+    test.strictEqual(util.util.stripTags('<span>Test</span>'),                         'Test',    'Text without HTML tags');
+    test.strictEqual(util.util.stripTags('<a href="#" onclick="alert()">Testing</a>'), 'Testing', 'Text without HTML tags');
+
+    test.done();
+  },
+
   encodeName : function (test) {
     'use strict';
 

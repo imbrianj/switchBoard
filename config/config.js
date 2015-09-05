@@ -420,6 +420,17 @@ exports.config = {
     disabled    : true
   },
 
+  /*
+   * Simple RSS reader.
+   */
+  rss : {
+    typeClass   : 'rss',
+    title       : 'Gym',
+    host        : 'crossfitbelltown.com',
+    path        : '/feed/',
+    disabled    : false
+  },
+
   gerty : {
     typeClass   : 'gerty',
     title       : 'Gerty',

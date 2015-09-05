@@ -42,6 +42,7 @@ Supported Devices/Services
 | Pushover         | Stable      | Requires purchased app and token / user key                                      |
 | Raspberry Remote | Stable      | Uses [Raspberry Remote](https://xkonni.github.io/raspberry-remote/) to control lighting. Only Linux is supported |
 | Roku             | Stable      | Launch apps directly, text input and basic controls                              |
+| RSS              | Development | Simple RSS reader                                                                |
 | Samsung SmartTV  | Stable      | Text input and basic controls                                                    |
 | SmartThings      | Stable      | Control devices and monitor real-time states. Requires [companion app](https://github.com/imbrianj/oauth_controller/blob/master/oauth_controller.groovy) |
 | SMS              | Stable      | Uses Twilio. Requires ID and token                                               |

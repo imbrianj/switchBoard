@@ -394,6 +394,9 @@ module.exports = (function () {
           FORWARD        : "Forward",
           INSTANT_REPLAY : "Instant Replay"
         },
+        rss : {
+          RSS : "RSS"
+        },
         samsung : {
           SAMSUNG          : "Samsung",
           CEC_SPEAKERS     : "CEC Speakers",
