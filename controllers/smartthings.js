@@ -559,7 +559,7 @@ module.exports = (function () {
                             smartthingsData = JSON.parse(dataReply);
                           }
 
-                          catch (err) {
+                          catch(err) {
                             smartthings.callback('Invalid data returned from API');
                           }
 

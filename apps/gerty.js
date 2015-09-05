@@ -63,6 +63,8 @@ module.exports = (function () {
           utterance = acted || '';
         }
 
+// Send text to gerty as comment
+
         for(device in controllers) {
           if(device !== 'config') {
             if(controllers[device].config.typeClass === 'speech') {

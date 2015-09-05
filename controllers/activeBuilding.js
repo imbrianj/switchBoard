@@ -84,6 +84,7 @@ module.exports = (function () {
                     response.once('end', function() {
                       var deviceState        = require(__dirname + '/../lib/deviceState'),
                           activeBuildingData = [],
+                          data               = null,
                           i                  = 0,
                           j                  = 0;
 
@@ -91,11 +92,17 @@ module.exports = (function () {
                         dataReply = dataReply.substring(0, dataReply.length - 1).replace('EVIL(', '');
 
                         try {
-                          dataReply = JSON.parse(dataReply);
+                          data = JSON.parse(dataReply);
+                        }
 
-                          for(i; i < dataReply.length; i += 1) {
-                            if(dataReply[i].unit === activeBuilding.unitNumber) {
-                              switch(dataReply[i].typeName) {
+                        catch(err) {
+                          activeBuilding.callback('Failed to parse JSONP');
+                        }
+
+                        if(data) {
+                          for(i; i < data.length; i += 1) {
+                            if(data[i].unit === activeBuilding.unitNumber) {
+                              switch(data[i].typeName) {
                                 case 'Amazon'       :
                                 case 'Bag'          :
                                 case 'Dry Cleaning' :
@@ -105,7 +112,7 @@ module.exports = (function () {
                                 case 'OnTrac'       :
                                 case 'UPS'          :
                                 case 'USPS'         :
-                                  activeBuildingData[j] = dataReply[i].typeName;
+                                  activeBuildingData[j] = data[i].typeName;
                                 break;
 
                                 default :
@@ -120,10 +127,6 @@ module.exports = (function () {
                           activeBuildingData.sort();
 
                           activeBuilding.callback(null, activeBuildingData);
-                        }
-
-                        catch (err) {
-                          activeBuilding.callback('Failed to parse JSONP');
                         }
                       }
 

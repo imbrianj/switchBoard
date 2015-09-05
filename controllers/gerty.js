@@ -33,7 +33,7 @@ module.exports = (function () {
    *               tasks.
    */
   return {
-    version : 20141219,
+    version : 20150829,
 
     inputs  : ['command', 'text'],
 
@@ -118,6 +118,28 @@ module.exports = (function () {
     },
 
     /**
+     * Gerty should accept comments from users and from device interactions and
+     * collate them for display as a running chat-log.
+     */
+    getComments : function (config) {
+      var deviceState,
+          gertyState,
+          allComments = [],
+          comments    = config.comments;
+
+      if(comments.length) {
+        deviceState = require(__dirname + '/../lib/deviceState');
+        gertyState  = deviceState.getDeviceState(config.config.deviceId);
+
+        allComments = gertyState.value.comments.concat(comments);
+      }
+
+      // We don't need to keep a full log as it'd be too heavy to update with
+      // long uptimes.
+      return allComments.slice(0, 100);
+    },
+
+    /**
      * Gerty should default to being happy and active.
      */
     init : function (controller, config) {
@@ -129,14 +151,14 @@ module.exports = (function () {
     state : function (controller, config, callback) {
       var runCommand  = require(__dirname + '/../lib/runCommand'),
           deviceState = require(__dirname + '/../lib/deviceState'),
-          gertyState = deviceState.getDeviceState(controller.config.deviceId),
+          gertyState  = deviceState.getDeviceState(controller.config.deviceId),
           personality = (controller.config.personality / 100) || 0.5,
           random      = Math.random(),
-          gerty      = {};
+          gerty       = {};
 
       if((gertyState) && (gertyState.value) && (personality > random)) {
         // At a rare random event, Gerty should have some added personality.
-        if(((random - 0.75) > 0.2) && (gertyState.value.description !== 'SLEEPING')) {
+        if((random > 0.95) && (gertyState.value.description !== 'SLEEPING')) {
           gertyState.value.description = 'PLAYFUL';
         }
 
@@ -147,18 +169,21 @@ module.exports = (function () {
     send : function (config) {
       var gerty = {},
           value,
-          action;
+          action,
+          comments;
 
       gerty.command     = config.command            || '';
       gerty.text        = config.text               || '';
       gerty.personality = config.device.personality || 0.5;
+      gerty.comments    = config.comments           || [];
       gerty.callback    = config.callback           || function () {};
 
-      value  = this.getEmojiType(gerty.command);
-      action = this.getActionType(gerty.personality, gerty.command);
+      value    = this.getEmojiType(gerty.command);
+      action   = this.getActionType(gerty.personality, gerty.command);
+      comments = this.getComments(gerty);
 
       if((value) && (gerty.command)) {
-        gerty.callback(null, { emoji : value, description : gerty.command, action : action });
+        gerty.callback(null, { emoji : value, description : gerty.command, action : action, comments : comments });
       }
 
       if(gerty.text) {

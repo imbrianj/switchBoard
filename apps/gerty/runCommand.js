@@ -32,7 +32,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150808,
+    version : 20150829,
 
     /**
      * Take in a typeClass and return the type of device it's categorized as.
@@ -47,6 +47,10 @@ module.exports = (function () {
 
         case 'nest' :
           deviceType = 'nest';
+        break;
+
+        case 'foscam' :
+          deviceType = 'security';
         break;
 
         case 'samsung'   :
@@ -88,13 +92,15 @@ module.exports = (function () {
     setDevice : function(rawText, controllers, device, macros, language) {
       var translate      = require(__dirname + '/../../lib/translate'),
           runCommand     = require(__dirname + '/../../lib/runCommand'),
-          gerdyLanguage  = require(__dirname + '/language'),
-          genericDevices = gerdyLanguage.getGenericDevices(controllers),
-          subDevices     = gerdyLanguage.getSubDevices(controllers),
-          genericTerms   = gerdyLanguage.getGenericTerms(language),
-          verbs          = gerdyLanguage.getVerbs(language),
+          gertyLanguage  = require(__dirname + '/language'),
+          genericDevices = gertyLanguage.getGenericDevices(controllers),
+          subDevices     = gertyLanguage.getSubDevices(controllers),
+          genericTerms   = gertyLanguage.getGenericTerms(language),
+          verbs          = gertyLanguage.getVerbs(language),
+          inquiry        = gertyLanguage.getInquiry(language),
           implied        = translate.translate('{{i18n_AND}}', 'gerty', language),
           commands       = [{ action : null, implied : false }],
+          questions      = [{ action : null, implied : false }],
           devices        = [{ device : null, typeClass : null, subDevice : null }],
           rawMacro       = [],
           macro          = '',
@@ -103,7 +109,8 @@ module.exports = (function () {
           acted          = false,
           i              = 0,
           j              = 0,
-          k              = 0;
+          k              = 0,
+          x              = 0;
 
       text = rawText.split(' ');
 
@@ -155,6 +162,25 @@ module.exports = (function () {
 
             commands[j] = { action : null, implied : false };
             devices[j]  = { device : null, typeClass : null, subDevice : null };
+          }
+        }
+
+        // Loop through looking for inquiry words.  Once we have one, store it
+        // so we can act on it once we find a suitable device.
+        for(keyword in inquiry) {
+          if(text[i] === inquiry[keyword].toUpperCase()) {
+            questions[x].action = inquiry[keyword];
+
+            break;
+          }
+
+          // When we have a pair of action + command, we can start looking for
+          // our next command.
+          if((questions[x].action) && (devices[j].device)) {
+            x += 1;
+
+            questions[x] = { action : null, implied : false };
+            devices[j]   = { device : null, typeClass : null, subDevice : null };
           }
         }
 
@@ -262,15 +288,19 @@ module.exports = (function () {
         }
       }
 
-// Search for common phrases
-// "What time is it?"
-// "What's the date?"
-// "How's the weather?"
-// "Do I need a coat?"
-// "How are my stocks?"
-// "How are you doing?"
+      // If we have a question that's not related to any device.
+      // "What time is it?"
+      // "What is the date?"
+      // "Do I need a coat?"
+      // "How are you doing?"
+      if((!devices[0].device) && (!commands[0].action) && (questions[0].action)) {
 
-      if((devices[0].device) && (commands[0].action)) {
+      }
+
+      else if((devices[0].device) && ((commands[0].action) || (questions[0].action))) {
+
+// Figure out how to coordinate "questions" with "commands"
+
         // If we have more commands than devices, there's probably some
         // ambiguity with a conjunction, such as:
         // "Turn off the hall light and office light"
@@ -321,7 +351,20 @@ module.exports = (function () {
                     break;
                   }
                 break;
+
+                case 'security' :
+                  switch(commands[i].action.toUpperCase()) {
+                    case 'ARM' :
+                      commands[i].action = 'ALARM_ON';
+                    break;
+
+                    case 'DISARM' :
+                      commands[i].action = 'ALARM_OFF';
+                    break;
+                  }
+                break;
               }
+
               runCommand.runCommand(devices[i].device, commands[i].action);
             }
           }
@@ -338,7 +381,8 @@ module.exports = (function () {
     setDeviceUpdate : function(deviceId, typeClass, command, values, controllers) {
       var gertyMood   = require(__dirname + '/mood'),
           deviceState = require(__dirname + '/../../lib/deviceState'),
-          mood        = { comfortable : 0, entertained : 0, excited : 0, scared : 0, social : 0 },
+          mood        = { comfortable : 0, entertained : 0, excited : 0, scared : 0, social : 0, comments: [] },
+          date,
           state,
           deviceType,
           deviceCommand,
@@ -362,21 +406,28 @@ module.exports = (function () {
               mood.excited     += deviceMood.excited     || 0;
               mood.scared      += deviceMood.scared      || 0;
               mood.social      += deviceMood.social      || 0;
+
+              if(deviceMood.comment) {
+                date = new Date();
+                mood.comments.push({ comment : deviceMood.comment,
+                                     device  : device,
+                                     updated : date.getTime() });
+              }
             }
           }
         }
       }
 
-      mood.comfortable = mood.comfortable >  10 ?  10 : mood.comfortable;
-      mood.comfortable = mood.comfortable < -10 ? -10 : mood.comfortable;
-      mood.entertained = mood.entertained >  10 ?  10 : mood.entertained;
-      mood.entertained = mood.entertained < -10 ? -10 : mood.entertained;
-      mood.excited     = mood.excited     >  10 ?  10 : mood.excited;
-      mood.excited     = mood.excited     < -10 ? -10 : mood.excited;
-      mood.scared      = mood.scared      >  10 ?  10 : mood.scared;
-      mood.scared      = mood.scared      < -10 ? -10 : mood.scared;
-      mood.social      = mood.social      >  10 ?  10 : mood.social;
-      mood.social      = mood.social      < -10 ? -10 : mood.social;
+      mood.comfortable = Math.min(mood.comfortable,  10);
+      mood.comfortable = Math.max(mood.comfortable, -10);
+      mood.entertained = Math.min(mood.entertained,  10);
+      mood.entertained = Math.max(mood.entertained, -10);
+      mood.excited     = Math.min(mood.excited,      10);
+      mood.excited     = Math.max(mood.excited,     -10);
+      mood.scared      = Math.min(mood.scared,       10);
+      mood.scared      = Math.max(mood.scared,      -10);
+      mood.social      = Math.min(mood.social,       10);
+      mood.social      = Math.max(mood.social,      -10);
 
       gertyMood.deriveMood(mood, controllers);
     }

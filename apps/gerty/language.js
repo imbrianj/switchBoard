@@ -33,7 +33,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150808,
+    version : 20150829,
 
     /**
      * Some devices can be assumed - if you say "TV" and only have one TV
@@ -137,6 +137,15 @@ module.exports = (function () {
      */
     getVerbs : function(language) {
       var codes = ['ON', 'OFF', 'HEAT', 'COOL', 'TOGGLE', 'UP', 'DOWN', 'LEFT', 'RIGHT', 'ENTER', 'ARM', 'DISARM'];
+
+      return this.getKeywords(codes, language);
+    },
+
+    /**
+     * Grab each inquiry keyword we're listening for.
+     */
+    getInquiry : function(language) {
+      var codes = ['DO', 'HOW', 'SHOULD', 'WHAT', 'WHEN', 'WHERE', 'WHO', 'WHY'];
 
       return this.getKeywords(codes, language);
     }

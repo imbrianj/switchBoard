@@ -25,17 +25,17 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview Execute Gerty commands based on active building package status.
+ * @fileoverview Execute Gerty commands based on camera devices.
  */
 
 module.exports = (function () {
   'use strict';
 
   return {
-    activeBuilding : function(state, command) {
-      var excited = state.value ? (state.value.length * 2) : 0;
+    security : function(state, command) {
+      var scared = state.value === 'off' ? 0 : -2;
 
-      return { excited : excited };
+      return { scared : scared };
     }
   };
 }());
