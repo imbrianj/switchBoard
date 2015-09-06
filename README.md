@@ -32,7 +32,7 @@ Supported Devices/Services
 | ActiveBuilding   | Stable      | Checks for arrived packages to be picked up from your concierge                  |
 | Denon            | Stable      | New controller and still in testing                                              |
 | Foscam           | Stable      | Works with FI8910W (if you have another version that this does not work with, let me know and I can add support).  Arm, Disarm, Go to presets, etc. *INSECURE* Exposes camera credentials to users |
-| Gerty            | Stable      | A simple interface for all devices that reacts to natural inputs.  New and buggy |
+| Gerty            | Development | A simple interface for all devices that reacts to natural inputs.  New and buggy |
 | LG TVs           | Development | Still need work on authentication                                                |
 | MP3              | Stable      | Works on *nix with mpg123 or OSX with afplay. Win not supported                  |
 | Nest             | Stable      | Works with Nest thermostat and Protect smoke / CO detectors                      |
@@ -42,7 +42,7 @@ Supported Devices/Services
 | Pushover         | Stable      | Requires purchased app and token / user key                                      |
 | Raspberry Remote | Stable      | Uses [Raspberry Remote](https://xkonni.github.io/raspberry-remote/) to control lighting. Only Linux is supported |
 | Roku             | Stable      | Launch apps directly, text input and basic controls                              |
-| RSS              | Development | Simple RSS reader                                                                |
+| RSS              | Testing     | Simple RSS and Atom reader                                                       |
 | Samsung SmartTV  | Stable      | Text input and basic controls                                                    |
 | SmartThings      | Stable      | Control devices and monitor real-time states. Requires [companion app](https://github.com/imbrianj/oauth_controller/blob/master/oauth_controller.groovy) |
 | SMS              | Stable      | Uses Twilio. Requires ID and token                                               |

@@ -29,10 +29,10 @@ module.exports = (function () {
   /**
    * @author brian@bevey.org
    * @fileoverview Grabs RSS feeds for display.
-   * @requires http, xml2js
+   * @requires http, https, xml2js
    */
   return {
-    version : 20150905,
+    version : 20150906,
 
     inputs  : ['list'],
 
@@ -69,8 +69,56 @@ module.exports = (function () {
       runCommand.runCommand(controller.config.deviceId, 'list', controller.config.deviceId);
     },
 
+    getArticles : function (reply, maxCount) {
+      var sharedUtil  = require(__dirname + '/../lib/sharedUtil').util,
+          article     = {},
+          rssData     = [],
+          i           = 0,
+          j           = 0;
+
+      maxCount = maxCount || 3;
+
+      // You're an RSS feed.
+      if(reply.rss) {
+        for(i in reply.rss.channel[0].item) {
+          article = reply.rss.channel[0].item[i];
+
+          rssData[j] = { 'title'       : sharedUtil.stripTags(article.title[0]),
+                         'url'         : sharedUtil.stripTags(article.link[0]),
+                         'description' : sharedUtil.stripTags(article.description[0]),
+                         'text'        : sharedUtil.stripTags(article['content:encoded'][0]) };
+
+          j += 1;
+
+          if(j >= maxCount) {
+            break;
+          }
+        }
+      }
+
+      // You're probably an Atom feed
+      else if((reply.feed) && (reply.feed.entry)) {
+        for(i; i < reply.feed.entry.length; i += 1) {
+          article = reply.feed.entry[i];
+
+          rssData[j] = { 'title'       : sharedUtil.stripTags(article.title[0]),
+                         'url'         : sharedUtil.stripTags(article.link[0].$.href),
+                         'description' : sharedUtil.stripTags(article.summary[0]),
+                         'text'        : sharedUtil.stripTags(article.content[0]._) };
+
+          j += 1;
+
+          if(j >= maxCount) {
+            break;
+          }
+        }
+      }
+
+      return rssData;
+    },
+
     send : function (config) {
-      var http      = require('http'),
+      var http      = config.device.port === 443 ? require('https') : require('http'),
           that      = this,
           rss       = {},
           dataReply = '',
@@ -80,7 +128,6 @@ module.exports = (function () {
       rss.host     = config.device.host;
       rss.path     = config.device.path;
       rss.port     = config.device.port     || 80;
-      rss.method   = config.method          || 'GET';
       rss.maxCount = config.device.maxCount || 3;
       rss.callback = config.callback        || function () {};
 
@@ -96,38 +143,19 @@ module.exports = (function () {
         response.once('end', function() {
           var xml2js      = require('xml2js'),
               deviceState = require(__dirname + '/../lib/deviceState'),
-              sharedUtil  = require(__dirname + '/../lib/sharedUtil').util,
               parser      = new xml2js.Parser(),
               data        = null,
               rssData     = [];
 
           if(dataReply) {
             parser.parseString(dataReply, function(err, reply) {
-              var article,
-                  i = 0,
-                  j = 0;
-
               if(reply) {
                 if(err) {
                   console.log('\x1b[31m' + config.device.title + '\x1b[0m: Unable to parse reply');
                 }
 
                 else {
-                  for(i in reply.rss.channel[0].item) {
-                    article = reply.rss.channel[0].item[i];
-
-                    rssData[j] = { 'title'       : sharedUtil.stripTags(article.title[0]),
-                                   'url'         : sharedUtil.stripTags(article.link[0]),
-                                   'description' : sharedUtil.stripTags(article.description[0]),
-                                   'text'        : sharedUtil.stripTags(article['content:encoded'][0])
-                                 };
-
-                    j += 1;
-
-                    if(j >= rss.maxCount) {
-                      break;
-                    }
-                  }
+                  rssData = that.getArticles(reply, rss.maxCount);
 
                   rss.callback(null, rssData);
                 }

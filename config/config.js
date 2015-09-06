@@ -421,14 +421,16 @@ exports.config = {
   },
 
   /*
-   * Simple RSS reader.
+   * Simple RSS and Atom reader.
    */
   rss : {
     typeClass   : 'rss',
     title       : 'Gym',
     host        : 'crossfitbelltown.com',
+    port        : 80,
     path        : '/feed/',
-    disabled    : false
+    maxCount    : 3,
+    disabled    : true
   },
 
   gerty : {
