@@ -84,10 +84,11 @@ module.exports = (function () {
     },
 
     send : function(config) {
-      var https     = require('https'),
-          that      = this,
-          travis    = {},
-          dataReply = '',
+      var https       = require('https'),
+          sharedUtil  = require(__dirname + '/../lib/sharedUtil').util,
+          that        = this,
+          travis      = {},
+          dataReply   = '',
           request;
 
       travis.deviceId = config.device.deviceId;
@@ -129,11 +130,11 @@ module.exports = (function () {
             if(data) {
               for(i; i < data.length; i += 1) {
                 if(i < travis.maxCount) {
-                  travisData[i] = { 'label'       : that.encodeMessage(data[i].message),
-                                    'url'         : 'http://travis-ci.org/' + travis.owner + '/' + travis.repo + '/builds/' + data[i].id,
-                                    'status'      : data[i].result === 0 ? 'ok' : 'err',
-                                    'duration'    : data[i].duration,
-                                    'state'       : data[i].state
+                  travisData[i] = { 'label'    : sharedUtil.stripTags(that.encodeMessage(data[i].message)),
+                                    'url'      : sharedUtil.stripTags('http://travis-ci.org/' + travis.owner + '/' + travis.repo + '/builds/' + data[i].id),
+                                    'status'   : data[i].result === 0 ? 'ok' : 'err',
+                                    'duration' : sharedUtil.stripTags(data[i].duration),
+                                    'state'    : sharedUtil.stripTags(data[i].state)
                                   };
 
                   if((i === (data.length - 1)) || (i === (travis.maxCount - 1))) {

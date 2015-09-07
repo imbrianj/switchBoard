@@ -36,6 +36,7 @@ exports.sharedUtilTest = {
 
     var util = require(__dirname + '/../../../lib/sharedUtil');
 
+    test.strictEqual(util.util.stripTags(12),                                          12,        'Don\'t choke on non-strings');
     test.strictEqual(util.util.stripTags('<span>Test</span>'),                         'Test',    'Text without HTML tags');
     test.strictEqual(util.util.stripTags('<a href="#" onclick="alert()">Testing</a>'), 'Testing', 'Text without HTML tags');
 
