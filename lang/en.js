@@ -395,7 +395,8 @@ module.exports = (function () {
           INSTANT_REPLAY : "Instant Replay"
         },
         rss : {
-          RSS : "RSS"
+          RSS         : "RSS",
+          NEW_ARTICLE : "New article from {{DEVICE}}: {{TITLE}}"
         },
         samsung : {
           SAMSUNG          : "Samsung",

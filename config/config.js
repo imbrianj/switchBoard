@@ -430,6 +430,8 @@ exports.config = {
     port        : 80,
     path        : '/feed/',
     maxCount    : 3,
+    apps        : { 'Announce' : { id            : 'announceRss',
+                                   controllerIds : ['speech'] } },
     disabled    : true
   },
 

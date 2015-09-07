@@ -25,55 +25,46 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview If you receive a new package,  send a Desktop Notification.
+ * @fileoverview Announce when a new RSS or Atom feed article becomes available.
  */
 
 module.exports = (function () {
   'use strict';
 
-  var ActiveBuildingPackages = {};
+  var RssArticles = '';
 
   return {
-    version : 20150803,
+    version : 20150907,
 
     translate : function(token, lang) {
       var translate = require(__dirname + '/../lib/translate');
 
-      return translate.translate('{{i18n_' + token + '}}', 'activeBuilding', lang);
+      return translate.translate('{{i18n_' + token + '}}', 'rss', lang);
     },
 
-    announceActiveBuilding : function(device, command, controllers, values, config) {
-      var sharedUtil          = require(__dirname + '/../lib/sharedUtil').util,
-          deviceState         = require(__dirname + '/../lib/deviceState'),
-          activeBuildingState = deviceState.getDeviceState(device),
+    announceRss : function(device, command, controllers, values, config) {
+      var sharedUtil   = require(__dirname + '/../lib/sharedUtil').util,
+          deviceState  = require(__dirname + '/../lib/deviceState'),
+          rssState     = deviceState.getDeviceState(device),
+          articleTitle = '',
           notify,
           runCommand,
-          lang                = controllers.config.language,
-          senders             = '',
-          message             = '',
-          packages            = [];
+          lang         = controllers.config.language,
+          message      = '';
 
-      if((values) && (values.value)) {
-        packages = values.value;
+      if((values) && (values.value) && (values.value[0]) && (values.value[0].title)) {
+        articleTitle = values.value[0].title;
 
-        if(JSON.stringify(ActiveBuildingPackages[device]) !== JSON.stringify(packages)) {
-          senders = sharedUtil.arrayList(values.value, 'activeBuilding', lang);
+        if(RssArticles !== articleTitle) {
+          RssArticles = articleTitle;
 
-          ActiveBuildingPackages[device] = packages;
-
-          if(senders) {
+          if(articleTitle) {
             notify     = require(__dirname + '/../lib/notify');
             runCommand = require(__dirname + '/../lib/runCommand');
 
-            if(packages.length === 1) {
-              message = this.translate('SINGLE_PACKAGE', lang);
-            }
-
-            else if(packages.length > 1) {
-              message = this.translate('PLURAL_PACKAGES', lang);
-            }
-
-            message = message.split('{{SENDERS}}').join(senders);
+            message = this.translate('NEW_ARTICLE', lang);
+            message = message.split('{{DEVICE}}').join(controllers[device].config.title);
+            message = message.split('{{TITLE}}').join(articleTitle);
 
             notify.sendNotification(null, message, device);
             notify.notify(message, controllers);

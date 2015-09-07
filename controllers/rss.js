@@ -69,12 +69,16 @@ module.exports = (function () {
       runCommand.runCommand(controller.config.deviceId, 'list', controller.config.deviceId);
     },
 
+    /**
+     * Accept the JSON formatted API response and parse through, determining if
+     * the data is RSS or Atom - and returning an array of sanitized values.
+     */
     getArticles : function (reply, maxCount) {
-      var sharedUtil  = require(__dirname + '/../lib/sharedUtil').util,
-          article     = {},
-          rssData     = [],
-          i           = 0,
-          j           = 0;
+      var sharedUtil = require(__dirname + '/../lib/sharedUtil').util,
+          article    = {},
+          rssData    = [],
+          i          = 0,
+          j          = 0;
 
       maxCount = maxCount || 3;
 
