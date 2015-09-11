@@ -294,7 +294,7 @@ module.exports = (function () {
       // "Do I need a coat?"
       // "How are you doing?"
       if((!devices[0].device) && (!commands[0].action) && (questions[0].action)) {
-
+// Register questions
       }
 
       else if((devices[0].device) && ((commands[0].action) || (questions[0].action))) {

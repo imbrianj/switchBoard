@@ -87,9 +87,9 @@ module.exports = (function () {
           subdevice,
           deviceId,
           weatherState,
-          present      = [],
-          delay        = config.delay    || 10,
-          presence     = config.presence || [];
+          present     = [],
+          delay       = config.delay    || 10,
+          presence    = config.presence || [];
 
       if(command.indexOf('subdevice-state-presence-') === 0) {
         if((values.value) && (values.value.devices)) {

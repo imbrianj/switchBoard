@@ -34,7 +34,7 @@ module.exports = (function () {
   var RssArticles = '';
 
   return {
-    version : 20150907,
+    version : 20150908,
 
     translate : function(token, lang) {
       var translate = require(__dirname + '/../lib/translate');
@@ -56,9 +56,7 @@ module.exports = (function () {
         articleTitle = values.value[0].title;
 
         if(RssArticles !== articleTitle) {
-          RssArticles = articleTitle;
-
-          if(articleTitle) {
+          if((articleTitle) && (RssArticles)) {
             notify     = require(__dirname + '/../lib/notify');
             runCommand = require(__dirname + '/../lib/runCommand');
 
@@ -69,6 +67,8 @@ module.exports = (function () {
             notify.sendNotification(null, message, device);
             notify.notify(message, controllers);
           }
+
+          RssArticles = articleTitle;
         }
       }
     }
