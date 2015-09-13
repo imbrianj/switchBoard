@@ -30,6 +30,7 @@ Supported Devices/Services
 | Name             | Status      | Notes                                                                            |
 |------------------|-------------|----------------------------------------------------------------------------------|
 | ActiveBuilding   | Stable      | Checks for arrived packages to be picked up from your concierge                  |
+| Belkin Wemo      | Stable      | New controller and still in testing                                              |
 | Denon            | Stable      | New controller and still in testing                                              |
 | Foscam           | Stable      | Works with FI8910W (if you have another version that this does not work with, let me know and I can add support).  Arm, Disarm, Go to presets, etc. *INSECURE* Exposes camera credentials to users |
 | Gerty            | Development | A simple interface for all devices that reacts to natural inputs.  New and buggy |
@@ -50,7 +51,7 @@ Supported Devices/Services
 | Stocks           | Stable      | Uses Yahoo Finance                                                               |
 | Traffic Cams     | Stable      | View multiple traffic webcams                                                    |
 | Travis CI        | Stable      |                                                                                  |
-| Belkin Wemo      | Stable      | New controller and still in testing                                              |
+| Twitter          | Development | Present mentions of your Twitter handle                                          |
 | Weather          | Stable      | Uses Yahoo Weather                                                               |
 | XBMC             | Stable      | Basic controls work                                                              |
 

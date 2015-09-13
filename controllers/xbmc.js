@@ -125,14 +125,13 @@ module.exports = (function () {
           that        = this;
 
       xbmc.deviceIp   = config.device.deviceIp;
-      xbmc.devicePort = config.device.devicePort;
+      xbmc.devicePort = config.device.devicePort       || 9090;
       xbmc.player     = config.player                  || '';
       xbmc.list       = config.list                    || '';
       xbmc.state      = config.command === 'state';
       xbmc.timeout    = config.device.localTimeout     || config.config.localTimeout;
       xbmc.command    = this.hashTable[config.command] || '';
       xbmc.text       = config.text                    || '';
-      xbmc.devicePort = config.devicePort              || 9090;
       xbmc.callback   = config.callback                || function () {};
 
       if((Socket) && (!Socket.destroyed) && (xbmc.command)) {

@@ -442,6 +442,9 @@ module.exports = (function () {
           BUILD_FAILURE : "Travis build failure!",
           BUILD_STATUS  : "Build Status"
         },
+        twitter : {
+          TWITTER : "Twitter"
+        },
         weather : {
           WEATHER     : "Weather",
           CURRENT     : "Current Weather",

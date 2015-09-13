@@ -120,15 +120,15 @@ module.exports = (function () {
           client          = new net.Socket();
 
       samsung.deviceIp    = config.device.deviceIp;
+      samsung.devicePort  = config.device.devicePort   || 55000;
       samsung.serverIp    = config.config.serverIp;
       samsung.serverMac   = config.config.serverMac;
       samsung.timeout     = config.device.localTimeout || config.config.localTimeout;
       samsung.command     = config.command             || '';
       samsung.text        = config.text                || '';
-      samsung.devicePort  = config.devicePort          || 55000;
-      samsung.appString   = config.appString           || 'iphone..iapp.samsung';
-      samsung.tvAppString = config.tvAppString         || 'iphone.UN60ES8000.iapp.samsung';
-      samsung.remoteName  = config.remoteName          || 'SwitchBoard Remote';
+      samsung.appString   = config.device.appString    || 'iphone..iapp.samsung';
+      samsung.tvAppString = config.device.tvAppString  || 'iphone.UN60ES8000.iapp.samsung';
+      samsung.remoteName  = config.device.remoteName   || 'SwitchBoard Remote';
       samsung.callback    = config.callback            || function() {};
 
       client.connect(samsung.devicePort, samsung.deviceIp);

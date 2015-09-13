@@ -435,6 +435,31 @@ exports.config = {
     disabled    : true
   },
 
+  /*
+   * Subscribe to a feed of tweets mentioning a given user.
+   * To get your required keys and tokens, you'll need to visit:
+   * https://apps.twitter.com/
+   * Click "Create New App"
+   * Enter whatever you'd like for "Name" and "Description".
+   * Enter "https://github.com/imbrianj/switchBoard" for "Website"
+   * Leave "Callback URL" empty
+   * "Yes, I agree" to the terms - and click "Create your Twitter application"
+   *
+   * Once you have your application created, click the "Keys and Access Tokens"
+   * tab.  This will take you to a page with your "Consumer Key", "Consumer
+   * Secret", "Access Token" and "Access Token Secret".  Take these values and
+   * populate them below.
+   */
+  twitter : {
+    typeClass        : 'twitter',
+    title            : 'Twitter',
+    consumerKey      : 'xxxxxxxxxxxxxxxxxxxxxx',
+    accessToken      : 'xxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+    consumerSecret   : 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+    oauthTokenSecret : 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+    disabled         : true
+  },
+
   gerty : {
     typeClass   : 'gerty',
     title       : 'Gerty',
