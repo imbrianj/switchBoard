@@ -63,6 +63,7 @@ module.exports = (function () {
                 'tests/unit/controllers/stocksTest.js',
                 'tests/unit/controllers/trafficTest.js',
                 'tests/unit/controllers/travisTest.js',
+                'tests/unit/controllers/twitterTest.js',
                 'tests/unit/controllers/weatherTest.js',
                 'tests/unit/controllers/wemoTest.js',
                 'tests/unit/controllers/xbmcTest.js',
