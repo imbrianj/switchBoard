@@ -200,7 +200,7 @@ module.exports = (function () {
                                                name   : sharedUtil.sanitize(data[i].user.name),
                                                image  : sharedUtil.sanitize(data[i].user.profile_image_url),
                                                text   : sharedUtil.sanitize(data[i].text),
-                                               url    : sharedUtil.sanitize('https://twitter.com/' + data[i].user.scree_name + '/status/' + data[i].id_str),
+                                               url    : sharedUtil.sanitize('https://twitter.com/' + data[i].user.screen_name + '/status/' + data[i].id_str),
                                                date   : new Date(data[i].created_at).getTime() });
 
                             j += 1;
