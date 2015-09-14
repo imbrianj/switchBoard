@@ -177,7 +177,7 @@ module.exports = (function () {
 
                     response.once('end', function() {
                       var deviceState = require(__dirname + '/../lib/deviceState'),
-                          sharedUtil = require(__dirname + '/../lib/sharedUtil').util,
+                          sharedUtil  = require(__dirname + '/../lib/sharedUtil').util,
                           twitterData = [],
                           data,
                           i           = 0,
@@ -200,8 +200,8 @@ module.exports = (function () {
                                                name   : sharedUtil.sanitize(data[i].user.name),
                                                image  : sharedUtil.sanitize(data[i].user.profile_image_url),
                                                text   : sharedUtil.sanitize(data[i].text),
-                                               url    : sharedUtil.sanitize('https://twitter.com/' + data[i].user.name + '/status/' + data[i].id_str),
-                                               date   : new Date(data[i].created_at) });
+                                               url    : sharedUtil.sanitize('https://twitter.com/' + data[i].user.scree_name + '/status/' + data[i].id_str),
+                                               date   : new Date(data[i].created_at).getTime() });
 
                             j += 1;
 
