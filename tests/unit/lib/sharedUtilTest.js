@@ -34,11 +34,15 @@ exports.sharedUtilTest = {
   stripTags : function (test) {
     'use strict';
 
-    var util = require(__dirname + '/../../../lib/sharedUtil');
+    var util = require(__dirname + '/../../../lib/sharedUtil').util;
 
-    test.strictEqual(util.util.stripTags(12),                                          12,        'Don\'t choke on non-strings');
-    test.strictEqual(util.util.stripTags('<span>Test</span>'),                         'Test',    'Text without HTML tags');
-    test.strictEqual(util.util.stripTags('<a href="#" onclick="alert()">Testing</a>'), 'Testing', 'Text without HTML tags');
+    test.strictEqual(util.stripTags(12),                                          12,        'Don\'t choke on non-strings');
+    test.strictEqual(util.stripTags('<span>Test</span>'),                         'Test',    'Text without HTML tags');
+    test.strictEqual(util.stripTags('<a href="#" onclick="alert()">Testing</a>'), 'Testing', 'Text without HTML tags');
+
+    test.strictEqual(util.sanitize(12),                                           12,        'Don\'t choke on non-strings');
+    test.strictEqual(util.sanitize('<span>Test</span>'),                          'Test',    'Text without HTML tags');
+    test.strictEqual(util.sanitize('<a href="#" onclick="alert()">Testing</a>'),  'Testing', 'Text without HTML tags');
 
     test.done();
   },
@@ -46,10 +50,10 @@ exports.sharedUtilTest = {
   encodeName : function (test) {
     'use strict';
 
-    var util = require(__dirname + '/../../../lib/sharedUtil');
+    var util = require(__dirname + '/../../../lib/sharedUtil').util;
 
-    test.strictEqual(util.util.encodeName(' \' $ This is a bad %^ ! name()'), '_____this_is_a_bad______name__', 'Name encoded');
-    test.strictEqual(util.util.encodeName('ThisIsAGoodName'),                 'thisisagoodname',                'Name encoded');
+    test.strictEqual(util.encodeName(' \' $ This is a bad %^ ! name()'), '_____this_is_a_bad______name__', 'Name encoded');
+    test.strictEqual(util.encodeName('ThisIsAGoodName'),                 'thisisagoodname',                'Name encoded');
 
     test.done();
   },
@@ -57,9 +61,9 @@ exports.sharedUtilTest = {
   translate : function (test) {
     'use strict';
 
-    var util = require(__dirname + '/../../../lib/sharedUtil');
+    var util = require(__dirname + '/../../../lib/sharedUtil').util;
 
-    test.strictEqual(util.util.translate('THERMOSTAT', 'nest', 'en'), 'Thermostat', 'Token translated');
+    test.strictEqual(util.translate('THERMOSTAT', 'nest', 'en'), 'Thermostat', 'Token translated');
 
     test.done();
   },
@@ -67,11 +71,11 @@ exports.sharedUtilTest = {
   arrayList : function (test) {
     'use strict';
 
-    var util = require(__dirname + '/../../../lib/sharedUtil');
+    var util = require(__dirname + '/../../../lib/sharedUtil').util;
 
-    test.strictEqual(util.util.arrayList(['One', 'Two', 'Three'], 'nest', 'en'), 'One, Two and Three', 'Long list');
-    test.strictEqual(util.util.arrayList(['One', 'Two'],          'nest', 'en'), 'One and Two',       'Short list');
-    test.strictEqual(util.util.arrayList(['One'],                 'nest', 'en'), 'One',                'Single item');
+    test.strictEqual(util.arrayList(['One', 'Two', 'Three'], 'nest', 'en'), 'One, Two and Three', 'Long list');
+    test.strictEqual(util.arrayList(['One', 'Two'],          'nest', 'en'), 'One and Two',       'Short list');
+    test.strictEqual(util.arrayList(['One'],                 'nest', 'en'), 'One',                'Single item');
 
     test.done();
   }

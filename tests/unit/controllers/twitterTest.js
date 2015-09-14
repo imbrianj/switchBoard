@@ -63,6 +63,7 @@ exports.twitterControllerTest = {
                               port         : 443,
                               host         : 'api.twitter.com',
                               path         : '/1.1/statuses/mentions_timeline.json',
+                              maxCount     : 5,
                               consumerKey  : '123456',
                               nonce        : '123456',
                               sigMethod    : 'HMAC-SHA1',
@@ -73,7 +74,7 @@ exports.twitterControllerTest = {
                               oauthSec     : '123456' },
         signature         = twitterController.generateSignature(config);
 
-    test.strictEqual(signature, 'K/+Q4BOzwo/Fwn+y9OSDiAlfiGY%3D', 'Signature should match');
+    test.strictEqual(signature, '5QMMYaJWgY33ZzHv9lECRFZaSdA%3D', 'Signature should match');
 
     test.done();
   },
@@ -86,6 +87,7 @@ exports.twitterControllerTest = {
                               port         : 443,
                               host         : 'api.twitter.com',
                               path         : '/1.1/statuses/mentions_timeline.json',
+                              maxCount     : 5,
                               consumerKey  : '123456',
                               nonce        : '123456',
                               sigMethod    : 'HMAC-SHA1',
@@ -99,7 +101,7 @@ exports.twitterControllerTest = {
 
     test.deepEqual(testData, { host : 'api.twitter.com',
                                port : 443,
-                               path : '/1.1/statuses/mentions_timeline.json',
+                               path : '/1.1/statuses/mentions_timeline.json?count=5',
                                method : 'get',
                                headers : {
                                  Accept: 'application/json',
@@ -107,7 +109,7 @@ exports.twitterControllerTest = {
                                  'User-Agent': 'node-switchBoard',
                                  'Content-Type': 'application/x-www-form-urlencoded',
                                  Connection: 'keep-alive',
-                                 Authorization: 'OAuth oauth_consumer_key="123456", oauth_nonce="123456", oauth_signature="K/+Q4BOzwo/Fwn+y9OSDiAlfiGY%3D", oauth_signature_method="HMAC-SHA1", oauth_timestamp="12345678", oauth_token="123456", oauth_version="1.0"'
+                                 Authorization: 'OAuth oauth_consumer_key="123456", oauth_nonce="123456", oauth_signature="5QMMYaJWgY33ZzHv9lECRFZaSdA%3D", oauth_signature_method="HMAC-SHA1", oauth_timestamp="12345678", oauth_token="123456", oauth_version="1.0"'
                                }
                              }, 'Additional params are filtered out - sig generated and Auth properly formatted.');
 

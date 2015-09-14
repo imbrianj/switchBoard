@@ -56,9 +56,7 @@ module.exports = (function () {
      * cache-buster.
      */
     generateNonce : function (length) {
-      var chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-                   'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-                   '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'],
+      var chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
           nonce = '',
           i     = length || 32;
 
@@ -78,8 +76,8 @@ module.exports = (function () {
           method     = config.method.toUpperCase(),
           protocol   = config.port === 443 ? 'https' : 'http',
           baseString = method + '&' + protocol + '%3A%2F%2F' + config.host + config.path.split('/').join('%2F') +
-                       '&' + (config.params ? config.params.split('%').join('%25').split('=').join('%3D').split('&').join('%26') + '%26' : '') +
-                       'oauth_consumer_key%3D' + config.consumerKey +
+                       '&count%3D' + config.maxCount +
+                       '%26oauth_consumer_key%3D' + config.consumerKey +
                        '%26oauth_nonce%3D' + config.nonce +
                        '%26oauth_signature_method%3D' + config.sigMethod +
                        '%26oauth_timestamp%3D' + config.timestamp +
@@ -115,6 +113,10 @@ module.exports = (function () {
           accessToken  = config.accessToken,
           oauthVersion = config.oauthVersion;
 
+      if(config.maxCount) {
+        request.path = config.path + '?count=' + config.maxCount;
+      }
+
       request.headers.Authorization = 'OAuth oauth_consumer_key="' + consumerKey + '", ' +
                                             'oauth_nonce="' + nonce + '", ' +
                                             'oauth_signature="' + signature + '", ' +
@@ -146,6 +148,7 @@ module.exports = (function () {
       twitter.path         = config.device.path         || '/1.1/statuses/mentions_timeline.json';
       twitter.port         = config.device.port         || 443;
       twitter.method       = config.device.method       || 'GET';
+      twitter.maxCount     = config.device.maxCount     || 5;
       twitter.callback     = config.callback            || function () {};
       twitter.state        = config.command === 'state';
       twitter.text         = config.text                || '';
@@ -174,9 +177,11 @@ module.exports = (function () {
 
                     response.once('end', function() {
                       var deviceState = require(__dirname + '/../lib/deviceState'),
+                          sharedUtil = require(__dirname + '/../lib/sharedUtil').util,
                           twitterData = [],
                           data,
-                          i           = 0;
+                          i           = 0,
+                          j           = 0;
 
                       OpenConnection = null;
 
@@ -191,11 +196,18 @@ module.exports = (function () {
 
                         if(data) {
                           for(i; i < data.length; i += 1) {
-                            twitterData.push({ author : data[i].user.screen_name,
-                                               name   : data[i].user.name,
-                                               image  : data[i].user.profile_image_url,
-                                               text   : data[i].text,
+                            twitterData.push({ author : sharedUtil.sanitize(data[i].user.screen_name),
+                                               name   : sharedUtil.sanitize(data[i].user.name),
+                                               image  : sharedUtil.sanitize(data[i].user.profile_image_url),
+                                               text   : sharedUtil.sanitize(data[i].text),
+                                               url    : sharedUtil.sanitize('https://twitter.com/' + data[i].user.name + '/status/' + data[i].id_str),
                                                date   : new Date(data[i].created_at) });
+
+                            j += 1;
+
+                            if(j >= twitter.maxCount) {
+                              break;
+                            }
                           }
 
                           twitter.callback(null, twitterData);

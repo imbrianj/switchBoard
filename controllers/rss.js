@@ -87,10 +87,10 @@ module.exports = (function () {
         for(i in reply.rss.channel[0].item) {
           article = reply.rss.channel[0].item[i];
 
-          rssData[j] = { 'title'       : sharedUtil.stripTags(article.title[0]),
-                         'url'         : sharedUtil.stripTags(article.link[0]),
-                         'description' : sharedUtil.stripTags(article.description[0]),
-                         'text'        : sharedUtil.stripTags(article['content:encoded'][0]) };
+          rssData[j] = { 'title'       : sharedUtil.sanitize(article.title[0]),
+                         'url'         : sharedUtil.sanitize(article.link[0]),
+                         'description' : sharedUtil.sanitize(article.description[0]),
+                         'text'        : sharedUtil.sanitize(article['content:encoded'][0]) };
 
           j += 1;
 
@@ -105,10 +105,10 @@ module.exports = (function () {
         for(i; i < reply.feed.entry.length; i += 1) {
           article = reply.feed.entry[i];
 
-          rssData[j] = { 'title'       : sharedUtil.stripTags(article.title[0]),
-                         'url'         : sharedUtil.stripTags(article.link[0].$.href),
-                         'description' : sharedUtil.stripTags(article.summary[0]),
-                         'text'        : sharedUtil.stripTags(article.content[0]._) };
+          rssData[j] = { 'title'       : sharedUtil.sanitize(article.title[0]),
+                         'url'         : sharedUtil.sanitize(article.link[0].$.href),
+                         'description' : sharedUtil.sanitize(article.summary[0]),
+                         'text'        : sharedUtil.sanitize(article.content[0]._) };
 
           j += 1;
 

@@ -130,11 +130,11 @@ module.exports = (function () {
             if(data) {
               for(i; i < data.length; i += 1) {
                 if(i < travis.maxCount) {
-                  travisData[i] = { 'label'    : sharedUtil.stripTags(that.encodeMessage(data[i].message)),
-                                    'url'      : sharedUtil.stripTags('http://travis-ci.org/' + travis.owner + '/' + travis.repo + '/builds/' + data[i].id),
+                  travisData[i] = { 'label'    : sharedUtil.sanitize(that.encodeMessage(data[i].message)),
+                                    'url'      : sharedUtil.sanitize('http://travis-ci.org/' + travis.owner + '/' + travis.repo + '/builds/' + data[i].id),
                                     'status'   : data[i].result === 0 ? 'ok' : 'err',
-                                    'duration' : sharedUtil.stripTags(data[i].duration),
-                                    'state'    : sharedUtil.stripTags(data[i].state)
+                                    'duration' : sharedUtil.sanitize(data[i].duration),
+                                    'state'    : sharedUtil.sanitize(data[i].state)
                                   };
 
                   if((i === (data.length - 1)) || (i === (travis.maxCount - 1))) {
