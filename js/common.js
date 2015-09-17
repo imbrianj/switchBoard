@@ -28,7 +28,7 @@ SB = (function () {
   'use strict';
 
   return {
-    version : 20150610,
+    version : 20150916,
 
    /**
     * Stops event bubbling further.
@@ -455,6 +455,22 @@ SB = (function () {
       return reply;
     },
 
+    /**
+     * Accepts a native Javascript object and returns a string of JSON.
+     *
+     * @param {Object} Native Javascript object to be encoded to a string.
+     * @return {String} string String of JSON.
+     */
+     encode : function (json) {
+       var reply = '';
+
+       if (typeof JSON === 'object') {
+         reply = JSON.stringify(json);
+       }
+
+       return reply;
+     },
+
    /**
     * Log messages.  If you pass a source and type (success, info or error),
     * it will print to console with pretty colors.
@@ -673,6 +689,10 @@ SB = (function () {
       if(key) {
         if(typeof localStorage !== 'undefined') {
           if(value !== undefined) {
+            if(typeof value === 'object') {
+              value = SB.encode(value);
+            }
+
             localStorage.setItem(key, value);
           }
 

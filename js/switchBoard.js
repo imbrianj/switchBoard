@@ -1,5 +1,5 @@
 /*global SB, document, window, console */
-/*jslint white: true, evil: true */
+/*jslint white: true */
 /*jshint -W020 */
 
 /**
@@ -33,7 +33,7 @@ SB.spec = (function () {
   'use strict';
 
   return {
-    version : 20150610,
+    version : 20150916,
 
     state     : {},
     parsers   : {},
@@ -114,24 +114,26 @@ SB.spec = (function () {
         if(deviceState === 'ok') {
           markup = markup.split('{{DEVICE_ACTIVE}}').join(SB.spec.strings.ACTIVE);
 
-          if(SB.hasClass(node,   'device-off')) {
-            SB.removeClass(node, 'device-off');
-            SB.addClass(node,    'device-on');
-            SB.putText(SB.getByTag('em', SB.getByTag('h1', node)[0])[0], SB.spec.strings.ACTIVE);
+          if(SB.hasClass(node,    'device-off')) {
+             SB.removeClass(node, 'device-off');
+             SB.addClass(node,    'device-on');
+             SB.putText(SB.getByTag('em', SB.getByTag('h1', node)[0])[0], SB.spec.strings.ACTIVE);
           }
         }
 
         else {
           markup = markup.split('{{DEVICE_ACTIVE}}').join(SB.spec.strings.INACTIVE);
 
-          if(SB.hasClass(node,   'device-on')) {
-            SB.removeClass(node, 'device-on');
-            SB.addClass(node,    'device-off');
-            SB.putText(SB.getByTag('em', SB.getByTag('h1', node)[0])[0], SB.spec.strings.INACTIVE);
+          if(SB.hasClass(node,    'device-on')) {
+             SB.removeClass(node, 'device-on');
+             SB.addClass(node,    'device-off');
+             SB.putText(SB.getByTag('em', SB.getByTag('h1', node)[0])[0], SB.spec.strings.INACTIVE);
           }
         }
 
         if((node) && (markup) && (state)) {
+          SB.storage('state', SB.spec.state);
+
           markup = markup.split('{{DEVICE_ID}}').join(state.deviceId);
           markup = markup.split('{{DEVICE_TYPE}}').join(state.typeClass);
           markup = markup.split('{{DEVICE_SELECTED}}').join(selected);
@@ -309,6 +311,7 @@ SB.spec = (function () {
           // Otherwise, you're grabbing the templates.
           else if((message[device]) && (message[device].markup)) {
             SB.spec.uiComponents.templates = message;
+            SB.storage('templates', SB.spec.uiComponents.templates);
           }
         }
       };
@@ -358,6 +361,7 @@ SB.spec = (function () {
         method : 'GET',
         onComplete : function () {
           SB.spec.uiComponents.templates = SB.decode(ajaxRequest.response);
+          SB.storage('templates', SB.spec.uiComponents.templates);
         }
       };
 
@@ -941,7 +945,10 @@ SB.spec = (function () {
      * Initialization for SB.  Executes the standard functions used.
      */
     init : function() {
-      var active = SB.storage('selected'),
+      var active    = SB.storage('selected'),
+          templates = SB.storage('templates'),
+          state     = SB.storage('state'),
+          device,
           headerData,
           bodyData;
 
@@ -962,6 +969,16 @@ SB.spec = (function () {
 
       if(active) {
         SB.spec.navChange(active);
+      }
+
+      if((templates) && (state)) {
+        SB.spec.uiComponents.templates = SB.decode(templates);
+
+        state = SB.decode(state);
+
+        for(device in state) {
+          SB.spec.updateTemplate(state[device]);
+        }
       }
 
       /* If we support WebSockets, we'll grab updates as they happen */
