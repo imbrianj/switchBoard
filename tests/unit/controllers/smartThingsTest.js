@@ -87,9 +87,11 @@ exports.smartthingsControllerTest = {
                                         contact : {
                                           value : 'closed'
                                         },
-
+                                        battery : {
+                                          value: '55'
+                                        },
                                         temperature : {
-                                          value : 72
+                                          value : '72'
                                         }
                                       }
                                     }
@@ -98,10 +100,12 @@ exports.smartthingsControllerTest = {
 
     smartthingsController.updateState(smartthings, response);
 
-    test.strictEqual(State.FOO.value.devices[0].type,           'switch',  'The first device is a switch');
-    test.strictEqual(State.FOO.value.devices[1].type,           'contact', 'The first device is a contact sensor');
-    test.strictEqual(State.FOO.value.devices[1].peripheral.temp, 72,       'The second device has a peripheral function');
-    test.strictEqual(State.FOO.updated > (now.getTime() - 1),    true,     'State object should be newer than the initial time');
+    test.strictEqual(State.FOO.value.devices[0].type,              'switch',  'The first device is a switch');
+    test.strictEqual(State.FOO.value.devices[0].peripheral,        undefined, 'The first device has no peripheral');
+    test.strictEqual(State.FOO.value.devices[1].type,              'contact', 'The first device is a contact sensor');
+    test.strictEqual(State.FOO.value.devices[1].peripheral.temp,    72,       'The second device has a peripheral function');
+    test.strictEqual(State.FOO.value.devices[1].peripheral.battery, 55,       'The second device has a battery');
+    test.strictEqual(State.FOO.updated > (now.getTime() - 1),       true,     'State object should be newer than the initial time');
 
     test.done();
   },

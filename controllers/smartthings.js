@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic control of SmartThings endpoint.
    */
   return {
-    version : 20150816,
+    version : 20150917,
 
     inputs  : ['list', 'subdevice'],
 
@@ -223,28 +223,36 @@ module.exports = (function () {
             }
 
             // These are commonly secondary sensors for a given device.
-            if((device.values.temperature) || (device.values.vibrate)) {
+            if((device.values.temperature) || (device.values.vibrate) || (device.values.battery)) {
               // If you have a proper state, temp is peripheral sensor.
               if(subDevices[i].state) {
                 subDevices[i].peripheral = subDevices[i].peripheral || {};
 
                 if(device.values.temperature) {
-                  subDevices[i].peripheral.temp = device.values.temperature.value;
+                  subDevices[i].peripheral.temp = parseInt(device.values.temperature.value, 10);
                 }
 
                 if(device.values.vibrate) {
-                  subDevices[i].peripheral.temp = device.values.temperature.value;
+                  subDevices[i].peripheral.vibrate = device.values.vibrate.value;
+                }
+
+                if(device.values.battery) {
+                  subDevices[i].peripheral.battery = parseInt(device.values.battery.value, 10);
                 }
               }
 
               // If you have no proper state, you're just a temperature sensor.
               else {
                 if(device.values.temperature) {
-                  subDevices[i].state = device.values.temperature.value;
+                  subDevices[i].state = parseInt(device.values.temperature.value, 10);
                 }
 
                 if(device.values.vibrate) {
                   subDevices[i].state = device.values.vibrate.value;
+                }
+
+                if(device.values.battery) {
+                  subDevices[i].peripheral.battery = parseInt(device.values.battery.value, 10);
                 }
               }
             }
