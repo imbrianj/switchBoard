@@ -85,6 +85,7 @@ main {
 body {
 	font-family: helvetica;
 	line-height: 1;
+	touch-action: pan-y;
 }
 
 .theme-dark body {

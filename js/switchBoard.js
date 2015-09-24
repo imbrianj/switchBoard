@@ -676,10 +676,16 @@ SB.spec = (function () {
           tapped           = false,
           touched          = false,
           interrupt        = false,
+          done             = false,
           touchStartX      = 0,
           touchStartY      = 0,
           touchThreshold   = 5,
           transcribe       = null,
+          // iOS registers both "ontouchstart" and "onmousedown" events - but
+          // with a ~400ms delay between them.  We need to act on the touch
+          // event and delay any cleanup till after mousdown fires to prevent
+          // potential double actions for a single event.
+          touchDelay       = 450,
           transcribeParse  = function(text) {
             var device = commandIssued;
 
@@ -731,6 +737,7 @@ SB.spec = (function () {
             commandIteration = 0;
             interrupt        = true;
             touched          = false;
+            done             = false;
             touchStartX      = 0;
             touchStartY      = 0;
           },
@@ -788,14 +795,17 @@ SB.spec = (function () {
             touchStartX = parseInt(e.changedTouches[0].clientX, 10);
             touchStartY = parseInt(e.changedTouches[0].clientY, 10);
 
-            // Wait 100ms to determine if you're scrolling.
+            // Wait a period of time to determine if you're scrolling and to
+            // wait for the onmousedown event to fire before we clean up.
             setTimeout(function() {
               // And unset that flag so we know not to run this again on
               // touchend.
-              tapped = false;
+              if(!done) {
+                tapped = false;
 
-              fireCommand(e);
-            }, 150);
+                fireCommand(e);
+              }
+            }, touchDelay);
           }
         });
 
@@ -807,6 +817,8 @@ SB.spec = (function () {
           // Emoji touch events are cancelled after speech recognition - which
           // requires lifting your finger to accept the dialog.
           if(!SB.hasClass(SB.getTarget(e).parentNode, 'emoji') && (tapped)) {
+            done = true;
+
             fireCommand(e);
           }
 
