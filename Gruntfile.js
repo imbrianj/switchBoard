@@ -4,7 +4,7 @@ module.exports = function(grunt) {
 
     banner  : { comment : '/* <%= grunt.template.today("yyyymmdd") %> */\n' },
 
-    jsFiles : ['config/*.js', 'apps/**/*.js', 'controllers/*.js', 'lib/*.js', 'parsers/*.js', 'pollers/*.js', 'js/common.js', 'js/switchBoard.js', 'lang/*.js', 'tests/**/*Test.js', 'app.js'],
+    jsFiles : ['config/*.js', 'apps/**/*.js', 'devices/**/*.js', 'lib/*.js', 'js/common.js', 'js/switchBoard.js', 'lang/*.js', 'tests/**/*.js', 'app.js'],
 
     jshint  : {
       files   : '<%= jsFiles %>',
@@ -41,16 +41,15 @@ module.exports = function(grunt) {
       /* We want to explicitly run tests/unit/js/ last since it will create some
          mock client objects that would otherwise be picked up in
          tests/unit/parsers/ */
-      all : ['tests/unit/apps/**/*Test.js',
-             'tests/unit/controllers/*Test.js',
-             'tests/unit/lib/*Test.js',
-             'tests/unit/parsers/*Test.js',
-             'tests/unit/js/*Test.js']
+      all : ['tests/unit/apps/**/*.js',
+             'tests/unit/devices/**/*.js',
+             'tests/unit/lib/*.js',
+             'tests/unit/js/*.js']
     },
 
     uglify : {
       options : { banner : '<%= banner.comment %>' },
-      dist    : { files : { 'js/combo.min.js' : ['js/common.js', 'js/switchBoard.js', 'parsers/*', 'lib/sharedUtil.js'] } }
+      dist    : { files : { 'js/combo.min.js' : ['js/common.js', 'js/switchBoard.js', 'devices/**/parser.js', 'lib/sharedUtil.js'] } }
     },
 
     concat: {
