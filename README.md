@@ -1,4 +1,6 @@
 [![Build Status](https://secure.travis-ci.org/imbrianj/switchBoard.png)](http://travis-ci.org/imbrianj/switchBoard)
+[![Dependencies Status](https://david-dm.org/imbrianj/switchboard.svg)](https://david-dm.org/imbrianj/switchboard#info=dependencies)
+[![Dev Dependencies Status](https://david-dm.org/imbrianj/switchboard/dev-status.svg)](https://david-dm.org/imbrianj/switchboard#info=devDependencies)
 
 SwitchBoard
 ---
