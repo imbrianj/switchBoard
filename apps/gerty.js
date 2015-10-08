@@ -32,7 +32,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150110,
+    version : 20151008,
 
     gerty : function(device, command, controllers, values, config) {
       var translate       = require(__dirname + '/../lib/translate'),
@@ -67,10 +67,8 @@ module.exports = (function () {
 
         for(device in controllers) {
           if(device !== 'config') {
-            if(controllers[device].config.typeClass === 'speech') {
+            if((controllers[device].config.typeClass === 'speech') || (controllers[device].config.typeClass === 'clientSpeech')) {
               runCommand.runCommand(device, 'text-' + utterance);
-
-              break;
             }
           }
         }
