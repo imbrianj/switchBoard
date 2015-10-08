@@ -32,7 +32,7 @@ module.exports = (function () {
    *               clients.
    */
   return {
-    version : 20151005,
+    version : 20151007,
 
     inputs : ['text'],
 
@@ -57,14 +57,15 @@ module.exports = (function () {
      * not support WebSockets, it's unlikely you support Destktop Notifications.
      */
     send : function (config) {
-      var webSockets = require(__dirname + '/webSockets'),
-          clientNotify = {};
+      var webSockets   = require(__dirname + '/../../lib/webSockets'),
+          clientNotify = {},
+          params       = config.params || {};
 
       clientNotify.options      = {};
       clientNotify.options.icon = config.device.image || '/images/icons/apple-touch-icon.png';
       clientNotify.options.body = config.text         || '';
       clientNotify.title        = config.device.title || 'SwitchBoard';
-      clientNotify.deviceId     = config.deviceId     || config.params.source || '';
+      clientNotify.deviceId     = config.deviceId     || params.source || '';
 
       if(clientNotify.options.body) {
         webSockets.send(clientNotify);

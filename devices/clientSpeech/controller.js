@@ -32,7 +32,7 @@ module.exports = (function () {
    *               clients.
    */
   return {
-    version : 20151005,
+    version : 20151007,
 
     inputs : ['text'],
 
@@ -54,7 +54,7 @@ module.exports = (function () {
      * WebSockets, it's unlikely you support speechSynthesis.
      */
     send : function (config) {
-      var webSockets  = require(__dirname + '/webSockets'),
+      var webSockets   = require(__dirname + '/../../lib/webSockets'),
           clientSpeech = {};
 
       clientSpeech.speech   = config.text            || '';
