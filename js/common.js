@@ -28,7 +28,7 @@ SB = (function () {
   'use strict';
 
   return {
-    version : 20150916,
+    version : 20151007,
 
    /**
     * Stops event bubbling further.
@@ -437,6 +437,20 @@ SB = (function () {
       string = string || '';
 
       return string.toString().replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+    },
+
+    /**
+     * Replace all instances of a substring within a larger string by a new
+     * string.  Basically .replace, but for all instances of the substring.
+     */
+    replaceAll : function(text, find, replace) {
+      var value = text;
+
+      if(typeof text === 'string') {
+        value = text.replace(new RegExp(find, 'g'), replace);
+      }
+
+      return value;
     },
 
    /**

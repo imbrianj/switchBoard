@@ -761,7 +761,11 @@ section .numeric-controls ul li:last-child {
 
 section .numeric-controls ol span,
 section .presets ol span {
-	display: block;
+	display: inline;
+	height: auto;
+	overflow: visible;
+	text-indent: 0;
+	width: auto;
 }
 
 section .media {
