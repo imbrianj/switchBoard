@@ -65,7 +65,7 @@ module.exports = (function () {
       clientNotify.options.icon = config.device.image || '/images/icons/apple-touch-icon.png';
       clientNotify.options.body = config.text         || '';
       clientNotify.title        = config.device.title || 'SwitchBoard';
-      clientNotify.deviceId     = config.deviceId     || params.source || '';
+      clientNotify.deviceId     = config.source       || '';
 
       if(clientNotify.options.body) {
         webSockets.send(clientNotify);
