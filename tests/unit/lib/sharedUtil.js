@@ -31,6 +31,17 @@
 State = {};
 
 exports.sharedUtilTest = {
+  replaceAll : function (test) {
+    'use strict';
+
+    var util = require(__dirname + '/../../../lib/sharedUtil').util;
+
+    test.strictEqual(util.replaceAll('Test test testing', 'test', 'Test'), 'Test Test Testing', 'Replace multiple instances of a substring');
+    test.strictEqual(util.replaceAll(455, '4', '5'),                       455,                 'Don\'t choke on non-strings');
+
+    test.done();
+  },
+
   stripTags : function (test) {
     'use strict';
 

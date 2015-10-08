@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global module, require, console */
+/*global module, require */
 
 /**
  * Copyright (c) 2014 brian@bevey.org
@@ -25,26 +25,22 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview When a speech command is issued for a local text-to-speech, we
- *               can also send a broadcast via WebSockets for all capable
- *               clients to also read the message aloud.
+ * @fileoverview Simple script to fire for each scheduled interval.
  */
 
 module.exports = (function () {
   'use strict';
 
   return {
-    version : 20141204,
+    version : 20151006,
 
-    sendSpeech : function(device, command, controllers, values, config) {
-      var notify = require(__dirname + '/../lib/notify'),
-          voice  = 'male';
+    /**
+     * On poll, check the RSS feed.
+     */
+    poll : function(deviceId, controllers) {
+      var runCommand  = require(__dirname + '/../../lib/runCommand');
 
-      if(controllers[device].config.typeClass === 'speech') {
-        voice = controllers[device].config.voice;
-      }
-
-      notify.sendSpeech(command.replace('text-', ''), controllers.config.language, voice);
+      runCommand.runCommand(deviceId, 'list');
     }
   };
 }());

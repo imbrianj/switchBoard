@@ -34,6 +34,28 @@ exports.config = {
     disabled  : false
   },
 
+  clientMp3 : {
+    typeClass      : 'clientMp3',
+    title          : 'Client MP3',
+    disabled       : false,
+    disabledMarkup : true
+  },
+
+  clientNotify : {
+    typeClass      : 'clientNotify',
+    title          : 'Desktop Notification',
+    disabled       : false,
+    disabledMarkup : true
+  },
+
+  clientSpeech : {
+    typeClass      : 'clientSpeech',
+    title          : 'Client Speech',
+    voice          : 'male',
+    disabled       : false,
+    disabledMarkup : true
+  },
+
   samsung : {
     typeClass : 'samsung',
     title     : 'Samsung SmartTV',
@@ -130,7 +152,7 @@ exports.config = {
     apps      : { 'Notify' : { id            : 'announceStocks',
                                limits        : { YHOO : { buy : 30,  sell : 55 },
                                                  TSLA : { buy : 200, sell : 350 } },
-                               controllerIds : ['pushover', 'speech', 'mp3'] } },
+                               controllerIds : ['pushover', 'speech', 'mp3', 'clientSpeech', 'clientMp3', 'clientNotify'] } },
     disabled  : true
   },
 
@@ -151,7 +173,7 @@ exports.config = {
                                   // trigger automatically, so I stick with
                                   // Home.
                                   nightMode     : 'Home',
-                                  controllerIds : ['smartthings'] } },
+                                  controllerIds : ['smartthings', 'clientNotify'] } },
     disabled  : true
   },
 
@@ -168,7 +190,7 @@ exports.config = {
     username  : 'user',
     password  : 'password',
     apps      : { 'Announce'      : { id            : 'announceFoscam',
-                                      controllerIds : ['speech'] },
+                                      controllerIds : ['speech', 'clientSpeech', 'clientNotify'] },
                   'Foscam Change' : { id            : 'foscamChange' } },
     disabled  : true
   },
@@ -198,6 +220,22 @@ exports.config = {
                  { title : 'Stewart, Yale &amp; Denny', image : 'http://www.seattle.gov/trafficcams/images/Yale_Denny.jpg' },
                  { title : '15th &amp; Emerson',        image : 'http://www.seattle.gov/trafficcams/images/15W_Emerson.jpg' },
                  { title : 'SeaTac Airport',            image : 'http://archive.king5.com/weather/images/core/webcam/seatac.jpg' }],
+    disabled  : true
+  },
+
+  /*
+   * Configure Tasker on Android to ping your location while driving to a PHP
+   * endpoint: https://github.com/imbrianj/switchboard-phpServer
+   */
+  location : {
+    typeClass : 'location',
+    title     : 'Location',
+    host      : 'example.com',
+    port      : 80,
+    path      : '/location/',
+    username  : 'username',
+    password  : 'password',
+    maxCount  : 15,
     disabled  : true
   },
 
@@ -292,10 +330,10 @@ exports.config = {
     /*
     apps           : { 'Announce'          : { id            : 'announcePresence',
                                                presence      : ['Brian', 'Goblin'],
-                                               controllerIds : ['speech'],
+                                               controllerIds : ['speech', 'cientSpeech', 'clientNotify'],
                                                disabled      : true },
                        'Announce Moisture' : { id            : 'announceMoisture',
-                                               controllerIds : [],
+                                               controllerIds : ['speech', 'clientNotify', 'clientSpeech'],
                                                disabled      : true },
                        'Window Open'       : { id            : 'windowOpen',
                                                contact       : ['Bedroom Window'],
@@ -312,7 +350,7 @@ exports.config = {
                                                contact       : 'Front Door',
                                                vibrate       : 'Front Door',
                                                delay         : 5,
-                                               controllerIds : ['pushover', 'sms', 'speech', 'mp3'],
+                                               controllerIds : ['pushover', 'sms', 'speech', 'mp3', 'clientSpeech', 'clientNotify', 'clientMp3'],
                                                disabled      : true },
                        'Presence Mode'     : { id            : 'presenceMode',
                                                presence      : ['Brian', 'Goblin'],
@@ -322,7 +360,7 @@ exports.config = {
                                                // mode to trigger automatically,
                                                // so I stick with Home.
                                                nightMode     : 'Home',
-                                               controllerIds : ['weather'] }
+                                               controllerIds : ['weather', 'clientNotify'] }
                      },
     */
     className      : { Goblin : 'fa-female' },
@@ -340,9 +378,9 @@ exports.config = {
                   'Window Open'   : { id            : 'windowOpen',
                                       thermostats   : ['Living Room'],
                                       contact       : ['Balcony Door', 'Office Window', 'Bedroom Window', 'Dining Room Window', 'Living Room Window'],
-                                      controllerIds : ['smartthings', 'pushover', 'speech'] },
+                                      controllerIds : ['smartthings', 'pushover', 'speech', 'clientSpeech', 'clientNotify'] },
                   'Protect Alarm' : { id            : 'announceNest',
-                                      controllerIds : ['pushover', 'sms', 'speech'] }
+                                      controllerIds : ['pushover', 'sms', 'speech', 'clientSpeech', 'clientNotify'] }
     */
                 },
     disabled  : true
@@ -353,7 +391,8 @@ exports.config = {
     title          : 'Travis',
     travisOwner    : 'imbrianj',
     travisRepo     : 'switchBoard',
-    apps           : { 'Announce' : { id : 'announceTravis' } },
+    apps           : { 'Announce' : { id            : 'announceTravis',
+                                      controllerIds : ['clientNotify'] } },
     disabledMarkup : true,
     disabled       : true
   },
@@ -416,7 +455,7 @@ exports.config = {
     communityId : '1234',
     unitNumber  : '123',
     apps        : { 'Announce' : { id            : 'announceActiveBuilding',
-                                   controllerIds : ['speech'] } },
+                                   controllerIds : ['speech', 'clientSpeech', 'clientNotify'] } },
     disabled    : true
   },
 
@@ -431,7 +470,7 @@ exports.config = {
     path        : '/feed/',
     maxCount    : 3,
     apps        : { 'Announce' : { id            : 'announceRss',
-                                   controllerIds : ['speech'] } },
+                                   controllerIds : ['speech', 'clientSpeech', 'clientNotify'] } },
     disabled    : true
   },
 
@@ -471,7 +510,7 @@ exports.config = {
                                                   'Good Night'    : 'smartthings=subdevice-mode-Night',
                                                   'Goodbye'       : 'smartthings=subdevice-mode-Away;nest=Away',
                                                   'Welcome Home'  : 'smartthings=subdevice-mode-Home;nest=Home' },
-                                controllerIds : ['samsung', 'roku', 'ps3', 'panasonic', 'lg', 'pioneer', 'denon', 'speech', 'stocks', 'weather', 'foscam', 'mp3', 'sms', 'pushover', 'smartthings', 'nest', 'switchBoardCI', 'xbmc', 'raspberryRemote', 'wemo', 'activeBuilding'] } },
+                                controllerIds : ['samsung', 'roku', 'ps3', 'panasonic', 'lg', 'pioneer', 'denon', 'speech', 'stocks', 'weather', 'foscam', 'mp3', 'sms', 'pushover', 'smartthings', 'nest', 'switchBoardCI', 'xbmc', 'raspberryRemote', 'wemo', 'activeBuilding', 'clientMp3', 'clientNotify', 'clientSpeech'] } },
     disabled    : true
   }
 };

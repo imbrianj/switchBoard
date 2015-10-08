@@ -34,7 +34,7 @@ module.exports = (function () {
   var ActiveBuildingPackages = {};
 
   return {
-    version : 20150803,
+    version : 20151009,
 
     translate : function(token, lang) {
       var translate = require(__dirname + '/../lib/translate');
@@ -75,8 +75,7 @@ module.exports = (function () {
 
             message = message.split('{{SENDERS}}').join(senders);
 
-            notify.sendNotification(null, message, device);
-            notify.notify(message, controllers);
+            notify.notify(message, controllers, device);
           }
         }
       }

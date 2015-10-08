@@ -23,7 +23,7 @@
     "nopt": "~3.0.4",
     "request": "~2.64.0",
     "xml2js": "~0.4.12",
-    "websocket": "~1.0.21"
+    "websocket": "~1.0.22"
   },
   "devDependencies": {
     "grunt": "~0.4.5",

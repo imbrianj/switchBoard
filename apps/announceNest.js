@@ -35,7 +35,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150525,
+    version : 20151009,
 
     announceNest : function(device, command, controllers, values, config) {
       var runCommand  = require(__dirname + '/../lib/runCommand'),
@@ -57,8 +57,6 @@ module.exports = (function () {
             }
 
             message = message + tempMessage;
-
-            notify.sendNotification(null, tempMessage, device);
           }
 
           if(values.protect[subDevice].co !== 'ok') {
@@ -69,13 +67,11 @@ module.exports = (function () {
             }
 
             message = message + tempMessage;
-
-            notify.sendNotification(null, tempMessage, device);
           }
         }
 
         if(message) {
-          notify.notify(message, controllers);
+          notify.notify(message, controllers, device);
         }
       }
     }

@@ -33,7 +33,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150525,
+    version : 20151009,
 
     announceStocks : function(device, command, controllers, values, config) {
       var translate  = require(__dirname + '/../lib/translate'),
@@ -66,11 +66,10 @@ module.exports = (function () {
       if(message) {
         console.log('\x1b[35mSchedule\x1b[0m: ' + message);
 
-        notify.sendNotification(null, message, device);
-        notify.notify(message, controllers);
+        notify.notify(message, controllers, device);
 
         for(deviceId in controllers) {
-          if((deviceId !== 'config') && (controllers[deviceId].typeClass === 'mp3')) {
+          if((deviceId !== 'config') && ((controllers[deviceId].typeClass === 'mp3') || (controllers[deviceId].typeClass === 'clientMp3'))) {
             runCommand.runCommand(deviceId, 'text-cash');
             break;
           }

@@ -32,7 +32,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150813,
+    version : 20151009,
 
     stillAway : true,
 
@@ -75,8 +75,7 @@ module.exports = (function () {
 
       runCommand.runCommand(device, 'subdevice-mode-' + newMode);
 
-      notify.notify(message, controllers);
-      notify.sendNotification(null, message, device);
+      notify.notify(message, controllers, device);
     },
 
     presenceMode : function(device, command, controllers, values, config) {

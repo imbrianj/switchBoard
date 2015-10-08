@@ -34,7 +34,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150626,
+    version : 20151005,
 
     lastEvents : { knock : 0, open : 0, close: 0 },
 
@@ -68,12 +68,10 @@ module.exports = (function () {
              (Math.abs(that.lastEvents.knock - that.lastEvents.close) > (config.delay * 1000))) {
             message = translate.translate('{{i18n_DOOR_KNOCK}}', 'smartthings', controllers.config.language).split('{{LABEL}}').join(config.contact);
 
-            notify.sendNotification(null, message, device);
-            notify.notify(message, controllers);
-            notify.sendSound('doorbell');
+            notify.notify(message, controllers, device);
 
             for(deviceId in controllers) {
-              if((controllers[deviceId].config) && (controllers[deviceId].config.typeClass === 'mp3')) {
+              if((controllers[deviceId].config) && ((controllers[deviceId].config.typeClass === 'mp3') || (controllers[deviceId].config.typeClass === 'clientMp3'))) {
                 runCommand.runCommand(deviceId, 'text-doorbell');
                 break;
               }

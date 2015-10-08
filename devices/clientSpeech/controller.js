@@ -23,40 +23,45 @@
  * IN THE SOFTWARE.
  */
 
-/**
- * @author brian@bevey.org
- * @fileoverview Announce and push notification when a SmartThings moisture
- *               sensor has gone off.
- */
-
 module.exports = (function () {
   'use strict';
 
+  /**
+   * @author brian@bevey.org
+   * @fileoverview Send speech synthesis commands to all Websocket connected
+   *               clients.
+   */
   return {
-    version : 20151009,
+    version : 20151005,
 
-    announceMoisture : function(device, command, controllers, values, config) {
-      var runCommand = require(__dirname + '/../lib/runCommand'),
-          translate  = require(__dirname + '/../lib/translate'),
-          notify     = require(__dirname + '/../lib/notify'),
-          message    = '',
-          value,
-          deviceId;
+    inputs : ['text'],
 
-      if(command.indexOf('subdevice-state-moisture-') === 0) {
-        command = command.split('subdevice-state-moisture-').join('');
-        value   = command.split('-');
-        command = value[0];
-        value   = value[1];
+    /**
+     * Default to this device being active and workable.
+     */
+    init : function(controller, config) {
+      var deviceState = require(__dirname + '/../../lib/deviceState');
 
-        if(value === 'on') {
-          message = translate.translate('{{i18n_WATER_DETECTED}}', 'smartthings', controllers.config.language).replace('{{LABEL}}', command);
-        }
+      deviceState.updateState(controller.config.deviceId, 'clientSpeech', { state : 'ok' });
+    },
 
-        if(message) {
-          notify.notify(message, controllers, device);
-        }
-      }
+    /**
+     * Accepts a message and formats it, then sends it to webSockets to be read
+     * aloud client-side.
+     *
+     * Speech is only available to clients that support both speechSynthesis
+     * as well as WebSockets.  It's assumed that if you do not support
+     * WebSockets, it's unlikely you support speechSynthesis.
+     */
+    send : function (config) {
+      var webSockets  = require(__dirname + '/webSockets'),
+          clientSpeech = {};
+
+      clientSpeech.speech   = config.text            || '';
+      clientSpeech.language = config.config.language || 'en-US';
+      clientSpeech.voice    = config.device.voice    || 'male';
+
+      webSockets.send(clientSpeech);
     }
   };
 }());

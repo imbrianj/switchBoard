@@ -34,7 +34,7 @@ module.exports = (function () {
   var RssArticles = '';
 
   return {
-    version : 20150908,
+    version : 20151009,
 
     translate : function(token, lang) {
       var translate = require(__dirname + '/../lib/translate');
@@ -64,8 +64,7 @@ module.exports = (function () {
             message = message.split('{{DEVICE}}').join(controllers[device].config.title);
             message = message.split('{{TITLE}}').join(articleTitle);
 
-            notify.sendNotification(null, message, device);
-            notify.notify(message, controllers);
+            notify.notify(message, controllers, device);
           }
 
           RssArticles = articleTitle;

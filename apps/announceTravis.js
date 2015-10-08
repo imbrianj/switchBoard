@@ -35,7 +35,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20141201,
+    version : 20151009,
 
     announceTravis : function(device, command, controllers, values, config) {
       var notify,
@@ -45,7 +45,7 @@ module.exports = (function () {
         notify    = require(__dirname + '/../lib/notify');
         translate = require(__dirname + '/../lib/translate');
 
-        notify.sendNotification(null, translate.translate('{{i18n_BUILD_FAILURE}}', 'travis', controllers.config.language), device);
+        notify.notify(translate.translate('{{i18n_BUILD_FAILURE}}', 'travis', controllers.config.language), controllers, device);
       }
     }
   };

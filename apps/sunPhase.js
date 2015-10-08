@@ -33,7 +33,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150628,
+    version : 20151009,
 
     lastState : null,
 
@@ -83,8 +83,7 @@ module.exports = (function () {
               message = message.split('{{SUNSET}}').join(config.nightMode);
               message = message.split('{{SUNRISE}}').join(config.dayMode);
 
-              notify.notify(message, controllers);
-              notify.sendNotification(null, message, device);
+              notify.notify(message, controllers, device);
             }
           }
         }

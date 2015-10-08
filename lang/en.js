@@ -101,6 +101,15 @@ module.exports = (function () {
           PLURAL_PACKAGES : "You have packages from: {{SENDERS}}",
           SINGLE_PACKAGE  : "You have a package from: {{SENDERS}}"
         },
+        clientMp3 : {
+          CLIENTMP3 : "Client MP3"
+        },
+        clientNotify : {
+          CLIENTNOTIFY : "Desktop Notification"
+        },
+        clientSpeech : {
+          CLIENTSPEECH : "Client Speech Synthesis"
+        },
         denon : {
           DENON             : "Denon",
           AAC_DOLBY_EX      : "AAC + Dolby EX",
@@ -307,6 +316,11 @@ module.exports = (function () {
           LG       : "LG",
           EXTERNAL : "External",
           INFO     : "Info",
+        },
+        location : {
+          LOCATION : "Location",
+          FEET     : "Feet",
+          MPH      : "mph"
         },
         mp3 : {
           MP3 : "MP3"

@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global module, require, console */
+/*global module, console */
 
 /**
  * Copyright (c) 2014 brian@bevey.org
@@ -23,40 +23,28 @@
  * IN THE SOFTWARE.
  */
 
-/**
- * @author brian@bevey.org
- * @fileoverview Announce and push notification when a SmartThings moisture
- *               sensor has gone off.
- */
-
-module.exports = (function () {
+(function(exports){
   'use strict';
 
-  return {
-    version : 20151009,
+  var version = 20151006;
 
-    announceMoisture : function(device, command, controllers, values, config) {
-      var runCommand = require(__dirname + '/../lib/runCommand'),
-          translate  = require(__dirname + '/../lib/translate'),
-          notify     = require(__dirname + '/../lib/notify'),
-          message    = '',
-          value,
-          deviceId;
+  exports.location = function (deviceId, markup, state, value, fragments) {
+    var template   = fragments.item,
+        tempMarkup = '',
+        i          = 0;
 
-      if(command.indexOf('subdevice-state-moisture-') === 0) {
-        command = command.split('subdevice-state-moisture-').join('');
-        value   = command.split('-');
-        command = value[0];
-        value   = value[1];
-
-        if(value === 'on') {
-          message = translate.translate('{{i18n_WATER_DETECTED}}', 'smartthings', controllers.config.language).replace('{{LABEL}}', command);
-        }
-
-        if(message) {
-          notify.notify(message, controllers, device);
-        }
+    if((state) && (value)) {
+      for(i; i < value.length; i += 1) {
+        tempMarkup = tempMarkup + template.split('{{LOCATION_NAME}}').join(value[i].name);
+        tempMarkup = tempMarkup.split('{{LOCATION_URL}}').join(value[i].url);
+        tempMarkup = tempMarkup.split('{{LOCATION_LATLONG}}').join(value[i].lat + ', ' + value[i].long);
+        tempMarkup = tempMarkup.split('{{LOCATION_ALTITUDE}}').join(value[i].alt);
+        tempMarkup = tempMarkup.split('{{LOCATION_SPEED}}').join(value[i].speed);
       }
     }
+
+    markup = markup.replace('{{LOCATION_DYNAMIC}}', tempMarkup);
+
+    return markup;
   };
-}());
+})(typeof exports === 'undefined' ? this.SB.spec.parsers : exports);

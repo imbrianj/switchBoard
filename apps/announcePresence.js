@@ -32,7 +32,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150813,
+    version : 20151009,
 
     announcePresence : function(device, command, controllers, values, config) {
       var runCommand = require(__dirname + '/../lib/runCommand'),
@@ -59,8 +59,7 @@ module.exports = (function () {
           }
 
           if(message) {
-            notify.sendNotification(null, message, device);
-            notify.notify(message, controllers);
+            notify.notify(message, controllers, device);
           }
         }
       }

@@ -35,7 +35,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150703,
+    version : 20151009,
 
     governor : false,
 
@@ -121,8 +121,7 @@ module.exports = (function () {
         this.governor = true;
 
         message = that.formatMessage('warn', status.contact, status.thermostat[0].state, controllers.config.language);
-        notify.notify(message, controllers);
-        notify.sendNotification(null, message, device);
+        notify.notify(message, controllers, device);
 
         setTimeout(function() {
           var status = checkState(),
@@ -138,8 +137,7 @@ module.exports = (function () {
                   }
 
                   message = that.formatMessage('off', status.contact, status.thermostat[0].state, controllers.config.language);
-                  notify.notify(message, controllers);
-                  notify.sendNotification(null, message, device);
+                  notify.notify(message, controllers, device);
                 }
               }
             }

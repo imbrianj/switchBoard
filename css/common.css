@@ -655,7 +655,11 @@ section .text-block li .fa span {
 
 section a span,
 section .sub-device-list .icon .fa span {
-	display: none;
+	display: block;
+	height: 0;
+	overflow: hidden;
+	text-indent: -999em;
+	width: 0;
 }
 
 section a:link,

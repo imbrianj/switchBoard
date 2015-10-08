@@ -46,18 +46,6 @@ module.exports = (function () {
     },
 
     /**
-     * If the API responds with markup, we want to escape it instead of
-     * rendering it.
-     */
-     encodeMessage : function (message) {
-       message = message.split('&').join('&amp;');
-       message = message.split('<').join('&lt;');
-       message = message.split('>').join('&gt;');
-
-       return message;
-    },
-
-    /**
      * Prepare a request for command execution.
      */
     postPrepare : function(config) {
@@ -130,7 +118,7 @@ module.exports = (function () {
             if(data) {
               for(i; i < data.length; i += 1) {
                 if(i < travis.maxCount) {
-                  travisData[i] = { 'label'    : sharedUtil.sanitize(that.encodeMessage(data[i].message)),
+                  travisData[i] = { 'label'    : sharedUtil.sanitize(data[i].message),
                                     'url'      : sharedUtil.sanitize('http://travis-ci.org/' + travis.owner + '/' + travis.repo + '/builds/' + data[i].id),
                                     'status'   : data[i].result === 0 ? 'ok' : 'err',
                                     'duration' : sharedUtil.sanitize(data[i].duration),

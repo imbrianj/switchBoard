@@ -49,8 +49,7 @@ module.exports = (function () {
      * Prepare a request for command execution.
      */
     postPrepare : function (rss) {
-      var path    = '/upnp/control/basicevent1',
-          method  = 'GET';
+      var method  = rss.method || 'GET';
 
       return {
         host   : rss.host,
