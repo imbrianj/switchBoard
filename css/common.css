@@ -206,12 +206,6 @@ form input[type="checkbox"]:focus {
 	outline: 1px auto #129FEA;
 }
 
-form .pure-checkbox,
-form .pure-radio {
-	display: block;
-	margin: .5em 0;
-}
-
 form input[type="text"][disabled],
 form input[type="password"][disabled],
 form input[type="email"][disabled],
@@ -1198,8 +1192,11 @@ section .sub-device-group li {
 section .sub-device-list li a span,
 section .sub-device-list li span span,
 section .sub-device-list li dl dd {
-	display: block;
 	font-size: 30%;
+	height: auto;
+	overflow: visible;
+	text-indent: 0;
+	width: auto;
 }
 
 section .sub-device-list li dl dd.fa,
