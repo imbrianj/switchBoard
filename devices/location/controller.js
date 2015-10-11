@@ -34,7 +34,7 @@ module.exports = (function () {
    * @requires http, https
    */
   return {
-    version : 20151007,
+    version : 20151010,
 
     inputs  : ['list'],
 
@@ -77,7 +77,7 @@ module.exports = (function () {
       }
 
       else {
-        value = 'user=' + location.username + '&pass=' + location.password;
+        value = 'user=' + location.username + '&pass=' + location.password + '&count=' + location.maxCount;
       }
 
       return value;
@@ -103,7 +103,7 @@ module.exports = (function () {
           i            = 0,
           j            = 0;
 
-      maxCount = maxCount || 15;
+      maxCount = maxCount || 10;
 
       for(i in reply) {
         location = reply[i];
@@ -115,7 +115,7 @@ module.exports = (function () {
                               'url'   : sharedUtil.sanitize(location.link),
                               'speed' : sharedUtil.sanitize(location.speed),
                               'name'  : sharedUtil.sanitize(location.user),
-                              'time'  : sharedUtil.sanitize(location.time) };
+                              'time'  : sharedUtil.sanitize(location.time * 1000) };
 
           j += 1;
         }
@@ -142,7 +142,7 @@ module.exports = (function () {
       location.method   = config.device.method   || 'POST';
       location.username = config.device.username || '';
       location.password = config.device.password || '';
-      location.maxCount = config.device.maxCount || 15;
+      location.maxCount = config.device.maxCount || 10;
       location.callback = config.callback        || function () {};
 
       console.log('\x1b[35m' + config.device.title + '\x1b[0m: Fetching device info');

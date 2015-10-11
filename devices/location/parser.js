@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global module, console */
+/*global module, console, require */
 
 /**
  * Copyright (c) 2014 brian@bevey.org
@@ -26,20 +26,85 @@
 (function(exports){
   'use strict';
 
-  var version = 20151006;
+  var version = 20151010;
 
-  exports.location = function (deviceId, markup, state, value, fragments) {
+  exports.location = function (deviceId, markup, state, value, fragments, language) {
     var template   = fragments.item,
         tempMarkup = '',
-        i          = 0;
+        date       = null,
+        day        = '',
+        hour       = 0,
+        minute     = '',
+        meridian   = '',
+        time       = '',
+        i          = 0,
+        translate  = function(message) {
+          var util;
+
+          if((typeof SB === 'object') && (typeof SB.util === 'object')) {
+            message = SB.util.translate(message, 'location');
+          }
+
+          else {
+            util    = require(__dirname + '/../../lib/sharedUtil').util;
+            message = util.translate(message, 'location', language);
+          }
+
+          return message;
+        };
 
     if((state) && (value)) {
       for(i; i < value.length; i += 1) {
+        date     = new Date(value[i].time);
+        day      = date.getDay();
+        hour     = date.getHours();
+        minute   = date.getMinutes();
+        meridian = translate('am');
+
+        if(hour > 12) {
+          hour     = hour - 12;
+          meridian = translate('pm');
+        }
+
+        switch(day) {
+          case 0 :
+            day = 'sun';
+          break;
+
+          case 1 :
+            day = 'mon';
+          break;
+
+          case 2 :
+            day = 'tue';
+          break;
+
+          case 3 :
+            day = 'wed';
+          break;
+
+          case 4 :
+            day = 'thur';
+          break;
+
+          case 5 :
+            day = 'fri';
+          break;
+
+          case 6 :
+            day = 'sat';
+          break;
+        }
+
+        day = translate(day);
+
+        time = day + ' at ' + hour + ':' + minute + meridian;
+
         tempMarkup = tempMarkup + template.split('{{LOCATION_NAME}}').join(value[i].name);
         tempMarkup = tempMarkup.split('{{LOCATION_URL}}').join(value[i].url);
-        tempMarkup = tempMarkup.split('{{LOCATION_LATLONG}}').join(value[i].lat + ', ' + value[i].long);
+        tempMarkup = tempMarkup.split('{{LOCATION_TIME}}').join(time);
         tempMarkup = tempMarkup.split('{{LOCATION_ALTITUDE}}').join(value[i].alt);
-        tempMarkup = tempMarkup.split('{{LOCATION_SPEED}}').join(value[i].speed);
+        tempMarkup = tempMarkup.split('{{LOCATION_SPEED}}').join(Math.ceil(value[i].speed));
       }
     }
 

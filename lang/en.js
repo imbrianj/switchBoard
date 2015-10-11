@@ -319,8 +319,17 @@ module.exports = (function () {
         },
         location : {
           LOCATION : "Location",
+          AM       : "am",
           FEET     : "Feet",
-          MPH      : "mph"
+          FRI      : "Fri",
+          MON      : "Mon",
+          MPH      : "mph",
+          PM       : "pm",
+          SAT      : "Sat",
+          SUN      : "Sun",
+          THUR     : "Thur",
+          TUE      : "Tue",
+          WED      : "Wed"
         },
         mp3 : {
           MP3 : "MP3"

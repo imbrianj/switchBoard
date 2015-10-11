@@ -99,7 +99,7 @@ exports.locationControllerTest = {
                                         url   : 'https://maps.google.com/?q=45.678901234,-124.45678901',
                                         speed : '5.67890123',
                                         name  : 'Tester',
-                                        time  : '1234567890'
+                                        time  : 1234567890000
                                      }], 'One article should be found for RSS feeds');
     test.deepEqual(testBadData,  {}, 'Nothing should be returned for bad data');
 

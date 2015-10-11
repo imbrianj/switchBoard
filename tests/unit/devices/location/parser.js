@@ -34,17 +34,17 @@ exports.locationParserTest = {
 
     var locationParser = require(__dirname + '/../../../../devices/location/parser'),
         markup         = '<h1>Foo</h1> <div>{{LOCATION_DYNAMIC}}</div>',
-        value          = [ { url : 'http://example.com/1', name : 'Tester', lat : '45.67890123', long : '-123.5678901' },
-                           { url : 'http://example.com/2', name : 'Tester', lat : '46.78901234', long : '-123.4567890' }],
-        fragments      = { item : '<a href="{{LOCATION_URL}}">{{LOCATION_NAME}}</a> <p>{{LOCATION_LATLONG}}</p>' },
+        value          = [ { url : 'http://example.com/1', name : 'Tester', lat : '45.67890123', long : '-123.5678901', time : 1444480200000 },
+                           { url : 'http://example.com/2', name : 'Tester', lat : '46.78901234', long : '-123.4567890', time : 1444381200000 }],
+        fragments      = { item : '<a href="{{LOCATION_URL}}">{{LOCATION_NAME}}</a> <p>{{LOCATION_TIME}}</p>' },
         goodMarkup     = locationParser.location('dummy', markup, 'ok', value, fragments),
         noValue        = locationParser.location('dummy', markup, 'ok', null,  fragments);
 
-    test.strictEqual(goodMarkup.indexOf('{{'),                                                                            -1, 'All values replaced');
-    test.notStrictEqual(goodMarkup.indexOf('<a href="http://example.com/1">Tester</a> <p>45.67890123, -123.5678901</p>'), -1, 'Passed markup validated1');
-    test.notStrictEqual(goodMarkup.indexOf('<a href="http://example.com/2">Tester</a> <p>46.78901234, -123.4567890</p>'), -1, 'Passed markup validated2');
-    test.strictEqual(noValue.indexOf('{{'),                                                                               -1, 'All values replaced');
-    test.strictEqual(noValue, '<h1>Foo</h1> <div></div>',                                                                     'Passed markup validated');
+    test.strictEqual(goodMarkup.indexOf('{{'),                                                                -1, 'All values replaced');
+    test.notStrictEqual(goodMarkup.indexOf('<a href="http://example.com/1">Tester</a> <p>Sat at 5:30am</p>'), -1, 'Passed markup validated1');
+    test.notStrictEqual(goodMarkup.indexOf('<a href="http://example.com/2">Tester</a> <p>Fri at 2:0am</p>'),  -1, 'Passed markup validated2');
+    test.strictEqual(noValue.indexOf('{{'),                                                                   -1, 'All values replaced');
+    test.strictEqual(noValue, '<h1>Foo</h1> <div></div>',                                                         'Passed markup validated');
 
     test.done();
   }
