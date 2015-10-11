@@ -66,6 +66,10 @@
           meridian = translate('pm');
         }
 
+        if(minute < 10) {
+          minute = '0' + minute;
+        }
+
         switch(day) {
           case 0 :
             day = 'sun';
