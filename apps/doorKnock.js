@@ -34,7 +34,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20151005,
+    version : 20151012,
 
     lastEvents : { knock : 0, open : 0, close: 0 },
 
@@ -73,7 +73,6 @@ module.exports = (function () {
             for(deviceId in controllers) {
               if((controllers[deviceId].config) && ((controllers[deviceId].config.typeClass === 'mp3') || (controllers[deviceId].config.typeClass === 'clientMp3'))) {
                 runCommand.runCommand(deviceId, 'text-doorbell');
-                break;
               }
             }
           }
