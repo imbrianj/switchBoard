@@ -1192,6 +1192,7 @@ section .sub-device-group li {
 section .sub-device-list li a span,
 section .sub-device-list li span span,
 section .sub-device-list li dl dd {
+	display: block;
 	font-size: 30%;
 	height: auto;
 	overflow: visible;
