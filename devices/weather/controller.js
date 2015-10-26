@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic weather information, courtesy of Yahoo.
    */
   return {
-    version : 20150921,
+    version : 20151026,
 
     inputs  : ['list'],
 
@@ -154,7 +154,7 @@ module.exports = (function () {
                           weather.callback('API returned an unexpected value');
                         }
 
-                        if((data.query) && (data.query.results)) {
+                        if(data && data.query && data.query.results) {
                           city = data.query.results.channel;
 
                           if(city.title.indexOf('Error') !== -1) {
