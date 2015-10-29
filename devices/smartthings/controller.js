@@ -108,7 +108,6 @@ module.exports = (function () {
       smartthings.path     = controller.config.path || '/api/smartapps/endpoints/' + controller.config.clientId + '?access_token=' + auth.accessToken;
       smartthings.callback = function(err, response) {
         var fs = require('fs'),
-            i  = 0,
             cache;
 
         if(!err) {
@@ -163,7 +162,7 @@ module.exports = (function () {
           state           = 'err',
           mode            = '',
           i               = 0,
-          j               = 0,
+          currDevice      = {},
           device;
 
       if((response) && (response.mode) && (response.devices)) {
@@ -174,13 +173,13 @@ module.exports = (function () {
           device = response.devices[i];
 
           if((device.values) && (device.id) && (device.label)) {
-            subDevices[j] = {
+            currDevice = {
               id    : device.id,
               label : device.label
             };
 
             if((smartthings.className) && (smartthings.className[device.label])) {
-              subDevices[j].className = smartthings.className[device.label];
+              currDevice.className = smartthings.className[device.label];
             }
 
             // SmartThings supports multi-role devices - meaning a single device
@@ -189,76 +188,76 @@ module.exports = (function () {
             // those functions that seem most valuable.
             if(device.values.switch) {
               // You're a switch
-              subDevices[j].type  = 'switch';
-              subDevices[j].state = device.values.switch.value;
+              currDevice.type  = 'switch';
+              currDevice.state = device.values.switch.value;
             }
 
             else if(device.values.lock) {
               // You're a lock
-              subDevices[j].type  = 'lock';
-              subDevices[j].state = device.values.lock.value;
+              currDevice.type  = 'lock';
+              currDevice.state = device.values.lock.value;
             }
 
             else if(device.values.contact) {
               // You're a contact sensor
-              subDevices[j].type  = 'contact';
-              subDevices[j].state = device.values.contact.value === 'open' ? 'on' : 'off';
+              currDevice.type  = 'contact';
+              currDevice.state = device.values.contact.value === 'open' ? 'on' : 'off';
             }
 
             else if(device.values.water) {
               // You're a moisture sensor
-              subDevices[j].type  = 'water';
-              subDevices[j].state = device.values.water.value === 'wet' ? 'on' : 'off';
+              currDevice.type  = 'water';
+              currDevice.state = device.values.water.value === 'wet' ? 'on' : 'off';
             }
 
             else if(device.values.motion) {
               // You're a motion sensor
-              subDevices[j].type  = 'motion';
-              subDevices[j].state = device.values.motion.value === 'active' ? 'on' : 'off';
+              currDevice.type  = 'motion';
+              currDevice.state = device.values.motion.value === 'active' ? 'on' : 'off';
             }
 
             else if(device.values.presence) {
               // You're a presence sensor
-              subDevices[j].type  = 'presence';
-              subDevices[j].state = device.values.presence.value === 'present' ? 'on' : 'off';
+              currDevice.type  = 'presence';
+              currDevice.state = device.values.presence.value === 'present' ? 'on' : 'off';
             }
 
             // These are commonly secondary sensors for a given device.
             if((device.values.temperature) || (device.values.vibrate) || (device.values.battery)) {
               // If you have a proper state, temp is peripheral sensor.
-              if(subDevices[j].state) {
-                subDevices[j].peripheral = subDevices[j].peripheral || {};
+              if(currDevice.state) {
+                currDevice.peripheral = currDevice.peripheral || {};
 
                 if(device.values.temperature) {
-                  subDevices[j].peripheral.temp = parseInt(device.values.temperature.value, 10);
+                  currDevice.peripheral.temp = parseInt(device.values.temperature.value, 10);
                 }
 
                 if(device.values.vibrate) {
-                  subDevices[j].peripheral.vibrate = device.values.vibrate.value;
+                  currDevice.peripheral.vibrate = device.values.vibrate.value;
                 }
 
                 if(device.values.battery) {
-                  subDevices[j].peripheral.battery = parseInt(device.values.battery.value, 10);
+                  currDevice.peripheral.battery = parseInt(device.values.battery.value, 10);
                 }
               }
 
               // If you have no proper state, you're just a temperature sensor.
               else {
                 if(device.values.temperature) {
-                  subDevices[j].state = parseInt(device.values.temperature.value, 10);
+                  currDevice.state = parseInt(device.values.temperature.value, 10);
                 }
 
                 if(device.values.vibrate) {
-                  subDevices[j].state = device.values.vibrate.value;
+                  currDevice.state = device.values.vibrate.value;
                 }
 
                 if(device.values.battery) {
-                  subDevices[j].peripheral.battery = parseInt(device.values.battery.value, 10);
+                  currDevice.peripheral.battery = parseInt(device.values.battery.value, 10);
                 }
               }
             }
 
-            j += 1;
+            subDevices.push(currDevice);
           }
         }
 
@@ -277,15 +276,13 @@ module.exports = (function () {
     findSubDevices : function (subDeviceLabel, subDevices) {
       var subDevice = {},
           collected = [],
-          i         = 0,
-          j         = 0;
+          i         = 0;
 
       for(i in subDevices) {
         subDevice = subDevices[i];
 
         if(subDevice.label === subDeviceLabel) {
-          collected[j] = subDevice;
-          j += 1;
+          collected.push(subDevice);
         }
       }
 

@@ -252,8 +252,7 @@ module.exports = (function () {
       config.callback = function(err, response) {
         var deviceState = require(__dirname + '/../../lib/deviceState'),
             nest        = { devices : [] },
-            i,
-            j           = 0;
+            i;
 
         if(response) {
           for(i in response.structure) {
@@ -265,23 +264,21 @@ module.exports = (function () {
           // "topaz" contains only smoke detectors.
           for(i in response.topaz) {
             if((response.topaz[i]) && (response.topaz[i].serial_number)) {
-              nest.devices[j] = {
+              nest.devices.push({
                 serial  : response.topaz[i].serial_number,
                 smoke   : response.topaz[i].smoke_status         === 0 ? 'ok' : 'err',
                 co      : response.topaz[i].co_status            === 0 ? 'ok' : 'err',
                 battery : response.topaz[i].battery_health_state === 0 ? 'ok' : 'err',
                 label   : that.findLabel(response.topaz[i].where_id, config.language),
                 type    : 'protect'
-              };
-
-              j += 1;
+              });
             }
           }
 
           // "device" contains only thermostats.
           for(i in response.device) {
             if((response.device[i]) && (response.device[i].serial_number)) {
-              nest.devices[j] = {
+              nest.devices.push({
                 serial       : response.device[i].serial_number,
                 state        : response.shared[response.device[i].serial_number].target_temperature_type,
                 active       : response.shared[response.device[i].serial_number].hvac_heater_state ? 'heat' : response.shared[response.device[i].serial_number].hvac_ac_state ? 'cool' : 'off',
@@ -293,9 +290,7 @@ module.exports = (function () {
                 leaf         : response.device[i].leaf,
                 label        : that.findLabel(response.device[i].where_id),
                 type         : 'thermostat'
-              };
-
-              j += 1;
+              });
             }
           }
 
@@ -318,8 +313,7 @@ module.exports = (function () {
     findSubDevices : function (subDeviceLabel, subDevices) {
       var subDevice = {},
           collected = [],
-          i         = 0,
-          j         = 0;
+          i         = 0;
 
       for(i in subDevices) {
         subDevice = subDevices[i];
@@ -327,9 +321,7 @@ module.exports = (function () {
         // Thermostat is the only interactive type, so we'll assume that's what
         // you're looking for.
         if((subDevice.label === subDeviceLabel) && (subDevice.type === 'thermostat')) {
-          collected[j] = subDevice;
-
-          j += 1;
+          collected.push(subDevice);
         }
       }
 
@@ -347,7 +339,6 @@ module.exports = (function () {
           nestState   = deviceState.getDeviceState(config.deviceId),
           subDevices  = {},
           commandType = '',
-          i           = 1,
           value       = '',
           command     = config.command,
           subdevice   = config.subdevice;

@@ -63,7 +63,7 @@ module.exports = (function () {
       traffic.callback = config.callback       || function () {};
 
       for(i; i < traffic.cameras.length; i += 1) {
-        cameras[i] = { title : traffic.cameras[i].title, image : traffic.cameras[i].image + '?' + now };
+        cameras.push({ title : traffic.cameras[i].title, image : traffic.cameras[i].image + '?' + now });
       }
 
       traffic.callback(null, cameras);
