@@ -35,7 +35,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20151009,
+    version : 20151028,
 
     announceNest : function(device, command, controllers, values, config) {
       var runCommand  = require(__dirname + '/../lib/runCommand'),
@@ -45,7 +45,9 @@ module.exports = (function () {
           tempMessage = '',
           i           = 0,
           subDevice,
-          deviceId;
+          deviceId,
+          rawMacro,
+          macro;
 
       if(values.protect) {
         for(subDevice in values.protect) {
@@ -72,6 +74,16 @@ module.exports = (function () {
 
         if(message) {
           notify.notify(message, controllers, device);
+
+          // If you have a macro assigned to this specific Mode, we'll act upon
+          // it.
+          if(config.macro) {
+            rawMacro = config.macro.split(';');
+
+            for(macro in rawMacro) {
+              runCommand.macroCommands(rawMacro[macro]);
+            }
+          }
         }
       }
     }

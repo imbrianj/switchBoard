@@ -31,7 +31,7 @@ module.exports = (function () {
    * @fileoverview Basic control of traffic cams from around the web.
    */
   return {
-    version : 20150921,
+    version : 20151028,
 
     inputs : ['list'],
 
@@ -56,7 +56,7 @@ module.exports = (function () {
     send : function (config) {
       var traffic = {},
           now     = new Date().getTime(),
-          cameras = {},
+          cameras = [],
           i       = 0;
 
       traffic.cameras  = config.device.cameras || {};

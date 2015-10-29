@@ -380,6 +380,7 @@ exports.config = {
                                       contact       : ['Balcony Door', 'Office Window', 'Bedroom Window', 'Dining Room Window', 'Living Room Window'],
                                       controllerIds : ['smartthings', 'pushover', 'speech', 'clientSpeech', 'clientNotify'] },
                   'Protect Alarm' : { id            : 'announceNest',
+                                      macro         : 'smartthings=subdevice-on-Hall+Light',
                                       controllerIds : ['pushover', 'sms', 'speech', 'clientSpeech', 'clientNotify'] }
     */
                 },

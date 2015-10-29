@@ -33,9 +33,9 @@ Supported Devices/Services
 |------------------|-------------|----------------------------------------------------------------------------------|
 | ActiveBuilding   | Stable      | Checks for arrived packages to be picked up from your concierge                  |
 | Belkin Wemo      | Stable      | Reportedly works, but unable to test                                             |
-| Client MP3       | Testing     | Sends an mp3 playback command to all Websocket connected clients                 |
-| Client Notify    | Testing     | Sends a Desktop Notification to all Websocket connected clients                  |
-| Client Speech    | Testing     | Sends text to be speech synthesized to all Websocket connected clients           |
+| Client MP3       | Stable      | Sends an mp3 playback command to all Websocket connected clients                 |
+| Client Notify    | Stable      | Sends a Desktop Notification to all Websocket connected clients                  |
+| Client Speech    | Stable      | Sends text to be speech synthesized to all Websocket connected clients           |
 | Denon            | Stable      | New controller and still in testing                                              |
 | Foscam           | Stable      | Works with FI8910W (if you have another version that this does not work with, let me know and I can add support).  Arm, Disarm, Go to presets, etc. *INSECURE* Exposes camera credentials to users |
 | Gerty            | Testing     | A simple interface for all devices that reacts to natural inputs.                |
