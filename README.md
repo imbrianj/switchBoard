@@ -8,7 +8,7 @@ SwitchBoard is a node.js based application intended to run on a device within a 
 
 Video demonstration:
 
-[![Demonstration of SwitchBoard](http://img.youtube.com/vi/-Xn966pFELw/0.jpg)](https://www.youtube.com/watch?v=-Xn966pFELw)
+[![Demonstration of SwitchBoard](https://img.youtube.com/vi/Ni_YgL4hcgI/0.jpg)](https://www.youtube.com/watch?v=Ni_YgL4hcgI)
 
 Or you may browse through a static version:
 http://imbrianj.github.io/switchBoard/
