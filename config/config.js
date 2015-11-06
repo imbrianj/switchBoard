@@ -505,6 +505,11 @@ exports.config = {
     typeClass   : 'gerty',
     title       : 'Gerty',
     personality : 80,
+    // Sometimes, words are transcribed incorrectly.  Since I'm 100% certain
+    // I'll never say something like "bedroom lambs", I can list some words or
+    // phrases that will carry some actual meaning.
+    corrections : { 'bedroom lambs' : 'bedroom lamps',
+                    'office which'  : 'office switch' },
     apps        : { 'Gerty' : { id            : 'gerty',
                                 macros        : { 'Watch A Movie' : 'ps3=PowerOn,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,Circle,sleep,sleep,Left;samsung=sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,HDMI4,sleep,DOWN,sleep,ENTER,sleep,sleep,sleep,sleep,ENTER',
                                                   'Goodnight'     : 'smartthings=subdevice-mode-Night',

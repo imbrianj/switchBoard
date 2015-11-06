@@ -26,23 +26,35 @@
 (function(exports){
   'use strict';
 
-  var version = 20150921;
+  var version = 20151105;
 
-  exports.gerty = function (deviceId, markup, state, value, language) {
-    var action = '',
-        container;
+  exports.gerty = function (deviceId, markup, state, value, fragments, language) {
+    var templateComment = fragments.comment,
+        action          = '',
+        commentsMarkup  = '',
+        comment,
+        container,
+        commentsList;
+
+    if(value.comments) {
+      for(comment in value.comments) {
+        commentsMarkup = commentsMarkup + templateComment.split('{{COMMENT}}').join(value.comments[comment].text);
+      }
+    }
 
     if(typeof SB === 'object') {
-      container = SB.getByTag('span', SB.get(deviceId))[0];
+      container    = SB.getByTag('span', SB.get(deviceId))[0];
+      commentsList = SB.getByTag('ol', SB.get(deviceId))[0];
 
       if(container) {
         SB.putText(container, value.emoji);
 
-        if(value.action) {
-          action = value.action;
-        }
+        container.className = value.action || '';
+      }
 
-        container.className = action;
+      if(commentsList) {
+        commentsList.innerHTML = commentsMarkup;
+        commentsList.scrollTop = commentsList.scrollHeight;
       }
 
       markup = '';
@@ -55,6 +67,7 @@
 
       markup = markup.split('{{GERTY_ACTION}}').join(action);
       markup = markup.split('{{GERTY_DYNAMIC}}').join(value.emoji);
+      markup = markup.split('{{GERTY_COMMENTS}}').join(commentsMarkup);
     }
 
     return markup;

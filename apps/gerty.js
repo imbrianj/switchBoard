@@ -32,7 +32,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20151008,
+    version : 20151101,
 
     gerty : function(device, command, controllers, values, config) {
       var translate       = require(__dirname + '/../lib/translate'),
@@ -62,8 +62,6 @@ module.exports = (function () {
         else {
           utterance = acted || '';
         }
-
-// Send text to gerty as comment
 
         for(device in controllers) {
           if(device !== 'config') {

@@ -29,6 +29,17 @@
  */
 
 exports.gertyControllerTest = {
+  fragments : function(test) {
+    'use strict';
+
+    var gertyController = require(__dirname + '/../../../../devices/gerty/controller'),
+        fragments       = gertyController.fragments();
+
+    test.strictEqual(typeof fragments.comment,  'string', 'Comment fragment verified');
+
+    test.done();
+  },
+
   getActionType : function (test) {
     'use strict';
 
@@ -36,6 +47,25 @@ exports.gertyControllerTest = {
         sleeping        = gertyController.getActionType(500, 'SLEEP');
 
     test.strictEqual(sleeping, '', 'If Gery is sleeping, there will never be an action');
+
+    test.done();
+  },
+
+  getCorrectedText : function (test) {
+    'use strict';
+
+    var gertyController = require(__dirname + '/../../../../devices/gerty/controller'),
+        nullConfig      = {},
+        replaceConfig   = { corrections : { something : 'nothing', foo : 'bar', baz : 'bang' } },
+        noConfig        = gertyController.getCorrectedText('no config', nullConfig),
+        noTerms         = gertyController.getCorrectedText('no terms',  replaceConfig),
+        someTerms       = gertyController.getCorrectedText('something changed', replaceConfig),
+        allTerms        = gertyController.getCorrectedText('something foo baz foo bang', replaceConfig);
+
+    test.strictEqual(noConfig,  'no config',                 'No config changes, so string remains the same');
+    test.strictEqual(noTerms,   'no terms',                  'No phrases present,so string remains the same');
+    test.strictEqual(someTerms, 'nothing changed',           'One small change');
+    test.strictEqual(allTerms,  'nothing bar bang bar bang', 'String changed by every config');
 
     test.done();
   }

@@ -33,10 +33,17 @@ exports.gertyParserTest = {
     'use strict';
 
     var gertyParser = require(__dirname + '/../../../../devices/gerty/parser'),
-        markup       = '<h1>Foo</h1> <span>{{GERTY_DYNAMIC}}</span>',
-        smile        = gertyParser.gerty('dummy', markup, 'ok', 'happy');
+        markup       = '<h1>Foo</h1> <span>{{GERTY_DYNAMIC}}</span> <ol>{{GERTY_COMMENTS}}</ol>',
+        state        = { emoji    : ':)',
+                         action   : null,
+                         comments : [{ text : 'Testing 1' },
+                                     { text : 'Testing 2'} ]},
+        smile        = gertyParser.gerty('dummy', markup, 'ok', state, {comment: '<span>{{COMMENT}}</span>'});
 
-    test.strictEqual(smile.indexOf('{{'), -1, 'All values replaced');
+    test.strictEqual(smile.indexOf('{{'),                        -1, 'All values replaced');
+    test.notStrictEqual(smile.indexOf(':)'),                     -1, 'Smile found');
+    test.notStrictEqual(smile.indexOf('<span>Testing 1</span>'), -1, 'First comment');
+    test.notStrictEqual(smile.indexOf('<span>Testing 2</span>'), -1, 'Second comment');
 
     test.done();
   }

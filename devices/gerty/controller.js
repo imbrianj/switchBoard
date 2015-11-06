@@ -28,12 +28,10 @@ module.exports = (function () {
 
   /**
    * @author brian@bevey.org
-   * @fileoverview Fake controller for Gerty.  This basically just runs the
-   *               callback, which will include apps to do a number of simple
-   *               tasks.
+   * @fileoverview Register comments to Gerty.
    */
   return {
-    version : 20150921,
+    version : 20151105,
 
     inputs  : ['command', 'text'],
 
@@ -41,6 +39,15 @@ module.exports = (function () {
      * Whitelist of available emotion key codes to use.
      */
     keymap  : ['ANGRY', 'EXCITED', 'HAPPY', 'INDIFFERENT', 'LOVE', 'PLAYFUL', 'SAD', 'SCARED', 'SLEEP', 'STRESSED'],
+
+    /**
+     * Reference template fragments to be used by the parser.
+     */
+    fragments : function () {
+      var fs = require('fs');
+
+      return { comment : fs.readFileSync(__dirname + '/fragments/comment.tpl').toString() };
+    },
 
     /**
      * Randomly select an emoji that fits the mood.
@@ -122,21 +129,48 @@ module.exports = (function () {
      * collate them for display as a running chat-log.
      */
     getComments : function (config) {
-      var deviceState,
-          gertyState,
+      var deviceState = require(__dirname + '/../../lib/deviceState'),
+          gertyState  = deviceState.getDeviceState(config.deviceId),
+          comment     = config.text,
           allComments = [],
-          comments    = config.comments;
+          now;
 
-      if(comments.length) {
-        deviceState = require(__dirname + '/../../lib/deviceState');
-        gertyState  = deviceState.getDeviceState(config.config.deviceId);
+      if(gertyState && gertyState.value && gertyState.value.comments) {
+        allComments = JSON.parse(JSON.stringify(gertyState.value.comments));
+      }
 
-        allComments = gertyState.value.comments.concat(comments);
+      if(comment) {
+        now = new Date().getTime();
+
+        if(allComments.length) {
+          allComments.push({ text : comment, time : now });
+        }
+
+        else {
+          allComments = [{ text : comment, time : now }];
+        }
       }
 
       // We don't need to keep a full log as it'd be too heavy to update with
       // long uptimes.
       return allComments.slice(0, 100);
+    },
+
+    /**
+     * Speech dictation can be a bit rough, so we'll try to do some simple text
+     * replacement to convert "bedroom lambs" to "bedroom lamps", etc.
+     */
+    getCorrectedText : function (text, config) {
+      var correctionHash = config.corrections || {},
+          term           = '';
+
+      if(text) {
+        for(term in correctionHash) {
+          text = text.split(term).join(correctionHash[term]);
+        }
+      }
+
+      return text;
     },
 
     /**
@@ -167,28 +201,26 @@ module.exports = (function () {
     },
 
     send : function (config) {
-      var gerty = {},
+      var deviceState = require(__dirname + '/../../lib/deviceState'),
+          gertyState  = deviceState.getDeviceState(config.device.deviceId) || {},
+          gerty       = {},
           value,
           action,
           comments;
 
-      gerty.command     = config.command            || '';
-      gerty.text        = config.text               || '';
-      gerty.personality = config.device.personality || 0.5;
-      gerty.comments    = config.comments           || [];
-      gerty.callback    = config.callback           || function () {};
+      gertyState.value  = gertyState.value                                  || {};
+      gerty.deviceId    = config.device.deviceId;
+      gerty.command     = config.command                                    || '';
+      gerty.text        = this.getCorrectedText(config.text, config.device) || '';
+      gerty.personality = config.device.personality                         || 0.5;
+      gerty.comments    = config.comments                                   || [];
+      gerty.callback    = config.callback                                   || function () {};
 
-      value    = this.getEmojiType(gerty.command);
+      value    = this.getEmojiType(gerty.command)                           || gertyState.value.emoji;
       action   = this.getActionType(gerty.personality, gerty.command);
-      comments = this.getComments(gerty);
+      comments = this.getComments(gerty)                                    || gertyState.value.comments;
 
-      if((value) && (gerty.command)) {
-        gerty.callback(null, { emoji : value, description : gerty.command, action : action, comments : comments });
-      }
-
-      if(gerty.text) {
-        gerty.callback(null, gerty.text, true);
-      }
+      gerty.callback(null, { emoji : value, description : gerty.command, action : action, comments : comments });
     }
   };
 }());
