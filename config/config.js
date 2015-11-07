@@ -509,7 +509,10 @@ exports.config = {
     // I'll never say something like "bedroom lambs", I can list some words or
     // phrases that will carry some actual meaning.
     corrections : { 'bedroom lambs' : 'bedroom lamps',
-                    'office which'  : 'office switch' },
+                    'office which'  : 'office switch',
+                    'hall life'     : 'hall light',
+                    'kitchen life'  : 'kitchen light',
+                    'dining life'   : 'dining light' },
     apps        : { 'Gerty' : { id            : 'gerty',
                                 macros        : { 'Watch A Movie' : 'ps3=PowerOn,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,Circle,sleep,sleep,Left;samsung=sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,HDMI4,sleep,DOWN,sleep,ENTER,sleep,sleep,sleep,sleep,ENTER',
                                                   'Goodnight'     : 'smartthings=subdevice-mode-Night',
