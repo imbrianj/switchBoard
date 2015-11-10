@@ -104,7 +104,7 @@ module.exports = (function () {
     state : function (controller, config, callback) {
       var panasonic = { device : {}};
 
-      callback                      = callback || function() {};
+      callback                      = callback || function () {};
       panasonic.command             = 'state';
       panasonic.device.deviceId     = controller.config.deviceId;
       panasonic.device.deviceIp     = controller.config.deviceIp;
@@ -138,24 +138,24 @@ module.exports = (function () {
       panasonic.devicePort = config.devicePort          || 55000;
       panasonic.callback   = config.callback            || function () {};
 
-      request = http.request(this.postPrepare(panasonic), function(response) {
-                  response.on('data', function(response) {
+      request = http.request(this.postPrepare(panasonic), function (response) {
+                  response.on('data', function (response) {
                     dataReply += response;
                   });
 
-                  response.once('end', function() {
+                  response.once('end', function () {
                     panasonic.callback(null, dataReply);
                   });
                 });
 
       if(panasonic.command === 'state') {
-        request.setTimeout(panasonic.timeout, function() {
+        request.setTimeout(panasonic.timeout, function () {
           request.destroy();
           panasonic.callback({ code : 'ETIMEDOUT' }, null, true);
         });
       }
 
-      request.once('error', function(err) {
+      request.once('error', function (err) {
         if((err.code !== 'ETIMEDOUT') || (panasonic.command !== 'state')) {
           panasonic.callback(err);
         }

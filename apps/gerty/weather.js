@@ -32,13 +32,13 @@ module.exports = (function () {
   'use strict';
 
   return {
-    weather : function(state, command) {
+    weather : function (state, command) {
       var excited     = 0,
           comfortable = 0,
           temp,
           weather;
 
-      if(state.value) {
+      if((state) && (state.value)) {
         temp    = parseFloat(state.value.temp);
         weather = parseFloat(state.value.code);
 

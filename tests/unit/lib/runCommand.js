@@ -29,7 +29,7 @@
  */
 
 exports.runCommandTest = {
-  parseCommands : function(test) {
+  parseCommands : function (test) {
     'use strict';
 
     var runCommand  = require(__dirname + '/../../../lib/runCommand'),
@@ -38,21 +38,22 @@ exports.runCommandTest = {
                                     markup     : '<span>{{DEVICE_ID}} {{TEST_KEY}}</span>',
                                     controller : { inputs : ['command'],
                                                    keymap : ['VOLUP'],
-                                                   send   : function(request) { return request; } } } },
-        response    = { end : function() {} },
+                                                   send   : function (request) { return request; } } } },
+        request     = { connection : { remoteAddress : '127.0.0.1' } },
+        response    = { end : function () {} },
         emptyCommand,
         badCommand,
         goodCommand;
 
     runCommand.init(controllers);
 
-    emptyCommand = runCommand.parseCommands('samsung', '', null, response);
-    badCommand   = runCommand.parseCommands('samsung', 'VOLMUTE', null, response);
-    goodCommand  = runCommand.parseCommands('samsung', 'VOLUP', null, response);
+    emptyCommand = runCommand.parseCommands('samsung', '',        null, request, response);
+    badCommand   = runCommand.parseCommands('samsung', 'VOLMUTE', null, request, response);
+    goodCommand  = runCommand.parseCommands('samsung', 'VOLUP',   null, request, response);
 
     test.strictEqual(emptyCommand, '', 'Empty reply if there is no command issued');
-    test.deepEqual(badCommand, { device : 'samsung', command : 'VOLMUTE', message : 'invalid' }, 'Bad command should be invalidated');
-    test.deepEqual(goodCommand, { device : 'samsung', command : 'VOLUP', message : 'valid' }, 'Good command should be validated');
+    test.deepEqual(badCommand,  { device : 'samsung', command : 'VOLMUTE', message : 'invalid' }, 'Bad command should be invalidated');
+    test.deepEqual(goodCommand, { device : 'samsung', command : 'VOLUP',   message : 'valid' },   'Good command should be validated');
 
     test.done();
   },
@@ -68,7 +69,7 @@ exports.runCommandTest = {
     test.done();
   },
 
-  stripTypePrefix : function(test) {
+  stripTypePrefix : function (test) {
     'use strict';
 
     var runCommand = require(__dirname + '/../../../lib/runCommand'),
@@ -85,7 +86,7 @@ exports.runCommandTest = {
     test.done();
   },
 
-  getCommandType : function(test) {
+  getCommandType : function (test) {
     'use strict';
 
     var runCommand = require(__dirname + '/../../../lib/runCommand'),
@@ -102,7 +103,7 @@ exports.runCommandTest = {
     test.done();
   },
 
-  validateCommand : function(test) {
+  validateCommand : function (test) {
     'use strict';
 
     var runCommand  = require(__dirname + '/../../../lib/runCommand'),
@@ -111,7 +112,7 @@ exports.runCommandTest = {
                                     markup     : '<span>{{DEVICE_ID}} {{TEST_KEY}}</span>',
                                     controller : { inputs : ['command', 'text'],
                                                    keymap : ['VOLUP'],
-                                                   send   : function(request) { return request; } } } },
+                                                   send   : function (request) { return request; } } } },
         validCommand,
         validText,
         invalidLaunch,
@@ -135,7 +136,7 @@ exports.runCommandTest = {
     test.done();
   },
 
-  runCommand : function(test) {
+  runCommand : function (test) {
     'use strict';
 
     var runCommand     = require(__dirname + '/../../../lib/runCommand'),
@@ -144,10 +145,11 @@ exports.runCommandTest = {
                                        markup     : '<span>{{DEVICE_ID}} {{TEST_KEY}}</span>',
                                        controller : { inputs : ['command', 'text'],
                                                       keymap : ['VOLUP'],
-                                                      send   : function(request) { return request; } } } },
-        response       = { end : function(msg) { return msg; } },
-        validCommand   = runCommand.runCommand('samsung', 'VOLUP', null, response),
-        invalidCommand = runCommand.runCommand('samsung', 'TEST', null, response);
+                                                      send   : function (request) { return request; } } } },
+        request        = { connection : { remoteAddress : '127.0.0.1' } },
+        response       = { end : function (msg) { return msg; } },
+        validCommand   = runCommand.runCommand('samsung', 'VOLUP', null, request, response),
+        invalidCommand = runCommand.runCommand('samsung', 'TEST',  null, request, response);
 
     test.deepEqual(validCommand,   { device: 'samsung', command: 'VOLUP', message: 'valid' },   'Good command should be validated');
     test.deepEqual(invalidCommand, { device: 'samsung', command: 'TEST',  message: 'invalid' }, 'Bad command should be invalidated');

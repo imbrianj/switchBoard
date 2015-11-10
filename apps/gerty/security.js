@@ -32,7 +32,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    security : function(state, command) {
+    security : function (state, command) {
       var scared = state.value === 'off' ? 0 : -2;
 
       return { scared : scared };

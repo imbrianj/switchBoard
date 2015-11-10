@@ -28,10 +28,8 @@
  * @fileoverview Unit test for devices/wemo/controller.js
  */
 
-State = {};
-
 exports.wemoControllerTest = {
-  fragments : function(test) {
+  fragments : function (test) {
     'use strict';
 
     var wemoController = require(__dirname + '/../../../../devices/wemo/controller'),
@@ -43,7 +41,7 @@ exports.wemoControllerTest = {
     test.done();
   },
 
-  postPrepare : function(test) {
+  postPrepare : function (test) {
     'use strict';
 
     var wemoController = require(__dirname + '/../../../../devices/wemo/controller'),
@@ -64,7 +62,7 @@ exports.wemoControllerTest = {
     test.done();
   },
 
-  postData : function(test) {
+  postData : function (test) {
     'use strict';
 
     var wemoController = require(__dirname + '/../../../../devices/wemo/controller'),

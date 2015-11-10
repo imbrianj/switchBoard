@@ -28,8 +28,6 @@
  * @fileoverview Unit test for devices/activeBuilding/controller.js
  */
 
-State = {};
-
 exports.activeBuildingControllerTest = {
   postPrepare : function (test) {
     'use strict';

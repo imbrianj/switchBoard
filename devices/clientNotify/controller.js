@@ -39,7 +39,7 @@ module.exports = (function () {
     /**
      * Default to this device being active and workable.
      */
-    init : function(controller, config) {
+    init : function (controller, config) {
       var deviceState = require(__dirname + '/../../lib/deviceState');
 
       deviceState.updateState(controller.config.deviceId, 'clientNotify', { state : 'ok' });

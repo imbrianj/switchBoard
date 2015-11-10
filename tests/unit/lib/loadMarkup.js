@@ -29,7 +29,7 @@
  */
 
 exports.loadMarkupTest = {
-  loadTemplates : function(test) {
+  loadTemplates : function (test) {
     'use strict';
 
     var loadMarkup  = require('../../../lib/loadMarkup'),
@@ -55,7 +55,7 @@ exports.loadMarkupTest = {
     test.done();
   },
 
-  loadMarkup : function(test) {
+  loadMarkup : function (test) {
     'use strict';
 
     var fs          = require('fs'),
@@ -65,12 +65,12 @@ exports.loadMarkupTest = {
                         samsung : { config : { deviceId : 'TEST-deviceId',
                                                title    : 'TEST-title' },
                                     markup : '<span>{{DEVICE_ID}} {{TEST_KEY}}</span>',
-                                    controller : { onload : function(device) { return device.markup.replace('{{TEST_KEY}}', 'PASSED'); } } },
+                                    controller : { onload : function (device) { return device.markup.replace('{{TEST_KEY}}', 'PASSED'); } } },
                         speech  : { config : { deviceId       : 'Test-deviceId2',
                                                title          : 'TEST-another-title',
                                                disabledMarkup : true },
                                     markup : '<span>{{DEVICE_ID}} {{TEST_KEY}}</span>',
-                                    controller : { onload : function(device) { return device.markup.replace('{{TEST_KEY}}', 'This should never be printed!'); } } } },
+                                    controller : { onload : function (device) { return device.markup.replace('{{TEST_KEY}}', 'This should never be printed!'); } } } },
         markup      = loadMarkup.loadMarkup(template, controllers, null);
 
     test.notStrictEqual(markup.indexOf('class="theme-TEST-theme"'),          -1, 'Markup theme populated');

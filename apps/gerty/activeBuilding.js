@@ -32,7 +32,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    activeBuilding : function(state, command) {
+    activeBuilding : function (state, command) {
       var excited = state.value ? (state.value.length * 2) : 0;
 
       return { excited : excited };

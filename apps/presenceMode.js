@@ -36,13 +36,13 @@ module.exports = (function () {
 
     stillAway : true,
 
-    translate : function(token, lang) {
+    translate : function (token, lang) {
       var translate = require(__dirname + '/../lib/translate');
 
       return translate.translate('{{i18n_' + token + '}}', 'smartthings', lang);
     },
 
-    isPresent : function(devices, presence) {
+    isPresent : function (devices, presence) {
       var present = [],
           subdevice;
 
@@ -55,7 +55,7 @@ module.exports = (function () {
       return present;
     },
 
-    changeMode : function(device, newMode, present, controllers, lang) {
+    changeMode : function (device, newMode, present, controllers, lang) {
       var sharedUtil = require(__dirname + '/../lib/sharedUtil').util,
           notify     = require(__dirname + '/../lib/notify'),
           runCommand = require(__dirname + '/../lib/runCommand'),
@@ -78,7 +78,7 @@ module.exports = (function () {
       notify.notify(message, controllers, device);
     },
 
-    presenceMode : function(device, command, controllers, values, config) {
+    presenceMode : function (device, command, controllers, values, config) {
       var that        = this,
           deviceState = require(__dirname + '/../lib/deviceState'),
           lang        = controllers.config.language,
@@ -120,7 +120,7 @@ module.exports = (function () {
 
           if((newMode) && (values.value.mode !== newMode)) {
             if(newMode === 'Away') {
-              setTimeout(function() {
+              setTimeout(function () {
                 var currentState = deviceState.getDeviceState(device),
                     present      = that.isPresent(currentState.value.devices);
 

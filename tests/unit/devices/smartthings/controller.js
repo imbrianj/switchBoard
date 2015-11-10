@@ -28,10 +28,8 @@
  * @fileoverview Unit test for devices/smartthings/controller.js
  */
 
-State = {};
-
 exports.smartthingsControllerTest = {
-  fragments : function(test) {
+  fragments : function (test) {
     'use strict';
 
     var smartthingsController = require(__dirname + '/../../../../devices/smartthings/controller'),
@@ -63,10 +61,9 @@ exports.smartthingsControllerTest = {
   updateState : function (test) {
     'use strict';
 
-    State.FOO       = {};
-    State.FOO.state = 'ok';
-
     var smartthingsController = require(__dirname + '/../../../../devices/smartthings/controller'),
+        deviceState           = require(__dirname + '/../../../../lib/deviceState'),
+        initialState          = deviceState.updateState('FOO', 'smartthings', { state : 'ok' }),
         now                   = new Date(),
         smartthings           = { deviceId : 'FOO' },
         response              = { mode     : 'Home',
@@ -96,16 +93,16 @@ exports.smartthingsControllerTest = {
                                       }
                                     }
                                   ]
-                                };
+                                },
+        updateState           = smartthingsController.updateState(smartthings, response),
+        newState              = deviceState.getDeviceState('FOO');
 
-    smartthingsController.updateState(smartthings, response);
-
-    test.strictEqual(State.FOO.value.devices[0].type,              'switch',  'The first device is a switch');
-    test.strictEqual(State.FOO.value.devices[0].peripheral,        undefined, 'The first device has no peripheral');
-    test.strictEqual(State.FOO.value.devices[1].type,              'contact', 'The first device is a contact sensor');
-    test.strictEqual(State.FOO.value.devices[1].peripheral.temp,    72,       'The second device has a peripheral function');
-    test.strictEqual(State.FOO.value.devices[1].peripheral.battery, 55,       'The second device has a battery');
-    test.strictEqual(State.FOO.updated > (now.getTime() - 1),       true,     'State object should be newer than the initial time');
+    test.strictEqual(newState.value.devices[0].type,              'switch',  'The first device is a switch');
+    test.strictEqual(newState.value.devices[0].peripheral,        undefined, 'The first device has no peripheral');
+    test.strictEqual(newState.value.devices[1].type,              'contact', 'The first device is a contact sensor');
+    test.strictEqual(newState.value.devices[1].peripheral.temp,    72,       'The second device has a peripheral function');
+    test.strictEqual(newState.value.devices[1].peripheral.battery, 55,       'The second device has a battery');
+    test.strictEqual(newState.updated > (now.getTime() - 1),       true,     'State object should be newer than the initial time');
 
     test.done();
   },
@@ -124,8 +121,8 @@ exports.smartthingsControllerTest = {
         testSubDevicesRepeat  = smartthingsController.findSubDevices('Some Light', subDevicesRepeat),
         testSubDevicesUnique  = smartthingsController.findSubDevices('Light 2',    subDevicesUnique);
 
-    test.deepEqual(testSubDevicesRepeat, [ { label: 'Some Light' }, { label: 'Some Light' } ], 'Two lights should be returned if they both have the same name');
-    test.deepEqual(testSubDevicesUnique, [ { label: 'Light 2' } ],                             'Only one light is returned as its unique');
+    test.deepEqual(testSubDevicesRepeat, [{ label: 'Some Light' }, { label: 'Some Light' }], 'Two lights should be returned if they both have the same name');
+    test.deepEqual(testSubDevicesUnique, [{ label: 'Light 2' }],                             'Only one light is returned as its unique');
 
     test.done();
   },
@@ -133,27 +130,36 @@ exports.smartthingsControllerTest = {
   getDevicePath : function (test) {
     'use strict';
 
-    State.FOO       = {};
-    State.FOO.state = 'ok';
-    State.FOO.value = { devices :
-                         { 0 : { id    : '01234567890',
-                                 label : 'Test Switch',
-                                 type  : 'switch',
-                                 state : 'off' },
-                           1 : { id    : '09876543210',
-                                 label : 'Test Door',
-                                 type  : 'contact',
-                                 state : 'off',
-                                 peripheral : { temp: 72 } } } };
+    var stState = { state : 'ok',
+                    value : {
+                      devices : {
+                        0 : { id    : '01234567890',
+                              label : 'Test Switch',
+                              type  : 'switch',
+                              state : 'off' },
+                        1 : { id    : '09876543210',
+                              label : 'Test Door',
+                              type  : 'contact',
+                              state : 'off',
+                              peripheral : { temp: 72 } } } } };
 
     var smartthingsController = require(__dirname + '/../../../../devices/smartthings/controller'),
-        callback              = function(err, state) { State.FOO.value = state; },
+        deviceState           = require(__dirname + '/../../../../lib/deviceState'),
+        initialState          = deviceState.updateState('FOO', 'smartthings', stState),
+        callback              = function (err, state) {
+          var stStateClone = JSON.parse(JSON.stringify(stState));
+
+          stStateClone.value = state;
+
+          deviceState.updateState('FOO', 'smartthings', stStateClone);
+        },
         smartthings           = { device : { deviceId : 'FOO' } },
         switchState           = smartthingsController.getDevicePath('state-switch-Test Switch-on', smartthings, callback),
-        contactState          = smartthingsController.getDevicePath('state-contact-Test Door-on',  smartthings, callback);
+        contactState          = smartthingsController.getDevicePath('state-contact-Test Door-on',  smartthings, callback),
+        finalState            = deviceState.getDeviceState('FOO');
 
-    test.strictEqual(State.FOO.value.devices[0].state, 'on', 'The first device should now be on');
-    test.strictEqual(State.FOO.value.devices[1].state, 'on', 'The second device should now be open');
+    test.strictEqual(finalState.value.devices[0].state, 'on', 'The first device should now be on');
+    test.strictEqual(finalState.value.devices[1].state, 'on', 'The second device should now be open');
 
     test.done();
   }

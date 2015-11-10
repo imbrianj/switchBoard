@@ -29,13 +29,13 @@
  */
 
 exports.gertyControllerTest = {
-  fragments : function(test) {
+  fragments : function (test) {
     'use strict';
 
     var gertyController = require(__dirname + '/../../../../devices/gerty/controller'),
         fragments       = gertyController.fragments();
 
-    test.strictEqual(typeof fragments.comment,  'string', 'Comment fragment verified');
+    test.strictEqual(typeof fragments.comment, 'string', 'Comment fragment verified');
 
     test.done();
   },
@@ -47,6 +47,21 @@ exports.gertyControllerTest = {
         sleeping        = gertyController.getActionType(500, 'SLEEP');
 
     test.strictEqual(sleeping, '', 'If Gery is sleeping, there will never be an action');
+
+    test.done();
+  },
+
+  getUser : function (test) {
+    'use strict';
+
+    var gertyController = require(__dirname + '/../../../../devices/gerty/controller'),
+        noNames         = gertyController.getUser({ issuer : '127.0.0.1' }),
+        noValidnames    = gertyController.getUser({ issuer : '192.168.1.1', names : { '192.168.2.1' : 'Won\'t Show' } }),
+        replaceName     = gertyController.getUser({ issuer : '192.168.1.2', names : { '192.168.1.2' : 'Should Show' } });
+
+    test.deepEqual(noNames,      { name : '1',           code : 'user-0' }, 'Validate simple user');
+    test.deepEqual(noValidnames, { name : '1',           code : 'user-1' }, 'Validate simple user');
+    test.deepEqual(replaceName,  { name : 'Should Show', code : 'user-2' }, 'Validate simple user');
 
     test.done();
   },

@@ -90,18 +90,18 @@ module.exports = (function () {
 
       if(mp3.execute) {
         if(mp3.file) {
-          fs.exists(mp3.file, function(exists) {
+          fs.exists(mp3.file, function (exists) {
             var spawn = require('child_process').spawn,
                 mpg123;
 
             if((exists) && (mp3.execute)) {
               mpg123 = spawn(mp3.execute.command, mp3.execute.params);
 
-              mpg123.once('error', function(err) {
+              mpg123.once('error', function (err) {
                 mp3.callback(err);
               });
 
-              mpg123.once('close', function(code) {
+              mpg123.once('close', function (code) {
                 mp3.callback(null, 'ok');
               });
             }

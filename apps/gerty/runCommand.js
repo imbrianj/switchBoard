@@ -37,7 +37,7 @@ module.exports = (function () {
     /**
      * Take in a typeClass and return the type of device it's categorized as.
      */
-    findDeviceType : function(typeClass) {
+    findDeviceType : function (typeClass) {
       var deviceType = '';
 
       switch(typeClass) {
@@ -89,7 +89,7 @@ module.exports = (function () {
      * Takes inputted spoken text and tries to derive the intended devices and
      * actions to execute.
      */
-    setDevice : function(rawText, controllers, device, macros, language) {
+    setDevice : function (rawText, controllers, device, macros, language) {
       var translate      = require(__dirname + '/../../lib/translate'),
           runCommand     = require(__dirname + '/../../lib/runCommand'),
           gertyLanguage  = require(__dirname + '/language'),
@@ -378,7 +378,7 @@ module.exports = (function () {
      * For commands that are executed against certain devices (or subdevices),
      * we'll determine what impact those have on the mood of Gerty.
      */
-    setDeviceUpdate : function(deviceId, typeClass, command, values, controllers) {
+    setDeviceUpdate : function (deviceId, typeClass, command, values, controllers) {
       var gertyMood   = require(__dirname + '/mood'),
           deviceState = require(__dirname + '/../../lib/deviceState'),
           mood        = { comfortable : 0, entertained : 0, excited : 0, scared : 0, social : 0, comments: [] },

@@ -29,7 +29,7 @@
  */
 
 exports.locationControllerTest = {
-  fragments : function(test) {
+  fragments : function (test) {
     'use strict';
 
     var locationController = require(__dirname + '/../../../../devices/location/controller'),
@@ -40,7 +40,7 @@ exports.locationControllerTest = {
     test.done();
   },
 
-  postPrepare : function(test) {
+  postPrepare : function (test) {
     'use strict';
 
     var locationController = require(__dirname + '/../../../../devices/location/controller'),
@@ -68,7 +68,7 @@ exports.locationControllerTest = {
     test.done();
   },
 
-  getLocations : function(test) {
+  getLocations : function (test) {
     'use strict';
 
     var locationController = require(__dirname + '/../../../../devices/location/controller'),

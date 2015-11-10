@@ -28,8 +28,6 @@
  * @fileoverview Unit test for devices/samsung/controller.js
  */
 
-State = {};
-
 exports.samsungControllerTest = {
   base64Encode : function (test) {
     'use strict';

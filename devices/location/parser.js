@@ -23,10 +23,10 @@
  * IN THE SOFTWARE.
  */
 
-(function(exports){
+(function (exports){
   'use strict';
 
-  var version = 20151010;
+  var version = 20151108;
 
   exports.location = function (deviceId, markup, state, value, fragments, language) {
     var template   = fragments.item,
@@ -38,7 +38,7 @@
         meridian   = '',
         time       = '',
         i          = 0,
-        translate  = function(message) {
+        translate  = function (message) {
           var util;
 
           if((typeof SB === 'object') && (typeof SB.util === 'object')) {
@@ -51,58 +51,26 @@
           }
 
           return message;
+        },
+        displayTime = function (unix) {
+          var util,
+              time;
+
+          if((typeof SB === 'object') && (typeof SB.util === 'object')) {
+            time = SB.util.displayTime(unix, translate);
+          }
+
+          else {
+            util = require(__dirname + '/../../lib/sharedUtil').util;
+            time = util.displayTime(unix, translate);
+          }
+
+          return time;
         };
 
     if((state) && (value)) {
       for(i; i < value.length; i += 1) {
-        date     = new Date(value[i].time);
-        day      = date.getDay();
-        hour     = date.getHours();
-        minute   = date.getMinutes();
-        meridian = translate('am');
-
-        if(hour > 12) {
-          hour     = hour - 12;
-          meridian = translate('pm');
-        }
-
-        if(minute < 10) {
-          minute = '0' + minute;
-        }
-
-        switch(day) {
-          case 0 :
-            day = 'sun';
-          break;
-
-          case 1 :
-            day = 'mon';
-          break;
-
-          case 2 :
-            day = 'tue';
-          break;
-
-          case 3 :
-            day = 'wed';
-          break;
-
-          case 4 :
-            day = 'thur';
-          break;
-
-          case 5 :
-            day = 'fri';
-          break;
-
-          case 6 :
-            day = 'sat';
-          break;
-        }
-
-        day = translate(day);
-
-        time = day + ' at ' + hour + ':' + minute + meridian;
+        time = displayTime(value[i].time);
 
         tempMarkup = tempMarkup + template.split('{{LOCATION_NAME}}').join(value[i].name);
         tempMarkup = tempMarkup.split('{{LOCATION_URL}}').join(value[i].url);

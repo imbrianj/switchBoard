@@ -29,7 +29,7 @@
  */
 
 exports.raspberryRemoteControllerTest = {
-  fragments : function(test) {
+  fragments : function (test) {
     'use strict';
 
     var raspberryRemoteController = require(__dirname + '/../../../../devices/raspberryRemote/controller'),

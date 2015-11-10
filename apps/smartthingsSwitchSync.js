@@ -37,7 +37,7 @@ module.exports = (function () {
   return {
     version : 20150628,
 
-    smartthingsSwitchSync : function(device, command, controllers, values, config) {
+    smartthingsSwitchSync : function (device, command, controllers, values, config) {
       var runCommand,
           deviceState,
           smartthingsState,

@@ -130,11 +130,11 @@ module.exports = (function () {
         if(rremote.parameters.length === 3) {
           send = spawn('send', rremote.parameters);
 
-          send.once('error', function(err) {
+          send.once('error', function (err) {
             rremote.callback(err);
           });
 
-          send.once('close', function(code) {
+          send.once('close', function (code) {
             rremote.callback(null, 'ok', true);
           });
         }

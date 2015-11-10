@@ -37,13 +37,13 @@ module.exports = (function () {
 
     lastState : null,
 
-    translate : function(token, lang) {
+    translate : function (token, lang) {
       var translate = require(__dirname + '/../lib/translate');
 
       return translate.translate('{{i18n_' + token + '}}', 'weather', lang);
     },
 
-    sunPhase : function(device, command, controllers, values, config) {
+    sunPhase : function (device, command, controllers, values, config) {
       var state    = values.value ? values.value.phase : null,
           runCommand,
           notify,

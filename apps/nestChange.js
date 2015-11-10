@@ -36,13 +36,13 @@ module.exports = (function () {
   return {
     version : 20141201,
 
-    nestChange : function(device, command, controllers, values, config) {
+    nestChange : function (device, command, controllers, values, config) {
       var runCommand = require(__dirname + '/../lib/runCommand');
 
       if(command !== 'LIST') {
         // We want to grab the state from the source of truth (the actual
         // API), but we need to wait a short time for it to register.
-        setTimeout(function() {
+        setTimeout(function () {
             runCommand.runCommand(device, 'list', device, false);
         }, 1000);
       }

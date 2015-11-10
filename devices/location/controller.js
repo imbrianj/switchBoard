@@ -151,14 +151,14 @@ module.exports = (function () {
         location.postRequest = this.postData(location);
       }
 
-      request = http.request(this.postPrepare(location), function(response) {
+      request = http.request(this.postPrepare(location), function (response) {
         response.setEncoding('utf8');
 
-        response.on('data', function(response) {
+        response.on('data', function (response) {
           dataReply += response;
         });
 
-        response.once('end', function() {
+        response.once('end', function () {
           var deviceState  = require(__dirname + '/../../lib/deviceState'),
               data         = null,
               locationData;
@@ -181,7 +181,7 @@ module.exports = (function () {
         });
       });
 
-      request.once('error', function(err) {
+      request.once('error', function (err) {
         location.callback(err);
       });
 

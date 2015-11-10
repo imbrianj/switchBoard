@@ -34,7 +34,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20140903,
+    version : 20151109,
 
     strings : function () {
       return {
@@ -48,6 +48,7 @@ module.exports = (function () {
         common : {
           ACTIVE         : "Active",
           AIR_CONDITION  : "air conditioner",
+          AM             : "am",
           AND            : "and",
           ARE            : "are",
           BACK           : "Back",
@@ -60,6 +61,7 @@ module.exports = (function () {
           EXIT           : "Exit",
           FAST_FORWARD   : "Fast Forward",
           FILE_NOT_FOUND : "File not found",
+          FRI            : "Fri",
           GREEN          : "Green",
           HDMI           : "HDMI",
           HEAT           : "heat",
@@ -70,12 +72,14 @@ module.exports = (function () {
           IS             : "is",
           LEFT           : "Left",
           MENU           : "Menu",
+          MON            : "Mon",
           MUTE           : "Mute",
           OFF            : "Off",
           OK             : "OK",
           ON             : "On",
           PAUSE          : "Pause",
           PLAY           : "Play",
+          PM             : "pm",
           POWER          : "Power",
           POWER_OFF      : "Power Off",
           POWER_ON       : "Power On",
@@ -85,14 +89,19 @@ module.exports = (function () {
           RETURN         : "Return",
           REWIND         : "Rewind",
           RIGHT          : "Right",
+          SAT            : "Sat",
           SELECT         : "Select",
           SOURCE         : "Source",
           STOP           : "Stop",
           SUBMIT         : "Submit",
+          SUN            : "Sun",
           TEXT_INPUT     : "Text Input",
+          THUR           : "Thur",
+          TUE            : "Tue",
           UP             : "Up",
           VOLUME_UP      : "Volume Up",
           VOLUME_DOWN    : "Volume Down",
+          WED            : "Wed",
           YELLOW         : "Yellow"
         },
         activeBuilding : {
@@ -319,17 +328,8 @@ module.exports = (function () {
         },
         location : {
           LOCATION : "Location",
-          AM       : "am",
           FEET     : "Feet",
-          FRI      : "Fri",
-          MON      : "Mon",
-          MPH      : "mph",
-          PM       : "pm",
-          SAT      : "Sat",
-          SUN      : "Sun",
-          THUR     : "Thur",
-          TUE      : "Tue",
-          WED      : "Wed"
+          MPH      : "mph"
         },
         mp3 : {
           MP3 : "MP3"

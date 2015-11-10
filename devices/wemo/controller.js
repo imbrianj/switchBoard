@@ -111,14 +111,14 @@ module.exports = (function () {
           sendCommand,
           name;
 
-      callback                 = callback || function() {};
+      callback                 = callback || function () {};
       wemo.command             = 'state';
       wemo.device.deviceIp     = controller.config.subdevices[wemoKeys[0]];
       wemo.device.deviceId     = controller.config.deviceId;
       wemo.device.subdevices   = controller.config.subdevices;
       wemo.device.localTimeout = controller.controller.localTimeout || config.localTimeout;
 
-      sendCommand = function(subdevices, count) {
+      sendCommand = function (subdevices, count) {
         wemo.callback = function (err, reply) {
           var state  = 'err';
 
@@ -131,7 +131,7 @@ module.exports = (function () {
           }
 
           if((!err) && (reply)) {
-            parser.parseString(reply, function(err, reply) {
+            parser.parseString(reply, function (err, reply) {
               if(reply['s:Envelope']) {
                 state = parseInt(reply['s:Envelope']['s:Body'][0]['u:GetBinaryStateResponse'][0].BinaryState[0], 10) > 0 ? 'on' : 'off';
               }
@@ -213,16 +213,16 @@ module.exports = (function () {
         }
       }
 
-      request = http.request(this.postPrepare(wemo), function(response) {
+      request = http.request(this.postPrepare(wemo), function (response) {
                   var deviceState = require(__dirname + '/../../lib/deviceState'),
                       wemoState   = deviceState.getDeviceState(config.deviceId),
                       runCommand;
 
-                  response.on('data', function(response) {
+                  response.on('data', function (response) {
                     dataReply += response;
                   });
 
-                  response.once('end', function() {
+                  response.once('end', function () {
                     if(commandType) {
                       runCommand = require(__dirname + '/../../lib/runCommand');
 
@@ -237,13 +237,13 @@ module.exports = (function () {
                 });
 
       if(wemo.command === 'state') {
-        request.setTimeout(wemo.timeout, function() {
+        request.setTimeout(wemo.timeout, function () {
           request.destroy();
           wemo.callback({ code : 'ETIMEDOUT' }, null, true);
         });
       }
 
-      request.once('error', function(err) {
+      request.once('error', function (err) {
         if((err.code !== 'ETIMEDOUT') && (wemo.command !== 'state')) {
           wemo.callback(err);
         }

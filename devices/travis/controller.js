@@ -48,7 +48,7 @@ module.exports = (function () {
     /**
      * Prepare a request for command execution.
      */
-    postPrepare : function(config) {
+    postPrepare : function (config) {
       return {
         host    : config.host,
         port    : config.port,
@@ -71,7 +71,7 @@ module.exports = (function () {
       runCommand.runCommand(controller.config.deviceId, 'list', controller.config.deviceId);
     },
 
-    send : function(config) {
+    send : function (config) {
       var https       = require('https'),
           sharedUtil  = require(__dirname + '/../../lib/sharedUtil').util,
           that        = this,
@@ -92,14 +92,14 @@ module.exports = (function () {
       if((travis.owner) && (travis.repo)) {
         console.log('\x1b[35m' + config.device.title + '\x1b[0m: Fetching device info');
 
-        request = https.request(this.postPrepare(travis), function(response) {
+        request = https.request(this.postPrepare(travis), function (response) {
           response.setEncoding('utf8');
 
-          response.on('data', function(response) {
+          response.on('data', function (response) {
             dataReply += response;
           });
 
-          response.once('end', function() {
+          response.once('end', function () {
             var deviceState = require(__dirname + '/../../lib/deviceState'),
                 data        = null,
                 travisData  = [],
@@ -146,7 +146,7 @@ module.exports = (function () {
           });
         });
 
-        request.once('error', function(err) {
+        request.once('error', function (err) {
           travis.callback(err);
         });
 

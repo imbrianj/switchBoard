@@ -219,7 +219,7 @@ module.exports = (function () {
             controller.config.auth = auth;
 
             cache = fs.createWriteStream(__dirname + '/../../cache/nestAuth.json');
-            cache.once('open', function() {
+            cache.once('open', function () {
               console.log('\x1b[35m' + controller.config.title + '\x1b[0m: Auth data cached with URL');
 
               that.deviceList(controller.config);
@@ -239,7 +239,7 @@ module.exports = (function () {
      */
     deviceList : function (config) {
       var that     = this,
-          callback = config.callback || function() {};
+          callback = config.callback || function () {};
 
       console.log('\x1b[35m' + config.title + '\x1b[0m: Fetching device info');
 
@@ -249,7 +249,7 @@ module.exports = (function () {
       config.method   = 'GET';
       config.device   = { auth : config.auth, deviceId : config.deviceId };
 
-      config.callback = function(err, response) {
+      config.callback = function (err, response) {
         var deviceState = require(__dirname + '/../../lib/deviceState'),
             nest        = { devices : [] },
             i;
@@ -430,10 +430,10 @@ module.exports = (function () {
           expired = true;
 
       if(typeof controller.config.username !== 'undefined' && controller.config.password !== 'undefined') {
-        fs.exists(__dirname + '/../../cache/nestAuth.json', function(fileExists) {
+        fs.exists(__dirname + '/../../cache/nestAuth.json', function (fileExists) {
           // If we have a presumed good auth token, we can populate the device list.
           if(fileExists) {
-            fs.readFile(__dirname + '/../../cache/nestAuth.json', function(err, auth) {
+            fs.readFile(__dirname + '/../../cache/nestAuth.json', function (err, auth) {
               var runCommand  = require(__dirname + '/../../lib/runCommand');
 
               if(auth.toString()) {
@@ -505,12 +505,12 @@ module.exports = (function () {
       }
 
       else {
-        request = https.request(this.postPrepare(nest), function(response) {
-          response.on('data', function(response) {
+        request = https.request(this.postPrepare(nest), function (response) {
+          response.on('data', function (response) {
             dataReply += response;
           });
 
-          response.once('end', function() {
+          response.once('end', function () {
             var deviceState = require(__dirname + '/../../lib/deviceState'),
                 nestData    = null;
 
@@ -525,9 +525,9 @@ module.exports = (function () {
 
               if(nestData) {
                 if(nestData.cmd === 'REINIT_STATE') {
-                  fs.exists('cache/nestAuth.json', function(exists) {
+                  fs.exists('cache/nestAuth.json', function (exists) {
                     if(exists) {
-                      fs.unlink('cache/nestAuth.json', function(err) {
+                      fs.unlink('cache/nestAuth.json', function (err) {
                         if(err) {
                           nest.callback('Failed to remove expired auth');
                         }
@@ -554,7 +554,7 @@ module.exports = (function () {
           });
         });
 
-        request.once('error', function(err) {
+        request.once('error', function (err) {
           nest.callback(err);
         });
 

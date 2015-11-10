@@ -26,12 +26,14 @@
 module.exports = (function () {
   'use strict';
 
+  var Users = { length : 0 };
+
   /**
    * @author brian@bevey.org
    * @fileoverview Register comments to Gerty.
    */
   return {
-    version : 20151105,
+    version : 20151108,
 
     inputs  : ['command', 'text'],
 
@@ -125,6 +127,46 @@ module.exports = (function () {
     },
 
     /**
+     * Take in an IP address and offer a more suitable name and class name for
+     * display.
+     */
+    getUser : function (config) {
+      var issuer = config.issuer,
+          names  = config.names || {},
+          user   = {};
+
+      if(Users[issuer]) {
+        user = Users[issuer];
+      }
+
+      else {
+        if(issuer === 'localhost') {
+          user.name = config.title;
+          user.code = 'gerty';
+        }
+
+        else {
+          if(names[issuer]) {
+            user.name = names[issuer];
+          }
+
+          else {
+            user.name = issuer.split('.').slice(-1)[0];
+          }
+
+          // Each code will have an assigned style, but we'll max out at 10.
+          user.code = 'user-' + (Users.length % 10);
+
+          Users.length += 1;
+        }
+
+        Users[issuer] = user;
+      }
+
+      return user;
+    },
+
+    /**
      * Gerty should accept comments from users and from device interactions and
      * collate them for display as a running chat-log.
      */
@@ -132,6 +174,7 @@ module.exports = (function () {
       var deviceState = require(__dirname + '/../../lib/deviceState'),
           gertyState  = deviceState.getDeviceState(config.deviceId),
           comment     = config.text,
+          user        = this.getUser(config),
           allComments = [],
           now;
 
@@ -143,11 +186,11 @@ module.exports = (function () {
         now = new Date().getTime();
 
         if(allComments.length) {
-          allComments.push({ text : comment, time : now });
+          allComments.push({ text : comment, time : now, name : user.name, code : user.code });
         }
 
         else {
-          allComments = [{ text : comment, time : now }];
+          allComments = [{ text : comment, time : now, name : user.name, code : user.code }];
         }
       }
 
@@ -215,6 +258,9 @@ module.exports = (function () {
       gerty.personality = config.device.personality                         || 0.5;
       gerty.comments    = config.comments                                   || [];
       gerty.callback    = config.callback                                   || function () {};
+      gerty.issuer      = config.issuer;
+      gerty.names       = config.device.names                               || {};
+      gerty.title       = config.device.title;
 
       value    = this.getEmojiType(gerty.command)                           || gertyState.value.emoji;
       action   = this.getActionType(gerty.personality, gerty.command);

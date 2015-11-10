@@ -37,7 +37,7 @@ module.exports = (function () {
 
     lastState : {},
 
-    switchControlsOutlet : function(device, command, controllers, values, config) {
+    switchControlsOutlet : function (device, command, controllers, values, config) {
       var that        = this,
           deviceState = require(__dirname + '/../lib/deviceState'),
           runCommand  = require(__dirname + '/../lib/runCommand'),
@@ -48,7 +48,7 @@ module.exports = (function () {
           currentDeviceState,
           state;
 
-      checkState = function() {
+      checkState = function () {
         var deviceId,
             currentDevice = {},
             status,

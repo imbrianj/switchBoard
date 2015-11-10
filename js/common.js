@@ -443,7 +443,7 @@ SB = (function () {
      * Replace all instances of a substring within a larger string by a new
      * string.  Basically .replace, but for all instances of the substring.
      */
-    replaceAll : function(text, find, replace) {
+    replaceAll : function (text, find, replace) {
       var value = text;
 
       if(typeof text === 'string') {
@@ -560,12 +560,12 @@ SB = (function () {
         if(Notification.permission === 'granted') {
           notification = new Notification(string, options);
 
-          setTimeout(function() {
+          setTimeout(function () {
             notification.close();
             SB.event.remove(notification, 'click', click);
           }, 10000);
 
-          click = function(e) {
+          click = function (e) {
             window.focus();
             callback(e);
             SB.event.remove(notification, 'click', click);
@@ -592,7 +592,7 @@ SB = (function () {
     notifyAsk : function () {
       if(typeof Notification === 'function') {
         if(Notification.permission !== 'denied') {
-          Notification.requestPermission(function(permission) {
+          Notification.requestPermission(function (permission) {
             if(Notification.permission !== permission) {
               Notification.permission = permission;
             }
@@ -672,7 +672,7 @@ SB = (function () {
 
         transcribe = new webkitSpeechRecognition();
 
-        process = function(e) {
+        process = function (e) {
           callback(e.results[0][0].transcript, e.results[0][0].confidence);
 
           SB.event.remove(document, 'result', process);

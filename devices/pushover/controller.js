@@ -94,15 +94,15 @@ module.exports = (function () {
       pushover.callback    = config.callback || function () {};
       pushover.postRequest = this.postData(pushover);
 
-      request = https.request(this.postPrepare(pushover), function(response) {
+      request = https.request(this.postPrepare(pushover), function (response) {
         response.setEncoding('utf8');
 
-        response.once('data', function(response) {
+        response.once('data', function (response) {
           pushover.callback(null, response);
         });
       });
 
-      request.once('error', function(err) {
+      request.once('error', function (err) {
         pushover.callback(err);
       });
 

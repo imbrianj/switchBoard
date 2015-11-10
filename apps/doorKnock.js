@@ -38,7 +38,7 @@ module.exports = (function () {
 
     lastEvents : { knock : 0, open : 0, close: 0 },
 
-    doorKnock : function(device, command, controllers, values, config) {
+    doorKnock : function (device, command, controllers, values, config) {
       var now   = new Date().getTime(),
           delay = config.delay || 5,
           that  = this;
@@ -56,7 +56,7 @@ module.exports = (function () {
       }
 
       if(now === this.lastEvents.knock) {
-        setTimeout(function() {
+        setTimeout(function () {
           var notify     = require(__dirname + '/../lib/notify'),
               translate  = require(__dirname + '/../lib/translate'),
               runCommand = require(__dirname + '/../lib/runCommand'),

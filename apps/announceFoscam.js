@@ -34,7 +34,7 @@ module.exports = (function () {
   return {
     version : 20151009,
 
-    announceFoscam : function(device, command, controllers, values, config) {
+    announceFoscam : function (device, command, controllers, values, config) {
       var runCommand   = require(__dirname + '/../lib/runCommand'),
           translate    = require(__dirname + '/../lib/translate'),
           deviceState  = require(__dirname + '/../lib/deviceState'),

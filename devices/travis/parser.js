@@ -23,7 +23,7 @@
  * IN THE SOFTWARE.
  */
 
-(function(exports){
+(function (exports){
   'use strict';
 
   var version = 20150921;

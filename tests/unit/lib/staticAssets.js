@@ -29,7 +29,7 @@
  */
 
 exports.staticAssetsTest = {
-  getDirectory : function(test) {
+  getDirectory : function (test) {
     'use strict';
 
     var staticAssets = require(__dirname + '/../../../lib/staticAssets'),

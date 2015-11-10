@@ -32,7 +32,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    entertainment : function(state, command) {
+    entertainment : function (state, command) {
       var entertained = state.state === 'err' ? 0 : 4;
 
       return { entertained : entertained };

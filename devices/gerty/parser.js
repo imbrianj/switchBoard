@@ -23,22 +23,57 @@
  * IN THE SOFTWARE.
  */
 
-(function(exports){
+(function (exports){
   'use strict';
 
-  var version = 20151105;
+  var version = 20151108;
 
   exports.gerty = function (deviceId, markup, state, value, fragments, language) {
     var templateComment = fragments.comment,
         action          = '',
         commentsMarkup  = '',
+        time,
         comment,
         container,
-        commentsList;
+        commentsList,
+        translate  = function (message) {
+          var util;
+
+          if((typeof SB === 'object') && (typeof SB.util === 'object')) {
+            message = SB.util.translate(message, 'gerty');
+          }
+
+          else {
+            util    = require(__dirname + '/../../lib/sharedUtil').util;
+            message = util.translate(message, 'gerty', language);
+          }
+
+          return message;
+        },
+        displayTime = function (unix) {
+          var util,
+              time;
+
+          if((typeof SB === 'object') && (typeof SB.util === 'object')) {
+            time = SB.util.displayTime(unix, translate);
+          }
+
+          else {
+            util = require(__dirname + '/../../lib/sharedUtil').util;
+            time = util.displayTime(unix, translate);
+          }
+
+          return time;
+        };
 
     if(value.comments) {
       for(comment in value.comments) {
-        commentsMarkup = commentsMarkup + templateComment.split('{{COMMENT}}').join(value.comments[comment].text);
+        time = displayTime(value.comments[comment].time);
+
+        commentsMarkup = commentsMarkup + templateComment.split('{{TIME}}').join(time);
+        commentsMarkup = commentsMarkup.split('{{CODE}}').join(value.comments[comment].code);
+        commentsMarkup = commentsMarkup.split('{{NAME}}').join(value.comments[comment].name);
+        commentsMarkup = commentsMarkup.split('{{COMMENT}}').join(value.comments[comment].text);
       }
     }
 

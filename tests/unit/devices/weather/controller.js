@@ -28,10 +28,8 @@
  * @fileoverview Unit test for devices/weather/controller.js
  */
 
-State = {};
-
 exports.weatherControllerTest = {
-  fragments : function(test) {
+  fragments : function (test) {
     'use strict';
 
     var weatherController = require(__dirname + '/../../../../devices/weather/controller'),

@@ -78,13 +78,13 @@ module.exports = (function () {
       var path    = '/',
           method  = 'POST',
           that    = this,
-          runText = function(i, text, ip) {
+          runText = function (i, text, ip) {
             var letter = text[i];
 
             if(letter) {
               that.send({ letter: letter, device : { deviceIp: ip }});
 
-              setTimeout(function() {
+              setTimeout(function () {
                 runText(i + 1, text, ip);
               }, 200);
             }
@@ -129,7 +129,7 @@ module.exports = (function () {
       var fs       = require('fs'),
           filePath = __dirname + '/../../images/roku/icon_' + appId + '.png';
 
-      fs.exists(filePath, function(exists) {
+      fs.exists(filePath, function (exists) {
         var request;
 
         if(!exists) {
@@ -155,15 +155,15 @@ module.exports = (function () {
           apps   = {},
           that   = this;
 
-      callback   = callback || function() {};
+      callback   = callback || function () {};
 
-      this.send({ device : { deviceIp: config.deviceIp }, list: true, callback: function(err, response) {
+      this.send({ device : { deviceIp: config.deviceIp }, list: true, callback: function (err, response) {
         if(err) {
           callback(err);
         }
 
         else {
-          parser.parseString(response, function(err, reply) {
+          parser.parseString(response, function (err, reply) {
             var app,
                 i = 0;
 
@@ -209,9 +209,9 @@ module.exports = (function () {
     state : function (controller, config, callback) {
       var stateCallback;
 
-      callback = callback || function() {};
+      callback = callback || function () {};
 
-      stateCallback = function(err, reply) {
+      stateCallback = function (err, reply) {
         if(err) {
           callback(controller.config.deviceId, err);
         }
@@ -239,17 +239,17 @@ module.exports = (function () {
       roku.devicePort = config.devicePort              || 8060;
       roku.callback   = config.callback                || function () {};
 
-      request = http.request(this.postPrepare(roku), function(response) {
-                  response.on('data', function(response) {
+      request = http.request(this.postPrepare(roku), function (response) {
+                  response.on('data', function (response) {
                     dataReply += response;
                   });
 
-                  response.once('end', function() {
+                  response.once('end', function () {
                     roku.callback(null, dataReply);
                   });
                 });
 
-      request.once('error', function(err) {
+      request.once('error', function (err) {
         roku.callback(err);
       });
 

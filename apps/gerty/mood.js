@@ -40,7 +40,7 @@ module.exports = (function () {
      * excited, scared), we'll set bounds and determine a distilled emotion for
      * display.
      */
-    deriveMood : function(mood, controllers) {
+    deriveMood : function (mood, controllers) {
       var runCommand  = require(__dirname + '/../../lib/runCommand'),
           deviceState = require(__dirname + '/../../lib/deviceState'),
           gertyState,
@@ -102,7 +102,7 @@ module.exports = (function () {
           if(controllers[deviceId].config.typeClass === 'gerty') {
             gertyState = deviceState.getDeviceState(deviceId);
 
-            if(gertyState.value.description !== mood.emotion) {
+            if((gertyState) && (gertyState.value.description !== mood.emotion)) {
               runCommand.runCommand(deviceId, mood.emotion);
             }
 
@@ -122,7 +122,7 @@ module.exports = (function () {
     /**
      * You can explicitly set an emotion by passing that specific text.
      */
-    setEmotion : function(text, device, language) {
+    setEmotion : function (text, device, language) {
       var translate  = require(__dirname + '/../../lib/translate'),
           runCommand = require(__dirname + '/../../lib/runCommand'),
           synonyms   = translate.findSynonyms('gerty', language),

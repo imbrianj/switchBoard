@@ -32,14 +32,14 @@ module.exports = (function () {
   'use strict';
 
   return {
-    stocks : function(state, command) {
+    stocks : function (state, command) {
       var excited = 0,
           scared  = 0,
           stock,
           change  = 0,
           i       = 0;
 
-      if(state.value) {
+      if((state) && (state.value)) {
         // Collect an average of all current sotck movement for the day.
         for(stock in state.value) {
           if(state.value[stock].dayChangePercent) {

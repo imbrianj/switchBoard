@@ -136,14 +136,14 @@ module.exports = (function () {
 
       console.log('\x1b[35m' + config.device.title + '\x1b[0m: Fetching device info');
 
-      request = http.request(this.postPrepare(rss), function(response) {
+      request = http.request(this.postPrepare(rss), function (response) {
         response.setEncoding('utf8');
 
-        response.on('data', function(response) {
+        response.on('data', function (response) {
           dataReply += response;
         });
 
-        response.once('end', function() {
+        response.once('end', function () {
           var xml2js      = require('xml2js'),
               deviceState = require(__dirname + '/../../lib/deviceState'),
               parser      = new xml2js.Parser(),
@@ -151,7 +151,7 @@ module.exports = (function () {
               rssData     = [];
 
           if(dataReply) {
-            parser.parseString(dataReply, function(err, reply) {
+            parser.parseString(dataReply, function (err, reply) {
               if(reply) {
                 if(err) {
                   console.log('\x1b[31m' + config.device.title + '\x1b[0m: Unable to parse reply');
@@ -168,7 +168,7 @@ module.exports = (function () {
         });
       });
 
-      request.once('error', function(err) {
+      request.once('error', function (err) {
         rss.callback(err);
       });
 

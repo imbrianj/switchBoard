@@ -29,9 +29,7 @@
  * @requires fs, http, https, url, path, nopt, websocket
  */
 
-State = {};
-
-var version         = 20150331,
+var version         = 20151109,
     fs              = require('fs'),
     http            = require('http'),
     https           = require('https'),
@@ -78,7 +76,7 @@ if(settings.config.config.ssl.disabled !== true) {
 }
 
 if(controllers) {
-  connection = function(request, response) {
+  connection = function (request, response) {
     'use strict';
 
     // Accept commands via POST as well.
@@ -114,7 +112,7 @@ if(controllers) {
     }
   };
 
-  startup = function() {
+  startup = function () {
     'use strict';
 
     console.log('\x1b[36mListening on port ' + settings.config.config.serverPort + '\x1b[0m');
@@ -137,7 +135,7 @@ if(controllers) {
   // Or you're connecting with Web Sockets
   wsServer = new webSocketServer({ httpServer : server }, 'echo-protocol');
 
-  wsServer.on('request', function(request) {
+  wsServer.on('request', function (request) {
     'use strict';
 
     webSockets.newConnection(request, controllers);

@@ -29,7 +29,7 @@
  */
 
 exports.trafficControllerTest = {
-  fragments : function(test) {
+  fragments : function (test) {
     'use strict';
 
     var trafficController = require(__dirname + '/../../../../devices/roku/controller'),

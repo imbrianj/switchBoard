@@ -36,13 +36,13 @@ module.exports = (function () {
   return {
     version : 20151009,
 
-    translate : function(token, lang) {
+    translate : function (token, lang) {
       var translate = require(__dirname + '/../lib/translate');
 
       return translate.translate('{{i18n_' + token + '}}', 'rss', lang);
     },
 
-    announceRss : function(device, command, controllers, values, config) {
+    announceRss : function (device, command, controllers, values, config) {
       var sharedUtil   = require(__dirname + '/../lib/sharedUtil').util,
           deviceState  = require(__dirname + '/../lib/deviceState'),
           rssState     = deviceState.getDeviceState(device),

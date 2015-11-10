@@ -572,6 +572,60 @@ section .dialog {
 	width: 90%;
 }
 
+section .dialog .time {
+	filter: alpha(opacity=50);
+	font-size: 70%;
+	-moz-opacity: .5;
+	-ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=50)';
+	-webkit-opacity: .5;
+	opacity: .5;
+	vertical-align: middle;
+}
+
+section .dialog .gerty {
+	color: #F00;
+}
+
+section .dialog .user-1 {
+	color: #0F0;
+}
+
+section .dialog .user-2 {
+	color: #00F;
+}
+
+section .dialog .user-3 {
+	color: #FF0;
+}
+
+section .dialog .user-4 {
+	color: #F0F;
+}
+
+section .dialog .user-5 {
+	color: #0FF;
+}
+
+section .dialog .user-6 {
+	color: #F88;
+}
+
+section .dialog .user-7 {
+	color: #8F8;
+}
+
+section .dialog .user-8 {
+	color: #88F;
+}
+
+section .dialog .user-9 {
+	color: #FF8;
+}
+
+section .dialog .user-0 {
+	color: #F8F;
+}
+
 section .installed,
 section .installed-list,
 section .image-list {

@@ -37,7 +37,7 @@ module.exports = (function () {
   return {
     version : 20150613,
 
-    smartthingsModeChange : function(device, command, controllers, values, config) {
+    smartthingsModeChange : function (device, command, controllers, values, config) {
       var deviceState      = require(__dirname + '/../lib/deviceState'),
           smartthingsState = deviceState.getDeviceState(device),
           runCommand,

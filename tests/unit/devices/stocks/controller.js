@@ -28,10 +28,8 @@
  * @fileoverview Unit test for devices/stocks/controller.js
  */
 
- State = {};
-
 exports.stocksControllerTest = {
-  fragments : function(test) {
+  fragments : function (test) {
     'use strict';
 
     var stocksController = require(__dirname + '/../../../../devices/stocks/controller'),
@@ -44,10 +42,6 @@ exports.stocksControllerTest = {
 
   stocksOpen : function (test) {
     'use strict';
-
-    State.FOO       = {};
-    State.FOO.state = 'ok';
-    State.FOO.value = { foo : 'bar' };
 
     var stocksController = require(__dirname + '/../../../../devices/stocks/controller'),
         weekend          = new Date('July 20, 2014 12:00:00'),

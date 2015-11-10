@@ -23,7 +23,7 @@
  * IN THE SOFTWARE.
  */
 
-(function(exports){
+(function (exports){
   'use strict';
 
   var version = 20150921;
@@ -41,7 +41,7 @@
         subDevice,
         subDevices,
         subDeviceGroup,
-        encodeName = function(name) {
+        encodeName = function (name) {
           var util;
 
           if(typeof SB === 'object') {
@@ -72,7 +72,7 @@
 
           return collected;
         },
-        getDeviceMarkup = function(device, markup) {
+        getDeviceMarkup = function (device, markup) {
           var deviceTemplate = '',
               deviceMarkup   = '',
               deviceClass    = '',
@@ -137,7 +137,7 @@
 
           return deviceMarkup;
         },
-        translate  = function(message) {
+        translate  = function (message) {
           var util;
 
           if((typeof SB === 'object') && (typeof SB.util === 'object')) {

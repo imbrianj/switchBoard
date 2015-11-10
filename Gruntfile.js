@@ -1,4 +1,4 @@
-module.exports = function(grunt) {
+module.exports = function (grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
@@ -23,7 +23,6 @@ module.exports = function(grunt) {
         newcap   : false,
         globals  : {
           console     : true,
-          State       : true,
           __dirname   : true,
           SB          : true,
           exports     : true,
@@ -73,7 +72,7 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('translation', function() {
+  grunt.registerTask('translation', function () {
     var master = require(__dirname + '/lang/en').strings(),
         langs  = ['es-CO'],
         lang,
@@ -109,13 +108,13 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('install-precommit', function() {
+  grunt.registerTask('install-precommit', function () {
     var fs   = require('fs'),
         done = this.async(),
         file = __dirname + '/.git/hooks/pre-commit',
         hook;
 
-    fs.exists(file, function(exists) {
+    fs.exists(file, function (exists) {
       if(!exists) {
         hook  = '#!/bin/bash\n';
         hook += '\n';
@@ -130,7 +129,7 @@ module.exports = function(grunt) {
         hook += '  echo -e "\\e[32mGit Precommit\\e[0m: Finished without error"\n';
         hook += 'fi';
 
-        fs.writeFile(file, hook, function(err) {
+        fs.writeFile(file, hook, function (err) {
           if(err) {
             console.log('\x1b[31mGit Precommit\x1b[0m: Hook failed to generate');
           }

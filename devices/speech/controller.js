@@ -84,7 +84,7 @@ module.exports = (function () {
      * once the text has finished.
      */
     init : function (controller) {
-      var callback = function(err, reply) {
+      var callback = function (err, reply) {
             var deviceState = require(__dirname + '/../../lib/deviceState'),
                 message     = 'err';
 
@@ -113,11 +113,11 @@ module.exports = (function () {
         if(speech.text && speech.execute) {
           speak = spawn(speech.execute.command, speech.execute.params);
 
-          speak.once('error', function(err) {
+          speak.once('error', function (err) {
             speech.callback(err);
           });
 
-          speak.once('close', function(code) {
+          speak.once('close', function (code) {
               speech.callback(null, 'ok');
           });
         }

@@ -39,7 +39,7 @@ exports.translateTest = {
     test.done();
   },
 
-  translate : function(test) {
+  translate : function (test) {
     'use strict';
 
     var translate = require('../../../lib/translate'),

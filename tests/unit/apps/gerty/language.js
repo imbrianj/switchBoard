@@ -28,8 +28,6 @@
  * @fileoverview Unit test for apps/gerty/language.js
  */
 
-State = {};
-
 exports.languageTest = {
   getGenericDevices : function (test) {
     'use strict';
@@ -52,10 +50,10 @@ exports.languageTest = {
   getSubDevices : function (test) {
     'use strict';
 
-    State.FOO = { value : { devices : { 0 : { label : 'Test Switch' },
-                                        1 : { label : 'Random Thing' } } } };
-
     var language    = require(__dirname + '/../../../../apps/gerty/language'),
+        deviceState = require(__dirname + '/../../../../lib/deviceState'),
+        iniState    = deviceState.updateState('FOO', 'faux-type', { value : { devices : { 0 : { label : 'Test Switch' },
+                                                                                          1 : { label : 'Random Thing' } } } }),
         controllers = { 'FOO' : {} },
         subDevices  = language.getSubDevices(controllers);
 

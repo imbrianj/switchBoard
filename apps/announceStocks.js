@@ -35,7 +35,7 @@ module.exports = (function () {
   return {
     version : 20151009,
 
-    announceStocks : function(device, command, controllers, values, config) {
+    announceStocks : function (device, command, controllers, values, config) {
       var translate  = require(__dirname + '/../lib/translate'),
           runCommand = require(__dirname + '/../lib/runCommand'),
           notify     = require(__dirname + '/../lib/notify'),

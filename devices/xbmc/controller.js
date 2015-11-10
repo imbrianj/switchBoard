@@ -98,7 +98,7 @@ module.exports = (function () {
     state : function (controller, config, callback) {
       var xbmc = { device : {}, config : {}};
 
-      callback                 = callback || function() {};
+      callback                 = callback || function () {};
       xbmc.command             = 'state';
       xbmc.device.deviceId     = controller.config.deviceId;
       xbmc.device.deviceIp     = controller.config.deviceIp;
@@ -146,7 +146,7 @@ module.exports = (function () {
         Socket = new net.Socket();
         Socket.connect(xbmc.devicePort, xbmc.deviceIp);
 
-        Socket.once('connect', function() {
+        Socket.once('connect', function () {
           if(xbmc.command) {
             Socket.write(that.postData(xbmc));
           }
@@ -155,14 +155,14 @@ module.exports = (function () {
         });
 
         if(xbmc.state) {
-          Socket.setTimeout(xbmc.timeout, function() {
+          Socket.setTimeout(xbmc.timeout, function () {
             Socket.destroy();
 
             xbmc.callback({ code : 'ETIMEDOUT' });
           });
         }
 
-        Socket.on('data', function(dataReply) {
+        Socket.on('data', function (dataReply) {
           var reply   = JSON.parse(dataReply.toString()),
               current = '';
 
@@ -194,7 +194,7 @@ module.exports = (function () {
           }
         });
 
-        Socket.once('end', function() {
+        Socket.once('end', function () {
           var deviceState = require(__dirname + '/../../lib/deviceState'),
               xbmcState   = deviceState.getDeviceState(config.deviceId);
 
@@ -203,7 +203,7 @@ module.exports = (function () {
           xbmc.callback({ code : 'ETIMEDOUT' }, xbmcState);
         });
 
-        Socket.once('error', function(err) {
+        Socket.once('error', function (err) {
           var deviceState = require(__dirname + '/../../lib/deviceState'),
               xbmcState   = deviceState.getDeviceState(config.deviceId);
 

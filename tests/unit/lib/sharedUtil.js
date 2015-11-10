@@ -28,8 +28,6 @@
  * @fileoverview Unit test for sharedUtil.js
  */
 
-State = {};
-
 exports.sharedUtilTest = {
   replaceAll : function (test) {
     'use strict';
@@ -85,8 +83,23 @@ exports.sharedUtilTest = {
     var util = require(__dirname + '/../../../lib/sharedUtil').util;
 
     test.strictEqual(util.arrayList(['One', 'Two', 'Three'], 'nest', 'en'), 'One, Two and Three', 'Long list');
-    test.strictEqual(util.arrayList(['One', 'Two'],          'nest', 'en'), 'One and Two',       'Short list');
+    test.strictEqual(util.arrayList(['One', 'Two'],          'nest', 'en'), 'One and Two',        'Short list');
     test.strictEqual(util.arrayList(['One'],                 'nest', 'en'), 'One',                'Single item');
+
+    test.done();
+  },
+
+  displayTime : function (test) {
+    'use strict';
+
+    var util      = require(__dirname + '/../../../lib/sharedUtil').util,
+        translate = function (token) {
+          return token;
+        };
+
+    test.strictEqual(util.displayTime(1451073600000, translate), 'fri @ 12:00am', 'Covert time');
+    test.strictEqual(util.displayTime(1451163600000, translate), 'sat @ 1:00pm',  'Covert time');
+    test.strictEqual(util.displayTime(1447056900000, translate), 'mon @ 12:15am', 'Covert midnight hour');
 
     test.done();
   }

@@ -104,7 +104,7 @@ module.exports = (function () {
         denonState = { value : { ZONE1 : {}, ZONE2 : {}, ZONE3 : {} } };
       }
 
-      callback                  = callback || function() {};
+      callback                  = callback || function () {};
       denon.device.deviceId     = controller.config.deviceId;
       denon.device.deviceIp     = controller.config.deviceIp;
       denon.device.localTimeout = controller.config.localTimeout || config.localTimeout;
@@ -116,7 +116,7 @@ module.exports = (function () {
             encodeName = sharedUtil.encodeName,
             rex        = '',
             state      = 'err',
-            encodeTranslate = function(message) {
+            encodeTranslate = function (message) {
               message = encodeName(message);
 
               return translate(message, 'denon', config.language);
@@ -258,7 +258,7 @@ module.exports = (function () {
         Socket = new net.Socket();
         Socket.connect(denon.devicePort, denon.deviceIp);
 
-        Socket.once('connect', function() {
+        Socket.once('connect', function () {
           if(denon.command) {
             Socket.write(denon.command + "\r");
           }
@@ -267,24 +267,24 @@ module.exports = (function () {
         });
 
         if(denon.command === 'state') {
-          Socket.setTimeout(denon.timeout, function() {
+          Socket.setTimeout(denon.timeout, function () {
             Socket.destroy();
             denon.callback({ code : 'ETIMEDOUT' });
           });
         }
 
-        Socket.on('data', function(dataReply) {
+        Socket.on('data', function (dataReply) {
           var response = '';
           response += dataReply;
           passover = response.toString().split("\r");
           denon.callback(null, passover);
         });
 
-        Socket.once('end', function() {
+        Socket.once('end', function () {
           Socket = null;
         });
 
-        Socket.once('error', function(err) {
+        Socket.once('error', function (err) {
           var deviceState = require(__dirname + '/../../lib/deviceState'),
               denonState  = deviceState.getDeviceState(config.deviceId);
 

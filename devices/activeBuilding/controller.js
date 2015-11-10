@@ -74,14 +74,14 @@ module.exports = (function () {
       if((activeBuilding.appId) && (activeBuilding.communityId) && (activeBuilding.unitNumber)) {
         console.log('\x1b[35m' + config.device.title + '\x1b[0m: Fetching device info');
 
-        request = https.request(this.postPrepare(activeBuilding), function(response) {
+        request = https.request(this.postPrepare(activeBuilding), function (response) {
                     response.setEncoding('utf8');
 
-                    response.on('data', function(response) {
+                    response.on('data', function (response) {
                       dataReply += response;
                     });
 
-                    response.once('end', function() {
+                    response.once('end', function () {
                       var deviceState        = require(__dirname + '/../../lib/deviceState'),
                           activeBuildingData = [],
                           data               = null,
@@ -136,7 +136,7 @@ module.exports = (function () {
                     });
                   });
 
-        request.once('error', function(err) {
+        request.once('error', function (err) {
           activeBuilding.callback(err);
         });
 

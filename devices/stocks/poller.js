@@ -37,7 +37,7 @@ module.exports = (function () {
     /**
      * Check stock price on poll - but only if the market is assumed open.
      */
-    poll : function(deviceId, controllers) {
+    poll : function (deviceId, controllers) {
       var runCommand = require(__dirname + '/../../lib/runCommand');
 
       if(controllers[deviceId].controller.stocksOpen({ device : { deviceId : deviceId, title : controllers[deviceId].config.title } })) {

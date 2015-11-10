@@ -29,7 +29,7 @@
  */
 
 exports.travisControllerTest = {
-  fragments : function(test) {
+  fragments : function (test) {
     'use strict';
 
     var travisController = require(__dirname + '/../../../../devices/travis/controller'),

@@ -38,7 +38,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20140904,
+    version : 20151109,
 
     strings : function () {
       return {
@@ -52,6 +52,7 @@ module.exports = (function () {
         common : {
           ACTIVE         : "Activo",
           AIR_CONDITION  : "aire acondicionado",
+          AM             : "am",
           AND            : "y",
           ARE            : "están",
           BACK           : "De Vuelta",
@@ -64,6 +65,7 @@ module.exports = (function () {
           EXIT           : "Salir",
           FAST_FORWARD   : "Adelantar",
           FILE_NOT_FOUND : "Archivo No Encontrado",
+          FRI            : "Vie",
           GREEN          : "Verde",
           HDMI           : "HDMI",
           HEAT           : "calor",
@@ -74,12 +76,14 @@ module.exports = (function () {
           IS             : "es",
           LEFT           : "Izquierda",
           MENU           : "Menú",
+          MON            : "Lun",
           MUTE           : "Silenciar",
           OFF            : "Apagar",
           OK             : "OK",
           ON             : "Prender",
           PAUSE          : "Pausa",
           PLAY           : "Iniciar",
+          PM             : "pm",
           POWER          : "Poder",
           POWER_OFF      : "Apagar",
           POWER_ON       : "Prender",
@@ -89,14 +93,19 @@ module.exports = (function () {
           RETURN         : "Regresar",
           REWIND         : "Devolver",
           RIGHT          : "Derecha",
+          SAT            : "Sáb",
           SELECT         : "Seleccionar",
           SOURCE         : "Origen",
           STOP           : "Parar",
           SUBMIT         : "Someter",
+          SUN            : "Dom",
           TEXT_INPUT     : "Text Input",
+          THUR           : "Jue",
+          TUE            : "Mar",
           UP             : "Up",
           VOLUME_UP      : "Incrementar volumen",
           VOLUME_DOWN    : "Bajar volumen",
+          WED            : "Mié",
           YELLOW         : "Amarillo"
         },
         activeBuilding : {

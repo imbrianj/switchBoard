@@ -125,7 +125,7 @@ module.exports = (function () {
     state : function (controller, config, callback) {
       var foscam = { device : {}, config : {} };
 
-      callback                   = callback || function() {};
+      callback                   = callback || function () {};
       foscam.command             = 'state';
       foscam.device.deviceId     = controller.config.deviceId;
       foscam.device.deviceIp     = controller.config.deviceIp;
@@ -175,7 +175,7 @@ module.exports = (function () {
       foscam.callback   = config.callback            || function () {};
 
       if(foscam.command === 'TAKE') {
-        fs.exists(filePath, function(exists) {
+        fs.exists(filePath, function (exists) {
           var request,
               controller,
               postData;
@@ -196,12 +196,12 @@ module.exports = (function () {
       }
 
       else {
-        request = http.request(this.postPrepare(foscam), function(response) {
-          response.on('data', function(response) {
+        request = http.request(this.postPrepare(foscam), function (response) {
+          response.on('data', function (response) {
             dataReply += response;
           });
 
-          response.once('end', function() {
+          response.once('end', function () {
             if(dataReply) {
               foscam.callback(null, dataReply, true);
             }
@@ -209,13 +209,13 @@ module.exports = (function () {
         });
 
         if(foscam.command === 'state') {
-          request.setTimeout(foscam.timeout, function() {
+          request.setTimeout(foscam.timeout, function () {
             request.destroy();
             foscam.callback({ code : 'ETIMEDOUT' }, null, true);
           });
         }
 
-        request.once('error', function(err) {
+        request.once('error', function (err) {
           if((err.code !== 'ETIMEDOUT') || (foscam.command !== 'state')) {
             foscam.callback(err, null, true);
           }

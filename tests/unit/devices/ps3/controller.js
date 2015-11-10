@@ -28,8 +28,6 @@
  * @fileoverview Unit test for devices/ps3/controller.js
  */
 
-State = {};
-
 exports.ps3ControllerTest = {
   translateCommand : function (test) {
     'use strict';

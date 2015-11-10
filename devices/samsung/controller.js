@@ -92,7 +92,7 @@ module.exports = (function () {
     state : function (controller, config, callback) {
       var samsung = { device : {}, config : {}};
 
-      callback                    = callback || function() {};
+      callback                    = callback || function () {};
       samsung.command             = 'state';
       samsung.device.deviceId     = controller.config.deviceId;
       samsung.device.deviceIp     = controller.config.deviceIp;
@@ -129,11 +129,11 @@ module.exports = (function () {
       samsung.appString   = config.device.appString    || 'iphone..iapp.samsung';
       samsung.tvAppString = config.device.tvAppString  || 'iphone.UN60ES8000.iapp.samsung';
       samsung.remoteName  = config.device.remoteName   || 'SwitchBoard Remote';
-      samsung.callback    = config.callback            || function() {};
+      samsung.callback    = config.callback            || function () {};
 
       client.connect(samsung.devicePort, samsung.deviceIp);
 
-      client.once('connect', function() {
+      client.once('connect', function () {
         if((samsung.command) || (samsung.text)) {
           client.write(that.chunkOne(samsung));
           client.write(that.chunkTwo(samsung));
@@ -145,13 +145,13 @@ module.exports = (function () {
       });
 
       if(samsung.command === 'state') {
-        client.setTimeout(samsung.timeout, function() {
+        client.setTimeout(samsung.timeout, function () {
           client.destroy();
           samsung.callback({ code : 'ETIMEDOUT' });
         });
       }
 
-      client.once('error', function(err) {
+      client.once('error', function (err) {
         if((err.code !== 'ETIMEDOUT') || (samsung.command !== 'state')) {
           samsung.callback(err);
         }

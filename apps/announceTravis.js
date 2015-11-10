@@ -37,7 +37,7 @@ module.exports = (function () {
   return {
     version : 20151009,
 
-    announceTravis : function(device, command, controllers, values, config) {
+    announceTravis : function (device, command, controllers, values, config) {
       var notify,
           translate;
 

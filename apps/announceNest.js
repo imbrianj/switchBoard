@@ -37,7 +37,7 @@ module.exports = (function () {
   return {
     version : 20151028,
 
-    announceNest : function(device, command, controllers, values, config) {
+    announceNest : function (device, command, controllers, values, config) {
       var runCommand  = require(__dirname + '/../lib/runCommand'),
           translate   = require(__dirname + '/../lib/translate'),
           notify      = require(__dirname + '/../lib/notify'),

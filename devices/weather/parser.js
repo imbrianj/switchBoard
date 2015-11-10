@@ -23,7 +23,7 @@
  * IN THE SOFTWARE.
  */
 
-(function(exports){
+(function (exports){
   'use strict';
 
   var version = 20150921;
@@ -35,7 +35,7 @@
         translate,
         translateCode;
 
-    translate  = function(message) {
+    translate  = function (message) {
       var util;
 
       if((typeof SB === 'object') && (typeof SB.util === 'object')) {
@@ -51,7 +51,7 @@
     };
 
     // https://developer.yahoo.com/weather/#codes
-    translateCode = function(code) {
+    translateCode = function (code) {
       var icon = '';
 
       code = parseInt(code, 10);

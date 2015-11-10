@@ -53,7 +53,7 @@ SB.spec = (function () {
      *
      * @param {String} selected Name of the new tab that should be selected.
      */
-    navChange : function(selected) {
+    navChange : function (selected) {
       var newNav        = SB.getByClass(selected, SB.spec.uiComponents.header, 'li')[0],
           newContent    = SB.get(selected),
           selectNav     = SB.getByClass('selected', SB.spec.uiComponents.header, 'li')[0],
@@ -83,7 +83,7 @@ SB.spec = (function () {
      *
      * @param {Object} state State object of a changed controller.
      */
-    updateTemplate : function(state) {
+    updateTemplate : function (state) {
       var node        = SB.get(state.deviceId),
           parser      = SB.spec.parsers[state.typeClass],
           value       = state.value,
@@ -230,7 +230,7 @@ SB.spec = (function () {
 
         i += 1;
 
-        reconnect = function() {
+        reconnect = function () {
           // If everyone gets booted at the same time, we want to make sure they
           // have some variance in their reconnection times.
           var delay = Math.round(Math.min(Math.max((i * (Math.random() * 15)), 10), 60));
@@ -239,13 +239,13 @@ SB.spec = (function () {
           SB.spec.uiComponents.indicator.className = 'disconnected';
           SB.putText(SB.spec.uiComponents.indicator, SB.spec.strings.DISCONNECTED);
 
-          setTimeout(function() {
+          setTimeout(function () {
             SB.spec.socketConnect(i);
           }, delay * 1000);
         };
       }
 
-      open = function(e) {
+      open = function (e) {
         var reconnected = SB.spec.uiComponents.indicator.className === 'disconnected' ? true : false;
 
         SB.spec.uiComponents.indicator.className = 'connected';
@@ -262,7 +262,7 @@ SB.spec = (function () {
         SB.event.add(SB.spec.socket, 'close', close);
       };
 
-      message = function(e) {
+      message = function (e) {
         var message = SB.decode(e.data),
             device  = {},
             notification,
@@ -282,7 +282,7 @@ SB.spec = (function () {
 
         // If you have a title, you're a Desktop Notification.
         else if(typeof message.title === 'string') {
-          notify = function() {
+          notify = function () {
             if(message.deviceId) {
               SB.spec.navChange(message.deviceId);
             }
@@ -316,7 +316,7 @@ SB.spec = (function () {
         }
       };
 
-      close = function(e) {
+      close = function (e) {
         SB.event.remove(SB.spec.socket, 'close', close);
 
         SB.log('Disconnected', 'WebSocket', 'error');
@@ -324,7 +324,7 @@ SB.spec = (function () {
         reconnect();
       };
 
-      error = function(e) {
+      error = function (e) {
         SB.event.remove(SB.spec.socket, 'error', close);
 
         SB.log('Error', 'WebSocket', 'error');
@@ -332,7 +332,7 @@ SB.spec = (function () {
         reconnect();
       };
 
-      cleanup = function() {
+      cleanup = function () {
         SB.event.remove(SB.spec.socket, 'open',    open);
         SB.event.remove(SB.spec.socket, 'message', message);
         SB.event.remove(SB.spec.socket, 'error',   error);
@@ -349,7 +349,7 @@ SB.spec = (function () {
      * If WebSockets are not available, we'll do an XHR poll for current State
      * data.
      */
-    statePoller : function() {
+    statePoller : function () {
       var ajaxRequest;
 
       SB.log('not supported - using polling', 'WebSockets', 'error');
@@ -368,7 +368,7 @@ SB.spec = (function () {
       SB.ajax.request(ajaxRequest);
 
       // Set up our poller to continually grab device State.
-      setInterval(function() {
+      setInterval(function () {
         var pollRequest = {
           path   : '/state/',
           param  : 'ts=' + new Date().getTime(),
@@ -381,7 +381,7 @@ SB.spec = (function () {
               SB.spec.uiComponents.indicator.className = 'connected';
               SB.putText(SB.spec.uiComponents.indicator, SB.spec.strings.CONNECTED);
 
-              setTimeout(function() {
+              setTimeout(function () {
                 SB.spec.uiComponents.indicator.className = 'connecting';
                 SB.putText(SB.spec.uiComponents.indicator, SB.spec.strings.CONNECTIG);
               }, 1000);
@@ -407,7 +407,7 @@ SB.spec = (function () {
      *
      * @param {String} id ID of the DOM node we want to lazy load images in.
      */
-    lazyLoad : function(id) {
+    lazyLoad : function (id) {
       var container,
           images,
           i = 0;
@@ -432,7 +432,7 @@ SB.spec = (function () {
      * @param {Object} elm DOM node that we want to remove image src
      *                  attributes from.
      */
-    lazyUnLoad : function(elm) {
+    lazyUnLoad : function (elm) {
       var images,
           i = 0;
 
@@ -451,14 +451,14 @@ SB.spec = (function () {
     /**
      * Simply find all text fields inside any controller.
      */
-    findTextInputs : function() {
+    findTextInputs : function () {
       return SB.spec.uiComponents.body.getElementsByTagName('input');
     },
 
     /**
      * Find all number input fields inside any controller.
      */
-    findNumberInputs : function() {
+    findNumberInputs : function () {
       var textInputs   = SB.spec.findTextInputs(),
           numberInputs = [],
           i;
@@ -480,7 +480,7 @@ SB.spec = (function () {
      * @param {Object} numberInput DOM node of the number input form element.
      * @return {Integer} Pixel offset of the slider's "left" value.
      */
-    findSliderPosition : function(slider, numberInput) {
+    findSliderPosition : function (slider, numberInput) {
       var sliderWidth,
           min,
           max,
@@ -509,7 +509,7 @@ SB.spec = (function () {
      *                  method's callback.
      * @return {Integer} Numerical value represented by the slider position.
      */
-    findSliderValue : function(slider, drag) {
+    findSliderValue : function (slider, drag) {
       var numberInput = slider.parentNode.previousSibling,
           sliderWidth = slider.parentNode.offsetWidth - slider.offsetWidth,
           min         = parseInt(numberInput.min, 10),
@@ -528,30 +528,30 @@ SB.spec = (function () {
      *                  parent ID is present, sliders for all controllers will
      *                  be built.
      */
-    buildSliders : function(id) {
+    buildSliders : function (id) {
       var numberInputs = SB.spec.findNumberInputs(),
           buildSliderBar,
           changeForm,
           i;
 
-      buildSliderBar = function(slider, numberInput) {
+      buildSliderBar = function (slider, numberInput) {
         slider.style.left = SB.spec.findSliderPosition(slider, numberInput) + 'px';
 
         SB.clickDrag({ elm        : slider,
                        restrict   : true,
-                       onTween    : function(drag) {
+                       onTween    : function (drag) {
                          var value = SB.spec.findSliderValue(slider, drag);
 
                          numberInput.value = value;
                          slider.setAttribute('aria-valuenow', value);
                        },
-                       onComplete : function(drag) {
+                       onComplete : function (drag) {
                          changeForm(numberInput);
                        }
                      });
       };
 
-      changeForm = function(elm) {
+      changeForm = function (elm) {
         var form = elm.parentNode,
             slider;
 
@@ -570,7 +570,7 @@ SB.spec = (function () {
       };
 
       for(i = 0; i < numberInputs.length; i += 1) {
-        (function(numberInput) {
+        (function (numberInput) {
           var sliderBar,
               slider;
 
@@ -592,7 +592,7 @@ SB.spec = (function () {
               }
 
               else {
-                SB.event.add(window, 'load', function() {
+                SB.event.add(window, 'load', function () {
                   buildSliderBar(slider, numberInput);
                 });
               }
@@ -602,7 +602,7 @@ SB.spec = (function () {
       }
 
       if(!id) {
-        SB.event.add(SB.spec.uiComponents.body, 'keydown', function(e) {
+        SB.event.add(SB.spec.uiComponents.body, 'keydown', function (e) {
           var elm    = SB.getTarget(e),
               newVal = null,
               numInput;
@@ -628,7 +628,7 @@ SB.spec = (function () {
           }
         });
 
-        SB.event.add(SB.spec.uiComponents.body, 'keyup', function(e) {
+        SB.event.add(SB.spec.uiComponents.body, 'keyup', function (e) {
           var elm = SB.getTarget(e),
               numInput;
 
@@ -637,12 +637,12 @@ SB.spec = (function () {
           }
         });
 
-        SB.event.add(window, 'resize', function(e) {
+        SB.event.add(window, 'resize', function (e) {
           SB.spec.sliderSetWidths(numberInputs);
         });
 
         /* If you change the form value, we should change the slider position. */
-        SB.event.add(SB.spec.uiComponents.body, 'change', function(e) {
+        SB.event.add(SB.spec.uiComponents.body, 'change', function (e) {
           changeForm(SB.getTarget(e));
         });
       }
@@ -652,7 +652,7 @@ SB.spec = (function () {
      * Sets slider positions to the appropriate location.  Used when a form
      * value changes or if the scroll bar changes width.
      */
-    sliderSetWidths : function() {
+    sliderSetWidths : function () {
       var numberInputs = SB.spec.findNumberInputs(),
           slider,
           i;
@@ -669,7 +669,7 @@ SB.spec = (function () {
     /**
      * Builds event handler to delegate click events for standard commands.
      */
-    command : function() {
+    command : function () {
       var commandIssued    = null,
           commandIteration = 0,
           commandDelay     = 750,
@@ -686,14 +686,14 @@ SB.spec = (function () {
           // event and delay any cleanup till after mousdown fires to prevent
           // potential double actions for a single event.
           touchDelay       = 450,
-          transcribeParse  = function(text) {
+          transcribeParse  = function (text) {
             var device = commandIssued;
 
             SB.vibrate();
             SB.spec.sendTextInput(text, device, 'text');
             stopCommand();
           },
-          findCommand      = function(e) {
+          findCommand      = function (e) {
             var elm      = SB.getTarget(e),
                 tagName  = elm.tagName.toLowerCase(),
                 validElm = null;
@@ -708,7 +708,7 @@ SB.spec = (function () {
 
             return validElm;
           },
-          fireCommand      = function(e, speech) {
+          fireCommand      = function (e, speech) {
             var elm = findCommand(e);
 
             if(speech) {
@@ -731,7 +731,7 @@ SB.spec = (function () {
               }
             }
           },
-          stopCommand      = function(e) {
+          stopCommand      = function (e) {
             commandIssued    = null;
             commandDelay     = 750;
             commandIteration = 0;
@@ -741,7 +741,7 @@ SB.spec = (function () {
             touchStartX      = 0;
             touchStartY      = 0;
           },
-          sendCommand      = function() {
+          sendCommand      = function () {
             var ts = new Date().getTime(),
                 ajaxRequest;
 
@@ -785,7 +785,7 @@ SB.spec = (function () {
       if('ontouchstart' in document.documentElement) {
         SB.log('Enabled', 'Touch Events', 'info');
 
-        SB.event.add(SB.spec.uiComponents.body, 'touchstart', function(e) {
+        SB.event.add(SB.spec.uiComponents.body, 'touchstart', function (e) {
           // For quick taps of commands, we need to set a flag.
           tapped  = true;
           touched = true;
@@ -797,7 +797,7 @@ SB.spec = (function () {
 
             // Wait a period of time to determine if you're scrolling and to
             // wait for the onmousedown event to fire before we clean up.
-            setTimeout(function() {
+            setTimeout(function () {
               // And unset that flag so we know not to run this again on
               // touchend.
               if(!done) {
@@ -809,11 +809,11 @@ SB.spec = (function () {
           }
         });
 
-        SB.event.add(SB.spec.uiComponents.body, 'contextmenu', function(e) {
+        SB.event.add(SB.spec.uiComponents.body, 'contextmenu', function (e) {
           e.preventDefault();
         });
 
-        SB.event.add(SB.spec.uiComponents.body, 'touchend', function(e) {
+        SB.event.add(SB.spec.uiComponents.body, 'touchend', function (e) {
           // Emoji touch events are cancelled after speech recognition - which
           // requires lifting your finger to accept the dialog.
           if(!SB.hasClass(SB.getTarget(e).parentNode, 'emoji') && (tapped)) {
@@ -825,7 +825,7 @@ SB.spec = (function () {
           stopCommand(e);
         });
 
-        SB.event.add(SB.spec.uiComponents.body, 'touchmove', function(e) {
+        SB.event.add(SB.spec.uiComponents.body, 'touchmove', function (e) {
           if(touched) {
             if((Math.abs(parseInt(e.changedTouches[0].clientX, 10) - touchStartX) > touchThreshold) || (Math.abs(parseInt(e.changedTouches[0].clientY, 10) - touchStartY) > touchThreshold)) {
               stopCommand(e);
@@ -833,12 +833,12 @@ SB.spec = (function () {
           }
         });
 
-        SB.event.add(SB.spec.uiComponents.body, 'touchcancel', function(e) {
+        SB.event.add(SB.spec.uiComponents.body, 'touchcancel', function (e) {
           stopCommand(e);
         });
       }
 
-      SB.event.add(SB.spec.uiComponents.body, 'mousedown', function(e) {
+      SB.event.add(SB.spec.uiComponents.body, 'mousedown', function (e) {
         if(SB.hasClass(SB.getTarget(e).parentNode, 'emoji')) {
           fireCommand(e, true);
         }
@@ -853,13 +853,13 @@ SB.spec = (function () {
         tapped = false;
       });
 
-      SB.event.add(SB.spec.uiComponents.body, 'mouseup', function(e) {
+      SB.event.add(SB.spec.uiComponents.body, 'mouseup', function (e) {
         if(!SB.hasClass(SB.getTarget(e).parentNode, 'emoji')) {
           stopCommand(e);
         }
       });
 
-      SB.event.add(SB.spec.uiComponents.body, 'click', function(e) {
+      SB.event.add(SB.spec.uiComponents.body, 'click', function (e) {
         if(findCommand(e)) {
           e.preventDefault();
         }
@@ -870,7 +870,7 @@ SB.spec = (function () {
      * Accepts form inputs for text and numbers - grabs the values required and
      * passes them along for submission.
      */
-    sendInput : function(elm) {
+    sendInput : function (elm) {
       var text = '',
           type = '',
           device;
@@ -886,7 +886,7 @@ SB.spec = (function () {
      * Handles text and number input execution.  If you support WebSockets and
      * have an active connection, we'll use that.  If not, we'll use XHR.
      */
-    sendTextInput : function(text, device, type) {
+    sendTextInput : function (text, device, type) {
       var ts = new Date().getTime(),
           ajaxRequest;
 
@@ -918,8 +918,8 @@ SB.spec = (function () {
      * Builds event handler to delegate form submission events for text and
      * number inputs.
      */
-    formInput : function() {
-      SB.event.add(SB.spec.uiComponents.body, 'submit', function(e) {
+    formInput : function () {
+      SB.event.add(SB.spec.uiComponents.body, 'submit', function (e) {
         var elm = SB.getTarget(e);
 
         e.preventDefault();
@@ -931,8 +931,8 @@ SB.spec = (function () {
     /**
      * Handles navigation changes and changes to the connection indicator.
      */
-    nav : function() {
-      SB.event.add(SB.spec.uiComponents.header, 'click', function(e) {
+    nav : function () {
+      SB.event.add(SB.spec.uiComponents.header, 'click', function (e) {
         var elm     = SB.getTarget(e).parentNode,
             tagName = elm.tagName.toLowerCase();
 
@@ -956,7 +956,7 @@ SB.spec = (function () {
     /**
      * Initialization for SB.  Executes the standard functions used.
      */
-    init : function() {
+    init : function () {
       var active    = SB.storage('selected'),
           templates = SB.storage('templates'),
           state     = SB.storage('state'),
@@ -977,7 +977,16 @@ SB.spec = (function () {
                           ACTIVE       : bodyData.stringActive,
                           INACTIVE     : bodyData.stringInactive,
                           ON           : bodyData.stringOn,
-                          OFF          : bodyData.stringOff };
+                          OFF          : bodyData.stringOff,
+                          AM           : bodyData.stringAm,
+                          PM           : bodyData.stringPm,
+                          SUN          : bodyData.stringSun,
+                          MON          : bodyData.stringMon,
+                          TUE          : bodyData.stringTue,
+                          WED          : bodyData.stringWed,
+                          THUR         : bodyData.stringThur,
+                          FRI          : bodyData.stringFri,
+                          SAT          : bodyData.stringSat };
 
       if(active) {
         SB.spec.navChange(active);

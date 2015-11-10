@@ -28,50 +28,54 @@
  * @fileoverview Unit test for deviceState.js
  */
 
-State = {};
-
 exports.deviceState = {
-  getDeviceState : function(test) {
+  getDeviceState : function (test) {
     'use strict';
 
-    var deviceState    = require('../../../lib/deviceState'),
-        newFauxDevice  = deviceState.updateState('faux-device', 'faux-type', { state : 'ok', value : 100 }),
-        testFauxDevice = deviceState.getDeviceState('faux-device');
+    var deviceState    = require(__dirname + '/../../../lib/deviceState'),
+        newFauxDevice  = deviceState.updateState('faux-device', 'faux-type',  { state : 'ok', value : 100 }),
+        duexFauxDevice = deviceState.updateState('faux-device2', 'faux-type', { state : 'ok', value : 150 }),
+        testFauxDevice = deviceState.getDeviceState('faux-device'),
+        allStates      = deviceState.getDeviceState();
 
     test.notStrictEqual(parseInt(testFauxDevice.updated, 10), NaN, 'Timestamp should return a number.');
     test.strictEqual(testFauxDevice.value,                    100, 'Returned value should match set value.');
+    test.strictEqual(allStates['faux-device'].value,          100, 'Should return all device states');
+    test.strictEqual(allStates['faux-device2'].value,         150, 'Should return all device states');
 
     test.done();
   },
 
-  newState : function(test) {
+  newState : function (test) {
     'use strict';
 
-    var deviceState   = require('../../../lib/deviceState'),
-        newFauxDevice = deviceState.updateState('faux-device', 'faux-type', {});
+    var deviceState     = require(__dirname + '/../../../lib/deviceState'),
+        newFauxDevice   = deviceState.updateState('faux-device', 'faux-type', {}),
+        fauxDeviceState = deviceState.getDeviceState('faux-device');
 
-    test.notStrictEqual(parseInt(State['faux-device'].updated, 10), NaN, 'Timestamp should return a number.');
+    test.notStrictEqual(parseInt(fauxDeviceState.value.updated, 10), NaN, 'Timestamp should return a number.');
 
     test.done();
   },
 
-  updateState : function(test) {
+  updateState : function (test) {
     'use strict';
 
-    State['faux-device']     = {};
-    State['existing-device'] = { value : 50 };
+    var deviceState    = require(__dirname + '/../../../lib/deviceState'),
+        initNewDevice  = deviceState.updateState('faux-device',     'faux-type',     {}),
+        initExisting   = deviceState.updateState('existing-device', 'faux-type',     { value : 50 }),
+        newDevice      = deviceState.updateState('faux-device',     'faux-type',     { state : 'ok', value : 100 }),
+        newDeviceState = deviceState.getDeviceState('faux-device'),
+        existing       = deviceState.updateState('existing-device', 'existing-type', {}),
+        existingState  = deviceState.getDeviceState('existing-device');
 
-    var deviceState = require('../../../lib/deviceState'),
-        device      = deviceState.updateState('faux-device', 'faux-type', { state : 'ok', value : 100 }),
-        existing    = deviceState.updateState('existing-device', 'existing-type', {});
+    test.strictEqual(newDeviceState.state, 'ok', 'Device state should have been set to ok');
+    test.strictEqual(newDeviceState.value, 100,  'Device value should have been set to 100');
+    test.notStrictEqual(parseInt(newDeviceState.updated, 10), NaN, 'Timestamp should return a number.');
 
-    test.strictEqual(State['faux-device'].state, 'ok', 'Device state should have been set to ok');
-    test.strictEqual(State['faux-device'].value, 100,  'Device value should have been set to 100');
-    test.notStrictEqual(parseInt(State['faux-device'].updated, 10), NaN, 'Timestamp should return a number.');
-
-    test.strictEqual(State['existing-device'].state, 'err', 'Device state should have been set to err since no ok had been sent');
-    test.strictEqual(State['existing-device'].value, 50,    'Device value should have been kept at 50 since no updated had been made');
-    test.notStrictEqual(parseInt(State['existing-device'].updated, 10), NaN, 'Timestamp should return a number.');
+    test.strictEqual(existingState.state, 'err', 'Device state should have been set to err since no ok had been sent');
+    test.strictEqual(existingState.value, 50,    'Device value should have been kept at 50 since no updated had been made');
+    test.notStrictEqual(parseInt(existingState.updated, 10), NaN, 'Timestamp should return a number.');
 
     test.done();
   }

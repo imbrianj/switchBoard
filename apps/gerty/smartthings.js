@@ -32,7 +32,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    smartthings : function(state, command) {
+    smartthings : function (state, command) {
       var comfortable = 0,
           social      = 0,
           temp        = 0,

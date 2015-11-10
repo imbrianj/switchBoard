@@ -28,8 +28,6 @@
  * @fileoverview Unit test for devices/foscam/controller.js
  */
 
-State = {};
-
 exports.foscamControllerTest = {
   postPrepare : function (test) {
     'use strict';
@@ -82,13 +80,10 @@ exports.foscamControllerTest = {
   init : function (test) {
     'use strict';
 
-    State.FOO       = {};
-    State.FOO.value = 'on';
-
     var runCommand            = require(__dirname + '/../../../../lib/runCommand'),
         controller            = { 'FOO' : { markup     : '<h1>Contents:</h1> {{FOSCAM_DYNAMIC}}',
                                             controller : { inputs   : ['state'],
-                                            send       : function(request) { return request; } },
+                                            send       : function (request) { return request; } },
                                             config     : { deviceId : 'FOO',
                                                            deviceIp : '127.0.0.1',
                                                            username : 'USERNAME',

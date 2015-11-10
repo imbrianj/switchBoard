@@ -28,8 +28,6 @@
  * @fileoverview Unit test for devices/panasonic/controller.js
  */
 
-State = {};
-
 exports.panasonicControllerTest = {
   postPrepare : function (test) {
     'use strict';

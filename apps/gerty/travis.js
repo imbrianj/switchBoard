@@ -32,10 +32,10 @@ module.exports = (function () {
   'use strict';
 
   return {
-    travis : function(state, command) {
+    travis : function (state, command) {
       var scared = 0;
 
-      if((state.values) && (state.values.value) && (state.values.value.length)) {
+      if((state) && (state.values) && (state.values.value) && (state.values.value.length)) {
         if(state.values.value[0].status === 'err') {
           scared = -3;
         }

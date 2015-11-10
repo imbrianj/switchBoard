@@ -39,7 +39,7 @@ module.exports = (function () {
      * largely unnecessary, as state is sent through normal use via API
      * callbacks, but this will ensure things are current.
      */
-    poll : function(deviceId, controllers) {
+    poll : function (deviceId, controllers) {
       var runCommand  = require(__dirname + '/../../lib/runCommand');
 
       runCommand.runCommand(deviceId, 'list');

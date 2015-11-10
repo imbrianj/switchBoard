@@ -39,13 +39,13 @@ module.exports = (function () {
 
     governor : false,
 
-    translate : function(token, lang) {
+    translate : function (token, lang) {
       var translate = require(__dirname + '/../lib/translate');
 
       return translate.translate('{{i18n_' + token + '}}', 'smartthings', lang);
     },
 
-    formatMessage : function(messageType, contact, state, lang) {
+    formatMessage : function (messageType, contact, state, lang) {
       var sharedUtil = require(__dirname + '/../lib/sharedUtil').util,
           windows    = '',
           type       = '',
@@ -60,7 +60,7 @@ module.exports = (function () {
       return message;
     },
 
-    windowOpen : function(device, command, controllers, values, config) {
+    windowOpen : function (device, command, controllers, values, config) {
       var notify      = require(__dirname + '/../lib/notify'),
           deviceState = require(__dirname + '/../lib/deviceState'),
           runCommand  = require(__dirname + '/../lib/runCommand'),
@@ -70,7 +70,7 @@ module.exports = (function () {
           message     = '',
           status;
 
-      checkState = function() {
+      checkState = function () {
         var deviceId,
             currentDevice = {},
             status        = { thermostat : [], contact : [] },
@@ -123,7 +123,7 @@ module.exports = (function () {
         message = that.formatMessage('warn', status.contact, status.thermostat[0].state, controllers.config.language);
         notify.notify(message, controllers, device);
 
-        setTimeout(function() {
+        setTimeout(function () {
           var status = checkState(),
               deviceId,
               i      = 0;
@@ -144,7 +144,7 @@ module.exports = (function () {
           }
 
           // Don't hammer us if we're messing with the thermostat.
-          setTimeout(function() {
+          setTimeout(function () {
             that.governor = false;
           }, 60000);
         }, delay * 1000);

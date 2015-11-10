@@ -28,8 +28,6 @@
  * @fileoverview Unit test for devices/lg/controller.js
  */
 
-State = {};
-
 exports.lgControllerTest = {
   hashTable : function (test) {
     'use strict';

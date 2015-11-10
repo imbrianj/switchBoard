@@ -50,7 +50,7 @@ module.exports = (function () {
     /**
      * Prepare a request for command execution.
      */
-    postPrepare : function(config) {
+    postPrepare : function (config) {
       return {
         host    : config.host,
         port    : config.port,
@@ -73,7 +73,7 @@ module.exports = (function () {
           ssl         = config.ssl.disabled === false ? 'https' : 'http';
 
       smartthings.path     = deviceConfig.path || '/oauth/token?grant_type=authorization_code&client_id=' + deviceConfig.clientId + '&client_secret=' + deviceConfig.clientSecret + '&redirect_uri=' + ssl + '://' + config.serverIp + ':' + config.serverPort + '/oauth/' + deviceId + '&code=' + oauthCode + '&scope=app';
-      smartthings.callback = function(err, response) {
+      smartthings.callback = function (err, response) {
         var fs       = require('fs'),
             authData = {},
             cache;
@@ -106,7 +106,7 @@ module.exports = (function () {
       console.log('\x1b[35m' + controller.config.title + '\x1b[0m: Fetching device url');
 
       smartthings.path     = controller.config.path || '/api/smartapps/endpoints/' + controller.config.clientId + '?access_token=' + auth.accessToken;
-      smartthings.callback = function(err, response) {
+      smartthings.callback = function (err, response) {
         var fs = require('fs'),
             cache;
 
@@ -122,7 +122,7 @@ module.exports = (function () {
 
             cache = fs.createWriteStream(__dirname + '/../../cache/smartthingsAuth.json');
 
-            cache.once('open', function() {
+            cache.once('open', function () {
               console.log('\x1b[35m' + controller.config.title + '\x1b[0m: Auth data cached with URL');
 
               that.oauthDeviceList({ deviceId : controller.config.deviceId, auth : auth, groups : controller.config.groups, className : controller.config.className });
@@ -297,7 +297,7 @@ module.exports = (function () {
      * request and determine which device has changed to which state based on
      * the device path provided.
      */
-    getDevicePath : function(command, config, callback) {
+    getDevicePath : function (command, config, callback) {
       var deviceState      = require(__dirname + '/../../lib/deviceState'),
           smartThingsState = deviceState.getDeviceState(config.device.deviceId),
           subDevices       = {},
@@ -478,10 +478,10 @@ module.exports = (function () {
           ssl  = config.ssl.disabled === false ? 'https' : 'http';
 
       if(typeof controller.config.clientId !== 'undefined' && controller.config.clientSecret !== 'undefined') {
-        fs.exists(__dirname + '/../../cache/smartthingsAuth.json', function(fileExists) {
+        fs.exists(__dirname + '/../../cache/smartthingsAuth.json', function (fileExists) {
           // If we have a presumed good auth token, we can populate the device list.
           if(fileExists) {
-            fs.readFile(__dirname + '/../../cache/smartthingsAuth.json', function(err, auth) {
+            fs.readFile(__dirname + '/../../cache/smartthingsAuth.json', function (err, auth) {
               var runCommand = require(__dirname + '/../../lib/runCommand');
 
               if(auth.toString()) {
@@ -536,7 +536,7 @@ module.exports = (function () {
       smartthings.port      = config.port             || 443;
       smartthings.path      = config.path             || '';
       smartthings.method    = config.method           || 'GET';
-      smartthings.callback  = config.callback         || function() {};
+      smartthings.callback  = config.callback         || function () {};
 
       if(smartthings.list) {
         this.oauthDeviceList(smartthings);
@@ -554,12 +554,12 @@ module.exports = (function () {
         }
 
         if(request.path) {
-          request = https.request(request, function(response) {
-                      response.on('data', function(response) {
+          request = https.request(request, function (response) {
+                      response.on('data', function (response) {
                         dataReply += response;
                       });
 
-                      response.once('end', function() {
+                      response.once('end', function () {
                         var smartthingsData = null;
 
                         if(dataReply) {
@@ -597,7 +597,7 @@ module.exports = (function () {
                       });
                     });
 
-          request.once('error', function(err) {
+          request.once('error', function (err) {
             smartthings.callback(err);
           });
 

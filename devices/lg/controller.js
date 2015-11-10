@@ -176,7 +176,7 @@ module.exports = (function () {
     state : function (controller, config, callback) {
       var lg = { device : {}, config : {}};
 
-      callback               = callback || function() {};
+      callback               = callback || function () {};
       lg.command             = 'pair';
       lg.device.deviceId     = controller.config.deviceId;
       lg.device.deviceIp     = controller.config.deviceIp;
@@ -209,24 +209,24 @@ module.exports = (function () {
       lg.callback   = config.callback                || function () {};
       lg.pairKey    = config.device.pairKey;
 
-      request = http.request(this.postPrepare(lg), function(response) {
-                  response.on('data', function(response) {
+      request = http.request(this.postPrepare(lg), function (response) {
+                  response.on('data', function (response) {
                     dataReply += response;
                   });
 
-                  response.once('end', function() {
+                  response.once('end', function () {
                     lg.callback(null, dataReply);
                   });
                 });
 
       if(lg.command === 'state') {
-        request.setTimeout(lg.timeout, function() {
+        request.setTimeout(lg.timeout, function () {
           request.destroy();
           lg.callback({ code : 'ETIMEDOUT' }, null, true);
         });
       }
 
-      request.once('error', function(err) {
+      request.once('error', function (err) {
         if((err.code !== 'ETIMEDOUT') || (lg.command !== 'state')) {
           lg.callback(err);
         }

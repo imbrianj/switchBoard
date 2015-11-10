@@ -39,7 +39,7 @@ module.exports = (function () {
      * Some devices can be assumed - if you say "TV" and only have one TV
      * configured, we don't need to require you to use the proper name.
      */
-    getGenericDevices : function(controllers) {
+    getGenericDevices : function (controllers) {
       var genericTypes = { tv          : ['samsung', 'panasonic', 'lg'],
                            television  : ['samsung', 'panasonic', 'lg'],
                            stereo      : ['denon', 'pioneer'],
@@ -80,7 +80,7 @@ module.exports = (function () {
      * "Turn off the Hall Light" - we'll know which services to send that
      * request through.
      */
-    getSubDevices : function(controllers) {
+    getSubDevices : function (controllers) {
       var deviceState = require(__dirname + '/../../lib/deviceState'),
           subdevices = {},
           currentState,
@@ -111,7 +111,7 @@ module.exports = (function () {
      * Accept a chunk of translation codes along with the language and return
      * an array of the translated strings.
      */
-    getKeywords : function(codes, language) {
+    getKeywords : function (codes, language) {
       var translate = require(__dirname + '/../../lib/translate'),
           strings   = [],
           i         = 0;
@@ -126,7 +126,7 @@ module.exports = (function () {
     /**
      * Grab generic device names that have been translated.
      */
-    getGenericTerms : function(language) {
+    getGenericTerms : function (language) {
       var codes = ['TV', 'STEREO', 'CAMERA', 'PLAYSTATION', 'WEATHER', 'STOCKS'];
 
       return this.getKeywords(codes, language);
@@ -135,7 +135,7 @@ module.exports = (function () {
     /**
      * Grab each translated verb we're listening for.
      */
-    getVerbs : function(language) {
+    getVerbs : function (language) {
       var codes = ['ON', 'OFF', 'HEAT', 'COOL', 'TOGGLE', 'UP', 'DOWN', 'LEFT', 'RIGHT', 'ENTER', 'ARM', 'DISARM'];
 
       return this.getKeywords(codes, language);
@@ -144,7 +144,7 @@ module.exports = (function () {
     /**
      * Grab each inquiry keyword we're listening for.
      */
-    getInquiry : function(language) {
+    getInquiry : function (language) {
       var codes = ['DO', 'HOW', 'SHOULD', 'WHAT', 'WHEN', 'WHERE', 'WHO', 'WHY'];
 
       return this.getKeywords(codes, language);

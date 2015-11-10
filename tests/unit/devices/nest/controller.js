@@ -29,7 +29,7 @@
  */
 
 exports.nestControllerTest = {
-  fragments : function(test) {
+  fragments : function (test) {
     'use strict';
 
     var nestController = require(__dirname + '/../../../../devices/nest/controller'),

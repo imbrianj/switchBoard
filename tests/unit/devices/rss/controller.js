@@ -29,7 +29,7 @@
  */
 
 exports.rssControllerTest = {
-  fragments : function(test) {
+  fragments : function (test) {
     'use strict';
 
     var rssController = require(__dirname + '/../../../../devices/rss/controller'),
@@ -40,7 +40,7 @@ exports.rssControllerTest = {
     test.done();
   },
 
-  postPrepare : function(test) {
+  postPrepare : function (test) {
     'use strict';
 
     var rssController = require(__dirname + '/../../../../devices/rss/controller'),
@@ -56,7 +56,7 @@ exports.rssControllerTest = {
     test.done();
   },
 
-  getArticles : function(test) {
+  getArticles : function (test) {
     'use strict';
 
     var rssController = require(__dirname + '/../../../../devices/rss/controller'),

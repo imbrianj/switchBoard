@@ -35,7 +35,7 @@ module.exports = (function () {
   return {
     version : 20151009,
 
-    announceMoisture : function(device, command, controllers, values, config) {
+    announceMoisture : function (device, command, controllers, values, config) {
       var runCommand = require(__dirname + '/../lib/runCommand'),
           translate  = require(__dirname + '/../lib/translate'),
           notify     = require(__dirname + '/../lib/notify'),

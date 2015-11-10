@@ -39,7 +39,7 @@ module.exports = (function () {
     /**
      * Prepare a request for command execution.
      */
-    postPrepare : function(config) {
+    postPrepare : function (config) {
       return {
         auth    : config.twilioSid + ':' + config.twilioToken,
         host    : config.host,
@@ -79,7 +79,7 @@ module.exports = (function () {
       deviceState.updateState(controller.config.deviceId, controller.config.typeClass, { state : 'ok' });
     },
 
-    send : function(config) {
+    send : function (config) {
       var https       = require('https'),
           sms         = {},
           postRequest = '',
@@ -97,15 +97,15 @@ module.exports = (function () {
       sms.callback    = config.callback    || function () {};
       sms.postRequest = this.postData(sms);
 
-      request = https.request(this.postPrepare(sms), function(response) {
+      request = https.request(this.postPrepare(sms), function (response) {
         response.setEncoding('utf8');
 
-        response.once('data', function(response) {
+        response.once('data', function (response) {
           sms.callback(null, response);
         });
       });
 
-      request.once('error', function(err) {
+      request.once('error', function (err) {
         sms.callback(err);
       });
 

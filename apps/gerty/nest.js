@@ -32,7 +32,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    nest : function(state, command) {
+    nest : function (state, command) {
       var comfortable = 0,
           social      = 0,
           scared      = 0,

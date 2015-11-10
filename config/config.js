@@ -502,24 +502,35 @@ exports.config = {
   },
 
   gerty : {
-    typeClass   : 'gerty',
-    title       : 'Gerty',
-    personality : 80,
+    typeClass      : 'gerty',
+    title          : 'Gerty',
+    personality    : 80,
+    // Gerty will only act on inputted text that addresses him based on his
+    // given name.  This should be true if you intend to use the inputted text
+    // log as a simple chat app regularly.
+    address        : false,
+    // Gerty will try to act on any inputted text - but will not reply to the
+    // negative of any command it does not understand.  This should be true if
+    // you intend to use the inputted text log as a simple chat app some of the
+    // time.
+    ignoreNegative : true,
     // Sometimes, words are transcribed incorrectly.  Since I'm 100% certain
     // I'll never say something like "bedroom lambs", I can list some words or
     // phrases that will carry some actual meaning.
-    corrections : { 'bedroom lambs' : 'bedroom lamps',
-                    'office which'  : 'office switch',
-                    'hall life'     : 'hall light',
-                    'kitchen life'  : 'kitchen light',
-                    'dining life'   : 'dining light' },
-    apps        : { 'Gerty' : { id            : 'gerty',
-                                macros        : { 'Watch A Movie' : 'ps3=PowerOn,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,Circle,sleep,sleep,Left;samsung=sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,HDMI4,sleep,DOWN,sleep,ENTER,sleep,sleep,sleep,sleep,ENTER',
-                                                  'Goodnight'     : 'smartthings=subdevice-mode-Night',
-                                                  'Good Night'    : 'smartthings=subdevice-mode-Night',
-                                                  'Goodbye'       : 'smartthings=subdevice-mode-Away;nest=Away',
-                                                  'Welcome Home'  : 'smartthings=subdevice-mode-Home;nest=Home' },
-                                controllerIds : ['samsung', 'roku', 'ps3', 'panasonic', 'lg', 'pioneer', 'denon', 'speech', 'stocks', 'weather', 'foscam', 'mp3', 'sms', 'pushover', 'smartthings', 'nest', 'switchBoardCI', 'xbmc', 'raspberryRemote', 'wemo', 'activeBuilding', 'clientMp3', 'clientNotify', 'clientSpeech'] } },
-    disabled    : true
+    corrections    : { 'bedroom lambs' : 'bedroom lamps',
+                       'office which'  : 'office switch',
+                       'hall life'     : 'hall light',
+                       'kitchen life'  : 'kitchen light',
+                       'dining life'   : 'dining light' },
+    names          : { '192.168.1.1'   : 'Brian\'s Phone',
+                       '192.168.1.2'   : 'Brian\'s Computer' },
+    apps           : { 'Gerty' : { id            : 'gerty',
+                                   macros        : { 'Watch A Movie' : 'ps3=PowerOn,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,Circle,sleep,sleep,Left;samsung=sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,HDMI4,sleep,DOWN,sleep,ENTER,sleep,sleep,sleep,sleep,ENTER',
+                                                     'Goodnight'     : 'smartthings=subdevice-mode-Night',
+                                                     'Good Night'    : 'smartthings=subdevice-mode-Night',
+                                                     'Goodbye'       : 'smartthings=subdevice-mode-Away;nest=Away',
+                                                     'Welcome Home'  : 'smartthings=subdevice-mode-Home;nest=Home' },
+                                   controllerIds : ['samsung', 'roku', 'ps3', 'panasonic', 'lg', 'pioneer', 'denon', 'speech', 'stocks', 'weather', 'foscam', 'mp3', 'sms', 'pushover', 'smartthings', 'nest', 'switchBoardCI', 'xbmc', 'raspberryRemote', 'wemo', 'activeBuilding', 'clientMp3', 'clientNotify', 'clientSpeech'] } },
+    disabled       : false
   }
 };

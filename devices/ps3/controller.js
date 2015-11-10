@@ -116,7 +116,7 @@ module.exports = (function () {
      * On startup, your PS3 is clearly not connected to SwitchBoard, so we'll
      * start it off with the "err" (or "off") state.
      */
-    init : function(controller, config) {
+    init : function (controller, config) {
       var deviceState = require(__dirname + '/../../lib/deviceState');
 
       deviceState.updateState(controller.config.deviceId, 'ps3', { state : 'err' });
@@ -162,7 +162,7 @@ module.exports = (function () {
         if(ps3.command === 'POWERON') {
           ps3.callback(null, 'ok');
 
-          gimx.stderr.on('data', function(err) {
+          gimx.stderr.on('data', function (err) {
             if(err.toString().indexOf('shutdown') !== -1) {
               console.log('\x1b[31m' + config.device.title + '\x1b[0m: Controller disconnected');
             }
@@ -171,11 +171,11 @@ module.exports = (function () {
           });
         }
 
-        gimx.once('error', function(err) {
+        gimx.once('error', function (err) {
           ps3.callback(err);
         });
 
-        gimx.once('close', function(code) {
+        gimx.once('close', function (code) {
           var deviceState;
 
           if(ps3.command === 'POWERON') {

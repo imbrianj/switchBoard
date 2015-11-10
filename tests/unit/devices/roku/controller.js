@@ -28,10 +28,8 @@
  * @fileoverview Unit test for devices/roku/controller.js
  */
 
-State = {};
-
 exports.rokuControllerTest = {
-  fragments : function(test) {
+  fragments : function (test) {
     'use strict';
 
     var rokuController = require(__dirname + '/../../../../devices/roku/controller'),
