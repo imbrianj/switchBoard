@@ -82,7 +82,7 @@ module.exports = (function () {
      */
     getSubDevices : function (controllers) {
       var deviceState = require(__dirname + '/../../lib/deviceState'),
-          subdevices = {},
+          subdevices  = {},
           currentState,
           device,
           subdevice,

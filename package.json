@@ -22,7 +22,7 @@
   "dependencies": {
     "nopt": "~3.0.4",
     "request": "~2.65.0",
-    "xml2js": "~0.4.13",
+    "xml2js": "~0.4.15",
     "websocket": "~1.0.22"
   },
   "devDependencies": {
