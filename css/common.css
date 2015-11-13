@@ -464,11 +464,11 @@ section .text-block h1 {
 }
 
 .device-off {
-  filter: alpha(opacity=50);
-  -moz-opacity: .5;
-  -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=50)';
-  -webkit-opacity: .5;
-  opacity: .5;
+	-ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=50)';
+	filter: alpha(opacity=50);
+	-moz-opacity: .5;
+	-webkit-opacity: .5;
+	opacity: .5;
 }
 
 section > div {
@@ -564,19 +564,26 @@ section .text-block li .name {
 }
 
 section .dialog {
+	border: 1px solid #444;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
 	font-size: 50%;
 	margin: 0 auto;
 	max-height: 10em;
 	overflow-y: auto;
+	padding: .25em;
 	text-align: left;
 	width: 90%;
 }
 
 section .dialog .time {
+	display: inline-block;
+	-ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=50)';
 	filter: alpha(opacity=50);
 	font-size: 70%;
+	min-width: 7.5em;
 	-moz-opacity: .5;
-	-ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=50)';
 	-webkit-opacity: .5;
 	opacity: .5;
 	vertical-align: middle;
