@@ -33,7 +33,7 @@ SB.spec = (function () {
   'use strict';
 
   return {
-    version : 20150916,
+    version : 20151114,
 
     state     : {},
     parsers   : {},
@@ -871,13 +871,14 @@ SB.spec = (function () {
      * passes them along for submission.
      */
     sendInput : function (elm) {
-      var text = '',
-          type = '',
-          device;
+      var input  = SB.getByTag('input', elm, 'input')[0],
+          text   = input.value,
+          device = input.name,
+          type   = SB.getByClass('input-type', elm, 'input')[0].value;
 
-      text   = SB.getByTag('input', elm, 'input')[0].value;
-      device = SB.getByTag('input', elm, 'input')[0].name;
-      type   = SB.getByClass('input-type', elm, 'input')[0].value;
+      if(input.type === 'text') {
+        input.value = '';
+      }
 
       SB.spec.sendTextInput(text, device, type);
     },

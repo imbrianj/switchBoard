@@ -564,7 +564,6 @@ section .text-block li .name {
 }
 
 section .dialog {
-	border: 1px solid #444;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
 	border-radius: 3px;
@@ -575,6 +574,10 @@ section .dialog {
 	padding: .25em;
 	text-align: left;
 	width: 90%;
+}
+
+section .dialog:not(:empty) {
+	border: 1px solid #444;
 }
 
 section .dialog .time {
