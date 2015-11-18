@@ -1463,6 +1463,11 @@ section.nest .sub-device-list .control-device-status li {
 	width: 40%;
 }
 
+section.nest .sub-device-list .control-device-status li:only-child {
+	max-width: 60%;
+	width: 60%;
+}
+
 section.nest .sub-device-list .text-device-status {
 	max-width: 100%;
 	width: 100%;
