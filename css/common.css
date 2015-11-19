@@ -1699,7 +1699,8 @@ header .selected a {
 	}
 
 	section.nest .sub-device-list .sub-device-group,
-	section.nest .sub-device-list .control-device-status li {
+	section.nest .sub-device-list .control-device-status li,
+	section.nest .sub-device-list .control-device-status li:only-child {
 		max-width: 100%;
 		width: 100%;
 	}

@@ -17,6 +17,10 @@ exports.config = {
     localTimeout : 1000,
     // Your SSL key and SCR will be generated for you.  If you want to use one
     // you've manually created, drop "ssl.key" and "ssl.csr" into /cache/.
+    //
+    // If you're using self-signed certs, be aware that appCaching may not work
+    // in all (or any) browsers.  Also note that SmartThings cannot contact
+    // Switchboard for real-time updates.
     ssl          : {
       country  : 'US',
       state    : 'Washington',
