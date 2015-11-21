@@ -26,52 +26,55 @@
 /**
  * @author brian@bevey.org
  * @fileoverview Interface for various hardware controllers.
- * @requires fs, http, https, url, path, nopt, websocket
+ * @requires fs, http, https, url, path, websocket
  */
 
-var version         = 20151109,
+var version         = 20151121,
     fs              = require('fs'),
     http            = require('http'),
     https           = require('https'),
     url             = require('url'),
     path            = require('path'),
-    nopt            = require('nopt'),
     webSocketServer = require('websocket').server,
     staticAssets    = require(__dirname + '/lib/staticAssets'),
     loadController  = require(__dirname + '/lib/loadController'),
     requestInit     = require(__dirname + '/lib/requestInit'),
     webSockets      = require(__dirname + '/lib/webSockets'),
-    knownOpts       = { 'config' : path },
-    shortHands      = { 'c' : ['--config'] },
-    parsed          = nopt(knownOpts, shortHands, process.argv, 2),
     controllers,
     server,
     wsServer,
     settings,
+    configFile      = __dirname + '/config/config.js',
+    arg,
     options,
     connection,
     startup;
 
-if(parsed.config) {
-  settings = require(parsed.config);
-}
-
-else {
-  settings = require(__dirname + '/config/config');
-}
-
-controllers = loadController.loadController(settings.config);
-
-if(settings.config.config.ssl.disabled !== true) {
-  if((fs.existsSync('cache/key.pem')) && (fs.existsSync('cache/server.crt'))) {
-    options = {
-      key  : fs.readFileSync('cache/key.pem'),
-      cert : fs.readFileSync('cache/server.crt')
-    };
+for(arg in process.argv) {
+  switch(process.argv[arg]) {
+    case '-c' :
+    case '--config' :
+      configFile = __dirname + '/' + process.argv[parseInt(arg, 10) + 1];
+    break;
   }
+}
 
-  else if(process.platform === 'linux') {
-    staticAssets.buildCerts(settings.config.config.ssl);
+if(fs.existsSync(configFile)) {
+  settings = require(configFile);
+
+  controllers = loadController.loadController(settings.config);
+
+  if(settings.config.config.ssl.disabled !== true) {
+    if((fs.existsSync('cache/key.pem')) && (fs.existsSync('cache/server.crt'))) {
+      options = {
+        key  : fs.readFileSync('cache/key.pem'),
+        cert : fs.readFileSync('cache/server.crt')
+      };
+    }
+
+    else if(process.platform === 'linux') {
+      staticAssets.buildCerts(settings.config.config.ssl);
+    }
   }
 }
 
@@ -140,4 +143,8 @@ if(controllers) {
 
     webSockets.newConnection(request, controllers);
   });
+}
+
+else {
+  console.log('\x1b[31mError\x1b[0m: No controllers found.  Is your config file setup correctly?');
 }
