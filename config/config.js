@@ -220,9 +220,9 @@ exports.config = {
                  { title : 'I-5 &amp; Roanoke',         image : 'http://images.wsdot.wa.gov/nw/005vc16802.jpg' },
                  { title : 'I-5 &amp; Yesler',          image : 'http://images.wsdot.wa.gov/nw/005vc16508.jpg' },
                  { title : '99 &amp; S King',           image : 'http://images.wsdot.wa.gov/nw/099vc03072.jpg' },
-                 { title : 'Elliot &amp; Broad',        image : 'http://www.seattle.gov/trafficcams/images/Elliott_Broad.jpg' },
-                 { title : 'Stewart, Yale &amp; Denny', image : 'http://www.seattle.gov/trafficcams/images/Yale_Denny.jpg' },
-                 { title : '15th &amp; Emerson',        image : 'http://www.seattle.gov/trafficcams/images/15W_Emerson.jpg' },
+                 { title : 'Elliot &amp; Broad',        image : 'https://www.seattle.gov/trafficcams/images/Elliott_Broad.jpg' },
+                 { title : 'Stewart, Yale &amp; Denny', image : 'https://www.seattle.gov/trafficcams/images/Yale_Denny.jpg' },
+                 { title : '15th &amp; Emerson',        image : 'https://www.seattle.gov/trafficcams/images/15W_Emerson.jpg' },
                  { title : 'SeaTac Airport',            image : 'http://archive.king5.com/weather/images/core/webcam/seatac.jpg' }],
     disabled  : true
   },
