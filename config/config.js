@@ -156,7 +156,7 @@ exports.config = {
     apps      : { 'Notify' : { id            : 'announceStocks',
                                limits        : { YHOO : { buy : 30,  sell : 55 },
                                                  TSLA : { buy : 200, sell : 350 } },
-                               controllerIds : ['pushover', 'speech', 'mp3', 'clientSpeech', 'clientMp3', 'clientNotify'] } },
+                               controllerIds : ['pushover', 'speech', 'mp3', 'clientSpeech', 'clientMp3', 'clientNotify', 'gerty'] } },
     disabled  : true
   },
 
@@ -177,7 +177,7 @@ exports.config = {
                                   // trigger automatically, so I stick with
                                   // Home.
                                   nightMode     : 'Home',
-                                  controllerIds : ['smartthings', 'clientNotify'] } },
+                                  controllerIds : ['smartthings', 'clientNotify', 'gerty'] } },
     disabled  : true
   },
 
@@ -194,7 +194,7 @@ exports.config = {
     username  : 'user',
     password  : 'password',
     apps      : { 'Announce'      : { id            : 'announceFoscam',
-                                      controllerIds : ['speech', 'clientSpeech', 'clientNotify'] },
+                                      controllerIds : ['speech', 'clientSpeech', 'clientNotify', 'gerty'] },
                   'Foscam Change' : { id            : 'foscamChange' } },
     disabled  : true
   },
@@ -334,15 +334,15 @@ exports.config = {
     /*
     apps           : { 'Announce'          : { id            : 'announcePresence',
                                                presence      : ['Brian', 'Goblin'],
-                                               controllerIds : ['speech', 'cientSpeech', 'clientNotify'],
+                                               controllerIds : ['speech', 'cientSpeech', 'clientNotify', 'gerty'],
                                                disabled      : true },
                        'Announce Moisture' : { id            : 'announceMoisture',
-                                               controllerIds : ['speech', 'clientNotify', 'clientSpeech'],
+                                               controllerIds : ['speech', 'clientNotify', 'clientSpeech', 'gerty'],
                                                disabled      : true },
                        'Window Open'       : { id            : 'windowOpen',
                                                contact       : ['Bedroom Window'],
                                                thermostat    : ['Living Room'],
-                                               controllerIds : ['nest', 'pushover', 'speech'],
+                                               controllerIds : ['nest', 'pushover', 'speech', 'gerty'],
                                                disabled      : true },
                        'Mode Change'       : { id            : 'smartthingsModeChange',
                                                controllerIds : [],
@@ -354,7 +354,7 @@ exports.config = {
                                                contact       : 'Front Door',
                                                vibrate       : 'Front Door',
                                                delay         : 5,
-                                               controllerIds : ['pushover', 'sms', 'speech', 'mp3', 'clientSpeech', 'clientNotify', 'clientMp3'],
+                                               controllerIds : ['pushover', 'sms', 'speech', 'mp3', 'clientSpeech', 'clientNotify', 'clientMp3', 'gerty'],
                                                disabled      : true },
                        'Presence Mode'     : { id            : 'presenceMode',
                                                presence      : ['Brian', 'Goblin'],
@@ -364,7 +364,7 @@ exports.config = {
                                                // mode to trigger automatically,
                                                // so I stick with Home.
                                                nightMode     : 'Home',
-                                               controllerIds : ['weather', 'clientNotify'] }
+                                               controllerIds : ['weather', 'clientNotify', 'gerty'] }
                      },
     */
     className      : { Goblin : 'fa-female' },
@@ -382,10 +382,10 @@ exports.config = {
                   'Window Open'   : { id            : 'windowOpen',
                                       thermostats   : ['Living Room'],
                                       contact       : ['Balcony Door', 'Office Window', 'Bedroom Window', 'Dining Room Window', 'Living Room Window'],
-                                      controllerIds : ['smartthings', 'pushover', 'speech', 'clientSpeech', 'clientNotify'] },
+                                      controllerIds : ['smartthings', 'pushover', 'speech', 'clientSpeech', 'clientNotify', 'gerty'] },
                   'Protect Alarm' : { id            : 'announceNest',
                                       macro         : 'smartthings=subdevice-on-Hall+Light',
-                                      controllerIds : ['pushover', 'sms', 'speech', 'clientSpeech', 'clientNotify'] }
+                                      controllerIds : ['pushover', 'sms', 'speech', 'clientSpeech', 'clientNotify', 'gerty'] }
     */
                 },
     disabled  : true
@@ -397,7 +397,7 @@ exports.config = {
     travisOwner    : 'imbrianj',
     travisRepo     : 'switchBoard',
     apps           : { 'Announce' : { id            : 'announceTravis',
-                                      controllerIds : ['clientNotify'] } },
+                                      controllerIds : ['clientNotify', 'gerty'] } },
     disabledMarkup : true,
     disabled       : true
   },
@@ -460,7 +460,7 @@ exports.config = {
     communityId : '1234',
     unitNumber  : '123',
     apps        : { 'Announce' : { id            : 'announceActiveBuilding',
-                                   controllerIds : ['speech', 'clientSpeech', 'clientNotify'] } },
+                                   controllerIds : ['speech', 'clientSpeech', 'clientNotify', 'gerty'] } },
     disabled    : true
   },
 
@@ -475,7 +475,7 @@ exports.config = {
     path        : '/feed/',
     maxCount    : 3,
     apps        : { 'Announce' : { id            : 'announceRss',
-                                   controllerIds : ['speech', 'clientSpeech', 'clientNotify'] } },
+                                   controllerIds : ['speech', 'clientSpeech', 'clientNotify', 'gerty'] } },
     disabled    : true
   },
 
