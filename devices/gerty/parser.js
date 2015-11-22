@@ -26,7 +26,7 @@
 (function (exports){
   'use strict';
 
-  var version = 20151108;
+  var version = 20151121;
 
   exports.gerty = function (deviceId, markup, state, value, fragments, language) {
     var templateComment = fragments.comment,
@@ -81,13 +81,13 @@
       container    = SB.getByTag('span', SB.get(deviceId))[0];
       commentsList = SB.getByTag('ol', SB.get(deviceId))[0];
 
-      if(container) {
+      if((container) && (container.innerHTML !== value.emoji)) {
         SB.putText(container, value.emoji);
 
         container.className = value.action || '';
       }
 
-      if(commentsList) {
+      if((commentsList) && (commentsList.innerHTML !== commentsMarkup)) {
         commentsList.innerHTML = commentsMarkup;
         commentsList.scrollTop = commentsList.scrollHeight;
       }

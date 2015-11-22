@@ -535,6 +535,6 @@ exports.config = {
                                                      'Goodbye'       : 'smartthings=subdevice-mode-Away;nest=Away',
                                                      'Welcome Home'  : 'smartthings=subdevice-mode-Home;nest=Home' },
                                    controllerIds : ['samsung', 'roku', 'ps3', 'panasonic', 'lg', 'pioneer', 'denon', 'speech', 'stocks', 'weather', 'foscam', 'mp3', 'sms', 'pushover', 'smartthings', 'nest', 'switchBoardCI', 'xbmc', 'raspberryRemote', 'wemo', 'activeBuilding', 'clientMp3', 'clientNotify', 'clientSpeech'] } },
-    disabled       : false
+    disabled       : true
   }
 };
