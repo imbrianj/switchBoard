@@ -34,7 +34,7 @@ module.exports = (function () {
   return {
     version : 20151108,
 
-    gerty : function (device, command, controllers, values, config) {
+    gerty : function (device, command, controllers, values, config, appParams) {
       var translate       = require(__dirname + '/../lib/translate'),
           runCommand      = require(__dirname + '/../lib/runCommand'),
           gertyRunCommand = require(__dirname + '/gerty/runCommand'),
@@ -47,7 +47,7 @@ module.exports = (function () {
           acted           = false;
 
       // If it's a command explicitly sent to Gerty to act on.
-      if((deviceConfig.typeClass === 'gerty') && (command.indexOf('text-') === 0)) {
+      if((deviceConfig.typeClass === 'gerty') && (appParams.source === 'gerty') && (command.indexOf('text-') === 0)) {
         // You can configure Gerty to only act on inputted text that mention the
         // name you configure.
         if((!deviceConfig.address) || ((deviceConfig.address) && (command.toUpperCase().indexOf(deviceConfig.title.toUpperCase()) !== -1))) {

@@ -33,7 +33,7 @@ module.exports = (function () {
    * @fileoverview Register comments to Gerty.
    */
   return {
-    version : 20151108,
+    version : 20151122,
 
     inputs  : ['command', 'text'],
 
@@ -261,12 +261,13 @@ module.exports = (function () {
       gerty.issuer      = config.issuer;
       gerty.names       = config.device.names                               || {};
       gerty.title       = config.device.title;
+      gerty.source      = config.source;
 
       value    = this.getEmojiType(gerty.command)                           || gertyState.value.emoji;
       action   = this.getActionType(gerty.personality, gerty.command);
       comments = this.getComments(gerty)                                    || gertyState.value.comments;
 
-      gerty.callback(null, { emoji : value, description : gerty.command, action : action, comments : comments });
+      gerty.callback(null, { emoji : value, description : gerty.command, action : action, comments : comments }, false, { source : gerty.source });
     }
   };
 }());

@@ -140,7 +140,7 @@ exports.config = {
     typeClass      : 'speech',
     title          : 'Speech',
     voice          : 'male',
-    disabledMarkup : false,
+    disabledMarkup : true,
     disabled       : true
   },
 
@@ -397,8 +397,8 @@ exports.config = {
     travisOwner    : 'imbrianj',
     travisRepo     : 'switchBoard',
     apps           : { 'Announce' : { id            : 'announceTravis',
-                                      controllerIds : ['clientNotify', 'gerty'] } },
-    disabledMarkup : true,
+                                      controllerIds : ['clientNotify', 'speech', 'gerty'] } },
+    disabledMarkup : false,
     disabled       : true
   },
 

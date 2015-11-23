@@ -90,11 +90,13 @@ exports.runCommandTest = {
     'use strict';
 
     var runCommand = require(__dirname + '/../../../lib/runCommand'),
+        empty      = runCommand.getCommandType(null, null),
         text       = runCommand.getCommandType(null, 'text-TEST'),
         launch     = runCommand.getCommandType(null, 'launch-TEST'),
         list       = runCommand.getCommandType(null, 'list'),
         command    = runCommand.getCommandType(null, 'TEST');
 
+    test.strictEqual(empty,   '',        'Should return an empty string');
     test.strictEqual(text,    'text',    'Should return text');
     test.strictEqual(launch,  'launch',  'Should return launch');
     test.strictEqual(list,    'list',    'Should return list');
