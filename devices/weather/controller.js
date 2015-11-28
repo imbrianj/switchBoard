@@ -42,7 +42,7 @@ module.exports = (function () {
     fragments : function () {
       var fs = require('fs');
 
-      return { forecast : fs.readFileSync(__dirname + '/fragments/weather.tpl').toString() };
+      return { forecast : fs.readFileSync(__dirname + '/fragments/weather.tpl', 'utf-8') };
     },
 
     /**

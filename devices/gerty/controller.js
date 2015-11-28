@@ -33,7 +33,7 @@ module.exports = (function () {
    * @fileoverview Register comments to Gerty.
    */
   return {
-    version : 20151122,
+    version : 20151127,
 
     inputs  : ['command', 'text'],
 
@@ -48,7 +48,7 @@ module.exports = (function () {
     fragments : function () {
       var fs = require('fs');
 
-      return { comment : fs.readFileSync(__dirname + '/fragments/comment.tpl').toString() };
+      return { comment : fs.readFileSync(__dirname + '/fragments/comment.tpl', 'utf-8') };
     },
 
     /**
@@ -174,6 +174,7 @@ module.exports = (function () {
       var deviceState = require(__dirname + '/../../lib/deviceState'),
           gertyState  = deviceState.getDeviceState(config.deviceId),
           comment     = config.text,
+          maxCount    = config.maxCount || 100,
           user        = this.getUser(config),
           allComments = [],
           now;
@@ -196,7 +197,7 @@ module.exports = (function () {
 
       // We don't need to keep a full log as it'd be too heavy to update with
       // long uptimes.
-      return allComments.slice(0, 100);
+      return allComments.slice(Math.max(0, (allComments.length - maxCount)), allComments.length);
     },
 
     /**

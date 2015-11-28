@@ -47,7 +47,7 @@ module.exports = (function () {
     fragments : function () {
       var fs = require('fs');
 
-      return { tweet : fs.readFileSync(__dirname + '/fragments/twitter.tpl').toString() };
+      return { tweet : fs.readFileSync(__dirname + '/fragments/twitter.tpl', 'utf-8') };
     },
 
     /**

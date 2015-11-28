@@ -47,9 +47,9 @@ module.exports = (function () {
     fragments : function () {
       var fs = require('fs');
 
-      return { group      : fs.readFileSync(__dirname + '/fragments/nestGroups.tpl').toString(),
-               thermostat : fs.readFileSync(__dirname + '/fragments/nestThermostat.tpl').toString(),
-               protect    : fs.readFileSync(__dirname + '/fragments/nestProtect.tpl').toString() };
+      return { group      : fs.readFileSync(__dirname + '/fragments/nestGroups.tpl', 'utf-8'),
+               thermostat : fs.readFileSync(__dirname + '/fragments/nestThermostat.tpl', 'utf-8'),
+               protect    : fs.readFileSync(__dirname + '/fragments/nestProtect.tpl', 'utf-8') };
     },
 
     /**
@@ -128,69 +128,24 @@ module.exports = (function () {
      */
     findLabel : function (id, language) {
       var translate = require(__dirname + '/../../lib/translate'),
-          location  = '';
+          location  = '',
+          key       = id.replace('00000000-0000-0000-0000-0001000000', ''),
+          keymap    = { '01' : 'BASEMENT',
+                        '0d' : 'BEDROOM',
+                        '03' : 'DEN',
+                        '10' : 'DINING_ROOM',
+                        '06' : 'DOWNSTAIRS',
+                        '00' : 'ENTRYWAY',
+                        '0b' : 'FAMILY_ROOM',
+                        '02' : 'HALLWAY',
+                        '08' : 'KIDS_ROOM',
+                        '0a' : 'KITCHEN',
+                        '0c' : 'LIVING_ROOM',
+                        '05' : 'MASTER_BEDROOM',
+                        '0e' : 'OFFICE',
+                        '0f' : 'UPSTAIRS' };
 
-      id = id.replace('00000000-0000-0000-0000-0001000000', '');
-
-      switch(id) {
-        case '01' :
-          location = 'BASEMENT';
-        break;
-
-        case '0d' :
-          location = 'BEDROOM';
-        break;
-
-        case '03' :
-          location = 'DEN';
-        break;
-
-        case '10' :
-          location = 'DINING_ROOM';
-        break;
-
-        case '06' :
-          location = 'DOWNSTAIRS';
-        break;
-
-        case '00' :
-          location = 'ENTRYWAY';
-        break;
-
-        case '0b' :
-          location = 'FAMILY_ROOM';
-        break;
-
-        case '02' :
-          location = 'HALLWAY';
-        break;
-
-        case '08' :
-          location = 'KIDS_ROOM';
-        break;
-
-        case '0a' :
-          location = 'KITCHEN';
-        break;
-
-        case '0c' :
-          location = 'LIVING_ROOM';
-        break;
-
-        case '05' :
-          location = 'MASTER_BEDROOM';
-        break;
-
-        case '0e' :
-          location = 'OFFICE';
-        break;
-
-        case '0f' :
-          location = 'UPSTAIRS';
-        break;
-      }
-
-      return translate.translate('{{i18n_' + location + '}}', 'nest', language);
+      return translate.translate('{{i18n_' + keymap[key] + '}}', 'nest', language);
     },
 
     /**

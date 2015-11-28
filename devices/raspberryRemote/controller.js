@@ -42,7 +42,7 @@ module.exports = (function () {
     fragments : function () {
       var fs = require('fs');
 
-      return { switch : fs.readFileSync(__dirname + '/fragments/raspberryRemote.tpl').toString() };
+      return { switch : fs.readFileSync(__dirname + '/fragments/raspberryRemote.tpl', 'utf-8') };
     },
 
     /**

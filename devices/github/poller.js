@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global module, require, console */
+/*global module, require */
 
 /**
  * Copyright (c) 2014 brian@bevey.org
@@ -23,50 +23,24 @@
  * IN THE SOFTWARE.
  */
 
+/**
+ * @author brian@bevey.org
+ * @fileoverview Simple script to fire for each scheduled interval.
+ */
+
 module.exports = (function () {
   'use strict';
 
-  /**
-   * @author brian@bevey.org
-   * @fileoverview Basic control of traffic cams from around the web.
-   */
   return {
-    version : 20151028,
-
-    inputs : ['list'],
+    version : 20151124,
 
     /**
-     * Reference template fragments to be used by the parser.
+     * On poll, check the GitHub feed.
      */
-    fragments : function () {
-      var fs = require('fs');
+    poll : function (deviceId, controllers) {
+      var runCommand  = require(__dirname + '/../../lib/runCommand');
 
-      return { list : fs.readFileSync(__dirname + '/fragments/traffic.tpl', 'utf-8') };
-    },
-
-    /**
-     * Grab the latest state as soon as SwitchBoard starts up.
-     */
-    init : function (controller) {
-      var runCommand = require(__dirname + '/../../lib/runCommand');
-
-      runCommand.runCommand(controller.config.deviceId, 'list', controller.config.deviceId);
-    },
-
-    send : function (config) {
-      var traffic = {},
-          now     = new Date().getTime(),
-          cameras = [],
-          i       = 0;
-
-      traffic.cameras  = config.device.cameras || {};
-      traffic.callback = config.callback       || function () {};
-
-      for(i; i < traffic.cameras.length; i += 1) {
-        cameras.push({ title : traffic.cameras[i].title, image : traffic.cameras[i].image + '?' + now });
-      }
-
-      traffic.callback(null, cameras);
+      runCommand.runCommand(deviceId, 'list');
     }
   };
 }());

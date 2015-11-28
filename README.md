@@ -39,6 +39,7 @@ Supported Devices/Services
 | Denon            | Stable      | New controller and still in testing                                              |
 | Foscam           | Stable      | Works with FI8910W (if you have another version that this does not work with, let me know and I can add support).  Arm, Disarm, Go to presets, etc. *INSECURE* Exposes camera credentials to users |
 | Gerty            | Testing     | A simple interface for all devices that reacts to natural inputs.                |
+| GitHub           | Development | Poll for commits to a given repository.  For Switchboard, can tell you if you should update. |
 | LG TVs           | Development | Still need work on authentication                                                |
 | Location         | Testing     | Uses [switchboard-phpServer](https://github.com/imbrianj/switchboard-phpServer) and [Tasker](https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm) to track your GPS position
 | MP3              | Stable      | Works on *nix with mpg123 or OSX with afplay. Win not supported                  |
@@ -61,6 +62,10 @@ Supported Devices/Services
 | Weather          | Stable      | Uses Yahoo Weather                                                               |
 | XBMC             | Stable      | Basic controls work                                                              |
 
+### How to Contribute
+
+I'm always looking to add devices and services.  Even if you're not a developer, you can help by testing, doing documentation, translating or even just expressing interest in something to help guide the effort.  Join [##switchboard on irc.freenode.net](http://webchat.freenode.net/?channels=#%23switchboard) If you'd like to reach out.  If you work for a device manufacturer - let me know if I can beg, borrow or steal a device from you to integrate!
+
 ### Controlling your PS3 -- General instructions
 
   Overview: You'll need to have your SwitchBoard device (computer, raspberry pi, etc.) *pretend* to be a PS3 controller (aka Sixaxis Controller) that communicates with the PS3 via Bluetooth.
@@ -68,7 +73,7 @@ Supported Devices/Services
    * [Install GIMX](https://github.com/matlo/GIMX/releases) version 2.0x+ (earlier versions won't work)
    * Refer to the [detailed instruction for spoofing your Bluetooth dongle's MAC address](http://gimx.fr/wiki/index.php?title=Command_line#Linux_.2B_bluetooth_.2B_PS3).
    * :point_up: Tips:
-     * The above instructions pressume you have plugged your Sixaxis into your PS3, pressed the controller's PS button to pair it, unpluged the controller from the PS3, and pluged back into your SwitchBoard device.
+     * The above instructions assume you have plugged your Sixaxis into your PS3, pressed the controller's PS button to pair it, unplugged the controller from the PS3, and pluged back into your SwitchBoard device.
      * Keep note of the Bluetooth addresses of both your PS3 controller (aka Current Bluetooth Device Address, or sixaxis_bt_address) and PS3 console (aka Current Bluetooth master, or ps3_bt_address).  You'll need to add the PS3 Bluetooth address in your config/config.js file and you'll need the controller address to copy over to your dongle
 
 ### Controlling your PS3 -- via a Raspberry Pi set up as a presistent server
@@ -83,7 +88,7 @@ Current Bluetooth Device Address: 04:98:F3:0C:FA:6B # save for later, you can di
 - `hciconfig -a` # With your dongle plugged in, this should reveal the active dongle.
 - Take note of a line that looks like this, with the rest of the metadata representing your dongle: `hci0: Type: BR/EDR  Bus: USB Etc.`
 - `bdaddr -r -i hci0` # Use the integer (in our case 0) from the hci0 output above, in this command, to set the MAC address of your dongle to that of the Sixaxis you saved earlier.
-- Your Raspberry's dongle will now pretend to be the Siaxis controller.
+- Your Raspberry's dongle will now pretend to be the Sixaxis controller.
 - `switchBoard -c config/config.js` # power up your controller, hit the Raspberry Pi via your browser
 - You should now see the PS3 tab, click on it, click on the power button (equivalent to the PS3's start button), and profit.
 - Reference: [Installing on a Raspberry Pi](http://gimx.fr/wiki/index.php?title=RPi) (retrieved on 9.10.2014)

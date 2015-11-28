@@ -42,8 +42,8 @@ module.exports = (function () {
     fragments : function () {
       var fs = require('fs');
 
-      return { group  : fs.readFileSync(__dirname + '/fragments/wemoGroups.tpl').toString(),
-               switch : fs.readFileSync(__dirname + '/fragments/wemoListSwitch.tpl').toString() };
+      return { group  : fs.readFileSync(__dirname + '/fragments/wemoGroups.tpl', 'utf-8'),
+               switch : fs.readFileSync(__dirname + '/fragments/wemoListSwitch.tpl', 'utf-8') };
     },
 
     /**

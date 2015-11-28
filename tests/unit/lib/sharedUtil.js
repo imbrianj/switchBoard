@@ -95,9 +95,13 @@ exports.sharedUtilTest = {
     var util      = require(__dirname + '/../../../lib/sharedUtil').util,
         translate = function (token) {
           return token;
-        };
+        },
+        shortTime = util.displayTime(1451073600000, translate),
+        longTime  = util.displayTime(1451073600000, translate, 'long');
 
-    test.notStrictEqual(util.displayTime(1451073600000, translate).indexOf(' @ '), -1, 'Covert time');
+    test.notStrictEqual(shortTime.indexOf(' @ '),    -1, 'Covert time');
+    test.notStrictEqual(shortTime.split(' ').length,  2, 'Short time should only have two spaces');
+    test.notStrictEqual(longTime.split(' ').length,   3, 'Long time should have three spaces');
 
     test.done();
   }

@@ -55,7 +55,7 @@ module.exports = (function () {
           // If you're asleep, I'm assuming you're pretty comfortable.
           // This also will explicitly trigger the "SLEEP" emotion.
           case 'Night' :
-            comfortable += 10;
+            comfortable += 100;
           break;
         }
 

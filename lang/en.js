@@ -321,6 +321,11 @@ module.exports = (function () {
             STRESSED    : ["Stressed"]
           }
         },
+        github : {
+          GITHUB : "GitHub",
+          LATEST : "You are running the latest version of SwitchBoard.",
+          NEWER  : "There is a newer version of SwitchBoard available."
+        },
         lg : {
           LG       : "LG",
           EXTERNAL : "External",

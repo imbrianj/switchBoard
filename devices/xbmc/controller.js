@@ -63,7 +63,7 @@ module.exports = (function () {
     fragments : function () {
       var fs = require('fs');
 
-      return { current : fs.readFileSync(__dirname + '/fragments/xbmc.tpl').toString() };
+      return { current : fs.readFileSync(__dirname + '/fragments/xbmc.tpl', 'utf-8') };
     },
 
     /**

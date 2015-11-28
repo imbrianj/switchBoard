@@ -49,7 +49,7 @@ module.exports = (function () {
 
         // As it gets colder, I get less comfortable.
         else if(temp < 55) {
-          comfortable += ((temp - 55) / 5);
+          comfortable += ((temp - 55) / 8);
         }
 
         // But as it gets hotter, I tend to get less comfortable faster.

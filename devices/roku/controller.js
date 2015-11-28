@@ -68,7 +68,7 @@ module.exports = (function () {
     fragments : function () {
       var fs = require('fs');
 
-      return { list : fs.readFileSync(__dirname + '/fragments/roku.tpl').toString() };
+      return { list : fs.readFileSync(__dirname + '/fragments/roku.tpl', 'utf-8') };
     },
 
     /**

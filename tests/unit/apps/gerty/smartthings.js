@@ -55,9 +55,9 @@ exports.smartthingsTest = {
     devices.value.devices.BAZ.peripheral.temp = 40;
     deviceAway = smartthings.smartthings(devices);
 
-    test.deepEqual(deviceHome,  { social : 6,   comfortable : 4 },  'All is well in the world.  People are home and the temperature is comfortable');
-    test.deepEqual(deviceSleep, { social : 5,   comfortable : 14 }, 'I\'m asleep - so I\'m very comfortable, but not as social');
-    test.deepEqual(deviceAway,  { social : -15, comfortable : 0 },  'I\'m away - so I\'m not social.  It\'s also really cold in one room');
+    test.deepEqual(deviceHome,  { social : 6,   comfortable : 4 },   'All is well in the world.  People are home and the temperature is comfortable');
+    test.deepEqual(deviceSleep, { social : 5,   comfortable : 104 }, 'I\'m asleep - so I\'m very comfortable, but not as social');
+    test.deepEqual(deviceAway,  { social : -15, comfortable : 0 },   'I\'m away - so I\'m not social.  It\'s also really cold in one room');
 
     test.done();
   }

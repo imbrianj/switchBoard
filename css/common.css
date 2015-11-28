@@ -917,12 +917,13 @@ section .emoji {
 	margin: 0 auto;
 	padding: 1em 0;
 	text-align: center;
-	width: 50%;
 }
 
 section .emoji span {
 	cursor: pointer;
 	display: block;
+	margin: 0 auto;
+	padding: .5em;
 	/* Emoji size can't be adjusted by font-size */
 	-moz-transform: scale(2);
 	-webkit-transform: scale(2);
@@ -930,6 +931,7 @@ section .emoji span {
 	-moz-transition: none;
 	-webkit-transition: none;
 	transition: none;
+	width: 1em;
 }
 
 @-moz-keyframes bounce {

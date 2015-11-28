@@ -39,7 +39,7 @@ exports.weatherTest = {
 
     test.deepEqual(deviceHot,  { excited: -1, comfortable: -8.666666666666668 },  'This is just miserable weather');
     test.deepEqual(deviceNice, { excited: 0,  comfortable: 5 },                   'Sunny.  Comfy, but not too exciting');
-    test.deepEqual(deviceSnow, { excited: 5,  comfortable: -5 },                  'Snowing!  Not comfy, but pretty exciting');
+    test.deepEqual(deviceSnow, { excited: 5,  comfortable: -3.125 },              'Snowing!  Not comfy, but pretty exciting');
 
     test.done();
   }

@@ -60,7 +60,7 @@ exports.loadMarkupTest = {
 
     var fs          = require('fs'),
         loadMarkup  = require('../../../lib/loadMarkup'),
-        template    = fs.readFileSync(__dirname + '/../../../templates/markup.html').toString(),
+        template    = fs.readFileSync(__dirname + '/../../../templates/markup.html', 'utf-8'),
         controllers = { config  : { theme  : 'TEST-theme', default : 'samsung' },
                         samsung : { config : { deviceId : 'TEST-deviceId',
                                                title    : 'TEST-title' },

@@ -44,7 +44,7 @@ module.exports = (function () {
     fragments : function () {
       var fs = require('fs');
 
-      return { item : fs.readFileSync(__dirname + '/fragments/location.tpl').toString() };
+      return { item : fs.readFileSync(__dirname + '/fragments/location.tpl', 'utf-8') };
     },
 
     /**
@@ -109,13 +109,13 @@ module.exports = (function () {
         location = reply[i];
 
         if((location.lat) && (location.long)) {
-          locationData[j] = { 'lat'   : sharedUtil.sanitize(location.lat),
-                              'long'  : sharedUtil.sanitize(location.long),
-                              'alt'   : sharedUtil.sanitize(location.alt),
-                              'url'   : sharedUtil.sanitize(location.link),
-                              'speed' : sharedUtil.sanitize(location.speed),
-                              'name'  : sharedUtil.sanitize(location.user),
-                              'time'  : sharedUtil.sanitize(location.time * 1000) };
+          locationData[j] = { lat   : sharedUtil.sanitize(location.lat),
+                              long  : sharedUtil.sanitize(location.long),
+                              alt   : sharedUtil.sanitize(location.alt),
+                              url   : sharedUtil.sanitize(location.link),
+                              speed : sharedUtil.sanitize(location.speed),
+                              name  : sharedUtil.sanitize(location.user),
+                              time  : sharedUtil.sanitize(location.time * 1000) };
 
           j += 1;
         }

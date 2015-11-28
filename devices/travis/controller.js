@@ -42,7 +42,7 @@ module.exports = (function () {
     fragments : function () {
       var fs = require('fs');
 
-      return { build : fs.readFileSync(__dirname + '/fragments/travis.tpl').toString() };
+      return { build : fs.readFileSync(__dirname + '/fragments/travis.tpl', 'utf-8') };
     },
 
     /**

@@ -20,7 +20,7 @@ exports.config = {
     //
     // If you're using self-signed certs, be aware that appCaching may not work
     // in all (or any) browsers.  Also note that SmartThings cannot contact
-    // Switchboard for real-time updates.
+    // SwitchBoard for real-time updates.
     ssl          : {
       country  : 'US',
       state    : 'Washington',
@@ -477,6 +477,22 @@ exports.config = {
     apps        : { 'Announce' : { id            : 'announceRss',
                                    controllerIds : ['speech', 'clientSpeech', 'clientNotify', 'gerty'] } },
     disabled    : true
+  },
+
+  /*
+   * Read GitHub commits.  If checking against SwitchBoard, can alert you to
+   * changes integrated into master and suggest an update.
+   */
+  github : {
+    typeClass    : 'github',
+    title        : 'GitHub',
+    owner        : 'imbrianj',
+    repo         : 'switchboard',
+    // checkVersion will only work against the main SwitchBoard repo.
+    checkVersion : true,
+    apps         : { 'Announce' : { id            : 'announceGithub',
+                                    controllerIds : ['speech', 'clientSpeech', 'clientNotify', 'gerty'] } },
+    disabled     : true
   },
 
   /*

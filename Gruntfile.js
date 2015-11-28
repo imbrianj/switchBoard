@@ -151,11 +151,30 @@ module.exports = function (grunt) {
     });
   });
 
+  grunt.registerTask('update-version', function () {
+    var fs      = require('fs'),
+        done    = this.async(),
+        file    = __dirname + '/cache/version.txt',
+        version = new Date().getTime();
+
+    fs.writeFile(file, version, function (err) {
+      if(err) {
+        console.log('\x1b[31mVersion\x1b[0m: Failed to update');
+      }
+
+      else {
+        console.log('\x1b[32mVersion\x1b[0m: Updated');
+      }
+
+      done();
+    });
+  });
+
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.registerTask('default', ['concat', 'cssmin', 'jshint', 'nodeunit', 'uglify', 'translation', 'install-precommit']);
+  grunt.registerTask('default', ['update-version', 'concat', 'cssmin', 'jshint', 'nodeunit', 'uglify', 'translation', 'install-precommit']);
 };
