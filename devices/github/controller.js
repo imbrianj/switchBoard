@@ -32,7 +32,7 @@ module.exports = (function () {
    * @requires https
    */
   return {
-    version : 20151127,
+    version : 20151129,
 
     inputs  : ['list'],
 
@@ -75,8 +75,12 @@ module.exports = (function () {
       if((controller.config.checkVersion === true) &&
          (controller.config.owner === 'imbrianj') &&
          (controller.config.repo === 'switchboard')) {
-        if(fs.existsSync(__dirname + '/../../cache/version.txt')) {
+        try {
           controller.config.version = fs.readFileSync(__dirname + '/../../cache/version.txt', 'utf-8');
+        }
+
+        catch(err) {
+          console.log('\x1b[35m' + config.device.title + '\x1b[0m: No version file found.');
         }
       }
 

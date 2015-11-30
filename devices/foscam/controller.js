@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic control of Foscam IP camera.
    */
   return {
-    version : 20150921,
+    version : 20151129,
 
     inputs  : ['command'],
 
@@ -175,22 +175,22 @@ module.exports = (function () {
       foscam.callback   = config.callback            || function () {};
 
       if(foscam.command === 'TAKE') {
-        fs.exists(filePath, function (exists) {
+        fs.stat(filePath, function(err, data) {
           var request,
               controller,
               postData;
 
-          if(exists) {
-            console.log('\x1b[35m' + config.device.title + '\x1b[0m: Skipping image - already exists');
-          }
-
-          else {
-            request  = require('request');
+          if(err) {
+            request = require('request');
             postData = that.postPrepare(foscam);
 
             console.log('\x1b[35m' + config.device.title + '\x1b[0m: Saved image');
 
             request('http://' + postData.host + ':' + postData.port + postData.path).pipe(fs.createWriteStream(filePath));
+          }
+
+          else if(data) {
+            console.log('\x1b[35m' + config.device.title + '\x1b[0m: Skipping image - already exists');
           }
         });
       }

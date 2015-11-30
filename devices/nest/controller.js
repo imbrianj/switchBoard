@@ -32,7 +32,7 @@ module.exports = (function () {
    * @requires querystring, fs, https
    */
   return {
-    version : 20151028,
+    version : 20151129,
 
     inputs : ['command', 'text', 'list', 'subdevice'],
 
@@ -385,37 +385,37 @@ module.exports = (function () {
           expired = true;
 
       if(typeof controller.config.username !== 'undefined' && controller.config.password !== 'undefined') {
-        fs.exists(__dirname + '/../../cache/nestAuth.json', function (fileExists) {
+        fs.readFile(__dirname + '/../../cache/nestAuth.json', 'utf-8', function (err, data) {
+          var runCommand  = require(__dirname + '/../../lib/runCommand');
+
+          // We need to retrieve the auth token.
+          if(err) {
+            that.getAuth({ device : { deviceId : controller.config.deviceId, username : controller.config.username, password : controller.config.password } }, controller);
+          }
+
           // If we have a presumed good auth token, we can populate the device list.
-          if(fileExists) {
-            fs.readFile(__dirname + '/../../cache/nestAuth.json', function (err, auth) {
-              var runCommand  = require(__dirname + '/../../lib/runCommand');
+          else if(data) {
+            try {
+              controller.config.auth = JSON.parse(data);
+            }
 
-              if(auth.toString()) {
-                controller.config.auth = JSON.parse(auth.toString());
+            catch(catchErr) {
+              console.log('\x1b[31m' + controller.config.title + '\x1b[0m: Auth cache could not be read');
+            }
 
-                if((controller.config.auth.expire) && (controller.config.auth.expire > now)) {
-                  expired = false;
+            if(controller.config.auth) {
+              if((controller.config.auth.expire) && (controller.config.auth.expire > now)) {
+                expired = false;
 
-                  if(typeof controller.config.auth.url === 'string') {
-                    runCommand.runCommand(controller.config.deviceId, 'list', controller.config.deviceId);
-                  }
-                }
-
-                else {
-                  that.getAuth({ device : { deviceId : controller.config.deviceId, username : controller.config.username, password : controller.config.password } }, controller);
+                if(typeof controller.config.auth.url === 'string') {
+                  runCommand.runCommand(controller.config.deviceId, 'list', controller.config.deviceId);
                 }
               }
 
               else {
-                console.log('\x1b[31m' + controller.config.title + '\x1b[0m: Auth cache is empty');
+                that.getAuth({ device : { deviceId : controller.config.deviceId, username : controller.config.username, password : controller.config.password } }, controller);
               }
-            });
-          }
-
-          // Otherwise, we need to retrieve the auth token.
-          else {
-            that.getAuth({ device : { deviceId : controller.config.deviceId, username : controller.config.username, password : controller.config.password } }, controller);
+            }
           }
         });
       }
@@ -480,17 +480,13 @@ module.exports = (function () {
 
               if(nestData) {
                 if(nestData.cmd === 'REINIT_STATE') {
-                  fs.exists('cache/nestAuth.json', function (exists) {
-                    if(exists) {
-                      fs.unlink('cache/nestAuth.json', function (err) {
-                        if(err) {
-                          nest.callback('Failed to remove expired auth');
-                        }
+                  fs.unlink(__dirname + '/../../cache/nestAuth.json', function (err) {
+                    if(err) {
+                      nest.callback('Failed to remove expired auth');
+                    }
 
-                        else {
-                          nest.callback('Expired auth removed');
-                        }
-                      });
+                    else {
+                      nest.callback('Expired auth removed');
                     }
                   });
                 }

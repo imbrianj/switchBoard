@@ -180,8 +180,7 @@ module.exports = (function () {
                           sharedUtil  = require(__dirname + '/../../lib/sharedUtil').util,
                           twitterData = [],
                           data,
-                          i           = 0,
-                          j           = 0;
+                          i           = 0;
 
                       OpenConnection = null;
 
@@ -195,19 +194,13 @@ module.exports = (function () {
                         }
 
                         if(data) {
-                          for(i; i < data.length; i += 1) {
+                          for(i; i < Math.min(data.length, twitter.maxCount); i += 1) {
                             twitterData.push({ author : sharedUtil.sanitize(data[i].user.screen_name),
                                                name   : sharedUtil.sanitize(data[i].user.name),
                                                image  : sharedUtil.sanitize(data[i].user.profile_image_url),
                                                text   : sharedUtil.sanitize(data[i].text),
                                                url    : sharedUtil.sanitize('https://twitter.com/' + data[i].user.screen_name + '/status/' + data[i].id_str),
                                                date   : new Date(data[i].created_at).getTime() });
-
-                            j += 1;
-
-                            if(j >= twitter.maxCount) {
-                              break;
-                            }
                           }
 
                           twitter.callback(null, twitterData);

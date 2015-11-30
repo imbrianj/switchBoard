@@ -35,7 +35,7 @@ module.exports = (function () {
    *       sudo apt-get install mpg123
    */
   return {
-    version : 20150921,
+    version : 20151129,
 
     inputs  : ['text'],
 
@@ -81,7 +81,10 @@ module.exports = (function () {
 
     send : function (config) {
       var fs       = require('fs'),
-          mp3      = {};
+          mp3      = {},
+          file,
+          mpg123,
+          spawn;
 
       mp3.file     = config.text ? __dirname + '/../../mp3/' + config.text + '.mp3' : '';
       mp3.callback = config.callback || function () {};
@@ -90,26 +93,26 @@ module.exports = (function () {
 
       if(mp3.execute) {
         if(mp3.file) {
-          fs.exists(mp3.file, function (exists) {
-            var spawn = require('child_process').spawn,
-                mpg123;
+          try {
+            file = fs.statSync(mp3.file);
+          }
 
-            if((exists) && (mp3.execute)) {
-              mpg123 = spawn(mp3.execute.command, mp3.execute.params);
+          catch(catchErr) {
+            mp3.callback('Specified file not found');
+          }
 
-              mpg123.once('error', function (err) {
-                mp3.callback(err);
-              });
+          if((file) && (mp3.execute)) {
+            spawn = require('child_process').spawn;
+            mpg123 = spawn(mp3.execute.command, mp3.execute.params);
 
-              mpg123.once('close', function (code) {
-                mp3.callback(null, 'ok');
-              });
-            }
+            mpg123.once('error', function (err) {
+              mp3.callback(err);
+            });
 
-            else {
-              mp3.callback('Specified file not found');
-            }
-          });
+            mpg123.once('close', function (code) {
+              mp3.callback(null, 'ok');
+            });
+          }
         }
 
         else {

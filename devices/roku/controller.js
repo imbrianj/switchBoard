@@ -33,7 +33,7 @@ module.exports = (function () {
    * @requires xml2js, http, fs, request, path
    */
   return {
-    version : 20150921,
+    version : 20151129,
 
     inputs  : ['command', 'text', 'list', 'launch'],
 
@@ -127,18 +127,20 @@ module.exports = (function () {
      */
     cacheImage : function (appName, appId, config) {
       var fs       = require('fs'),
-          filePath = __dirname + '/../../images/roku/icon_' + appId + '.png';
+          filePath = __dirname + '/../../images/roku/icon_' + appId + '.png',
+          request,
+          image;
 
-      fs.exists(filePath, function (exists) {
-        var request;
+      try {
+        image = fs.statSync(filePath);
+      }
 
-        if(!exists) {
-          request = require('request');
+      catch(catchErr) {
+        request = require('request');
 
-          console.log('\x1b[35m' + config.title + '\x1b[0m: Saved image for ' + appName);
-          request('http://' + config.deviceIp + ':8060/query/icon/' + appId).pipe(fs.createWriteStream(filePath));
-        }
-      });
+        console.log('\x1b[35m' + config.title + '\x1b[0m: Saved image for ' + appName);
+        request('http://' + config.deviceIp + ':8060/query/icon/' + appId).pipe(fs.createWriteStream(filePath));
+      }
     },
 
     /**

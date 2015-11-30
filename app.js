@@ -29,7 +29,7 @@
  * @requires fs, http, https, url, path, websocket
  */
 
-var version         = 20151121,
+var version         = 20151129,
     fs              = require('fs'),
     http            = require('http'),
     https           = require('https'),
@@ -59,92 +59,115 @@ for(arg in process.argv) {
   }
 }
 
-if(fs.existsSync(configFile)) {
-  settings = require(configFile);
+connection = function (request, response) {
+  'use strict';
 
-  controllers = loadController.loadController(settings.config);
+  // Accept commands via POST as well.
+  if(request.method === 'POST') {
+    console.log('\x1b[36mPOST command received\x1b[0m');
 
-  if(settings.config.config.ssl.disabled !== true) {
-    if((fs.existsSync('cache/key.pem')) && (fs.existsSync('cache/server.crt'))) {
-      options = {
-        key  : fs.readFileSync('cache/key.pem'),
-        cert : fs.readFileSync('cache/server.crt')
-      };
-    }
-
-    else if(process.platform === 'linux') {
-      staticAssets.buildCerts(settings.config.config.ssl);
-    }
-  }
-}
-
-if(controllers) {
-  connection = function (request, response) {
-    'use strict';
-
-    // Accept commands via POST as well.
-    if(request.method === 'POST') {
-      console.log('\x1b[36mPOST command received\x1b[0m');
-
-      requestInit.requestInit(request, controllers, response);
-    }
-
-    else {
-      request.on('end', function () {
-        var deviceController,
-            device    = url.parse(request.url, true).query.device || controllers[controllers.config.default].config.deviceId,
-            filename  = path.basename(request.url),
-            extension = path.extname(filename),
-            directory = staticAssets.getDirectory(extension, request.url),
-            contents;
-
-        controllers.config.default = device;
-
-        // Serve static assets
-        if(directory) {
-          staticAssets.writeFile(directory, filename, response, controllers.config);
-        }
-
-        // Or the remote controller
-        else {
-          requestInit.requestInit(request, controllers, response);
-        }
-      });
-
-      request.resume();
-    }
-  };
-
-  startup = function () {
-    'use strict';
-
-    console.log('\x1b[36mListening on port ' + settings.config.config.serverPort + '\x1b[0m');
-
-    if(settings.config.config.appCaching === true) {
-      staticAssets.freshenManifest();
-    }
-  };
-
-  if(options) {
-    console.log('\x1b[36mSSL\x1b[0m: Enabled');
-    server = https.createServer(options, connection).listen(settings.config.config.serverPort, startup);
+    requestInit.requestInit(request, controllers, response);
   }
 
   else {
-    console.log('\x1b[31mSSL\x1b[0m: Disabled');
-    server = http.createServer(connection).listen(settings.config.config.serverPort, startup);
+    request.on('end', function () {
+      var deviceController,
+          device    = url.parse(request.url, true).query.device || controllers[controllers.config.default].config.deviceId,
+          filename  = path.basename(request.url),
+          extension = path.extname(filename),
+          directory = staticAssets.getDirectory(extension, request.url),
+          contents;
+
+      controllers.config.default = device;
+
+      // Serve static assets
+      if(directory) {
+        staticAssets.writeFile(directory, filename, response, controllers.config);
+      }
+
+      // Or the remote controller
+      else {
+        requestInit.requestInit(request, controllers, response);
+      }
+    });
+
+    request.resume();
+  }
+};
+
+startup = function () {
+  'use strict';
+
+  console.log('\x1b[36mListening on port ' + settings.config.config.serverPort + '\x1b[0m');
+
+  if(settings.config.config.appCaching === true) {
+    staticAssets.freshenManifest();
+  }
+};
+
+fs.stat(configFile, function(err, data) {
+  'use strict';
+
+  var key,
+      cert;
+
+  if(err) {
+    console.log('\x1b[31mError\x1b[0m: No controllers found.  Is your config file setup correctly?');
   }
 
-  // Or you're connecting with Web Sockets
-  wsServer = new webSocketServer({ httpServer : server }, 'echo-protocol');
+  if(data.isFile()) {
+    settings = require(configFile);
 
-  wsServer.on('request', function (request) {
-    'use strict';
+    controllers = loadController.loadController(settings.config);
 
-    webSockets.newConnection(request, controllers);
-  });
-}
+    if(settings.config.config.ssl.disabled !== true) {
+      try {
+        key = fs.statSync(__dirname + '/cache/key.pem');
+      }
 
-else {
-  console.log('\x1b[31mError\x1b[0m: No controllers found.  Is your config file setup correctly?');
-}
+      catch(catchErr) {
+        console.log('\x1b[31mError\x1b[0m: Invalid SSL key provided.');
+      }
+
+      try {
+        cert = fs.statSync(__dirname + '/cache/server.crt');
+      }
+
+      catch(catchErr) {
+        console.log('\x1b[31mError\x1b[0m: Invalid SSL cert provided.');
+      }
+
+      if((key) && (cert)) {
+        options = {
+          key  : fs.readFileSync(__dirname + '/cache/key.pem'),
+          cert : fs.readFileSync(__dirname + '/cache/server.crt')
+        };
+      }
+
+      else if(process.platform === 'linux') {
+        staticAssets.buildCerts(settings.config.config.ssl);
+      }
+    }
+
+    if(options) {
+      console.log('\x1b[36mSSL\x1b[0m: Enabled');
+      server = https.createServer(options, connection).listen(settings.config.config.serverPort, startup);
+    }
+
+    else {
+      console.log('\x1b[31mSSL\x1b[0m: Disabled');
+      server = http.createServer(connection).listen(settings.config.config.serverPort, startup);
+    }
+
+    // Or you're connecting with Web Sockets
+    wsServer = new webSocketServer({ httpServer : server }, 'echo-protocol');
+
+    wsServer.on('request', function (request) {
+      webSockets.newConnection(request, controllers);
+    });
+  }
+
+  else {
+    console.log('\x1b[31mError\x1b[0m: Config file looks invalid.');
+  }
+});

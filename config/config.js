@@ -2,6 +2,11 @@
 /*global exports */
 
 exports.config = {
+  // This file configures SwitchBoard to include any of your services, devices,
+  // options and apps.  This file should be considered sensitive and unique to
+  // your setup.
+  //
+  // NOTE: DO NOT EXPOSE CREDENTIALS TO A PUBLIC PLACE - LIKE GITHUB.
   config : {
     serverPort   : 8080,
     serverIp     : '192.168.1.145',

@@ -114,8 +114,8 @@ module.exports = function (grunt) {
         file = __dirname + '/.git/hooks/pre-commit',
         hook;
 
-    fs.exists(file, function (exists) {
-      if(!exists) {
+    fs.stat(file, function(err, data) {
+      if(err) {
         hook  = '#!/bin/bash\n';
         hook += '\n';
         hook += 'grunt\n';

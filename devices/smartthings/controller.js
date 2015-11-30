@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic control of SmartThings endpoint.
    */
   return {
-    version : 20151028,
+    version : 20151129,
 
     inputs  : ['list', 'subdevice'],
 
@@ -478,15 +478,30 @@ module.exports = (function () {
           ssl  = config.ssl.disabled === false ? 'https' : 'http';
 
       if(typeof controller.config.clientId !== 'undefined' && controller.config.clientSecret !== 'undefined') {
-        fs.exists(__dirname + '/../../cache/smartthingsAuth.json', function (fileExists) {
-          // If we have a presumed good auth token, we can populate the device list.
-          if(fileExists) {
-            fs.readFile(__dirname + '/../../cache/smartthingsAuth.json', function (err, auth) {
-              var runCommand = require(__dirname + '/../../lib/runCommand');
+        fs.readFile(__dirname + '/../../cache/smartthingsAuth.json', function (err, data) {
+          var runCommand = require(__dirname + '/../../lib/runCommand');
 
-              if(auth.toString()) {
-                controller.config.auth = JSON.parse(auth.toString());
+          // We need to prompt the user to retrieve the auth token.
+          if(err) {
+            console.log('\x1b[31m=====================================================================\x1b[0m');
+            console.log('\x1b[31mWARNING\x1b[0m: ' + controller.config.title + ': Attempting to load controller that requires');
+            console.log('\x1b[31mWARNING\x1b[0m: additional OAuth configuration!');
+            console.log('\x1b[31mWARNING\x1b[0m: Visit this URL to authenticate:');
+            console.log('https://graph.api.smartthings.com/oauth/authorize?response_type=code&client_id=' + controller.config.clientId + '&redirect_uri=' + ssl + '://' + config.serverIp + ':' + config.serverPort + '/oauth/' + controller.config.deviceId + '&scope=app');
+            console.log('\x1b[31m=====================================================================\x1b[0m');
+          }
 
+          else if(data) {
+            if(data.toString()) {
+              try {
+                controller.config.auth = JSON.parse(data.toString());
+              }
+
+              catch(catchErr) {
+                console.log('\x1b[31m' + controller.config.title + '\x1b[0m: Failed to parse auth file');
+              }
+
+              if(controller.config.auth) {
                 if(typeof controller.config.auth.url === 'string') {
                   runCommand.runCommand(controller.config.deviceId, 'list', controller.config.deviceId);
                 }
@@ -497,19 +512,13 @@ module.exports = (function () {
               }
 
               else {
-                console.log('\x1b[31m' + controller.config.title + '\x1b[0m: Auth cache is empty');
+                console.log('\x1b[31m' + controller.config.title + '\x1b[0m: Auth cache is invalid');
               }
-            });
-          }
+            }
 
-          // Otherwise, we need to prompt the user to retrieve the auth token.
-          else {
-            console.log('\x1b[31m=====================================================================\x1b[0m');
-            console.log('\x1b[31mWARNING\x1b[0m: ' + controller.config.title + ': Attempting to load controller that requires');
-            console.log('\x1b[31mWARNING\x1b[0m: additional OAuth configuration!');
-            console.log('\x1b[31mWARNING\x1b[0m: Visit this URL to authenticate:');
-            console.log('https://graph.api.smartthings.com/oauth/authorize?response_type=code&client_id=' + controller.config.clientId + '&redirect_uri=' + ssl + '://' + config.serverIp + ':' + config.serverPort + '/oauth/' + controller.config.deviceId + '&scope=app');
-            console.log('\x1b[31m=====================================================================\x1b[0m');
+            else {
+              console.log('\x1b[31m' + controller.config.title + '\x1b[0m: Auth cache is empty');
+            }
           }
         });
       }
