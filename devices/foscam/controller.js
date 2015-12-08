@@ -150,7 +150,7 @@ module.exports = (function () {
         }
 
         else if(err) {
-          foscam.callback(foscam.device.deviceId, 'err', 'err');
+          callback(foscam.device.deviceId, 'err', 'err');
         }
       };
 

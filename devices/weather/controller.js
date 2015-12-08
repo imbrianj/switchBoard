@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic weather information, courtesy of Yahoo.
    */
   return {
-    version : 20151026,
+    version : 20151207,
 
     inputs  : ['list'],
 
@@ -142,6 +142,7 @@ module.exports = (function () {
                     response.once('end', function () {
                       var deviceState = require(__dirname + '/../../lib/deviceState'),
                           weatherData = {},
+                          errMessage  = 'err',
                           data,
                           city;
 
@@ -151,17 +152,15 @@ module.exports = (function () {
                         }
 
                         catch(err) {
-                          weather.callback('API returned an unexpected value');
+                          errMessage = 'API returned an unexpected value';
                         }
 
                         if(data && data.query && data.query.results) {
                           city = data.query.results.channel;
 
-                          if(city.title.indexOf('Error') !== -1) {
-                            deviceState.updateState(weather.deviceId, 'weather', { state : 'err', value : city.title });
-                          }
+                          if(city.title.indexOf('Error') === -1) {
+                            errMessage  = null;
 
-                          else {
                             weatherData = { 'city'     : city.location.city,
                                             'temp'     : city.item.condition.temp,
                                             'text'     : city.item.condition.text,
@@ -172,21 +171,19 @@ module.exports = (function () {
                                             'forecast' : city.item.forecast,
                                             'phase'    : that.findSunPhase(city.astronomy.sunrise, city.astronomy.sunset)
                                           };
-
-                            deviceState.updateState(weather.deviceId, 'weather', { state : 'ok', value : weatherData });
                           }
-
-                          weather.callback(null, weatherData);
                         }
 
                         else {
-                          weather.callback('No data returned from API');
+                          errMessage = 'No data returned from API';
                         }
                       }
 
                       else {
-                        weather.callback('No data returned from API');
+                        errMessage = 'No data returned from API';
                       }
+
+                      weather.callback(errMessage, weatherData);
                     });
                   });
 

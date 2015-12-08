@@ -89,6 +89,19 @@ exports.sharedUtilTest = {
     test.done();
   },
 
+  displayRelativeTime : function (test) {
+    'use strict';
+
+    var util  = require(__dirname + '/../../../lib/sharedUtil').util,
+        short = util.displayRelativeTime(10),
+        long  = util.displayRelativeTime(10000000);
+
+    test.strictEqual(short, '0 0:0:10',     'Relative time converted');
+    test.strictEqual(long,  '115 17:46:40', 'Relative time converted');
+
+    test.done();
+  },
+
   displayTime : function (test) {
     'use strict';
 

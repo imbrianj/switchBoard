@@ -79,6 +79,7 @@ module.exports = (function () {
                 'tests/unit/lib/staticAssets.js',
                 'tests/unit/lib/translate.js',
                 'tests/unit/devices/activeBuilding/parser.js',
+                'tests/unit/devices/debug/parser.js',
                 'tests/unit/devices/denon/parser.js',
                 'tests/unit/devices/foscam/parser.js',
                 'tests/unit/devices/gerty/parser.js',

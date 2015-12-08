@@ -36,7 +36,9 @@ exports.config = {
     }
   },
 
-  // Be sure to mark the "disabled" to true to remove the welcome message.
+  /*
+   * Be sure to mark the "disabled" to true to remove the welcome message.
+   */
   welcome : {
     typeClass : 'welcome',
     title     : 'Welcome!',
@@ -557,5 +559,15 @@ exports.config = {
                                                      'Welcome Home'  : 'smartthings=subdevice-mode-Home;nest=Home' },
                                    controllerIds : ['samsung', 'roku', 'ps3', 'panasonic', 'lg', 'pioneer', 'denon', 'speech', 'stocks', 'weather', 'foscam', 'mp3', 'sms', 'pushover', 'smartthings', 'nest', 'switchBoardCI', 'xbmc', 'raspberryRemote', 'wemo', 'activeBuilding', 'clientMp3', 'clientNotify', 'clientSpeech'] } },
     disabled       : true
-  }
+  },
+
+  /*
+   * Prints out basic debug info (uptime, memory usage, cpu load).
+   */
+  debug : {
+    typeClass      : 'debug',
+    title          : 'Debug',
+    disabled       : true,
+    disabledMarkup : true
+  },
 };

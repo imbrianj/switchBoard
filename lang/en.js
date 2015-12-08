@@ -119,6 +119,15 @@ module.exports = (function () {
         clientSpeech : {
           CLIENTSPEECH : "Client Speech Synthesis"
         },
+        debug : {
+          DEBUG             : "Debug",
+          CLIENTS_CONNECTED : "Clients Connected",
+          CPU               : "CPU",
+          LAST_UPDATE       : "Last Update",
+          MEMORY_USED       : "Memory Used",
+          RUNTIME           : "Runtime",
+          UPTIME            : "Uptime"
+        },
         denon : {
           DENON             : "Denon",
           AAC_DOLBY_EX      : "AAC + Dolby EX",
