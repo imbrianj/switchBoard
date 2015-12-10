@@ -55,7 +55,7 @@ for(arg in process.argv) {
     case '-c' :
     case '--config' :
       configFile = __dirname + '/' + process.argv[parseInt(arg, 10) + 1];
-      break;
+    break;
   }
 }
 

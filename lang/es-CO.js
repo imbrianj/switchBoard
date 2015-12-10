@@ -259,7 +259,7 @@ module.exports = (function () {
           CHANNEL_UP   : "Siguiente Canal",
           COOL         : "Enfriar",
           DISARM       : "Desarmar",
-          DO              : "Sabes",
+          DO           : "Sabes",
           DOWN         : "Bajar",
           ENTER        : "Entrar",
           HEAT         : "Calentar",
