@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic control of Foscam IP camera.
    */
   return {
-    version : 20151129,
+    version : 20151208,
 
     inputs  : ['command'],
 
@@ -45,58 +45,22 @@ module.exports = (function () {
      * Prepare a request for command execution.
      */
     postPrepare : function (config) {
-      var path  = '',
-          login = '?user=' + config.username + '&amp;pwd=' + config.password + '&amp;';
+      var path   = '',
+          login  = '?user=' + config.username + '&amp;pwd=' + config.password + '&amp;',
+          keymap = { 'ALARM_OFF' : '/set_alarm.cgi' + login + 'motion_armed=0',
+                     'ALARM_ON'  : '/set_alarm.cgi' + login + 'motion_armed=1',
+                     'DOWN'      : '/decoder_control.cgi' + login + 'command=2',
+                     'LEFT'      : '/decoder_control.cgi' + login + 'command=6',
+                     'PRESET1'   : '/decoder_control.cgi' + login + 'command=31',
+                     'PRESET2'   : '/decoder_control.cgi' + login + 'command=33',
+                     'PRESET3'   : '/decoder_control.cgi' + login + 'command=35',
+                     'RIGHT'     : '/decoder_control.cgi' + login + 'command=4',
+                     'STOP'      : '/decoder_control.cgi' + login + 'command=1',
+                     'UP'        : '/decoder_control.cgi' + login + 'command=0',
+                     'TAKE'      : '/snapshot.cgi' + login,
+                     'PARAMS'    : '/get_params.cgi' + login };
 
-      switch(config.command) {
-        case 'ALARM_OFF' :
-          path = '/set_alarm.cgi' + login + 'motion_armed=0';
-        break;
-
-        case 'ALARM_ON' :
-          path = '/set_alarm.cgi' + login + 'motion_armed=1';
-        break;
-
-        case 'DOWN' :
-          path = '/decoder_control.cgi' + login + 'command=2';
-        break;
-
-        case 'LEFT' :
-          path = '/decoder_control.cgi' + login + 'command=6';
-        break;
-
-        case 'PRESET1' :
-          path = '/decoder_control.cgi' + login + 'command=31';
-        break;
-
-        case 'PRESET2' :
-          path = '/decoder_control.cgi' + login + 'command=33';
-        break;
-
-        case 'PRESET3' :
-          path = '/decoder_control.cgi' + login + 'command=35';
-        break;
-
-        case 'RIGHT' :
-          path = '/decoder_control.cgi' + login + 'command=4';
-        break;
-
-        case 'STOP' :
-          path = '/decoder_control.cgi' + login + 'command=1';
-        break;
-
-        case 'UP' :
-          path = '/decoder_control.cgi' + login + 'command=0';
-        break;
-
-        case 'TAKE' :
-          path = '/snapshot.cgi' + login;
-        break;
-
-        case 'PARAMS' :
-          path = '/get_params.cgi' + login;
-        break;
-      }
+      path = keymap[config.command];
 
       return { host   : config.deviceIp,
                port   : config.devicePort,

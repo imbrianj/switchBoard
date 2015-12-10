@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic viewing of Travis CI job states.
    */
   return {
-    version : 20150921,
+    version : 20151208,
 
     inputs  : ['list'],
 
@@ -122,13 +122,10 @@ module.exports = (function () {
                                     'url'      : sharedUtil.sanitize('http://travis-ci.org/' + travis.owner + '/' + travis.repo + '/builds/' + data[i].id),
                                     'status'   : data[i].result === 0 ? 'ok' : 'err',
                                     'duration' : sharedUtil.sanitize(data[i].duration),
-                                    'state'    : sharedUtil.sanitize(data[i].state)
-                                  };
+                                    'state'    : sharedUtil.sanitize(data[i].state) };
 
                   if((i === (data.length - 1)) || (i === (travis.maxCount - 1))) {
                     travisData.status = travisData[0].status;
-
-                    deviceState.updateState(travis.deviceId, 'travis', { state : travisData.status, value : travisData });
                   }
                 }
 

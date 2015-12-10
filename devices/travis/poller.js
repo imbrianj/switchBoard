@@ -38,7 +38,7 @@ module.exports = (function () {
      * On poll, check the Travis build state.
      */
     poll : function (deviceId, controllers) {
-      var runCommand  = require(__dirname + '/../../lib/runCommand');
+      var runCommand = require(__dirname + '/../../lib/runCommand');
 
       runCommand.runCommand(deviceId, 'list');
     }

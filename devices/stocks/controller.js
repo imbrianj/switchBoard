@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic stocks information, courtesy of Yahoo.
    */
   return {
-    version : 20150921,
+    version : 20151209,
 
     inputs  : ['list'],
 
@@ -50,9 +50,7 @@ module.exports = (function () {
      * correcting for DST and check for weekends.
      */
     stocksOpen : function (config, explicit) {
-      var deviceState = require(__dirname + '/../../lib/deviceState'),
-          stocksState = deviceState.getDeviceState(config.device.deviceId),
-          date        = new Date(),
+      var date        = new Date(),
           utcTime     = date.getTime() + (date.getTimezoneOffset() * 60000),
           // Try to determine if we're in DST by comparing one month that is
           // in DST against the current timezone offset.
@@ -72,19 +70,14 @@ module.exports = (function () {
         // Trading is only open from 9am - 4pm.
         if((nycTime.getHours() >= 9) && (nycTime.getHours() < 16)) {
           open = true;
-          deviceState.updateState(config.device.deviceId, 'stocks', { state : 'ok', value : stocksState.value });
         }
 
         else {
-          deviceState.updateState(config.device.deviceId, 'stocks', { state : 'err', value : stocksState.value });
-
           console.log('\x1b[35m' + config.device.title + '\x1b[0m: Stock trading is closed - after hours');
         }
       }
 
       else {
-        deviceState.updateState(config.device.deviceId, 'stocks', { state : 'err', value : stocksState.value });
-
         console.log('\x1b[35m' + config.device.title + '\x1b[0m: Stock trading is closed - weekend');
       }
 
@@ -111,11 +104,21 @@ module.exports = (function () {
     },
 
     send : function (config) {
-      var https     = require('https'),
-          that      = this,
-          stocks    = {},
-          dataReply = '',
-          request;
+      var https       = require('https'),
+          deviceState = require(__dirname + '/../../lib/deviceState'),
+          stocksState = deviceState.getDeviceState(config.device.deviceId) || { value : {} },
+          stocksOpen  = this.stocksOpen(config),
+          hasData     = false,
+          that        = this,
+          stocks      = {},
+          dataReply   = '',
+          request,
+          i;
+
+      for(i in stocksState.value) {
+        hasData = true;
+        break;
+      }
 
       stocks.deviceId = config.device.deviceId;
       stocks.stocks   = config.device.stocks ? config.device.stocks.join('","') : null;
@@ -125,7 +128,7 @@ module.exports = (function () {
       stocks.method   = config.method   || 'GET';
       stocks.callback = config.callback || function () {};
 
-      if(stocks.stocks !== null) {
+      if((stocks.stocks !== null) && ((stocksOpen) || (!hasData))) {
         console.log('\x1b[35m' + config.device.title + '\x1b[0m: Fetching device info');
 
         request = https.request(this.postPrepare(stocks), function (response) {
@@ -140,7 +143,6 @@ module.exports = (function () {
                           stockData   = {},
                           stock,
                           data,
-                          state,
                           i = 0;
 
                       if(dataReply) {
@@ -165,17 +167,12 @@ module.exports = (function () {
                                                         'yearHigh'         : stock.YearHigh,
                                                         'yearLow'          : stock.YearLow,
                                                         'dayChangePercent' : stock.ChangeinPercent,
-                                                        'dayChangeValue'   : stock.Change
-                                                      };
+                                                        'dayChangeValue'   : stock.Change };
                           }
                         }
-
-                        state = that.stocksOpen(config) ? 'ok' : 'err';
-
-                        deviceState.updateState(stocks.deviceId, 'stocks', { state: state, value : stockData });
                       }
 
-                      stocks.callback(state === 'err' ? 'ignore' : null, stockData);
+                      stocks.callback(stocksOpen ? null : 'Stock trading is closed', stockData);
                     });
                   });
 
@@ -187,7 +184,7 @@ module.exports = (function () {
       }
 
       else {
-        stocks.callback('No stocks specified');
+        stocks.callback('err', stocksState.value);
       }
     }
   };

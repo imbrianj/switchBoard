@@ -33,7 +33,7 @@ module.exports = (function () {
    * @requires os
    */
   return {
-    version : 20151207,
+    version : 20151208,
 
     inputs  : ['list'],
 
@@ -43,7 +43,11 @@ module.exports = (function () {
      * Log the Unix timestamp for when SwitchBoard starts up.
      */
     init : function (controller) {
+      var runCommand = require(__dirname + '/../../lib/runCommand');
+
       this.startup = new Date().getTime();
+
+      runCommand.runCommand(controller.config.deviceId, 'state', controller.config.deviceId);
     },
 
     /**

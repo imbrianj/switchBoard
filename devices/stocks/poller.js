@@ -32,17 +32,15 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150921,
+    version : 20151209,
 
     /**
-     * Check stock price on poll - but only if the market is assumed open.
+     * Check stock price on poll.
      */
     poll : function (deviceId, controllers) {
       var runCommand = require(__dirname + '/../../lib/runCommand');
 
-      if(controllers[deviceId].controller.stocksOpen({ device : { deviceId : deviceId, title : controllers[deviceId].config.title } })) {
-        runCommand.runCommand(deviceId, 'list');
-      }
+      runCommand.runCommand(deviceId, 'list');
     }
   };
 }());

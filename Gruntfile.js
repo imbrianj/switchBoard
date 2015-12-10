@@ -48,11 +48,11 @@ module.exports = function (grunt) {
 
     uglify : {
       options : { banner : '<%= banner.comment %>' },
-      dist    : { files : { 'js/combo.min.js' : ['js/common.js', 'js/switchBoard.js', 'devices/**/parser.js', 'lib/sharedUtil.js'] } }
+      dist    : { files  : { 'js/combo.min.js' : ['js/common.js', 'js/switchBoard.js', 'devices/**/parser.js', 'lib/sharedUtil.js'] } }
     },
 
-    concat: {
-      css: {
+    concat : {
+      css : {
         src  : ['css/common.css', 'css/font-awesome.css'],
         dest : 'css/combo.min.css'
       }
