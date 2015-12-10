@@ -114,6 +114,24 @@ module.exports = (function () {
           PLURAL_PACKAGES : "Llegaron paquetes enviados por: {{SENDERS}}",
           SINGLE_PACKAGE  : "Llego un paquete enviado por: {{SENDERS}}"
         },
+        clientMp3 : {
+          CLIENTMP3 : "Cliente MP3"
+        },
+        clientNotify : {
+          CLIENTNOTIFY : "Notificación de escritorio"
+        },
+        clientSpeech : {
+          CLIENTSPEECH : "Síntesis de voz del cliente"
+        },
+        debug : {
+          DEBUG             : "Depurar",
+          CLIENTS_CONNECTED : "Clientes Conectados",
+          CPU               : "CPU",
+          LAST_UPDATE       : "Última Actualización",
+          MEMORY_USED       : "Memoria Utilizada",
+          RUNTIME           : "Tiempo de ejecución",
+          UPTIME            : "Tiempo prendido"
+        },
         denon : {
           DENON             : "Denon",
           AAC_DOLBY_EX      : "AAC + Dolby EX",
@@ -241,20 +259,28 @@ module.exports = (function () {
           CHANNEL_UP   : "Siguiente Canal",
           COOL         : "Enfriar",
           DISARM       : "Desarmar",
+          DO              : "Sabes",
           DOWN         : "Bajar",
           ENTER        : "Entrar",
           HEAT         : "Calentar",
+          HOW          : "Como",
           LEFT         : "Izquierda",
           OFF          : "Apagar",
           ON           : "Prender",
           PLAYSTATION  : "Playstation",
           RIGHT        : "Derecha",
+          SHOULD       : "Debes",
           STEREO       : "Estéreo",
           STOCKS       : "Mercado de valores",
           TOGGLE       : "Cambiar",
           TV           : "TV",
           UP           : "Arriba",
           WEATHER      : "Tiempo",
+          WHAT         : "Que",
+          WHEN         : "Cuando",
+          WHERE        : "Donde",
+          WHO          : "Quien",
+          WHY          : "Por qué",
           SYNONYMS : {
             AFFIRMATIVE : ["Si",
                            "Bueno",
@@ -302,10 +328,20 @@ module.exports = (function () {
             STRESSED    : ["Estresado"]
           }
         },
+        github : {
+          GITHUB : "GitHub",
+          LATEST : "Tienes instalado la última versión de SwitchBoard.",
+          NEWER  : "Hay una nueva versión de SwitchBoard para bajar."
+        },
         lg : {
           LG       : "LG",
           EXTERNAL : "Externo",
           INFO     : "información",
+        },
+        location : {
+          LOCATION : "Localización",
+          FEET     : "Pies",
+          MPH      : "mph"
         },
         mp3 : {
           MP3 : "MP3"
@@ -385,13 +421,17 @@ module.exports = (function () {
           PUSHOVER : "Notificaciones en vivo"
         },
         raspberryRemote : {
-          RASPBERRY_REMOTE : 'Raspberry Remote'
+          RASPBERRY_REMOTE : 'Raspberry Control Remoto'
         },
         roku : {
           ROKU           : "Roku",
           BACKSPACE      : "Borrar",
           FORWARD        : "Adelantar",
           INSTANT_REPLAY : "Repetición instantánea"
+        },
+        rss : {
+          RSS         : "RSS",
+          NEW_ARTICLE : "Nuevo articulo en su {{DEVICE}}: {{TITLE}}"
         },
         samsung : {
           SAMSUNG          : "Samsung",
@@ -437,6 +477,9 @@ module.exports = (function () {
           BUILD_FAILURE : "¡La construcción por medio de Travis no se completo!",
           BUILD_STATUS  : "Estado de construcción"
         },
+        twitter : {
+          TWITTER : "Twitter"
+        },
         weather : {
           WEATHER     : "Tiempo",
           CURRENT     : "Tiempo actual",
@@ -448,7 +491,7 @@ module.exports = (function () {
           WELCOME   : "Bienvenido",
           HEADER    : "¡Bienvenido!",
           SUCCESS   : "Bienvenido a SwitchBoard.  Si estas viendo este mensaje, quiere decir que todo esta funcionando y solamente tienes que configurar su control remoto.",
-          CONFIGURE : "Por favor abra el documento config/config.js que contiene la configuración initial de aparatos electrónicos comunes.  Si encuentras un aparato parecido al suyo, por favor configúrelo con la información especifica que le pertenece al suyo.  Si hay algo que no le funciona, por favor estudiar los muchos comentarios atra vez de config.js y los muchos otros archivos.  Y ya que estas en el archivo config.js, puedes configurar el aparato \"welcome\", modificándolo a disabled: true para no ver este mensaje otra vez.",
+          CONFIGURE : "Por favor abra el documento config/config.js que contiene la configuración inicial de aparatos electrónicos comunes.  Si encuentras un aparato parecido al suyo, por favor configúrelo con la información especifica que le pertenece al suyo.  Si hay algo que no le funciona, por favor estudiar los muchos comentarios atra vez de config.js y los muchos otros archivos.  Y ya que estas en el archivo config.js, puedes configurar el aparato \"welcome\", modificándolo a disabled: true para no ver este mensaje otra vez.",
           SUPPORT   : "Atascado? Preguntas?  Algo no le funciono o tiene una sugerencia? Por favor tómese la libertad de documentar su situación <a href=\"https://github.com/imbrianj/switchBoard/issues/new\" rel=\"external\">aqui</a> o mandarme un email a <a href=\"mailto:brian@bevey.org\" rel=\"external\">brian@bevey.org</a>."
         },
         wemo : {
