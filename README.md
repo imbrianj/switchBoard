@@ -84,8 +84,8 @@ I'm always looking to add devices and services.  Even if you're not a developer,
 - Plug your PS3 controller (aka Sixaxis) into your PS3, press the controller's PS button to pair it.  Then, unplug the controller from the PS3 and plug into your Raspberry Pi.
 - `sixaddr`
 - Should result in:
-`Current Bluetooth master: 90:34:FC:F7:75:E3 # your PS3's Bluetooth address, set this to be MAC address of your ps3 within config/config.js, remember to enable the device as well
-Current Bluetooth Device Address: 04:98:F3:0C:FA:6B # save for later, you can disconnect the PS3 controller now`
+`Current Bluetooth master: 90:34:FC:F7:75:E3` # your PS3's Bluetooth address, set this to be MAC address of your ps3 within config/config.js, remember to enable the device as well
+- ... And `Current Bluetooth Device Address: 04:98:F3:0C:FA:6B` # save for later, you can disconnect the PS3 controller now
 - `hciconfig -a` # With your dongle plugged in, this should reveal the active dongle.
 - Take note of a line that looks like this, with the rest of the metadata representing your dongle: `hci0: Type: BR/EDR  Bus: USB Etc.`
 - `bdaddr -r -i hci0` # Use the integer (in our case 0) from the hci0 output above, in this command, to set the MAC address of your dongle to that of the Sixaxis you saved earlier.
