@@ -88,8 +88,7 @@ module.exports = (function () {
       var deviceState = require(__dirname + '/../../lib/deviceState'),
           subdevices  = {},
           className   = '',
-          i,
-          j           = 0;
+          i;
 
       if(process.platform === 'linux') {
         for(i in controller.config.subdevices) {
@@ -99,11 +98,10 @@ module.exports = (function () {
             className = controller.config.className[i];
           }
 
-          subdevices[j] = { id        : controller.config.subdevices[i],
+          subdevices.push({ id        : controller.config.subdevices[i],
                             label     : i,
                             type      : 'switch',
-                            className : className };
-          j += 1;
+                            className : className });
         }
 
         deviceState.updateState(controller.config.deviceId, controller.config.typeClass, { state : 'ok', value : { devices : subdevices } });
