@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic stocks information, courtesy of Yahoo.
    */
   return {
-    version : 20151209,
+    version : 20151215,
 
     inputs  : ['list'],
 
@@ -58,12 +58,8 @@ module.exports = (function () {
           july        = new Date(date.getFullYear(), 6, 1),
           dst         = date.getTimezoneOffset() < Math.max(january.getTimezoneOffset(), july.getTimezoneOffset()),
           nycOffset   = dst ? -4 : -5,
-          nycTime     = new Date(utcTime + (3600000 * nycOffset)),
+          nycTime     = explicit || new Date(utcTime + (3600000 * nycOffset)),
           open        = false;
-
-      if(explicit) {
-        nycTime = explicit;
-      }
 
       // Trading isn't open on weekends, so we don't need to poll.
       if((nycTime.getDay() !== 6) && (nycTime.getDay() !== 0)) {

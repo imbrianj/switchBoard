@@ -96,7 +96,7 @@ exports.sharedUtilTest = {
         short = util.displayRelativeTime(10),
         long  = util.displayRelativeTime(10000000);
 
-    test.strictEqual(short, '0 0:0:10',     'Relative time converted');
+    test.strictEqual(short, '00 00:00:10',     'Relative time converted');
     test.strictEqual(long,  '115 17:46:40', 'Relative time converted');
 
     test.done();
@@ -109,12 +109,12 @@ exports.sharedUtilTest = {
         translate = function (token) {
           return token;
         },
-        shortTime = util.displayTime(1451073600000, translate),
-        longTime  = util.displayTime(1451073600000, translate, 'long');
+        weekend   = new Date('July 20, 2014 12:00:00'),
+        shortTime = util.displayTime(1451073600000, translate, null, weekend),
+        longTime  = util.displayTime(1451073600000, translate, 'long', weekend);
 
-    test.notStrictEqual(shortTime.indexOf(' @ '),    -1, 'Covert time');
-    test.notStrictEqual(shortTime.split(' ').length,  2, 'Short time should only have two spaces');
-    test.notStrictEqual(longTime.split(' ').length,   3, 'Long time should have three spaces');
+    test.strictEqual(shortTime, 'sun @ 12:00am',    'Convert time');
+    test.strictEqual(longTime,  'sun 20 @ 12:00am', 'Long time should have date');
 
     test.done();
   }
