@@ -81,19 +81,23 @@ exports.config = {
     disabled  : true
   },
 
-  /*
-   * PS3 support is supplied by Gimx and is available on Windows and Linux
-   * only.  Refer to the README for information on setup.
-   */
   ps3 : {
+    deviceNotes: [
+      'PS3 support is supplied by Gimx and is available on Windows and Linux',
+      'only.  Refer to the README for information on setup.'
+    ],
     typeClass   : 'ps3',
     title       : 'PS3',
-    // Bluetooth mac address of PS3
-    // This is *NOT* the TCP network mac address
     deviceMac   : '00:00:00:00:00:00',
-    // Gimx requires starting up a server and port.  You can set it to something
-    // specific if you need, but this should be fine.
+    deviceMacNotes: [
+      'Bluetooth mac address of PS3',
+      'This is *NOT* the TCP network mac address'
+    ],
     serviceIp   : '127.0.0.1',
+    serviceIpNotes: [
+      'Gimx requires starting up a server and port.  You can set it to something',
+      'specific if you need, but this should be fine.'
+    ],
     servicePort : 8181,
     disabled    : true
   },
@@ -105,11 +109,8 @@ exports.config = {
     disabled  : true
   },
 
-  /*
-   * This device is incomplete.  If you have one to test on, please let me
-   * know!
-   */
   lg : {
+    deviceNotes: 'This device is incomplete.  If you have one to test on, please let me know!',
     typeClass : 'lg',
     title     : 'LG TV',
     deviceIp  : '192.168.1.6',
@@ -117,33 +118,27 @@ exports.config = {
     disabled  : true
   },
 
-  /*
-   * This device is incomplete.  If you have one to test on, please let me
-   * know!
-   */
   pioneer : {
+    deviceNotes: 'This device is incomplete.  If you have one to test on, please let me know!',
     typeClass : 'pioneer',
     title     : 'Pioneer Amp',
     deviceIp  : '192.168.1.6',
     disabled  : true
   },
 
-  /*
-   * This device is incomplete.  If you have one to test on, please let me
-   * know!
-   */
   denon : {
+    deviceNotes: 'This device is incomplete.  If you have one to test on, please let me know!',
     typeClass : 'denon',
     title     : 'Denon Receiver',
     deviceIp  : '192.168.1.6',
     disabled  : true
   },
 
-  /*
-   * Speech uses the "espeak" package on Linux, BSD and SunOS. For OSX, it uses
-   * the built-in "say" command.  Windows is not supported.
-   */
   speech : {
+    deviceNotes: [
+      'Speech uses the "espeak" package on Linux, BSD and SunOS. For OSX, it uses',
+      'the built-in "say" command.  Windows is not supported.'
+    ],
     typeClass      : 'speech',
     title          : 'Speech',
     voice          : 'male',
@@ -188,13 +183,13 @@ exports.config = {
     disabled  : true
   },
 
-  /*
-   * This is insecure.  Your Foscam username and password will be sent in
-   * plain-text and can be viewable within the source of the rendered
-   * controller template.
-   * Procede with caution.
-   */
   foscam : {
+    deviceNotes: [
+      'This is insecure.  Your Foscam username and password will be sent in',
+      'plain-text and can be viewable within the source of the rendered',
+      'controller template.',
+      'Procede with caution.'
+    ],
     typeClass : 'foscam',
     title     : 'Foscam',
     deviceIp  : '192.168.1.7',
@@ -250,11 +245,11 @@ exports.config = {
     disabled  : true
   },
 
-  /*
-   * MP3 uses the "mpg123" package on Linux, BSD and SunOS. For OSX, it uses
-   * the built-in "afplay" command.  Windows is not supported.
-   */
   mp3 : {
+    deviceNotes: [
+      'MP3 uses the "mpg123" package on Linux, BSD and SunOS. For OSX, it uses',
+      'the built-in "afplay" command.  Windows is not supported.'
+    ],
     typeClass : 'mp3',
     title     : 'MP3',
     disabled  : true
@@ -570,4 +565,16 @@ exports.config = {
     disabled       : true,
     disabledMarkup : true
   },
+  formalize: {
+    whitelist: [
+      'welcome', 'clientMp3', 'clientNotify', 'clientSpeech', 'samsung', 'roku',
+      {'ps3': ['deviceMac', 'serviceIp', 'servicePort']},
+      'panasonic', 'lg', 'pioneer', 'denon',
+      {'speech': 'voice'},
+      {'foscam': ['username', 'password']},
+      'mp3'
+    ],
+    commonFields: ['title', 'typeClass', 'deviceNotes', 'disabled', 'disabledMarkup', 'deviceIp']
+  }
+
 };
