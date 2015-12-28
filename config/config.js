@@ -371,7 +371,13 @@ exports.config = {
                                                // mode to trigger automatically,
                                                // so I stick with Home.
                                                nightMode     : 'Home',
-                                               controllerIds : ['weather', 'clientNotify', 'gerty'] }
+                                               controllerIds : ['weather', 'clientNotify', 'gerty'] },
+                       'Hall Light Home'   : { id            : 'hallLightHome',
+                                               presence      : ['Brian', 'Goblin'],
+                                               contact       : ['Front Door'],
+                                               action        : ['Hall Light'],
+                                               delay         : 10,
+                                               macro         : '' }
                      },
     */
     className      : { Goblin : 'fa-female' },
