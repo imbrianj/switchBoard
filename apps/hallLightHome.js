@@ -34,7 +34,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20151227,
+    version : 20151228,
 
     lastEvents : { presence : 0, open : 0 },
 
@@ -43,7 +43,7 @@ module.exports = (function () {
           deviceState = require(__dirname + '/../lib/deviceState'),
           runCommand  = require(__dirname + '/../lib/runCommand'),
           now         = new Date().getTime(),
-          delay       = (config.delay || 10) * 1000,
+          delay       = (config.delay || 15) * 1000,
           rawMacro    = (config.macro || '').split(';'),
           macro,
           currentDeviceState,
@@ -55,7 +55,7 @@ module.exports = (function () {
                 current;
 
             for(current in collection) {
-              if(command = prefix + collection[current] + '-on') {
+              if(command === prefix + collection[current] + '-on') {
                 found = true;
                 break;
               }
@@ -94,7 +94,7 @@ module.exports = (function () {
             if((currentDeviceState.value) && (currentDeviceState.value.devices)) {
               for(subdevice in currentDeviceState.value.devices) {
                 if(config.action.indexOf(currentDeviceState.value.devices[subdevice].label) !== -1) {
-                  runCommand.runCommand(deviceId, 'subdevice-on-' + config.action);
+                  runCommand.runCommand(deviceId, 'subdevice-on-' + currentDeviceState.value.devices[subdevice].label);
                 }
               }
             }

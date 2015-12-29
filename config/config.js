@@ -376,7 +376,7 @@ exports.config = {
                                                presence      : ['Brian', 'Goblin'],
                                                contact       : ['Front Door'],
                                                action        : ['Hall Light'],
-                                               delay         : 10,
+                                               delay         : 15,
                                                macro         : '' }
                      },
     */
