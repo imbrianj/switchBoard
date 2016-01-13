@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic control of SmartThings endpoint.
    */
   return {
-    version : 20151129,
+    version : 20160112,
 
     inputs  : ['list', 'subdevice'],
 
@@ -72,6 +72,7 @@ module.exports = (function () {
           that        = this,
           ssl         = config.ssl.disabled === false ? 'https' : 'http';
 
+      smartthings.method   = 'POST';
       smartthings.path     = deviceConfig.path || '/oauth/token?grant_type=authorization_code&client_id=' + deviceConfig.clientId + '&client_secret=' + deviceConfig.clientSecret + '&redirect_uri=' + ssl + '://' + config.serverIp + ':' + config.serverPort + '/oauth/' + deviceId + '&code=' + oauthCode + '&scope=app';
       smartthings.callback = function (err, response) {
         var fs       = require('fs'),
@@ -89,6 +90,10 @@ module.exports = (function () {
 
             that.oauthUrl(authData, { 'controller' : that, 'config' : deviceConfig });
           }
+        }
+
+        else {
+          console.log('\x1b[31m' + deviceConfig.title + '\x1b[0m: ' + err);
         }
       };
 

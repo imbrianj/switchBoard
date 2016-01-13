@@ -355,11 +355,11 @@ module.exports = (function () {
                 case 'security' :
                   switch(commands[i].action.toUpperCase()) {
                     case 'ARM' :
-                      commands[i].action = 'ALARM_ON';
+                      commands[i].action = 'Alarm_On';
                     break;
 
                     case 'DISARM' :
-                      commands[i].action = 'ALARM_OFF';
+                      commands[i].action = 'Alarm_Off';
                     break;
                   }
                 break;
