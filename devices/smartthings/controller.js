@@ -246,16 +246,19 @@ module.exports = (function () {
                 }
               }
 
-              // If you have no proper state, you're just a temperature sensor.
               else {
+                // If you have no proper state, you're just a temperature
+                // sensor.
                 if(device.values.temperature) {
                   currDevice.state = parseInt(device.values.temperature.value, 10);
                 }
 
+                // ...or a vibrate sensor.
                 if(device.values.vibrate) {
                   currDevice.state = device.values.vibrate.value;
                 }
 
+                // ...or something with a battery.
                 if(device.values.battery) {
                   currDevice.peripheral.battery = parseInt(device.values.battery.value, 10);
                 }

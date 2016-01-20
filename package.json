@@ -21,7 +21,7 @@
   "preferGlobal": true,
   "dependencies": {
     "request": "~2.67.0",
-    "xml2js": "~0.4.15",
+    "xml2js": "~0.4.16",
     "websocket": "~1.0.22"
   },
   "devDependencies": {
@@ -29,7 +29,7 @@
     "grunt-cli": "~0.1.13",
     "grunt-contrib-concat": "~0.5.1",
     "grunt-contrib-cssmin": "~0.14.0",
-    "grunt-contrib-jshint": "~0.11.3",
+    "grunt-contrib-jshint": "~0.12.0",
     "grunt-contrib-nodeunit": "~0.4.1",
     "grunt-contrib-uglify": "~0.11.0",
     "grunt-contrib-watch": "~0.6.1",
