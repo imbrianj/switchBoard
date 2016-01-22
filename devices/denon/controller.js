@@ -112,20 +112,18 @@ module.exports = (function () {
 
       denon.callback = function (err, reply) {
         var sharedUtil = require(__dirname + '/../../lib/sharedUtil').util,
-            translate  = sharedUtil.translate,
-            encodeName = sharedUtil.encodeName,
             rex        = '',
             state      = 'err',
             encodeTranslate = function (message) {
-              message = encodeName(message);
+              message = sharedUtil.encodeName(message);
 
-              return translate(message, 'denon', config.language);
+              return sharedUtil.translate(message, 'denon', config.language);
             };
 
         for(var i in reply) {
           if(reply[i].match(/PW.+/)) {
             if(rex = reply[i].match(/PW(ON|OFF|STANDBY)/)) {
-              if(encodeName(rex[1]) === 'ON') {
+              if(sharedUtil.encodeName(rex[1]) === 'ON') {
                 state = 'ok';
               }
 

@@ -106,9 +106,21 @@ module.exports = (function () {
         },
         activeBuilding : {
           ACTIVEBUILDING  : "Active Building",
+          AMAZON          : "Amazon",
+          BAG             : "Bag",
+          DRY_CLEANING    : "Dry Cleaning",
+          ENVELOPE        : "Envelope",
+          FEDEX           : "FedEx",
+          GENERAL_MAIL    : "General Mail",
+          NEWSPAPER       : "Newspaper",
           NO_PACKAGES     : "No packages available.",
+          ONTRAC          : "OnTrac",
+          OTHER           : "Other",
           PLURAL_PACKAGES : "You have packages from: {{SENDERS}}",
-          SINGLE_PACKAGE  : "You have a package from: {{SENDERS}}"
+          SINGLE_PACKAGE  : "You have a package from: {{SENDERS}}",
+          UPS             : "UPS",
+          USPS            : "USPS",
+          UNKNOWN         : "Unknown"
         },
         clientMp3 : {
           CLIENTMP3 : "Client MP3"
