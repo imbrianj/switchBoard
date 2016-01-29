@@ -410,7 +410,7 @@ exports.config = {
     travisOwner    : 'imbrianj',
     travisRepo     : 'switchBoard',
     apps           : { 'Announce' : { id            : 'announceTravis',
-                                      controllerIds : ['clientNotify', 'speech', 'gerty'] } },
+                                      controllerIds : ['clientNotify', 'clientSpeech', 'speech', 'gerty'] } },
     disabledMarkup : false,
     disabled       : true
   },
