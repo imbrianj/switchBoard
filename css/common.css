@@ -571,6 +571,10 @@ section .text-list li .text-group li {
   margin: .5em 0;
 }
 
+section .text-list li .text-group {
+  text-align: center;
+}
+
 section .text-group li {
   position: relative;
 }
@@ -590,6 +594,7 @@ section .text-group li dt a {
 section.sports .text-group .away,
 section.sports .text-group .home {
   display: inline-block;
+  text-align: left;
   width: 48%;
 }
 
