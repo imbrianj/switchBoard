@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic weather information, courtesy of Yahoo.
    */
   return {
-    version : 20160120,
+    version : 20160204,
 
     inputs : ['list'],
 
@@ -83,16 +83,16 @@ module.exports = (function () {
 
                     response.once('end', function () {
                       var deviceState        = require(__dirname + '/../../lib/deviceState'),
-                          sharedUtil         = require(__dirname + '/../../lib/sharedUtil').util,
-                          encodeTranslate    = function (message) {
-                            message = sharedUtil.encodeName(message).toUpperCase();
-
-                            return sharedUtil.translate(message, 'activeBuilding', config.language);
-                          },
+                          util               = require(__dirname + '/../../lib/sharedUtil').util,
                           activeBuildingData = [],
                           data               = null,
                           i                  = 0,
-                          j                  = 0;
+                          j                  = 0,
+                          encodeTranslate    = function (message) {
+                            message = util.encodeName(message).toUpperCase();
+
+                            return util.translate(message, 'activeBuilding', config.language);
+                          };
 
                       if((dataReply) && (dataReply.indexOf('EVIL(') === 0)) {
                         dataReply = dataReply.substring(0, dataReply.length - 1).replace('EVIL(', '');

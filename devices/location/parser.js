@@ -36,7 +36,6 @@
         hour       = 0,
         minute     = '',
         meridian   = '',
-        time       = '',
         i          = 0,
         translate  = function (message) {
           var util;
@@ -70,11 +69,9 @@
 
     if((state) && (value)) {
       for(i; i < value.length; i += 1) {
-        time = displayTime(value[i].time);
-
         tempMarkup = tempMarkup + template.split('{{LOCATION_NAME}}').join(value[i].name);
         tempMarkup = tempMarkup.split('{{LOCATION_URL}}').join(value[i].url);
-        tempMarkup = tempMarkup.split('{{LOCATION_TIME}}').join(time);
+        tempMarkup = tempMarkup.split('{{LOCATION_TIME}}').join(displayTime(value[i].time));
         tempMarkup = tempMarkup.split('{{LOCATION_ALTITUDE}}').join(value[i].alt);
         tempMarkup = tempMarkup.split('{{LOCATION_SPEED}}').join(Math.ceil(value[i].speed));
       }

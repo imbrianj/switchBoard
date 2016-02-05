@@ -415,7 +415,7 @@ header #indicator {
   overflow: hidden;
   position: fixed;
   right: .5em;
-  text-indent: -999px;
+  text-indent: -999em;
   top: .5em;
   width: 1.5em;
 }
@@ -455,7 +455,7 @@ section {
 section h1 {
   height: 0;
   overflow: hidden;
-  text-indent: -999px;
+  text-indent: -999em;
 }
 
 section .text-block h1 {
@@ -507,7 +507,8 @@ section .text-control li {
 }
 
 section .text,
-section .text-block {
+section .text-block,
+section .text-list {
   clear: both;
   float: none;
   margin: 0 auto;
@@ -515,7 +516,8 @@ section .text-block {
   width: 100%;
 }
 
-section .text-block {
+section .text-block,
+section .text-list {
   font-size: 50%;
   line-height: 1.2em;
   max-width: 40em;
@@ -561,6 +563,51 @@ section .state-ok .fa {
 section .text-block li .name {
   display: inline-block;
   width: 3.5em;
+}
+
+section .text-list li,
+section .text-list li h2,
+section .text-list li .text-group li {
+  margin: .5em 0;
+}
+
+section .text-group li {
+  position: relative;
+}
+
+section .text-group li dt a {
+  content: '.';
+  display: block;
+  height: 100%;
+  left: 0;
+  overflow: hidden;
+  position: absolute;
+  text-indent: -999em;
+  top: 0;
+  width: 100%;
+}
+
+section.sports .text-group .away,
+section.sports .text-group .home {
+  display: inline-block;
+  width: 48%;
+}
+
+section.sports .text-group .home {
+  text-align: right;
+}
+
+section.sports .text-group .away span,
+section.sports .text-group .home span {
+  display: block;
+}
+
+section.sports .text-group .state {
+  text-align: center;
+}
+
+section.sports .text-group img {
+  max-width: 100%;
 }
 
 section .dialog {
@@ -645,7 +692,8 @@ section .image-list {
   width: 100%;
 }
 
-section .installed .sub-device-list li {
+section .installed .sub-device-list li,
+section .text-list .text-group li {
   display: inline-block;
   margin: .1em .5%;
   vertical-align: middle;
@@ -655,12 +703,18 @@ section .installed .sub-device-list li {
 section .installed .sub-device-group,
 section .installed .sub-device-group li,
 section .installed-list li,
-section .image-list li {
+section .image-list li,
+section .text-list .text-group li {
   display: inline-block;
   margin: .1em .5%;
   max-width: 30%;
   vertical-align: middle;
   width: 500px;
+}
+
+section .text-list .text-group li dl {
+  font-size: 80%;
+  padding: 0 1em;
 }
 
 section .installed-list li,
@@ -716,7 +770,7 @@ section .text-block li .fa span {
   display: block;
   height: 0;
   overflow: hidden;
-  text-indent: -999px;
+  text-indent: -999em;
   width: 0;
 }
 
@@ -1244,7 +1298,8 @@ section .current {
   text-align: center;
 }
 
-section .sub-device-list .sub-device-group {
+section .sub-device-list .sub-device-group,
+section .text-list .text-group li {
   border: 1px solid #444;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
@@ -1652,6 +1707,7 @@ header .selected a {
 
   section .installed .sub-device-group,
   section .installed .sub-device-group li,
+  section .text-list .text-group li,
   section .installed-list li,
   section .image-list li {
     max-width: 45%;
@@ -1696,7 +1752,8 @@ header .selected a {
     width: 40%;
   }
 
-  section .installed .sub-device-group li {
+  section .installed .sub-device-group li,
+  section .text-list .text-group li {
     max-width: 90%;
   }
 
@@ -1732,6 +1789,7 @@ header .selected a {
 
   section .installed .sub-device-group,
   section .installed .sub-device-group li,
+  section .text-list .text-group li,
   section .installed-list li,
   section .image-list li {
     max-width: 45%;
@@ -1757,6 +1815,7 @@ header .selected a {
 
   section .installed .sub-device-group,
   section .installed .sub-device-group li,
+  section .text-list .text-group li,
   section .installed-list li,
   section .image-list li {
     max-width: 30%;

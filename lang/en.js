@@ -34,7 +34,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20151109,
+    version : 20160204,
 
     strings : function () {
       return {
@@ -474,6 +474,15 @@ module.exports = (function () {
         },
         speech : {
           SPEECH : "Speech"
+        },
+        sports : {
+          SPORTS         : "Sports",
+          AWAY_TEAM_LOGO : "Away Team Logo",
+          FINAL          : "Final",
+          HOME_TEAM_LOGO : "Home Team Logo",
+          LIVE           : "Live",
+          TITLE          : "{{AWAY}} vs. {{HOME}}",
+          UPCOMING       : "Upcoming",
         },
         stocks : {
           STOCKS  : "Stocks",

@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic viewing of Travis CI job states.
    */
   return {
-    version : 20151208,
+    version : 20160204,
 
     inputs  : ['list'],
 
@@ -72,11 +72,11 @@ module.exports = (function () {
     },
 
     send : function (config) {
-      var https       = require('https'),
-          sharedUtil  = require(__dirname + '/../../lib/sharedUtil').util,
-          that        = this,
-          travis      = {},
-          dataReply   = '',
+      var https     = require('https'),
+          util      = require(__dirname + '/../../lib/sharedUtil').util,
+          that      = this,
+          travis    = {},
+          dataReply = '',
           request;
 
       travis.deviceId = config.device.deviceId;
@@ -118,11 +118,11 @@ module.exports = (function () {
             if(data) {
               for(i; i < data.length; i += 1) {
                 if(i < travis.maxCount) {
-                  travisData[i] = { 'label'    : sharedUtil.sanitize(data[i].message),
-                                    'url'      : sharedUtil.sanitize('http://travis-ci.org/' + travis.owner + '/' + travis.repo + '/builds/' + data[i].id),
+                  travisData[i] = { 'label'    : util.sanitize(data[i].message),
+                                    'url'      : util.sanitize('http://travis-ci.org/' + travis.owner + '/' + travis.repo + '/builds/' + data[i].id),
                                     'status'   : data[i].result === 0 ? 'ok' : 'err',
-                                    'duration' : sharedUtil.sanitize(data[i].duration),
-                                    'state'    : sharedUtil.sanitize(data[i].state) };
+                                    'duration' : util.sanitize(data[i].duration),
+                                    'state'    : util.sanitize(data[i].state) };
 
                   if((i === (data.length - 1)) || (i === (travis.maxCount - 1))) {
                     travisData.status = travisData[0].status;

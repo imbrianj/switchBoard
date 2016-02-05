@@ -73,22 +73,22 @@ exports.rssControllerTest = {
           }
         ]}]}},
         atomData      = { feed : { entry : [
-          { title   : ['Test 1'],
+          { title   : [{ '_' : 'Test 1'}],
             link    : [{'$'   : { 'href' : 'http://example.com/test1' }}],
             summary : ['This is a test'],
             content : [{ '_' : 'This is a piece of encoded content'}]
           },
-          { title   : ['Test 2'],
+          { title   : [{ '_' : 'Test 2'}],
             link    : [{'$'   : { 'href' : 'http://example.com/test2' }}],
             summary : ['This is another test'],
             content : [{ '_' : 'This is another piece of encoded content'}]
           },
-          { title   : ['Test 3'],
+          { title   : [{ '_' : 'Test 3'}],
             link    : [{'$'   : { 'href' : 'http://example.com/test3' }}],
             summary : ['This is a third test'],
             content : [{ '_' : 'This is a 3rd piece of encoded content'}]
           },
-          { title   : ['Test 4'],
+          { title   : [{ '_' : 'Test 4'}],
             link    : [{'$'   : { 'href' : 'http://example.com/test4' }}],
             summary : ['This is a fourth test'],
             content : [{ '_' : 'This is a fourth piece of encoded content'}]

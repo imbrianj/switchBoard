@@ -1,5 +1,5 @@
 /*jslint white: true */
-/*global module, console */
+/*global module, require */
 
 /**
  * Copyright (c) 2014 brian@bevey.org
@@ -23,28 +23,24 @@
  * IN THE SOFTWARE.
  */
 
-(function (exports){
+/**
+ * @author brian@bevey.org
+ * @fileoverview Simple script to fire for each scheduled interval.
+ */
+
+module.exports = (function () {
   'use strict';
 
-  var version = 20160204;
+  return {
+    version : 20160202,
 
-  exports.rss = function (deviceId, markup, state, value, fragments) {
-    var template   = fragments.item,
-        tempMarkup = '',
-        i          = 0,
-        text       = '';
+    /**
+     * On long interval, poll the ESPN API for the latest data.
+     */
+    poll : function (deviceId, controllers) {
+      var runCommand  = require(__dirname + '/../../lib/runCommand');
 
-    if((state) && (value)) {
-      for(i; i < value.length; i += 1) {
-        text       = value[i].description ? value[i].description : value[i].text;
-        tempMarkup = tempMarkup + template.split('{{RSS_URL}}').join(value[i].url);
-        tempMarkup = tempMarkup.split('{{RSS_TITLE}}').join(value[i].title);
-        tempMarkup = tempMarkup.split('{{RSS_DESCRIPTION}}').join(text);
-      }
+      runCommand.runCommand(deviceId, 'list');
     }
-
-    markup = markup.replace('{{RSS_DYNAMIC}}', tempMarkup);
-
-    return markup;
   };
-})(typeof exports === 'undefined' ? this.SB.spec.parsers : exports);
+}());

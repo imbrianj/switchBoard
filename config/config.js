@@ -15,6 +15,7 @@ exports.config = {
     delegate     : ['gerty'],
     theme        : 'dark',
     language     : 'en',
+    region       : 'us',
     default      : 'welcome',
     macroPause   : 1500,
     pollMinutes  : 5,
@@ -490,6 +491,25 @@ exports.config = {
     apps        : { 'Announce' : { id            : 'announceRss',
                                    controllerIds : ['speech', 'clientSpeech', 'clientNotify', 'gerty'] } },
     disabled    : true
+  },
+
+  /*
+   * Same reader can be used to pull in news.
+   */
+  news : {
+    typeClass : 'rss',
+    title     : 'News',
+    host      : 'news.google.com',
+    port      : 443,
+    path      : '/news?cf=all&hl=en&pz=1&ned=us&output=atom',
+    maxCount  : 10,
+    disabled  : true
+  },
+
+  sports : {
+    typeClass : 'sports',
+    title     : 'Sports',
+    disabled  : true
   },
 
   /*

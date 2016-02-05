@@ -34,7 +34,7 @@ module.exports = (function () {
    * @requires net
    */
   return {
-    version : 20150921,
+    version : 20160204,
 
     inputs : ['command', 'list', 'subdevice'],
 
@@ -111,19 +111,19 @@ module.exports = (function () {
       denon.command             = statusCommands[count];
 
       denon.callback = function (err, reply) {
-        var sharedUtil = require(__dirname + '/../../lib/sharedUtil').util,
-            rex        = '',
-            state      = 'err',
+        var util            = require(__dirname + '/../../lib/sharedUtil').util,
+            rex             = '',
+            state           = 'err',
             encodeTranslate = function (message) {
-              message = sharedUtil.encodeName(message);
+              message = util.encodeName(message);
 
-              return sharedUtil.translate(message, 'denon', config.language);
+              return util.translate(message, 'denon', config.language);
             };
 
         for(var i in reply) {
           if(reply[i].match(/PW.+/)) {
             if(rex = reply[i].match(/PW(ON|OFF|STANDBY)/)) {
-              if(sharedUtil.encodeName(rex[1]) === 'ON') {
+              if(util.encodeName(rex[1]) === 'ON') {
                 state = 'ok';
               }
 

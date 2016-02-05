@@ -37,7 +37,7 @@ module.exports = (function () {
    *       https://dev.twitter.com/rest/reference/get/statuses/mentions_timeline
    */
   return {
-    version : 20150921,
+    version : 20160204,
 
     inputs  : ['text', 'list'],
 
@@ -177,7 +177,7 @@ module.exports = (function () {
 
                     response.once('end', function () {
                       var deviceState = require(__dirname + '/../../lib/deviceState'),
-                          sharedUtil  = require(__dirname + '/../../lib/sharedUtil').util,
+                          util        = require(__dirname + '/../../lib/sharedUtil').util,
                           twitterData = [],
                           data,
                           i           = 0;
@@ -195,11 +195,11 @@ module.exports = (function () {
 
                         if(data) {
                           for(i; i < Math.min(data.length, twitter.maxCount); i += 1) {
-                            twitterData.push({ author : sharedUtil.sanitize(data[i].user.screen_name),
-                                               name   : sharedUtil.sanitize(data[i].user.name),
-                                               image  : sharedUtil.sanitize(data[i].user.profile_image_url),
-                                               text   : sharedUtil.sanitize(data[i].text),
-                                               url    : sharedUtil.sanitize('https://twitter.com/' + data[i].user.screen_name + '/status/' + data[i].id_str),
+                            twitterData.push({ author : util.sanitize(data[i].user.screen_name),
+                                               name   : util.sanitize(data[i].user.name),
+                                               image  : util.sanitize(data[i].user.profile_image_url),
+                                               text   : util.sanitize(data[i].text),
+                                               url    : util.sanitize('https://twitter.com/' + data[i].user.screen_name + '/status/' + data[i].id_str),
                                                date   : new Date(data[i].created_at).getTime() });
                           }
 

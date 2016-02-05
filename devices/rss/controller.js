@@ -32,7 +32,7 @@ module.exports = (function () {
    * @requires http, https, xml2js
    */
   return {
-    version : 20150921,
+    version : 20160204,
 
     inputs  : ['list'],
 
@@ -73,11 +73,11 @@ module.exports = (function () {
      * the data is RSS or Atom - and returning an array of sanitized values.
      */
     getArticles : function (reply, maxCount) {
-      var sharedUtil = require(__dirname + '/../../lib/sharedUtil').util,
-          article    = {},
-          rssData    = [],
-          i          = 0,
-          j          = 0;
+      var util    = require(__dirname + '/../../lib/sharedUtil').util,
+          article = {},
+          rssData = [],
+          i       = 0,
+          j       = 0;
 
       maxCount = maxCount || 3;
 
@@ -86,10 +86,10 @@ module.exports = (function () {
         for(i in reply.rss.channel[0].item) {
           article = reply.rss.channel[0].item[i];
 
-          rssData[j] = { 'title'       : sharedUtil.sanitize(article.title[0]),
-                         'url'         : sharedUtil.sanitize(article.link[0]),
-                         'description' : sharedUtil.sanitize(article.description[0]),
-                         'text'        : sharedUtil.sanitize(article['content:encoded'][0]) };
+          rssData[j] = { 'title'       : util.sanitize(article.title[0]),
+                         'url'         : util.sanitize(article.link[0]),
+                         'description' : util.sanitize(article.description[0]),
+                         'text'        : util.sanitize(article['content:encoded'][0]) };
 
           j += 1;
 
@@ -104,10 +104,10 @@ module.exports = (function () {
         for(i; i < reply.feed.entry.length; i += 1) {
           article = reply.feed.entry[i];
 
-          rssData[j] = { 'title'       : sharedUtil.sanitize(article.title[0]),
-                         'url'         : sharedUtil.sanitize(article.link[0].$.href),
-                         'description' : sharedUtil.sanitize(article.summary[0]),
-                         'text'        : sharedUtil.sanitize(article.content[0]._) };
+          rssData[j] = { 'title'       : util.sanitize(article.title[0]._),
+                         'url'         : util.sanitize(article.link[0].$.href),
+                         'description' : article.summary ? util.sanitize(article.summary[0]) : null,
+                         'text'        : util.sanitize(article.content[0]._) };
 
           j += 1;
 

@@ -36,7 +36,7 @@ module.exports = (function () {
    *       http://wiki.xbmc.org/index.php?title=JSON-RPC_API/Examples
    */
   return {
-    version : 20150921,
+    version : 20160204,
 
     inputs  : ['command', 'text', 'list'],
 
@@ -119,10 +119,10 @@ module.exports = (function () {
     },
 
     send : function (config) {
-      var net         = require('net'),
-          sharedUtil  = require(__dirname + '/../../lib/sharedUtil').util,
-          xbmc        = {},
-          that        = this;
+      var net  = require('net'),
+          util = require(__dirname + '/../../lib/sharedUtil').util,
+          xbmc = {},
+          that = this;
 
       xbmc.deviceIp   = config.device.deviceIp;
       xbmc.devicePort = config.device.devicePort       || 9090;
@@ -180,13 +180,13 @@ module.exports = (function () {
             if((reply.result) && (reply.result.item)) {
               // First try to grab the official title.  Otherwise, the filename.
               // Failing that, we'll revert to generic "Movie".
-              current = reply.result.item.title || reply.result.item.label || sharedUtil.translate('MOVIE', 'xbmc', config.language);
+              current = reply.result.item.title || reply.result.item.label || util.translate('MOVIE', 'xbmc', config.language);
             }
 
             // Catch other methods - such as screensaver.
             else if(reply.method) {
               if(reply.method === 'GUI.OnScreensaverActivated') {
-                current = sharedUtil.translate('SCREENSAVER', 'xbmc', config.language);
+                current = util.translate('SCREENSAVER', 'xbmc', config.language);
               }
             }
 

@@ -32,7 +32,7 @@ module.exports = (function () {
    * @requires https
    */
   return {
-    version : 20151129,
+    version : 20160204,
 
     inputs  : ['list'],
 
@@ -94,7 +94,7 @@ module.exports = (function () {
      * the data is versioned - and returning an array of sanitized values.
      */
     getCommits : function (data, maxCount, version) {
-      var sharedUtil = require(__dirname + '/../../lib/sharedUtil').util,
+      var util       = require(__dirname + '/../../lib/sharedUtil').util,
           commit     = {},
           githubData = [],
           i          = 0;
@@ -104,9 +104,9 @@ module.exports = (function () {
       for(i; i < data.length; i += 1) {
         if(i < maxCount) {
           commit = {
-            url         : sharedUtil.sanitize(data[i].html_url),
-            time        : sharedUtil.sanitize(new Date(data[i].commit.committer.date).getTime()),
-            description : sharedUtil.sanitize(data[i].commit.message)
+            url         : util.sanitize(data[i].html_url),
+            time        : util.sanitize(new Date(data[i].commit.committer.date).getTime()),
+            description : util.sanitize(data[i].commit.message)
           };
 
           if(version) {

@@ -34,7 +34,7 @@ module.exports = (function () {
    * @requires http, https
    */
   return {
-    version : 20151010,
+    version : 20160204,
 
     inputs  : ['list'],
 
@@ -97,7 +97,7 @@ module.exports = (function () {
      * array of sanitized values.
      */
     getLocations : function (reply, maxCount) {
-      var sharedUtil   = require(__dirname + '/../../lib/sharedUtil').util,
+      var util         = require(__dirname + '/../../lib/sharedUtil').util,
           location     = {},
           locationData = [],
           i            = 0,
@@ -109,13 +109,13 @@ module.exports = (function () {
         location = reply[i];
 
         if((location.lat) && (location.long)) {
-          locationData[j] = { lat   : sharedUtil.sanitize(location.lat),
-                              long  : sharedUtil.sanitize(location.long),
-                              alt   : sharedUtil.sanitize(location.alt),
-                              url   : sharedUtil.sanitize(location.link),
-                              speed : sharedUtil.sanitize(location.speed),
-                              name  : sharedUtil.sanitize(location.user),
-                              time  : sharedUtil.sanitize(location.time * 1000) };
+          locationData[j] = { lat   : util.sanitize(location.lat),
+                              long  : util.sanitize(location.long),
+                              alt   : util.sanitize(location.alt),
+                              url   : util.sanitize(location.link),
+                              speed : util.sanitize(location.speed),
+                              name  : util.sanitize(location.user),
+                              time  : util.sanitize(location.time * 1000) };
 
           j += 1;
         }

@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic stocks information, courtesy of Yahoo.
    */
   return {
-    version : 20151215,
+    version : 20160204,
 
     inputs  : ['list'],
 
@@ -101,6 +101,7 @@ module.exports = (function () {
 
     send : function (config) {
       var https       = require('https'),
+          util        = require(__dirname + '/../../lib/sharedUtil').util,
           deviceState = require(__dirname + '/../../lib/deviceState'),
           stocksState = deviceState.getDeviceState(config.device.deviceId) || { value : {} },
           stocksOpen  = this.stocksOpen(config),
@@ -154,16 +155,16 @@ module.exports = (function () {
                           for(i in data.query.results.quote) {
                             stock = data.query.results.quote[i];
 
-                            stockData[stock.symbol] = { 'name'             : stock.symbol,
-                                                        'price'            : stock.LastTradePriceOnly,
-                                                        'ask'              : stock.AskRealtime,
-                                                        'bid'              : stock.BidRealtime,
-                                                        'dayHigh'          : stock.DaysHigh,
-                                                        'dayLow'           : stock.DaysLow,
-                                                        'yearHigh'         : stock.YearHigh,
-                                                        'yearLow'          : stock.YearLow,
-                                                        'dayChangePercent' : stock.ChangeinPercent,
-                                                        'dayChangeValue'   : stock.Change };
+                            stockData[util.encodeName(stock.symbol)] = { 'name'             : util.sanitize(stock.symbol),
+                                                                         'price'            : util.sanitize(stock.LastTradePriceOnly),
+                                                                         'ask'              : util.sanitize(stock.AskRealtime),
+                                                                         'bid'              : util.sanitize(stock.BidRealtime),
+                                                                         'dayHigh'          : util.sanitize(stock.DaysHigh),
+                                                                         'dayLow'           : util.sanitize(stock.DaysLow),
+                                                                         'yearHigh'         : util.sanitize(stock.YearHigh),
+                                                                         'yearLow'          : util.sanitize(stock.YearLow),
+                                                                         'dayChangePercent' : util.sanitize(stock.ChangeinPercent),
+                                                                         'dayChangeValue'   : util.sanitize(stock.Change) };
                           }
                         }
                       }
