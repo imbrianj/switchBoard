@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic sports information, from ESPN.
    */
   return {
-    version : 20160204,
+    version : 20160205,
 
     inputs  : ['list'],
 
@@ -102,7 +102,7 @@ module.exports = (function () {
      * Take the team object and other params to find the most appropriate path
      * to download from - and cache locally as to not burden the source.
      */
-    getImage : function (league, team, theme, title) {
+    getImage : function (league, team, title, theme) {
       var util = require(__dirname + '/../../lib/sharedUtil').util,
           image,
           parts,
@@ -118,7 +118,22 @@ module.exports = (function () {
       return path;
     },
 
-    getGames : function (sports, title) {
+    /**
+     * Convert raw status into a sanitized string we can use for translation.
+     */
+    getStatus : function (rawStatus) {
+      var hashTable = { 'pre'  : 'UPCOMING',
+                        'in'   : 'LIVE',
+                        'post' : 'FINAL' };
+
+      return hashTable[rawStatus] || 'UNKNOWN';
+    },
+
+    /**
+     * Parse through the raw sports object and extract (and sanitize) only the
+     * parts we care about.
+     */
+    getGames : function (sports, title, theme) {
       var util       = require(__dirname + '/../../lib/sharedUtil').util,
           sportsData = {},
           sportKey,
@@ -149,17 +164,17 @@ module.exports = (function () {
                 title  : util.sanitize(game.competitors[0].name),
                 score  : util.sanitize(game.competitors[0].score),
                 winner : util.sanitize(game.competitors[0].winner),
-                image  : this.getImage(league.abbreviation, game.competitors[0], sports.theme, title)
+                image  : this.getImage(league.abbreviation, game.competitors[0], title, theme)
               },
               away : {
                 title  : util.sanitize(game.competitors[1].name),
                 score  : util.sanitize(game.competitors[1].score),
                 winner : util.sanitize(game.competitors[1].winner),
-                image  : this.getImage(league.abbreviation, game.competitors[1], sports.theme, title)
+                image  : this.getImage(league.abbreviation, game.competitors[1], title, theme)
               },
               time     : new Date(util.sanitize(game.date)).getTime(),
               summary  : util.sanitize(game.summary),
-              status   : util.sanitize(game.status),
+              status   : this.getStatus(game.status),
               location : util.sanitize(game.location),
               url      : util.sanitize(game.link)
             });
@@ -181,6 +196,7 @@ module.exports = (function () {
           http      = require('http'),
           language  = config.config.language || 'en',
           region    = config.config.region   || 'us',
+          theme     = config.config.theme,
           sports    = {},
           dataReply = '',
           request;
@@ -195,7 +211,6 @@ module.exports = (function () {
       sports.port     = config.port     || 80;
       sports.method   = config.method   || 'GET';
       sports.callback = config.callback || function () {};
-      sports.theme    = config.config.theme;
 
       console.log('\x1b[35m' + config.device.title + '\x1b[0m: Fetching device info');
 
@@ -222,7 +237,7 @@ module.exports = (function () {
                       }
 
                       if(data && data.sports) {
-                        sportsData = that.getGames(data.sports, config.device.title);
+                        sportsData = that.getGames(data.sports, config.device.title, theme);
                       }
 
                       else {

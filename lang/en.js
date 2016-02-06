@@ -478,11 +478,11 @@ module.exports = (function () {
         sports : {
           SPORTS         : "Sports",
           AWAY_TEAM_LOGO : "Away Team Logo",
+          FINAL          : "Final",
           HOME_TEAM_LOGO : "Home Team Logo",
-          IN             : "Live",
-          POST           : "Final",
-          PRE            : "Upcoming",
-          TITLE          : "{{AWAY}} vs. {{HOME}}"
+          LIVE           : "Live",
+          TITLE          : "{{AWAY}} vs. {{HOME}}",
+          UPCOMING       : "Upcoming"
         },
         stocks : {
           STOCKS  : "Stocks",

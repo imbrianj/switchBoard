@@ -67,6 +67,19 @@ exports.sportsControllerTest = {
     test.done();
   },
 
+  getStatus : function (test) {
+    'use strict';
+
+    var sportsController = require(__dirname + '/../../../../devices/sports/controller'),
+        goodStatus       = sportsController.getStatus('in'),
+        badStatus        = sportsController.getStatus('foo');
+
+    test.strictEqual(goodStatus, 'LIVE',    'Status converted');
+    test.strictEqual(badStatus,  'UNKNOWN', 'Status sanitized');
+
+    test.done();
+  },
+
   getGames : function (test) {
     'use strict';
 
@@ -142,7 +155,7 @@ exports.sportsControllerTest = {
                                                image: '' },
                                             time: 1454630400000,
                                             summary: 'Text',
-                                            status: 'post',
+                                            status: 'FINAL',
                                             location: 'Azkaban',
                                             url: 'http://localhost' },
                                           { home:
@@ -157,7 +170,7 @@ exports.sportsControllerTest = {
                                                image: '' },
                                             time: 1454637600000,
                                             summary: 'Text',
-                                            status: 'post',
+                                            status: 'FINAL',
                                             location: 'Azkaban',
                                             url: 'http://localhost' } ] } }, 'Grabs game data');
     test.deepEqual(testBadData, {}, 'Nothing should be returned for bad data');

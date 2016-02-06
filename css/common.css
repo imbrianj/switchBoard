@@ -566,8 +566,7 @@ section .text-block li .name {
 }
 
 section .text-list li,
-section .text-list li h2,
-section .text-list li .text-group li {
+section .text-list li h2 {
   margin: .5em 0;
 }
 
@@ -575,7 +574,8 @@ section .text-list li .text-group {
   text-align: center;
 }
 
-section .text-group li {
+section .text-list li .text-group li {
+  margin: .3em .5%;
   position: relative;
 }
 
