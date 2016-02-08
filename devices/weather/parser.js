@@ -156,6 +156,8 @@
 
     else {
       markup = markup.replace('{{WEATHER_CURRENT}}', translate('UNAVAILABLE'));
+      markup = markup.replace('{{WEATHER_SUNRISE}}', '');
+      markup = markup.replace('{{WEATHER_SUNSET}}', '');
 
       if(typeof value === 'string') {
         tempMarkup = value;
