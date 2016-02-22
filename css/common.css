@@ -830,6 +830,7 @@ section .volume a,
 section .channel a,
 section .presets a,
 section .mode a {
+  display: block;
   margin: .4em auto;
 }
 
@@ -838,6 +839,7 @@ section .alarm a {
 }
 
 section .presence a {
+  display: block;
   margin: 1em auto;
 }
 

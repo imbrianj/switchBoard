@@ -32,7 +32,7 @@ module.exports = (function () {
    * @fileoverview Basic sports information, from ESPN.
    */
   return {
-    version : 20160205,
+    version : 20160221,
 
     inputs  : ['list'],
 
@@ -110,7 +110,15 @@ module.exports = (function () {
 
       if((team.logo) && (!team.test)) {
         image = (theme === 'dark' && team.logoDark) ? team.logoDark : team.logo;
-        parts = team.type === 'team' ? image.split('http://a.espncdn.com') : image.split('http://a.espncdn.com/combiner/i?img=');
+
+        if(team.type === 'team') {
+          parts = image.split('http://a.espncdn.com');
+        } else if (image.indexOf('http://a.espncdn.com/combiner/i?img=') !== -1) {
+          parts = image.split('http://a.espncdn.com/combiner/i?img=');
+        } else {
+          // Auto racing seems to come through differently
+          parts = image.split('http://a.espncdn.com/');
+        }
 
         path = this.cacheImage(league, team, theme, 'http://a1.espncdn.com/combiner/i?img=' + util.sanitize(parts[1]) + '&h=100&w=100', title);
       }
