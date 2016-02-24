@@ -36,6 +36,8 @@
         league         = {},
         game           = {},
         title          = '',
+        awayWinner     = '',
+        homeWinner     = '',
         tempMarkup     = '',
         gameMarkup     = '',
         translate      = function (message) {
@@ -74,18 +76,23 @@
         gameMarkup = '';
 
         for(j = 0; j < league.games.length; j += 1) {
-          game  = league.games[j];
-          title = translate('TITLE').split('{{AWAY}}').join(game.away.title).split('{{HOME}}').join(game.home.title);
+          game       = league.games[j];
+          title      = translate('TITLE').split('{{AWAY}}').join(game.away.title).split('{{HOME}}').join(game.home.title);
+          awayWinner = game.away.winner ? ' winner' : '';
+          homeWinner = game.home.winner ? ' winner' : '';
 
           gameMarkup = gameMarkup + gameTemplate.split('{{GAME_LINK}}').join(game.url);
           gameMarkup = gameMarkup.split('{{GAME_TITLE}}').join(title);
+          gameMarkup = gameMarkup.split('{{GAME_AWAY_WINNER}}').join(awayWinner);
           gameMarkup = gameMarkup.split('{{GAME_AWAY_TEAM}}').join(game.away.title);
           gameMarkup = gameMarkup.split('{{GAME_AWAY_IMAGE}}').join(game.away.image);
           gameMarkup = gameMarkup.split('{{GAME_AWAY_SCORE}}').join(game.away.score);
+          gameMarkup = gameMarkup.split('{{GAME_HOME_WINNER}}').join(homeWinner);
           gameMarkup = gameMarkup.split('{{GAME_HOME_TEAM}}').join(game.home.title);
           gameMarkup = gameMarkup.split('{{GAME_HOME_IMAGE}}').join(game.home.image);
           gameMarkup = gameMarkup.split('{{GAME_HOME_SCORE}}').join(game.home.score);
           gameMarkup = gameMarkup.split('{{GAME_TIME}}').join(displayTime(game.time));
+          gameMarkup = gameMarkup.split('{{GAME_STATUS}}').join((game.status || '').toLowerCase());
           gameMarkup = gameMarkup.split('{{GAME_STATE}}').join(translate(game.status));
         }
 

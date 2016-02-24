@@ -118,9 +118,9 @@ module.exports = (function () {
           OTHER           : "Other",
           PLURAL_PACKAGES : "You have packages from: {{SENDERS}}",
           SINGLE_PACKAGE  : "You have a package from: {{SENDERS}}",
+          UNKNOWN         : "Unknown",
           UPS             : "UPS",
-          USPS            : "USPS",
-          UNKNOWN         : "Unknown"
+          USPS            : "USPS"
         },
         clientMp3 : {
           CLIENTMP3 : "Client MP3"

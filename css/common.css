@@ -615,6 +615,11 @@ section.sports .text-group img {
   max-width: 100%;
 }
 
+section.sports .winner,
+section.sports .live .state {
+  color: #0078E7;
+}
+
 section .dialog {
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;

@@ -110,9 +110,21 @@ module.exports = (function () {
         },
         activeBuilding : {
           ACTIVEBUILDING  : "Active Building",
+          AMAZON          : "Amazon",
+          BAG             : "Bolso",
+          DRY_CLEANING    : "Limpieza En Seco",
+          ENVELOPE        : "Sobre",
+          FEDEX           : "FedEx",
+          GENERAL_MAIL    : "Correo General",
+          NEWSPAPER       : "Periódico",
           NO_PACKAGES     : "No han llegado paquetes.",
+          ONTRAC          : "OnTrac",
+          OTHER           : "Otro",
           PLURAL_PACKAGES : "Llegaron paquetes enviados por: {{SENDERS}}",
-          SINGLE_PACKAGE  : "Llego un paquete enviado por: {{SENDERS}}"
+          SINGLE_PACKAGE  : "Llego un paquete enviado por: {{SENDERS}}",
+          UNKNOWN         : "Desconocido",
+          UPS             : "UPS",
+          USPS            : "USPS"
         },
         clientMp3 : {
           CLIENTMP3 : "Cliente MP3"
@@ -460,6 +472,15 @@ module.exports = (function () {
         },
         speech : {
           SPEECH : "Voz"
+        },
+        sports : {
+          SPORTS         : "Deportes",
+          AWAY_TEAM_LOGO : "Logo Equipo Distancia",
+          FINAL          : "Final",
+          HOME_TEAM_LOGO : "Logo Equipo Local",
+          LIVE           : "Presente",
+          TITLE          : "{{AWAY}} vs. {{HOME}}",
+          UPCOMING       : "Próximas"
         },
         stocks : {
           STOCKS  : "Mercado de valores",
