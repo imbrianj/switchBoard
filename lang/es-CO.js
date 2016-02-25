@@ -111,8 +111,8 @@ module.exports = (function () {
         activeBuilding : {
           ACTIVEBUILDING  : "Active Building",
           AMAZON          : "Amazon",
-          BAG             : "Bolso",
-          DRY_CLEANING    : "Limpieza En Seco",
+          BAG             : "Bolsa",
+          DRY_CLEANING    : "Lavanderia",
           ENVELOPE        : "Sobre",
           FEDEX           : "FedEx",
           GENERAL_MAIL    : "Correo General",
@@ -475,10 +475,10 @@ module.exports = (function () {
         },
         sports : {
           SPORTS         : "Deportes",
-          AWAY_TEAM_LOGO : "Logo Equipo Distancia",
+          AWAY_TEAM_LOGO : "Logo del equipo contrario",
           FINAL          : "Final",
-          HOME_TEAM_LOGO : "Logo Equipo Local",
-          LIVE           : "Presente",
+          HOME_TEAM_LOGO : "Logo del equipo local",
+          LIVE           : "En vivo y en directo",
           TITLE          : "{{AWAY}} vs. {{HOME}}",
           UPCOMING       : "Próximas"
         },
