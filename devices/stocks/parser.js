@@ -26,7 +26,7 @@
 (function (exports){
   'use strict';
 
-  var version = 20150921;
+  var version = 20160303;
 
   exports.stocks = function (deviceId, markup, state, value, fragments, language) {
     var template   = fragments.list,
@@ -52,22 +52,22 @@
 
     if(value) {
       for(i in value) {
-        if(value[i].dayChangeValue.indexOf('+') === 0) {
-          change    = 'gain';
-          arrow     = 'arrow-up';
-          direction = translate('GAIN');
-        }
+        change    = 'neutral';
+        arrow     = 'arrows-h';
+        direction = translate('NEUTRAL');
 
-        else if(value[i].dayChangeValue.indexOf('-') === 0) {
-          change    = 'loss';
-          arrow     = 'arrow-down';
-          direction = translate('LOSS');
-        }
+        if(value[i].dayChangeValue) {
+          if(value[i].dayChangeValue.indexOf('+') === 0) {
+            change    = 'gain';
+            arrow     = 'arrow-up';
+            direction = translate('GAIN');
+          }
 
-        else {
-          change    = 'neutral';
-          arrow     = 'arrows-h';
-          direction = translate('NEUTRAL');
+          else if(value[i].dayChangeValue.indexOf('-') === 0) {
+            change    = 'loss';
+            arrow     = 'arrow-down';
+            direction = translate('LOSS');
+          }
         }
 
         tempMarkup = tempMarkup + template.split('{{STOCK_CHANGE}}').join(change);
