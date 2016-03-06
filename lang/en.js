@@ -510,6 +510,9 @@ module.exports = (function () {
           SUNRISE     : "Set to {{SUNRISE}} - sun has come up",
           UNAVAILABLE : "Weather data unavailable"
         },
+        website : {
+          WEBSITE : "Website"
+        },
         welcome : {
           WELCOME   : "Welcome",
           HEADER    : "Welcome!",

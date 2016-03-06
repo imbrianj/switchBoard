@@ -97,6 +97,7 @@ module.exports = (function () {
                 'tests/unit/devices/travis/parser.js',
                 'tests/unit/devices/twitter/parser.js',
                 'tests/unit/devices/weather/parser.js',
+                'tests/unit/devices/website/parser.js',
                 'tests/unit/devices/wemo/parser.js',
                 'tests/unit/devices/xbmc/parser.js',
                 'tests/unit/js/combo.min.js']);

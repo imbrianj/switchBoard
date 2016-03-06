@@ -508,6 +508,9 @@ module.exports = (function () {
           SUNRISE     : "Estatus {{SUNRISE}} - ha amanecido",
           UNAVAILABLE : "No se encontró el tiempo actual"
         },
+        website : {
+          WEBSITE : "Sitio Web"
+        },
         welcome : {
           WELCOME   : "Bienvenido",
           HEADER    : "¡Bienvenido!",

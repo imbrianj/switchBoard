@@ -237,6 +237,18 @@ exports.config = {
   },
 
   /*
+   * Simple device type to include a website in an iframe.
+   * Visit this link to find the specific Waze params that work for you:
+   * https://support.google.com/waze/partners/answer/6287370
+   */
+  website : {
+    typeClass : 'website',
+    title     : 'Waze',
+    source    : 'https://embed.waze.com/iframe?zoom=14&lat=47.6205819&lon=-122.3493387',
+    disabled  : true
+  },
+
+  /*
    * Configure Tasker on Android to ping your location while driving to a PHP
    * endpoint: https://github.com/imbrianj/switchboard-phpServer
    */
@@ -596,5 +608,5 @@ exports.config = {
     title          : 'Debug',
     disabled       : true,
     disabledMarkup : true
-  },
+  }
 };

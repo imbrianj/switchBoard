@@ -62,6 +62,7 @@ Supported Devices/Services
 | Travis CI        | Stable      |                                                                                  |
 | Twitter          | Development | Present mentions of your Twitter handle                                          |
 | Weather          | Stable      | Uses Yahoo Weather                                                               |
+| Website          | Development | Simple controller to load an external site as an iframe                          |
 | XBMC             | Stable      | Basic controls work                                                              |
 
 ### How to Contribute

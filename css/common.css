@@ -506,6 +506,18 @@ section .text-control li {
   width: 22%;
 }
 
+section iframe {
+  border: 1px solid #444;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  display: block;
+  height: 10em;
+  margin: 0 auto;
+  max-width: 100%;
+  width: 15em;
+}
+
 section .text,
 section .text-block,
 section .text-list {
