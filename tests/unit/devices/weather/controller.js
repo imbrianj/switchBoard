@@ -64,5 +64,15 @@ exports.weatherControllerTest = {
     test.deepEqual(weatherController.formatTime('4:22 pm'), { hour : '16', minute : '22' });
 
     test.done();
+  },
+
+  fToC : function (test) {
+    'use strict';
+
+    var weatherController = require(__dirname + '/../../../../devices/weather/controller');
+
+    test.deepEqual(weatherController.fToC(57), 14);
+
+    test.done();
   }
 };

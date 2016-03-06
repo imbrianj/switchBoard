@@ -79,6 +79,13 @@ module.exports = (function () {
     },
 
     /**
+     * Accept a temperature in fahrenheit and convert it to celsius.
+     */
+    fToC : function (f) {
+      return Math.round((f - 32) / 1.8);
+    },
+
+    /**
      * Accept sunrise and sunset times as deliverd from the API - and determine
      * what the current sun phase is.  Can either be "Day" or "Night".
      */
@@ -123,11 +130,12 @@ module.exports = (function () {
       weather.deviceId = config.device.deviceId;
       weather.zip      = config.device.zip;
       weather.woeid    = config.device.woeid;
-      weather.host     = config.host     || 'query.yahooapis.com';
-      weather.path     = config.path     || '/v1/public/yql?format=json&q=select * from weather.forecast where ' + (weather.woeid ? 'woeid=' + weather.woeid : 'location=' + weather.zip);
-      weather.port     = config.port     || 443;
-      weather.method   = config.method   || 'GET';
-      weather.callback = config.callback || function () {};
+      weather.celsius  = config.device.celsius || false;
+      weather.host     = config.host           || 'query.yahooapis.com';
+      weather.path     = config.path           || '/v1/public/yql?format=json&q=select * from weather.forecast where ' + (weather.woeid ? 'woeid=' + weather.woeid : 'location=' + weather.zip);
+      weather.port     = config.port           || 443;
+      weather.method   = config.method         || 'GET';
+      weather.callback = config.callback       || function () {};
 
       if((weather.zip !== null) || (weather.woeid !== null)) {
         console.log('\x1b[35m' + config.device.title + '\x1b[0m: Fetching device info');
@@ -143,6 +151,7 @@ module.exports = (function () {
                       var deviceState = require(__dirname + '/../../lib/deviceState'),
                           weatherData = {},
                           errMessage  = 'err',
+                          temp,
                           data,
                           city;
 
@@ -161,8 +170,14 @@ module.exports = (function () {
                           if(city.title.indexOf('Error') === -1) {
                             errMessage  = null;
 
+                            temp        = city.item.condition.temp;
+
+                            if(weather.celsius) {
+                              temp = that.fToC(temp);
+                            }
+
                             weatherData = { 'city'     : city.location.city,
-                                            'temp'     : city.item.condition.temp,
+                                            'temp'     : temp,
                                             'text'     : city.item.condition.text,
                                             'humidity' : city.atmosphere.humidity,
                                             'sunrise'  : city.astronomy.sunrise,

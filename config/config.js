@@ -178,6 +178,7 @@ exports.config = {
     // It's also available in places that don't have Zip codes.
     // Find your location's WOEID from: http://woeid.factormystic.net/
     woeid     : 12798963,
+    celsius   : false,
     apps      : { 'Sun Phase' : { id            : 'sunPhase',
                                   macros        : { 'sunset' : 'smartthings=subdevice-mode-Night' },
                                   dayMode       : 'Home',
