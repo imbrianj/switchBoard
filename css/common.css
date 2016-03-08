@@ -574,7 +574,7 @@ section .state-ok .fa {
 
 section .text-block li .name {
   display: inline-block;
-  width: 3.5em;
+  min-width: 3.5em;
 }
 
 section .text-list li,
