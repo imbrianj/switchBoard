@@ -33,7 +33,7 @@ SB.spec = (function () {
   'use strict';
 
   return {
-    version : 20151114,
+    version : 20160307,
 
     state     : {},
     parsers   : {},
@@ -410,16 +410,20 @@ SB.spec = (function () {
     lazyLoad : function (id) {
       var container,
           images,
+          iframes,
+          elms,
           i = 0;
 
       if(SB.get(id)) {
         container = SB.get(id);
 
-        images = SB.getByTag('img', container);
+        images  = Array.prototype.slice.call(SB.getByTag('img', container));
+        iframes = Array.prototype.slice.call(SB.getByTag('iframe', container));
+        elms    = images.concat(iframes);
 
-        for(i = 0; i < images.length; i += 1) {
-          if((images[i].getAttribute('data-src')) && (!images[i].src)) {
-            images[i].src = images[i].getAttribute('data-src');
+        for(i = 0; i < elms.length; i += 1) {
+          if((elms[i].getAttribute('data-src')) && (!elms[i].src)) {
+            elms[i].src = elms[i].getAttribute('data-src');
           }
         }
       }
@@ -434,15 +438,19 @@ SB.spec = (function () {
      */
     lazyUnLoad : function (elm) {
       var images,
+          iframes,
+          elms,
           i = 0;
 
       if(elm) {
-        images = SB.getByTag('img', elm);
+        images  = Array.prototype.slice.call(SB.getByTag('img', elm));
+        iframes = Array.prototype.slice.call(SB.getByTag('iframe', elm));
+        elms    = images.concat(iframes);
 
-        for(i = 0; i < images.length; i += 1) {
-          if((images[i].getAttribute('src')) && (SB.hasClass(images[i], 'streaming'))) {
-            images[i].setAttribute('data-src', images[i].src);
-            images[i].removeAttribute('src');
+        for(i = 0; i < elms.length; i += 1) {
+          if((elms[i].getAttribute('src')) && ((SB.hasClass(elms[i], 'streaming')) || (elms[i].tagName === 'IFRAME'))) {
+            elms[i].setAttribute('data-src', elms[i].src);
+            elms[i].removeAttribute('src');
           }
         }
       }
