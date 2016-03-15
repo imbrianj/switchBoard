@@ -68,6 +68,13 @@ exports.config = {
     disabledMarkup : true
   },
 
+  clientVibrate : {
+    typeClass      : 'clientVibrate',
+    title          : 'Client Vibrate',
+    disabled       : false,
+    disabledMarkup : true
+  },
+
   samsung : {
     typeClass : 'samsung',
     title     : 'Samsung SmartTV',

@@ -37,7 +37,7 @@ module.exports = (function () {
    *       http://gimx.fr/wiki/index.php?title=Command_line#Linux_.2B_bluetooth_.2B_PS3
    */
   return {
-    version : 20150921,
+    version : 20160314,
 
     inputs  : ['command'],
 
@@ -71,10 +71,10 @@ module.exports = (function () {
           case 'PS' :
             execute.command = 'gimx';
 
-            execute.params.push('--dst');
-            execute.params.push(serviceIP + ':' + servicePort);
             execute.params.push('--event');
             execute.params.push('PS(' + value + ')');
+            execute.params.push('--dst');
+            execute.params.push(serviceIP + ':' + servicePort);
           break;
 
           case 'LEFT'     :
@@ -93,10 +93,10 @@ module.exports = (function () {
           case 'R2'       :
             execute.command = 'gimx';
 
-            execute.params.push('--dst');
-            execute.params.push(serviceIP + ':' + servicePort);
             execute.params.push('--event');
             execute.params.push(command.toLowerCase() + '(' + value + ')');
+            execute.params.push('--dst');
+            execute.params.push(serviceIP + ':' + servicePort);
           break;
 
           default :

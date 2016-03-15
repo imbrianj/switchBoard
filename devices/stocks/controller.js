@@ -157,8 +157,6 @@ module.exports = (function () {
 
                             stockData[util.encodeName(stock.symbol)] = { 'name'             : util.sanitize(stock.symbol),
                                                                          'price'            : util.sanitize(stock.LastTradePriceOnly),
-                                                                         'ask'              : util.sanitize(stock.AskRealtime),
-                                                                         'bid'              : util.sanitize(stock.BidRealtime),
                                                                          'dayHigh'          : util.sanitize(stock.DaysHigh),
                                                                          'dayLow'           : util.sanitize(stock.DaysLow),
                                                                          'yearHigh'         : util.sanitize(stock.YearHigh),

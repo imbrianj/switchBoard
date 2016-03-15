@@ -131,6 +131,10 @@ module.exports = (function () {
         clientSpeech : {
           CLIENTSPEECH : "Client Speech Synthesis"
         },
+        clientVibrate : {
+          CLIENTVIBRATE    : "Client Vibration",
+          VIBRATE_DURATION : "Vibration Duration"
+        },
         debug : {
           DEBUG             : "Debug",
           CLIENTS_CONNECTED : "Clients Connected",

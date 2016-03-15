@@ -33,7 +33,7 @@ SB.spec = (function () {
   'use strict';
 
   return {
-    version : 20160307,
+    version : 20160314,
 
     state     : {},
     parsers   : {},
@@ -278,6 +278,11 @@ SB.spec = (function () {
         else if(typeof message.sound === 'string') {
           SB.log(message.sound, 'Sound', 'success');
           SB.sound.play('/mp3/' + message.sound + '.mp3');
+        }
+
+        else if(typeof message.vibrate === 'string') {
+          SB.log(message.vibrate, 'Vibrate', 'success');
+          SB.vibrate(message.vibrate * 100);
         }
 
         // If you have a title, you're a Desktop Notification.

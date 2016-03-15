@@ -23,44 +23,41 @@
  * IN THE SOFTWARE.
  */
 
-/**
- * @author brian@bevey.org
- * @fileoverview Manage desktop notification pushes and general notification
- *               helper methods.
- */
-
 module.exports = (function () {
   'use strict';
 
+  /**
+   * @author brian@bevey.org
+   * @fileoverview Send vibration command to all Websocket connected clients.
+   */
   return {
     version : 20160314,
 
+    inputs : ['text'],
+
     /**
-     * Accepts a message and object comprised of device controllers.  If any of
-     * the controllers are conidered a notification means, the message is sent
-     * to them.
+     * Default to this device being active and workable.
      */
-    notify : function (message, controllers, source) {
-      var runCommand = require(__dirname + '/../lib/runCommand'),
-          deviceId;
+    init : function (controller, config) {
+      var deviceState = require(__dirname + '/../../lib/deviceState');
 
-      for(deviceId in controllers) {
-        if((controllers[deviceId].config) && (deviceId !== source)) {
-          switch(controllers[deviceId].config.typeClass) {
-            case 'clientNotify' :
-            case 'clientSpeech' :
-            case 'pushover'     :
-            case 'sms'          :
-            case 'speech'       :
-            case 'gerty'        :
-              runCommand.runCommand(deviceId, 'text-' + message, source);
-            break;
+      deviceState.updateState(controller.config.deviceId, 'clientVibrate', { state : 'ok' });
+    },
 
-            case 'clientVibrate' :
-              runCommand.runCommand(deviceId, 'text-5', source);
-            break;
-          }
-        }
+    /**
+     * Accepts a vibration duration number, then sends it to webSockets to be
+     * executed client-side.
+     *
+     * Vibration is only available to clients that support both vibrate as well
+     * as WebSockets.  It's assumed that if you do not support WebSockets, it's
+     * unlikely you support vibrate.
+     */
+    send : function (config) {
+      var webSockets = require(__dirname + '/../../lib/webSockets'),
+          vibrate    = config.text || 0;
+
+      if(vibrate) {
+        webSockets.send({ vibrate : vibrate });
       }
     }
   };

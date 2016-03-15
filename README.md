@@ -29,41 +29,42 @@ Download the source, edit config/config.js to reflect your node server IP, desir
 Supported Devices/Services
 ---
 
-| Name             | Status      | Notes                                                                            |
-|------------------|-------------|----------------------------------------------------------------------------------|
-| ActiveBuilding   | Stable      | Checks for arrived packages to be picked up from your concierge                  |
-| Belkin Wemo      | Stable      |                                                                                  |
-| Client MP3       | Stable      | Sends an mp3 playback command to all Websocket connected clients                 |
-| Client Notify    | Stable      | Sends a Desktop Notification to all Websocket connected clients                  |
-| Client Speech    | Stable      | Sends text to be speech synthesized to all Websocket connected clients           |
-| Debug            | Stable      | Display basic system information (memory, cpu, uptime)                           |
-| Denon            | Stable      | New controller and still in testing                                              |
+| Name             | Status      | Notes                                                                             |
+|------------------|-------------|-----------------------------------------------------------------------------------|
+| ActiveBuilding   | Stable      | Checks for arrived packages to be picked up from your concierge                   |
+| Belkin Wemo      | Stable      |                                                                                   |
+| Client MP3       | Stable      | Sends an mp3 playback command to all Websocket connected clients                  |
+| Client Notify    | Stable      | Sends a Desktop Notification to all Websocket connected clients                   |
+| Client Speech    | Stable      | Sends text to be speech synthesized to all Websocket connected clients            |
+| Client Vibrate   | Testing     | Sends a command to vibrate all Websocket connected clients (phones, tablets, etc) |
+| Debug            | Stable      | Display basic system information (memory, cpu, uptime)                            |
+| Denon            | Stable      | New controller and still in testing                                               |
 | Foscam           | Stable      | Works with FI8910W (if you have another version that this does not work with, let me know and I can add support).  Arm, Disarm, Go to presets, etc. *INSECURE* Exposes camera credentials to users |
-| Gerty            | Stable      | A simple interface for all devices that reacts to natural inputs.                |
+| Gerty            | Stable      | A simple interface for all devices that reacts to natural inputs.                 |
 | GitHub           | Testing     | Poll for commits to a given repository.  For Switchboard, can tell you if you should update. |
-| LG TVs           | Development | Still need work on authentication                                                |
+| LG TVs           | Development | Still need work on authentication                                                 |
 | Location         | Stable      | Uses [switchboard-phpServer](https://github.com/imbrianj/switchboard-phpServer) and [Tasker](https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm) to track your GPS position
-| MP3              | Stable      | Works on *nix with mpg123 or OSX with afplay. Win not supported                  |
-| Nest             | Stable      | Works with Nest thermostat and Protect smoke / CO detectors                      |
-| Panasonic        | Stable      | Text input and basic controls                                                    |
-| Pioneer          | Testing     | Reportedly works, but unable to test                                             |
+| MP3              | Stable      | Works on *nix with mpg123 or OSX with afplay. Win not supported                   |
+| Nest             | Stable      | Works with Nest thermostat and Protect smoke / CO detectors                       |
+| Panasonic        | Stable      | Text input and basic controls                                                     |
+| Pioneer          | Testing     | Reportedly works, but unable to test                                              |
 | PS3              | Stable      | Uses GIMX to emulate PS3 controller ([see below](https://github.com/imbrianj/switchBoard#faq)). OSX not supported  |
-| Pushover         | Stable      | Requires purchased app and token / user key                                      |
+| Pushover         | Stable      | Requires purchased app and token / user key                                       |
 | Raspberry Remote | Stable      | Uses [Raspberry Remote](https://xkonni.github.io/raspberry-remote/) to control lighting. Only Linux is supported |
-| Roku             | Stable      | Launch apps directly, text input and basic controls                              |
-| RSS              | Stable      | Simple RSS and Atom reader                                                       |
-| Samsung SmartTV  | Stable      | Text input and basic controls                                                    |
+| Roku             | Stable      | Launch apps directly, text input and basic controls                               |
+| RSS              | Stable      | Simple RSS and Atom reader                                                        |
+| Samsung SmartTV  | Stable      | Text input and basic controls                                                     |
 | SmartThings      | Stable      | Control devices and monitor real-time states. Requires [companion app](https://github.com/imbrianj/oauth_controller/blob/master/oauth_controller.groovy) |
-| SMS              | Stable      | Uses Twilio. Requires ID and token                                               |
-| Speech           | Stable      | Uses espeak for *nix, say on OSX.  Win not supported                             |
-| Sports           | Development | Pull sports scores from ESPN (please don't hammer this endpoint)                 |
-| Stocks           | Stable      | Uses Yahoo Finance                                                               |
-| Traffic Cams     | Stable      | View multiple traffic webcams                                                    |
-| Travis CI        | Stable      |                                                                                  |
-| Twitter          | Development | Present mentions of your Twitter handle                                          |
-| Weather          | Stable      | Uses Yahoo Weather                                                               |
-| Website          | Development | Simple controller to load an external site as an iframe                          |
-| XBMC             | Stable      | Basic controls work                                                              |
+| SMS              | Stable      | Uses Twilio. Requires ID and token                                                |
+| Speech           | Stable      | Uses espeak for *nix, say on OSX.  Win not supported                              |
+| Sports           | Development | Pull sports scores from ESPN (please don't hammer this endpoint)                  |
+| Stocks           | Stable      | Uses Yahoo Finance                                                                |
+| Traffic Cams     | Stable      | View multiple traffic webcams                                                     |
+| Travis CI        | Stable      |                                                                                   |
+| Twitter          | Development | Present mentions of your Twitter handle                                           |
+| Weather          | Stable      | Uses Yahoo Weather                                                                |
+| Website          | Development | Simple controller to load an external site as an iframe                           |
+| XBMC             | Stable      | Basic controls work                                                               |
 
 ### How to Contribute
 
