@@ -260,6 +260,7 @@ module.exports = (function () {
 
                 // ...or something with a battery.
                 if(device.values.battery) {
+                  currDevice.peripheral         = currDevice.peripheral || {};
                   currDevice.peripheral.battery = parseInt(device.values.battery.value, 10);
                 }
               }
