@@ -135,6 +135,10 @@ module.exports = (function () {
         clientSpeech : {
           CLIENTSPEECH : "Síntesis de voz del cliente"
         },
+        clientVibrate : {
+          CLIENTVIBRATE    : "Vibrar cliente",
+          VIBRATE_DURATION : "Duración de vibración"
+        }
         debug : {
           DEBUG             : "Depurar",
           CLIENTS_CONNECTED : "Clientes Conectados",
@@ -516,7 +520,7 @@ module.exports = (function () {
           HEADER    : "¡Bienvenido!",
           SUCCESS   : "Bienvenido a SwitchBoard.  Si estas viendo este mensaje, quiere decir que todo esta funcionando y solamente tienes que configurar su control remoto.",
           CONFIGURE : "Por favor abra el documento config/config.js que contiene la configuración inicial de aparatos electrónicos comunes.  Si encuentras un aparato parecido al suyo, por favor configúrelo con la información especifica que le pertenece al suyo.  Si hay algo que no le funciona, por favor estudiar los muchos comentarios atra vez de config.js y los muchos otros archivos.  Y ya que estas en el archivo config.js, puedes configurar el aparato \"welcome\", modificándolo a disabled: true para no ver este mensaje otra vez.",
-          SUPPORT   : "Atascado? Preguntas?  Algo no le funciono o tiene una sugerencia? Por favor tómese la libertad de documentar su situación <a href=\"https://github.com/imbrianj/switchBoard/issues/new\" rel=\"external\">aqui</a> o mandarme un email a <a href=\"mailto:brian@bevey.org\" rel=\"external\">brian@bevey.org</a>."
+          SUPPORT   : "Atascado? Preguntas?  Algo no le funciono o tiene una sugerencia? Por favor tómese la libertad de documentar su situación <a href=\"https://github.com/imbrianj/switchBoard/issues/new\" rel=\"external\">aqui</a> o mandarme un email a <a href=\"mailto:brian@bevey.org\" rel=\"external\">brian@bevey.org</a>. Para una solucion mas imediata, por favor <a href=\"http://webchat.freenode.net/?channels=##switchboard\" rel=\"external\">acceder chat por IRC</a>".
         },
         wemo : {
           WEMO : "Wemo"
