@@ -1355,6 +1355,11 @@ section .sub-device-list li dl dd {
   width: auto;
 }
 
+section .sub-device-list li a span,
+section .sub-device-list li span span {
+  font-family: helvetica;
+}
+
 section .sub-device-list li dl dd.fa,
 section .sub-device-list li dl dd.icon {
   font-size: 100%;
