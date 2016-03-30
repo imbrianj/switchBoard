@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -32,7 +29,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    tv : function (state, command) {
+    tv : function (state) {
       var entertained = state.state === 'err' ? 0 : 3;
 
       return { entertained : entertained };

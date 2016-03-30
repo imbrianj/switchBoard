@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -32,16 +29,14 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20151009,
+    version : 20160329,
 
     announcePresence : function (device, command, controllers, values, config) {
-      var runCommand = require(__dirname + '/../lib/runCommand'),
-          translate  = require(__dirname + '/../lib/translate'),
+      var translate  = require(__dirname + '/../lib/translate'),
           notify     = require(__dirname + '/../lib/notify'),
           message    = '',
           presence   = config.presence || [],
-          value,
-          deviceId;
+          value;
 
       if(command.indexOf('subdevice-state-presence-') === 0) {
         command = command.split('subdevice-state-presence-').join('');

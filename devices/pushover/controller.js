@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -79,9 +76,8 @@ module.exports = (function () {
     },
 
     send : function (config) {
-      var https       = require('https'),
-          pushover    = {},
-          postRequest = '',
+      var https    = require('https'),
+          pushover = {},
           request;
 
       pushover.token       = config.token    || config.device.token;

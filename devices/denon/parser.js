@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, console, require */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -26,9 +23,7 @@
 (function (exports){
   'use strict';
 
-  var version = 20150921;
-
-  exports.denon = function (deviceId, markup, state, value, language) {
+  exports.denon = function (deviceId, markup, state, value) {
     if(value) {
       markup = markup.split('{{DEVICE_POWER}}').join(value.power);
 

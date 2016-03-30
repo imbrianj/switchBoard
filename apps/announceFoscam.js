@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -34,14 +31,12 @@ module.exports = (function () {
   return {
     version : 20151009,
 
-    announceFoscam : function (device, command, controllers, values, config) {
-      var runCommand   = require(__dirname + '/../lib/runCommand'),
-          translate    = require(__dirname + '/../lib/translate'),
+    announceFoscam : function (device, command, controllers) {
+      var translate    = require(__dirname + '/../lib/translate'),
           deviceState  = require(__dirname + '/../lib/deviceState'),
           notify       = require(__dirname + '/../lib/notify'),
           currentState = deviceState.getDeviceState(device),
-          message      = '',
-          deviceId;
+          message      = '';
 
       if((currentState) && (currentState.value)) {
         if((command === 'ALARM_ON') || (command === 'ALARM_OFF')) {

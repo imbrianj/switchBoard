@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -111,8 +108,6 @@ module.exports = (function () {
       panasonic.device.localTimeout = controller.config.localTimeout || config.localTimeout;
 
       panasonic.callback = function (err, reply) {
-        var message = '';
-
         if(reply) {
           callback(panasonic.device.deviceId, null, 'ok');
         }

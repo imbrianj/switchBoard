@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, String, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -32,11 +29,15 @@ exports.deviceState = {
   getDeviceState : function (test) {
     'use strict';
 
-    var deviceState    = require(__dirname + '/../../../lib/deviceState'),
-        newFauxDevice  = deviceState.updateState('faux-device', 'faux-type',  { state : 'ok', value : 100 }),
-        duexFauxDevice = deviceState.updateState('faux-device2', 'faux-type', { state : 'ok', value : 150 }),
-        testFauxDevice = deviceState.getDeviceState('faux-device'),
-        allStates      = deviceState.getDeviceState();
+    var deviceState = require(__dirname + '/../../../lib/deviceState'),
+        testFauxDevice,
+        allStates;
+
+    deviceState.updateState('faux-device', 'faux-type',  { state : 'ok', value : 100 });
+    deviceState.updateState('faux-device2', 'faux-type', { state : 'ok', value : 150 });
+
+    testFauxDevice = deviceState.getDeviceState('faux-device');
+    allStates      = deviceState.getDeviceState();
 
     test.notStrictEqual(parseInt(testFauxDevice.updated, 10), NaN, 'Timestamp should return a number.');
     test.strictEqual(testFauxDevice.value,                    100, 'Returned value should match set value.');
@@ -49,9 +50,11 @@ exports.deviceState = {
   newState : function (test) {
     'use strict';
 
-    var deviceState     = require(__dirname + '/../../../lib/deviceState'),
-        newFauxDevice   = deviceState.updateState('faux-device', 'faux-type', {}),
-        fauxDeviceState = deviceState.getDeviceState('faux-device');
+    var deviceState = require(__dirname + '/../../../lib/deviceState'),
+        fauxDeviceState;
+
+    deviceState.updateState('faux-device', 'faux-type', {});
+    fauxDeviceState = deviceState.getDeviceState('faux-device');
 
     test.notStrictEqual(parseInt(fauxDeviceState.value.updated, 10), NaN, 'Timestamp should return a number.');
 
@@ -62,12 +65,15 @@ exports.deviceState = {
     'use strict';
 
     var deviceState    = require(__dirname + '/../../../lib/deviceState'),
-        initNewDevice  = deviceState.updateState('faux-device',     'faux-type',     {}),
-        initExisting   = deviceState.updateState('existing-device', 'faux-type',     { value : 50 }),
-        newDevice      = deviceState.updateState('faux-device',     'faux-type',     { state : 'ok', value : 100 }),
-        newDeviceState = deviceState.getDeviceState('faux-device'),
-        existing       = deviceState.updateState('existing-device', 'existing-type', {}),
-        existingState  = deviceState.getDeviceState('existing-device');
+        newDeviceState,
+        existingState;
+
+    deviceState.updateState('faux-device',     'faux-type', {});
+    deviceState.updateState('existing-device', 'faux-type', { value : 50 });
+    deviceState.updateState('faux-device',     'faux-type', { state : 'ok', value : 100 });
+    newDeviceState = deviceState.getDeviceState('faux-device');
+    deviceState.updateState('existing-device', 'existing-type', {});
+    existingState  = deviceState.getDeviceState('existing-device');
 
     test.strictEqual(newDeviceState.state, 'ok', 'Device state should have been set to ok');
     test.strictEqual(newDeviceState.value, 100,  'Device value should have been set to 100');

@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require, console */
-
 /**
  * Copyright (c) 2014 markewest@gmail.com
  *
@@ -84,7 +81,7 @@ module.exports = (function () {
      * Since RaspberryRemote does not indicate state, we'll just need to load
      * subdevice names to be populated.
      */
-    init : function (controller, config) {
+    init : function (controller) {
       var deviceState = require(__dirname + '/../../lib/deviceState'),
           subdevices  = {},
           className   = '',
@@ -132,7 +129,7 @@ module.exports = (function () {
             rremote.callback(err);
           });
 
-          send.once('close', function (code) {
+          send.once('close', function () {
             rremote.callback(null, 'ok', true);
           });
         }

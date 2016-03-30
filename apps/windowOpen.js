@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -75,10 +72,7 @@ module.exports = (function () {
             currentDevice = {},
             status        = { thermostat : [], contact : [] },
             subDeviceId,
-            subDevice,
-            windows       = '',
-            type          = '',
-            i             = 0;
+            subDevice;
 
         for(deviceId in controllers) {
           if((controllers[deviceId].config) && (controllers[deviceId].config.typeClass === 'nest')) {

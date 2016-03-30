@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, String, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -52,10 +49,13 @@ exports.languageTest = {
 
     var language    = require(__dirname + '/../../../../apps/gerty/language'),
         deviceState = require(__dirname + '/../../../../lib/deviceState'),
-        iniState    = deviceState.updateState('FOO', 'faux-type', { value : { devices : { 0 : { label : 'Test Switch' },
-                                                                                          1 : { label : 'Random Thing' } } } }),
         controllers = { 'FOO' : {} },
-        subDevices  = language.getSubDevices(controllers);
+        subDevices;
+
+    deviceState.updateState('FOO', 'faux-type', { value : { devices : { 0 : { label : 'Test Switch' },
+                                                                        1 : { label : 'Random Thing' } } } });
+
+    subDevices = language.getSubDevices(controllers);
 
     test.deepEqual(subDevices.FOO.subDevices, ['Test Switch', 'Random Thing'], 'Should have subdevice list populated from State var');
 

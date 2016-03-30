@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -83,7 +80,6 @@ module.exports = (function () {
           deviceState = require(__dirname + '/../lib/deviceState'),
           lang        = controllers.config.language,
           newMode     = null,
-          subdevice,
           deviceId,
           weatherState,
           present     = [],

@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, console, require */
-
 /**
  * Copyright (c) 2014 markewest@gmail.com
  *
@@ -26,8 +23,6 @@
 (function (exports){
   'use strict';
 
-  var version = 20150921;
-
   exports.wemo = function (deviceId, markup, state, value, fragments, language) {
     var templateSwitch  = fragments.switch,
         templateGroup   = fragments.group,
@@ -35,7 +30,6 @@
         j               = 0,
         tempMarkup      = '',
         stateClass      = '',
-        deviceMarkup    = '',
         subDeviceMarkup = '',
         subDevice,
         encodeName = function (name) {
@@ -66,7 +60,7 @@
 
           return collected;
         },
-        getDeviceMarkup = function (device, markup) {
+        getDeviceMarkup = function (device) {
           var deviceMarkup   = '';
 
           if(stateClass) {

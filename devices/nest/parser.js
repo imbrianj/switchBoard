@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, console, require */
-
 /**
  * Copyright (c) 2014 markewest@gmail.com
  *
@@ -25,8 +22,6 @@
 
 (function (exports){
   'use strict';
-
-  var version = 20150921;
 
   exports.nest = function (deviceId, markup, state, value, fragments, language) {
     var templateThermostat = fragments.thermostat,

@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -106,7 +103,6 @@ module.exports = (function () {
           stocksState = deviceState.getDeviceState(config.device.deviceId) || { value : {} },
           stocksOpen  = this.stocksOpen(config),
           hasData     = false,
-          that        = this,
           stocks      = {},
           dataReply   = '',
           request,
@@ -136,8 +132,7 @@ module.exports = (function () {
                     });
 
                     response.once('end', function () {
-                      var deviceState = require(__dirname + '/../../lib/deviceState'),
-                          stockData   = {},
+                      var stockData = {},
                           stock,
                           data,
                           i = 0;

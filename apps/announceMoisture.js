@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -33,15 +30,13 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20151009,
+    version : 20160329,
 
-    announceMoisture : function (device, command, controllers, values, config) {
-      var runCommand = require(__dirname + '/../lib/runCommand'),
-          translate  = require(__dirname + '/../lib/translate'),
+    announceMoisture : function (device, command, controllers) {
+      var translate  = require(__dirname + '/../lib/translate'),
           notify     = require(__dirname + '/../lib/notify'),
           message    = '',
-          value,
-          deviceId;
+          value;
 
       if(command.indexOf('subdevice-state-moisture-') === 0) {
         command = command.split('subdevice-state-moisture-').join('');

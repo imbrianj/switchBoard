@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, console, require */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -25,8 +22,6 @@
 
 (function (exports){
   'use strict';
-
-  var version = 20160303;
 
   exports.stocks = function (deviceId, markup, state, value, fragments, language) {
     var template   = fragments.list,

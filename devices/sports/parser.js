@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, console, require */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -25,8 +22,6 @@
 
 (function (exports){
   'use strict';
-
-  var version = 20160204;
 
   exports.sports = function (deviceId, markup, state, value, fragments, language) {
     var leagueTemplate = fragments.league,

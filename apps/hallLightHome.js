@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -39,8 +36,7 @@ module.exports = (function () {
     lastEvents : { presence : 0, open : 0 },
 
     hallLightHome : function (device, command, controllers, values, config) {
-      var that        = this,
-          deviceState = require(__dirname + '/../lib/deviceState'),
+      var deviceState = require(__dirname + '/../lib/deviceState'),
           runCommand  = require(__dirname + '/../lib/runCommand'),
           now         = new Date().getTime(),
           delay       = (config.delay || 15) * 1000,

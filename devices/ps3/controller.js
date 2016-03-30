@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -116,7 +113,7 @@ module.exports = (function () {
      * On startup, your PS3 is clearly not connected to SwitchBoard, so we'll
      * start it off with the "err" (or "off") state.
      */
-    init : function (controller, config) {
+    init : function (controller) {
       var deviceState = require(__dirname + '/../../lib/deviceState');
 
       deviceState.updateState(controller.config.deviceId, 'ps3', { state : 'err' });
@@ -176,8 +173,6 @@ module.exports = (function () {
         });
 
         gimx.once('close', function (code) {
-          var deviceState;
-
           if(ps3.command === 'POWERON') {
             ps3.callback('Device is off or unreachable');
           }

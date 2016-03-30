@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -32,7 +29,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    nest : function (state, command) {
+    nest : function (state) {
       var comfortable = 0,
           social      = 0,
           scared      = 0,

@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global exports */
-
 exports.config = {
   // This file configures SwitchBoard to include any of your services, devices,
   // options and apps.  This file should be considered sensitive and unique to
@@ -276,9 +273,10 @@ exports.config = {
    * the built-in "afplay" command.  Windows is not supported.
    */
   mp3 : {
-    typeClass : 'mp3',
-    title     : 'MP3',
-    disabled  : true
+    typeClass      : 'mp3',
+    title          : 'MP3',
+    disabledMarkup : true,
+    disabled       : true
   },
 
   /*

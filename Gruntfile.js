@@ -10,6 +10,7 @@ module.exports = function (grunt) {
       files   : '<%= jsFiles %>',
       options : {
         undef    : true,
+        unused   : true,
         eqnull   : true,
         debug    : true,
         noarg    : true,
@@ -22,6 +23,8 @@ module.exports = function (grunt) {
         nonew    : true,
         newcap   : false,
         globals  : {
+          module      : true,
+          require     : true,
           console     : true,
           __dirname   : true,
           SB          : true,

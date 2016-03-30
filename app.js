@@ -1,6 +1,3 @@
-/*jslint white: true, nomen: true, indent: 2, sub: true */
-/*global require, console, setTimeout, process */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -29,8 +26,7 @@
  * @requires fs, http, https, url, path, websocket
  */
 
-var version         = 20151129,
-    fs              = require('fs'),
+var fs              = require('fs'),
     http            = require('http'),
     https           = require('https'),
     url             = require('url'),
@@ -71,12 +67,10 @@ connection = function (request, response) {
 
   else {
     request.on('end', function () {
-      var deviceController,
-          device    = url.parse(request.url, true).query.device || controllers[controllers.config.default].config.deviceId,
+      var device    = url.parse(request.url, true).query.device || controllers[controllers.config.default].config.deviceId,
           filename  = path.basename(request.url),
           extension = path.extname(filename),
-          directory = staticAssets.getDirectory(extension, request.url),
-          contents;
+          directory = staticAssets.getDirectory(extension, request.url);
 
       controllers.config.default = device;
 

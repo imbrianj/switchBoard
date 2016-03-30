@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -89,7 +86,7 @@ module.exports = (function () {
     /**
      * Grab the latest state as soon as SwitchBoard starts up.
      */
-    init : function (controller, config) {
+    init : function (controller) {
       var runCommand = require(__dirname + '/../../lib/runCommand');
 
       runCommand.runCommand(controller.config.deviceId, 'state', controller.config.deviceId);
@@ -99,17 +96,13 @@ module.exports = (function () {
      * Prepares and calls send() to request the current state.
      */
     state : function (controller, config, callback) {
-      var that        = this,
-          deviceState = require(__dirname + '/../../lib/deviceState'),
-          wemoState   = deviceState.getDeviceState(controller.config.deviceId),
-          wemo        = { device  : {}, config : {} },
-          value       = { devices : {}, groups : controller.config.groups },
-          wemoKeys    = Object.keys(controller.config.subdevices),
-          xml2js      = require('xml2js'),
-          parser      = new xml2js.Parser(),
-          dataReply   = {},
-          sendCommand,
-          name;
+      var that     = this,
+          wemo     = { device  : {}, config : {} },
+          value    = { devices : {}, groups : controller.config.groups },
+          wemoKeys = Object.keys(controller.config.subdevices),
+          xml2js   = require('xml2js'),
+          parser   = new xml2js.Parser(),
+          sendCommand;
 
       callback                 = callback || function () {};
       wemo.command             = 'state';
@@ -161,7 +154,6 @@ module.exports = (function () {
 
     send : function (config) {
       var http      = require('http'),
-          that      = this,
           deviceState,
           wemoState,
           wemo      = {},

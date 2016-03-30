@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -37,7 +34,7 @@ module.exports = (function () {
     /**
      * Poll the Nest API.
      */
-    poll : function (deviceId, controllers) {
+    poll : function (deviceId) {
       var runCommand  = require(__dirname + '/../../lib/runCommand');
 
       runCommand.runCommand(deviceId, 'list');

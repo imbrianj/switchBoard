@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -34,7 +31,7 @@ module.exports = (function () {
   var GithubCommits = '';
 
   return {
-    version : 20151127,
+    version : 20160329,
 
     translate : function (token, lang) {
       var translate = require(__dirname + '/../lib/translate');
@@ -42,15 +39,10 @@ module.exports = (function () {
       return translate.translate('{{i18n_' + token + '}}', 'github', lang);
     },
 
-    announceGithub : function (device, command, controllers, values, config) {
-      var sharedUtil     = require(__dirname + '/../lib/sharedUtil').util,
-          deviceState    = require(__dirname + '/../lib/deviceState'),
-          githubState    = deviceState.getDeviceState(device),
-          commitMessage  = '',
-          newerAvailable = false,
+    announceGithub : function (device, command, controllers, values) {
+      var commitMessage  = '',
           i              = 0,
           notify,
-          runCommand,
           lang           = controllers.config.language,
           message        = '';
 
@@ -61,7 +53,6 @@ module.exports = (function () {
           for(i; i < values.value.length; i += 1) {
             if(values.value[i].upToDate === false) {
               notify     = require(__dirname + '/../lib/notify');
-              runCommand = require(__dirname + '/../lib/runCommand');
 
               message = this.translate('NEWER', lang);
 

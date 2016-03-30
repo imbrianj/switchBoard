@@ -28,7 +28,7 @@ SB = (function () {
   'use strict';
 
   return {
-    version : 20151007,
+    version : 20160329,
 
    /**
     * Stops event bubbling further.
@@ -1080,3 +1080,7 @@ SB.event.add(window, 'unload', function () {
 
   SB.event.removeAll();
 });
+
+if(typeof module === 'object') {
+  module.exports = SB;
+}

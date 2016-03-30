@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -128,7 +125,6 @@ module.exports = (function () {
      */
     findLabel : function (id, language) {
       var translate = require(__dirname + '/../../lib/translate'),
-          location  = '',
           key       = id.replace('00000000-0000-0000-0000-0001000000', ''),
           keymap    = { '01' : 'BASEMENT',
                         '0d' : 'BEDROOM',
@@ -205,8 +201,7 @@ module.exports = (function () {
       config.device   = { auth : config.auth, deviceId : config.deviceId };
 
       config.callback = function (err, response) {
-        var deviceState = require(__dirname + '/../../lib/deviceState'),
-            nest        = { devices : [] },
+        var nest = { devices : [] },
             i;
 
         if(response) {
@@ -376,11 +371,9 @@ module.exports = (function () {
      *
      * If you don't have registered auth information, we can check for that now.
      */
-    init : function (controller, config) {
+    init : function (controller) {
       var fs      = require('fs'),
           that    = this,
-          auth    = {},
-          groups  = config.groups || {},
           now     = new Date().getTime(),
           expired = true;
 
@@ -427,8 +420,6 @@ module.exports = (function () {
       var https       = require('https'),
           fs          = require('fs'),
           nest        = {},
-          that        = this,
-          postRequest = '',
           dataReply   = '',
           request;
 
@@ -466,8 +457,7 @@ module.exports = (function () {
           });
 
           response.once('end', function () {
-            var deviceState = require(__dirname + '/../../lib/deviceState'),
-                nestData    = null;
+            var nestData = null;
 
             if(dataReply) {
               try {

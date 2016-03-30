@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -74,7 +71,6 @@ module.exports = (function () {
     send : function (config) {
       var https     = require('https'),
           util      = require(__dirname + '/../../lib/sharedUtil').util,
-          that      = this,
           travis    = {},
           dataReply = '',
           request;
@@ -100,10 +96,9 @@ module.exports = (function () {
           });
 
           response.once('end', function () {
-            var deviceState = require(__dirname + '/../../lib/deviceState'),
-                data        = null,
-                travisData  = [],
-                i           = 0;
+            var data       = null,
+                travisData = [],
+                i          = 0;
 
             if(dataReply) {
               try {

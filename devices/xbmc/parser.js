@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -26,14 +23,12 @@
 (function (exports){
   'use strict';
 
-  var version = 20150921;
-
   exports.xbmc = function (deviceId, markup, state, value, fragments) {
     var templateCurrent = fragments.current,
         current         = '';
 
     if((value) && (value.current)) {
-      current = fragments.current.split('{{DEVICE_CURRENT}}').join(value.current);
+      current = templateCurrent.split('{{DEVICE_CURRENT}}').join(value.current);
     }
 
     return markup.replace('{{XBMC_DYNAMIC}}', current);

@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -32,7 +29,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    weather : function (state, command) {
+    weather : function (state) {
       var excited     = 0,
           comfortable = 0,
           temp,

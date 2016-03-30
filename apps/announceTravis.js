@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -37,7 +34,7 @@ module.exports = (function () {
   return {
     version : 20151221,
 
-    announceTravis : function (device, command, controllers, values, config) {
+    announceTravis : function (device, command, controllers, values) {
       var notify,
           translate;
 

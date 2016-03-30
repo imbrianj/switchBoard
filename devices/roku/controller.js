@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, setTimeout, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -150,8 +147,6 @@ module.exports = (function () {
      */
     findState : function (controller, callback) {
       var xml2js = require('xml2js'),
-          fs     = require('fs'),
-          path   = require('path'),
           parser = new xml2js.Parser(),
           config = controller.config,
           apps   = {},
@@ -199,7 +194,7 @@ module.exports = (function () {
     /**
      * Grab the latest state as soon as SwitchBoard starts up.
      */
-    init : function (controller, config) {
+    init : function (controller) {
       var runCommand = require(__dirname + '/../../lib/runCommand');
 
       runCommand.runCommand(controller.config.deviceId, 'state', controller.config.deviceId);

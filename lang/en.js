@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, console, require */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -462,16 +459,20 @@ module.exports = (function () {
           WEB_BROWSER      : "Web Browser"
         },
         smartthings : {
-          SMARTTHINGS    : "SmartThings",
-          ARRIVED        : "{{LABEL}} has just arrived",
-          AWAY           : "Away",
-          DOOR_KNOCK     : "Someone is at the {{LABEL}}",
-          HOME           : "Home",
-          LEFT           : "{{LABEL}} has just left",
-          NIGHT          : "Night",
-          NOBODY_HOME    : "Set to Away - nobody is home",
-          SOMEBODY_HOME  : "Set to Home - {{PEOPLE}} {{PLURAL}} home",
-          WATER_DETECTED : "{{LABEL}} has detected water!"
+          SMARTTHINGS        : "SmartThings",
+          ARRIVED            : "{{LABEL}} has just arrived",
+          AWAY               : "Away",
+          DOOR_KNOCK         : "Someone is at the {{LABEL}}",
+          HOME               : "Home",
+          LEFT               : "{{LABEL}} has just left",
+          NIGHT              : "Night",
+          NOBODY_HOME        : "Set to Away - nobody is home",
+          SAFE_WATCH_CONTACT : "{{LABEL}} has been opened!",
+          SAFE_WATCH_MOTION  : "{{LABEL}} has detected motion!",
+          SAFE_WATCH_TEMP    : "{{LABEL}} has temperature at {{TEMP}}",
+          SAFE_WATCH_VIBRATE : "{{LABEL}} has detected vibration!",
+          SOMEBODY_HOME      : "Set to Home - {{PEOPLE}} {{PLURAL}} home",
+          WATER_DETECTED     : "{{LABEL}} has detected water!"
         },
         sms : {
           SMS : "SMS"

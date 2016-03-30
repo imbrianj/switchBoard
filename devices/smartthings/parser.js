@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, console, require */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -26,8 +23,6 @@
 (function (exports){
   'use strict';
 
-  var version = 20150921;
-
   exports.smartthings = function (deviceId, markup, state, value, fragments, language) {
     var templateAction  = fragments.action,
         templateStatic  = fragments.static,
@@ -35,10 +30,8 @@
         i               = 0,
         j               = 0,
         tempMarkup      = '',
-        deviceMarkup    = '',
         mode            = '',
         subDeviceMarkup = '',
-        subDevice,
         subDevices,
         subDeviceGroup,
         encodeName = function (name) {
@@ -72,7 +65,7 @@
 
           return collected;
         },
-        getDeviceMarkup = function (device, markup) {
+        getDeviceMarkup = function (device) {
           var deviceTemplate = '',
               deviceMarkup   = '',
               deviceClass    = '',

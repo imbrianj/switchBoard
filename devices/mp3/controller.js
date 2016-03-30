@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -109,7 +106,7 @@ module.exports = (function () {
               mp3.callback(err);
             });
 
-            mpg123.once('close', function (code) {
+            mpg123.once('close', function () {
               mp3.callback(null, 'ok');
             });
           }

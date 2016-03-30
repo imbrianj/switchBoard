@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, String, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -63,7 +60,6 @@ exports.smartthingsControllerTest = {
 
     var smartthingsController = require(__dirname + '/../../../../devices/smartthings/controller'),
         deviceState           = require(__dirname + '/../../../../lib/deviceState'),
-        initialState          = deviceState.updateState('FOO', 'smartthings', { state : 'ok' }),
         now                   = new Date(),
         smartthings           = { deviceId : 'FOO' },
         response              = { mode     : 'Home',
@@ -94,8 +90,11 @@ exports.smartthingsControllerTest = {
                                     }
                                   ]
                                 },
-        updateState           = smartthingsController.updateState(smartthings, response),
-        newState              = deviceState.getDeviceState('FOO');
+        newState;
+
+    deviceState.updateState('FOO', 'smartthings', { state : 'ok' });
+    smartthingsController.updateState(smartthings, response);
+    newState = deviceState.getDeviceState('FOO');
 
     test.strictEqual(newState.value.devices[0].type,              'switch',  'The first device is a switch');
     test.strictEqual(newState.value.devices[0].peripheral,        undefined, 'The first device has no peripheral');
@@ -111,11 +110,6 @@ exports.smartthingsControllerTest = {
     'use strict';
 
     var smartthingsController = require(__dirname + '/../../../../devices/smartthings/controller'),
-        config                = { host    : 'TEST-host',
-                                  port    : '443',
-                                  path    : '/TEST/',
-                                  method  : 'GET',
-                                  badData : 'FAILURE' },
         subDevicesRepeat      = { 0 : { label : 'Some Light' }, 1 : { label : 'Some Light' }, 2 : { label : 'Light 3' } },
         subDevicesUnique      = { 0 : { label : 'Light 1' },    1 : { label : 'Light 2' },    2 : { label : 'Light 3' } },
         testSubDevicesRepeat  = smartthingsController.findSubDevices('Some Light', subDevicesRepeat),
@@ -145,7 +139,6 @@ exports.smartthingsControllerTest = {
 
     var smartthingsController = require(__dirname + '/../../../../devices/smartthings/controller'),
         deviceState           = require(__dirname + '/../../../../lib/deviceState'),
-        initialState          = deviceState.updateState('FOO', 'smartthings', stState),
         callback              = function (err, state) {
           var stStateClone = JSON.parse(JSON.stringify(stState));
 
@@ -154,9 +147,13 @@ exports.smartthingsControllerTest = {
           deviceState.updateState('FOO', 'smartthings', stStateClone);
         },
         smartthings           = { device : { deviceId : 'FOO' } },
-        switchState           = smartthingsController.getDevicePath('state-switch-Test Switch-on', smartthings, callback),
-        contactState          = smartthingsController.getDevicePath('state-contact-Test Door-on',  smartthings, callback),
-        finalState            = deviceState.getDeviceState('FOO');
+        finalState;
+
+    deviceState.updateState('FOO', 'smartthings', stState);
+    smartthingsController.getDevicePath('state-switch-Test Switch-on', smartthings, callback);
+    smartthingsController.getDevicePath('state-contact-Test Door-on',  smartthings, callback);
+
+    finalState = deviceState.getDeviceState('FOO');
 
     test.strictEqual(finalState.value.devices[0].state, 'on', 'The first device should now be on');
     test.strictEqual(finalState.value.devices[1].state, 'on', 'The second device should now be open');

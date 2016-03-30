@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -62,7 +59,7 @@ module.exports = (function () {
     /**
      * Grab the latest state as soon as SwitchBoard starts up.
      */
-    init : function (controller, config) {
+    init : function (controller) {
       var runCommand = require(__dirname + '/../../lib/runCommand');
 
       runCommand.runCommand(controller.config.deviceId, 'list', controller.config.deviceId);
@@ -144,11 +141,9 @@ module.exports = (function () {
         });
 
         response.once('end', function () {
-          var xml2js      = require('xml2js'),
-              deviceState = require(__dirname + '/../../lib/deviceState'),
-              parser      = new xml2js.Parser(),
-              data        = null,
-              rssData     = [];
+          var xml2js  = require('xml2js'),
+              parser  = new xml2js.Parser(),
+              rssData = [];
 
           if(dataReply) {
             parser.parseString(dataReply, function (err, reply) {

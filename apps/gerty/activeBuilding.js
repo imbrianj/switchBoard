@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -32,7 +29,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    activeBuilding : function (state, command) {
+    activeBuilding : function (state) {
       var excited = state.value ? (state.value.length * 2) : 0;
 
       return { excited : excited };

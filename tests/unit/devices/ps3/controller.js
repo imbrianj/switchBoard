@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, String, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -36,9 +33,8 @@ exports.ps3ControllerTest = {
         PowerOn       = ps3Controller.translateCommand('POWERON',  '12:34:56', '127.0.0.1', '8181', 'linux'),
         PS            = ps3Controller.translateCommand('PS',       '12:34:56', '127.0.0.1', '8181', 'win32'),
         Cross         = ps3Controller.translateCommand('CROSS',    '12:34:56', '127.0.0.1', '8181', 'linux'),
-        Square        = ps3Controller.translateCommand('SQUARE',   '12:34:56', '127.0.0.1', '8181', 'sunos'),
+        Square        = ps3Controller.translateCommand('SQUARE',   '12:34:56', '127.0.0.1', '8181', 'darwin'),
         Triangle      = ps3Controller.translateCommand('TRIANGLE', '12:34:56', '127.0.0.1', '8181', 'freebsd'),
-        Left          = ps3Controller.translateCommand('LEFT',     '12:34:56', '127.0.0.1', '8181', 'darwin'),
         L1            = ps3Controller.translateCommand('L1',       '12:34:56', '127.0.0.1', '8181', 'linux'),
         L2            = ps3Controller.translateCommand('L2',       '12:34:56', '127.0.0.1', '8181', 'linux'),
         R1            = ps3Controller.translateCommand('R1',       '12:34:56', '127.0.0.1', '8181', 'linux'),

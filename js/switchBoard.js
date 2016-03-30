@@ -1,5 +1,3 @@
-/*global SB, document, window, console */
-/*jslint white: true */
 /*jshint -W020 */
 
 /**
@@ -57,8 +55,7 @@ SB.spec = (function () {
       var newNav        = SB.getByClass(selected, SB.spec.uiComponents.header, 'li')[0],
           newContent    = SB.get(selected),
           selectNav     = SB.getByClass('selected', SB.spec.uiComponents.header, 'li')[0],
-          selectContent = SB.getByClass('selected', SB.spec.uiComponents.body,   'section')[0],
-          slider;
+          selectContent = SB.getByClass('selected', SB.spec.uiComponents.body,   'section')[0];
 
       if((newNav) && (!SB.hasClass(newNav, 'selected'))) {
         SB.removeClass(selectNav,     'selected');
@@ -92,8 +89,7 @@ SB.spec = (function () {
           selected,
           markup,
           innerMarkup = document.createElement('div'),
-          oldMarkup,
-          i;
+          oldMarkup;
 
       SB.spec.state[state.deviceId] = state;
 
@@ -245,7 +241,7 @@ SB.spec = (function () {
         };
       }
 
-      open = function (e) {
+      open = function () {
         var reconnected = SB.spec.uiComponents.indicator.className === 'disconnected' ? true : false;
 
         SB.spec.uiComponents.indicator.className = 'connected';
@@ -321,7 +317,7 @@ SB.spec = (function () {
         }
       };
 
-      close = function (e) {
+      close = function () {
         SB.event.remove(SB.spec.socket, 'close', close);
 
         SB.log('Disconnected', 'WebSocket', 'error');
@@ -329,7 +325,7 @@ SB.spec = (function () {
         reconnect();
       };
 
-      error = function (e) {
+      error = function () {
         SB.event.remove(SB.spec.socket, 'error', close);
 
         SB.log('Error', 'WebSocket', 'error');
@@ -558,7 +554,7 @@ SB.spec = (function () {
                          numberInput.value = value;
                          slider.setAttribute('aria-valuenow', value);
                        },
-                       onComplete : function (drag) {
+                       onComplete : function () {
                          changeForm(numberInput);
                        }
                      });
@@ -642,15 +638,14 @@ SB.spec = (function () {
         });
 
         SB.event.add(SB.spec.uiComponents.body, 'keyup', function (e) {
-          var elm = SB.getTarget(e),
-              numInput;
+          var elm = SB.getTarget(e);
 
           if(SB.hasClass(elm.parentNode, 'sliderBar')) {
             changeForm(elm.parentNode.previousSibling);
           }
         });
 
-        SB.event.add(window, 'resize', function (e) {
+        SB.event.add(window, 'resize', function () {
           SB.spec.sliderSetWidths(numberInputs);
         });
 
@@ -744,7 +739,7 @@ SB.spec = (function () {
               }
             }
           },
-          stopCommand      = function (e) {
+          stopCommand      = function () {
             commandIssued    = null;
             commandDelay     = 750;
             commandIteration = 0;

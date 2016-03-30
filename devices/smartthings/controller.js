@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -75,9 +72,7 @@ module.exports = (function () {
       smartthings.method   = 'POST';
       smartthings.path     = deviceConfig.path || '/oauth/token?grant_type=authorization_code&client_id=' + deviceConfig.clientId + '&client_secret=' + deviceConfig.clientSecret + '&redirect_uri=' + ssl + '://' + config.serverIp + ':' + config.serverPort + '/oauth/' + deviceId + '&code=' + oauthCode + '&scope=app';
       smartthings.callback = function (err, response) {
-        var fs       = require('fs'),
-            authData = {},
-            cache;
+        var authData = {};
 
         if((!err) && (response)) {
           if(response.error) {

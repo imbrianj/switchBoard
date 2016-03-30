@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -44,7 +41,6 @@ module.exports = (function () {
       var runCommand  = require(__dirname + '/../../lib/runCommand'),
           deviceState = require(__dirname + '/../../lib/deviceState'),
           gertyState,
-          oldEmotion,
           deviceId;
 
       // If you haven't explicitly changed emotion based on a devices input,

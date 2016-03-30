@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, String, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *

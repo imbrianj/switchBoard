@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, String, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -142,12 +139,6 @@ exports.runCommandTest = {
     'use strict';
 
     var runCommand     = require(__dirname + '/../../../lib/runCommand'),
-        controllers    = { samsung : { config     : { deviceId : 'TEST-deviceId',
-                                                      title : 'TEST-title' },
-                                       markup     : '<span>{{DEVICE_ID}} {{TEST_KEY}}</span>',
-                                       controller : { inputs : ['command', 'text'],
-                                                      keymap : ['VOLUP'],
-                                                      send   : function (request) { return request; } } } },
         request        = { connection : { remoteAddress : '127.0.0.1' } },
         response       = { end : function (msg) { return msg; } },
         validCommand   = runCommand.runCommand('samsung', 'VOLUP', null, request, response),

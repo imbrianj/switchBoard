@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -38,7 +35,7 @@ module.exports = (function () {
     /**
      * Default to this device being active and workable.
      */
-    init : function (controller, config) {
+    init : function (controller) {
       var deviceState = require(__dirname + '/../../lib/deviceState');
 
       deviceState.updateState(controller.config.deviceId, 'clientVibrate', { state : 'ok' });

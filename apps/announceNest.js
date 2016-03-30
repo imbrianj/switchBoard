@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -43,9 +40,7 @@ module.exports = (function () {
           notify      = require(__dirname + '/../lib/notify'),
           message     = '',
           tempMessage = '',
-          i           = 0,
           subDevice,
-          deviceId,
           rawMacro,
           macro;
 

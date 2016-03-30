@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -220,19 +217,18 @@ module.exports = (function () {
     /**
      * Gerty should default to being happy and active.
      */
-    init : function (controller, config) {
+    init : function (controller) {
       var runCommand = require(__dirname + '/../../lib/runCommand');
 
       runCommand.runCommand(controller.config.deviceId, 'HAPPY', controller.config.deviceId);
     },
 
-    state : function (controller, config, callback) {
+    state : function (controller) {
       var runCommand  = require(__dirname + '/../../lib/runCommand'),
           deviceState = require(__dirname + '/../../lib/deviceState'),
           gertyState  = deviceState.getDeviceState(controller.config.deviceId),
           personality = (controller.config.personality / 100) || 0.5,
-          random      = Math.random(),
-          gerty       = {};
+          random      = Math.random();
 
       if((gertyState) && (gertyState.value) && (personality > random)) {
         // At a rare random event, Gerty should have some added personality.

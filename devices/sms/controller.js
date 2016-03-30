@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -80,9 +77,8 @@ module.exports = (function () {
     },
 
     send : function (config) {
-      var https       = require('https'),
-          sms         = {},
-          postRequest = '',
+      var https = require('https'),
+          sms   = {},
           request;
 
       sms.phone       = config.phone       || config.device.phone;

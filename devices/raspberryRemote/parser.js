@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, console, require */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -26,27 +23,11 @@
 (function (exports){
   'use strict';
 
-  var version = 20150921;
-
-  exports.raspberryRemote = function (deviceId, markup, state, value, fragments, language) {
+  exports.raspberryRemote = function (deviceId, markup, state, value, fragments) {
     var templateSwitch = fragments.switch,
         i              = 0,
         tempMarkup     = '',
         subDevices,
-        encodeName = function (name) {
-          var util;
-
-          if(typeof SB === 'object') {
-            name = SB.util.encodeName(name);
-          }
-
-          else {
-            util = require(__dirname + '/../../lib/sharedUtil').util;
-            name = util.encodeName(name);
-          }
-
-          return 'group-' + name;
-        },
         getDeviceMarkup = function (device) {
           var deviceTemplate = templateSwitch,
               deviceMarkup   = '';
@@ -55,20 +36,6 @@
           deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_NAME}}').join(device.label);
 
           return deviceMarkup;
-        },
-        translate  = function (message) {
-          var util;
-
-          if((typeof SB === 'object') && (typeof SB.util === 'object')) {
-            message = SB.util.translate(message, 'raspberryRemote');
-          }
-
-          else {
-            util    = require(__dirname + '/../../lib/sharedUtil').util;
-            message = util.translate(message, 'raspberryRemote', language);
-          }
-
-          return message;
         };
 
     if((value) && (typeof value === 'object')) {

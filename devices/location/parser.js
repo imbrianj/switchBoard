@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, console, require */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -26,16 +23,9 @@
 (function (exports){
   'use strict';
 
-  var version = 20151108;
-
   exports.location = function (deviceId, markup, state, value, fragments, language) {
     var template   = fragments.item,
         tempMarkup = '',
-        date       = null,
-        day        = '',
-        hour       = 0,
-        minute     = '',
-        meridian   = '',
         i          = 0,
         translate  = function (message) {
           var util;

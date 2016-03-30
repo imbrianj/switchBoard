@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -82,8 +79,7 @@ module.exports = (function () {
                     });
 
                     response.once('end', function () {
-                      var deviceState        = require(__dirname + '/../../lib/deviceState'),
-                          util               = require(__dirname + '/../../lib/sharedUtil').util,
+                      var util               = require(__dirname + '/../../lib/sharedUtil').util,
                           activeBuildingData = [],
                           data               = null,
                           i                  = 0,

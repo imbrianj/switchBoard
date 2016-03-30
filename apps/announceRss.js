@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -34,7 +31,7 @@ module.exports = (function () {
   var RssArticles = '';
 
   return {
-    version : 20151009,
+    version : 20160329,
 
     translate : function (token, lang) {
       var translate = require(__dirname + '/../lib/translate');
@@ -42,13 +39,9 @@ module.exports = (function () {
       return translate.translate('{{i18n_' + token + '}}', 'rss', lang);
     },
 
-    announceRss : function (device, command, controllers, values, config) {
-      var sharedUtil   = require(__dirname + '/../lib/sharedUtil').util,
-          deviceState  = require(__dirname + '/../lib/deviceState'),
-          rssState     = deviceState.getDeviceState(device),
-          articleTitle = '',
+    announceRss : function (device, command, controllers, values) {
+      var articleTitle = '',
           notify,
-          runCommand,
           lang         = controllers.config.language,
           message      = '';
 
@@ -58,7 +51,6 @@ module.exports = (function () {
         if(RssArticles !== articleTitle) {
           if((articleTitle) && (RssArticles)) {
             notify     = require(__dirname + '/../lib/notify');
-            runCommand = require(__dirname + '/../lib/runCommand');
 
             message = this.translate('NEW_ARTICLE', lang);
             message = message.split('{{DEVICE}}').join(controllers[device].config.title);

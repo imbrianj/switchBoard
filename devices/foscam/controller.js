@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -73,7 +70,7 @@ module.exports = (function () {
      * this opportunity to alter the default markup template with the correct
      * path for the image since it will always be part of a data attribute.
      */
-    init : function (controller, config) {
+    init : function (controller) {
       var runCommand = require(__dirname + '/../../lib/runCommand');
 
       runCommand.runCommand(controller.config.deviceId, 'state', controller.config.deviceId);
@@ -141,7 +138,6 @@ module.exports = (function () {
       if(foscam.command === 'TAKE') {
         fs.stat(filePath, function(err, data) {
           var request,
-              controller,
               postData;
 
           if(err) {

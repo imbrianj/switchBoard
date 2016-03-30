@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -32,7 +29,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    security : function (state, command) {
+    security : function (state) {
       var scared = state.value === 'off' ? 0 : -2;
 
       return { scared : scared };

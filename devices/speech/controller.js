@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -117,7 +114,7 @@ module.exports = (function () {
             speech.callback(err);
           });
 
-          speak.once('close', function (code) {
+          speak.once('close', function () {
               speech.callback(null, 'ok');
           });
         }

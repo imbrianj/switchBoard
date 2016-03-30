@@ -1,6 +1,3 @@
-/*jslint white: true */
-/*global module, require, console */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -37,7 +34,7 @@ module.exports = (function () {
   return {
     version : 20150615,
 
-    foscamChange : function (device, command, controllers, values, config) {
+    foscamChange : function (device, command, controllers) {
       var runCommand = require(__dirname + '/../lib/runCommand');
 
       if((command === 'ALARM_ON') || (command === 'ALARM_OFF')) {
