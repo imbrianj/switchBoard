@@ -50,12 +50,12 @@ module.exports = (function () {
           generic,
           device;
 
-      for(device in controllers) {
-        if(device !== 'config') {
-          for(generic in genericTypes) {
-            if(!notUnique[generic]) {
-              if(genericTypes[generic].indexOf(controllers[device].config.typeClass) !== -1) {
-                if(unique[generic.toUpperCase()]) {
+      for (device in controllers) {
+        if (device !== 'config') {
+          for (generic in genericTypes) {
+            if (!notUnique[generic]) {
+              if (genericTypes[generic].indexOf(controllers[device].config.typeClass) !== -1) {
+                if (unique[generic.toUpperCase()]) {
                   notUnique[generic] = true;
                   delete unique[generic.toUpperCase()];
                 }
@@ -85,15 +85,15 @@ module.exports = (function () {
           subdevice,
           i;
 
-      for(device in controllers) {
-        if(device !== 'config') {
+      for (device in controllers) {
+        if (device !== 'config') {
           currentState = deviceState.getDeviceState(device);
 
-          if((currentState) && (currentState.value) && (currentState.value.devices)) {
+          if ((currentState) && (currentState.value) && (currentState.value.devices)) {
             i = 0;
             subdevices[device] = { subDevices : [] };
 
-            for(subdevice in currentState.value.devices) {
+            for (subdevice in currentState.value.devices) {
               subdevices[device].subDevices[i] = currentState.value.devices[subdevice].label;
               i += 1;
             }
@@ -113,7 +113,7 @@ module.exports = (function () {
           strings   = [],
           i         = 0;
 
-      for(i; i < codes.length; i += 1) {
+      for (i; i < codes.length; i += 1) {
         strings[codes[i]] = translate.translate('{{i18n_' + codes[i] + '}}', 'gerty', language);
       }
 

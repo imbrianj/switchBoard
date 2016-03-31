@@ -35,7 +35,7 @@
         translate           = function (message) {
           var util;
 
-          if((typeof SB === 'object') && (typeof SB.util === 'object')) {
+          if ((typeof SB === 'object') && (typeof SB.util === 'object')) {
             message = SB.util.translate(message, 'debug');
           }
 
@@ -50,7 +50,7 @@
           var util,
               time;
 
-          if((typeof SB === 'object') && (typeof SB.util === 'object')) {
+          if ((typeof SB === 'object') && (typeof SB.util === 'object')) {
             time = SB.util.displayTime(unix, translate);
           }
 
@@ -65,7 +65,7 @@
           var util,
               time;
 
-          if((typeof SB === 'object') && (typeof SB.util === 'object')) {
+          if ((typeof SB === 'object') && (typeof SB.util === 'object')) {
             time = SB.util.displayRelativeTime(milliseconds);
           }
 
@@ -77,7 +77,7 @@
           return time;
         };
 
-    if(value) {
+    if (value) {
       uptime        = displayRelativeTime(value.uptime);
       runtime       = displayRelativeTime((now - value.startup) / 1000);
       memoryUsed    = value.memoryUsed;

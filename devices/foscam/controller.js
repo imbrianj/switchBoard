@@ -98,19 +98,19 @@ module.exports = (function () {
       foscam.callback = function (err, reply) {
         var params  = { value : '' };
 
-        if(reply) {
-          if(reply.toString().indexOf('var alarm_motion_armed=0') !== -1) {
+        if (reply) {
+          if (reply.toString().indexOf('var alarm_motion_armed=0') !== -1) {
             params.value = 'off';
           }
 
-          else if(reply.toString().indexOf('var alarm_motion_armed=1') !== -1) {
+          else if (reply.toString().indexOf('var alarm_motion_armed=1') !== -1) {
             params.value = 'on';
           }
 
           callback(foscam.device.deviceId, null, 'ok', params);
         }
 
-        else if(err) {
+        else if (err) {
           callback(foscam.device.deviceId, 'err', 'err');
         }
       };
@@ -135,12 +135,12 @@ module.exports = (function () {
       foscam.devicePort = config.device.devicePort   || 80;
       foscam.callback   = config.callback            || function () {};
 
-      if(foscam.command === 'TAKE') {
+      if (foscam.command === 'TAKE') {
         fs.stat(filePath, function(err, data) {
           var request,
               postData;
 
-          if(err) {
+          if (err) {
             request = require('request');
             postData = that.postPrepare(foscam);
 
@@ -149,7 +149,7 @@ module.exports = (function () {
             request('http://' + postData.host + ':' + postData.port + postData.path).pipe(fs.createWriteStream(filePath));
           }
 
-          else if(data) {
+          else if (data) {
             console.log('\x1b[35m' + config.device.title + '\x1b[0m: Skipping image - already exists');
           }
         });
@@ -168,7 +168,7 @@ module.exports = (function () {
           });
         });
 
-        if(foscam.command === 'state') {
+        if (foscam.command === 'state') {
           request.setTimeout(foscam.timeout, function () {
             request.destroy();
             foscam.callback({ code : 'ETIMEDOUT' }, null, true);
@@ -176,7 +176,7 @@ module.exports = (function () {
         }
 
         request.once('error', function (err) {
-          if((err.code !== 'ETIMEDOUT') || (foscam.command !== 'state')) {
+          if ((err.code !== 'ETIMEDOUT') || (foscam.command !== 'state')) {
             foscam.callback(err, null, true);
           }
         });

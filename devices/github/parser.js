@@ -35,7 +35,7 @@
         translate      = function (message) {
           var util;
 
-          if((typeof SB === 'object') && (typeof SB.util === 'object')) {
+          if ((typeof SB === 'object') && (typeof SB.util === 'object')) {
             message = SB.util.translate(message, 'github');
           }
 
@@ -50,7 +50,7 @@
           var util,
               time;
 
-          if((typeof SB === 'object') && (typeof SB.util === 'object')) {
+          if ((typeof SB === 'object') && (typeof SB.util === 'object')) {
             time = SB.util.displayTime(unix, translate, 'long');
           }
 
@@ -62,19 +62,19 @@
           return time;
         };
 
-    if((state) && (value)) {
-      for(i; i < value.length; i += 1) {
+    if ((state) && (value)) {
+      for (i; i < value.length; i += 1) {
         time = displayTime(value[i].time);
 
         tempMarkup = tempMarkup + commit.split('{{GITHUB_URL}}').join(value[i].url);
         tempMarkup = tempMarkup.split('{{GITHUB_TITLE}}').join(time);
         tempMarkup = tempMarkup.split('{{GITHUB_DESCRIPTION}}').join(value[i].description);
 
-        if(value[i].upToDate === false) {
+        if (value[i].upToDate === false) {
           newerAvailable = 'NEWER';
         }
 
-        else if(value[i].upToDate === true) {
+        else if (value[i].upToDate === true) {
           hasLatest = 'LATEST';
         }
       }
@@ -82,7 +82,7 @@
 
     markup = markup.replace('{{GITHUB_DYNAMIC}}', tempMarkup);
 
-    if(newerAvailable) {
+    if (newerAvailable) {
       messageText = translate(newerAvailable);
     }
 

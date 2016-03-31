@@ -33,7 +33,7 @@
         translate  = function (message) {
           var util;
 
-          if((typeof SB === 'object') && (typeof SB.util === 'object')) {
+          if ((typeof SB === 'object') && (typeof SB.util === 'object')) {
             message = SB.util.translate(message, 'stocks');
           }
 
@@ -45,20 +45,20 @@
           return message;
         };
 
-    if(value) {
-      for(i in value) {
+    if (value) {
+      for (i in value) {
         change    = 'neutral';
         arrow     = 'arrows-h';
         direction = translate('NEUTRAL');
 
-        if(value[i].dayChangeValue) {
-          if(value[i].dayChangeValue.indexOf('+') === 0) {
+        if (value[i].dayChangeValue) {
+          if (value[i].dayChangeValue.indexOf('+') === 0) {
             change    = 'gain';
             arrow     = 'arrow-up';
             direction = translate('GAIN');
           }
 
-          else if(value[i].dayChangeValue.indexOf('-') === 0) {
+          else if (value[i].dayChangeValue.indexOf('-') === 0) {
             change    = 'loss';
             arrow     = 'arrow-down';
             direction = translate('LOSS');

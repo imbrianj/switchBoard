@@ -37,7 +37,7 @@
         encodeName = function (name) {
           var util;
 
-          if(typeof SB === 'object') {
+          if (typeof SB === 'object') {
             name = SB.util.encodeName(name);
           }
 
@@ -48,16 +48,30 @@
 
           return 'group-' + name;
         },
+        translate = function (message) {
+          var util;
+
+          if ((typeof SB === 'object') && (typeof SB.util === 'object')) {
+            message = SB.util.translate(message, 'smartthings');
+          }
+
+          else {
+            util    = require(__dirname + '/../../lib/sharedUtil').util;
+            message = util.translate(message, 'smartthings', language);
+          }
+
+          return message;
+        },
         findSubDevices = function (subDeviceLabel, subDevices) {
           var subDevice = {},
               collected = [],
               i         = 0,
               j         = 0;
 
-          for(i in subDevices) {
+          for (i in subDevices) {
             subDevice = subDevices[i];
 
-            if(subDevice.label === subDeviceLabel) {
+            if (subDevice.label === subDeviceLabel) {
               collected[j] = subDevice;
               j += 1;
             }
@@ -72,7 +86,7 @@
               temp           = '',
               vibrate        = '';
 
-          switch(device.type) {
+          switch (device.type) {
             case 'switch' :
               deviceTemplate = templateAction;
               deviceClass    = 'fa-lightbulb-o';
@@ -104,20 +118,20 @@
             break;
           }
 
-          if((device.peripheral) && (device.peripheral.temp)) {
+          if ((device.peripheral) && (device.peripheral.temp)) {
             temp = ' (' + device.peripheral.temp + '&deg;)';
           }
 
-          if((device.peripheral) && (device.peripheral.vibrate === 'on')) {
+          if ((device.peripheral) && (device.peripheral.vibrate === 'on')) {
             vibrate = ' device-vibrate';
           }
 
-          if(deviceTemplate) {
+          if (deviceTemplate) {
             deviceMarkup = deviceTemplate.split('{{SUB_DEVICE_ID}}').join(device.label.split(' ').join('+'));
             deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_NAME}}').join(device.label + temp);
             deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_CLASS}}').join(device.className || deviceClass);
 
-            if(device.state === 'on') {
+            if (device.state === 'on') {
               deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_STATE}}').join(' device-active' + vibrate);
               deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_STATUS}}').join(translate('ACTIVE'));
             }
@@ -129,37 +143,23 @@
           }
 
           return deviceMarkup;
-        },
-        translate  = function (message) {
-          var util;
-
-          if((typeof SB === 'object') && (typeof SB.util === 'object')) {
-            message = SB.util.translate(message, 'smartthings');
-          }
-
-          else {
-            util    = require(__dirname + '/../../lib/sharedUtil').util;
-            message = util.translate(message, 'smartthings', language);
-          }
-
-          return message;
         };
 
-    if((value) && (typeof value === 'object') && (typeof value.mode === 'string')) {
+    if ((value) && (typeof value === 'object') && (typeof value.mode === 'string')) {
       mode       = value.mode;
       subDevices = value.devices;
 
-      if(subDevices) {
+      if (subDevices) {
         // You want to display SmartThings devices in groups.
-        if(value.groups) {
-          for(i in value.groups) {
+        if (value.groups) {
+          for (i in value.groups) {
             tempMarkup      = tempMarkup + templateGroup;
             subDeviceMarkup = '';
 
-            for(j in value.groups[i]) {
+            for (j in value.groups[i]) {
               subDeviceGroup = findSubDevices(value.groups[i][j], subDevices);
 
-              if(subDeviceGroup && subDeviceGroup[0]) {
+              if (subDeviceGroup && subDeviceGroup[0]) {
                 subDeviceMarkup = subDeviceMarkup + getDeviceMarkup(subDeviceGroup[0]);
               }
             }
@@ -172,13 +172,13 @@
 
         // Otherwise, you want to show them in a list.
         else {
-          for(i in subDevices) {
+          for (i in subDevices) {
             tempMarkup = tempMarkup + getDeviceMarkup(subDevices[i]);
           }
         }
       }
 
-      switch(mode) {
+      switch (mode) {
         case 'Home' :
           markup = markup.split('{{DEVICE_STATE_HOME}}').join(' device-active');
           markup = markup.split('{{HOME_STATUS}}').join(translate('ACTIVE'));

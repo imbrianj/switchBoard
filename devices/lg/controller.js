@@ -116,8 +116,8 @@ module.exports = (function () {
      * Prepare a request for command execution.
      */
     postPrepare : function (lg) {
-      var path    = lg.command === 'pair' ? '/udap/api/pairing' : '/udap/api/command',
-          method  = 'POST';
+      var path   = lg.command === 'pair' ? '/udap/api/pairing' : '/udap/api/command',
+          method = 'POST';
 
       return {
         host    : lg.deviceIp,
@@ -181,11 +181,11 @@ module.exports = (function () {
       lg.device.localTimeout = controller.config.localTimeout || config.localTimeout;
 
       lg.callback = function (err, reply) {
-        if(reply) {
+        if (reply) {
           callback(lg.device.deviceId, null, 'ok');
         }
 
-        else if(err) {
+        else if (err) {
           callback(lg.device.deviceId, err);
         }
       };
@@ -216,7 +216,7 @@ module.exports = (function () {
                   });
                 });
 
-      if(lg.command === 'state') {
+      if (lg.command === 'state') {
         request.setTimeout(lg.timeout, function () {
           request.destroy();
           lg.callback({ code : 'ETIMEDOUT' }, null, true);
@@ -224,12 +224,12 @@ module.exports = (function () {
       }
 
       request.once('error', function (err) {
-        if((err.code !== 'ETIMEDOUT') || (lg.command !== 'state')) {
+        if ((err.code !== 'ETIMEDOUT') || (lg.command !== 'state')) {
           lg.callback(err);
         }
       });
 
-      if(lg.command === 'pair') {
+      if (lg.command === 'pair') {
         request.end(this.postPairData(lg));
       }
 

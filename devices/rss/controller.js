@@ -79,8 +79,8 @@ module.exports = (function () {
       maxCount = maxCount || 3;
 
       // You're an RSS feed.
-      if(reply.rss) {
-        for(i in reply.rss.channel[0].item) {
+      if (reply.rss) {
+        for (i in reply.rss.channel[0].item) {
           article = reply.rss.channel[0].item[i];
 
           rssData[j] = { 'title'       : util.sanitize(article.title[0]),
@@ -90,15 +90,15 @@ module.exports = (function () {
 
           j += 1;
 
-          if(j >= maxCount) {
+          if (j >= maxCount) {
             break;
           }
         }
       }
 
       // You're probably an Atom feed
-      else if((reply.feed) && (reply.feed.entry)) {
-        for(i; i < reply.feed.entry.length; i += 1) {
+      else if ((reply.feed) && (reply.feed.entry)) {
+        for (i; i < reply.feed.entry.length; i += 1) {
           article = reply.feed.entry[i];
 
           rssData[j] = { 'title'       : util.sanitize(article.title[0]._),
@@ -108,7 +108,7 @@ module.exports = (function () {
 
           j += 1;
 
-          if(j >= maxCount) {
+          if (j >= maxCount) {
             break;
           }
         }
@@ -145,10 +145,10 @@ module.exports = (function () {
               parser  = new xml2js.Parser(),
               rssData = [];
 
-          if(dataReply) {
+          if (dataReply) {
             parser.parseString(dataReply, function (err, reply) {
-              if(reply) {
-                if(err) {
+              if (reply) {
+                if (err) {
                   console.log('\x1b[31m' + config.device.title + '\x1b[0m: Unable to parse reply');
                 }
 

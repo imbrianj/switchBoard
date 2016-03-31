@@ -40,19 +40,19 @@ module.exports = (function () {
           delay = config.delay || 5,
           that  = this;
 
-      if(command === 'subdevice-state-vibrate-' + config.vibrate + '-on') {
+      if (command === 'subdevice-state-vibrate-' + config.vibrate + '-on') {
         this.lastEvents.knock = now;
       }
 
-      else if(command === 'subdevice-state-contact-' + config.contact + '-on') {
+      else if (command === 'subdevice-state-contact-' + config.contact + '-on') {
         this.lastEvents.open = now;
       }
 
-      else if(command === 'subdevice-state-contact-' + config.contact + '-off') {
+      else if (command === 'subdevice-state-contact-' + config.contact + '-off') {
         this.lastEvents.close = now;
       }
 
-      if(now === this.lastEvents.knock) {
+      if (now === this.lastEvents.knock) {
         setTimeout(function () {
           var notify     = require(__dirname + '/../lib/notify'),
               translate  = require(__dirname + '/../lib/translate'),
@@ -60,15 +60,15 @@ module.exports = (function () {
               message    = '',
               deviceId;
 
-          if((that.lastEvents.open <= that.lastEvents.close) &&
-             (Math.abs(that.lastEvents.knock - that.lastEvents.open)  > (config.delay * 1000)) &&
-             (Math.abs(that.lastEvents.knock - that.lastEvents.close) > (config.delay * 1000))) {
+          if ((that.lastEvents.open <= that.lastEvents.close) &&
+              (Math.abs(that.lastEvents.knock - that.lastEvents.open)  > (config.delay * 1000)) &&
+              (Math.abs(that.lastEvents.knock - that.lastEvents.close) > (config.delay * 1000))) {
             message = translate.translate('{{i18n_DOOR_KNOCK}}', 'smartthings', controllers.config.language).split('{{LABEL}}').join(config.contact);
 
             notify.notify(message, controllers, device);
 
-            for(deviceId in controllers) {
-              if((controllers[deviceId].config) && ((controllers[deviceId].config.typeClass === 'mp3') || (controllers[deviceId].config.typeClass === 'clientMp3'))) {
+            for (deviceId in controllers) {
+              if ((controllers[deviceId].config) && ((controllers[deviceId].config.typeClass === 'mp3') || (controllers[deviceId].config.typeClass === 'clientMp3'))) {
                 runCommand.runCommand(deviceId, 'text-doorbell');
               }
             }

@@ -38,17 +38,17 @@ module.exports = (function () {
           currentState = deviceState.getDeviceState(device),
           message      = '';
 
-      if((currentState) && (currentState.value)) {
-        if((command === 'ALARM_ON') || (command === 'ALARM_OFF')) {
-          if((command === 'ALARM_ON') && (currentState.value === 'off')) {
+      if ((currentState) && (currentState.value)) {
+        if ((command === 'ALARM_ON') || (command === 'ALARM_OFF')) {
+          if ((command === 'ALARM_ON') && (currentState.value === 'off')) {
             message = translate.translate('{{i18n_CAMERA_ARMED}}', 'foscam', controllers.config.language);
           }
 
-          else if((command === 'ALARM_OFF') && (currentState.value === 'on')) {
+          else if ((command === 'ALARM_OFF') && (currentState.value === 'on')) {
             message = translate.translate('{{i18n_CAMERA_DISARMED}}', 'foscam', controllers.config.language);
           }
 
-          if(message) {
+          if (message) {
             notify.notify(message, controllers, device);
           }
         }

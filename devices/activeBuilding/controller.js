@@ -68,7 +68,7 @@ module.exports = (function () {
       activeBuilding.method      = config.method   || 'GET';
       activeBuilding.callback    = config.callback || function () {};
 
-      if((activeBuilding.appId) && (activeBuilding.communityId) && (activeBuilding.unitNumber)) {
+      if ((activeBuilding.appId) && (activeBuilding.communityId) && (activeBuilding.unitNumber)) {
         console.log('\x1b[35m' + config.device.title + '\x1b[0m: Fetching device info');
 
         request = https.request(this.postPrepare(activeBuilding), function (response) {
@@ -90,21 +90,21 @@ module.exports = (function () {
                             return util.translate(message, 'activeBuilding', config.language);
                           };
 
-                      if((dataReply) && (dataReply.indexOf('EVIL(') === 0)) {
+                      if ((dataReply) && (dataReply.indexOf('EVIL(') === 0)) {
                         dataReply = dataReply.substring(0, dataReply.length - 1).replace('EVIL(', '');
 
                         try {
                           data = JSON.parse(dataReply);
                         }
 
-                        catch(err) {
+                        catch (err) {
                           activeBuilding.callback('Failed to parse JSONP');
                         }
 
-                        if(data) {
-                          for(i; i < data.length; i += 1) {
-                            if(data[i].unit === activeBuilding.unitNumber) {
-                              switch(data[i].typeName) {
+                        if (data) {
+                          for (i; i < data.length; i += 1) {
+                            if (data[i].unit === activeBuilding.unitNumber) {
+                              switch (data[i].typeName) {
                                 case 'Amazon'       :
                                 case 'Bag'          :
                                 case 'Dry Cleaning' :

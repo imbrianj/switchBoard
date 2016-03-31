@@ -31,7 +31,7 @@
         translate  = function (message) {
           var util;
 
-          if((typeof SB === 'object') && (typeof SB.util === 'object')) {
+          if ((typeof SB === 'object') && (typeof SB.util === 'object')) {
             message = SB.util.translate(message, 'activeBuilding');
           }
 
@@ -46,7 +46,7 @@
           var message = '',
               util;
 
-          if((typeof SB === 'object') && (typeof SB.util === 'object')) {
+          if ((typeof SB === 'object') && (typeof SB.util === 'object')) {
             message = SB.util.arrayList(elms, 'activeBuilding', language);
           }
 
@@ -58,23 +58,23 @@
           return message;
         };
 
-    if((state) && (value)) {
+    if ((state) && (value)) {
       senders = arrayList(value);
     }
 
-    if((!value || value.length === 0)) {
+    if ((!value || value.length === 0)) {
       status     = 'err';
       icon       = 'times';
       tempMarkup = translate('NO_PACKAGES');
     }
 
-    else if(value.length === 1) {
+    else if (value.length === 1) {
       status     = 'ok';
       icon       = 'tag';
       tempMarkup = translate('SINGLE_PACKAGE');
     }
 
-    else if(value.length > 1) {
+    else if (value.length > 1) {
       status     = 'ok';
       icon       = 'tags';
       tempMarkup = translate('PLURAL_PACKAGES');

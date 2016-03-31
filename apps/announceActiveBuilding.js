@@ -47,22 +47,22 @@ module.exports = (function () {
           message    = '',
           packages   = [];
 
-      if((values) && (values.value)) {
+      if ((values) && (values.value)) {
         packages = values.value;
 
-        if(JSON.stringify(ActiveBuildingPackages[device]) !== JSON.stringify(packages)) {
+        if (JSON.stringify(ActiveBuildingPackages[device]) !== JSON.stringify(packages)) {
           senders = sharedUtil.arrayList(values.value, 'activeBuilding', lang);
 
           ActiveBuildingPackages[device] = packages;
 
-          if(senders) {
+          if (senders) {
             notify     = require(__dirname + '/../lib/notify');
 
-            if(packages.length === 1) {
+            if (packages.length === 1) {
               message = this.translate('SINGLE_PACKAGE', lang);
             }
 
-            else if(packages.length > 1) {
+            else if (packages.length > 1) {
               message = this.translate('PLURAL_PACKAGES', lang);
             }
 

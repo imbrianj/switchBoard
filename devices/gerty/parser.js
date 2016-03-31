@@ -34,7 +34,7 @@
         translate  = function (message) {
           var util;
 
-          if((typeof SB === 'object') && (typeof SB.util === 'object')) {
+          if ((typeof SB === 'object') && (typeof SB.util === 'object')) {
             message = SB.util.translate(message, 'gerty');
           }
 
@@ -49,7 +49,7 @@
           var util,
               time;
 
-          if((typeof SB === 'object') && (typeof SB.util === 'object')) {
+          if ((typeof SB === 'object') && (typeof SB.util === 'object')) {
             time = SB.util.displayTime(unix, translate);
           }
 
@@ -61,8 +61,8 @@
           return time;
         };
 
-    if(value.comments) {
-      for(comment in value.comments) {
+    if (value.comments) {
+      for (comment in value.comments) {
         time = displayTime(value.comments[comment].time);
 
         commentsMarkup = commentsMarkup + templateComment.split('{{TIME}}').join(time);
@@ -72,17 +72,17 @@
       }
     }
 
-    if(typeof SB === 'object') {
+    if (typeof SB === 'object') {
       container    = SB.getByTag('span', SB.get(deviceId))[0];
       commentsList = SB.getByTag('ol', SB.get(deviceId))[0];
 
-      if((container) && (container.innerHTML !== value.emoji)) {
+      if ((container) && (container.innerHTML !== value.emoji)) {
         SB.putText(container, value.emoji);
 
         container.className = value.action || '';
       }
 
-      if((commentsList) && (commentsList.innerHTML !== commentsMarkup)) {
+      if ((commentsList) && (commentsList.innerHTML !== commentsMarkup)) {
         commentsList.innerHTML = commentsMarkup;
         commentsList.scrollTop = commentsList.scrollHeight;
       }
@@ -91,7 +91,7 @@
     }
 
     else {
-      if(value.action) {
+      if (value.action) {
         action = ' class="' + value.action + '"';
       }
 

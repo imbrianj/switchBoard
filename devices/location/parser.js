@@ -30,7 +30,7 @@
         translate  = function (message) {
           var util;
 
-          if((typeof SB === 'object') && (typeof SB.util === 'object')) {
+          if ((typeof SB === 'object') && (typeof SB.util === 'object')) {
             message = SB.util.translate(message, 'location');
           }
 
@@ -45,7 +45,7 @@
           var util,
               time;
 
-          if((typeof SB === 'object') && (typeof SB.util === 'object')) {
+          if ((typeof SB === 'object') && (typeof SB.util === 'object')) {
             time = SB.util.displayTime(unix, translate);
           }
 
@@ -57,8 +57,8 @@
           return time;
         };
 
-    if((state) && (value)) {
-      for(i; i < value.length; i += 1) {
+    if ((state) && (value)) {
+      for (i; i < value.length; i += 1) {
         tempMarkup = tempMarkup + template.split('{{LOCATION_NAME}}').join(value[i].name);
         tempMarkup = tempMarkup.split('{{LOCATION_URL}}').join(value[i].url);
         tempMarkup = tempMarkup.split('{{LOCATION_TIME}}').join(displayTime(value[i].time));

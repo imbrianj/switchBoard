@@ -26,7 +26,7 @@
   exports.website = function (deviceId, markup, state, value) {
     var source = '';
 
-    if((value) && (value.source)) {
+    if ((value) && (value.source)) {
       source = value.source;
     }
 

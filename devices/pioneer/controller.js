@@ -86,11 +86,11 @@ module.exports = (function () {
       pioneer.device.localTimeout = controller.config.localTimeout || config.localTimeout;
 
       pioneer.callback = function (err, reply) {
-        if(reply) {
+        if (reply) {
           callback(pioneer.device.deviceId, null, 'ok');
         }
 
-        else if(err) {
+        else if (err) {
           callback(pioneer.device.deviceId, 'err');
         }
       };
@@ -110,7 +110,7 @@ module.exports = (function () {
       pioneer.callback   = config.callback                || function () {};
 
       client.connect(pioneer.devicePort, pioneer.deviceIp, function () {
-        if(pioneer.command) {
+        if (pioneer.command) {
           client.write(pioneer.command + "\r\n");
         }
 
@@ -123,7 +123,7 @@ module.exports = (function () {
         client.end();
       });
 
-      if(pioneer.command === 'state') {
+      if (pioneer.command === 'state') {
         client.setTimeout(pioneer.timeout, function () {
           client.destroy();
           pioneer.callback({ code : 'ETIMEDOUT' });
@@ -131,7 +131,7 @@ module.exports = (function () {
       }
 
       client.once('error', function (err) {
-        if((err.code !== 'ETIMEDOUT') || (pioneer.command !== 'state')) {
+        if ((err.code !== 'ETIMEDOUT') || (pioneer.command !== 'state')) {
           pioneer.callback(err);
         }
       });

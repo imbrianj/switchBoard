@@ -100,12 +100,12 @@ module.exports = (function () {
       sunset.unix  = new Date(year, month, date, sunset.hour,  sunset.minute).getTime();
 
       // The sun hasn't come up yet.
-      if(sunrise.unix > unixNow) {
+      if (sunrise.unix > unixNow) {
         state = 'Night';
       }
 
       // The sun has come up - but has not gone down.
-      else if(sunset.unix > unixNow) {
+      else if (sunset.unix > unixNow) {
         state = 'Day';
       }
 
@@ -134,7 +134,7 @@ module.exports = (function () {
       weather.method   = config.method         || 'GET';
       weather.callback = config.callback       || function () {};
 
-      if((weather.zip !== null) || (weather.woeid !== null)) {
+      if ((weather.zip !== null) || (weather.woeid !== null)) {
         console.log('\x1b[35m' + config.device.title + '\x1b[0m: Fetching device info');
 
         request = https.request(this.postPrepare(weather), function (response) {
@@ -151,24 +151,24 @@ module.exports = (function () {
                           data,
                           city;
 
-                      if(dataReply) {
+                      if (dataReply) {
                         try {
                           data = JSON.parse(dataReply);
                         }
 
-                        catch(err) {
+                        catch (err) {
                           errMessage = 'API returned an unexpected value';
                         }
 
-                        if(data && data.query && data.query.results) {
+                        if (data && data.query && data.query.results) {
                           city = data.query.results.channel;
 
-                          if(city.title.indexOf('Error') === -1) {
+                          if (city.title.indexOf('Error') === -1) {
                             errMessage  = null;
 
                             temp        = city.item.condition.temp;
 
-                            if(weather.celsius) {
+                            if (weather.celsius) {
                               temp = that.fToC(temp);
                             }
 

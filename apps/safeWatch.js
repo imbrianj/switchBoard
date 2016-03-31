@@ -32,7 +32,7 @@ module.exports = (function () {
   var TempNotified = false;
 
   return {
-    version : 20160329,
+    version : 20160330,
 
     safeWatch : function (device, command, controllers, values, config) {
       var notify,
@@ -53,8 +53,8 @@ module.exports = (function () {
             var found = false,
                 current;
 
-            for(current in collection) {
-              if(command === prefix + collection[current] + '-on') {
+            for (current in collection) {
+              if (command === prefix + collection[current] + '-on') {
                 found = collection[current];
                 break;
               }
@@ -66,9 +66,9 @@ module.exports = (function () {
             var current,
                 value = false;
 
-            for(current in devices) {
-              if((devices[current].type === 'presence') && (devices[current].state === 'off')) {
-                if(presence.indexOf(devices[current].label !== -1)) {
+            for (current in devices) {
+              if ((devices[current].type === 'presence') && (devices[current].state === 'off')) {
+                if (presence.indexOf(devices[current].label !== -1)) {
                   value = true;
                 }
               }
@@ -77,39 +77,42 @@ module.exports = (function () {
             return value;
           };
 
-      if(subdevice = isIn(command, config.motion, 'subdevice-state-motion-')) {
+      if (isIn(command, config.motion, 'subdevice-state-motion-')) {
+        subdevice = isIn(command, config.motion, 'subdevice-state-motion-');
         type = 'MOTION';
       }
 
-      else if(subdevice = isIn(command, config.vibrate, 'subdevice-state-vibrate-')) {
+      else if (isIn(command, config.vibrate, 'subdevice-state-vibrate-')) {
+        subdevice = isIn(command, config.vibrate, 'subdevice-state-vibrate-');
         type = 'VIBRATE';
       }
 
-      else if(subdevice = isIn(command, config.contact, 'subdevice-state-contact-')) {
+      else if (isIn(command, config.contact, 'subdevice-state-contact-')) {
+        subdevice = isIn(command, config.contact, 'subdevice-state-contact-');
         type = 'CONTACT';
       }
 
-      else if(command.indexOf('subdevice-state-temp-') === 0) {
+      else if (command.indexOf('subdevice-state-temp-') === 0) {
         parts     = command.replace('subdevice-state-temp-', '').split('-');
         temp      = parts.pop();
         subdevice = parts.join('-');
 
-        if(temp > tempMax || temp < tempMin) {
+        if (temp > tempMax || temp < tempMin) {
           now = new Date().getTime();
 
-          if(now - governor > TempNotified) {
+          if (now - governor > TempNotified) {
             type         = 'TEMP';
             TempNotified = now;
           }
         }
       }
 
-      if((subdevice) && (type)) {
+      if ((subdevice) && (type)) {
         deviceState      = require(__dirname + '/../lib/deviceState');
         smartThingsState = deviceState.getDeviceState(device);
 
-        if((smartThingsState) && (smartThingsState.value) && (smartThingsState.value.devices)) {
-          if(isNotPresent(smartThingsState.value.devices, config.presence)) {
+        if ((smartThingsState) && (smartThingsState.value) && (smartThingsState.value.devices)) {
+          if (isNotPresent(smartThingsState.value.devices, config.presence)) {
             notify    = require(__dirname + '/../lib/notify');
             translate = require(__dirname + '/../lib/translate');
 

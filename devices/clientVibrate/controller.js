@@ -53,7 +53,7 @@ module.exports = (function () {
       var webSockets = require(__dirname + '/../../lib/webSockets'),
           vibrate    = config.text || 0;
 
-      if(vibrate) {
+      if (vibrate) {
         webSockets.send({ vibrate : vibrate });
       }
     }

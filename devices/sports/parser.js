@@ -38,7 +38,7 @@
         translate      = function (message) {
           var util;
 
-          if((typeof SB === 'object') && (typeof SB.util === 'object')) {
+          if ((typeof SB === 'object') && (typeof SB.util === 'object')) {
             message = SB.util.translate(message, 'sports');
           }
 
@@ -53,7 +53,7 @@
           var util,
               time;
 
-          if((typeof SB === 'object') && (typeof SB.util === 'object')) {
+          if ((typeof SB === 'object') && (typeof SB.util === 'object')) {
             time = SB.util.displayTime(unix, translate);
           }
 
@@ -65,12 +65,12 @@
           return time;
         };
 
-    if((state) && (value)) {
-      for(i in value) {
+    if ((state) && (value)) {
+      for (i in value) {
         league = value[i];
         gameMarkup = '';
 
-        for(j = 0; j < league.games.length; j += 1) {
+        for (j = 0; j < league.games.length; j += 1) {
           game       = league.games[j];
           title      = translate('TITLE').split('{{AWAY}}').join(game.away.title).split('{{HOME}}').join(game.home.title);
           awayWinner = game.away.winner ? ' winner' : '';

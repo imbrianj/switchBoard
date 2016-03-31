@@ -54,7 +54,7 @@ module.exports = (function () {
     getEmojiType : function (command) {
       var emojis;
 
-      switch(command) {
+      switch (command) {
         case 'ANGRY'       :
           emojis = ['😡', '😠', '😫', '😣'];
         break;
@@ -113,9 +113,9 @@ module.exports = (function () {
           action  = '';
 
       // If you're asleep, you shouldn't be very active.
-      if(command !== 'SLEEP') {
+      if (command !== 'SLEEP') {
         // At a rare random event, Gerty should have some added personality.
-        if((personality > random) && (random % 2)) {
+        if ((personality > random) && (random % 2)) {
           action = actions[Math.floor(Math.random() * actions.length)];
         }
       }
@@ -132,18 +132,18 @@ module.exports = (function () {
           names  = config.names || {},
           user   = {};
 
-      if(Users[issuer]) {
+      if (Users[issuer]) {
         user = Users[issuer];
       }
 
       else {
-        if(issuer === 'localhost') {
+        if (issuer === 'localhost') {
           user.name = config.title;
           user.code = 'gerty';
         }
 
         else {
-          if(names[issuer]) {
+          if (names[issuer]) {
             user.name = names[issuer];
           }
 
@@ -176,14 +176,14 @@ module.exports = (function () {
           allComments = [],
           now;
 
-      if(gertyState && gertyState.value && gertyState.value.comments) {
+      if (gertyState && gertyState.value && gertyState.value.comments) {
         allComments = JSON.parse(JSON.stringify(gertyState.value.comments));
       }
 
-      if(comment) {
+      if (comment) {
         now = new Date().getTime();
 
-        if(allComments.length) {
+        if (allComments.length) {
           allComments.push({ text : comment, time : now, name : user.name, code : user.code });
         }
 
@@ -205,8 +205,8 @@ module.exports = (function () {
       var correctionHash = config.corrections || {},
           term           = '';
 
-      if(text) {
-        for(term in correctionHash) {
+      if (text) {
+        for (term in correctionHash) {
           text = text.split(term).join(correctionHash[term]);
         }
       }
@@ -230,9 +230,9 @@ module.exports = (function () {
           personality = (controller.config.personality / 100) || 0.5,
           random      = Math.random();
 
-      if((gertyState) && (gertyState.value) && (personality > random)) {
+      if ((gertyState) && (gertyState.value) && (personality > random)) {
         // At a rare random event, Gerty should have some added personality.
-        if((random > 0.95) && (gertyState.value.description !== 'SLEEPING')) {
+        if ((random > 0.95) && (gertyState.value.description !== 'SLEEPING')) {
           gertyState.value.description = 'PLAYFUL';
         }
 

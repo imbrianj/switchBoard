@@ -9,20 +9,26 @@ module.exports = function (grunt) {
     jshint  : {
       files   : '<%= jsFiles %>',
       options : {
-        undef    : true,
-        unused   : true,
-        eqnull   : true,
-        debug    : true,
-        noarg    : true,
-        boss     : true,
-        loopfunc : true,
-        evil     : true,
-        laxbreak : true,
-        bitwise  : true,
-        strict   : true,
-        nonew    : true,
-        newcap   : false,
-        globals  : {
+        bitwise       : true,
+        debug         : true,
+        curly         : true,
+        eqeqeq        : true,
+        eqnull        : true,
+        freeze        : true,
+        futurehostile : true,
+        iterator      : true,
+        latedef       : true,
+        laxbreak      : true,
+        loopfunc      : true,
+        noarg         : true,
+        nonbsp        : true,
+        nocomma       : true,
+        nonew         : true,
+        notypeof      : true,
+        strict        : true,
+        undef         : true,
+        unused        : true,
+        globals       : {
           module      : true,
           require     : true,
           console     : true,
@@ -40,9 +46,6 @@ module.exports = function (grunt) {
     },
 
     nodeunit : {
-      /* We want to explicitly run tests/unit/js/ last since it will create some
-         mock client objects that would otherwise be picked up in
-         tests/unit/parsers/ */
       all : ['tests/unit/apps/**/*.js',
              'tests/unit/devices/**/*.js',
              'tests/unit/lib/*.js',

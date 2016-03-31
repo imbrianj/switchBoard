@@ -45,11 +45,11 @@ module.exports = (function () {
           lang         = controllers.config.language,
           message      = '';
 
-      if((values) && (values.value) && (values.value[0]) && (values.value[0].title)) {
+      if ((values) && (values.value) && (values.value[0]) && (values.value[0].title)) {
         articleTitle = values.value[0].title;
 
-        if(RssArticles !== articleTitle) {
-          if((articleTitle) && (RssArticles)) {
+        if (RssArticles !== articleTitle) {
+          if ((articleTitle) && (RssArticles)) {
             notify     = require(__dirname + '/../lib/notify');
 
             message = this.translate('NEW_ARTICLE', lang);

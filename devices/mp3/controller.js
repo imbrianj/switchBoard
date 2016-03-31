@@ -42,7 +42,7 @@ module.exports = (function () {
     translateCommand : function (file, platform) {
       var execute = { command : '', params : [] };
 
-      switch(platform) {
+      switch (platform) {
         case 'linux' :
         case 'freebsd' :
         case 'sunos' :
@@ -88,17 +88,17 @@ module.exports = (function () {
       mp3.platform = config.platofrm || process.platform;
       mp3.execute  = this.translateCommand(mp3.file, mp3.platform);
 
-      if(mp3.execute) {
-        if(mp3.file) {
+      if (mp3.execute) {
+        if (mp3.file) {
           try {
             file = fs.statSync(mp3.file);
           }
 
-          catch(catchErr) {
+          catch (catchErr) {
             mp3.callback('Specified file not found');
           }
 
-          if((file) && (mp3.execute)) {
+          if ((file) && (mp3.execute)) {
             spawn = require('child_process').spawn;
             mpg123 = spawn(mp3.execute.command, mp3.execute.params);
 

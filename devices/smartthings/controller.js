@@ -74,8 +74,8 @@ module.exports = (function () {
       smartthings.callback = function (err, response) {
         var authData = {};
 
-        if((!err) && (response)) {
-          if(response.error) {
+        if ((!err) && (response)) {
+          if (response.error) {
             console.log('\x1b[31m' + deviceConfig.title + '\x1b[0m: ' + response.error_description);
           }
 
@@ -110,8 +110,8 @@ module.exports = (function () {
         var fs = require('fs'),
             cache;
 
-        if(!err) {
-          if(response.error) {
+        if (!err) {
+          if (response.error) {
             console.log('\x1b[31m' + controller.config.title + '\x1b[0m: ' + response.message);
           }
 
@@ -165,20 +165,20 @@ module.exports = (function () {
           currDevice      = {},
           device;
 
-      if((response) && (response.mode) && (response.devices)) {
+      if ((response) && (response.mode) && (response.devices)) {
         mode  = response.mode;
         state = 'ok';
 
-        for(i; i < response.devices.length; i += 1) {
+        for (i; i < response.devices.length; i += 1) {
           device = response.devices[i];
 
-          if((device.values) && (device.id) && (device.label)) {
+          if ((device.values) && (device.id) && (device.label)) {
             currDevice = {
               id    : device.id,
               label : device.label
             };
 
-            if((smartthings.className) && (smartthings.className[device.label])) {
+            if ((smartthings.className) && (smartthings.className[device.label])) {
               currDevice.className = smartthings.className[device.label];
             }
 
@@ -186,57 +186,57 @@ module.exports = (function () {
             // may report temp as well as be a contact sensor.  For now, we're
             // only concerned with the primary role - and take priority over
             // those functions that seem most valuable.
-            if(device.values.switch) {
+            if (device.values.switch) {
               // You're a switch
               currDevice.type  = 'switch';
               currDevice.state = device.values.switch.value;
             }
 
-            else if(device.values.lock) {
+            else if (device.values.lock) {
               // You're a lock
               currDevice.type  = 'lock';
               currDevice.state = device.values.lock.value;
             }
 
-            else if(device.values.contact) {
+            else if (device.values.contact) {
               // You're a contact sensor
               currDevice.type  = 'contact';
               currDevice.state = device.values.contact.value === 'open' ? 'on' : 'off';
             }
 
-            else if(device.values.water) {
+            else if (device.values.water) {
               // You're a moisture sensor
               currDevice.type  = 'water';
               currDevice.state = device.values.water.value === 'wet' ? 'on' : 'off';
             }
 
-            else if(device.values.motion) {
+            else if (device.values.motion) {
               // You're a motion sensor
               currDevice.type  = 'motion';
               currDevice.state = device.values.motion.value === 'active' ? 'on' : 'off';
             }
 
-            else if(device.values.presence) {
+            else if (device.values.presence) {
               // You're a presence sensor
               currDevice.type  = 'presence';
               currDevice.state = device.values.presence.value === 'present' ? 'on' : 'off';
             }
 
             // These are commonly secondary sensors for a given device.
-            if((device.values.temperature) || (device.values.vibrate) || (device.values.battery)) {
+            if ((device.values.temperature) || (device.values.vibrate) || (device.values.battery)) {
               // If you have a proper state, temp is peripheral sensor.
-              if(currDevice.state) {
+              if (currDevice.state) {
                 currDevice.peripheral = currDevice.peripheral || {};
 
-                if(device.values.temperature) {
+                if (device.values.temperature) {
                   currDevice.peripheral.temp = parseInt(device.values.temperature.value, 10);
                 }
 
-                if(device.values.vibrate) {
+                if (device.values.vibrate) {
                   currDevice.peripheral.vibrate = device.values.vibrate.value;
                 }
 
-                if(device.values.battery) {
+                if (device.values.battery) {
                   currDevice.peripheral.battery = parseInt(device.values.battery.value, 10);
                 }
               }
@@ -244,17 +244,17 @@ module.exports = (function () {
               else {
                 // If you have no proper state, you're just a temperature
                 // sensor.
-                if(device.values.temperature) {
+                if (device.values.temperature) {
                   currDevice.state = parseInt(device.values.temperature.value, 10);
                 }
 
                 // ...or a vibrate sensor.
-                if(device.values.vibrate) {
+                if (device.values.vibrate) {
                   currDevice.state = device.values.vibrate.value;
                 }
 
                 // ...or something with a battery.
-                if(device.values.battery) {
+                if (device.values.battery) {
                   currDevice.peripheral         = currDevice.peripheral || {};
                   currDevice.peripheral.battery = parseInt(device.values.battery.value, 10);
                 }
@@ -282,10 +282,10 @@ module.exports = (function () {
           collected = [],
           i         = 0;
 
-      for(i in subDevices) {
+      for (i in subDevices) {
         subDevice = subDevices[i];
 
-        if(subDevice.label === subDeviceLabel) {
+        if (subDevice.label === subDeviceLabel) {
           collected.push(subDevice);
         }
       }
@@ -311,88 +311,88 @@ module.exports = (function () {
           i                = 1,
           value            = '';
 
-      if((smartThingsState.value) && (smartThingsState.value.devices)) {
+      if ((smartThingsState.value) && (smartThingsState.value.devices)) {
         subDevices = JSON.parse(JSON.stringify(smartThingsState.value.devices));
       }
 
-      if(command.indexOf('mode-') === 0) {
+      if (command.indexOf('mode-') === 0) {
         command = command.replace('mode-', '');
         path    = config.device.auth.url + '/mode/' + command + '?access_token=' + config.device.auth.accessToken;
       }
 
-      else if(command.indexOf('toggle-') === 0) {
+      else if (command.indexOf('toggle-') === 0) {
         commandType = 'toggle';
       }
 
-      else if(command.indexOf('on-') === 0) {
+      else if (command.indexOf('on-') === 0) {
         commandType = 'on';
       }
 
-      else if(command.indexOf('off-') === 0) {
+      else if (command.indexOf('off-') === 0) {
         commandType = 'off';
       }
 
-      else if(command.indexOf('lock-') === 0) {
+      else if (command.indexOf('lock-') === 0) {
         commandType = 'lock';
       }
 
-      else if(command.indexOf('unlock-') === 0) {
+      else if (command.indexOf('unlock-') === 0) {
         commandType = 'unlock';
       }
 
-      else if(command.indexOf('state-mode-') === 0) {
+      else if (command.indexOf('state-mode-') === 0) {
         command = command.replace('state-mode-', '');
 
-        if((command === 'Home') || (command === 'Away') || (command === 'Night')) {
+        if ((command === 'Home') || (command === 'Away') || (command === 'Night')) {
           callback(null, { devices : subDevices, mode : command, groups : config.device.groups });
         }
       }
 
-      else if(command.indexOf('state-switch-') === 0) {
+      else if (command.indexOf('state-switch-') === 0) {
         commandType = 'switch';
       }
 
-      else if(command.indexOf('state-lock-') === 0) {
+      else if (command.indexOf('state-lock-') === 0) {
         commandType = 'lock';
       }
 
-      else if(command.indexOf('state-temp-') === 0) {
+      else if (command.indexOf('state-temp-') === 0) {
         commandType = 'temp';
       }
 
-      else if(command.indexOf('state-vibrate-') === 0) {
+      else if (command.indexOf('state-vibrate-') === 0) {
         commandType = 'vibrate';
       }
 
-      else if(command.indexOf('state-contact-') === 0) {
+      else if (command.indexOf('state-contact-') === 0) {
         commandType = 'contact';
       }
 
-      else if(command.indexOf('state-moisture-') === 0) {
+      else if (command.indexOf('state-moisture-') === 0) {
         commandType = 'moisture';
       }
 
-      else if(command.indexOf('state-motion-') === 0) {
+      else if (command.indexOf('state-motion-') === 0) {
         commandType = 'motion';
       }
 
-      else if(command.indexOf('state-presence-') === 0) {
+      else if (command.indexOf('state-presence-') === 0) {
         commandType = 'presence';
       }
 
-      if(commandType === 'temp') {
+      if (commandType === 'temp') {
         command = command.replace('state-temp-', '');
         value   = command.split('-');
         command = value[0];
         value   = value[1];
 
-        if(!isNaN(value)) {
-          for(i in subDevices) {
+        if (!isNaN(value)) {
+          for (i in subDevices) {
             subDevice = subDevices[i];
 
-            if(subDevice.label === command) {
+            if (subDevice.label === command) {
               // If you have a proper state, temp is peripheral sensor.
-              if(subDevice.state) {
+              if (subDevice.state) {
                 subDevices[i].peripheral = subDevices[i].peripheral || {};
                 subDevices[i].peripheral.temp = value;
               }
@@ -408,18 +408,18 @@ module.exports = (function () {
         }
       }
 
-      else if((command.indexOf('state-') === 0) && (commandType)) {
+      else if ((command.indexOf('state-') === 0) && (commandType)) {
         command = command.replace('state-' + commandType + '-', '');
         value   = command.split('-');
         command = value[0];
         value   = value[1];
 
-        for(i in subDevices) {
+        for (i in subDevices) {
           subDevice = subDevices[i];
 
-          if(subDevice.label === command) {
+          if (subDevice.label === command) {
             // If you have a proper state, vibrate is peripheral sensor.
-            if((commandType === 'vibrate') && (subDevice.state)) {
+            if ((commandType === 'vibrate') && (subDevice.state)) {
               subDevices[i].peripheral = subDevices[i].peripheral || {};
               subDevices[i].peripheral.vibrate = value;
             }
@@ -434,30 +434,30 @@ module.exports = (function () {
         }
       }
 
-      else if(commandType) {
+      else if (commandType) {
         command   = command.replace(commandType + '-', '');
         subDevice = this.findSubDevices(command, subDevices);
 
-        if((subDevice) && (subDevice[0])) {
-          if(subDevice[0].type === 'switch') {
+        if ((subDevice) && (subDevice[0])) {
+          if (subDevice[0].type === 'switch') {
             path = config.device.auth.url + '/switches/' + subDevice[0].id + '/' + commandType + '?access_token=' + config.device.auth.accessToken;
           }
 
-          else if(subDevice[0].type === 'lock') {
+          else if (subDevice[0].type === 'lock') {
             path = config.device.auth.url + '/locks/' + subDevice[0].id + '/' + commandType + '?access_token=' + config.device.auth.accessToken;
           }
 
           // For same-named devices, we want them to operate in concert, so
           // we'll send along the same command to each of them.
-          if(subDevice.length > 1) {
-            for(i; i < subDevice.length; i += 1) {
+          if (subDevice.length > 1) {
+            for (i; i < subDevice.length; i += 1) {
               config.subdevice = '';
 
-              if(subDevice[i].type === 'switch') {
+              if (subDevice[i].type === 'switch') {
                 config.path = config.device.auth.url + '/switches/' + subDevice[i].id + '/' + commandType + '?access_token=' + config.device.auth.accessToken;
               }
 
-              else if(subDevice[i].type === 'lock') {
+              else if (subDevice[i].type === 'lock') {
                 config.path = config.device.auth.url + '/locks/' + subDevice[i].id + '/' + commandType + '?access_token=' + config.device.auth.accessToken;
               }
 
@@ -481,12 +481,12 @@ module.exports = (function () {
           auth = {},
           ssl  = config.ssl.disabled === false ? 'https' : 'http';
 
-      if(typeof controller.config.clientId !== 'undefined' && controller.config.clientSecret !== 'undefined') {
+      if (typeof controller.config.clientId !== 'undefined' && controller.config.clientSecret !== 'undefined') {
         fs.readFile(__dirname + '/../../cache/smartthingsAuth.json', function (err, data) {
           var runCommand = require(__dirname + '/../../lib/runCommand');
 
           // We need to prompt the user to retrieve the auth token.
-          if(err) {
+          if (err) {
             console.log('\x1b[31m=====================================================================\x1b[0m');
             console.log('\x1b[31mWARNING\x1b[0m: ' + controller.config.title + ': Attempting to load controller that requires');
             console.log('\x1b[31mWARNING\x1b[0m: additional OAuth configuration!');
@@ -495,18 +495,18 @@ module.exports = (function () {
             console.log('\x1b[31m=====================================================================\x1b[0m');
           }
 
-          else if(data) {
-            if(data.toString()) {
+          else if (data) {
+            if (data.toString()) {
               try {
                 controller.config.auth = JSON.parse(data.toString());
               }
 
-              catch(catchErr) {
+              catch (catchErr) {
                 console.log('\x1b[31m' + controller.config.title + '\x1b[0m: Failed to parse auth file');
               }
 
-              if(controller.config.auth) {
-                if(typeof controller.config.auth.url === 'string') {
+              if (controller.config.auth) {
+                if (typeof controller.config.auth.url === 'string') {
                   runCommand.runCommand(controller.config.deviceId, 'list', controller.config.deviceId);
                 }
 
@@ -551,22 +551,22 @@ module.exports = (function () {
       smartthings.method    = config.method           || 'GET';
       smartthings.callback  = config.callback         || function () {};
 
-      if(smartthings.list) {
+      if (smartthings.list) {
         this.oauthDeviceList(smartthings);
       }
 
       else {
         request = this.postPrepare(smartthings);
 
-        if(smartthings.auth) {
+        if (smartthings.auth) {
           request.headers.Authorization = 'Bearer ' + smartthings.auth.accessToken;
         }
 
-        if(smartthings.command) {
+        if (smartthings.command) {
           request.path = this.getDevicePath(smartthings.command, config, smartthings.callback);
         }
 
-        if(request.path) {
+        if (request.path) {
           request = https.request(request, function (response) {
                       response.on('data', function (response) {
                         dataReply += response;
@@ -575,22 +575,22 @@ module.exports = (function () {
                       response.once('end', function () {
                         var smartthingsData = null;
 
-                        if(dataReply) {
+                        if (dataReply) {
                           try {
                             smartthingsData = JSON.parse(dataReply);
                           }
 
-                          catch(err) {
+                          catch (err) {
                             smartthings.callback('Invalid data returned from API');
                           }
 
-                          if(smartthingsData) {
+                          if (smartthingsData) {
                             smartthingsData.groups    = config.device.groups;
                             smartthingsData.className = config.device.className;
 
                             // If we have a full device list, we should try and
                             // get a filtered data set.
-                            if(smartthingsData.devices) {
+                            if (smartthingsData.devices) {
                               smartthingsData = that.updateState(smartthings, smartthingsData);
                             }
 

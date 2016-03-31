@@ -44,22 +44,22 @@ module.exports = (function () {
           acted           = false;
 
       // If it's a command explicitly sent to Gerty to act on.
-      if((deviceConfig.typeClass === 'gerty') && (command.indexOf('text-') === 0) &&
-         ((appParams.source === 'gerty') || (appParams.source === 'single') || (appParams.source === 'macro'))) {
+      if ((deviceConfig.typeClass === 'gerty') && (command.indexOf('text-') === 0) &&
+          ((appParams.source === 'gerty') || (appParams.source === 'single') || (appParams.source === 'macro'))) {
         // You can configure Gerty to only act on inputted text that mention the
         // name you configure.
-        if((!deviceConfig.address) || ((deviceConfig.address) && (command.toUpperCase().indexOf(deviceConfig.title.toUpperCase()) !== -1))) {
+        if ((!deviceConfig.address) || ((deviceConfig.address) && (command.toUpperCase().indexOf(deviceConfig.title.toUpperCase()) !== -1))) {
           text = command.replace('text-', '').toUpperCase();
 
           gertyMood.setEmotion(text, device, controllers.config.language);
 
           acted = gertyRunCommand.setDevice(text, controllers, device, config.macros, controllers.config.language);
 
-          if(acted === true) {
+          if (acted === true) {
             utterance = utterance.AFFIRMATIVE[Math.floor(Math.random() * utterance.AFFIRMATIVE.length)];
           }
 
-          else if((acted === false) && (!ignoreNegative)) {
+          else if ((acted === false) && (!ignoreNegative)) {
             utterance = utterance.NEGATIVE[Math.floor(Math.random() * utterance.NEGATIVE.length)];
           }
 
@@ -67,9 +67,9 @@ module.exports = (function () {
             utterance = acted || '';
           }
 
-          for(tempDevice in controllers) {
-            if(tempDevice !== 'config') {
-              if((controllers[tempDevice].config.typeClass === 'speech') || (controllers[tempDevice].config.typeClass === 'clientSpeech')) {
+          for (tempDevice in controllers) {
+            if (tempDevice !== 'config') {
+              if ((controllers[tempDevice].config.typeClass === 'speech') || (controllers[tempDevice].config.typeClass === 'clientSpeech')) {
                 runCommand.runCommand(tempDevice, 'text-' + utterance);
               }
             }

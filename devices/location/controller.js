@@ -69,7 +69,7 @@ module.exports = (function () {
     postData : function (location) {
       var value;
 
-      if(location.args) {
+      if (location.args) {
         value = JSON.stringify(location.args);
       }
 
@@ -102,10 +102,10 @@ module.exports = (function () {
 
       maxCount = maxCount || 10;
 
-      for(i in reply) {
+      for (i in reply) {
         location = reply[i];
 
-        if((location.lat) && (location.long)) {
+        if ((location.lat) && (location.long)) {
           locationData[j] = { lat   : util.sanitize(location.lat),
                               long  : util.sanitize(location.long),
                               alt   : util.sanitize(location.alt),
@@ -117,7 +117,7 @@ module.exports = (function () {
           j += 1;
         }
 
-        if(j >= maxCount) {
+        if (j >= maxCount) {
           break;
         }
       }
@@ -144,7 +144,7 @@ module.exports = (function () {
 
       console.log('\x1b[35m' + config.device.title + '\x1b[0m: Fetching device info');
 
-      if(location.method === 'POST') {
+      if (location.method === 'POST') {
         location.postRequest = this.postData(location);
       }
 
@@ -158,16 +158,16 @@ module.exports = (function () {
         response.once('end', function () {
           var locationData;
 
-          if(dataReply) {
+          if (dataReply) {
             try {
               locationData = JSON.parse(dataReply);
             }
 
-            catch(err) {
+            catch (err) {
               location.callback('API returned an unexpected value');
             }
 
-            if(locationData) {
+            if (locationData) {
               locationData = that.getLocations(locationData, location.maxCount);
 
               location.callback(null, locationData);
@@ -180,7 +180,7 @@ module.exports = (function () {
         location.callback(err);
       });
 
-      if(location.method === 'POST') {
+      if (location.method === 'POST') {
         request.write(location.postRequest);
       }
 

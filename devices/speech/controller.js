@@ -43,13 +43,13 @@ module.exports = (function () {
     translateCommand : function (voice, text, platform) {
       var execute = { command : '', params : [] };
 
-      switch(platform) {
+      switch (platform) {
         case 'linux' :
         case 'freebsd' :
         case 'sunos' :
           execute.command = 'espeak';
 
-          if(voice === 'female') {
+          if (voice === 'female') {
             execute.params.push('-ven+f3');
           }
 
@@ -59,7 +59,7 @@ module.exports = (function () {
         case 'darwin' :
           execute.command = 'say';
 
-          if(voice === 'female') {
+          if (voice === 'female') {
             execute.params.push('-v');
             execute.params.push('vicki');
           }
@@ -85,7 +85,7 @@ module.exports = (function () {
             var deviceState = require(__dirname + '/../../lib/deviceState'),
                 message     = 'err';
 
-            if(reply) {
+            if (reply) {
               message = 'ok';
             }
 
@@ -106,8 +106,8 @@ module.exports = (function () {
       speech.platform = config.platform     || process.platform;
       speech.execute  = this.translateCommand(speech.voice, speech.text, speech.platform);
 
-      if(speech.platform) {
-        if(speech.text && speech.execute) {
+      if (speech.platform) {
+        if (speech.text && speech.execute) {
           speak = spawn(speech.execute.command, speech.execute.params);
 
           speak.once('error', function (err) {

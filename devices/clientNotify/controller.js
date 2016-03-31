@@ -63,7 +63,7 @@ module.exports = (function () {
       clientNotify.title        = config.device.title || 'SwitchBoard';
       clientNotify.deviceId     = config.source       || '';
 
-      if(clientNotify.options.body) {
+      if (clientNotify.options.body) {
         webSockets.send(clientNotify);
       }
     }

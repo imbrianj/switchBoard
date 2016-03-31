@@ -119,13 +119,13 @@ module.exports = (function () {
                                    state : 'err',
                                    type  : 'switch' };
 
-          if((controller.config.className) && (controller.config.className[wemoKeys[count]])) {
+          if ((controller.config.className) && (controller.config.className[wemoKeys[count]])) {
             value.devices[count].className = controller.config.className[wemoKeys[count]];
           }
 
-          if((!err) && (reply)) {
+          if ((!err) && (reply)) {
             parser.parseString(reply, function (err, reply) {
-              if(reply['s:Envelope']) {
+              if (reply['s:Envelope']) {
                 state = parseInt(reply['s:Envelope']['s:Body'][0]['u:GetBinaryStateResponse'][0].BinaryState[0], 10) > 0 ? 'on' : 'off';
               }
 
@@ -137,7 +137,7 @@ module.exports = (function () {
 
           wemo.device.deviceIp = subdevices[wemoKeys[count]];
 
-          if(count >= wemoKeys.length) {
+          if (count >= wemoKeys.length) {
             callback(controller.config.deviceId, null, 'ok', { value : value });
           }
 
@@ -169,28 +169,28 @@ module.exports = (function () {
       wemo.subdevice  = config.subdevice           || '';
       wemo.callback   = config.callback            || function () {};
 
-      if(wemo.subdevice) {
-        if(wemo.subdevice.indexOf('toggle-') === 0) {
+      if (wemo.subdevice) {
+        if (wemo.subdevice.indexOf('toggle-') === 0) {
           commandType = 'toggle';
         }
 
-        else if(wemo.subdevice.indexOf('on-') === 0) {
+        else if (wemo.subdevice.indexOf('on-') === 0) {
           commandType = 'on';
         }
 
-        else if(wemo.subdevice.indexOf('off-') === 0) {
+        else if (wemo.subdevice.indexOf('off-') === 0) {
           commandType = 'off';
         }
 
-        if(commandType) {
+        if (commandType) {
           wemo.subdevice = wemo.subdevice.replace(commandType + '-', '');
 
-          if(commandType === 'toggle') {
+          if (commandType === 'toggle') {
             deviceState = require(__dirname + '/../../lib/deviceState');
             wemoState   = deviceState.getDeviceState(config.device.deviceId);
 
-            for(device in wemoState.value.devices) {
-              if(wemo.subdevice === wemoState.value.devices[device].label) {
+            for (device in wemoState.value.devices) {
+              if (wemo.subdevice === wemoState.value.devices[device].label) {
                 commandType = wemoState.value.devices[device].state === 'on' ? 'off' : 'on';
 
                 break;
@@ -198,7 +198,7 @@ module.exports = (function () {
             }
           }
 
-          if((commandType) && (commandType !== 'toggle')) {
+          if ((commandType) && (commandType !== 'toggle')) {
             wemo.deviceIp = config.device.subdevices[wemo.subdevice];
             wemo.command  = commandType;
           }
@@ -215,7 +215,7 @@ module.exports = (function () {
                   });
 
                   response.once('end', function () {
-                    if(commandType) {
+                    if (commandType) {
                       runCommand = require(__dirname + '/../../lib/runCommand');
 
                       wemo.callback(null, wemoState);
@@ -228,7 +228,7 @@ module.exports = (function () {
                   });
                 });
 
-      if(wemo.command === 'state') {
+      if (wemo.command === 'state') {
         request.setTimeout(wemo.timeout, function () {
           request.destroy();
           wemo.callback({ code : 'ETIMEDOUT' }, null, true);
@@ -236,7 +236,7 @@ module.exports = (function () {
       }
 
       request.once('error', function (err) {
-        if((err.code !== 'ETIMEDOUT') && (wemo.command !== 'state')) {
+        if ((err.code !== 'ETIMEDOUT') && (wemo.command !== 'state')) {
           wemo.callback(err);
         }
       });

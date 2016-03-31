@@ -28,8 +28,8 @@
         tempMarkup = '',
         i          = 0;
 
-    if((state) && (value)) {
-      for(i; i < value.length; i += 1) {
+    if ((state) && (value)) {
+      for (i; i < value.length; i += 1) {
         tempMarkup = tempMarkup + template.split('{{TWEET_TEXT}}').join(value[i].text);
         tempMarkup = tempMarkup.split('{{TWEET_URL}}').join(value[i].url);
         tempMarkup = tempMarkup.split('{{TWEET_AUTHOR}}').join(value[i].author);

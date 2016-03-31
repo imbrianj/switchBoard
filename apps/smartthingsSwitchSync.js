@@ -43,7 +43,7 @@ module.exports = (function () {
           deviceAction     = '',
           subdevice;
 
-      if(command.indexOf('subdevice-state-switch-') === 0) {
+      if (command.indexOf('subdevice-state-switch-') === 0) {
         runCommand       = require(__dirname + '/../lib/runCommand');
         deviceState      = require(__dirname + '/../lib/deviceState');
 
@@ -52,12 +52,12 @@ module.exports = (function () {
         deviceName       = command.split('subdevice-state-switch-').join('');
         deviceName       = deviceName.split('-' + deviceAction).join('');
 
-        if(config.action.indexOf(deviceName) !== -1) {
-          if((smartthingsState.value) && (smartthingsState.value.devices)) {
-            for(subdevice in smartthingsState.value.devices) {
-              if(config.action.indexOf(smartthingsState.value.devices[subdevice].label) !== -1) {
-                if((smartthingsState.value.devices[subdevice].state !== deviceAction) &&
-                   (smartthingsState.value.devices[subdevice].label !== deviceName)) {
+        if (config.action.indexOf(deviceName) !== -1) {
+          if ((smartthingsState.value) && (smartthingsState.value.devices)) {
+            for (subdevice in smartthingsState.value.devices) {
+              if (config.action.indexOf(smartthingsState.value.devices[subdevice].label) !== -1) {
+                if ((smartthingsState.value.devices[subdevice].state !== deviceAction) &&
+                    (smartthingsState.value.devices[subdevice].label !== deviceName)) {
                   runCommand.runCommand(device, 'subdevice-' + deviceAction + '-' + smartthingsState.value.devices[subdevice].label);
                 }
               }

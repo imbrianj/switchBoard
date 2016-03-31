@@ -35,7 +35,7 @@
         encodeName = function (name) {
           var util;
 
-          if(typeof SB === 'object') {
+          if (typeof SB === 'object') {
             name = SB.util.encodeName(name);
           }
 
@@ -46,12 +46,26 @@
 
           return name;
         },
+        translate  = function (message) {
+          var util;
+
+          if ((typeof SB === 'object') && (typeof SB.util === 'object')) {
+            message = SB.util.translate(message, 'wemo');
+          }
+
+          else {
+            util    = require(__dirname + '/../../lib/sharedUtil').util;
+            message = util.translate(message, 'wemo', language);
+          }
+
+          return message;
+        },
         findSubDevice = function (subDeviceLabel, subDevices) {
           var collected = {},
               i         = 0;
 
-          for(i in subDevices) {
-            if(subDevices[i].label === subDeviceLabel) {
+          for (i in subDevices) {
+            if (subDevices[i].label === subDeviceLabel) {
               collected = subDevices[i];
 
               break;
@@ -63,7 +77,7 @@
         getDeviceMarkup = function (device) {
           var deviceMarkup   = '';
 
-          if(stateClass) {
+          if (stateClass) {
             stateClass = stateClass + 'device-active';
           }
 
@@ -71,12 +85,12 @@
           deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_NAME}}').join(device.label);
           deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_CLASS}}').join(device.className || 'fa-lightbulb-o');
 
-          if(device.state === 'on') {
+          if (device.state === 'on') {
             deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_STATE}}').join(' device-active');
             deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_STATUS}}').join(translate('ACTIVE'));
           }
 
-          else if(device.state === 'off') {
+          else if (device.state === 'off') {
             deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_STATE}}').join('');
             deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_STATUS}}').join(translate('INACTIVE'));
           }
@@ -87,33 +101,19 @@
           }
 
           return deviceMarkup;
-        },
-        translate  = function (message) {
-          var util;
-
-          if((typeof SB === 'object') && (typeof SB.util === 'object')) {
-            message = SB.util.translate(message, 'wemo');
-          }
-
-          else {
-            util    = require(__dirname + '/../../lib/sharedUtil').util;
-            message = util.translate(message, 'wemo', language);
-          }
-
-          return message;
         };
 
-    if((value) && (value.devices)) {
+    if ((value) && (value.devices)) {
       // You want to display Wemo devices in groups.
-      if(value.groups) {
-        for(i in value.groups) {
+      if (value.groups) {
+        for (i in value.groups) {
           tempMarkup      = tempMarkup + templateGroup;
           subDeviceMarkup = '';
 
-          for(j in value.groups[i]) {
+          for (j in value.groups[i]) {
             subDevice = findSubDevice(value.groups[i][j], value.devices);
 
-            if(subDevice) {
+            if (subDevice) {
               subDeviceMarkup = subDeviceMarkup + getDeviceMarkup(subDevice);
             }
           }
@@ -126,12 +126,12 @@
 
       // Otherwise, you want to show them in a list.
       else {
-        for(i in value.devices) {
+        for (i in value.devices) {
           tempMarkup = tempMarkup + getDeviceMarkup(value.devices[i]);
         }
       }
 
-      if(tempMarkup) {
+      if (tempMarkup) {
         tempMarkup = tempMarkup.replace('{{SUB_DEVICE_CLASS}}', ' text-device-status');
       }
     }

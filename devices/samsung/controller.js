@@ -72,13 +72,13 @@ module.exports = (function () {
       var command = 'KEY_' + samsung.command,
           message = '';
 
-      if(samsung.command) {
+      if (samsung.command) {
         message = String.fromCharCode(0x00) + String.fromCharCode(0x00) + String.fromCharCode(0x00) + String.fromCharCode(this.base64Encode(command).length) + String.fromCharCode(0x00) + this.base64Encode(command);
 
         return String.fromCharCode(0x00) + String.fromCharCode(samsung.tvAppString.length) + String.fromCharCode(0x00) + samsung.tvAppString + String.fromCharCode(message.length) + String.fromCharCode(0x00) + message;
       }
 
-      else if(samsung.text) {
+      else if (samsung.text) {
         message = String.fromCharCode(0x01) + String.fromCharCode(0x00) + String.fromCharCode(this.base64Encode(samsung.text).length) + String.fromCharCode(0x00) + this.base64Encode(samsung.text);
 
         return String.fromCharCode(0x01) + String.fromCharCode(samsung.appString.length) + String.fromCharCode(0x00) + samsung.appString + String.fromCharCode(message.length) + String.fromCharCode(0x00) + message;
@@ -100,11 +100,11 @@ module.exports = (function () {
       samsung.config.serverMac    = config.serverMac;
 
       samsung.callback = function (err, reply) {
-        if(reply) {
+        if (reply) {
           callback(samsung.device.deviceId, null, 'ok');
         }
 
-        else if(err) {
+        else if (err) {
           callback(samsung.device.deviceId, err);
         }
       };
@@ -133,7 +133,7 @@ module.exports = (function () {
       client.connect(samsung.devicePort, samsung.deviceIp);
 
       client.once('connect', function () {
-        if((samsung.command) || (samsung.text)) {
+        if ((samsung.command) || (samsung.text)) {
           client.write(that.chunkOne(samsung));
           client.write(that.chunkTwo(samsung));
         }
@@ -143,7 +143,7 @@ module.exports = (function () {
         samsung.callback(null, 'ok');
       });
 
-      if(samsung.command === 'state') {
+      if (samsung.command === 'state') {
         client.setTimeout(samsung.timeout, function () {
           client.destroy();
           samsung.callback({ code : 'ETIMEDOUT' });
@@ -151,7 +151,7 @@ module.exports = (function () {
       }
 
       client.once('error', function (err) {
-        if((err.code !== 'ETIMEDOUT') || (samsung.command !== 'state')) {
+        if ((err.code !== 'ETIMEDOUT') || (samsung.command !== 'state')) {
           samsung.callback(err);
         }
       });

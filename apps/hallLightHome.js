@@ -50,8 +50,8 @@ module.exports = (function () {
             var found = false,
                 current;
 
-            for(current in collection) {
-              if(command === prefix + collection[current] + '-on') {
+            for (current in collection) {
+              if (command === prefix + collection[current] + '-on') {
                 found = true;
                 break;
               }
@@ -60,26 +60,26 @@ module.exports = (function () {
             return found;
           };
 
-      if(isIn(command, config.presence, 'subdevice-state-presence-')) {
+      if (isIn(command, config.presence, 'subdevice-state-presence-')) {
         this.lastEvents.presence = now;
       }
 
-      else if(isIn(command, config.contact, 'subdevice-state-contact-')) {
+      else if (isIn(command, config.contact, 'subdevice-state-contact-')) {
         this.lastEvents.open = now;
       }
 
-      if((now < delay + this.lastEvents.presence) && (now < delay + this.lastEvents.open)) {
-        if(config.macro) {
-          for(macro in rawMacro) {
+      if ((now < delay + this.lastEvents.presence) && (now < delay + this.lastEvents.open)) {
+        if (config.macro) {
+          for (macro in rawMacro) {
             runCommand.macroCommands(rawMacro[macro]);
           }
         }
 
-        for(deviceId in controllers) {
+        for (deviceId in controllers) {
           state = deviceState.getDeviceState(deviceId);
 
-          if(controllers[deviceId].config) {
-            switch(controllers[deviceId].config.typeClass) {
+          if (controllers[deviceId].config) {
+            switch (controllers[deviceId].config.typeClass) {
               case 'smartthings'     :
               case 'wemo'            :
               case 'raspberryRemote' :
@@ -87,9 +87,9 @@ module.exports = (function () {
               break;
             }
 
-            if((currentDeviceState.value) && (currentDeviceState.value.devices)) {
-              for(subdevice in currentDeviceState.value.devices) {
-                if(config.action.indexOf(currentDeviceState.value.devices[subdevice].label) !== -1) {
+            if ((currentDeviceState.value) && (currentDeviceState.value.devices)) {
+              for (subdevice in currentDeviceState.value.devices) {
+                if (config.action.indexOf(currentDeviceState.value.devices[subdevice].label) !== -1) {
                   runCommand.runCommand(deviceId, 'subdevice-on-' + currentDeviceState.value.devices[subdevice].label);
                 }
               }

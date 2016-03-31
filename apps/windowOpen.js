@@ -74,29 +74,29 @@ module.exports = (function () {
             subDeviceId,
             subDevice;
 
-        for(deviceId in controllers) {
-          if((controllers[deviceId].config) && (controllers[deviceId].config.typeClass === 'nest')) {
+        for (deviceId in controllers) {
+          if ((controllers[deviceId].config) && (controllers[deviceId].config.typeClass === 'nest')) {
             currentDevice = deviceState.getDeviceState(deviceId);
 
-            if(currentDevice.value) {
-              for(subDeviceId in currentDevice.value.devices) {
+            if (currentDevice.value) {
+              for (subDeviceId in currentDevice.value.devices) {
                 subDevice = currentDevice.value.devices[subDeviceId];
 
-                if((config.thermostat.indexOf(subDevice.label) !== -1) && (subDevice.type === 'thermostat') && (subDevice.state !== 'off') && (currentDevice.state !== 'err')) {
+                if ((config.thermostat.indexOf(subDevice.label) !== -1) && (subDevice.type === 'thermostat') && (subDevice.state !== 'off') && (currentDevice.state !== 'err')) {
                   status.thermostat.push({ label : subDevice.label, state : subDevice.state });
                 }
               }
             }
           }
 
-          else if((controllers[deviceId].config) && (controllers[deviceId].config.typeClass === 'smartthings')) {
+          else if ((controllers[deviceId].config) && (controllers[deviceId].config.typeClass === 'smartthings')) {
             currentDevice = deviceState.getDeviceState(deviceId);
 
-            if(currentDevice.value) {
-              for(subDeviceId in currentDevice.value.devices) {
+            if (currentDevice.value) {
+              for (subDeviceId in currentDevice.value.devices) {
                 subDevice = currentDevice.value.devices[subDeviceId];
 
-                if((config.contact.indexOf(subDevice.label) !== -1) && (subDevice.type === 'contact') && (subDevice.state === 'on')) {
+                if ((config.contact.indexOf(subDevice.label) !== -1) && (subDevice.type === 'contact') && (subDevice.state === 'on')) {
                   status.contact.push(subDevice.label);
                 }
               }
@@ -111,7 +111,7 @@ module.exports = (function () {
 
       // If something is on while a contact sensor is open, we'll first notify,
       // then wait a minute before we shut things down.
-      if((this.governor === false) && (status.thermostat.length) && (status.contact.length)) {
+      if ((this.governor === false) && (status.thermostat.length) && (status.contact.length)) {
         this.governor = true;
 
         message = that.formatMessage('warn', status.contact, status.thermostat[0].state, controllers.config.language);
@@ -122,11 +122,11 @@ module.exports = (function () {
               deviceId,
               i      = 0;
 
-          if(status.thermostat.length && status.contact.length) {
-            for(deviceId in controllers) {
-              if(controllers[deviceId].config) {
-                if(controllers[deviceId].config.typeClass === 'nest') {
-                  for(i; i < status.thermostat.length; i += 1) {
+          if (status.thermostat.length && status.contact.length) {
+            for (deviceId in controllers) {
+              if (controllers[deviceId].config) {
+                if (controllers[deviceId].config.typeClass === 'nest') {
+                  for (i; i < status.thermostat.length; i += 1) {
                     runCommand.runCommand(deviceId, 'subdevice-mode-' + status.thermostat[i].label + '-off');
                   }
 

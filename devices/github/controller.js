@@ -69,14 +69,14 @@ module.exports = (function () {
       var runCommand = require(__dirname + '/../../lib/runCommand'),
           fs         = require('fs');
 
-      if((controller.config.checkVersion === true) &&
+      if ((controller.config.checkVersion === true) &&
          (controller.config.owner === 'imbrianj') &&
          (controller.config.repo === 'switchboard')) {
         try {
           controller.config.version = fs.readFileSync(__dirname + '/../../cache/version.txt', 'utf-8');
         }
 
-        catch(err) {
+        catch (err) {
           console.log('\x1b[35m' + config.device.title + '\x1b[0m: No version file found.');
         }
       }
@@ -98,16 +98,16 @@ module.exports = (function () {
 
       maxCount = maxCount || 3;
 
-      for(i; i < data.length; i += 1) {
-        if(i < maxCount) {
+      for (i; i < data.length; i += 1) {
+        if (i < maxCount) {
           commit = {
             url         : util.sanitize(data[i].html_url),
             time        : util.sanitize(new Date(data[i].commit.committer.date).getTime()),
             description : util.sanitize(data[i].commit.message)
           };
 
-          if(version) {
-            if(new Date(data[i].commit.committer.date).getTime() > version) {
+          if (version) {
+            if (new Date(data[i].commit.committer.date).getTime() > version) {
               commit.upToDate = false;
             }
 
@@ -156,12 +156,12 @@ module.exports = (function () {
           var data       = null,
               githubData = [];
 
-          if(dataReply) {
+          if (dataReply) {
             try {
               data = JSON.parse(dataReply);
             }
 
-            catch(err) {
+            catch (err) {
               github.callback('API returned an unexpected value');
             }
 

@@ -29,8 +29,8 @@
         i          = 0,
         text       = '';
 
-    if((state) && (value)) {
-      for(i; i < value.length; i += 1) {
+    if ((state) && (value)) {
+      for (i; i < value.length; i += 1) {
         text       = value[i].description ? value[i].description : value[i].text;
         tempMarkup = tempMarkup + template.split('{{RSS_URL}}').join(value[i].url);
         tempMarkup = tempMarkup.split('{{RSS_TITLE}}').join(value[i].title);

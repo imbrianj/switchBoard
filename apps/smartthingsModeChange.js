@@ -41,20 +41,20 @@ module.exports = (function () {
           rawMacro,
           macro;
 
-      if((smartthingsState) && (smartthingsState.value) && (smartthingsState.value.mode)) {
+      if ((smartthingsState) && (smartthingsState.value) && (smartthingsState.value.mode)) {
         // We'll check the SmartThings state and compare to the last time we
         // ran this to see if things have changed, regardless of source.
-        if(smartthingsState.value.mode !== SmartthingsMode[device]) {
+        if (smartthingsState.value.mode !== SmartthingsMode[device]) {
           SmartthingsMode[device] = smartthingsState.value.mode;
 
           // If you have a macro assigned to this specific Mode, we'll act upon
           // it.
-          if(config[SmartthingsMode[device]]) {
+          if (config[SmartthingsMode[device]]) {
             runCommand = require(__dirname + '/../lib/runCommand');
 
             rawMacro = config[SmartthingsMode[device]].split(';');
 
-            for(macro in rawMacro) {
+            for (macro in rawMacro) {
               runCommand.macroCommands(rawMacro[macro]);
             }
           }

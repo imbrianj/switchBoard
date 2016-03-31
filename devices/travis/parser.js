@@ -30,24 +30,24 @@
         duration   = '',
         i          = 0;
 
-    if((state) && (value)) {
-      for(i; i < value.length; i += 1) {
+    if ((state) && (value)) {
+      for (i; i < value.length; i += 1) {
         icon     = '';
         duration = '';
 
-        if((value[i].state === 'created') || (value[i].state === 'started')) {
+        if ((value[i].state === 'created') || (value[i].state === 'started')) {
           icon = 'cogs';
         }
 
-        else if(value[i].status === 'ok') {
+        else if (value[i].status === 'ok') {
           icon = 'check';
         }
 
-        else if(value[i].status === 'err') {
+        else if (value[i].status === 'err') {
           icon = 'times';
         }
 
-        if(value[i].duration) {
+        if (value[i].duration) {
           duration = ' (' + value[i].duration + 's)';
         }
 

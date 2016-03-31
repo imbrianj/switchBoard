@@ -54,7 +54,7 @@ module.exports = (function () {
       var webSockets = require(__dirname + '/../../lib/webSockets'),
           text       = config.text || '';
 
-      if(text) {
+      if (text) {
         webSockets.send({ sound : text });
       }
     }

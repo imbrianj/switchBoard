@@ -53,11 +53,11 @@ module.exports = (function () {
           deviceId,
           message  = '';
 
-      if(!this.lastState) {
+      if (!this.lastState) {
         this.lastState = state;
       }
 
-      if(state !== this.lastState) {
+      if (state !== this.lastState) {
         this.lastState = state;
         runCommand     = require(__dirname + '/../lib/runCommand');
         notify         = require(__dirname + '/../lib/notify');
@@ -65,15 +65,15 @@ module.exports = (function () {
         newMode        = state === 'Day' ? config.dayMode : config.nightMode;
         rawMacro       = config.macros[newPhase].split(';');
 
-        for(deviceId in controllers) {
-          if((controllers[deviceId].config) && (controllers[deviceId].config.typeClass === 'smartthings')) {
+        for (deviceId in controllers) {
+          if ((controllers[deviceId].config) && (controllers[deviceId].config.typeClass === 'smartthings')) {
             deviceState      = require(__dirname + '/../lib/deviceState');
             smartthingsState = deviceState.getDeviceState(deviceId);
 
-            if((smartthingsState) &&
-               (smartthingsState.value) &&
-               (smartthingsState.value.mode !== 'Away') &&
-               (smartthingsState.value.mode !== newMode)) {
+            if ((smartthingsState) &&
+                (smartthingsState.value) &&
+                (smartthingsState.value.mode !== 'Away') &&
+                (smartthingsState.value.mode !== newMode)) {
               runCommand.runCommand(deviceId, 'subdevice-mode-' + newMode);
 
               message = this.translate(newPhase.toUpperCase(), controllers.config.language);
@@ -85,7 +85,7 @@ module.exports = (function () {
           }
         }
 
-        for(macro in rawMacro) {
+        for (macro in rawMacro) {
           runCommand.macroCommands(rawMacro[macro]);
         }
       }

@@ -35,33 +35,33 @@ module.exports = (function () {
           temp,
           weather;
 
-      if((state) && (state.value)) {
+      if ((state) && (state.value)) {
         temp    = parseFloat(state.value.temp);
         weather = parseFloat(state.value.code);
 
         // This is a good temperature range for me.
-        if((temp > 60) && (temp < 75)) {
+        if ((temp > 60) && (temp < 75)) {
           comfortable += 5;
         }
 
         // As it gets colder, I get less comfortable.
-        else if(temp < 55) {
+        else if (temp < 55) {
           comfortable += ((temp - 55) / 8);
         }
 
         // But as it gets hotter, I tend to get less comfortable faster.
-        else if(temp > 80) {
+        else if (temp > 80) {
           comfortable += ((80 - temp) / 3);
         }
 
         // All types of rain are a bum out.
-        if(((weather > 8) && (weather < 14)) || (weather === 40)) {
+        if (((weather > 8) && (weather < 14)) || (weather === 40)) {
           excited     += -1;
           comfortable += -2;
         }
 
         // ...but I like snow!
-        if(((weather > 4) && (weather < 9)) || ((weather > 40) && (weather < 44)) || (weather === 46)) {
+        if (((weather > 4) && (weather < 9)) || ((weather > 40) && (weather < 44)) || (weather === 46)) {
           excited = 5;
         }
       }

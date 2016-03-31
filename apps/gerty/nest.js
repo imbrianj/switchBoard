@@ -38,8 +38,8 @@ module.exports = (function () {
           device,
           deviceId;
 
-      if((state) && (state.value)) {
-        switch(state.value.presence) {
+      if ((state) && (state.value)) {
+        switch (state.value.presence) {
           case 'on' :
             social += 1;
           break;
@@ -49,45 +49,45 @@ module.exports = (function () {
           break;
         }
 
-        for(deviceId in state.value.devices) {
+        for (deviceId in state.value.devices) {
           device = state.value.devices[deviceId];
 
-          if(device.temp) {
+          if (device.temp) {
             temp  += device.temp;
             temps += 1;
           }
 
-          if(device.type === 'protect') {
-            if(device.battery !== 'ok') {
+          if (device.type === 'protect') {
+            if (device.battery !== 'ok') {
               comfortable -= 3;
             }
 
-            if(device.co !== 'ok') {
+            if (device.co !== 'ok') {
               scared -= 10;
             }
 
-            if(device.smoke !== 'ok') {
+            if (device.smoke !== 'ok') {
               scared -= 10;
             }
           }
         }
       }
 
-      if(temps) {
+      if (temps) {
         temp = temp / temps;
 
         // This is a good temperature range for me.
-        if((temp > 60) && (temp < 75)) {
+        if ((temp > 60) && (temp < 75)) {
           comfortable += 4;
         }
 
         // As it gets colder, I get less comfortable.
-        else if(temp < 55) {
+        else if (temp < 55) {
           comfortable += ((temp - 55) / 5);
         }
 
         // But as it gets hotter, I tend to get less comfortable faster.
-        else if(temp > 80) {
+        else if (temp > 80) {
           comfortable += ((80 - temp) / 3);
         }
       }

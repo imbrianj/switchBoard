@@ -73,14 +73,14 @@ module.exports = (function () {
                 jsonrpc : '2.0',
                 method  : 'Input.' + xbmc.command };
 
-      if(xbmc.list) {
+      if (xbmc.list) {
         value.method = 'Player.GetItem';
         value.params = { properties : ['title', 'album', 'artist', 'showtitle'],
                          playerid   : xbmc.player };
         value.id     = 'VideoGetItem';
       }
 
-      if(xbmc.text) {
+      if (xbmc.text) {
         value.id = 0;
         value.method = 'Input.SendText';
         value.params = { text : xbmc.text, done : false };
@@ -103,11 +103,11 @@ module.exports = (function () {
       xbmc.device.localTimeout = controller.config.localTimeout || config.localTimeout;
 
       xbmc.callback = function (err, reply) {
-        if(reply) {
+        if (reply) {
           callback(xbmc.device.deviceId, null, 'ok');
         }
 
-        else if(err) {
+        else if (err) {
           callback(xbmc.device.deviceId, err);
         }
       };
@@ -131,27 +131,27 @@ module.exports = (function () {
       xbmc.text       = config.text                    || '';
       xbmc.callback   = config.callback                || function () {};
 
-      if((Socket) && (!Socket.destroyed) && (xbmc.command)) {
-        if(!xbmc.state) {
+      if ((Socket) && (!Socket.destroyed) && (xbmc.command)) {
+        if (!xbmc.state) {
           Socket.write(that.postData(xbmc));
         }
 
         xbmc.callback(null, 'ok');
       }
 
-      else if((xbmc.command) || (xbmc.state)) {
+      else if ((xbmc.command) || (xbmc.state)) {
         Socket = new net.Socket();
         Socket.connect(xbmc.devicePort, xbmc.deviceIp);
 
         Socket.once('connect', function () {
-          if(xbmc.command) {
+          if (xbmc.command) {
             Socket.write(that.postData(xbmc));
           }
 
           xbmc.callback(null, 'ok');
         });
 
-        if(xbmc.state) {
+        if (xbmc.state) {
           Socket.setTimeout(xbmc.timeout, function () {
             Socket.destroy();
 
@@ -163,10 +163,10 @@ module.exports = (function () {
           var reply   = JSON.parse(dataReply.toString()),
               current = '';
 
-          if(reply) {
+          if (reply) {
             // We know you're watching a video.  Now we need to send a request
             // for what the video title is.
-            if((reply.params) && (reply.params.data) && (reply.params.data.player) && (reply.params.data.player.playerid)) {
+            if ((reply.params) && (reply.params.data) && (reply.params.data.player) && (reply.params.data.player.playerid)) {
               config.list   = true;
               config.player = reply.params.data.player.playerid;
 
@@ -174,15 +174,15 @@ module.exports = (function () {
             }
 
             // This should now have the video title.
-            if((reply.result) && (reply.result.item)) {
+            if ((reply.result) && (reply.result.item)) {
               // First try to grab the official title.  Otherwise, the filename.
               // Failing that, we'll revert to generic "Movie".
               current = reply.result.item.title || reply.result.item.label || util.translate('MOVIE', 'xbmc', config.language);
             }
 
             // Catch other methods - such as screensaver.
-            else if(reply.method) {
-              if(reply.method === 'GUI.OnScreensaverActivated') {
+            else if (reply.method) {
+              if (reply.method === 'GUI.OnScreensaverActivated') {
                 current = util.translate('SCREENSAVER', 'xbmc', config.language);
               }
             }
@@ -204,7 +204,7 @@ module.exports = (function () {
           var deviceState = require(__dirname + '/../../lib/deviceState'),
               xbmcState   = deviceState.getDeviceState(config.deviceId);
 
-          if((err.code !== 'ETIMEDOUT') || (!xbmc.state)) {
+          if ((err.code !== 'ETIMEDOUT') || (!xbmc.state)) {
             xbmc.callback(err, xbmcState);
           }
         });

@@ -57,7 +57,7 @@ module.exports = (function () {
           nonce = '',
           i     = length || 32;
 
-      for(i; i > 0; i -= 1) {
+      for (i; i > 0; i -= 1) {
         nonce += chars[Math.floor(Math.random() * chars.length)];
       }
 
@@ -110,7 +110,7 @@ module.exports = (function () {
           accessToken  = config.accessToken,
           oauthVersion = config.oauthVersion;
 
-      if(config.maxCount) {
+      if (config.maxCount) {
         request.path = config.path + '?count=' + config.maxCount;
       }
 
@@ -160,7 +160,7 @@ module.exports = (function () {
       twitter.nonce        = this.generateNonce();
       twitter.timestamp    = Math.floor((new Date().getTime() / 1000), 10);
 
-      if(((twitter.list) && (OpenConnection === null)) || (twitter.command)) {
+      if (((twitter.list) && (OpenConnection === null)) || (twitter.command)) {
         console.log('\x1b[35m' + config.device.title + '\x1b[0m: Fetching device info');
 
         request = https.request(this.postPrepare(twitter), function (response) {
@@ -180,17 +180,17 @@ module.exports = (function () {
 
                       OpenConnection = null;
 
-                      if(dataReply) {
+                      if (dataReply) {
                         try {
                           data = JSON.parse(dataReply);
                         }
 
-                        catch(err) {
+                        catch (err) {
                           twitter.callback('API returned an unexpected value');
                         }
 
-                        if(data) {
-                          for(i; i < Math.min(data.length, twitter.maxCount); i += 1) {
+                        if (data) {
+                          for (i; i < Math.min(data.length, twitter.maxCount); i += 1) {
                             twitterData.push({ author : util.sanitize(data[i].user.screen_name),
                                                name   : util.sanitize(data[i].user.name),
                                                image  : util.sanitize(data[i].user.profile_image_url),

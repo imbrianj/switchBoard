@@ -32,8 +32,8 @@ module.exports = (function () {
     travis : function (state) {
       var scared = 0;
 
-      if((state) && (state.values) && (state.values.value) && (state.values.value.length)) {
-        if(state.values.value[0].status === 'err') {
+      if ((state) && (state.values) && (state.values.value) && (state.values.value.length)) {
+        if (state.values.value[0].status === 'err') {
           scared = -3;
         }
       }

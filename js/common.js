@@ -210,7 +210,7 @@ SB = (function () {
     hasClass : function (elm, className) {
       var hasClass = false;
 
-      if((elm) && (elm.className)) {
+      if ((elm) && (elm.className)) {
         hasClass = SB.hasAttribute(elm, 'className', className) ? true : false;
       }
 
@@ -225,7 +225,7 @@ SB = (function () {
     * @param {String} className Class name to be applied.
     */
     addClass : function (elm, className) {
-      if((elm) && (className)) {
+      if ((elm) && (className)) {
         if (!SB.hasClass(elm, className)) {
           elm.className = SB.trim(elm.className + ' ' + className);
         }
@@ -269,11 +269,11 @@ SB = (function () {
     * @param {Object} elm Element to be focused.
     */
     setFocus : function (elm) {
-      if(typeof elm.setActive === 'function') {
+      if (typeof elm.setActive === 'function') {
         elm.setActive();
       }
 
-      else if(typeof elm.focus === 'function') {
+      else if (typeof elm.focus === 'function') {
         elm.focus();
       }
     },
@@ -446,7 +446,7 @@ SB = (function () {
     replaceAll : function (text, find, replace) {
       var value = text;
 
-      if(typeof text === 'string') {
+      if (typeof text === 'string') {
         value = text.replace(new RegExp(find, 'g'), replace);
       }
 
@@ -499,11 +499,11 @@ SB = (function () {
       var now   = new Date(),
           color = 'color: white';
 
-      if((typeof console === 'object') && (typeof console.log === 'function')) {
-        if((source) && (typeof message !== 'object')) {
+      if ((typeof console === 'object') && (typeof console.log === 'function')) {
+        if ((source) && (typeof message !== 'object')) {
           message = '%c' + source + '%c: ' + message + ' (' + now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes() + ')';
 
-          switch(type) {
+          switch (type) {
             case 'success' :
               color = 'color: green';
             break;
@@ -534,7 +534,7 @@ SB = (function () {
     vibrate : function (duration) {
       duration = duration || 20;
 
-      if((window.navigator) && (window.navigator.vibrate)) {
+      if ((window.navigator) && (window.navigator.vibrate)) {
         window.navigator.vibrate(duration);
       }
 
@@ -556,8 +556,8 @@ SB = (function () {
       var notification,
           click;
 
-      if(typeof Notification === 'function') {
-        if(Notification.permission === 'granted') {
+      if (typeof Notification === 'function') {
+        if (Notification.permission === 'granted') {
           notification = new Notification(string, options);
 
           setTimeout(function () {
@@ -590,10 +590,10 @@ SB = (function () {
     * If you've explicitly denied permission, we'll honor that and not ask.
     */
     notifyAsk : function () {
-      if(typeof Notification === 'function') {
-        if(Notification.permission !== 'denied') {
+      if (typeof Notification === 'function') {
+        if (Notification.permission !== 'denied') {
           Notification.requestPermission(function (permission) {
-            if(Notification.permission !== permission) {
+            if (Notification.permission !== permission) {
               Notification.permission = permission;
             }
           });
@@ -610,8 +610,8 @@ SB = (function () {
        * @param {String} string Path of the audio file to be played.
        */
       play : function (path) {
-        if(typeof Audio === 'function') {
-          if(!SB.sound.sounds[path]) {
+        if (typeof Audio === 'function') {
+          if (!SB.sound.sounds[path]) {
             SB.sound.sounds[path] = new Audio(path);
           }
 
@@ -632,17 +632,17 @@ SB = (function () {
       var message,
           voices;
 
-      if(window.speechSynthesis) {
+      if (window.speechSynthesis) {
         message       = new SpeechSynthesisUtterance();
         voices        = window.speechSynthesis.getVoices();
         message.text  = string;
         message.lang  = lang  || 'en-US';
 
         // iOS / OSX support more unique voices
-        if((voices) && (voices[10]) && (voices[10].name === 'Alex')) {
+        if ((voices) && (voices[10]) && (voices[10].name === 'Alex')) {
           message.voice = voices[10];
 
-          if(voice === 'female') {
+          if (voice === 'female') {
             message.voice = voices[30];
           }
         }
@@ -700,10 +700,10 @@ SB = (function () {
     storage : function (key, value) {
       var newValue;
 
-      if(key) {
-        if(typeof localStorage !== 'undefined') {
-          if(value !== undefined) {
-            if(typeof value === 'object') {
+      if (key) {
+        if (typeof localStorage !== 'undefined') {
+          if (value !== undefined) {
+            if (typeof value === 'object') {
               value = SB.encode(value);
             }
 
@@ -1054,7 +1054,7 @@ SB = (function () {
     * Initialization for SB.  Executes the standard functions used.
     */
     init : function () {
-      if((SB.spec) && (SB.spec.init)) {
+      if ((SB.spec) && (SB.spec.init)) {
         SB.spec.init();
       }
 
@@ -1063,14 +1063,14 @@ SB = (function () {
   };
 }());
 
-if(document.addEventListener) {
+if (document.addEventListener) {
   document.addEventListener('DOMContentLoaded', SB.init, false);
 }
 
 SB.event.add(window, 'load', function () {
   'use strict';
 
-  if(!document.addEventListener) {
+  if (!document.addEventListener) {
     SB.init();
   }
 });
@@ -1081,6 +1081,6 @@ SB.event.add(window, 'unload', function () {
   SB.event.removeAll();
 });
 
-if(typeof module === 'object') {
+if (typeof module === 'object') {
   module.exports = SB;
 }

@@ -52,18 +52,18 @@ module.exports = (function () {
             subDeviceId,
             subDevice;
 
-        for(deviceId in controllers) {
-          if(controllers[deviceId].config) {
+        for (deviceId in controllers) {
+          if (controllers[deviceId].config) {
             currentDevice = deviceState.getDeviceState(deviceId);
 
-            if((currentDevice.value) && (currentDevice.value.devices)) {
-              for(subDeviceId in currentDevice.value.devices) {
+            if ((currentDevice.value) && (currentDevice.value.devices)) {
+              for (subDeviceId in currentDevice.value.devices) {
                 subDevice = currentDevice.value.devices[subDeviceId];
 
-                if(config.trigger === subDevice.label) {
+                if (config.trigger === subDevice.label) {
                   status = subDevice.state;
 
-                  if(!that.lastState[device]) {
+                  if (!that.lastState[device]) {
 
                     that.lastState[device] = {};
                     that.lastState[device][config.trigger] = status;
@@ -81,14 +81,14 @@ module.exports = (function () {
 
       status = checkState();
 
-      if(status !== this.lastState[device][config.trigger]) {
+      if (status !== this.lastState[device][config.trigger]) {
         this.lastState[device][config.trigger] = status;
 
-        for(deviceId in controllers) {
+        for (deviceId in controllers) {
           state = deviceState.getDeviceState(deviceId);
 
-          if(controllers[deviceId].config) {
-            switch(controllers[deviceId].config.typeClass) {
+          if (controllers[deviceId].config) {
+            switch (controllers[deviceId].config.typeClass) {
               case 'smartthings'     :
               case 'wemo'            :
               case 'raspberryRemote' :
@@ -96,10 +96,10 @@ module.exports = (function () {
               break;
             }
 
-            if((currentDeviceState.value) && (currentDeviceState.value.devices)) {
-              for(subdevice in currentDeviceState.value.devices) {
-                if(config.action.indexOf(currentDeviceState.value.devices[subdevice].label) !== -1) {
-                  if(currentDeviceState.value.devices[subdevice].state !== status) {
+            if ((currentDeviceState.value) && (currentDeviceState.value.devices)) {
+              for (subdevice in currentDeviceState.value.devices) {
+                if (config.action.indexOf(currentDeviceState.value.devices[subdevice].label) !== -1) {
+                  if (currentDeviceState.value.devices[subdevice].state !== status) {
                     runCommand.runCommand(deviceId, 'subdevice-' + status + '-' + state.value.devices[subdevice].label);
                   }
                 }

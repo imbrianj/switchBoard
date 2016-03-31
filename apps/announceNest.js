@@ -44,22 +44,22 @@ module.exports = (function () {
           rawMacro,
           macro;
 
-      if(values.protect) {
-        for(subDevice in values.protect) {
-          if(values.protect[subDevice].smoke !== 'ok') {
+      if (values.protect) {
+        for (subDevice in values.protect) {
+          if (values.protect[subDevice].smoke !== 'ok') {
             tempMessage = translate.translate('{{i18n_SMOKE_DETECTED}}', 'nest', controllers.config.language).replace('{{LABEL}}', values.protect[subDevice].label);
 
-            if(message) {
+            if (message) {
               message = message + ' ';
             }
 
             message = message + tempMessage;
           }
 
-          if(values.protect[subDevice].co !== 'ok') {
+          if (values.protect[subDevice].co !== 'ok') {
             tempMessage = translate.translate('{{i18n_CO_DETECTED}}', 'nest', controllers.config.language).replace('{{LABEL}}', values.protect[subDevice].label);
 
-            if(message) {
+            if (message) {
               message = message + ' ';
             }
 
@@ -67,15 +67,15 @@ module.exports = (function () {
           }
         }
 
-        if(message) {
+        if (message) {
           notify.notify(message, controllers, device);
 
           // If you have a macro assigned to this specific Mode, we'll act upon
           // it.
-          if(config.macro) {
+          if (config.macro) {
             rawMacro = config.macro.split(';');
 
-            for(macro in rawMacro) {
+            for (macro in rawMacro) {
               runCommand.macroCommands(rawMacro[macro]);
             }
           }

@@ -46,12 +46,12 @@ module.exports = (function () {
           lang           = controllers.config.language,
           message        = '';
 
-      if((values) && (values.value) && (values.value.length)) {
+      if ((values) && (values.value) && (values.value.length)) {
         commitMessage = values.value[0].description;
 
-        if(GithubCommits !== commitMessage) {
-          for(i; i < values.value.length; i += 1) {
-            if(values.value[i].upToDate === false) {
+        if (GithubCommits !== commitMessage) {
+          for (i; i < values.value.length; i += 1) {
+            if (values.value[i].upToDate === false) {
               notify     = require(__dirname + '/../lib/notify');
 
               message = this.translate('NEWER', lang);

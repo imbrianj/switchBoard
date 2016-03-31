@@ -78,7 +78,7 @@ module.exports = (function () {
           runText = function (i, text, ip) {
             var letter = text[i];
 
-            if(letter) {
+            if (letter) {
               that.send({ letter: letter, device : { deviceIp: ip }});
 
               setTimeout(function () {
@@ -87,25 +87,25 @@ module.exports = (function () {
             }
           };
 
-      if(command.command) {
+      if (command.command) {
         path += 'keypress/' + command.command;
       }
 
-      if(command.letter) {
+      if (command.letter) {
         path += 'keypress/Lit_' + command.letter;
       }
 
-      if(command.text) {
+      if (command.text) {
         // Roku requires a string to be sent one char at a time.
         runText(0, command.text, command.deviceIp);
       }
 
-      if(command.list) {
+      if (command.list) {
         method = 'GET';
         path  += 'query/apps';
       }
 
-      if(command.launch) {
+      if (command.launch) {
         path += 'launch/11?contentID=' + command.launch;
       }
 
@@ -132,7 +132,7 @@ module.exports = (function () {
         image = fs.statSync(filePath);
       }
 
-      catch(catchErr) {
+      catch (catchErr) {
         request = require('request');
 
         console.log('\x1b[35m' + config.title + '\x1b[0m: Saved image for ' + appName);
@@ -155,7 +155,7 @@ module.exports = (function () {
       callback   = callback || function () {};
 
       this.send({ device : { deviceIp: config.deviceIp }, list: true, callback: function (err, response) {
-        if(err) {
+        if (err) {
           callback(err);
         }
 
@@ -164,13 +164,13 @@ module.exports = (function () {
             var app,
                 i = 0;
 
-            if(reply) {
-              if(err) {
+            if (reply) {
+              if (err) {
                 console.log('\x1b[31m' + config.device.title + '\x1b[0m: Unable to parse reply');
               }
 
               else {
-                for(i in reply.apps.app) {
+                for (i in reply.apps.app) {
                   app = reply.apps.app[i];
 
                   apps[app.$.id] = { 'name'  : app._,
@@ -209,11 +209,11 @@ module.exports = (function () {
       callback = callback || function () {};
 
       stateCallback = function (err, reply) {
-        if(err) {
+        if (err) {
           callback(controller.config.deviceId, err);
         }
 
-        else if(reply) {
+        else if (reply) {
           callback(controller.config.deviceId, null, 'ok', { value : reply });
         }
       };

@@ -59,9 +59,9 @@ module.exports = (function () {
           open        = false;
 
       // Trading isn't open on weekends, so we don't need to poll.
-      if((nycTime.getDay() !== 6) && (nycTime.getDay() !== 0)) {
+      if ((nycTime.getDay() !== 6) && (nycTime.getDay() !== 0)) {
         // Trading is only open from 9am - 4pm.
-        if((nycTime.getHours() >= 9) && (nycTime.getHours() < 16)) {
+        if ((nycTime.getHours() >= 9) && (nycTime.getHours() < 16)) {
           open = true;
         }
 
@@ -108,7 +108,7 @@ module.exports = (function () {
           request,
           i;
 
-      for(i in stocksState.value) {
+      for (i in stocksState.value) {
         hasData = true;
         break;
       }
@@ -121,7 +121,7 @@ module.exports = (function () {
       stocks.method   = config.method   || 'GET';
       stocks.callback = config.callback || function () {};
 
-      if((stocks.stocks !== null) && ((stocksOpen) || (!hasData))) {
+      if ((stocks.stocks !== null) && ((stocksOpen) || (!hasData))) {
         console.log('\x1b[35m' + config.device.title + '\x1b[0m: Fetching device info');
 
         request = https.request(this.postPrepare(stocks), function (response) {
@@ -137,17 +137,17 @@ module.exports = (function () {
                           data,
                           i = 0;
 
-                      if(dataReply) {
+                      if (dataReply) {
                         try {
                           data = JSON.parse(dataReply);
                         }
 
-                        catch(err) {
+                        catch (err) {
                           stocks.callback('API returned an unexpected value');
                         }
 
-                        if(data && data.query && data.query.results && data.query.results.quote) {
-                          for(i in data.query.results.quote) {
+                        if (data && data.query && data.query.results && data.query.results.quote) {
+                          for (i in data.query.results.quote) {
                             stock = data.query.results.quote[i];
 
                             stockData[util.encodeName(stock.symbol)] = { 'name'             : util.sanitize(stock.symbol),

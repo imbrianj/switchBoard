@@ -52,8 +52,8 @@ module.exports = (function () {
       var execute = { command : '', params : [] },
           value   = revert === true ? 0 : 255;
 
-      if(platform === 'linux' || platform === 'win32') {
-        switch(command) {
+      if (platform === 'linux' || platform === 'win32') {
+        switch (command) {
           case 'POWERON' :
             execute.command = 'gimx';
 
@@ -136,9 +136,9 @@ module.exports = (function () {
       ps3.platform    = config.platform           || process.platform;
       ps3.revert      = config.revert             || false;
 
-      if(ps3State.state === 'ok') {
+      if (ps3State.state === 'ok') {
         // If the PS3 is already on, we shouldn't execute PowerOn again.
-        if(ps3.command === 'POWERON') {
+        if (ps3.command === 'POWERON') {
           console.log('\x1b[35m' + config.device.title + '\x1b[0m: Device looks on already.  Changing command to PS');
 
           ps3.command = 'PS';
@@ -151,16 +151,16 @@ module.exports = (function () {
 
       ps3.execute = this.translateCommand(ps3.command, ps3.deviceMac, ps3.serviceIp, ps3.servicePort, ps3.platform, ps3.revert);
 
-      if((ps3.execute) && (ps3.execute.command) && (ps3.execute.params)) {
+      if ((ps3.execute) && (ps3.execute.command) && (ps3.execute.params)) {
         gimx = spawn(ps3.execute.command, ps3.execute.params);
 
         // The Gimx service will run for quite a while, so we need to execute the
         // callback to send a response before the command closes some time later.
-        if(ps3.command === 'POWERON') {
+        if (ps3.command === 'POWERON') {
           ps3.callback(null, 'ok');
 
           gimx.stderr.on('data', function (err) {
-            if(err.toString().indexOf('shutdown') !== -1) {
+            if (err.toString().indexOf('shutdown') !== -1) {
               console.log('\x1b[31m' + config.device.title + '\x1b[0m: Controller disconnected');
             }
 
@@ -173,19 +173,19 @@ module.exports = (function () {
         });
 
         gimx.once('close', function (code) {
-          if(ps3.command === 'POWERON') {
+          if (ps3.command === 'POWERON') {
             ps3.callback('Device is off or unreachable');
           }
 
-          else if((ps3.revert !== true) && (ps3.command !== 'PS')) {
+          else if ((ps3.revert !== true) && (ps3.command !== 'PS')) {
             config.revert = true;
 
             that.send(config);
           }
 
           else {
-            if(ps3State.state === 'ok') {
-              if(code === 0) {
+            if (ps3State.state === 'ok') {
+              if (code === 0) {
                 ps3.callback(null, 'ok');
               }
 

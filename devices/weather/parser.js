@@ -33,7 +33,7 @@
     translate  = function (message) {
       var util;
 
-      if((typeof SB === 'object') && (typeof SB.util === 'object')) {
+      if ((typeof SB === 'object') && (typeof SB.util === 'object')) {
         message = SB.util.translate(message, 'weather');
       }
 
@@ -51,79 +51,79 @@
 
       code = parseInt(code, 10);
 
-      if(code <= 2) {
+      if (code <= 2) {
         icon = 'warning';
       }
 
-      else if(code <= 4) {
+      else if (code <= 4) {
         icon = 'bolt';
       }
 
-      else if(code <= 8) {
+      else if (code <= 8) {
         icon = 'asterisk';
       }
 
-      else if(code <= 12) {
+      else if (code <= 12) {
         icon = 'tint';
       }
 
-      else if(code <= 18) {
+      else if (code <= 18) {
         icon = 'asterisk';
       }
 
-      else if(code <= 22) {
+      else if (code <= 22) {
         icon = 'fire';
       }
 
-      else if(code <= 24) {
+      else if (code <= 24) {
         icon = 'flag';
       }
 
-      else if(code === 25 ||
-              code === 35) {
+      else if (code === 25 ||
+               code === 35) {
         icon = 'asterisk';
       }
 
-      else if(code <= 30) {
+      else if (code <= 30) {
         icon = 'cloud';
       }
 
-      else if(code === 31 ||
-              code === 33) {
+      else if (code === 31 ||
+               code === 33) {
         icon = 'moon-o';
       }
 
-      else if(code === 32 ||
-              code === 34 ||
-              code === 36) {
+      else if (code === 32 ||
+               code === 34 ||
+               code === 36) {
         icon = 'sun-o';
       }
 
-      else if(code <= 39) {
+      else if (code <= 39) {
         icon = 'bolt';
       }
 
-      else if(code === 40) {
+      else if (code === 40) {
         icon = 'tint';
       }
 
-      else if(code <= 43) {
+      else if (code <= 43) {
         icon = 'asterisk';
       }
 
-      else if(code === 44) {
+      else if (code === 44) {
         icon = 'cloud';
       }
 
-      else if(code === 45) {
+      else if (code === 45) {
         icon = 'bolt';
       }
 
-      else if(code === 46) {
+      else if (code === 46) {
         icon = 'asterisk';
       }
 
-      else if(code === 47) {
+      else if (code === 47) {
         icon = 'bolt';
       }
 
@@ -134,13 +134,13 @@
       return icon;
     };
 
-    if((value) && (value.code)) {
+    if ((value) && (value.code)) {
       markup = markup.replace('{{WEATHER_ICON}}', translateCode(value.code));
       markup = markup.replace('{{WEATHER_CURRENT}}', value.city + ' ' + translate('CURRENT') + ': ' + value.temp + '&deg; ' + value.text);
       markup = markup.replace('{{WEATHER_SUNRISE}}', value.sunrise);
       markup = markup.replace('{{WEATHER_SUNSET}}', value.sunset);
 
-      for(i in value.forecast) {
+      for (i in value.forecast) {
         tempMarkup = tempMarkup + template.split('{{WEATHER_ICON}}').join(translateCode(value.forecast[i].code));
         tempMarkup = tempMarkup.split('{{WEATHER_DAY}}').join(value.forecast[i].day + ':');
         tempMarkup = tempMarkup.split('{{WEATHER_TEXT}}').join(value.forecast[i].text);
@@ -154,7 +154,7 @@
       markup = markup.replace('{{WEATHER_SUNRISE}}', '');
       markup = markup.replace('{{WEATHER_SUNSET}}', '');
 
-      if(typeof value === 'string') {
+      if (typeof value === 'string') {
         tempMarkup = value;
       }
     }

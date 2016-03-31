@@ -47,7 +47,7 @@ module.exports = (function () {
       var path    = '/',
           method  = 'POST';
 
-      if(panasonic.command || panasonic.text) {
+      if (panasonic.command || panasonic.text) {
         path += 'nrc/control_0';
       }
 
@@ -77,7 +77,7 @@ module.exports = (function () {
           urn      = 'panasonic-com:service:p00NetworkControl:1',
           value    = '<X_KeyEvent>NRC_' + panasonic.command + '-ONOFF</X_KeyEvent>';
 
-      if(panasonic.text) {
+      if (panasonic.text) {
         action = 'X_SendString';
         urn    = 'panasonic-com:service:p00NetworkControl:1';
         value  = '<X_String>' + panasonic.text + '</X_String>';
@@ -108,11 +108,11 @@ module.exports = (function () {
       panasonic.device.localTimeout = controller.config.localTimeout || config.localTimeout;
 
       panasonic.callback = function (err, reply) {
-        if(reply) {
+        if (reply) {
           callback(panasonic.device.deviceId, null, 'ok');
         }
 
-        else if(err) {
+        else if (err) {
           callback(panasonic.device.deviceId, 'err');
         }
       };
@@ -143,7 +143,7 @@ module.exports = (function () {
                   });
                 });
 
-      if(panasonic.command === 'state') {
+      if (panasonic.command === 'state') {
         request.setTimeout(panasonic.timeout, function () {
           request.destroy();
           panasonic.callback({ code : 'ETIMEDOUT' }, null, true);
@@ -151,7 +151,7 @@ module.exports = (function () {
       }
 
       request.once('error', function (err) {
-        if((err.code !== 'ETIMEDOUT') || (panasonic.command !== 'state')) {
+        if ((err.code !== 'ETIMEDOUT') || (panasonic.command !== 'state')) {
           panasonic.callback(err);
         }
       });

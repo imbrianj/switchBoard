@@ -43,8 +43,8 @@ module.exports = (function () {
       var present = [],
           subdevice;
 
-      for(subdevice in devices) {
-        if((devices[subdevice].type === 'presence') && (devices[subdevice].state === 'on') && (presence) && (presence.indexOf(devices[subdevice].label) !== -1)) {
+      for (subdevice in devices) {
+        if ((devices[subdevice].type === 'presence') && (devices[subdevice].state === 'on') && (presence) && (presence.indexOf(devices[subdevice].label) !== -1)) {
           present.push(devices[subdevice].label);
         }
       }
@@ -60,7 +60,7 @@ module.exports = (function () {
           message    = '',
           people     = '';
 
-      if(newMode === 'Away') {
+      if (newMode === 'Away') {
         message = this.translate('NOBODY_HOME', lang);
       }
 
@@ -86,13 +86,13 @@ module.exports = (function () {
           delay       = config.delay    || 10,
           presence    = config.presence || [];
 
-      if(command.indexOf('subdevice-state-presence-') === 0) {
-        if((values.value) && (values.value.devices)) {
+      if (command.indexOf('subdevice-state-presence-') === 0) {
+        if ((values.value) && (values.value.devices)) {
           present = this.isPresent(values.value.devices, presence);
 
-          if(present.length === 0) {
+          if (present.length === 0) {
             // Only mark "Away" based on a presence sensor going off.
-            if(command.indexOf('-off') === (command.length - 4)) {
+            if (command.indexOf('-off') === (command.length - 4)) {
               this.stillAway = true;
               newMode = 'Away';
             }
@@ -100,12 +100,12 @@ module.exports = (function () {
 
           else {
             // Only mark "Home" or "Night" based on a presence sensor going on.
-            if(command.indexOf('-on') === (command.length - 3)) {
+            if (command.indexOf('-on') === (command.length - 3)) {
               this.stillAway = false;
               newMode = 'Home';
 
-              for(deviceId in controllers) {
-                if((controllers[deviceId].config) && (controllers[deviceId].config.typeClass === 'weather')) {
+              for (deviceId in controllers) {
+                if ((controllers[deviceId].config) && (controllers[deviceId].config.typeClass === 'weather')) {
                   weatherState = deviceState.getDeviceState(deviceId);
 
                   newMode = weatherState.value.phase === 'Day' ? config.dayMode : config.nightMode;
@@ -114,13 +114,13 @@ module.exports = (function () {
             }
           }
 
-          if((newMode) && (values.value.mode !== newMode)) {
-            if(newMode === 'Away') {
+          if ((newMode) && (values.value.mode !== newMode)) {
+            if (newMode === 'Away') {
               setTimeout(function () {
                 var currentState = deviceState.getDeviceState(device),
                     present      = that.isPresent(currentState.value.devices);
 
-                if((that.stillAway) && (present.length === 0)) {
+                if ((that.stillAway) && (present.length === 0)) {
                   that.stillAway = false;
 
                   that.changeMode(device, newMode, present, controllers, lang);

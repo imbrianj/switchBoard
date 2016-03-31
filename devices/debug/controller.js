@@ -57,11 +57,11 @@ module.exports = (function () {
       debug.command = 'state';
 
       debug.callback = function (err, reply) {
-        if(reply) {
+        if (reply) {
           callback(controller.config.deviceId, null, 'ok', reply);
         }
 
-        else if(err) {
+        else if (err) {
           callback(controller.config.deviceId, 'err', 'err');
         }
       };

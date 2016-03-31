@@ -37,7 +37,7 @@ module.exports = (function () {
     findDeviceType : function (typeClass) {
       var deviceType = '';
 
-      switch(typeClass) {
+      switch (typeClass) {
         case 'smartthings' :
           deviceType = 'smartthings';
         break;
@@ -111,13 +111,13 @@ module.exports = (function () {
 
       text = rawText.split(' ');
 
-      if(macros) {
+      if (macros) {
         // Loop through all configured macros anywhere in the inputted text.
-        for(keyword in macros) {
-          if(rawText.indexOf(keyword.toUpperCase()) !== -1) {
+        for (keyword in macros) {
+          if (rawText.indexOf(keyword.toUpperCase()) !== -1) {
             rawMacro = macros[keyword].split(';');
 
-            for(macro in rawMacro) {
+            for (macro in rawMacro) {
               runCommand.macroCommands(rawMacro[macro]);
             }
 
@@ -126,19 +126,19 @@ module.exports = (function () {
         }
       }
 
-      for(i = 0; i < text.length; i += 1) {
+      for (i = 0; i < text.length; i += 1) {
         // If you have a series of commands, you don't want to have to repeat
         // the same word.  So we'll use "AND" to assume the same action.
-        if((commands.length > 1) && (text[i] === implied.toUpperCase())) {
+        if ((commands.length > 1) && (text[i] === implied.toUpperCase())) {
           commands[j].action  = commands[(j - 1)].action;
           commands[j].implied = true;
         }
 
         // Loop through looking for action words.  Once we have one, store it
         // so we can act on it once we find a suitable device.
-        for(keyword in verbs) {
+        for (keyword in verbs) {
           // Look ahead for "Channel Up" to not confuse with just "Up".
-          if(text[i] + ' ' + text[(i + 1)] === verbs[keyword].toUpperCase()) {
+          if (text[i] + ' ' + text[(i + 1)] === verbs[keyword].toUpperCase()) {
             commands[j].action = verbs[keyword];
 
             i += 1;
@@ -146,7 +146,7 @@ module.exports = (function () {
             break;
           }
 
-          else if(text[i] === verbs[keyword].toUpperCase()) {
+          else if (text[i] === verbs[keyword].toUpperCase()) {
             commands[j].action = verbs[keyword];
 
             break;
@@ -154,7 +154,7 @@ module.exports = (function () {
 
           // When we have a pair of action + command, we can start looking for
           // our next command.
-          if((commands[j].action) && (devices[j].device)) {
+          if ((commands[j].action) && (devices[j].device)) {
             j += 1;
 
             commands[j] = { action : null, implied : false };
@@ -164,8 +164,8 @@ module.exports = (function () {
 
         // Loop through looking for inquiry words.  Once we have one, store it
         // so we can act on it once we find a suitable device.
-        for(keyword in inquiry) {
-          if(text[i] === inquiry[keyword].toUpperCase()) {
+        for (keyword in inquiry) {
+          if (text[i] === inquiry[keyword].toUpperCase()) {
             questions[x].action = inquiry[keyword];
 
             break;
@@ -173,7 +173,7 @@ module.exports = (function () {
 
           // When we have a pair of action + command, we can start looking for
           // our next command.
-          if((questions[x].action) && (devices[j].device)) {
+          if ((questions[x].action) && (devices[j].device)) {
             x += 1;
 
             questions[x] = { action : null, implied : false };
@@ -181,16 +181,16 @@ module.exports = (function () {
           }
         }
 
-        for(keyword in genericTerms) {
+        for (keyword in genericTerms) {
           // Check for generic names "TV", "Stereo", "Playstation", etc.
-          if(genericTerms[keyword].toUpperCase() === text[i]) {
-            if(controllers[genericDevices[genericTerms[keyword].toUpperCase()]]) {
+          if (genericTerms[keyword].toUpperCase() === text[i]) {
+            if (controllers[genericDevices[genericTerms[keyword].toUpperCase()]]) {
               devices[j].device    = genericDevices[genericTerms[keyword].toUpperCase()];
               devices[j].typeClass = controllers[genericDevices[genericTerms[keyword].toUpperCase()]].config.typeClass;
 
               // When we have a pair of action + command, we can start looking
               // for our next command.
-              if((commands[j].action) && (devices[j].device)) {
+              if ((commands[j].action) && (devices[j].device)) {
                 j += 1;
 
                 commands[j] = { action : null, implied : false };
@@ -202,12 +202,12 @@ module.exports = (function () {
 
         // Look through any registered subdevices that may need to be acted
         // upon.
-        for(keyword in controllers) {
-          if(keyword !== 'config') {
-            if((subDevices) && (subDevices[keyword]) && (subDevices[keyword].subDevices)) {
-              for(k = 0; k < subDevices[keyword].subDevices.length; k += 1) {
+        for (keyword in controllers) {
+          if (keyword !== 'config') {
+            if ((subDevices) && (subDevices[keyword]) && (subDevices[keyword].subDevices)) {
+              for (k = 0; k < subDevices[keyword].subDevices.length; k += 1) {
                 // Look ahead for device names that may be multiple words.
-                if(text[i] + ' ' + text[(i + 1)] + ' ' + text[(i + 2)] === subDevices[keyword].subDevices[k].toUpperCase()) {
+                if (text[i] + ' ' + text[(i + 1)] + ' ' + text[(i + 2)] === subDevices[keyword].subDevices[k].toUpperCase()) {
                   devices[j].device    = keyword;
                   devices[j].typeClass = controllers[keyword].config.typeClass;
                   devices[j].subDevice = subDevices[keyword].subDevices[k];
@@ -217,7 +217,7 @@ module.exports = (function () {
                   break;
                 }
 
-                else if(text[i] + ' ' + text[(i + 1)] === subDevices[keyword].subDevices[k].toUpperCase()) {
+                else if (text[i] + ' ' + text[(i + 1)] === subDevices[keyword].subDevices[k].toUpperCase()) {
                   devices[j].device    = keyword;
                   devices[j].typeClass = controllers[keyword].config.typeClass;
                   devices[j].subDevice = subDevices[keyword].subDevices[k];
@@ -227,7 +227,7 @@ module.exports = (function () {
                   break;
                 }
 
-                else if(text[i] === subDevices[keyword].subDevices[k].toUpperCase()) {
+                else if (text[i] === subDevices[keyword].subDevices[k].toUpperCase()) {
                   devices[j].device = keyword;
                   devices[j].typeClass = controllers[keyword].config.typeClass;
                   devices[j].subDevice = subDevices[keyword].subDevices[k];
@@ -235,7 +235,7 @@ module.exports = (function () {
 
                 // When we have a pair of action + command, we can start looking for
                 // our next command.
-                if((commands[j].action) && (devices[j].device)) {
+                if ((commands[j].action) && (devices[j].device)) {
                   j += 1;
 
                   commands[j] = { action : null, implied : false };
@@ -248,10 +248,10 @@ module.exports = (function () {
 
         // Look through each device and compare with the "title" used in the
         // navigation.
-        for(keyword in controllers) {
-          if(keyword !== 'config') {
+        for (keyword in controllers) {
+          if (keyword !== 'config') {
             // Look ahead for device names that may be multiple words.
-            if(text[i] + ' ' + text[(i + 1)] + ' ' + text[(i + 2)] === controllers[keyword].config.title.toUpperCase()) {
+            if (text[i] + ' ' + text[(i + 1)] + ' ' + text[(i + 2)] === controllers[keyword].config.title.toUpperCase()) {
               commands[j].device    = keyword;
               commands[j].typeClass = controllers[keyword].config.typeClass;
 
@@ -260,7 +260,7 @@ module.exports = (function () {
               break;
             }
 
-            else if(text[i] + ' ' + text[(i + 1)] === controllers[keyword].config.title.toUpperCase()) {
+            else if (text[i] + ' ' + text[(i + 1)] === controllers[keyword].config.title.toUpperCase()) {
               commands[j].device    = keyword;
               commands[j].typeClass = controllers[keyword].config.typeClass;
 
@@ -269,14 +269,14 @@ module.exports = (function () {
               break;
             }
 
-            else if(text[i] === controllers[keyword].config.title.toUpperCase()) {
+            else if (text[i] === controllers[keyword].config.title.toUpperCase()) {
               commands[j].device    = keyword;
               commands[j].typeClass = controllers[keyword].config.typeClass;
             }
 
             // When we have a pair of action + command, we can start looking for
             // our next command.
-            if((commands[j].action) && (commands[j].device)) {
+            if ((commands[j].action) && (commands[j].device)) {
               j += 1;
 
               commands[j] = { action : null, device : null, typeClass: null, subDevice : null };
@@ -290,11 +290,11 @@ module.exports = (function () {
       // "What is the date?"
       // "Do I need a coat?"
       // "How are you doing?"
-      if((!devices[0].device) && (!commands[0].action) && (questions[0].action)) {
+      if ((!devices[0].device) && (!commands[0].action) && (questions[0].action)) {
 // Register questions
       }
 
-      else if((devices[0].device) && ((commands[0].action) || (questions[0].action))) {
+      else if ((devices[0].device) && ((commands[0].action) || (questions[0].action))) {
 
 // Figure out how to coordinate "questions" with "commands"
 
@@ -306,9 +306,9 @@ module.exports = (function () {
         // "Turn off the hall light and turn on the office light"
         // This would produce an extra element in the "commands" list, which is
         // what we'll try and filter here.
-        if(commands.length > devices.length) {
-          for(i = 0; i < commands.length; i += 1) {
-            if(commands[i].implied === true) {
+        if (commands.length > devices.length) {
+          for (i = 0; i < commands.length; i += 1) {
+            if (commands[i].implied === true) {
               commands.splice(i, 1);
             }
           }
@@ -318,15 +318,15 @@ module.exports = (function () {
         // we do not, then we clearly misunderstand part (or all) of a message,
         // so it's probably best to not act on it rather than act incorrectly
         // on it.
-        if(commands.length === devices.length) {
-          for(i = 0; i < commands.length; i += 1) {
-            if((devices[i].device) && (commands[i].action)) {
+        if (commands.length === devices.length) {
+          for (i = 0; i < commands.length; i += 1) {
+            if ((devices[i].device) && (commands[i].action)) {
               // Only at this point should we assume a command will actually be
               // acted upon.
               acted = true;
 
-              if(devices[i].subDevice) {
-                if(devices[i].typeClass === 'nest') {
+              if (devices[i].subDevice) {
+                if (devices[i].typeClass === 'nest') {
                   devices[i].subDevice = devices[i].subDevice + '-' + commands[i].action.toLowerCase();
                   commands[i].action   = 'mode';
                 }
@@ -334,11 +334,11 @@ module.exports = (function () {
                 commands[i].action = 'subdevice-' + commands[i].action.toLowerCase() + '-' + devices[i].subDevice;
               }
 
-              switch(this.findDeviceType(devices[i].typeClass)) {
+              switch (this.findDeviceType(devices[i].typeClass)) {
                 case 'tv'            :
                 case 'entertainment' :
                 case 'stereo'        :
-                  switch(commands[i].action.toUpperCase()) {
+                  switch (commands[i].action.toUpperCase()) {
                     case 'OFF' :
                       commands[i].action = 'PowerOff';
                     break;
@@ -350,7 +350,7 @@ module.exports = (function () {
                 break;
 
                 case 'security' :
-                  switch(commands[i].action.toUpperCase()) {
+                  switch (commands[i].action.toUpperCase()) {
                     case 'ARM' :
                       commands[i].action = 'Alarm_On';
                     break;
@@ -386,25 +386,25 @@ module.exports = (function () {
           deviceMood,
           device;
 
-      for(device in controllers) {
+      for (device in controllers) {
         deviceType = null;
 
-        if(device !== 'config') {
+        if (device !== 'config') {
           deviceType = this.findDeviceType(controllers[device].config.typeClass);
 
-          if(deviceType) {
+          if (deviceType) {
             state         = deviceState.getDeviceState(device);
             deviceCommand = require(__dirname + '/' + deviceType);
             deviceMood    = deviceCommand[deviceType](state, command);
 
-            if(deviceMood) {
+            if (deviceMood) {
               mood.comfortable += deviceMood.comfortable || 0;
               mood.entertained += deviceMood.entertained || 0;
               mood.excited     += deviceMood.excited     || 0;
               mood.scared      += deviceMood.scared      || 0;
               mood.social      += deviceMood.social      || 0;
 
-              if(deviceMood.comment) {
+              if (deviceMood.comment) {
                 date = new Date();
                 mood.comments.push({ comment : deviceMood.comment,
                                      device  : device,

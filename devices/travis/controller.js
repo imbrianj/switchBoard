@@ -85,7 +85,7 @@ module.exports = (function () {
       travis.maxCount = config.device.maxCount || 3;
       travis.callback = config.callback        || function () {};
 
-      if((travis.owner) && (travis.repo)) {
+      if ((travis.owner) && (travis.repo)) {
         console.log('\x1b[35m' + config.device.title + '\x1b[0m: Fetching device info');
 
         request = https.request(this.postPrepare(travis), function (response) {
@@ -100,26 +100,26 @@ module.exports = (function () {
                 travisData = [],
                 i          = 0;
 
-            if(dataReply) {
+            if (dataReply) {
               try {
                 data = JSON.parse(dataReply);
               }
 
-              catch(err) {
+              catch (err) {
                 travis.callback('Invalid data returned from API');
               }
             }
 
-            if(data) {
-              for(i; i < data.length; i += 1) {
-                if(i < travis.maxCount) {
+            if (data) {
+              for (i; i < data.length; i += 1) {
+                if (i < travis.maxCount) {
                   travisData[i] = { 'label'    : util.sanitize(data[i].message),
                                     'url'      : util.sanitize('http://travis-ci.org/' + travis.owner + '/' + travis.repo + '/builds/' + data[i].id),
                                     'status'   : data[i].result === 0 ? 'ok' : 'err',
                                     'duration' : util.sanitize(data[i].duration),
                                     'state'    : util.sanitize(data[i].state) };
 
-                  if((i === (data.length - 1)) || (i === (travis.maxCount - 1))) {
+                  if ((i === (data.length - 1)) || (i === (travis.maxCount - 1))) {
                     travisData.status = travisData[0].status;
                   }
                 }

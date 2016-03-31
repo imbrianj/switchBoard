@@ -46,8 +46,8 @@ var fs              = require('fs'),
     connection,
     startup;
 
-for(arg in process.argv) {
-  switch(process.argv[arg]) {
+for (arg in process.argv) {
+  switch (process.argv[arg]) {
     case '-c' :
     case '--config' :
       configFile = __dirname + '/' + process.argv[parseInt(arg, 10) + 1];
@@ -59,7 +59,7 @@ connection = function (request, response) {
   'use strict';
 
   // Accept commands via POST as well.
-  if(request.method === 'POST') {
+  if (request.method === 'POST') {
     console.log('\x1b[36mPOST command received\x1b[0m');
 
     requestInit.requestInit(request, controllers, response);
@@ -75,7 +75,7 @@ connection = function (request, response) {
       controllers.config.default = device;
 
       // Serve static assets
-      if(directory) {
+      if (directory) {
         staticAssets.writeFile(directory, filename, response, controllers.config);
       }
 
@@ -94,32 +94,32 @@ startup = function () {
 
   console.log('\x1b[36mListening on port ' + settings.config.config.serverPort + '\x1b[0m');
 
-  if(settings.config.config.appCaching === true) {
+  if (settings.config.config.appCaching === true) {
     staticAssets.freshenManifest();
   }
 };
 
-fs.stat(configFile, function(err, data) {
+fs.stat(configFile, function (err, data) {
   'use strict';
 
   var key,
       cert;
 
-  if(err) {
+  if (err) {
     console.log('\x1b[31mError\x1b[0m: No controllers found.  Is your config file setup correctly?');
   }
 
-  if(data.isFile()) {
+  if (data.isFile()) {
     settings = require(configFile);
 
     controllers = loadController.loadController(settings.config);
 
-    if(settings.config.config.ssl.disabled !== true) {
+    if (settings.config.config.ssl.disabled !== true) {
       try {
         key = fs.statSync(__dirname + '/cache/key.pem');
       }
 
-      catch(catchErr) {
+      catch (catchErr) {
         console.log('\x1b[31mError\x1b[0m: Invalid SSL key provided.');
       }
 
@@ -127,23 +127,23 @@ fs.stat(configFile, function(err, data) {
         cert = fs.statSync(__dirname + '/cache/server.crt');
       }
 
-      catch(catchErr) {
+      catch (catchErr) {
         console.log('\x1b[31mError\x1b[0m: Invalid SSL cert provided.');
       }
 
-      if((key) && (cert)) {
+      if ((key) && (cert)) {
         options = {
           key  : fs.readFileSync(__dirname + '/cache/key.pem'),
           cert : fs.readFileSync(__dirname + '/cache/server.crt')
         };
       }
 
-      else if(process.platform === 'linux') {
+      else if (process.platform === 'linux') {
         staticAssets.buildCerts(settings.config.config.ssl);
       }
     }
 
-    if(options) {
+    if (options) {
       console.log('\x1b[36mSSL\x1b[0m: Enabled');
       server = https.createServer(options, connection).listen(settings.config.config.serverPort, startup);
     }

@@ -40,17 +40,17 @@ module.exports = (function () {
           stockName,
           deviceId;
 
-      if((config.limits) && (values.value)) {
-        for(stockName in config.limits) {
-          if((typeof config.limits[stockName].sell !== 'undefined') && (values.value[stockName]) && (values.value[stockName].price >= config.limits[stockName].sell)) {
+      if ((config.limits) && (values.value)) {
+        for (stockName in config.limits) {
+          if ((typeof config.limits[stockName].sell !== 'undefined') && (values.value[stockName]) && (values.value[stockName].price >= config.limits[stockName].sell)) {
             message = message + translate.translate('{{i18n_SELL}}', 'stocks', controllers.config.language).replace('{{LABEL}}', values.value[stockName].name).replace('{{PRICE}}', values.value[stockName].price) + ' ';
           }
 
-          else if((typeof config.limits[stockName].buy !== 'undefined') && (values.value[stockName]) && (values.value[stockName].price <= config.limits[stockName].buy)) {
+          else if ((typeof config.limits[stockName].buy !== 'undefined') && (values.value[stockName]) && (values.value[stockName].price <= config.limits[stockName].buy)) {
             message = message + translate.translate('{{i18n_BUY}}', 'stocks', controllers.config.language).replace('{{LABEL}}', values.value[stockName].name).replace('{{PRICE}}', values.value[stockName].price) + ' ';
           }
 
-          else if(values.value[stockName]){
+          else if (values.value[stockName]){
             console.log('\x1b[35mSchedule\x1b[0m: ' + values.value[stockName].name + ' is at ' + values.value[stockName].price + ' - within range');
           }
 
@@ -60,13 +60,13 @@ module.exports = (function () {
         }
       }
 
-      if(message) {
+      if (message) {
         console.log('\x1b[35mSchedule\x1b[0m: ' + message);
 
         notify.notify(message, controllers, device);
 
-        for(deviceId in controllers) {
-          if((deviceId !== 'config') && ((controllers[deviceId].typeClass === 'mp3') || (controllers[deviceId].typeClass === 'clientMp3'))) {
+        for (deviceId in controllers) {
+          if ((deviceId !== 'config') && ((controllers[deviceId].typeClass === 'mp3') || (controllers[deviceId].typeClass === 'clientMp3'))) {
             runCommand.runCommand(deviceId, 'text-cash');
             break;
           }

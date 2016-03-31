@@ -55,19 +55,19 @@ module.exports = (function () {
           commandType = '',
           subdevice;
 
-      if(rremote.subdevice.indexOf('on-') === 0) {
+      if (rremote.subdevice.indexOf('on-') === 0) {
         commandType = 'on';
       }
 
-      else if(rremote.subdevice.indexOf('off-') === 0) {
+      else if (rremote.subdevice.indexOf('off-') === 0) {
         commandType = 'off';
       }
 
-      if(commandType) {
+      if (commandType) {
         subdevice   = rremote.subdevice.replace(commandType + '-', '');
         subdevice   = rremote.subdevices[subdevice];
 
-        if((rremote.system) && (subdevice) && (commandType)) {
+        if ((rremote.system) && (subdevice) && (commandType)) {
           params = [rremote.system, subdevice, commandType === 'on' ? 1 : 0];
         }
       }
@@ -87,11 +87,11 @@ module.exports = (function () {
           className   = '',
           i;
 
-      if(process.platform === 'linux') {
-        for(i in controller.config.subdevices) {
+      if (process.platform === 'linux') {
+        for (i in controller.config.subdevices) {
           className = '';
 
-          if((controller.config.className) && (controller.config.className[i])) {
+          if ((controller.config.className) && (controller.config.className[i])) {
             className = controller.config.className[i];
           }
 
@@ -119,10 +119,10 @@ module.exports = (function () {
       rremote.subdevices = config.device.subdevices;
       rremote.callback   = config.callback || function () {};
 
-      if((rremote.subdevice) && (rremote.system)) {
+      if ((rremote.subdevice) && (rremote.system)) {
         rremote.parameters = this.getDeviceParameters(rremote);
 
-        if(rremote.parameters.length === 3) {
+        if (rremote.parameters.length === 3) {
           send = spawn('send', rremote.parameters);
 
           send.once('error', function (err) {

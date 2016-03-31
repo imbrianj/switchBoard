@@ -36,7 +36,7 @@ module.exports = (function () {
     nestChange : function (device, command) {
       var runCommand = require(__dirname + '/../lib/runCommand');
 
-      if(command !== 'LIST') {
+      if (command !== 'LIST') {
         // We want to grab the state from the source of truth (the actual
         // API), but we need to wait a short time for it to register.
         setTimeout(function () {

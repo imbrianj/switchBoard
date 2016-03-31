@@ -45,60 +45,60 @@ module.exports = (function () {
 
       // If you haven't explicitly changed emotion based on a devices input,
       // we'll try and derive one based on new info.
-      if(!mood.emotion) {
+      if (!mood.emotion) {
         mood.emotion = 'HAPPY';
 
-        if(mood.social < 1) {
+        if (mood.social < 1) {
           mood.emotion = 'INDIFFERENT';
         }
 
-        if(mood.comfortable < 1) {
+        if (mood.comfortable < 1) {
           mood.emotion = 'SAD';
         }
 
-        if((mood.excited < 1) && (mood.entertained < 1)) {
+        if ((mood.excited < 1) && (mood.entertained < 1)) {
           mood.emotion = 'INDIFFERENT';
         }
 
-        if(mood.social < 0) {
+        if (mood.social < 0) {
           mood.emotion = 'INDIFFERENT';
         }
 
-        if(mood.scared < -5) {
+        if (mood.scared < -5) {
           mood.emotion = 'SCARED';
         }
 
-        if(mood.entertained > 4) {
+        if (mood.entertained > 4) {
           mood.emotion = 'PLAYFUL';
         }
 
-        if(mood.excited > 4) {
+        if (mood.excited > 4) {
           mood.emotion = 'EXCITED';
         }
 
-        if(mood.social > 7) {
+        if (mood.social > 7) {
           mood.emotion = 'LOVE';
         }
 
-        if((mood.excited < -2) && (mood.scared < -2)) {
+        if ((mood.excited < -2) && (mood.scared < -2)) {
           mood.emotion = 'ANGRY';
         }
 
-        if(mood.comfortable >= 10) {
+        if (mood.comfortable >= 10) {
           mood.emotion = 'SLEEP';
         }
 
-        if(mood.scared <= -10) {
+        if (mood.scared <= -10) {
           mood.emotion = 'SCARED';
         }
       }
 
-      for(deviceId in controllers) {
-        if(deviceId !== 'config') {
-          if(controllers[deviceId].config.typeClass === 'gerty') {
+      for (deviceId in controllers) {
+        if (deviceId !== 'config') {
+          if (controllers[deviceId].config.typeClass === 'gerty') {
             gertyState = deviceState.getDeviceState(deviceId);
 
-            if((gertyState) && (gertyState.value.description !== mood.emotion)) {
+            if ((gertyState) && (gertyState.value.description !== mood.emotion)) {
               runCommand.runCommand(deviceId, mood.emotion);
             }
 
@@ -126,9 +126,9 @@ module.exports = (function () {
           command    = '',
           i;
 
-      for(keyword in synonyms) {
-        for(i = 0; i < synonyms[keyword].length; i += 1) {
-          if(text.indexOf(synonyms[keyword][i].toUpperCase()) !== -1) {
+      for (keyword in synonyms) {
+        for (i = 0; i < synonyms[keyword].length; i += 1) {
+          if (text.indexOf(synonyms[keyword][i].toUpperCase()) !== -1) {
             command = keyword;
 
             break;
@@ -136,7 +136,7 @@ module.exports = (function () {
         }
       }
 
-      if(command) {
+      if (command) {
         runCommand.runCommand(device, command);
       }
 

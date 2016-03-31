@@ -38,22 +38,22 @@ module.exports = (function () {
           presence   = config.presence || [],
           value;
 
-      if(command.indexOf('subdevice-state-presence-') === 0) {
+      if (command.indexOf('subdevice-state-presence-') === 0) {
         command = command.split('subdevice-state-presence-').join('');
         value   = command.split('-');
         command = value[0];
         value   = value[1];
 
-        if(presence.indexOf(command) !== -1) {
-          if(value === 'on') {
+        if (presence.indexOf(command) !== -1) {
+          if (value === 'on') {
             message = translate.translate('{{i18n_ARRIVED}}', 'smartthings', controllers.config.language).replace('{{LABEL}}', command);
           }
 
-          else if(value === 'off') {
+          else if (value === 'off') {
             message = translate.translate('{{i18n_LEFT}}', 'smartthings', controllers.config.language).replace('{{LABEL}}', command);
           }
 
-          if(message) {
+          if (message) {
             notify.notify(message, controllers, device);
           }
         }

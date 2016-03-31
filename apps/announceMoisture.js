@@ -38,17 +38,17 @@ module.exports = (function () {
           message    = '',
           value;
 
-      if(command.indexOf('subdevice-state-moisture-') === 0) {
+      if (command.indexOf('subdevice-state-moisture-') === 0) {
         command = command.split('subdevice-state-moisture-').join('');
         value   = command.split('-');
         command = value[0];
         value   = value[1];
 
-        if(value === 'on') {
+        if (value === 'on') {
           message = translate.translate('{{i18n_WATER_DETECTED}}', 'smartthings', controllers.config.language).replace('{{LABEL}}', command);
         }
 
-        if(message) {
+        if (message) {
           notify.notify(message, controllers, device);
         }
       }

@@ -27,7 +27,7 @@
     var templateCurrent = fragments.current,
         current         = '';
 
-    if((value) && (value.current)) {
+    if ((value) && (value.current)) {
       current = templateCurrent.split('{{DEVICE_CURRENT}}').join(value.current);
     }
 

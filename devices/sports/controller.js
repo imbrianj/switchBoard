@@ -85,7 +85,7 @@ module.exports = (function () {
         image = fs.statSync(filePath);
       }
 
-      catch(catchErr) {
+      catch (catchErr) {
         request = require('request');
 
         console.log('\x1b[35m' + title + '\x1b[0m: Saved image for ' + fileName);
@@ -105,14 +105,18 @@ module.exports = (function () {
           parts,
           path = '';
 
-      if((team.logo) && (!team.test)) {
+      if ((team.logo) && (!team.test)) {
         image = (theme === 'dark' && team.logoDark) ? team.logoDark : team.logo;
 
-        if(team.type === 'team') {
+        if (team.type === 'team') {
           parts = image.split('http://a.espncdn.com');
-        } else if (image.indexOf('http://a.espncdn.com/combiner/i?img=') !== -1) {
+        }
+
+        else if (image.indexOf('http://a.espncdn.com/combiner/i?img=') !== -1) {
           parts = image.split('http://a.espncdn.com/combiner/i?img=');
-        } else {
+        }
+
+        else {
           // Auto racing seems to come through differently
           parts = image.split('http://a.espncdn.com/');
         }
@@ -150,16 +154,16 @@ module.exports = (function () {
           game;
 
       // A "Sport" is like "basketball", "hockey", etc.
-      for(sportKey in sports) {
+      for (sportKey in sports) {
         sport = sports[sportKey];
 
         // A "League" is like "NBA", "NHL", etc.
-        for(leagueKey in sport.leagues) {
+        for (leagueKey in sport.leagues) {
           league = sport.leagues[leagueKey];
           games  = [];
 
           // An "Event" is a normal sports game.
-          for(gameKey in league.events) {
+          for (gameKey in league.events) {
             game = league.events[gameKey];
 
             games.push({
@@ -206,7 +210,7 @@ module.exports = (function () {
           dataReply = '',
           request;
 
-      if(language.indexOf('-') !== -1) {
+      if (language.indexOf('-') !== -1) {
         language = language.split('-')[0];
       }
 
@@ -231,16 +235,16 @@ module.exports = (function () {
                         errMessage,
                         data;
 
-                    if(dataReply) {
+                    if (dataReply) {
                       try {
                         data = JSON.parse(dataReply);
                       }
 
-                      catch(err) {
+                      catch (err) {
                         errMessage = 'API returned an unexpected value';
                       }
 
-                      if(data && data.sports) {
+                      if (data && data.sports) {
                         sportsData = that.getGames(data.sports, config.device.title, theme);
                       }
 

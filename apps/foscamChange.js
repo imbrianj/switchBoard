@@ -37,7 +37,7 @@ module.exports = (function () {
     foscamChange : function (device, command, controllers) {
       var runCommand = require(__dirname + '/../lib/runCommand');
 
-      if((command === 'ALARM_ON') || (command === 'ALARM_OFF')) {
+      if ((command === 'ALARM_ON') || (command === 'ALARM_OFF')) {
         // We want to grab the state from the source of truth (the actual
         // device), but we need to wait a short time for it to register.
         setTimeout(function () {

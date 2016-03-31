@@ -38,7 +38,7 @@ module.exports = (function () {
       var notify,
           translate;
 
-      if((values.value) && (values.value[0]) && (values.value[0].state === 'finished') && (values.value[0].status === 'err')) {
+      if ((values.value) && (values.value[0]) && (values.value[0].state === 'finished') && (values.value[0].status === 'err')) {
         notify    = require(__dirname + '/../lib/notify');
         translate = require(__dirname + '/../lib/translate');
 
