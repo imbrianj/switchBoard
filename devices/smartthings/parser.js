@@ -69,11 +69,13 @@
               j         = 0;
 
           for (i in subDevices) {
-            subDevice = subDevices[i];
+            if (subDevices.hasOwnProperty(i)) {
+              subDevice = subDevices[i];
 
-            if (subDevice.label === subDeviceLabel) {
-              collected[j] = subDevice;
-              j += 1;
+              if (subDevice.label === subDeviceLabel) {
+                collected[j] = subDevice;
+                j += 1;
+              }
             }
           }
 
@@ -153,27 +155,33 @@
         // You want to display SmartThings devices in groups.
         if (value.groups) {
           for (i in value.groups) {
-            tempMarkup      = tempMarkup + templateGroup;
-            subDeviceMarkup = '';
+            if (value.groups.hasOwnProperty(i)) {
+              tempMarkup      = tempMarkup + templateGroup;
+              subDeviceMarkup = '';
 
-            for (j in value.groups[i]) {
-              subDeviceGroup = findSubDevices(value.groups[i][j], subDevices);
+              for (j in value.groups[i]) {
+                if (value.groups[i].hasOwnProperty(j)) {
+                  subDeviceGroup = findSubDevices(value.groups[i][j], subDevices);
 
-              if (subDeviceGroup && subDeviceGroup[0]) {
-                subDeviceMarkup = subDeviceMarkup + getDeviceMarkup(subDeviceGroup[0]);
+                  if (subDeviceGroup && subDeviceGroup[0]) {
+                    subDeviceMarkup = subDeviceMarkup + getDeviceMarkup(subDeviceGroup[0]);
+                  }
+                }
               }
-            }
 
-            tempMarkup = tempMarkup.split('{{GROUP_CLASS}}').join(encodeName(i));
-            tempMarkup = tempMarkup.split('{{GROUP_TITLE}}').join(i);
-            tempMarkup = tempMarkup.split('{{SUB_DEVICE_LIST}}').join(subDeviceMarkup);
+              tempMarkup = tempMarkup.split('{{GROUP_CLASS}}').join(encodeName(i));
+              tempMarkup = tempMarkup.split('{{GROUP_TITLE}}').join(i);
+              tempMarkup = tempMarkup.split('{{SUB_DEVICE_LIST}}').join(subDeviceMarkup);
+            }
           }
         }
 
         // Otherwise, you want to show them in a list.
         else {
           for (i in subDevices) {
-            tempMarkup = tempMarkup + getDeviceMarkup(subDevices[i]);
+            if (subDevices.hasOwnProperty(i)) {
+              tempMarkup = tempMarkup + getDeviceMarkup(subDevices[i]);
+            }
           }
         }
       }

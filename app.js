@@ -47,11 +47,13 @@ var fs              = require('fs'),
     startup;
 
 for (arg in process.argv) {
-  switch (process.argv[arg]) {
-    case '-c' :
-    case '--config' :
-      configFile = __dirname + '/' + process.argv[parseInt(arg, 10) + 1];
-    break;
+  if (process.argv.hasOwnProperty(arg)) {
+    switch (process.argv[arg]) {
+      case '-c' :
+      case '--config' :
+        configFile = __dirname + '/' + process.argv[parseInt(arg, 10) + 1];
+      break;
+    }
   }
 }
 

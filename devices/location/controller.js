@@ -103,22 +103,24 @@ module.exports = (function () {
       maxCount = maxCount || 10;
 
       for (i in reply) {
-        location = reply[i];
+        if (reply.hasOwnProperty(i)) {
+          location = reply[i];
 
-        if ((location.lat) && (location.long)) {
-          locationData[j] = { lat   : util.sanitize(location.lat),
-                              long  : util.sanitize(location.long),
-                              alt   : util.sanitize(location.alt),
-                              url   : util.sanitize(location.link),
-                              speed : util.sanitize(location.speed),
-                              name  : util.sanitize(location.user),
-                              time  : util.sanitize(location.time * 1000) };
+          if ((location.lat) && (location.long)) {
+            locationData[j] = { lat   : util.sanitize(location.lat),
+                                long  : util.sanitize(location.long),
+                                alt   : util.sanitize(location.alt),
+                                url   : util.sanitize(location.link),
+                                speed : util.sanitize(location.speed),
+                                name  : util.sanitize(location.user),
+                                time  : util.sanitize(location.time * 1000) };
 
-          j += 1;
-        }
+            j += 1;
+          }
 
-        if (j >= maxCount) {
-          break;
+          if (j >= maxCount) {
+            break;
+          }
         }
       }
 

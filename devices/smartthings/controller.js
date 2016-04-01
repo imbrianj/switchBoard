@@ -283,10 +283,12 @@ module.exports = (function () {
           i         = 0;
 
       for (i in subDevices) {
-        subDevice = subDevices[i];
+        if (subDevices.hasOwnProperty(i)) {
+          subDevice = subDevices[i];
 
-        if (subDevice.label === subDeviceLabel) {
-          collected.push(subDevice);
+          if (subDevice.label === subDeviceLabel) {
+            collected.push(subDevice);
+          }
         }
       }
 
@@ -388,21 +390,23 @@ module.exports = (function () {
 
         if (!isNaN(value)) {
           for (i in subDevices) {
-            subDevice = subDevices[i];
+            if (subDevices.hasOwnProperty(i)) {
+              subDevice = subDevices[i];
 
-            if (subDevice.label === command) {
-              // If you have a proper state, temp is peripheral sensor.
-              if (subDevice.state) {
-                subDevices[i].peripheral = subDevices[i].peripheral || {};
-                subDevices[i].peripheral.temp = value;
+              if (subDevice.label === command) {
+                // If you have a proper state, temp is peripheral sensor.
+                if (subDevice.state) {
+                  subDevices[i].peripheral = subDevices[i].peripheral || {};
+                  subDevices[i].peripheral.temp = value;
+                }
+
+                // If you have no proper state, you're just a temperature sensor.
+                else {
+                  subDevices[i].state = value;
+                }
+
+                callback(null, { devices : subDevices, mode : smartThingsState.value.mode, groups : config.device.groups });
               }
-
-              // If you have no proper state, you're just a temperature sensor.
-              else {
-                subDevices[i].state = value;
-              }
-
-              callback(null, { devices : subDevices, mode : smartThingsState.value.mode, groups : config.device.groups });
             }
           }
         }
@@ -415,21 +419,23 @@ module.exports = (function () {
         value   = value[1];
 
         for (i in subDevices) {
-          subDevice = subDevices[i];
+          if (subDevices.hasOwnProperty(i)) {
+            subDevice = subDevices[i];
 
-          if (subDevice.label === command) {
-            // If you have a proper state, vibrate is peripheral sensor.
-            if ((commandType === 'vibrate') && (subDevice.state)) {
-              subDevices[i].peripheral = subDevices[i].peripheral || {};
-              subDevices[i].peripheral.vibrate = value;
+            if (subDevice.label === command) {
+              // If you have a proper state, vibrate is peripheral sensor.
+              if ((commandType === 'vibrate') && (subDevice.state)) {
+                subDevices[i].peripheral = subDevices[i].peripheral || {};
+                subDevices[i].peripheral.vibrate = value;
+              }
+
+              // If you have no proper state, you're just a temperature sensor.
+              else {
+                subDevices[i].state = value;
+              }
+
+              callback(null, { devices : subDevices, mode : smartThingsState.value.mode, groups : config.device.groups });
             }
-
-            // If you have no proper state, you're just a temperature sensor.
-            else {
-              subDevices[i].state = value;
-            }
-
-            callback(null, { devices : subDevices, mode : smartThingsState.value.mode, groups : config.device.groups });
           }
         }
       }

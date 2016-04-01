@@ -118,7 +118,9 @@ module.exports = (function () {
             rawMacro = macros[keyword].split(';');
 
             for (macro in rawMacro) {
-              runCommand.macroCommands(rawMacro[macro]);
+              if (rawMacro.hasOwnProperty(macro)) {
+                runCommand.macroCommands(rawMacro[macro]);
+              }
             }
 
             acted = true;
@@ -137,47 +139,51 @@ module.exports = (function () {
         // Loop through looking for action words.  Once we have one, store it
         // so we can act on it once we find a suitable device.
         for (keyword in verbs) {
-          // Look ahead for "Channel Up" to not confuse with just "Up".
-          if (text[i] + ' ' + text[(i + 1)] === verbs[keyword].toUpperCase()) {
-            commands[j].action = verbs[keyword];
+          if (verbs.hasOwnProperty(keyword)) {
+            // Look ahead for "Channel Up" to not confuse with just "Up".
+            if (text[i] + ' ' + text[(i + 1)] === verbs[keyword].toUpperCase()) {
+              commands[j].action = verbs[keyword];
 
-            i += 1;
+              i += 1;
 
-            break;
-          }
+              break;
+            }
 
-          else if (text[i] === verbs[keyword].toUpperCase()) {
-            commands[j].action = verbs[keyword];
+            else if (text[i] === verbs[keyword].toUpperCase()) {
+              commands[j].action = verbs[keyword];
 
-            break;
-          }
+              break;
+            }
 
-          // When we have a pair of action + command, we can start looking for
-          // our next command.
-          if ((commands[j].action) && (devices[j].device)) {
-            j += 1;
+            // When we have a pair of action + command, we can start looking for
+            // our next command.
+            if ((commands[j].action) && (devices[j].device)) {
+              j += 1;
 
-            commands[j] = { action : null, implied : false };
-            devices[j]  = { device : null, typeClass : null, subDevice : null };
+              commands[j] = { action : null, implied : false };
+              devices[j]  = { device : null, typeClass : null, subDevice : null };
+            }
           }
         }
 
         // Loop through looking for inquiry words.  Once we have one, store it
         // so we can act on it once we find a suitable device.
         for (keyword in inquiry) {
-          if (text[i] === inquiry[keyword].toUpperCase()) {
-            questions[x].action = inquiry[keyword];
+          if (inquiry.hasOwnProperty(keyword)) {
+            if (text[i] === inquiry[keyword].toUpperCase()) {
+              questions[x].action = inquiry[keyword];
 
-            break;
-          }
+              break;
+            }
 
-          // When we have a pair of action + command, we can start looking for
-          // our next command.
-          if ((questions[x].action) && (devices[j].device)) {
-            x += 1;
+            // When we have a pair of action + command, we can start looking for
+            // our next command.
+            if ((questions[x].action) && (devices[j].device)) {
+              x += 1;
 
-            questions[x] = { action : null, implied : false };
-            devices[j]   = { device : null, typeClass : null, subDevice : null };
+              questions[x] = { action : null, implied : false };
+              devices[j]   = { device : null, typeClass : null, subDevice : null };
+            }
           }
         }
 
@@ -387,28 +393,30 @@ module.exports = (function () {
           device;
 
       for (device in controllers) {
-        deviceType = null;
+        if (controllers.hasOwnProperty(device)) {
+          deviceType = null;
 
-        if (device !== 'config') {
-          deviceType = this.findDeviceType(controllers[device].config.typeClass);
+          if (device !== 'config') {
+            deviceType = this.findDeviceType(controllers[device].config.typeClass);
 
-          if (deviceType) {
-            state         = deviceState.getDeviceState(device);
-            deviceCommand = require(__dirname + '/' + deviceType);
-            deviceMood    = deviceCommand[deviceType](state, command);
+            if (deviceType) {
+              state         = deviceState.getDeviceState(device);
+              deviceCommand = require(__dirname + '/' + deviceType);
+              deviceMood    = deviceCommand[deviceType](state, command);
 
-            if (deviceMood) {
-              mood.comfortable += deviceMood.comfortable || 0;
-              mood.entertained += deviceMood.entertained || 0;
-              mood.excited     += deviceMood.excited     || 0;
-              mood.scared      += deviceMood.scared      || 0;
-              mood.social      += deviceMood.social      || 0;
+              if (deviceMood) {
+                mood.comfortable += deviceMood.comfortable || 0;
+                mood.entertained += deviceMood.entertained || 0;
+                mood.excited     += deviceMood.excited     || 0;
+                mood.scared      += deviceMood.scared      || 0;
+                mood.social      += deviceMood.social      || 0;
 
-              if (deviceMood.comment) {
-                date = new Date();
-                mood.comments.push({ comment : deviceMood.comment,
-                                     device  : device,
-                                     updated : date.getTime() });
+                if (deviceMood.comment) {
+                  date = new Date();
+                  mood.comments.push({ comment : deviceMood.comment,
+                                       device  : device,
+                                       updated : date.getTime() });
+                }
               }
             }
           }

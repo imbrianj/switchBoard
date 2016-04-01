@@ -171,16 +171,18 @@ module.exports = (function () {
 
               else {
                 for (i in reply.apps.app) {
-                  app = reply.apps.app[i];
+                  if (reply.apps.app.hasOwnProperty(i)) {
+                    app = reply.apps.app[i];
 
-                  apps[app.$.id] = { 'name'  : app._,
-                                     'id'    : app.$.id,
-                                     'link'  : 'http://' + config.deviceIp + ':8060/launch/11?contentID=' + app.$.id,
-                                     'image' : 'http://' + config.deviceIp + ':8060/query/icon/' + app.$.id,
-                                     'cache' : '/images/roku/icon_' + app.$.id + '.png'
-                                   };
+                    apps[app.$.id] = { 'name'  : app._,
+                                       'id'    : app.$.id,
+                                       'link'  : 'http://' + config.deviceIp + ':8060/launch/11?contentID=' + app.$.id,
+                                       'image' : 'http://' + config.deviceIp + ':8060/query/icon/' + app.$.id,
+                                       'cache' : '/images/roku/icon_' + app.$.id + '.png'
+                                     };
 
-                  that.cacheImage(app._, app.$.id, config);
+                    that.cacheImage(app._, app.$.id, config);
+                  }
                 }
 
                 callback(null, apps);

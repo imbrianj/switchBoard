@@ -89,16 +89,18 @@ module.exports = (function () {
 
       if (process.platform === 'linux') {
         for (i in controller.config.subdevices) {
-          className = '';
+          if (controller.config.subdevices.hasOwnProperty(i)) {
+            className = '';
 
-          if ((controller.config.className) && (controller.config.className[i])) {
-            className = controller.config.className[i];
+            if ((controller.config.className) && (controller.config.className[i])) {
+              className = controller.config.className[i];
+            }
+
+            subdevices.push({ id        : controller.config.subdevices[i],
+                              label     : i,
+                              type      : 'switch',
+                              className : className });
           }
-
-          subdevices.push({ id        : controller.config.subdevices[i],
-                            label     : i,
-                            type      : 'switch',
-                            className : className });
         }
 
         deviceState.updateState(controller.config.deviceId, controller.config.typeClass, { state : 'ok', value : { devices : subdevices } });

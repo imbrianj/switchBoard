@@ -47,31 +47,33 @@
 
     if (value) {
       for (i in value) {
-        change    = 'neutral';
-        arrow     = 'arrows-h';
-        direction = translate('NEUTRAL');
+        if (value.hasOwnProperty(i)) {
+          change    = 'neutral';
+          arrow     = 'arrows-h';
+          direction = translate('NEUTRAL');
 
-        if (value[i].dayChangeValue) {
-          if (value[i].dayChangeValue.indexOf('+') === 0) {
-            change    = 'gain';
-            arrow     = 'arrow-up';
-            direction = translate('GAIN');
+          if (value[i].dayChangeValue) {
+            if (value[i].dayChangeValue.indexOf('+') === 0) {
+              change    = 'gain';
+              arrow     = 'arrow-up';
+              direction = translate('GAIN');
+            }
+
+            else if (value[i].dayChangeValue.indexOf('-') === 0) {
+              change    = 'loss';
+              arrow     = 'arrow-down';
+              direction = translate('LOSS');
+            }
           }
 
-          else if (value[i].dayChangeValue.indexOf('-') === 0) {
-            change    = 'loss';
-            arrow     = 'arrow-down';
-            direction = translate('LOSS');
-          }
+          tempMarkup = tempMarkup + template.split('{{STOCK_CHANGE}}').join(change);
+          tempMarkup = tempMarkup.split('{{STOCK_ARROW}}').join(arrow);
+          tempMarkup = tempMarkup.split('{{STOCK_DIRECTION}}').join(direction);
+          tempMarkup = tempMarkup.split('{{STOCK_NAME}}').join(value[i].name);
+          tempMarkup = tempMarkup.split('{{STOCK_PRICE}}').join(value[i].price);
+          tempMarkup = tempMarkup.split('{{STOCK_CHANGE_VALUE}}').join(value[i].dayChangeValue);
+          tempMarkup = tempMarkup.split('{{STOCK_CHANGE_PERCENT}}').join(value[i].dayChangePercent);
         }
-
-        tempMarkup = tempMarkup + template.split('{{STOCK_CHANGE}}').join(change);
-        tempMarkup = tempMarkup.split('{{STOCK_ARROW}}').join(arrow);
-        tempMarkup = tempMarkup.split('{{STOCK_DIRECTION}}').join(direction);
-        tempMarkup = tempMarkup.split('{{STOCK_NAME}}').join(value[i].name);
-        tempMarkup = tempMarkup.split('{{STOCK_PRICE}}').join(value[i].price);
-        tempMarkup = tempMarkup.split('{{STOCK_CHANGE_VALUE}}').join(value[i].dayChangeValue);
-        tempMarkup = tempMarkup.split('{{STOCK_CHANGE_PERCENT}}').join(value[i].dayChangePercent);
       }
     }
 

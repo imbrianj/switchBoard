@@ -127,11 +127,13 @@ module.exports = (function () {
           i;
 
       for (keyword in synonyms) {
-        for (i = 0; i < synonyms[keyword].length; i += 1) {
-          if (text.indexOf(synonyms[keyword][i].toUpperCase()) !== -1) {
-            command = keyword;
+        if (synonyms.hasOwnProperty(keyword)) {
+          for (i = 0; i < synonyms[keyword].length; i += 1) {
+            if (text.indexOf(synonyms[keyword][i].toUpperCase()) !== -1) {
+              command = keyword;
 
-            break;
+              break;
+            }
           }
         }
       }

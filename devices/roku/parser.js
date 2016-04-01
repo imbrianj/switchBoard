@@ -30,9 +30,11 @@
 
     if (value) {
       for (i in value) {
-        tempMarkup = tempMarkup + template.split('{{APP_ID}}').join(value[i].id);
-        tempMarkup = tempMarkup.split('{{APP_IMG}}').join(value[i].cache);
-        tempMarkup = tempMarkup.split('{{APP_NAME}}').join(value[i].name);
+        if (value.hasOwnProperty(i)) {
+          tempMarkup = tempMarkup + template.split('{{APP_ID}}').join(value[i].id);
+          tempMarkup = tempMarkup.split('{{APP_IMG}}').join(value[i].cache);
+          tempMarkup = tempMarkup.split('{{APP_NAME}}').join(value[i].name);
+        }
       }
     }
 

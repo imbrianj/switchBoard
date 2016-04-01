@@ -63,12 +63,14 @@
 
     if (value.comments) {
       for (comment in value.comments) {
-        time = displayTime(value.comments[comment].time);
+        if (value.comments.hasOwnProperty(comment)) {
+          time = displayTime(value.comments[comment].time);
 
-        commentsMarkup = commentsMarkup + templateComment.split('{{TIME}}').join(time);
-        commentsMarkup = commentsMarkup.split('{{CODE}}').join(value.comments[comment].code);
-        commentsMarkup = commentsMarkup.split('{{NAME}}').join(value.comments[comment].name);
-        commentsMarkup = commentsMarkup.split('{{COMMENT}}').join(value.comments[comment].text);
+          commentsMarkup = commentsMarkup + templateComment.split('{{TIME}}').join(time);
+          commentsMarkup = commentsMarkup.split('{{CODE}}').join(value.comments[comment].code);
+          commentsMarkup = commentsMarkup.split('{{NAME}}').join(value.comments[comment].name);
+          commentsMarkup = commentsMarkup.split('{{COMMENT}}').join(value.comments[comment].text);
+        }
       }
     }
 

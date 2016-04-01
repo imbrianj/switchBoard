@@ -141,11 +141,13 @@
       markup = markup.replace('{{WEATHER_SUNSET}}', value.sunset);
 
       for (i in value.forecast) {
-        tempMarkup = tempMarkup + template.split('{{WEATHER_ICON}}').join(translateCode(value.forecast[i].code));
-        tempMarkup = tempMarkup.split('{{WEATHER_DAY}}').join(value.forecast[i].day + ':');
-        tempMarkup = tempMarkup.split('{{WEATHER_TEXT}}').join(value.forecast[i].text);
-        tempMarkup = tempMarkup.split('{{WEATHER_HIGH}}').join(value.forecast[i].high + '&deg;');
-        tempMarkup = tempMarkup.split('{{WEATHER_LOW}}').join(value.forecast[i].low + '&deg;');
+        if (value.forecast.hasOwnProperty(i)) {
+          tempMarkup = tempMarkup + template.split('{{WEATHER_ICON}}').join(translateCode(value.forecast[i].code));
+          tempMarkup = tempMarkup.split('{{WEATHER_DAY}}').join(value.forecast[i].day + ':');
+          tempMarkup = tempMarkup.split('{{WEATHER_TEXT}}').join(value.forecast[i].text);
+          tempMarkup = tempMarkup.split('{{WEATHER_HIGH}}').join(value.forecast[i].high + '&deg;');
+          tempMarkup = tempMarkup.split('{{WEATHER_LOW}}').join(value.forecast[i].low + '&deg;');
+        }
       }
     }
 

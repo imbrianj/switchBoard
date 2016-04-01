@@ -53,15 +53,17 @@ module.exports = (function () {
       for (device in controllers) {
         if (device !== 'config') {
           for (generic in genericTypes) {
-            if (!notUnique[generic]) {
-              if (genericTypes[generic].indexOf(controllers[device].config.typeClass) !== -1) {
-                if (unique[generic.toUpperCase()]) {
-                  notUnique[generic] = true;
-                  delete unique[generic.toUpperCase()];
-                }
+            if (genericTypes.hasOwnProperty(generic)) {
+              if (!notUnique[generic]) {
+                if (genericTypes[generic].indexOf(controllers[device].config.typeClass) !== -1) {
+                  if (unique[generic.toUpperCase()]) {
+                    notUnique[generic] = true;
+                    delete unique[generic.toUpperCase()];
+                  }
 
-                else {
-                  unique[generic.toUpperCase()] = device;
+                  else {
+                    unique[generic.toUpperCase()] = device;
+                  }
                 }
               }
             }
@@ -94,8 +96,10 @@ module.exports = (function () {
             subdevices[device] = { subDevices : [] };
 
             for (subdevice in currentState.value.devices) {
-              subdevices[device].subDevices[i] = currentState.value.devices[subdevice].label;
-              i += 1;
+              if (currentState.value.devices.hasOwnProperty(subdevice)) {
+                subdevices[device].subDevices[i] = currentState.value.devices[subdevice].label;
+                i += 1;
+              }
             }
           }
         }

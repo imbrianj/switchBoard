@@ -46,24 +46,26 @@ module.exports = (function () {
 
       if (values.protect) {
         for (subDevice in values.protect) {
-          if (values.protect[subDevice].smoke !== 'ok') {
-            tempMessage = translate.translate('{{i18n_SMOKE_DETECTED}}', 'nest', controllers.config.language).replace('{{LABEL}}', values.protect[subDevice].label);
+          if (values.protect.hasOwnProperty(subDevice)) {
+            if (values.protect[subDevice].smoke !== 'ok') {
+              tempMessage = translate.translate('{{i18n_SMOKE_DETECTED}}', 'nest', controllers.config.language).replace('{{LABEL}}', values.protect[subDevice].label);
 
-            if (message) {
-              message = message + ' ';
+              if (message) {
+                message = message + ' ';
+              }
+
+              message = message + tempMessage;
             }
 
-            message = message + tempMessage;
-          }
+            if (values.protect[subDevice].co !== 'ok') {
+              tempMessage = translate.translate('{{i18n_CO_DETECTED}}', 'nest', controllers.config.language).replace('{{LABEL}}', values.protect[subDevice].label);
 
-          if (values.protect[subDevice].co !== 'ok') {
-            tempMessage = translate.translate('{{i18n_CO_DETECTED}}', 'nest', controllers.config.language).replace('{{LABEL}}', values.protect[subDevice].label);
+              if (message) {
+                message = message + ' ';
+              }
 
-            if (message) {
-              message = message + ' ';
+              message = message + tempMessage;
             }
-
-            message = message + tempMessage;
           }
         }
 
@@ -76,7 +78,9 @@ module.exports = (function () {
             rawMacro = config.macro.split(';');
 
             for (macro in rawMacro) {
-              runCommand.macroCommands(rawMacro[macro]);
+              if (rawMacro.hasOwnProperty(macro)) {
+                runCommand.macroCommands(rawMacro[macro]);
+              }
             }
           }
         }

@@ -109,8 +109,10 @@ module.exports = (function () {
           i;
 
       for (i in stocksState.value) {
-        hasData = true;
-        break;
+        if (stocksState.value.hasOwnProperty(i)) {
+          hasData = true;
+          break;
+        }
       }
 
       stocks.deviceId = config.device.deviceId;
@@ -148,16 +150,18 @@ module.exports = (function () {
 
                         if (data && data.query && data.query.results && data.query.results.quote) {
                           for (i in data.query.results.quote) {
-                            stock = data.query.results.quote[i];
+                            if (data.query.results.quote.hasOwnProperty(i)) {
+                              stock = data.query.results.quote[i];
 
-                            stockData[util.encodeName(stock.symbol)] = { 'name'             : util.sanitize(stock.symbol),
-                                                                         'price'            : util.sanitize(stock.LastTradePriceOnly),
-                                                                         'dayHigh'          : util.sanitize(stock.DaysHigh),
-                                                                         'dayLow'           : util.sanitize(stock.DaysLow),
-                                                                         'yearHigh'         : util.sanitize(stock.YearHigh),
-                                                                         'yearLow'          : util.sanitize(stock.YearLow),
-                                                                         'dayChangePercent' : util.sanitize(stock.ChangeinPercent),
-                                                                         'dayChangeValue'   : util.sanitize(stock.Change) };
+                              stockData[util.encodeName(stock.symbol)] = { 'name'             : util.sanitize(stock.symbol),
+                                                                           'price'            : util.sanitize(stock.LastTradePriceOnly),
+                                                                           'dayHigh'          : util.sanitize(stock.DaysHigh),
+                                                                           'dayLow'           : util.sanitize(stock.DaysLow),
+                                                                           'yearHigh'         : util.sanitize(stock.YearHigh),
+                                                                           'yearLow'          : util.sanitize(stock.YearLow),
+                                                                           'dayChangePercent' : util.sanitize(stock.ChangeinPercent),
+                                                                           'dayChangeValue'   : util.sanitize(stock.Change) };
+                            }
                           }
                         }
                       }

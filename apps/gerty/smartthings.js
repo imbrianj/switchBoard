@@ -57,23 +57,25 @@ module.exports = (function () {
         }
 
         for (deviceId in state.value.devices) {
-          device = state.value.devices[deviceId];
+          if (state.value.devices.hasOwnProperty(deviceId)) {
+            device = state.value.devices[deviceId];
 
-          if ((device.peripheral) && (device.peripheral.temp)) {
-            temp  += parseInt(device.peripheral.temp, 10);
-            temps += 1;
-          }
-
-          if (device.type === 'presence') {
-            if (device.state === 'on') {
-              present += 5;
+            if ((device.peripheral) && (device.peripheral.temp)) {
+              temp  += parseInt(device.peripheral.temp, 10);
+              temps += 1;
             }
 
-            else {
-              present -= 5;
-            }
+            if (device.type === 'presence') {
+              if (device.state === 'on') {
+                present += 5;
+              }
 
-            presence += 1;
+              else {
+                present -= 5;
+              }
+
+              presence += 1;
+            }
           }
         }
       }

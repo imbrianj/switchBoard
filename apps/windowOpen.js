@@ -80,10 +80,12 @@ module.exports = (function () {
 
             if (currentDevice.value) {
               for (subDeviceId in currentDevice.value.devices) {
-                subDevice = currentDevice.value.devices[subDeviceId];
+                if (currentDevice.value.devices.hasOwnProperty(subDeviceId)) {
+                  subDevice = currentDevice.value.devices[subDeviceId];
 
-                if ((config.thermostat.indexOf(subDevice.label) !== -1) && (subDevice.type === 'thermostat') && (subDevice.state !== 'off') && (currentDevice.state !== 'err')) {
-                  status.thermostat.push({ label : subDevice.label, state : subDevice.state });
+                  if ((config.thermostat.indexOf(subDevice.label) !== -1) && (subDevice.type === 'thermostat') && (subDevice.state !== 'off') && (currentDevice.state !== 'err')) {
+                    status.thermostat.push({ label : subDevice.label, state : subDevice.state });
+                  }
                 }
               }
             }
@@ -94,10 +96,12 @@ module.exports = (function () {
 
             if (currentDevice.value) {
               for (subDeviceId in currentDevice.value.devices) {
-                subDevice = currentDevice.value.devices[subDeviceId];
+                if (currentDevice.value.devices.hasOwnProperty(subDeviceId)) {
+                  subDevice = currentDevice.value.devices[subDeviceId];
 
-                if ((config.contact.indexOf(subDevice.label) !== -1) && (subDevice.type === 'contact') && (subDevice.state === 'on')) {
-                  status.contact.push(subDevice.label);
+                  if ((config.contact.indexOf(subDevice.label) !== -1) && (subDevice.type === 'contact') && (subDevice.state === 'on')) {
+                    status.contact.push(subDevice.label);
+                  }
                 }
               }
             }

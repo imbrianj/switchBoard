@@ -81,17 +81,19 @@ module.exports = (function () {
       // You're an RSS feed.
       if (reply.rss) {
         for (i in reply.rss.channel[0].item) {
-          article = reply.rss.channel[0].item[i];
+          if (reply.rss.channel[0].item.hasOwnProperty(i)) {
+            article = reply.rss.channel[0].item[i];
 
-          rssData[j] = { 'title'       : util.sanitize(article.title[0]),
-                         'url'         : util.sanitize(article.link[0]),
-                         'description' : util.sanitize(article.description[0]),
-                         'text'        : util.sanitize(article['content:encoded'][0]) };
+            rssData[j] = { 'title'       : util.sanitize(article.title[0]),
+                           'url'         : util.sanitize(article.link[0]),
+                           'description' : util.sanitize(article.description[0]),
+                           'text'        : util.sanitize(article['content:encoded'][0]) };
 
-          j += 1;
+            j += 1;
 
-          if (j >= maxCount) {
-            break;
+            if (j >= maxCount) {
+              break;
+            }
           }
         }
       }

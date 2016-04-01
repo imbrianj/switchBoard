@@ -299,7 +299,9 @@ SB.spec = (function () {
 
         else if (typeof message === 'object') {
           for (device in message) {
-            break;
+            if (message.hasOwnProperty(device)) {
+              break;
+            }
           }
 
           // State objects have specific deviceIds associated.
@@ -307,7 +309,9 @@ SB.spec = (function () {
             SB.log('Received', 'State', 'success');
 
             for (device in message) {
-              SB.spec.updateTemplate(message[device]);
+              if (message.hasOwnProperty(device)) {
+                SB.spec.updateTemplate(message[device]);
+              }
             }
           }
 
@@ -390,7 +394,9 @@ SB.spec = (function () {
               }, 1000);
 
               for (device in state) {
-                SB.spec.updateTemplate(state[device]);
+                if (state.hasOwnProperty(device)) {
+                  SB.spec.updateTemplate(state[device]);
+                }
               }
             }
 
@@ -1009,7 +1015,9 @@ SB.spec = (function () {
         state = SB.decode(state);
 
         for (device in state) {
-          SB.spec.updateTemplate(state[device]);
+          if (state.hasOwnProperty(device)) {
+            SB.spec.updateTemplate(state[device]);
+          }
         }
       }
 

@@ -86,7 +86,9 @@ module.exports = (function () {
         }
 
         for (macro in rawMacro) {
-          runCommand.macroCommands(rawMacro[macro]);
+          if (rawMacro.hasOwnProperty(macro)) {
+            runCommand.macroCommands(rawMacro[macro]);
+          }
         }
       }
     }

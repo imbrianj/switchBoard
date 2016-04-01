@@ -155,45 +155,51 @@ module.exports = (function () {
 
       // A "Sport" is like "basketball", "hockey", etc.
       for (sportKey in sports) {
-        sport = sports[sportKey];
+        if (sports.hasOwnProperty(sportKey)) {
+          sport = sports[sportKey];
 
-        // A "League" is like "NBA", "NHL", etc.
-        for (leagueKey in sport.leagues) {
-          league = sport.leagues[leagueKey];
-          games  = [];
+          // A "League" is like "NBA", "NHL", etc.
+          for (leagueKey in sport.leagues) {
+            if (sport.leagues.hasOwnProperty(leagueKey)) {
+              league = sport.leagues[leagueKey];
+              games  = [];
 
-          // An "Event" is a normal sports game.
-          for (gameKey in league.events) {
-            game = league.events[gameKey];
+              // An "Event" is a normal sports game.
+              for (gameKey in league.events) {
+                if (league.events.hasOwnProperty(gameKey)) {
+                  game = league.events[gameKey];
 
-            games.push({
-              // It looks like "Home" is always the first
-              // element in the competitors array.
-              home     : {
-                title  : util.sanitize(game.competitors[0].name),
-                score  : util.sanitize(game.competitors[0].score),
-                winner : util.sanitize(game.competitors[0].winner),
-                image  : this.getImage(league.abbreviation, game.competitors[0], title, theme)
-              },
-              away : {
-                title  : util.sanitize(game.competitors[1].name),
-                score  : util.sanitize(game.competitors[1].score),
-                winner : util.sanitize(game.competitors[1].winner),
-                image  : this.getImage(league.abbreviation, game.competitors[1], title, theme)
-              },
-              time     : new Date(util.sanitize(game.date)).getTime(),
-              summary  : util.sanitize(game.summary),
-              status   : this.getStatus(game.status),
-              location : util.sanitize(game.location),
-              url      : util.sanitize(game.link)
-            });
+                  games.push({
+                    // It looks like "Home" is always the first
+                    // element in the competitors array.
+                    home     : {
+                      title  : util.sanitize(game.competitors[0].name),
+                      score  : util.sanitize(game.competitors[0].score),
+                      winner : util.sanitize(game.competitors[0].winner),
+                      image  : this.getImage(league.abbreviation, game.competitors[0], title, theme)
+                    },
+                    away : {
+                      title  : util.sanitize(game.competitors[1].name),
+                      score  : util.sanitize(game.competitors[1].score),
+                      winner : util.sanitize(game.competitors[1].winner),
+                      image  : this.getImage(league.abbreviation, game.competitors[1], title, theme)
+                    },
+                    time     : new Date(util.sanitize(game.date)).getTime(),
+                    summary  : util.sanitize(game.summary),
+                    status   : this.getStatus(game.status),
+                    location : util.sanitize(game.location),
+                    url      : util.sanitize(game.link)
+                  });
+                }
+              }
+
+              sportsData[util.encodeName(league.abbreviation)] = {
+                name  : util.sanitize(league.shortName),
+                title : util.sanitize(league.name),
+                games : games
+              };
+            }
           }
-
-          sportsData[util.encodeName(league.abbreviation)] = {
-            name  : util.sanitize(league.shortName),
-            title : util.sanitize(league.name),
-            games : games
-          };
         }
       }
 

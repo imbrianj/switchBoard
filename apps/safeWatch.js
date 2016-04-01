@@ -32,7 +32,7 @@ module.exports = (function () {
   var TempNotified = false;
 
   return {
-    version : 20160330,
+    version : 20160331,
 
     safeWatch : function (device, command, controllers, values, config) {
       var notify,
@@ -62,14 +62,15 @@ module.exports = (function () {
 
             return found;
           },
-          isNotPresent = function (devices, presence) {
+          isPresent = function (devices, presence) {
             var current,
                 value = false;
 
             for (current in devices) {
-              if ((devices[current].type === 'presence') && (devices[current].state === 'off')) {
+              if ((devices[current].type === 'presence') && (devices[current].state === 'on')) {
                 if (presence.indexOf(devices[current].label !== -1)) {
                   value = true;
+                  break;
                 }
               }
             }
@@ -112,7 +113,7 @@ module.exports = (function () {
         smartThingsState = deviceState.getDeviceState(device);
 
         if ((smartThingsState) && (smartThingsState.value) && (smartThingsState.value.devices)) {
-          if (isNotPresent(smartThingsState.value.devices, config.presence)) {
+          if (!isPresent(smartThingsState.value.devices, config.presence)) {
             notify    = require(__dirname + '/../lib/notify');
             translate = require(__dirname + '/../lib/translate');
 

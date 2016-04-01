@@ -50,24 +50,26 @@ module.exports = (function () {
         }
 
         for (deviceId in state.value.devices) {
-          device = state.value.devices[deviceId];
+          if (state.value.devices.hasOwnProperty(deviceId)) {
+            device = state.value.devices[deviceId];
 
-          if (device.temp) {
-            temp  += device.temp;
-            temps += 1;
-          }
-
-          if (device.type === 'protect') {
-            if (device.battery !== 'ok') {
-              comfortable -= 3;
+            if (device.temp) {
+              temp  += device.temp;
+              temps += 1;
             }
 
-            if (device.co !== 'ok') {
-              scared -= 10;
-            }
+            if (device.type === 'protect') {
+              if (device.battery !== 'ok') {
+                comfortable -= 3;
+              }
 
-            if (device.smoke !== 'ok') {
-              scared -= 10;
+              if (device.co !== 'ok') {
+                scared -= 10;
+              }
+
+              if (device.smoke !== 'ok') {
+                scared -= 10;
+              }
             }
           }
         }

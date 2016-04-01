@@ -107,27 +107,33 @@
       // You want to display Wemo devices in groups.
       if (value.groups) {
         for (i in value.groups) {
-          tempMarkup      = tempMarkup + templateGroup;
-          subDeviceMarkup = '';
+          if (value.groups.hasOwnProperty(i)) {
+            tempMarkup      = tempMarkup + templateGroup;
+            subDeviceMarkup = '';
 
-          for (j in value.groups[i]) {
-            subDevice = findSubDevice(value.groups[i][j], value.devices);
+            for (j in value.groups[i]) {
+              if (value.groups[i].hasOwnProperty(j)) {
+                subDevice = findSubDevice(value.groups[i][j], value.devices);
 
-            if (subDevice) {
-              subDeviceMarkup = subDeviceMarkup + getDeviceMarkup(subDevice);
+                if (subDevice) {
+                  subDeviceMarkup = subDeviceMarkup + getDeviceMarkup(subDevice);
+                }
+              }
             }
-          }
 
-          tempMarkup = tempMarkup.split('{{GROUP_CLASS}}').join(encodeName(i));
-          tempMarkup = tempMarkup.split('{{GROUP_TITLE}}').join(i);
-          tempMarkup = tempMarkup.split('{{SUB_DEVICE_LIST}}').join(subDeviceMarkup);
+            tempMarkup = tempMarkup.split('{{GROUP_CLASS}}').join(encodeName(i));
+            tempMarkup = tempMarkup.split('{{GROUP_TITLE}}').join(i);
+            tempMarkup = tempMarkup.split('{{SUB_DEVICE_LIST}}').join(subDeviceMarkup);
+          }
         }
       }
 
       // Otherwise, you want to show them in a list.
       else {
         for (i in value.devices) {
-          tempMarkup = tempMarkup + getDeviceMarkup(value.devices[i]);
+          if (value.devices.hasOwnProperty(i)) {
+            tempMarkup = tempMarkup + getDeviceMarkup(value.devices[i]);
+          }
         }
       }
 

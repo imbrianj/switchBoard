@@ -30,8 +30,10 @@
 
     if (value) {
       for (i in value) {
-        tempMarkup = tempMarkup + template.split('{{CAM_IMG}}').join(value[i].image);
-        tempMarkup = tempMarkup.split('{{CAM_NAME}}').join(value[i].title);
+        if (value.hasOwnProperty(i)) {
+          tempMarkup = tempMarkup + template.split('{{CAM_IMG}}').join(value[i].image);
+          tempMarkup = tempMarkup.split('{{CAM_NAME}}').join(value[i].title);
+        }
       }
     }
 

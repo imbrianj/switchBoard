@@ -206,9 +206,11 @@ module.exports = (function () {
 
         if (response) {
           for (i in response.structure) {
-            nest.structure = i;
-            nest.presence  = response.structure[i].away === false ? 'on' : 'off';
-            break;
+            if (response.structure.hasOwnProperty(i)) {
+              nest.structure = i;
+              nest.presence  = response.structure[i].away === false ? 'on' : 'off';
+              break;
+            }
           }
 
           // "topaz" contains only smoke detectors.
@@ -266,12 +268,14 @@ module.exports = (function () {
           i         = 0;
 
       for (i in subDevices) {
-        subDevice = subDevices[i];
+        if (subDevices.hasOwnProperty(i)) {
+          subDevice = subDevices[i];
 
-        // Thermostat is the only interactive type, so we'll assume that's what
-        // you're looking for.
-        if ((subDevice.label === subDeviceLabel) && (subDevice.type === 'thermostat')) {
-          collected.push(subDevice);
+          // Thermostat is the only interactive type, so we'll assume that's what
+          // you're looking for.
+          if ((subDevice.label === subDeviceLabel) && (subDevice.type === 'thermostat')) {
+            collected.push(subDevice);
+          }
         }
       }
 

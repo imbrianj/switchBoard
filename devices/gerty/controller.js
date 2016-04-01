@@ -207,7 +207,9 @@ module.exports = (function () {
 
       if (text) {
         for (term in correctionHash) {
-          text = text.split(term).join(correctionHash[term]);
+          if (correctionHash.hasOwnProperty(term)) {
+            text = text.split(term).join(correctionHash[term]);
+          }
         }
       }
 

@@ -71,26 +71,30 @@ module.exports = (function () {
       if ((now < delay + this.lastEvents.presence) && (now < delay + this.lastEvents.open)) {
         if (config.macro) {
           for (macro in rawMacro) {
-            runCommand.macroCommands(rawMacro[macro]);
+            if (rawMacro.hasOwnProperty(macro)) {
+              runCommand.macroCommands(rawMacro[macro]);
+            }
           }
         }
 
         for (deviceId in controllers) {
-          state = deviceState.getDeviceState(deviceId);
+          if (controllers.hasOwnProperty(deviceId)) {
+            state = deviceState.getDeviceState(deviceId);
 
-          if (controllers[deviceId].config) {
-            switch (controllers[deviceId].config.typeClass) {
-              case 'smartthings'     :
-              case 'wemo'            :
-              case 'raspberryRemote' :
-                currentDeviceState = deviceState.getDeviceState(deviceId);
-              break;
-            }
+            if (controllers[deviceId].config) {
+              switch (controllers[deviceId].config.typeClass) {
+                case 'smartthings'     :
+                case 'wemo'            :
+                case 'raspberryRemote' :
+                  currentDeviceState = deviceState.getDeviceState(deviceId);
+                break;
+              }
 
-            if ((currentDeviceState.value) && (currentDeviceState.value.devices)) {
-              for (subdevice in currentDeviceState.value.devices) {
-                if (config.action.indexOf(currentDeviceState.value.devices[subdevice].label) !== -1) {
-                  runCommand.runCommand(deviceId, 'subdevice-on-' + currentDeviceState.value.devices[subdevice].label);
+              if ((currentDeviceState.value) && (currentDeviceState.value.devices)) {
+                for (subdevice in currentDeviceState.value.devices) {
+                  if (config.action.indexOf(currentDeviceState.value.devices[subdevice].label) !== -1) {
+                    runCommand.runCommand(deviceId, 'subdevice-on-' + currentDeviceState.value.devices[subdevice].label);
+                  }
                 }
               }
             }
