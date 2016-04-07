@@ -6,7 +6,6 @@
   "contributors": [
     "Akshay Patel"
   ],
-  "private": true,
   "repository": {
     "type": "git",
     "url": "git@github.com:imbrianj/switchBoard.git"
