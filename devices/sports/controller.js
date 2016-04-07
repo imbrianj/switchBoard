@@ -29,7 +29,7 @@ module.exports = (function () {
    * @fileoverview Basic sports information, from ESPN.
    */
   return {
-    version : 20160221,
+    version : 20160407,
 
     inputs  : ['list'],
 
@@ -151,7 +151,9 @@ module.exports = (function () {
           league,
           gameKey,
           games,
-          game;
+          game,
+          home,
+          away;
 
       // A "Sport" is like "basketball", "hockey", etc.
       for (sportKey in sports) {
@@ -168,28 +170,40 @@ module.exports = (function () {
               for (gameKey in league.events) {
                 if (league.events.hasOwnProperty(gameKey)) {
                   game = league.events[gameKey];
+                  home = {};
+                  away = {};
 
-                  games.push({
+                  if(game.competitors) {
                     // It looks like "Home" is always the first
                     // element in the competitors array.
-                    home     : {
-                      title  : util.sanitize(game.competitors[0].name),
-                      score  : util.sanitize(game.competitors[0].score),
-                      winner : util.sanitize(game.competitors[0].winner),
-                      image  : this.getImage(league.abbreviation, game.competitors[0], title, theme)
-                    },
-                    away : {
-                      title  : util.sanitize(game.competitors[1].name),
-                      score  : util.sanitize(game.competitors[1].score),
-                      winner : util.sanitize(game.competitors[1].winner),
-                      image  : this.getImage(league.abbreviation, game.competitors[1], title, theme)
-                    },
-                    time     : new Date(util.sanitize(game.date)).getTime(),
-                    summary  : util.sanitize(game.summary),
-                    status   : this.getStatus(game.status),
-                    location : util.sanitize(game.location),
-                    url      : util.sanitize(game.link)
-                  });
+                    if(game.competitors[0]) {
+                      home = {
+                        title  : util.sanitize(game.competitors[0].name),
+                        score  : util.sanitize(game.competitors[0].score),
+                        winner : util.sanitize(game.competitors[0].winner),
+                        image  : this.getImage(league.abbreviation, game.competitors[0], title, theme)
+                      };
+                    }
+
+                    if(game.competitors[1]) {
+                      away = {
+                        title  : util.sanitize(game.competitors[1].name),
+                        score  : util.sanitize(game.competitors[1].score),
+                        winner : util.sanitize(game.competitors[1].winner),
+                        image  : this.getImage(league.abbreviation, game.competitors[1], title, theme)
+                      };
+                    }
+
+                    games.push({
+                      home     : home,
+                      away     : away,
+                      time     : new Date(util.sanitize(game.date)).getTime(),
+                      summary  : util.sanitize(game.summary),
+                      status   : this.getStatus(game.status),
+                      location : util.sanitize(game.location),
+                      url      : util.sanitize(game.link)
+                    });
+                  }
                 }
               }
 

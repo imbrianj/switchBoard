@@ -1,7 +1,7 @@
 {
   "name": "SwitchBoard",
   "description": "Universal Remote Controller powered by Node.js",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Brian J.",
   "contributors": [
     "Akshay Patel"
