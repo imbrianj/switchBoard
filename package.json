@@ -1,7 +1,7 @@
 {
   "name": "SwitchBoard",
   "description": "Universal Remote Controller powered by Node.js",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "author": "Brian J.",
   "contributors": [
     "Akshay Patel"
@@ -16,7 +16,7 @@
     "switchBoard": "bin/switchBoard"
   },
   "engines": {
-    "node": ">=0.8.0"
+    "node": ">=0.9.0"
   },
   "preferGlobal": true,
   "dependencies": {
