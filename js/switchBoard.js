@@ -40,8 +40,8 @@ SB.spec = (function () {
     socket    : {},
 
     uiComponents : {
-      header : {},
-      body : {},
+      header    : {},
+      body      : {},
       indicator : {},
       templates : []
     },
@@ -110,7 +110,7 @@ SB.spec = (function () {
         if (deviceState === 'ok') {
           markup = markup.split('{{DEVICE_ACTIVE}}').join(SB.spec.strings.ACTIVE);
 
-          if (SB.hasClass(node,    'device-off')) {
+          if (SB.hasClass(node,   'device-off')) {
              SB.removeClass(node, 'device-off');
              SB.addClass(node,    'device-on');
              SB.putText(SB.getByTag('em', SB.getByTag('h1', node)[0])[0], SB.spec.strings.ACTIVE);
@@ -120,7 +120,7 @@ SB.spec = (function () {
         else {
           markup = markup.split('{{DEVICE_ACTIVE}}').join(SB.spec.strings.INACTIVE);
 
-          if (SB.hasClass(node,    'device-on')) {
+          if (SB.hasClass(node,   'device-on')) {
              SB.removeClass(node, 'device-on');
              SB.addClass(node,    'device-off');
              SB.putText(SB.getByTag('em', SB.getByTag('h1', node)[0])[0], SB.spec.strings.INACTIVE);

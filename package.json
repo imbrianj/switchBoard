@@ -19,14 +19,14 @@
   },
   "preferGlobal": true,
   "dependencies": {
-    "request": "~2.71.0",
+    "request": "~2.72.0",
     "xml2js": "~0.4.16",
     "websocket": "~1.0.22"
   },
   "devDependencies": {
     "grunt": "~1.0.1",
     "grunt-cli": "~1.2.0",
-    "grunt-contrib-concat": "~1.0.0",
+    "grunt-contrib-concat": "~1.0.1",
     "grunt-contrib-cssmin": "~1.0.1",
     "grunt-contrib-jshint": "~1.0.0",
     "grunt-contrib-nodeunit": "~1.0.0",

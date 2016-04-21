@@ -457,20 +457,20 @@ module.exports = (function () {
           WEB_BROWSER      : "Navegador"
         },
         smartthings : {
-          SMARTTHINGS    : "SmartThings",
-          ARRIVED        : "{{LABEL}} acabo de llegar",
-          AWAY           : "Por fuera",
-          DOOR_KNOCK     : "Alguien está en la {{LABEL}}",
-          HOME           : "En Casa",
-          LEFT           : "{{LABEL}} acabo de salir",
-          NIGHT          : "Noche",
-          NOBODY_HOME    : "Estatus por fuera - no hay nadie en casa",
+          SMARTTHINGS        : "SmartThings",
+          ARRIVED            : "{{LABEL}} acabo de llegar",
+          AWAY               : "Por fuera",
+          DOOR_KNOCK         : "Alguien está en la {{LABEL}}",
+          HOME               : "En Casa",
+          LEFT               : "{{LABEL}} acabo de salir",
+          NIGHT              : "Noche",
+          NOBODY_HOME        : "Estatus por fuera - no hay nadie en casa",
           SAFE_WATCH_CONTACT : "{{LABEL}} se abrió!",
           SAFE_WATCH_MOTION  : "{{LABEL}} detectó movimiento!",
           SAFE_WATCH_TEMP    : "{{LABEL}} tiene una temperatura de {{TEMP}}",
           SAFE_WATCH_VIBRATE : "{{LABEL}} detectó vibración!",
-          SOMEBODY_HOME  : "Estatus en casa - {{PEOPLE}} {{PLURAL}} en casa",
-          WATER_DETECTED : "¡{{LABEL}} detecto agua!"
+          SOMEBODY_HOME      : "Estatus en casa - {{PEOPLE}} {{PLURAL}} en casa",
+          WATER_DETECTED     : "¡{{LABEL}} detecto agua!"
         },
         sms : {
           SMS : "SMS"
