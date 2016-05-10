@@ -2,6 +2,7 @@
 [![Dependencies Status](https://david-dm.org/imbrianj/switchboard.svg)](https://david-dm.org/imbrianj/switchboard#info=dependencies)
 [![Dev Dependencies Status](https://david-dm.org/imbrianj/switchboard/dev-status.svg)](https://david-dm.org/imbrianj/switchboard#info=devDependencies)
 [![npm version](https://badge.fury.io/js/switchboard-automation.svg)](https://badge.fury.io/js/switchboard-automation)
+[![Known Vulnerabilities](https://snyk.io/test/npm/switchboard-automation/badge.svg)](https://snyk.io/test/npm/switchboard-automation)
 
 SwitchBoard
 ---

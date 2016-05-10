@@ -575,6 +575,10 @@ exports.config = {
   gerty : {
     typeClass      : 'gerty',
     title          : 'Gerty',
+    // Number of comments to remain visible in Gerty's chat log.
+    maxCount       : 250,
+    // The higher the number, the more likely he is to change emojis and act
+    // out.
     personality    : 80,
     // Gerty will only act on inputted text that addresses him based on his
     // given name.  This should be true if you intend to use the inputted text
@@ -596,10 +600,12 @@ exports.config = {
     names          : { '192.168.1.1'   : 'Brian\'s Phone',
                        '192.168.1.2'   : 'Brian\'s Computer' },
     apps           : { 'Gerty' : { id            : 'gerty',
-                                   macros        : { 'Watch A Movie' : 'ps3=PowerOn,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,Circle,sleep,sleep,sleep,sleep,Left;samsung=sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,HDMI4,sleep,RIGHT,sleep,RIGHT,sleep,RIGHT,sleep,RIGHT,sleep,RIGHT,sleep,DOWN,sleep,ENTER',
+                                   macros        : { 'Watch A Movie' : 'ps3=PowerOn;samsung=sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,HDMI4,sleep,RIGHT,sleep,RIGHT,sleep,RIGHT,sleep,RIGHT,sleep,RIGHT,sleep,DOWN,sleep,ENTER,sleep,RETURN,sleep,sleep,sleep,LEFT',
                                                      'Goodnight'     : 'smartthings=subdevice-mode-Night',
                                                      'Good Night'    : 'smartthings=subdevice-mode-Night',
                                                      'Goodbye'       : 'smartthings=subdevice-mode-Away;nest=Away',
+                                                     'Good Bye'      : 'smartthings=subdevice-mode-Away;nest=Away',
+                                                     'I\'m Back'     : 'smartthings=subdevice-mode-Home;nest=Home',
                                                      'Welcome Home'  : 'smartthings=subdevice-mode-Home;nest=Home' },
                                    controllerIds : ['samsung', 'roku', 'ps3', 'panasonic', 'lg', 'pioneer', 'denon', 'speech', 'stocks', 'weather', 'foscam', 'mp3', 'sms', 'pushover', 'smartthings', 'nest', 'switchBoardCI', 'xbmc', 'raspberryRemote', 'wemo', 'activeBuilding', 'clientMp3', 'clientNotify', 'clientSpeech'] } },
     disabled       : true
@@ -609,9 +615,8 @@ exports.config = {
    * Prints out basic debug info (uptime, memory usage, cpu load).
    */
   debug : {
-    typeClass      : 'debug',
-    title          : 'Debug',
-    disabled       : true,
-    disabledMarkup : true
+    typeClass : 'debug',
+    title     : 'Debug',
+    disabled  : true
   }
 };
