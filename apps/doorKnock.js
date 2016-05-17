@@ -31,13 +31,13 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20151012,
+    version : 20160516,
 
     lastEvents : { knock : 0, open : 0, close: 0 },
 
     doorKnock : function (device, command, controllers, values, config) {
       var now   = new Date().getTime(),
-          delay = config.delay || 5,
+          delay = (config.delay || 5) * 1000,
           that  = this;
 
       if (command === 'subdevice-state-vibrate-' + config.vibrate + '-on') {
@@ -61,8 +61,8 @@ module.exports = (function () {
               deviceId;
 
           if ((that.lastEvents.open <= that.lastEvents.close) &&
-              (Math.abs(that.lastEvents.knock - that.lastEvents.open)  > (config.delay * 1000)) &&
-              (Math.abs(that.lastEvents.knock - that.lastEvents.close) > (config.delay * 1000))) {
+              (Math.abs(that.lastEvents.knock - that.lastEvents.open)  > delay) &&
+              (Math.abs(that.lastEvents.knock - that.lastEvents.close) > delay)) {
             message = translate.translate('{{i18n_DOOR_KNOCK}}', 'smartthings', controllers.config.language).split('{{LABEL}}').join(config.contact);
 
             notify.notify(message, controllers, device);
@@ -73,7 +73,7 @@ module.exports = (function () {
               }
             }
           }
-        }, delay * 1000);
+        }, delay);
       }
     }
   };

@@ -45,93 +45,71 @@
       return message;
     };
 
-    // https://developer.yahoo.com/weather/#codes
+    // https://developer.yahoo.com/weather/documentation.html#codes
     translateCode = function (code) {
-      var icon = '';
+      var warning    = 'warning',  // Tropical Storm
+          lightning  = 'bolt',     // Thunderstorm
+          snow       = 'asterisk', // Snow
+          rain       = 'tint',     // Rain
+          smoke      = 'fire',     // Smoke
+          wind       = 'flag',     // Wind
+          cloud      = 'cloud',    // Cloudy
+          clearNight = 'moon-o',   // Clear Night
+          clearDay   = 'sun-o',    // Clear Day
+          codes = {
+            0  : warning,
+            1  : warning,
+            2  : warning,
+            3  : lightning,
+            4  : lightning,
+            5  : snow,
+            6  : snow,
+            7  : snow,
+            8  : snow,
+            9  : rain,
+            10 : rain,
+            11 : rain,
+            12 : rain,
+            13 : snow,
+            14 : snow,
+            15 : snow,
+            16 : snow,
+            17 : snow,
+            18 : snow,
+            19 : smoke,
+            20 : smoke,
+            21 : smoke,
+            22 : smoke,
+            23 : wind,
+            24 : wind,
+            25 : snow,
+            26 : cloud,
+            27 : cloud,
+            28 : cloud,
+            29 : cloud,
+            30 : cloud,
+            31 : clearNight,
+            32 : clearDay,
+            33 : clearNight,
+            34 : clearDay,
+            35 : snow,
+            36 : clearDay,
+            37 : lightning,
+            38 : lightning,
+            39 : lightning,
+            40 : rain,
+            41 : snow,
+            42 : snow,
+            43 : snow,
+            44 : cloud,
+            45 : lightning,
+            46 : snow,
+            47 : lightning
+          };
 
       code = parseInt(code, 10);
 
-      if (code <= 2) {
-        icon = 'warning';
-      }
-
-      else if (code <= 4) {
-        icon = 'bolt';
-      }
-
-      else if (code <= 8) {
-        icon = 'asterisk';
-      }
-
-      else if (code <= 12) {
-        icon = 'tint';
-      }
-
-      else if (code <= 18) {
-        icon = 'asterisk';
-      }
-
-      else if (code <= 22) {
-        icon = 'fire';
-      }
-
-      else if (code <= 24) {
-        icon = 'flag';
-      }
-
-      else if (code === 25 ||
-               code === 35) {
-        icon = 'asterisk';
-      }
-
-      else if (code <= 30) {
-        icon = 'cloud';
-      }
-
-      else if (code === 31 ||
-               code === 33) {
-        icon = 'moon-o';
-      }
-
-      else if (code === 32 ||
-               code === 34 ||
-               code === 36) {
-        icon = 'sun-o';
-      }
-
-      else if (code <= 39) {
-        icon = 'bolt';
-      }
-
-      else if (code === 40) {
-        icon = 'tint';
-      }
-
-      else if (code <= 43) {
-        icon = 'asterisk';
-      }
-
-      else if (code === 44) {
-        icon = 'cloud';
-      }
-
-      else if (code === 45) {
-        icon = 'bolt';
-      }
-
-      else if (code === 46) {
-        icon = 'asterisk';
-      }
-
-      else if (code === 47) {
-        icon = 'bolt';
-      }
-
-      else {
-        icon = 'question';
-      }
-
-      return icon;
+      return codes[code] || 'question';
     };
 
     if ((value) && (value.code)) {

@@ -396,7 +396,13 @@ exports.config = {
                                                contact       : ['Front Door'],
                                                action        : ['Hall Light'],
                                                delay         : 15,
-                                               macro         : '' }
+                                               macro         : '' },
+                       'Home Watch'        : { id            : 'homeWatch',
+                                               contact       : ['Front Door'],
+                                               motion        : ['Living Room Motion'],
+                                               secureModes   : ['Away'],
+                                               delay         : 15,
+                                               controllerIds : ['pushover', 'sms', 'clientSpeech', 'clientNotify', 'gerty'] }
                      },
     */
     className      : { Goblin : 'fa-female' },

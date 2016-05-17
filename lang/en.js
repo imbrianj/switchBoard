@@ -464,6 +464,7 @@ module.exports = (function () {
           AWAY               : "Away",
           DOOR_KNOCK         : "Someone is at the {{LABEL}}",
           HOME               : "Home",
+          HOME_WATCH         : "{{LABEL}} has been triggered!",
           LEFT               : "{{LABEL}} has just left",
           NIGHT              : "Night",
           NOBODY_HOME        : "Set to Away - nobody is home",
