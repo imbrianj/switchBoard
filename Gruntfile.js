@@ -191,5 +191,6 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.registerTask('default', ['update-version', 'concat', 'cssmin', 'jshint', 'nodeunit', 'uglify', 'translation', 'install-precommit']);
+  grunt.registerTask('test-suite', ['jshint', 'nodeunit', 'translation']);
+  grunt.registerTask('default',    ['update-version', 'concat', 'cssmin', 'jshint', 'nodeunit', 'uglify', 'translation', 'install-precommit']);
 };

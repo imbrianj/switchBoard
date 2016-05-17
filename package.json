@@ -35,6 +35,6 @@
     "nodeunit": "~0.9.1"
   },
   "scripts": {
-    "test": "grunt nodeunit"
+    "test": "grunt test-suite"
   }
 }
