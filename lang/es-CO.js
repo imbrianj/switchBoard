@@ -462,6 +462,7 @@ module.exports = (function () {
           AWAY               : "Por fuera",
           DOOR_KNOCK         : "Alguien está en la {{LABEL}}",
           HOME               : "En Casa",
+          HOME_WATCH         : "{{LABEL}} se prendió!",
           LEFT               : "{{LABEL}} acabo de salir",
           NIGHT              : "Noche",
           NOBODY_HOME        : "Estatus por fuera - no hay nadie en casa",
