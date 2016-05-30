@@ -390,6 +390,13 @@ header h1 a {
   font-weight: bold;
 }
 
+header h2#current {
+  height: 0;
+  left: -999em;
+  position: absolute;
+  width: 0;
+}
+
 header nav,
 header nav ul,
 header nav ul li {

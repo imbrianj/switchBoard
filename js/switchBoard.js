@@ -31,7 +31,7 @@ SB.spec = (function () {
   'use strict';
 
   return {
-    version : 20160314,
+    version : 20160530,
 
     state     : {},
     parsers   : {},
@@ -44,6 +44,17 @@ SB.spec = (function () {
       body      : {},
       indicator : {},
       templates : []
+    },
+
+    /**
+     * Updates the Aria tag to announce the currently active device.
+     */
+    ariaDevice : function () {
+      var newNav    = SB.getByClass('selected', SB.spec.uiComponents.header, 'li')[0],
+          ariaTitle = SB.getByTag('h2', SB.spec.uiComponents.header)[0],
+          ariaText  = SB.spec.strings.CURRENT.split('{{DEVICE}}').join(SB.getText(newNav));
+
+      SB.putText(ariaTitle, ariaText);
     },
 
     /**
@@ -71,6 +82,8 @@ SB.spec = (function () {
         SB.spec.sliderSetWidths();
 
         SB.spec.lazyUnLoad(selectContent);
+
+        SB.spec.ariaDevice();
       }
     },
 
@@ -988,7 +1001,8 @@ SB.spec = (function () {
       headerData = SB.spec.uiComponents.header.dataset;
       bodyData   = SB.spec.uiComponents.body.dataset;
 
-      SB.spec.strings = { CONNECTED    : headerData.stringConnected,
+      SB.spec.strings = { CURRENT      : headerData.stringCurrent,
+                          CONNECTED    : headerData.stringConnected,
                           CONNECTING   : headerData.stringConnecting,
                           DISCONNECTED : headerData.stringDisconnected,
                           ACTIVE       : bodyData.stringActive,
@@ -1037,6 +1051,7 @@ SB.spec = (function () {
       SB.spec.command();
       SB.spec.formInput();
       SB.spec.nav();
+      SB.spec.ariaDevice();
     }
   };
 }());
