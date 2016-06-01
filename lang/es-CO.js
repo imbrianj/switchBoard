@@ -44,6 +44,7 @@ module.exports = (function () {
           APPNAME      : "SwitchBoard",
           CONNECTED    : "Conectado",
           CONNECTING   : "Conectándonos",
+          CURRENT      : "Aparato Activo: {{DEVICE}}",
           DISCONNECTED : "Desconectado"
         },
         common : {
