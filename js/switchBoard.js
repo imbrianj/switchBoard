@@ -698,7 +698,7 @@ SB.spec = (function () {
     /**
      * Builds event handler to delegate click events for standard commands.
      */
-    command : function () {
+    command : function (demoMode) {
       var commandIssued    = null,
           commandIteration = 0,
           commandDelay     = 750,
@@ -729,7 +729,11 @@ SB.spec = (function () {
             var device = commandIssued;
 
             SB.vibrate();
-            SB.spec.sendTextInput(text, device, 'text');
+
+            if (!demoMode) {
+              SB.spec.sendTextInput(text, device, 'text');
+            }
+
             stopCommand();
           },
           findCommand      = function (e) {
@@ -754,7 +758,11 @@ SB.spec = (function () {
             if ((commandIssued) && (!interrupt)) {
               SB.vibrate();
 
-              if (SB.spec.socket) {
+              if (demoMode) {
+                SB.log('Issued', 'Demo Command', 'success');
+              }
+
+              else if (SB.spec.socket) {
                 if (SB.spec.checkConnection()) {
                   SB.log('Issued', 'Command', 'success');
                   SB.spec.socket.send(commandIssued);
@@ -948,13 +956,19 @@ SB.spec = (function () {
      * Builds event handler to delegate form submission events for text and
      * number inputs.
      */
-    formInput : function () {
+    formInput : function (demoMode) {
       SB.event.add(SB.spec.uiComponents.body, 'submit', function (e) {
         var elm = SB.getTarget(e);
 
         e.preventDefault();
 
-        SB.spec.sendInput(elm);
+        if (demoMode) {
+          SB.log('Issued', 'Demo Text Command', 'success');
+        }
+
+        else {
+          SB.spec.sendInput(elm);
+        }
       });
     },
 
@@ -987,7 +1001,8 @@ SB.spec = (function () {
      * Initialization for SB.  Executes the standard functions used.
      */
     init : function () {
-      var active    = SB.storage('selected'),
+      var demoMode  = false,
+          active    = SB.storage('selected'),
           templates = SB.storage('templates'),
           state     = SB.storage('state'),
           device,
@@ -1035,21 +1050,23 @@ SB.spec = (function () {
         }
       }
 
-      /* If we support WebSockets, we'll grab updates as they happen */
-      if ((typeof WebSocket === 'function') || (typeof WebSocket === 'object')) {
-        SB.spec.socketConnect(0);
-      }
+      if (!demoMode) {
+        /* If we support WebSockets, we'll grab updates as they happen */
+        if ((typeof WebSocket === 'function') || (typeof WebSocket === 'object')) {
+          SB.spec.socketConnect(0);
+        }
 
-      /* Otherwise, we'll poll for updates */
-      else {
-        SB.spec.statePoller();
+        /* Otherwise, we'll poll for updates */
+        else {
+          SB.spec.statePoller();
+        }
       }
 
       SB.spec.lazyLoad(document.body.className);
 
       SB.spec.buildSliders();
-      SB.spec.command();
-      SB.spec.formInput();
+      SB.spec.command(demoMode);
+      SB.spec.formInput(demoMode);
       SB.spec.nav();
       SB.spec.ariaDevice();
     }
