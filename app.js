@@ -51,7 +51,7 @@ for (arg in process.argv) {
     switch (process.argv[arg]) {
       case '-c' :
       case '--config' :
-        configFile = __dirname + '/' + process.argv[parseInt(arg, 10) + 1];
+        configFile = process.argv[parseInt(arg, 10) + 1];
       break;
     }
   }
@@ -109,6 +109,7 @@ fs.stat(configFile, function (err, data) {
 
   if (err) {
     console.log('\x1b[31mError\x1b[0m: No controllers found.  Is your config file setup correctly?');
+    process.exit(1);
   }
 
   if (data.isFile()) {
@@ -116,7 +117,7 @@ fs.stat(configFile, function (err, data) {
 
     controllers = loadController.loadController(settings.config);
 
-    if (settings.config.config.ssl.disabled !== true) {
+    if (settings.config.config.ssl && settings.config.config.ssl.disabled !== true) {
       try {
         key = fs.statSync(__dirname + '/cache/key.pem');
       }

@@ -163,7 +163,7 @@ module.exports = (function () {
                         if (data && data.query && data.query.results) {
                           city = data.query.results.channel;
 
-                          if (city.title.indexOf('Error') === -1) {
+                          if (city && city.title && city.title.indexOf('Error') === -1) {
                             errMessage  = null;
 
                             temp        = city.item.condition.temp;
