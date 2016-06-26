@@ -1717,6 +1717,33 @@ header .selected a {
   background-image: linear-gradient(transparent, rgba(0,0,0,.05) 40%, rgba(0,0,0,.1));
 }
 
+header nav li.screenSaver {
+  display: none;
+}
+
+.clientScreenSaver.device-off {
+  background: rgba(0, 0, 0, 0);
+  z-index: -1;
+}
+
+.clientScreenSaver {
+  background: rgba(0, 0, 0, 1);
+  bottom: 0;
+  display: block;
+  height: 100%;
+  left: 0;
+  margin: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  -moz-transition: background 5s ease-in-out, color 2s ease-in-out;
+  -o-transition: background 5s ease-in-out, color 2s ease-in-out;
+  -webkit-transition: background 5s ease-in-out, color 2s ease-in-out;
+  transition: background 5s ease-in-out, color 2s ease-in-out;
+  width: 100%;
+  z-index: 2;
+}
+
 @media (max-width: 650px) {
   header ul {
     clear: both;

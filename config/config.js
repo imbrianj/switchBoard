@@ -43,6 +43,16 @@ exports.config = {
     disabled  : false
   },
 
+  /*
+   * The name of the screensaver should remain "screenSaver" to work properly.
+   */
+  screenSaver : {
+    typeClass : 'clientScreenSaver',
+    title     : 'Screen Saver',
+    timeout   : 60,
+    disabled  : true
+  },
+
   clientMp3 : {
     typeClass      : 'clientMp3',
     title          : 'Client MP3',

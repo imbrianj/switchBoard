@@ -130,6 +130,9 @@ module.exports = (function () {
         clientNotify : {
           CLIENTNOTIFY : "Notificación de escritorio"
         },
+        clientScreenSaver : {
+          CLIENTSCREENSAVER : 'Salvapantallas'
+        },
         clientSpeech : {
           CLIENTSPEECH : "Síntesis de voz del cliente"
         },
