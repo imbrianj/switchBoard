@@ -1,5 +1,3 @@
-/*global document, window, console, SB */
-/*jslint white: true, evil: true */
 /*jshint -W020 */
 
 /**
@@ -33,7 +31,7 @@ SB.spec = (function () {
   'use strict';
 
   return {
-    version : 20150314,
+    version : 20160530,
 
     state     : {},
     parsers   : {},
@@ -42,10 +40,21 @@ SB.spec = (function () {
     socket    : {},
 
     uiComponents : {
-      header : {},
-      body : {},
+      header    : {},
+      body      : {},
       indicator : {},
       templates : []
+    },
+
+    /**
+     * Updates the Aria tag to announce the currently active device.
+     */
+    ariaDevice : function () {
+      var newNav    = SB.getByClass('selected', SB.spec.uiComponents.header, 'li')[0],
+          ariaTitle = SB.getByTag('h2', SB.spec.uiComponents.header)[0],
+          ariaText  = SB.spec.strings.CURRENT.split('{{DEVICE}}').join(SB.getText(newNav));
+
+      SB.putText(ariaTitle, ariaText);
     },
 
     /**
@@ -53,14 +62,13 @@ SB.spec = (function () {
      *
      * @param {String} selected Name of the new tab that should be selected.
      */
-    navChange : function(selected) {
+    navChange : function (selected) {
       var newNav        = SB.getByClass(selected, SB.spec.uiComponents.header, 'li')[0],
           newContent    = SB.get(selected),
           selectNav     = SB.getByClass('selected', SB.spec.uiComponents.header, 'li')[0],
-          selectContent = SB.getByClass('selected', SB.spec.uiComponents.body,   'section')[0],
-          slider;
+          selectContent = SB.getByClass('selected', SB.spec.uiComponents.body,   'section')[0];
 
-      if((newNav) && (!SB.hasClass(newNav, 'selected'))) {
+      if ((newNav) && (!SB.hasClass(newNav, 'selected'))) {
         SB.removeClass(selectNav,     'selected');
         SB.removeClass(selectContent, 'selected');
 
@@ -74,6 +82,8 @@ SB.spec = (function () {
         SB.spec.sliderSetWidths();
 
         SB.spec.lazyUnLoad(selectContent);
+
+        SB.spec.ariaDevice();
       }
     },
 
@@ -83,7 +93,7 @@ SB.spec = (function () {
      *
      * @param {Object} state State object of a changed controller.
      */
-    updateTemplate : function(state) {
+    updateTemplate : function (state) {
       var node        = SB.get(state.deviceId),
           parser      = SB.spec.parsers[state.typeClass],
           value       = state.value,
@@ -92,14 +102,13 @@ SB.spec = (function () {
           selected,
           markup,
           innerMarkup = document.createElement('div'),
-          oldMarkup,
-          i;
+          oldMarkup;
 
       SB.spec.state[state.deviceId] = state;
 
       SB.log('Updated', state.deviceId, 'success');
 
-      if(node) {
+      if (node) {
         markup       = SB.spec.uiComponents.templates[state.typeClass].markup;
         selected     = SB.hasClass(node, 'selected') ? ' selected' : '';
         oldMarkup    = node.cloneNode(true);
@@ -107,36 +116,38 @@ SB.spec = (function () {
         deviceHeader.parentNode.removeChild(deviceHeader);
         oldMarkup    = oldMarkup.innerHTML;
 
-        if(parser) {
+        if (parser) {
           markup = parser(state.deviceId, markup, deviceState, value, SB.spec.uiComponents.templates[state.typeClass].fragments);
         }
 
-        if(deviceState === 'ok') {
+        if (deviceState === 'ok') {
           markup = markup.split('{{DEVICE_ACTIVE}}').join(SB.spec.strings.ACTIVE);
 
-          if(SB.hasClass(node,   'device-off')) {
-            SB.removeClass(node, 'device-off');
-            SB.addClass(node,    'device-on');
-            SB.putText(SB.getByTag('em', SB.getByTag('h1', node)[0])[0], SB.spec.strings.ACTIVE);
+          if (SB.hasClass(node,   'device-off')) {
+             SB.removeClass(node, 'device-off');
+             SB.addClass(node,    'device-on');
+             SB.putText(SB.getByTag('em', SB.getByTag('h1', node)[0])[0], SB.spec.strings.ACTIVE);
           }
         }
 
         else {
           markup = markup.split('{{DEVICE_ACTIVE}}').join(SB.spec.strings.INACTIVE);
 
-          if(SB.hasClass(node,   'device-on')) {
-            SB.removeClass(node, 'device-on');
-            SB.addClass(node,    'device-off');
-            SB.putText(SB.getByTag('em', SB.getByTag('h1', node)[0])[0], SB.spec.strings.INACTIVE);
+          if (SB.hasClass(node,   'device-on')) {
+             SB.removeClass(node, 'device-on');
+             SB.addClass(node,    'device-off');
+             SB.putText(SB.getByTag('em', SB.getByTag('h1', node)[0])[0], SB.spec.strings.INACTIVE);
           }
         }
 
-        if((node) && (markup) && (state)) {
+        if ((node) && (markup) && (state)) {
+          SB.storage('state', SB.spec.state);
+
           markup = markup.split('{{DEVICE_ID}}').join(state.deviceId);
           markup = markup.split('{{DEVICE_TYPE}}').join(state.typeClass);
           markup = markup.split('{{DEVICE_SELECTED}}').join(selected);
 
-          if(state.state === 'ok') {
+          if (state.state === 'ok') {
             markup = markup.split('{{DEVICE_STATE}}').join(' device-on');
           }
 
@@ -144,7 +155,7 @@ SB.spec = (function () {
             markup = markup.split('{{DEVICE_STATE}}').join(' device-off');
           }
 
-          if(selected) {
+          if (selected) {
             markup = markup.split('{{LAZY_LOAD_IMAGE}}').join('src');
           }
 
@@ -153,14 +164,14 @@ SB.spec = (function () {
           }
         }
 
-        if(markup) {
+        if (markup) {
           innerMarkup.innerHTML = markup;
           innerMarkup = SB.getByTag('section', innerMarkup)[0];
           deviceHeader = SB.getByTag('h1', innerMarkup)[0];
           deviceHeader.parentNode.removeChild(deviceHeader);
 
-          if(innerMarkup.innerHTML !== oldMarkup) {
-            if(SB.getByClass('sliderBar', node, 'div')[0]) {
+          if (innerMarkup.innerHTML !== oldMarkup) {
+            if (SB.getByClass('sliderBar', node, 'div')[0]) {
               SB.event.removeAll(SB.getByClass('sliderBar', node, 'div')[0].getElementsByTagName('span')[0]);
 
               node.outerHTML = markup;
@@ -183,7 +194,7 @@ SB.spec = (function () {
     buildIndicator : function () {
       var indicator;
 
-      if(!SB.get('indicator')) {
+      if (!SB.get('indicator')) {
         indicator = document.createElement('span');
         indicator.id = 'indicator';
         SB.addClass(indicator, 'connecting');
@@ -200,7 +211,7 @@ SB.spec = (function () {
     checkConnection : function () {
       var connected = SB.spec.socket.readyState <= 1;
 
-      if(!connected) {
+      if (!connected) {
         SB.spec.socketConnect(0);
         connected = SB.spec.socket.readyState <= 1;
       }
@@ -218,16 +229,17 @@ SB.spec = (function () {
           message,
           error,
           close,
-          cleanup;
+          cleanup,
+          protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
 
-      if((!SB.spec.socket.readyState) || (SB.spec.socket.readyState === 3)) {
+      if ((!SB.spec.socket.readyState) || (SB.spec.socket.readyState === 3)) {
         SB.log('Connecting', 'WebSocket', 'info');
 
-//        SB.spec.socket = new WebSocket('ws://' + window.location.host, 'echo-protocol');
+        SB.spec.socket = new WebSocket(protocol + '://' + window.location.host, 'echo-protocol');
 
         i += 1;
 
-        reconnect = function() {
+        reconnect = function () {
           // If everyone gets booted at the same time, we want to make sure they
           // have some variance in their reconnection times.
           var delay = Math.round(Math.min(Math.max((i * (Math.random() * 15)), 10), 60));
@@ -236,13 +248,13 @@ SB.spec = (function () {
           SB.spec.uiComponents.indicator.className = 'disconnected';
           SB.putText(SB.spec.uiComponents.indicator, SB.spec.strings.DISCONNECTED);
 
-          setTimeout(function() {
+          setTimeout(function () {
             SB.spec.socketConnect(i);
           }, delay * 1000);
         };
       }
 
-      open = function(e) {
+      open = function () {
         var reconnected = SB.spec.uiComponents.indicator.className === 'disconnected' ? true : false;
 
         SB.spec.uiComponents.indicator.className = 'connected';
@@ -250,7 +262,7 @@ SB.spec = (function () {
 
         SB.log('Connected', 'WebSocket', 'success');
 
-        if(reconnected) {
+        if (reconnected) {
           SB.spec.socket.send('fetch state');
 
           SB.log('Reconnected', 'WebSocket', 'success');
@@ -259,22 +271,33 @@ SB.spec = (function () {
         SB.event.add(SB.spec.socket, 'close', close);
       };
 
-      message = function(e) {
+      message = function (e) {
         var message = SB.decode(e.data),
             device  = {},
             notification,
             notify;
 
-        if(typeof message.speech === 'string') {
-          if(message.speech) {
+        if (typeof message.speech === 'string') {
+          if (message.speech) {
+            SB.log(message.speech, 'Speech', 'success');
             SB.speak(message.speech, message.language, message.voice);
           }
         }
 
+        else if (typeof message.sound === 'string') {
+          SB.log(message.sound, 'Sound', 'success');
+          SB.sound.play('/mp3/' + message.sound + '.mp3');
+        }
+
+        else if (typeof message.vibrate === 'string') {
+          SB.log(message.vibrate, 'Vibrate', 'success');
+          SB.vibrate(message.vibrate * 100);
+        }
+
         // If you have a title, you're a Desktop Notification.
-        else if(typeof message.title === 'string') {
-          notify = function() {
-            if(message.deviceId) {
+        else if (typeof message.title === 'string') {
+          notify = function () {
+            if (message.deviceId) {
               SB.spec.navChange(message.deviceId);
             }
           };
@@ -283,30 +306,37 @@ SB.spec = (function () {
         }
 
         // If you have a deviceId, you're an update to a controller state.
-        else if(typeof message.deviceId === 'string') {
+        else if (typeof message.deviceId === 'string') {
           SB.spec.updateTemplate(message);
         }
 
-        else if(typeof message === 'object') {
-          for(device in message) break;
+        else if (typeof message === 'object') {
+          for (device in message) {
+            if (message.hasOwnProperty(device)) {
+              break;
+            }
+          }
 
           // State objects have specific deviceIds associated.
-          if((message[device]) && (message[device].deviceId)) {
+          if ((message[device]) && (message[device].deviceId)) {
             SB.log('Received', 'State', 'success');
 
-            for(device in message) {
-              SB.spec.updateTemplate(message[device]);
+            for (device in message) {
+              if (message.hasOwnProperty(device)) {
+                SB.spec.updateTemplate(message[device]);
+              }
             }
           }
 
           // Otherwise, you're grabbing the templates.
-          else if((message[device]) && (message[device].markup)) {
+          else if ((message[device]) && (message[device].markup)) {
             SB.spec.uiComponents.templates = message;
+            SB.storage('templates', SB.spec.uiComponents.templates);
           }
         }
       };
 
-      close = function(e) {
+      close = function () {
         SB.event.remove(SB.spec.socket, 'close', close);
 
         SB.log('Disconnected', 'WebSocket', 'error');
@@ -314,7 +344,7 @@ SB.spec = (function () {
         reconnect();
       };
 
-      error = function(e) {
+      error = function () {
         SB.event.remove(SB.spec.socket, 'error', close);
 
         SB.log('Error', 'WebSocket', 'error');
@@ -322,7 +352,7 @@ SB.spec = (function () {
         reconnect();
       };
 
-      cleanup = function() {
+      cleanup = function () {
         SB.event.remove(SB.spec.socket, 'open',    open);
         SB.event.remove(SB.spec.socket, 'message', message);
         SB.event.remove(SB.spec.socket, 'error',   error);
@@ -339,7 +369,7 @@ SB.spec = (function () {
      * If WebSockets are not available, we'll do an XHR poll for current State
      * data.
      */
-    statePoller : function() {
+    statePoller : function () {
       var ajaxRequest;
 
       SB.log('not supported - using polling', 'WebSockets', 'error');
@@ -351,13 +381,14 @@ SB.spec = (function () {
         method : 'GET',
         onComplete : function () {
           SB.spec.uiComponents.templates = SB.decode(ajaxRequest.response);
+          SB.storage('templates', SB.spec.uiComponents.templates);
         }
       };
 
-//      SB.ajax.request(ajaxRequest);
+      SB.ajax.request(ajaxRequest);
 
       // Set up our poller to continually grab device State.
-      setInterval(function() {
+      setInterval(function () {
         var pollRequest = {
           path   : '/state/',
           param  : 'ts=' + new Date().getTime(),
@@ -366,17 +397,19 @@ SB.spec = (function () {
             var state = SB.decode(pollRequest.response),
                 device;
 
-            if(state) {
+            if (state) {
               SB.spec.uiComponents.indicator.className = 'connected';
               SB.putText(SB.spec.uiComponents.indicator, SB.spec.strings.CONNECTED);
 
-              setTimeout(function() {
+              setTimeout(function () {
                 SB.spec.uiComponents.indicator.className = 'connecting';
                 SB.putText(SB.spec.uiComponents.indicator, SB.spec.strings.CONNECTIG);
               }, 1000);
 
-              for(device in state) {
-                SB.spec.updateTemplate(state[device]);
+              for (device in state) {
+                if (state.hasOwnProperty(device)) {
+                  SB.spec.updateTemplate(state[device]);
+                }
               }
             }
 
@@ -387,7 +420,7 @@ SB.spec = (function () {
           }
         };
 
-//        SB.ajax.request(pollRequest);
+        SB.ajax.request(pollRequest);
       }, 10000);
     },
 
@@ -396,19 +429,23 @@ SB.spec = (function () {
      *
      * @param {String} id ID of the DOM node we want to lazy load images in.
      */
-    lazyLoad : function(id) {
+    lazyLoad : function (id) {
       var container,
           images,
+          iframes,
+          elms,
           i = 0;
 
-      if(SB.get(id)) {
+      if (SB.get(id)) {
         container = SB.get(id);
 
-        images = SB.getByTag('img', container);
+        images  = Array.prototype.slice.call(SB.getByTag('img', container));
+        iframes = Array.prototype.slice.call(SB.getByTag('iframe', container));
+        elms    = images.concat(iframes);
 
-        for(i = 0; i < images.length; i += 1) {
-          if((images[i].getAttribute('data-src')) && (!images[i].src)) {
-            images[i].src = images[i].getAttribute('data-src');
+        for (i = 0; i < elms.length; i += 1) {
+          if ((elms[i].getAttribute('data-src')) && (!elms[i].src)) {
+            elms[i].src = elms[i].getAttribute('data-src');
           }
         }
       }
@@ -421,17 +458,21 @@ SB.spec = (function () {
      * @param {Object} elm DOM node that we want to remove image src
      *                  attributes from.
      */
-    lazyUnLoad : function(elm) {
+    lazyUnLoad : function (elm) {
       var images,
+          iframes,
+          elms,
           i = 0;
 
-      if(elm) {
-        images = SB.getByTag('img', elm);
+      if (elm) {
+        images  = Array.prototype.slice.call(SB.getByTag('img', elm));
+        iframes = Array.prototype.slice.call(SB.getByTag('iframe', elm));
+        elms    = images.concat(iframes);
 
-        for(i = 0; i < images.length; i += 1) {
-          if((images[i].getAttribute('src')) && (SB.hasClass(images[i], 'streaming'))) {
-            images[i].setAttribute('data-src', images[i].src);
-            images[i].removeAttribute('src');
+        for (i = 0; i < elms.length; i += 1) {
+          if ((elms[i].getAttribute('src')) && ((SB.hasClass(elms[i], 'streaming')) || (elms[i].tagName === 'IFRAME'))) {
+            elms[i].setAttribute('data-src', elms[i].src);
+            elms[i].removeAttribute('src');
           }
         }
       }
@@ -440,20 +481,20 @@ SB.spec = (function () {
     /**
      * Simply find all text fields inside any controller.
      */
-    findTextInputs : function() {
+    findTextInputs : function () {
       return SB.spec.uiComponents.body.getElementsByTagName('input');
     },
 
     /**
      * Find all number input fields inside any controller.
      */
-    findNumberInputs : function() {
+    findNumberInputs : function () {
       var textInputs   = SB.spec.findTextInputs(),
           numberInputs = [],
           i;
 
-      for(i = 0; i < textInputs.length; i += 1) {
-        if(textInputs[i].type === 'number') {
+      for (i = 0; i < textInputs.length; i += 1) {
+        if (textInputs[i].type === 'number') {
           numberInputs.push(textInputs[i]);
         }
       }
@@ -469,14 +510,14 @@ SB.spec = (function () {
      * @param {Object} numberInput DOM node of the number input form element.
      * @return {Integer} Pixel offset of the slider's "left" value.
      */
-    findSliderPosition : function(slider, numberInput) {
+    findSliderPosition : function (slider, numberInput) {
       var sliderWidth,
           min,
           max,
           currentVal,
           offset = 0;
 
-      if(numberInput) {
+      if (numberInput) {
         sliderWidth = slider.parentNode.offsetWidth - slider.offsetWidth;
         min         = parseInt(numberInput.min, 10);
         max         = parseInt(numberInput.max, 10);
@@ -498,7 +539,7 @@ SB.spec = (function () {
      *                  method's callback.
      * @return {Integer} Numerical value represented by the slider position.
      */
-    findSliderValue : function(slider, drag) {
+    findSliderValue : function (slider, drag) {
       var numberInput = slider.parentNode.previousSibling,
           sliderWidth = slider.parentNode.offsetWidth - slider.offsetWidth,
           min         = parseInt(numberInput.min, 10),
@@ -517,34 +558,34 @@ SB.spec = (function () {
      *                  parent ID is present, sliders for all controllers will
      *                  be built.
      */
-    buildSliders : function(id) {
+    buildSliders : function (id) {
       var numberInputs = SB.spec.findNumberInputs(),
           buildSliderBar,
           changeForm,
           i;
 
-      buildSliderBar = function(slider, numberInput) {
+      buildSliderBar = function (slider, numberInput) {
         slider.style.left = SB.spec.findSliderPosition(slider, numberInput) + 'px';
 
         SB.clickDrag({ elm        : slider,
                        restrict   : true,
-                       onTween    : function(drag) {
+                       onTween    : function (drag) {
                          var value = SB.spec.findSliderValue(slider, drag);
 
                          numberInput.value = value;
                          slider.setAttribute('aria-valuenow', value);
                        },
-                       onComplete : function(drag) {
+                       onComplete : function () {
                          changeForm(numberInput);
                        }
                      });
       };
 
-      changeForm = function(elm) {
+      changeForm = function (elm) {
         var form = elm.parentNode,
             slider;
 
-        if(SB.hasClass(elm.nextSibling, 'sliderBar')) {
+        if (SB.hasClass(elm.nextSibling, 'sliderBar')) {
           slider = elm.nextSibling.getElementsByTagName('span')[0];
           slider.style.left = SB.spec.findSliderPosition(slider, elm) + 'px';
 
@@ -552,19 +593,19 @@ SB.spec = (function () {
             form = form.parentNode;
           }
 
-          if(form.tagName.toLowerCase() === 'form') {
+          if (form.tagName.toLowerCase() === 'form') {
             SB.spec.sendInput(form);
           }
         }
       };
 
-      for(i = 0; i < numberInputs.length; i += 1) {
-        (function(numberInput) {
+      for (i = 0; i < numberInputs.length; i += 1) {
+        (function (numberInput) {
           var sliderBar,
               slider;
 
-          if((numberInput.type === 'number') && (numberInput.min) && (numberInput.max)) {
-            if((!id) || (SB.isChildOf(numberInput, SB.get(id)))) {
+          if ((numberInput.type === 'number') && (numberInput.min) && (numberInput.max)) {
+            if ((!id) || (SB.isChildOf(numberInput, SB.get(id)))) {
               sliderBar           = document.createElement('div');
               sliderBar.className = 'sliderBar';
               slider              = document.createElement('span');
@@ -576,12 +617,12 @@ SB.spec = (function () {
               sliderBar.appendChild(slider);
               numberInput.parentNode.insertBefore(sliderBar, numberInput.nextSibling);
 
-              if(id) {
+              if (id) {
                 buildSliderBar(slider, numberInput);
               }
 
               else {
-                SB.event.add(window, 'load', function() {
+                SB.event.add(window, 'load', function () {
                   buildSliderBar(slider, numberInput);
                 });
               }
@@ -590,26 +631,26 @@ SB.spec = (function () {
         }(numberInputs[i]));
       }
 
-      if(!id) {
-        SB.event.add(SB.spec.uiComponents.body, 'keydown', function(e) {
+      if (!id) {
+        SB.event.add(SB.spec.uiComponents.body, 'keydown', function (e) {
           var elm    = SB.getTarget(e),
               newVal = null,
               numInput;
 
-          if(SB.hasClass(elm.parentNode, 'sliderBar')) {
+          if (SB.hasClass(elm.parentNode, 'sliderBar')) {
             numInput = elm.parentNode.previousSibling;
 
-            if((e.keyCode === 38) || (e.keyCode === 39)) {
+            if ((e.keyCode === 38) || (e.keyCode === 39)) {
               newVal = parseInt(numInput.value, 10) + 1;
               newVal = newVal <= numInput.max ? newVal : numInput.max;
             }
 
-            else if((e.keyCode === 37) || (e.keyCode === 40)) {
+            else if ((e.keyCode === 37) || (e.keyCode === 40)) {
               newVal = parseInt(numInput.value, 10) - 1;
               newVal = newVal >= numInput.min ? newVal : numInput.min;
             }
 
-            if((newVal) && (newVal >= numInput.min) && (newVal <= numInput.max)) {
+            if ((newVal) && (newVal >= numInput.min) && (newVal <= numInput.max)) {
               e.preventDefault();
 
               numInput.value = newVal;
@@ -617,21 +658,20 @@ SB.spec = (function () {
           }
         });
 
-        SB.event.add(SB.spec.uiComponents.body, 'keyup', function(e) {
-          var elm = SB.getTarget(e),
-              numInput;
+        SB.event.add(SB.spec.uiComponents.body, 'keyup', function (e) {
+          var elm = SB.getTarget(e);
 
-          if(SB.hasClass(elm.parentNode, 'sliderBar')) {
+          if (SB.hasClass(elm.parentNode, 'sliderBar')) {
             changeForm(elm.parentNode.previousSibling);
           }
         });
 
-        SB.event.add(window, 'resize', function(e) {
+        SB.event.add(window, 'resize', function () {
           SB.spec.sliderSetWidths(numberInputs);
         });
 
         /* If you change the form value, we should change the slider position. */
-        SB.event.add(SB.spec.uiComponents.body, 'change', function(e) {
+        SB.event.add(SB.spec.uiComponents.body, 'change', function (e) {
           changeForm(SB.getTarget(e));
         });
       }
@@ -641,13 +681,13 @@ SB.spec = (function () {
      * Sets slider positions to the appropriate location.  Used when a form
      * value changes or if the scroll bar changes width.
      */
-    sliderSetWidths : function() {
+    sliderSetWidths : function () {
       var numberInputs = SB.spec.findNumberInputs(),
           slider,
           i;
 
-      for(i = 0; i < numberInputs.length; i += 1) {
-        if(SB.hasClass(numberInputs[i].nextSibling, 'sliderBar')) {
+      for (i = 0; i < numberInputs.length; i += 1) {
+        if (SB.hasClass(numberInputs[i].nextSibling, 'sliderBar')) {
           slider = numberInputs[i].nextSibling.getElementsByTagName('span')[0];
 
           slider.style.left = SB.spec.findSliderPosition(slider, numberInputs[i]) + 'px';
@@ -658,25 +698,45 @@ SB.spec = (function () {
     /**
      * Builds event handler to delegate click events for standard commands.
      */
-    command : function() {
+    command : function (demoMode) {
       var commandIssued    = null,
           commandIteration = 0,
           commandDelay     = 750,
           tapped           = false,
           touched          = false,
           interrupt        = false,
+          done             = false,
           touchStartX      = 0,
           touchStartY      = 0,
           touchThreshold   = 5,
           transcribe       = null,
-          transcribeParse  = function(text) {
+          // iOS registers both "ontouchstart" and "onmousedown" events - but
+          // with a ~400ms delay between them.  We need to act on the touch
+          // event and delay any cleanup till after mousdown fires to prevent
+          // potential double actions for a single event.
+          touchDelay       = 450,
+          stopCommand      = function () {
+            commandIssued    = null;
+            commandDelay     = 750;
+            commandIteration = 0;
+            interrupt        = true;
+            touched          = false;
+            done             = false;
+            touchStartX      = 0;
+            touchStartY      = 0;
+          },
+          transcribeParse  = function (text) {
             var device = commandIssued;
 
             SB.vibrate();
-            SB.spec.sendTextInput(text, device, 'text');
+
+            if (!demoMode) {
+              SB.spec.sendTextInput(text, device, 'text');
+            }
+
             stopCommand();
           },
-          findCommand      = function(e) {
+          findCommand      = function (e) {
             var elm      = SB.getTarget(e),
                 tagName  = elm.tagName.toLowerCase(),
                 validElm = null;
@@ -685,55 +745,27 @@ SB.spec = (function () {
             elm = tagName === 'i'    ? elm.parentNode : elm;
             elm = tagName === 'span' ? elm.parentNode : elm;
 
-            if(elm.tagName.toLowerCase() === 'a') {
+            if (elm.tagName.toLowerCase() === 'a') {
               validElm = elm;
             }
 
             return validElm;
           },
-          fireCommand      = function(e, speech) {
-            var elm = findCommand(e);
-
-            if(speech) {
-              SB.vibrate();
-
-              commandIssued = SB.getTarget(e).parentNode.parentNode.id;
-              transcribe = SB.transcribe(transcribeParse);
-              transcribe.start();
-            }
-
-            else if((elm) && (!interrupt)) {
-              if(elm.rel === 'external') {
-                window.open(elm.href, '_blank').focus();
-              }
-
-              else {
-                commandIssued = elm.href;
-
-                sendCommand();
-              }
-            }
-          },
-          stopCommand      = function(e) {
-            commandIssued    = null;
-            commandDelay     = 750;
-            commandIteration = 0;
-            interrupt        = true;
-            touched          = false;
-            touchStartX      = 0;
-            touchStartY      = 0;
-          },
-          sendCommand      = function() {
+          sendCommand      = function () {
             var ts = new Date().getTime(),
                 ajaxRequest;
 
-            if((commandIssued) && (!interrupt)) {
+            if ((commandIssued) && (!interrupt)) {
               SB.vibrate();
 
-              if(SB.spec.socket) {
-                if(SB.spec.checkConnection()) {
+              if (demoMode) {
+                SB.log('Issued', 'Demo Command', 'success');
+              }
+
+              else if (SB.spec.socket) {
+                if (SB.spec.checkConnection()) {
                   SB.log('Issued', 'Command', 'success');
-//                  SB.spec.socket.send(commandIssued);
+                  SB.spec.socket.send(commandIssued);
                 }
               }
 
@@ -747,14 +779,14 @@ SB.spec = (function () {
                   }
                 };
 
-//                SB.ajax.request(ajaxRequest);
+                SB.ajax.request(ajaxRequest);
               }
 
-              if(commandIteration > 3) {
+              if (commandIteration > 3) {
                 commandDelay = 650;
               }
 
-              if(commandIteration > 10) {
+              if (commandIteration > 10) {
                 commandDelay = 500;
               }
 
@@ -762,65 +794,93 @@ SB.spec = (function () {
 
               setTimeout(sendCommand, commandDelay);
             }
+          },
+          fireCommand      = function (e, speech) {
+            var elm = findCommand(e);
+
+            if (speech) {
+              SB.vibrate();
+
+              commandIssued = SB.getTarget(e).parentNode.parentNode.id;
+              transcribe = SB.transcribe(transcribeParse);
+              transcribe.start();
+            }
+
+            else if ((elm) && (!interrupt)) {
+              if (elm.rel === 'external') {
+                window.open(elm.href, '_blank').focus();
+              }
+
+              else {
+                commandIssued = elm.href;
+
+                sendCommand();
+              }
+            }
           };
 
-      if('ontouchstart' in document.documentElement) {
+      if ('ontouchstart' in document.documentElement) {
         SB.log('Enabled', 'Touch Events', 'info');
 
-        SB.event.add(SB.spec.uiComponents.body, 'touchstart', function(e) {
+        SB.event.add(SB.spec.uiComponents.body, 'touchstart', function (e) {
           // For quick taps of commands, we need to set a flag.
           tapped  = true;
           touched = true;
 
-          if(findCommand(e)) {
+          if (findCommand(e)) {
             interrupt   = false;
             touchStartX = parseInt(e.changedTouches[0].clientX, 10);
             touchStartY = parseInt(e.changedTouches[0].clientY, 10);
 
-            // Wait 100ms to determine if you're scrolling.
-            setTimeout(function() {
+            // Wait a period of time to determine if you're scrolling and to
+            // wait for the onmousedown event to fire before we clean up.
+            setTimeout(function () {
               // And unset that flag so we know not to run this again on
               // touchend.
-              tapped = false;
+              if (!done) {
+                tapped = false;
 
-              fireCommand(e);
-            }, 150);
+                fireCommand(e);
+              }
+            }, touchDelay);
           }
         });
 
-        SB.event.add(SB.spec.uiComponents.body, 'contextmenu', function(e) {
+        SB.event.add(SB.spec.uiComponents.body, 'contextmenu', function (e) {
           e.preventDefault();
         });
 
-        SB.event.add(SB.spec.uiComponents.body, 'touchend', function(e) {
+        SB.event.add(SB.spec.uiComponents.body, 'touchend', function (e) {
           // Emoji touch events are cancelled after speech recognition - which
           // requires lifting your finger to accept the dialog.
-          if(!SB.hasClass(SB.getTarget(e).parentNode, 'emoji') && (tapped)) {
+          if (!SB.hasClass(SB.getTarget(e).parentNode, 'emoji') && (tapped)) {
+            done = true;
+
             fireCommand(e);
           }
 
           stopCommand(e);
         });
 
-        SB.event.add(SB.spec.uiComponents.body, 'touchmove', function(e) {
-          if(touched) {
-            if((Math.abs(parseInt(e.changedTouches[0].clientX, 10) - touchStartX) > touchThreshold) || (Math.abs(parseInt(e.changedTouches[0].clientY, 10) - touchStartY) > touchThreshold)) {
+        SB.event.add(SB.spec.uiComponents.body, 'touchmove', function (e) {
+          if (touched) {
+            if ((Math.abs(parseInt(e.changedTouches[0].clientX, 10) - touchStartX) > touchThreshold) || (Math.abs(parseInt(e.changedTouches[0].clientY, 10) - touchStartY) > touchThreshold)) {
               stopCommand(e);
             }
           }
         });
 
-        SB.event.add(SB.spec.uiComponents.body, 'touchcancel', function(e) {
+        SB.event.add(SB.spec.uiComponents.body, 'touchcancel', function (e) {
           stopCommand(e);
         });
       }
 
-      SB.event.add(SB.spec.uiComponents.body, 'mousedown', function(e) {
-        if(SB.hasClass(SB.getTarget(e).parentNode, 'emoji')) {
+      SB.event.add(SB.spec.uiComponents.body, 'mousedown', function (e) {
+        if (SB.hasClass(SB.getTarget(e).parentNode, 'emoji')) {
           fireCommand(e, true);
         }
 
-        else if((touched === false) && (tapped === false)) {
+        else if ((touched === false) && (tapped === false)) {
           interrupt = false;
 
           fireCommand(e);
@@ -830,14 +890,14 @@ SB.spec = (function () {
         tapped = false;
       });
 
-      SB.event.add(SB.spec.uiComponents.body, 'mouseup', function(e) {
-        if(!SB.hasClass(SB.getTarget(e).parentNode, 'emoji')) {
+      SB.event.add(SB.spec.uiComponents.body, 'mouseup', function (e) {
+        if (!SB.hasClass(SB.getTarget(e).parentNode, 'emoji')) {
           stopCommand(e);
         }
       });
 
-      SB.event.add(SB.spec.uiComponents.body, 'click', function(e) {
-        if(findCommand(e)) {
+      SB.event.add(SB.spec.uiComponents.body, 'click', function (e) {
+        if (findCommand(e)) {
           e.preventDefault();
         }
       });
@@ -847,14 +907,15 @@ SB.spec = (function () {
      * Accepts form inputs for text and numbers - grabs the values required and
      * passes them along for submission.
      */
-    sendInput : function(elm) {
-      var text = '',
-          type = '',
-          device;
+    sendInput : function (elm) {
+      var input  = SB.getByTag('input', elm, 'input')[0],
+          text   = input.value,
+          device = input.name,
+          type   = SB.getByClass('input-type', elm, 'input')[0].value;
 
-      text   = SB.getByTag('input', elm, 'input')[0].value;
-      device = SB.getByTag('input', elm, 'input')[0].name;
-      type   = SB.getByClass('input-type', elm, 'input')[0].value;
+      if (input.type === 'text') {
+        input.value = '';
+      }
 
       SB.spec.sendTextInput(text, device, type);
     },
@@ -863,17 +924,17 @@ SB.spec = (function () {
      * Handles text and number input execution.  If you support WebSockets and
      * have an active connection, we'll use that.  If not, we'll use XHR.
      */
-    sendTextInput : function(text, device, type) {
+    sendTextInput : function (text, device, type) {
       var ts = new Date().getTime(),
           ajaxRequest;
 
       type = type || 'text';
 
-      if(SB.spec.socket) {
-        if(SB.spec.checkConnection()) {
+      if (SB.spec.socket) {
+        if (SB.spec.checkConnection()) {
           SB.log('Issued', 'Text Command', 'success');
 
-//          SB.spec.socket.send('/?' + device + '=' + type + '-' + text);
+          SB.spec.socket.send('/?' + device + '=' + type + '-' + text);
         }
       }
 
@@ -895,25 +956,31 @@ SB.spec = (function () {
      * Builds event handler to delegate form submission events for text and
      * number inputs.
      */
-    formInput : function() {
-      SB.event.add(SB.spec.uiComponents.body, 'submit', function(e) {
+    formInput : function (demoMode) {
+      SB.event.add(SB.spec.uiComponents.body, 'submit', function (e) {
         var elm = SB.getTarget(e);
 
         e.preventDefault();
 
-        SB.spec.sendInput(elm);
+        if (demoMode) {
+          SB.log('Issued', 'Demo Text Command', 'success');
+        }
+
+        else {
+          SB.spec.sendInput(elm);
+        }
       });
     },
 
     /**
      * Handles navigation changes and changes to the connection indicator.
      */
-    nav : function() {
-      SB.event.add(SB.spec.uiComponents.header, 'click', function(e) {
+    nav : function () {
+      SB.event.add(SB.spec.uiComponents.header, 'click', function (e) {
         var elm     = SB.getTarget(e).parentNode,
             tagName = elm.tagName.toLowerCase();
 
-        if(tagName === 'li') {
+        if (tagName === 'li') {
           e.preventDefault();
 
           SB.spec.navChange(elm.className);
@@ -922,8 +989,8 @@ SB.spec = (function () {
           SB.notifyAsk();
         }
 
-        else if(SB.getTarget(e).id === 'indicator') {
-          if(SB.hasClass(SB.getTarget(e), 'disconnected')) {
+        else if (SB.getTarget(e).id === 'indicator') {
+          if (SB.hasClass(SB.getTarget(e), 'disconnected')) {
             SB.spec.socketConnect(0);
           }
         }
@@ -933,8 +1000,12 @@ SB.spec = (function () {
     /**
      * Initialization for SB.  Executes the standard functions used.
      */
-    init : function() {
-      var active = SB.storage('selected'),
+    init : function () {
+      var demoMode  = true,
+          active    = SB.storage('selected'),
+          templates = SB.storage('templates'),
+          state     = SB.storage('state'),
+          device,
           headerData,
           bodyData;
 
@@ -945,34 +1016,59 @@ SB.spec = (function () {
       headerData = SB.spec.uiComponents.header.dataset;
       bodyData   = SB.spec.uiComponents.body.dataset;
 
-      SB.spec.strings = { CONNECTED    : headerData.stringConnected,
+      SB.spec.strings = { CURRENT      : headerData.stringCurrent,
+                          CONNECTED    : headerData.stringConnected,
                           CONNECTING   : headerData.stringConnecting,
                           DISCONNECTED : headerData.stringDisconnected,
                           ACTIVE       : bodyData.stringActive,
                           INACTIVE     : bodyData.stringInactive,
                           ON           : bodyData.stringOn,
-                          OFF          : bodyData.stringOff };
+                          OFF          : bodyData.stringOff,
+                          AM           : bodyData.stringAm,
+                          PM           : bodyData.stringPm,
+                          SUN          : bodyData.stringSun,
+                          MON          : bodyData.stringMon,
+                          TUE          : bodyData.stringTue,
+                          WED          : bodyData.stringWed,
+                          THUR         : bodyData.stringThur,
+                          FRI          : bodyData.stringFri,
+                          SAT          : bodyData.stringSat };
 
-      if(active) {
+      if (active) {
         SB.spec.navChange(active);
       }
 
-      /* If we support WebSockets, we'll grab updates as they happen */
-      if((typeof WebSocket === 'function') || (typeof WebSocket === 'object')) {
-        SB.spec.socketConnect(0);
+      if ((templates) && (state)) {
+        SB.spec.uiComponents.templates = SB.decode(templates);
+
+        state = SB.decode(state);
+
+        for (device in state) {
+          if (state.hasOwnProperty(device)) {
+            SB.spec.updateTemplate(state[device]);
+          }
+        }
       }
 
-      /* Otherwise, we'll poll for updates */
-      else {
-        SB.spec.statePoller();
+      if (!demoMode) {
+        /* If we support WebSockets, we'll grab updates as they happen */
+        if ((typeof WebSocket === 'function') || (typeof WebSocket === 'object')) {
+          SB.spec.socketConnect(0);
+        }
+
+        /* Otherwise, we'll poll for updates */
+        else {
+          SB.spec.statePoller();
+        }
       }
 
       SB.spec.lazyLoad(document.body.className);
 
       SB.spec.buildSliders();
-      SB.spec.command();
-      SB.spec.formInput();
+      SB.spec.command(demoMode);
+      SB.spec.formInput(demoMode);
       SB.spec.nav();
+      SB.spec.ariaDevice();
     }
   };
 }());
