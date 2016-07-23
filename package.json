@@ -19,7 +19,7 @@
   },
   "preferGlobal": true,
   "dependencies": {
-    "request": "~2.73.0",
+    "request": "~2.74.0",
     "xml2js": "~0.4.17",
     "websocket": "~1.0.23"
   },
