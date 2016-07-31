@@ -31,7 +31,7 @@ SB.spec = (function () {
   'use strict';
 
   return {
-    version : 20160530,
+    version : 20160730,
 
     state     : {},
     parsers   : {},
@@ -899,6 +899,16 @@ SB.spec = (function () {
       SB.event.add(SB.spec.uiComponents.body, 'click', function (e) {
         if (findCommand(e)) {
           e.preventDefault();
+        }
+      });
+
+      SB.event.add(SB.spec.uiComponents.body, 'keyup', function (e) {
+        if ((e.keyCode === 13) && (findCommand(e))) {
+          interrupt = false;
+          fireCommand(e);
+          setTimeout(function() {
+            interrupt = true;
+          }, (commandDelay / 2));
         }
       });
     },
