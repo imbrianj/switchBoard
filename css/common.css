@@ -819,7 +819,8 @@ section a:visited {
 }
 
 section a:hover,
-section a:active {
+section a:active,
+section a:focus {
   color: #0078E7;
   text-shadow: 0 0 5px rgba(0,70,135,.5);
 }
@@ -1400,7 +1401,8 @@ section .sub-device-list li dl dd.icon {
   color: #F00;
 }
 
-a.device-active:hover:before {
+a.device-active:hover:before,
+a.device-active:focus:before {
   text-shadow: 0 0 0 #286EA0;
 }
 
