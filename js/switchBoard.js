@@ -796,7 +796,8 @@ SB.spec = (function () {
             }
           },
           fireCommand      = function (e, speech) {
-            var elm = findCommand(e);
+            var elm = findCommand(e),
+                newWindow;
 
             if (speech) {
               SB.vibrate();
@@ -808,7 +809,9 @@ SB.spec = (function () {
 
             else if ((elm) && (!interrupt)) {
               if (elm.rel === 'external') {
-                window.open(elm.href, '_blank').focus();
+                newWindow = window.open();
+                newWindow.opener = null;
+                newWindow.location = elm.href;
               }
 
               else {
