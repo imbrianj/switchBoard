@@ -90,6 +90,7 @@ module.exports = (function () {
           SAT            : "Sat",
           SELECT         : "Select",
           SOURCE         : "Source",
+          STATE_CHANGE   : "{{DEVICE}} is now {{STATE}}",
           STOP           : "Stop",
           SUBMIT         : "Submit",
           SUN            : "Sun",

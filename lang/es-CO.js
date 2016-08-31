@@ -94,6 +94,7 @@ module.exports = (function () {
           SAT            : "Sáb",
           SELECT         : "Seleccionar",
           SOURCE         : "Origen",
+          STATE_CHANGE   : "{{DEVICE}} ahora está {{STATE}}",
           STOP           : "Parar",
           SUBMIT         : "Someter",
           SUN            : "Dom",
