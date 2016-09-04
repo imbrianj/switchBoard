@@ -353,6 +353,10 @@ module.exports = (function () {
           LATEST : "You are running the latest version of SwitchBoard.",
           NEWER  : "There is a newer version of SwitchBoard available."
         },
+        haveibeenpwned : {
+          HAVEIBEENPWNED : 'HaveIBeenPwned',
+          ALL_CLEAR      : 'All Clear'
+        },
         lg : {
           LG       : "LG",
           EXTERNAL : "External",

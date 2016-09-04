@@ -563,6 +563,17 @@ exports.config = {
   },
 
   /*
+   * Polls haveibeenpwned.com for the given username's inclusion in any hacked
+   * sites, so that you may pro-actively secure your data.
+   */
+  haveibeenpwned : {
+    typeClass : 'haveibeenpwned',
+    title     : 'Pwned',
+    username  : 'brian@bevey.org',
+    disabled  : true
+  },
+
+  /*
    * Subscribe to a feed of tweets mentioning a given user.
    * To get your required keys and tokens, you'll need to visit:
    * https://apps.twitter.com/
