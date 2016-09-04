@@ -57,8 +57,10 @@ module.exports = (function () {
         path    : haveibeenpwned.path,
         method  : method,
         headers : {
+          'Accept'         : 'application/vnd.haveibeenpwned.v2+json',
           'Accept-Charset' : 'utf-8',
-          'User-Agent'     : 'node-switchBoard'
+          'User-Agent'     : 'node-switchBoard',
+          'api-version'    : 2
         }
       };
     },
@@ -134,10 +136,16 @@ module.exports = (function () {
             }
           }
 
-          haveibeenpwnedData = that.getPwns(data);
+          if (!dataReply || data) {
+            haveibeenpwnedData = that.getPwns(data);
 
-          haveibeenpwned.callback(null, haveibeenpwnedData);
+            haveibeenpwned.callback(null, haveibeenpwnedData);
+          }
         });
+      });
+
+      request.on('error', function() {
+        haveibeenpwned.callback('API failed to connect');
       });
 
       request.end();

@@ -43,7 +43,7 @@ exports.githubControllerTest = {
 
     var githubController = require(__dirname + '/../../../../devices/github/controller'),
         config           = { host        : 'example.com',
-                             port        : '80',
+                             port        : 80,
                              path        : '/test/',
                              method      : 'POST',
                              badData     : 'FAILURE',
@@ -51,7 +51,7 @@ exports.githubControllerTest = {
         testPost         = githubController.postPrepare(config);
 
     test.deepEqual(testPost, { host    : 'example.com',
-                               port    : '80',
+                               port    : 80,
                                path    : '/test/',
                                method  : 'POST',
                                headers : {

@@ -44,20 +44,21 @@ exports.haveibeenpwnedControllerTest = {
 
     var haveibeenpwnedController = require(__dirname + '/../../../../devices/haveibeenpwned/controller'),
         config           = { host        : 'example.com',
-                             port        : '80',
+                             port        : 443,
                              path        : '/test/',
-                             method      : 'POST',
                              badData     : 'FAILURE',
                              postRequest : 'hello :)'},
         testPost         = haveibeenpwnedController.postPrepare(config);
 
     test.deepEqual(testPost, { host    : 'example.com',
-                               port    : '80',
+                               port    : 443,
                                path    : '/test/',
-                               method  : 'POST',
+                               method  : 'GET',
                                headers : {
+                                 'Accept'         : 'application/vnd.haveibeenpwned.v2+json',
                                  'Accept-Charset' : 'utf-8',
-                                 'User-Agent'     : 'node-switchBoard'
+                                 'User-Agent'     : 'node-switchBoard',
+                                 'api-version'    : 2
                                }
                               }, 'Additional params are filtered out.');
 
