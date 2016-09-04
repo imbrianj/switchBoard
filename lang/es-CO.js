@@ -356,6 +356,10 @@ module.exports = (function () {
           EXTERNAL : "Externo",
           INFO     : "información",
         },
+        haveibeenpwned : {
+          HAVEIBEENPWNED : 'HaveIBeenPwned',
+          ALL_CLEAR      : 'Todo Claro'
+        },
         location : {
           LOCATION : "Localización",
           FEET     : "Pies",
