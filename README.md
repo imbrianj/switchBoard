@@ -45,6 +45,7 @@ Supported Devices/Services
 | Foscam              | Stable      | Works with FI8910W (if you have another version that this does not work with, let me know and I can add support).  Arm, Disarm, Go to presets, etc. *INSECURE* Exposes camera credentials to users |
 | Gerty               | Stable      | A simple interface for all devices that reacts to natural inputs.                 |
 | GitHub              | Testing     | Poll for commits to a given repository.  For Switchboard, can tell you if you should update. |
+| have i been pwned?  | Testing     | Query haveibeenpwned.com to see if your username has been part of a data breach.  |
 | LG TVs              | Development | Still need work on authentication                                                 |
 | Location            | Stable      | Uses [switchboard-phpServer](https://github.com/imbrianj/switchboard-phpServer) and [Tasker](https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm) to track your GPS position
 | MP3                 | Stable      | Works on *nix with mpg123 or OSX with afplay. Win not supported                   |
