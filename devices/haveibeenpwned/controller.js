@@ -25,7 +25,7 @@ module.exports = (function () {
 
   /**
    * @author brian@bevey.org
-   * @fileoverview Grabs any pages a given account may have been pned on.
+   * @fileoverview Grabs any pages a given account may have been pwned on.
    * @requires https
    * @note https://haveibeenpwned.com/API/v2
    */
