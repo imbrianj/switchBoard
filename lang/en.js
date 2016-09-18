@@ -497,7 +497,8 @@ module.exports = (function () {
           HOME_TEAM_LOGO : "Home Team Logo",
           LIVE           : "Live",
           TITLE          : "{{AWAY}} vs. {{HOME}}",
-          UPCOMING       : "Upcoming"
+          UPCOMING       : "Upcoming",
+          WINNER         : "Winner"
         },
         stocks : {
           STOCKS  : "Stocks",

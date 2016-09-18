@@ -495,7 +495,8 @@ module.exports = (function () {
           HOME_TEAM_LOGO : "Logo del equipo local",
           LIVE           : "En vivo y en directo",
           TITLE          : "{{AWAY}} vs. {{HOME}}",
-          UPCOMING       : "Próximas"
+          UPCOMING       : "Próximas",
+          WINNER         : "Ganador"
         },
         stocks : {
           STOCKS  : "Mercado de valores",

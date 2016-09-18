@@ -24,18 +24,20 @@
   'use strict';
 
   exports.sports = function (deviceId, markup, state, value, fragments, language) {
-    var leagueTemplate = fragments.league,
-        gameTemplate   = fragments.game,
-        i              = 0,
-        j              = 0,
-        league         = {},
-        game           = {},
-        title          = '',
-        awayWinner     = '',
-        homeWinner     = '',
-        tempMarkup     = '',
-        gameMarkup     = '',
-        translate      = function (message) {
+    var leagueTemplate  = fragments.league,
+        gameTemplate    = fragments.game,
+        i               = 0,
+        j               = 0,
+        league          = {},
+        game            = {},
+        title           = '',
+        homeWinnerClass = '',
+        awayWinnerClass = '',
+        awayWinner      = '',
+        homeWinner      = '',
+        tempMarkup      = '',
+        gameMarkup      = '',
+        translate       = function (message) {
           var util;
 
           if ((typeof SB === 'object') && (typeof SB.util === 'object')) {
@@ -49,7 +51,7 @@
 
           return message;
         },
-        displayTime    = function (unix) {
+        displayTime     = function (unix) {
           var util,
               time;
 
@@ -72,17 +74,21 @@
           gameMarkup = '';
 
           for (j = 0; j < league.games.length; j += 1) {
-            game       = league.games[j];
-            title      = translate('TITLE').split('{{AWAY}}').join(game.away.title).split('{{HOME}}').join(game.home.title);
-            awayWinner = game.away.winner ? ' winner' : '';
-            homeWinner = game.home.winner ? ' winner' : '';
+            game            = league.games[j];
+            title           = translate('TITLE').split('{{AWAY}}').join(game.away.title).split('{{HOME}}').join(game.home.title);
+            awayWinnerClass = game.away.winner ? ' winner' : '';
+            homeWinnerClass = game.home.winner ? ' winner' : '';
+            awayWinner      = game.away.winner ? ' (' + translate('WINNER') + ')' : '';
+            homeWinner      = game.home.winner ? ' (' + translate('WINNER') + ')' : '';
 
-            gameMarkup = gameMarkup + gameTemplate.split('{{GAME_LINK}}').join(game.url);
+            gameMarkup = gameMarkup + gameTemplate.split('{{GAME_LINK}}').join(game.url || '#');
             gameMarkup = gameMarkup.split('{{GAME_TITLE}}').join(title);
+            gameMarkup = gameMarkup.split('{{GAME_AWAY_WINNER_CLASS}}').join(awayWinnerClass);
             gameMarkup = gameMarkup.split('{{GAME_AWAY_WINNER}}').join(awayWinner);
             gameMarkup = gameMarkup.split('{{GAME_AWAY_TEAM}}').join(game.away.title);
             gameMarkup = gameMarkup.split('{{GAME_AWAY_IMAGE}}').join(game.away.image);
             gameMarkup = gameMarkup.split('{{GAME_AWAY_SCORE}}').join(game.away.score);
+            gameMarkup = gameMarkup.split('{{GAME_HOME_WINNER_CLASS}}').join(homeWinnerClass);
             gameMarkup = gameMarkup.split('{{GAME_HOME_WINNER}}').join(homeWinner);
             gameMarkup = gameMarkup.split('{{GAME_HOME_TEAM}}').join(game.home.title);
             gameMarkup = gameMarkup.split('{{GAME_HOME_IMAGE}}').join(game.home.image);
