@@ -96,8 +96,8 @@
     markup = markup.replace('{{DEBUG_SYSTEM_MEMORY}}', systemMemory);
     markup = markup.replace('{{DEBUG_MEMORY_PERCENT}}', memoryPercent);
     markup = markup.replace('{{DEBUG_CPU}}', cpuLoad);
-    markup = markup.replace('{{DEBUG_CLIENT_COUNT}}', clientCount);
     markup = markup.replace('{{DEBUG_CLIENT_TEMP}}', temperature);
+    markup = markup.replace('{{DEBUG_CLIENT_COUNT}}', clientCount);
 
     return markup;
   };

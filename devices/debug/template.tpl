@@ -7,7 +7,7 @@
           <li><span>{{i18n_RUNTIME}}:</span> {{DEBUG_RUNTIME}}</li>
           <li><span>{{i18n_MEMORY_USED}}:</span> {{DEBUG_MEMORY_USED}}/{{DEBUG_SYSTEM_MEMORY}} ({{DEBUG_MEMORY_PERCENT}}%)</li>
           <li><span>{{i18n_CPU}}:</span> {{DEBUG_CPU}}%</li>
-          <li><span>{{i18n_CLIENTS_CONNECTED}}:</span> {{DEBUG_CLIENT_COUNT}}</li>
           <li><span>{{i18n_TEMPERATURE}}:</span> {{DEBUG_CLIENT_TEMP}}</li>
+          <li><span>{{i18n_CLIENTS_CONNECTED}}:</span> {{DEBUG_CLIENT_COUNT}}</li>
         </ul>
       </section>
