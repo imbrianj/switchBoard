@@ -75,7 +75,8 @@
           }
 
           return time;
-        };
+        },
+        temperature         = translate ('NA');
 
     if (value) {
       uptime        = displayRelativeTime(value.uptime);
@@ -85,6 +86,7 @@
       memoryPercent = value.percentMemory;
       cpuLoad       = Math.round(value.cpuLoad[0] * 100);
       clientCount   = value.clientCount;
+      temperature   = value.temperature ? value.temperature : temperature;
     }
 
     markup = markup.replace('{{DEBUG_UPDATE}}', displayTime(now));
@@ -95,6 +97,7 @@
     markup = markup.replace('{{DEBUG_MEMORY_PERCENT}}', memoryPercent);
     markup = markup.replace('{{DEBUG_CPU}}', cpuLoad);
     markup = markup.replace('{{DEBUG_CLIENT_COUNT}}', clientCount);
+    markup = markup.replace('{{DEBUG_CLIENT_TEMP}}', temperature);
 
     return markup;
   };

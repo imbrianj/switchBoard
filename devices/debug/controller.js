@@ -27,10 +27,10 @@ module.exports = (function () {
    * @author brian@bevey.org
    * @fileoverview Register uptime, runtime and find memory usage and CPU load
    *               for debugging and curiosity.
-   * @requires os
+   * @requires os, fs
    */
   return {
-    version : 20151208,
+    version : 20161008,
 
     inputs  : ['list'],
 
@@ -73,10 +73,14 @@ module.exports = (function () {
       var os         = require('os'),
           webSockets = require(__dirname + '/../../lib/webSockets'),
           debug      = {},
-          callback   = config.callback || function () {};
+          callback   = config.callback || function () {},
+          tempPath   = '/sys/class/thermal/thermal_zone0/temp',
+          fs,
+          temp;
 
+      debug.platform      = os.platform();
       // Memory is measured in bytes, so we'll divide by 1024*1024 to grab MB.
-      debug.freeMemory    = Math.round(os.freemem() / 1048576);
+      debug.freeMemory    = Math.round(os.freemem()  / 1048576);
       debug.totalMemory   = Math.round(os.totalmem() / 1048576);
       debug.memoryUsed    = (debug.totalMemory - debug.freeMemory);
       debug.percentMemory = Math.round(debug.memoryUsed * 100 / debug.totalMemory);
@@ -84,6 +88,24 @@ module.exports = (function () {
       debug.uptime        = Math.round(os.uptime());
       debug.startup       = this.startup;
       debug.clientCount   = webSockets.connectionCount();
+
+      if (debug.platform === 'freebsd' ||
+          debug.platform === 'linux'   ||
+          debug.platform === 'openbsd') {
+        fs = require('fs');
+
+        try {
+          temp = fs.readFileSync(tempPath, 'utf-8');
+        }
+
+        catch (catchErr) {
+          console.log('\x1b[32m' + config.config.title + '\x1b[0m: Failed to read temperature for ' + config.config.typeClass);
+        }
+
+        if (temp) {
+          debug.temperature = (temp / 1000) + '&deg;';
+        }
+      }
 
       callback(null, { value : debug });
     }

@@ -147,7 +147,9 @@ module.exports = (function () {
           CPU               : "CPU",
           LAST_UPDATE       : "Última Actualización",
           MEMORY_USED       : "Memoria Utilizada",
+          NA                : "N/A",
           RUNTIME           : "Tiempo de ejecución",
+          TEMPERATURE       : "Temperatura",
           UPTIME            : "Tiempo prendido"
         },
         denon : {
