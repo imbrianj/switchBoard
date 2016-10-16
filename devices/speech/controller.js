@@ -115,7 +115,7 @@ module.exports = (function () {
           });
 
           speak.once('close', function () {
-              speech.callback(null, 'ok');
+            speech.callback(null, 'ok');
           });
         }
 

@@ -201,7 +201,7 @@ module.exports = (function () {
                       summary  : util.sanitize(game.summary),
                       status   : this.getStatus(game.status),
                       location : util.sanitize(game.location),
-                      url      : util.sanitize(game.link)
+                      url      : util.sanitize(game.links[0].href)
                     });
                   }
                 }
