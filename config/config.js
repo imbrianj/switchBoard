@@ -218,7 +218,11 @@ exports.config = {
     password  : 'password',
     apps      : { 'Announce'      : { id            : 'announceFoscam',
                                       controllerIds : ['speech', 'clientSpeech', 'clientNotify', 'gerty'] },
-                  'Foscam Change' : { id            : 'foscamChange' } },
+                  'Foscam Change' : { id            : 'foscamChange' },
+                  'Foscam DVR'    : { id            : 'foscamDvr',
+                                      delay         : 300, /* Delay for file check */
+                                      videoLength   : 600,
+                                      byteLimit     : 25600 /* Measured in MB */ } },
     disabled  : true
   },
 

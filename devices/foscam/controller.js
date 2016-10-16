@@ -122,7 +122,7 @@ module.exports = (function () {
       var http      = require('http'),
           fs        = require('fs'),
           that      = this,
-          filePath  = __dirname + '/../../images/foscam/' + Date.now() + '.jpg',
+          filePath  = __dirname + '/../../images/foscam/images/' + Date.now() + '.jpg',
           foscam    = {},
           dataReply = '',
           request;
