@@ -92,7 +92,7 @@ exports.sportsControllerTest = {
                                  location    : 'Azkaban',
                                  status      : 'post',
                                  summary     : 'Text',
-                                 link        : 'http://localhost',
+                                 links       : [{ href: 'http://localhost' }],
                                  competitors : [{
                                    type   : 'team',
                                    score  : '111',
@@ -113,7 +113,7 @@ exports.sportsControllerTest = {
                                  location    : 'Azkaban',
                                  status      : 'post',
                                  summary     : 'Text',
-                                 link        : 'http://localhost',
+                                 links       : [{ href: 'http://localhost' }],
                                  competitors : [{
                                    type   : 'team',
                                    score  : '2',
