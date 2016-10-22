@@ -32,7 +32,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150615,
+    version : 20161019,
 
     foscamChange : function (device, command, controllers) {
       var runCommand = require(__dirname + '/../lib/runCommand');
@@ -41,10 +41,10 @@ module.exports = (function () {
         // We want to grab the state from the source of truth (the actual
         // device), but we need to wait a short time for it to register.
         setTimeout(function () {
-            console.log('\x1b[35m' + controllers[device].config.title + '\x1b[0m: Fetching alarm state');
+          console.log('\x1b[35m' + controllers[device].config.title + '\x1b[0m: Fetching alarm state');
 
-            runCommand.runCommand(device, 'state', 'single', false);
-        }, 250);
+          runCommand.runCommand(device, 'state', 'single', false);
+        }, 500);
       }
     }
   };

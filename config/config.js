@@ -17,7 +17,7 @@ exports.config = {
     macroPause   : 1500,
     pollMinutes  : 5,
     pollSeconds  : 15,
-    localTimeout : 1000,
+    localTimeout : 1500,
     // Your SSL key and SCR will be generated for you.  If you want to use one
     // you've manually created, drop "ssl.key" and "ssl.csr" into /cache/.
     //

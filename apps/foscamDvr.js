@@ -121,6 +121,13 @@ module.exports = (function () {
 
       this.dvrProcess = spawn(dvrCommand.command, dvrCommand.params);
 
+      this.dvrProcess.stderr.on('data', function (data) {
+        data = data.toString();
+
+        // If you need help debugging ffmpeg, uncomment the following line:
+        // console.log(data)
+      });
+
       this.dvrProcess.once('close', function () {
         console.log('\x1b[35m' + deviceTitle + '\x1b[0m: DVR stopped');
       });
