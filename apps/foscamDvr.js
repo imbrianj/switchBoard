@@ -36,20 +36,42 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20161016,
+    version : 20161026,
 
-    lastEvents : { space : 0 },
+    lastEvents : { space : 0, thumbnail : 0 },
 
     dvrProcess : null,
 
+    getFilename : function (filename) {
+      var validTypes = ['jpg', 'gif', 'mkv'],
+          extension  = filename.split('.').pop(),
+          clean      = null;
+
+      if (validTypes.indexOf(extension) !== -1) {
+        clean = filename.slice(0, -4);
+      }
+
+      return clean;
+    },
+
     deleteOldest : function (controller) {
-      var fs = require('fs'),
-          path = 'images/foscam/dvr';
+      var fs      = require('fs'),
+          mkvPath = 'images/foscam/dvr',
+          gifPath = 'images/foscam/thumb',
+          jpgPath = gifPath,
+          filename,
+          self    = this;
 
-      fs.readdir(path, function(err, items) {
-        fs.unlink(path + '/' + items[0]);
+      fs.readdir(mkvPath, function(err, items) {
+        filename = self.getFilename(items[0]);
 
-        console.log('\x1b[35m' + controller.config.title + '\x1b[0m: DVR file ' + items[0] + ' deleted');
+        if (filename) {
+          fs.unlink(mkvPath + '/' + filename + '.mkv');
+          fs.unlink(gifPath + '/' + filename + '.gif');
+          fs.unlink(jpgPath + '/' + filename + '.jpg');
+
+          console.log('\x1b[35m' + controller.config.title + '\x1b[0m: DVR files for ' + filename + ' deleted');
+        }
       });
     },
 
@@ -72,7 +94,79 @@ module.exports = (function () {
       });
     },
 
-    translateCommand : function (config, videoLength) {
+    checkThumbnails : function (controller, thumbByteLimit) {
+      var fs   = require('fs'),
+          path = 'images/foscam/',
+          i    = 0,
+          self = this;
+
+      fs.readdir(path + 'dvr', function(err, items) {
+        for (i; i < items.length; i += 1) {
+          (function (filename) {
+            if (filename) {
+              fs.stat(path + 'dvr/' + filename + '.mkv', function (err, stats) {
+                if (stats.size >= thumbByteLimit) {
+                  fs.stat(path + 'thumb/' + filename + '.gif', function (err, stats) {
+                    // If we don't have a thumbnail for a video file larger than the
+                    // defined threshold, let's generate them.
+                    if (!stats) {
+                      self.buildThumbnails(controller, filename);
+                    }
+                  });
+                }
+              });
+            }
+          })(self.getFilename(items[i]));
+        }
+      });
+    },
+
+    buildThumbnails : function (controller, filename) {
+      var spawn             = require('child_process').spawn,
+          screenshotCommand = this.translateScreenshotCommand(filename),
+          thumbCommand      = this.translateThumbCommand(filename);
+
+      console.log('\x1b[35m' + controller.config.title + '\x1b[0m: Creating DVR thumbnails for ' + filename);
+
+      spawn(screenshotCommand.command, screenshotCommand.params);
+      spawn(thumbCommand.command, thumbCommand.params);
+    },
+
+    translateScreenshotCommand : function (filename) {
+      var input   = 'images/foscam/dvr/' + filename + '.mkv',
+          output  = 'images/foscam/thumb/' + filename + '.jpg',
+          execute = { command : 'ffmpeg', params : [] };
+
+      execute.params.push('-ss');
+      execute.params.push('00:00:15');
+      execute.params.push('-i');
+      execute.params.push(input);
+      execute.params.push('-vframes');
+      execute.params.push(1);
+      execute.params.push('-q:v');
+      execute.params.push('5');
+      execute.params.push(output);
+
+      return execute;
+    },
+
+    translateThumbCommand : function (filename) {
+      var input   = 'images/foscam/dvr/' + filename + '.mkv',
+          output  = 'images/foscam/thumb/' + filename + '.gif',
+          execute = { command : 'ffmpeg', params : [] };
+
+      execute.params.push('-i');
+      execute.params.push(input);
+      execute.params.push('-r');
+      execute.params.push(1);
+      execute.params.push('-filter:v');
+      execute.params.push('setpts=0.025*PTS');
+      execute.params.push(output);
+
+      return execute;
+    },
+
+    translateVideoCommand : function (config, videoLength) {
       var now       = new Date(),
           year      = now.getFullYear(),
           month     = now.getMonth() + 1,
@@ -82,7 +176,7 @@ module.exports = (function () {
           videoPath = 'http://' + config.deviceIp + '/videostream.cgi?user=' + config.username + '&pwd=' + config.password,
           audioPath = 'http://' + config.deviceIp + '/videostream.asf?user=' + config.username + '&pwd=' + config.password,
           localPath = 'images/foscam/dvr',
-          filename  = localPath + '/' + year + '-' + month + '-' + day + '-' + hour + '-' + minute + '-%03d.mkv',
+          output    = localPath + '/' + year + '-' + month + '-' + day + '-' + hour + '-' + minute + '-%03d.mkv',
           execute   = { command : 'ffmpeg', params : [] };
 
       execute.params.push('-use_wallclock_as_timestamps');
@@ -107,14 +201,14 @@ module.exports = (function () {
       execute.params.push(videoLength);
       execute.params.push('-reset_timestamps');
       execute.params.push(1);
-      execute.params.push(filename);
+      execute.params.push(output);
 
       return execute;
     },
 
     startDvr : function (controller, videoLength) {
       var spawn       = require('child_process').spawn,
-          dvrCommand  = this.translateCommand(controller.config, videoLength),
+          dvrCommand  = this.translateVideoCommand(controller.config, videoLength),
           deviceTitle = controller.config.title;
 
       console.log('\x1b[35m' + deviceTitle + '\x1b[0m: DVR started');
@@ -133,22 +227,36 @@ module.exports = (function () {
       });
     },
 
-    stopDvr : function () {
+    stopDvr : function (controller) {
+      var now = new Date().getTime();
+
       if (this.dvrProcess) {
         this.dvrProcess.kill();
         this.dvrProcess = null;
+
+        // When recording is over, we can safely build out any remaining
+        // thumbnails.
+        this.checkThumbnails(controller, 0);
+        this.lastEvents.thumbnail = now;
       }
     },
 
     foscamDvr : function (device, command, controllers, values, config) {
-      var deviceState  = require(__dirname + '/../lib/deviceState'),
-          controller   = controllers[device],
-          currentState = deviceState.getDeviceState(device),
-          now          = new Date().getTime(),
-          delay        = (config.delay || 300) * 1000,
-          videoLength  = config.videoLength || 600,
-          bytePerMeg   = 1048576,
-          byteLimit    = (config.byteLimit || 5120) * bytePerMeg;
+      var deviceState    = require(__dirname + '/../lib/deviceState'),
+          controller     = controllers[device],
+          currentState   = deviceState.getDeviceState(device),
+          now            = new Date().getTime(),
+          delay          = (config.delay || 300) * 1000,
+          videoLength    = config.videoLength || 600,
+          bytePerMeg     = 1048576,
+          roughMbPerMin  = 15,
+          // Maximum MB limit for all stored videos before we start deleting
+          // old files till we fall below that threshold.
+          byteLimit      = (config.byteLimit || 5120) * bytePerMeg,
+          // Minimum MB limit for a video file before we bother building a
+          // thumbnail set for it.  Any files that are smaller than this size
+          // will have thumbnails generated when recordig has ended.
+          thumbByteLimit = (config.thumbByteLimit || (roughMbPerMin * (videoLength / 60))) * bytePerMeg;
 
       if ((currentState) && (currentState.value)) {
         if ((currentState.value === 'off') && (this.dvrProcess)) {
@@ -167,6 +275,11 @@ module.exports = (function () {
         if (now > (this.lastEvents.space + delay)) {
           this.checkDisc(controller, byteLimit);
           this.lastEvents.space = now;
+        }
+
+        if (now > (this.lastEvents.thumbnail + delay)) {
+          this.checkThumbnails(controller, thumbByteLimit);
+          this.lastEvents.thumbnail = now;
         }
       }
     }
