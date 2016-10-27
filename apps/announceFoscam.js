@@ -29,7 +29,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20151009,
+    version : 20161027,
 
     announceFoscam : function (device, command, controllers) {
       var translate    = require(__dirname + '/../lib/translate'),

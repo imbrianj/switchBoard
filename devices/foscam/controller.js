@@ -29,7 +29,7 @@ module.exports = (function () {
    * @fileoverview Basic control of Foscam IP camera.
    */
   return {
-    version : 20161026,
+    version : 20161027,
 
     inputs  : ['command', 'list'],
 
