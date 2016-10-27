@@ -44,12 +44,14 @@
           return message;
         };
 
-    if (value === 'on') {
+    value = value || {};
+
+    if (value.alarm === 'on') {
       stateOn = ' device-active';
       status  = translate('CAMERA_ARMED');
     }
 
-    else if (value === 'off') {
+    else if (value.alarm === 'off') {
       stateOff = ' device-active';
       status   = translate('CAMERA_DISARMED');
     }
@@ -63,7 +65,7 @@
       arm    = SB.getByClass('fa-lock',   SB.get(deviceId), 'a')[0];
       disarm = SB.getByClass('fa-unlock', SB.get(deviceId), 'a')[0];
 
-      if ((value === 'on') && (!SB.hasClass(arm, 'device-on'))) {
+      if ((value.alarm === 'on') && (!SB.hasClass(arm, 'device-on'))) {
         SB.addClass(arm,       'device-active');
         SB.removeClass(disarm, 'device-active');
         SB.putText(SB.getByTag('em', arm)[0],    status);
@@ -71,7 +73,7 @@
         markup = '';
       }
 
-      else if ((value === 'off') && (!SB.hasClass(disarm, 'device-on'))) {
+      else if ((value.alarm === 'off') && (!SB.hasClass(disarm, 'device-on'))) {
         SB.addClass(disarm, 'device-active');
         SB.removeClass(arm, 'device-active');
         SB.putText(SB.getByTag('em', arm)[0],    status);

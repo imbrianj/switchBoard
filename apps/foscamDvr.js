@@ -55,12 +55,13 @@ module.exports = (function () {
     },
 
     deleteOldest : function (controller) {
-      var fs      = require('fs'),
-          mkvPath = 'images/foscam/dvr',
-          gifPath = 'images/foscam/thumb',
-          jpgPath = gifPath,
+      var fs         = require('fs'),
+          runCommand = require(__dirname + '/../lib/runCommand'),
+          mkvPath    = 'images/foscam/dvr',
+          gifPath    = 'images/foscam/thumb',
+          jpgPath    = gifPath,
           filename,
-          self    = this;
+          self       = this;
 
       fs.readdir(mkvPath, function(err, items) {
         filename = self.getFilename(items[0]);
@@ -69,6 +70,8 @@ module.exports = (function () {
           fs.unlink(mkvPath + '/' + filename + '.mkv');
           fs.unlink(gifPath + '/' + filename + '.gif');
           fs.unlink(jpgPath + '/' + filename + '.jpg');
+
+          runCommand.runCommand(controller.config.deviceId, 'list');
 
           console.log('\x1b[35m' + controller.config.title + '\x1b[0m: DVR files for ' + filename + ' deleted');
         }
@@ -123,10 +126,13 @@ module.exports = (function () {
 
     buildThumbnails : function (controller, filename) {
       var spawn             = require('child_process').spawn,
+          runCommand        = require(__dirname + '/../lib/runCommand'),
           screenshotCommand = this.translateScreenshotCommand(filename),
           thumbCommand      = this.translateThumbCommand(filename);
 
       console.log('\x1b[35m' + controller.config.title + '\x1b[0m: Creating DVR thumbnails for ' + filename);
+
+      runCommand.runCommand(controller.config.deviceId, 'list');
 
       spawn(screenshotCommand.command, screenshotCommand.params);
       spawn(thumbCommand.command, thumbCommand.params);
@@ -144,7 +150,9 @@ module.exports = (function () {
       execute.params.push('-vframes');
       execute.params.push(1);
       execute.params.push('-q:v');
-      execute.params.push('5');
+      execute.params.push('10');
+      execute.params.push('-vf');
+      execute.params.push('scale=200:-1');
       execute.params.push(output);
 
       return execute;
@@ -161,6 +169,8 @@ module.exports = (function () {
       execute.params.push(1);
       execute.params.push('-filter:v');
       execute.params.push('setpts=0.025*PTS');
+      execute.params.push('-vf');
+      execute.params.push('scale=200:-1');
       execute.params.push(output);
 
       return execute;

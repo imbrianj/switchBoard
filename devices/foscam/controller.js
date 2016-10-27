@@ -29,9 +29,9 @@ module.exports = (function () {
    * @fileoverview Basic control of Foscam IP camera.
    */
   return {
-    version : 20151208,
+    version : 20161026,
 
-    inputs  : ['command'],
+    inputs  : ['command', 'list'],
 
     /**
      * Whitelist of available key codes to use.
@@ -74,17 +74,72 @@ module.exports = (function () {
       var runCommand = require(__dirname + '/../../lib/runCommand');
 
       runCommand.runCommand(controller.config.deviceId, 'state', controller.config.deviceId);
+      runCommand.runCommand(controller.config.deviceId, 'list', controller.config.deviceId);
 
       controller.markup = controller.markup.replace('{{FOSCAM_DYNAMIC}}', 'http://' + controller.config.deviceIp + '/videostream.cgi?user=' + controller.config.username + '&amp;pwd=' + controller.config.password);
 
       return controller;
     },
 
+    getFilename : function (filename) {
+      var validTypes = ['jpg', 'gif', 'mkv'],
+          extension  = filename.split('.').pop(),
+          clean      = null;
+
+      if (validTypes.indexOf(extension) !== -1) {
+        clean = filename.slice(0, -4);
+      }
+
+      return clean;
+    },
+
+    /**
+     * Grab all thumbnail path and assume corresponding screenshot and videos.
+     */
+    getStoredVideos : function (foscam) {
+      var fs          = require('fs'),
+          deviceState = require(__dirname + '/../../lib/deviceState'),
+          path        = 'images/foscam/thumb',
+          self        = this,
+          videos      = [],
+          filename;
+
+      fs.readdir(path, function(err, items) {
+        var params = deviceState.getDeviceState(foscam.deviceId) || { value : null },
+            i = 0;
+
+        params.value = params.value || {};
+
+        for (i; i < items.length; i += 1) {
+          filename = items[i];
+
+          if (filename.split('.').pop() === 'gif') {
+            filename = self.getFilename(filename);
+
+            videos.push({
+              video  : 'images/foscam/dvr/' + filename + '.mkv',
+              thumb  : 'images/foscam/thumb/' + filename + '.gif',
+              screen : 'images/foscam/thumb/' + filename + '.jpg'
+            });
+          }
+        }
+
+        // We want reverse chron for more natural display.
+        videos.reverse();
+
+        // But we want to chop off any beyond a decent threshold.
+        params.value.videos = videos.slice(0, foscam.videoCount);
+
+        foscam.callback(null, params.value);
+      });
+    },
+
     /**
      * Prepares and calls send() to request the current state.
      */
     state : function (controller, config, callback) {
-      var foscam = { device : {}, config : {} };
+      var deviceState = require(__dirname + '/../../lib/deviceState'),
+          foscam      = { device : {}, config : {} };
 
       callback                   = callback || function () {};
       foscam.command             = 'state';
@@ -96,15 +151,17 @@ module.exports = (function () {
       foscam.command             = 'PARAMS';
 
       foscam.callback = function (err, reply) {
-        var params  = { value : '' };
+        var params = deviceState.getDeviceState(foscam.device.deviceId) || { value : null };
+
+        params.value = params.value || {};
 
         if (reply) {
           if (reply.toString().indexOf('var alarm_motion_armed=0') !== -1) {
-            params.value = 'off';
+            params.value.alarm = 'off';
           }
 
           else if (reply.toString().indexOf('var alarm_motion_armed=1') !== -1) {
-            params.value = 'on';
+            params.value.alarm = 'on';
           }
 
           callback(foscam.device.deviceId, null, 'ok', params);
@@ -127,15 +184,22 @@ module.exports = (function () {
           dataReply = '',
           request;
 
+      foscam.deviceId   = config.device.deviceId;
       foscam.deviceIp   = config.device.deviceIp;
       foscam.timeout    = config.device.localTimeout || config.config.localTimeout;
       foscam.username   = config.device.username;
       foscam.password   = config.device.password;
+      foscam.videoCount = config.device.videoCount   || 50;
       foscam.command    = config.command             || '';
+      foscam.list       = config.list                || '';
       foscam.devicePort = config.device.devicePort   || 80;
       foscam.callback   = config.callback            || function () {};
 
-      if (foscam.command === 'TAKE') {
+      if (foscam.list) {
+        this.getStoredVideos(foscam);
+      }
+
+      else if (foscam.command === 'TAKE') {
         fs.stat(filePath, function(err, data) {
           var request,
               postData;

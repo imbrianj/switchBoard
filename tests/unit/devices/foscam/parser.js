@@ -31,8 +31,8 @@ exports.foscamParserTest = {
 
     var foscamParser = require(__dirname + '/../../../../devices/foscam/parser'),
         markup       = '<h1>Foo</h1> <span class="{{DEVICE_STATE_ON}}">On</span> <span class="{{DEVICE_STATE_OFF}}">Off</span>',
-        onMarkup     = foscamParser.foscam('dummy', markup, 'ok', 'on'),
-        offMarkup    = foscamParser.foscam('dummy', markup, 'ok', 'off');
+        onMarkup     = foscamParser.foscam('dummy', markup, 'ok', { alarm: 'on' }),
+        offMarkup    = foscamParser.foscam('dummy', markup, 'ok', { alarm: 'off' });
 
     test.strictEqual(onMarkup.indexOf('{{'),  -1, 'All values replaced');
     test.notStrictEqual(onMarkup.indexOf('<span class=" device-active">On</span> <span class="">Off</span>'),  -1, 'Passed markup validated');
