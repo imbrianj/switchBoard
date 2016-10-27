@@ -40,11 +40,11 @@ module.exports = (function () {
 
       if ((currentState) && (currentState.value)) {
         if ((command === 'ALARM_ON') || (command === 'ALARM_OFF')) {
-          if ((command === 'ALARM_ON') && (currentState.value === 'off')) {
+          if ((command === 'ALARM_ON') && (currentState.value.alarm === 'off')) {
             message = translate.translate('{{i18n_CAMERA_ARMED}}', 'foscam', controllers.config.language);
           }
 
-          else if ((command === 'ALARM_OFF') && (currentState.value === 'on')) {
+          else if ((command === 'ALARM_OFF') && (currentState.value.alarm === 'on')) {
             message = translate.translate('{{i18n_CAMERA_DISARMED}}', 'foscam', controllers.config.language);
           }
 

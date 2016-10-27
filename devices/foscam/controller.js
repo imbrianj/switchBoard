@@ -105,7 +105,7 @@ module.exports = (function () {
           filename;
 
       fs.readdir(path, function(err, items) {
-        var params = deviceState.getDeviceState(foscam.deviceId) || { value : null },
+        var params = JSON.parse(JSON.stringify(deviceState.getDeviceState(foscam.deviceId))) || { value : null },
             i = 0;
 
         params.value = params.value || {};
@@ -151,7 +151,7 @@ module.exports = (function () {
       foscam.command             = 'PARAMS';
 
       foscam.callback = function (err, reply) {
-        var params = deviceState.getDeviceState(foscam.device.deviceId) || { value : null };
+        var params = JSON.parse(JSON.stringify(deviceState.getDeviceState(foscam.device.deviceId))) || { value : null };
 
         params.value = params.value || {};
 
@@ -164,7 +164,7 @@ module.exports = (function () {
             params.value.alarm = 'on';
           }
 
-          callback(foscam.device.deviceId, null, 'ok', params);
+          callback(foscam.device.deviceId, null, params.value, params);
         }
 
         else if (err) {
