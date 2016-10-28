@@ -30,7 +30,8 @@ module.exports = (function () {
 
   var reporter = require('nodeunit').reporters.default;
 
-  reporter.run(['tests/unit/apps/gerty/activeBuilding.js',
+  reporter.run(['tests/unit/apps/foscamDvr.js',
+                'tests/unit/apps/gerty/activeBuilding.js',
                 'tests/unit/apps/gerty/entertainment.js',
                 'tests/unit/apps/gerty/language.js',
                 'tests/unit/apps/gerty/mood.js',

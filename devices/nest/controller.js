@@ -29,7 +29,7 @@ module.exports = (function () {
    * @requires querystring, fs, https
    */
   return {
-    version : 20151129,
+    version : 20161027,
 
     inputs : ['command', 'text', 'list', 'subdevice'],
 
@@ -299,7 +299,7 @@ module.exports = (function () {
 
       // We can only send commands to thermostats.
       if ((nestState.value) && (nestState.value.devices)) {
-        subDevices = JSON.parse(JSON.stringify(nestState.value.devices));
+        subDevices = nestState.value.devices;
       }
 
       if (nestState.value) {

@@ -30,7 +30,7 @@ module.exports = (function () {
    * @fileoverview Register comments to Gerty.
    */
   return {
-    version : 20151127,
+    version : 20161027,
 
     inputs  : ['command', 'text'],
 
@@ -177,7 +177,7 @@ module.exports = (function () {
           now;
 
       if (gertyState && gertyState.value && gertyState.value.comments) {
-        allComments = JSON.parse(JSON.stringify(gertyState.value.comments));
+        allComments = gertyState.value.comments;
       }
 
       if (comment) {

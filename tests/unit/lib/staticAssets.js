@@ -34,15 +34,32 @@ exports.staticAssetsTest = {
         js           = staticAssets.getDirectory('.js', '/js/TEST-min.js'),
         roku         = staticAssets.getDirectory('.png', '/images/roku/TEST.png'),
         png          = staticAssets.getDirectory('.png', '/images/TEST/TEST.png'),
+        gif          = staticAssets.getDirectory('.gif', '/images/foscam/thumb/TEST.gif'),
         ico          = staticAssets.getDirectory('.ico', '/images/icons/TEST.ico'),
         woff         = staticAssets.getDirectory('.woff', '/font/TEST.woff');
 
-    test.strictEqual(css,  'css', 'CSS lives in the CSS directory');
-    test.strictEqual(js,   'js', 'JS lives in the JS directory');
-    test.strictEqual(roku, 'images/roku', 'Images live in their designated directories');
-    test.strictEqual(png,  'images/TEST', 'Images live in their designated directories');
-    test.strictEqual(ico,  'images/icons', 'Icons live in the images directory');
-    test.strictEqual(woff, 'font', 'Fonts live in the fonts directory');
+    test.strictEqual(css,  'css',                 'CSS lives in the CSS directory');
+    test.strictEqual(js,   'js',                  'JS lives in the JS directory');
+    test.strictEqual(roku, 'images/roku',         'Images live in their designated directories');
+    test.strictEqual(png,  'images/TEST',         'Images live in their designated directories');
+    test.strictEqual(gif,  'images/foscam/thumb', 'Images live in their designated directories');
+    test.strictEqual(ico,  'images/icons',        'Icons live in the images directory');
+    test.strictEqual(woff, 'font',                'Fonts live in the fonts directory');
+
+    test.done();
+  },
+
+  getFilename : function (test) {
+    'use strict';
+
+    var staticAssets = require(__dirname + '/../../../lib/staticAssets'),
+        goodFile     = staticAssets.getFilename('foo.jpg',  ['jpg']),
+        badFile      = staticAssets.getFilename('dir.info', ['gif']),
+        noFile       = staticAssets.getFilename();
+
+    test.deepEqual(goodFile, 'foo', 'Removes file extension');
+    test.deepEqual(badFile,  null,  'Filters out unexpected files');
+    test.deepEqual(noFile,   null,  'Filters out unexpected files');
 
     test.done();
   }

@@ -105,10 +105,10 @@ module.exports = (function () {
           filename;
 
       fs.readdir(path, function(err, items) {
-        var params = JSON.parse(JSON.stringify(deviceState.getDeviceState(foscam.deviceId))) || { value : null },
+        var foscamData = deviceState.getDeviceState(foscam.deviceId) || { value : null },
             i = 0;
 
-        params.value = params.value || {};
+        foscamData.value = foscamData.value || {};
 
         for (i; i < items.length; i += 1) {
           filename = items[i];
@@ -128,9 +128,9 @@ module.exports = (function () {
         videos.reverse();
 
         // But we want to chop off any beyond a decent threshold.
-        params.value.videos = videos.slice(0, foscam.videoCount);
+        foscamData.value.videos = videos.slice(0, foscam.maxCount);
 
-        foscam.callback(null, params.value);
+        foscam.callback(null, foscamData.value);
       });
     },
 
@@ -151,20 +151,20 @@ module.exports = (function () {
       foscam.command             = 'PARAMS';
 
       foscam.callback = function (err, reply) {
-        var params = JSON.parse(JSON.stringify(deviceState.getDeviceState(foscam.device.deviceId))) || { value : null };
+        var foscamData = deviceState.getDeviceState(foscam.device.deviceId) || { value : null };
 
-        params.value = params.value || {};
+        foscamData.value = foscamData.value || {};
 
         if (reply) {
           if (reply.toString().indexOf('var alarm_motion_armed=0') !== -1) {
-            params.value.alarm = 'off';
+            foscamData.value.alarm = 'off';
           }
 
           else if (reply.toString().indexOf('var alarm_motion_armed=1') !== -1) {
-            params.value.alarm = 'on';
+            foscamData.value.alarm = 'on';
           }
 
-          callback(foscam.device.deviceId, null, params.value, params);
+          callback(foscam.device.deviceId, null, foscamData.value, foscamData);
         }
 
         else if (err) {
@@ -189,7 +189,7 @@ module.exports = (function () {
       foscam.timeout    = config.device.localTimeout || config.config.localTimeout;
       foscam.username   = config.device.username;
       foscam.password   = config.device.password;
-      foscam.videoCount = config.device.videoCount   || 50;
+      foscam.maxCount   = config.device.maxCount     || 50;
       foscam.command    = config.command             || '';
       foscam.list       = config.list                || '';
       foscam.devicePort = config.device.devicePort   || 80;

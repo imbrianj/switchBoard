@@ -216,6 +216,7 @@ exports.config = {
     deviceIp  : '192.168.1.7',
     username  : 'user',
     password  : 'password',
+    maxCount  : 50,
     apps      : { 'Announce'      : { id            : 'announceFoscam',
                                       controllerIds : ['speech', 'clientSpeech', 'clientNotify', 'gerty'] },
                   'Foscam Change' : { id            : 'foscamChange' },

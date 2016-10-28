@@ -29,7 +29,7 @@ module.exports = (function () {
    * @fileoverview Basic control of SmartThings endpoint.
    */
   return {
-    version : 20160112,
+    version : 20161027,
 
     inputs  : ['list', 'subdevice'],
 
@@ -314,7 +314,7 @@ module.exports = (function () {
           value            = '';
 
       if ((smartThingsState.value) && (smartThingsState.value.devices)) {
-        subDevices = JSON.parse(JSON.stringify(smartThingsState.value.devices));
+        subDevices = smartThingsState.value.devices;
       }
 
       if (command.indexOf('mode-') === 0) {

@@ -28,7 +28,7 @@
  * @note Huge thanks for the ffmpeg syntax found here:
  *       http://foscam.us/forum/post33382.html#p33382
  * @note Requires the installation of ffmpeg.  You can download a .deb for
- *       Raspbian here:
+ *       Raspbian here (just follow step 1):
  *       https://github.com/ccrisan/motioneye/wiki/Install-On-Raspbian
  */
 
@@ -42,29 +42,17 @@ module.exports = (function () {
 
     dvrProcess : null,
 
-    getFilename : function (filename) {
-      var validTypes = ['jpg', 'gif', 'mkv'],
-          extension  = filename.split('.').pop(),
-          clean      = null;
-
-      if (validTypes.indexOf(extension) !== -1) {
-        clean = filename.slice(0, -4);
-      }
-
-      return clean;
-    },
-
     deleteOldest : function (controller) {
-      var fs         = require('fs'),
-          runCommand = require(__dirname + '/../lib/runCommand'),
-          mkvPath    = 'images/foscam/dvr',
-          gifPath    = 'images/foscam/thumb',
-          jpgPath    = gifPath,
-          filename,
-          self       = this;
+      var fs           = require('fs'),
+          runCommand   = require(__dirname + '/../lib/runCommand'),
+          staticAssets = require(__dirname + '/../lib/staticAssets'),
+          mkvPath      = 'images/foscam/dvr',
+          gifPath      = 'images/foscam/thumb',
+          jpgPath      = gifPath,
+          filename;
 
       fs.readdir(mkvPath, function(err, items) {
-        filename = self.getFilename(items[0]);
+        filename = staticAssets.getFilename(items[0], ['jpg', 'gif', 'mkv']);
 
         if (filename) {
           fs.unlink(mkvPath + '/' + filename + '.mkv');
@@ -98,10 +86,11 @@ module.exports = (function () {
     },
 
     checkThumbnails : function (controller, thumbByteLimit) {
-      var fs   = require('fs'),
-          path = 'images/foscam/',
-          i    = 0,
-          self = this;
+      var fs           = require('fs'),
+          staticAssets = require(__dirname + '/../lib/staticAssets'),
+          path         = 'images/foscam/',
+          i            = 0,
+          self         = this;
 
       fs.readdir(path + 'dvr', function(err, items) {
         for (i; i < items.length; i += 1) {
@@ -119,7 +108,7 @@ module.exports = (function () {
                 }
               });
             }
-          })(self.getFilename(items[i]));
+          })(staticAssets.getFilename(items[i], ['jpg', 'gif', 'mkv']));
         }
       });
     },
@@ -204,7 +193,7 @@ module.exports = (function () {
       execute.params.push('-acodec');
       execute.params.push('copy');
       execute.params.push('-vcodec');
-      execute.params.push('copy');
+      execute.params.push('libx264');
       execute.params.push('-f');
       execute.params.push('segment');
       execute.params.push('-segment_time');
@@ -269,11 +258,11 @@ module.exports = (function () {
           thumbByteLimit = (config.thumbByteLimit || (roughMbPerMin * (videoLength / 60))) * bytePerMeg;
 
       if ((currentState) && (currentState.value)) {
-        if ((currentState.value === 'off') && (this.dvrProcess)) {
+        if ((currentState.value.alarm === 'off') && (this.dvrProcess)) {
           this.stopDvr(controller);
         }
 
-        else if ((currentState.value === 'on') && (!this.dvrProcess)) {
+        else if ((currentState.value.alarm === 'on') && (!this.dvrProcess)) {
           this.startDvr(controller, videoLength);
         }
       }
