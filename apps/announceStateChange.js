@@ -35,7 +35,7 @@
    var State = {};
 
    return {
-     version : 20160830,
+     version : 20161101,
 
      translate : function (token, lang) {
        var translate = require(__dirname + '/../lib/translate');
@@ -43,10 +43,10 @@
        return translate.translate('{{i18n_' + token + '}}', 'common', lang);
      },
 
-     announceStateChange : function (device, command, controllers, values) {
+     announceStateChange : function (deviceId, command, controllers, values) {
        var stateTitle  = '',
            notify,
-           deviceTitle = controllers[device].config.title,
+           deviceTitle = controllers[deviceId].config.title,
            lang        = controllers.config.language,
            message     = '';
 
@@ -61,7 +61,7 @@
              message = message.split('{{DEVICE}}').join(deviceTitle);
              message = message.split('{{STATE}}').join(this.translate(stateTitle, lang));
 
-             notify.notify(message, controllers, device);
+             notify.notify(message, controllers, deviceId);
            }
 
            State[deviceTitle] = stateTitle;

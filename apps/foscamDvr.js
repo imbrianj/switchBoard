@@ -35,8 +35,10 @@
 module.exports = (function () {
   'use strict';
 
+  var Devices = {};
+
   return {
-    version : 20161026,
+    version : 201611101,
 
     lastEvents : { space : 0, thumbnail : 0 },
 
@@ -99,8 +101,8 @@ module.exports = (function () {
               fs.stat(path + 'dvr/' + filename + '.mkv', function (err, stats) {
                 if (stats.size >= thumbByteLimit) {
                   fs.stat(path + 'thumb/' + filename + '.gif', function (err, stats) {
-                    // If we don't have a thumbnail for a video file larger than the
-                    // defined threshold, let's generate them.
+                    // If we don't have a thumbnail for a video file larger than
+                    // the defined threshold, let's generate them.
                     if (!stats) {
                       self.buildThumbnails(controller, filename);
                     }
@@ -117,14 +119,26 @@ module.exports = (function () {
       var spawn             = require('child_process').spawn,
           runCommand        = require(__dirname + '/../lib/runCommand'),
           screenshotCommand = this.translateScreenshotCommand(filename),
-          thumbCommand      = this.translateThumbCommand(filename);
+          thumbCommand      = this.translateThumbCommand(filename),
+          thumbProcess;
 
       console.log('\x1b[35m' + controller.config.title + '\x1b[0m: Creating DVR thumbnails for ' + filename);
 
-      runCommand.runCommand(controller.config.deviceId, 'list');
-
       spawn(screenshotCommand.command, screenshotCommand.params);
-      spawn(thumbCommand.command, thumbCommand.params);
+      thumbProcess = spawn(thumbCommand.command, thumbCommand.params);
+
+      // Thumbnails take longer than screenshots, so we'll run the list command
+      // after it's completed.
+      thumbProcess.once('close', function () {
+        runCommand.runCommand(controller.config.deviceId, 'list');
+      });
+
+      thumbProcess.stderr.on('data', function (data) {
+        data = data.toString();
+
+        // If you need help debugging ffmpeg, uncomment the following line:
+        // console.log(data)
+      });
     },
 
     translateScreenshotCommand : function (filename) {
@@ -155,11 +169,9 @@ module.exports = (function () {
       execute.params.push('-i');
       execute.params.push(input);
       execute.params.push('-r');
-      execute.params.push(1);
-      execute.params.push('-filter:v');
-      execute.params.push('setpts=0.025*PTS');
+      execute.params.push(5);
       execute.params.push('-vf');
-      execute.params.push('scale=200:-1');
+      execute.params.push('setpts=0.05*PTS, scale=200:-1');
       execute.params.push(output);
 
       return execute;
@@ -172,10 +184,11 @@ module.exports = (function () {
           day       = now.getDate(),
           hour      = now.getHours(),
           minute    = now.getMinutes(),
+          deviceId  = config.deviceId,
           videoPath = 'http://' + config.deviceIp + '/videostream.cgi?user=' + config.username + '&pwd=' + config.password,
           audioPath = 'http://' + config.deviceIp + '/videostream.asf?user=' + config.username + '&pwd=' + config.password,
           localPath = 'images/foscam/dvr',
-          output    = localPath + '/' + year + '-' + month + '-' + day + '-' + hour + '-' + minute + '-%03d.mkv',
+          output    = localPath + '/' + deviceId + '-' + year + '-' + month + '-' + day + '-' + hour + '-' + minute + '-%03d.mkv',
           execute   = { command : 'ffmpeg', params : [] };
 
       execute.params.push('-use_wallclock_as_timestamps');
@@ -191,7 +204,7 @@ module.exports = (function () {
       execute.params.push('-map');
       execute.params.push('1:a');
       execute.params.push('-acodec');
-      execute.params.push('copy');
+      execute.params.push('aac');
       execute.params.push('-vcodec');
       execute.params.push('libx264');
       execute.params.push('-f');
@@ -205,45 +218,47 @@ module.exports = (function () {
       return execute;
     },
 
-    startDvr : function (controller, videoLength) {
+    startDvr : function (controller, deviceId, videoLength) {
       var spawn       = require('child_process').spawn,
           dvrCommand  = this.translateVideoCommand(controller.config, videoLength),
-          deviceTitle = controller.config.title;
+          deviceTitle = controller.config.title,
+          self        = this;
 
       console.log('\x1b[35m' + deviceTitle + '\x1b[0m: DVR started');
 
-      this.dvrProcess = spawn(dvrCommand.command, dvrCommand.params);
+      Devices[deviceId].dvrProcess = spawn(dvrCommand.command, dvrCommand.params);
 
-      this.dvrProcess.stderr.on('data', function (data) {
+      Devices[deviceId].dvrProcess.stderr.on('data', function (data) {
         data = data.toString();
 
         // If you need help debugging ffmpeg, uncomment the following line:
         // console.log(data)
       });
 
-      this.dvrProcess.once('close', function () {
+      Devices[deviceId].dvrProcess.once('close', function () {
+        // When recording is over, we can safely build out any remaining
+        // thumbnails.
+        self.checkThumbnails(controller, 0);
+
         console.log('\x1b[35m' + deviceTitle + '\x1b[0m: DVR stopped');
       });
     },
 
-    stopDvr : function (controller) {
+    stopDvr : function (deviceId) {
       var now = new Date().getTime();
 
-      if (this.dvrProcess) {
-        this.dvrProcess.kill();
-        this.dvrProcess = null;
+      if (Devices[deviceId].dvrProcess) {
+        Devices[deviceId].dvrProcess.kill();
+        Devices[deviceId].dvrProcess = null;
 
-        // When recording is over, we can safely build out any remaining
-        // thumbnails.
-        this.checkThumbnails(controller, 0);
-        this.lastEvents.thumbnail = now;
+        Devices[deviceId].lastEvents.thumbnail = now;
       }
     },
 
-    foscamDvr : function (device, command, controllers, values, config) {
+    foscamDvr : function (deviceId, command, controllers, values, config) {
       var deviceState    = require(__dirname + '/../lib/deviceState'),
-          controller     = controllers[device],
-          currentState   = deviceState.getDeviceState(device),
+          controller     = controllers[deviceId],
+          currentState   = deviceState.getDeviceState(deviceId),
           now            = new Date().getTime(),
           delay          = (config.delay || 300) * 1000,
           videoLength    = config.videoLength || 600,
@@ -257,18 +272,20 @@ module.exports = (function () {
           // will have thumbnails generated when recordig has ended.
           thumbByteLimit = (config.thumbByteLimit || (roughMbPerMin * (videoLength / 60))) * bytePerMeg;
 
+      Devices[deviceId] = Devices[deviceId] || {dvrProcess: null, lastEvents : { space : 0, thumbnail : 0 } };
+
       if ((currentState) && (currentState.value)) {
-        if ((currentState.value.alarm === 'off') && (this.dvrProcess)) {
-          this.stopDvr(controller);
+        if ((currentState.value.alarm === 'off') && (Devices[deviceId].dvrProcess)) {
+          this.stopDvr(deviceId);
         }
 
-        else if ((currentState.value.alarm === 'on') && (!this.dvrProcess)) {
-          this.startDvr(controller, videoLength);
+        else if ((currentState.value.alarm === 'on') && (!Devices[deviceId].dvrProcess)) {
+          this.startDvr(controller, deviceId, videoLength);
         }
       }
 
       // Only care about disc space when something will be written.
-      if (this.dvrProcess) {
+      if (Devices[deviceId].dvrProcess) {
         // Only check the disc usage after a delay (default 5 minutes) since it
         // may be expensive.
         if (now > (this.lastEvents.space + delay)) {

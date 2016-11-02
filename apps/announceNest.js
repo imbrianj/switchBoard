@@ -32,9 +32,9 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20151028,
+    version : 20161101,
 
-    announceNest : function (device, command, controllers, values, config) {
+    announceNest : function (deviceId, command, controllers, values, config) {
       var runCommand  = require(__dirname + '/../lib/runCommand'),
           translate   = require(__dirname + '/../lib/translate'),
           notify      = require(__dirname + '/../lib/notify'),
@@ -70,7 +70,7 @@ module.exports = (function () {
         }
 
         if (message) {
-          notify.notify(message, controllers, device);
+          notify.notify(message, controllers, deviceId);
 
           // If you have a macro assigned to this specific Mode, we'll act upon
           // it.

@@ -31,11 +31,11 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20160516,
+    version : 20161101,
 
     lastEvents : { knock : 0, open : 0, close: 0 },
 
-    doorKnock : function (device, command, controllers, values, config) {
+    doorKnock : function (deviceId, command, controllers, values, config) {
       var now   = new Date().getTime(),
           delay = (config.delay || 5) * 1000,
           that  = this;
@@ -58,18 +58,18 @@ module.exports = (function () {
               translate  = require(__dirname + '/../lib/translate'),
               runCommand = require(__dirname + '/../lib/runCommand'),
               message    = '',
-              deviceId;
+              currDevice;
 
           if ((that.lastEvents.open <= that.lastEvents.close) &&
               (Math.abs(that.lastEvents.knock - that.lastEvents.open)  > delay) &&
               (Math.abs(that.lastEvents.knock - that.lastEvents.close) > delay)) {
             message = translate.translate('{{i18n_DOOR_KNOCK}}', 'smartthings', controllers.config.language).split('{{LABEL}}').join(config.contact);
 
-            notify.notify(message, controllers, device);
+            notify.notify(message, controllers, deviceId);
 
-            for (deviceId in controllers) {
-              if ((controllers[deviceId].config) && ((controllers[deviceId].config.typeClass === 'mp3') || (controllers[deviceId].config.typeClass === 'clientMp3'))) {
-                runCommand.runCommand(deviceId, 'text-doorbell');
+            for (currDevice in controllers) {
+              if ((controllers[currDevice].config) && ((controllers[currDevice].config.typeClass === 'mp3') || (controllers[currDevice].config.typeClass === 'clientMp3'))) {
+                runCommand.runCommand(currDevice, 'text-doorbell');
               }
             }
           }

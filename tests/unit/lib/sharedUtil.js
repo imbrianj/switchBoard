@@ -53,6 +53,22 @@ exports.sharedUtilTest = {
     test.done();
   },
 
+  sanitize : function (test) {
+    'use strict';
+
+    var util = require(__dirname + '/../../../lib/sharedUtil').util;
+
+    test.strictEqual(util.sanitize(12),                                          12,        'Don\'t choke on non-strings');
+    test.strictEqual(util.sanitize('<span>Test</span>'),                         'Test',    'Text without HTML tags');
+    test.strictEqual(util.sanitize('<a href="#" onclick="alert()">Testing</a>'), 'Testing', 'Text without HTML tags');
+
+    test.strictEqual(util.sanitize(12),                                           12,        'Don\'t choke on non-strings');
+    test.strictEqual(util.sanitize('<span>Test</span>'),                          'Test',    'Text without HTML tags');
+    test.strictEqual(util.sanitize('<a href="#" onclick="alert()">Testing</a>'),  'Testing', 'Text without HTML tags');
+
+    test.done();
+  },
+
   encodeName : function (test) {
     'use strict';
 
@@ -93,7 +109,7 @@ exports.sharedUtilTest = {
         short = util.displayRelativeTime(10),
         long  = util.displayRelativeTime(10000000);
 
-    test.strictEqual(short, '00 00:00:10',     'Relative time converted');
+    test.strictEqual(short, '00 00:00:10',  'Relative time converted');
     test.strictEqual(long,  '115 17:46:40', 'Relative time converted');
 
     test.done();

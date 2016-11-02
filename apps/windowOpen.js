@@ -32,7 +32,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20151009,
+    version : 20161101,
 
     governor : false,
 
@@ -57,7 +57,7 @@ module.exports = (function () {
       return message;
     },
 
-    windowOpen : function (device, command, controllers, values, config) {
+    windowOpen : function (deviceId, command, controllers, values, config) {
       var notify      = require(__dirname + '/../lib/notify'),
           deviceState = require(__dirname + '/../lib/deviceState'),
           runCommand  = require(__dirname + '/../lib/runCommand'),
@@ -68,15 +68,15 @@ module.exports = (function () {
           status;
 
       checkState = function () {
-        var deviceId,
+        var currDevice,
             currentDevice = {},
             status        = { thermostat : [], contact : [] },
             subDeviceId,
             subDevice;
 
-        for (deviceId in controllers) {
-          if ((controllers[deviceId].config) && (controllers[deviceId].config.typeClass === 'nest')) {
-            currentDevice = deviceState.getDeviceState(deviceId);
+        for (currDevice in controllers) {
+          if ((controllers[currDevice].config) && (controllers[currDevice].config.typeClass === 'nest')) {
+            currentDevice = deviceState.getDeviceState(currDevice);
 
             if (currentDevice.value) {
               for (subDeviceId in currentDevice.value.devices) {
@@ -91,8 +91,8 @@ module.exports = (function () {
             }
           }
 
-          else if ((controllers[deviceId].config) && (controllers[deviceId].config.typeClass === 'smartthings')) {
-            currentDevice = deviceState.getDeviceState(deviceId);
+          else if ((controllers[currDevice].config) && (controllers[currDevice].config.typeClass === 'smartthings')) {
+            currentDevice = deviceState.getDeviceState(currDevice);
 
             if (currentDevice.value) {
               for (subDeviceId in currentDevice.value.devices) {
@@ -119,23 +119,23 @@ module.exports = (function () {
         this.governor = true;
 
         message = that.formatMessage('warn', status.contact, status.thermostat[0].state, controllers.config.language);
-        notify.notify(message, controllers, device);
+        notify.notify(message, controllers, deviceId);
 
         setTimeout(function () {
           var status = checkState(),
-              deviceId,
+              currDevice,
               i      = 0;
 
           if (status.thermostat.length && status.contact.length) {
-            for (deviceId in controllers) {
-              if (controllers[deviceId].config) {
-                if (controllers[deviceId].config.typeClass === 'nest') {
+            for (currDevice in controllers) {
+              if (controllers[currDevice].config) {
+                if (controllers[currDevice].config.typeClass === 'nest') {
                   for (i; i < status.thermostat.length; i += 1) {
-                    runCommand.runCommand(deviceId, 'subdevice-mode-' + status.thermostat[i].label + '-off');
+                    runCommand.runCommand(currDevice, 'subdevice-mode-' + status.thermostat[i].label + '-off');
                   }
 
                   message = that.formatMessage('off', status.contact, status.thermostat[0].state, controllers.config.language);
-                  notify.notify(message, controllers, device);
+                  notify.notify(message, controllers, deviceId);
                 }
               }
             }

@@ -32,9 +32,9 @@ module.exports = (function () {
   var TempNotified = false;
 
   return {
-    version : 20160331,
+    version : 20161101,
 
-    safeWatch : function (device, command, controllers, values, config) {
+    safeWatch : function (deviceId, command, controllers, values, config) {
       var notify,
           translate,
           deviceState,
@@ -110,7 +110,7 @@ module.exports = (function () {
 
       if ((subdevice) && (type)) {
         deviceState      = require(__dirname + '/../lib/deviceState');
-        smartThingsState = deviceState.getDeviceState(device);
+        smartThingsState = deviceState.getDeviceState(deviceId);
 
         if ((smartThingsState) && (smartThingsState.value) && (smartThingsState.value.devices)) {
           if (!isPresent(smartThingsState.value.devices, config.presence)) {
@@ -119,7 +119,7 @@ module.exports = (function () {
 
             message = translate.translate('{{i18n_SAFE_WATCH_' + type + '}}', 'smartthings', controllers.config.language).split('{{LABEL}}').join(subdevice).split('{{TEMP}}').join(temp);
 
-            notify.notify(message, controllers, device);
+            notify.notify(message, controllers, deviceId);
           }
         }
       }

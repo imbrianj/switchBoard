@@ -32,22 +32,22 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150628,
+    version : 20161101,
 
-    smartthingsSwitchSync : function (device, command, controllers, values, config) {
+    smartthingsSwitchSync : function (deviceId, command, controllers, values, config) {
       var runCommand,
           deviceState,
           smartthingsState,
-          deviceParts      = command.split('-'),
-          deviceName       = '',
-          deviceAction     = '',
+          deviceParts  = command.split('-'),
+          deviceName   = '',
+          deviceAction = '',
           subdevice;
 
       if (command.indexOf('subdevice-state-switch-') === 0) {
         runCommand       = require(__dirname + '/../lib/runCommand');
         deviceState      = require(__dirname + '/../lib/deviceState');
 
-        smartthingsState = deviceState.getDeviceState(device);
+        smartthingsState = deviceState.getDeviceState(deviceId);
         deviceAction     = deviceParts[(deviceParts.length - 1)];
         deviceName       = command.split('subdevice-state-switch-').join('');
         deviceName       = deviceName.split('-' + deviceAction).join('');
@@ -58,7 +58,7 @@ module.exports = (function () {
               if (config.action.indexOf(smartthingsState.value.devices[subdevice].label) !== -1) {
                 if ((smartthingsState.value.devices[subdevice].state !== deviceAction) &&
                     (smartthingsState.value.devices[subdevice].label !== deviceName)) {
-                  runCommand.runCommand(device, 'subdevice-' + deviceAction + '-' + smartthingsState.value.devices[subdevice].label);
+                  runCommand.runCommand(deviceId, 'subdevice-' + deviceAction + '-' + smartthingsState.value.devices[subdevice].label);
                 }
               }
             }

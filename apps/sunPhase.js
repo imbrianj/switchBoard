@@ -30,7 +30,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20151009,
+    version : 20161101,
 
     lastState : null,
 
@@ -40,7 +40,7 @@ module.exports = (function () {
       return translate.translate('{{i18n_' + token + '}}', 'weather', lang);
     },
 
-    sunPhase : function (device, command, controllers, values, config) {
+    sunPhase : function (deviceId, command, controllers, values, config) {
       var state    = values.value ? values.value.phase : null,
           runCommand,
           notify,
@@ -50,7 +50,7 @@ module.exports = (function () {
           newMode  = '',
           rawMacro,
           macro,
-          deviceId,
+          currDevice,
           message  = '';
 
       if (!this.lastState) {
@@ -65,22 +65,22 @@ module.exports = (function () {
         newMode        = state === 'Day' ? config.dayMode : config.nightMode;
         rawMacro       = config.macros[newPhase].split(';');
 
-        for (deviceId in controllers) {
-          if ((controllers[deviceId].config) && (controllers[deviceId].config.typeClass === 'smartthings')) {
+        for (currDevice in controllers) {
+          if ((controllers[currDevice].config) && (controllers[currDevice].config.typeClass === 'smartthings')) {
             deviceState      = require(__dirname + '/../lib/deviceState');
-            smartthingsState = deviceState.getDeviceState(deviceId);
+            smartthingsState = deviceState.getDeviceState(currDevice);
 
             if ((smartthingsState) &&
                 (smartthingsState.value) &&
                 (smartthingsState.value.mode !== 'Away') &&
                 (smartthingsState.value.mode !== newMode)) {
-              runCommand.runCommand(deviceId, 'subdevice-mode-' + newMode);
+              runCommand.runCommand(currDevice, 'subdevice-mode-' + newMode);
 
               message = this.translate(newPhase.toUpperCase(), controllers.config.language);
               message = message.split('{{SUNSET}}').join(config.nightMode);
               message = message.split('{{SUNRISE}}').join(config.dayMode);
 
-              notify.notify(message, controllers, device);
+              notify.notify(message, controllers, deviceId);
             }
           }
         }

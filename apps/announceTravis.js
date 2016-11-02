@@ -32,9 +32,9 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20151221,
+    version : 20161101,
 
-    announceTravis : function (device, command, controllers, values) {
+    announceTravis : function (deviceId, command, controllers, values) {
       var notify,
           translate;
 
@@ -42,7 +42,7 @@ module.exports = (function () {
         notify    = require(__dirname + '/../lib/notify');
         translate = require(__dirname + '/../lib/translate');
 
-        notify.notify(translate.translate('{{i18n_BUILD_FAILURE}}', 'travis', controllers.config.language), controllers, device);
+        notify.notify(translate.translate('{{i18n_BUILD_FAILURE}}', 'travis', controllers.config.language), controllers, deviceId);
       }
     }
   };

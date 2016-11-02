@@ -29,9 +29,9 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20160329,
+    version : 20161101,
 
-    announcePresence : function (device, command, controllers, values, config) {
+    announcePresence : function (deviceId, command, controllers, values, config) {
       var translate  = require(__dirname + '/../lib/translate'),
           notify     = require(__dirname + '/../lib/notify'),
           message    = '',
@@ -54,7 +54,7 @@ module.exports = (function () {
           }
 
           if (message) {
-            notify.notify(message, controllers, device);
+            notify.notify(message, controllers, deviceId);
           }
         }
       }

@@ -47,7 +47,7 @@ exports.foscamDvr = {
 
     test.deepEqual(goodFile.command,   'ffmpeg',                      'Returns command');
     test.deepEqual(goodFile.params[1], 'images/foscam/dvr/foo.mkv',   'Returns parameters');
-    test.deepEqual(goodFile.params[8], 'images/foscam/thumb/foo.gif', 'Returns parameters');
+    test.deepEqual(goodFile.params[6], 'images/foscam/thumb/foo.gif', 'Returns parameters');
 
     test.done();
   },

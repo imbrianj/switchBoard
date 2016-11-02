@@ -29,7 +29,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20151009,
+    version : 20161101,
 
     stillAway : true,
 
@@ -52,7 +52,7 @@ module.exports = (function () {
       return present;
     },
 
-    changeMode : function (device, newMode, present, controllers, lang) {
+    changeMode : function (deviceId, newMode, present, controllers, lang) {
       var sharedUtil = require(__dirname + '/../lib/sharedUtil').util,
           notify     = require(__dirname + '/../lib/notify'),
           runCommand = require(__dirname + '/../lib/runCommand'),
@@ -70,17 +70,17 @@ module.exports = (function () {
         message = message.split('{{PLURAL}}').join(this.translate(plural, lang));
       }
 
-      runCommand.runCommand(device, 'subdevice-mode-' + newMode);
+      runCommand.runCommand(deviceId, 'subdevice-mode-' + newMode);
 
-      notify.notify(message, controllers, device);
+      notify.notify(message, controllers, deviceId);
     },
 
-    presenceMode : function (device, command, controllers, values, config) {
+    presenceMode : function (deviceId, command, controllers, values, config) {
       var that        = this,
           deviceState = require(__dirname + '/../lib/deviceState'),
           lang        = controllers.config.language,
           newMode     = null,
-          deviceId,
+          currDevice,
           weatherState,
           present     = [],
           delay       = config.delay    || 10,
@@ -104,9 +104,9 @@ module.exports = (function () {
               this.stillAway = false;
               newMode = 'Home';
 
-              for (deviceId in controllers) {
-                if ((controllers[deviceId].config) && (controllers[deviceId].config.typeClass === 'weather')) {
-                  weatherState = deviceState.getDeviceState(deviceId);
+              for (currDevice in controllers) {
+                if ((controllers[currDevice].config) && (controllers[currDevice].config.typeClass === 'weather')) {
+                  weatherState = deviceState.getDeviceState(currDevice);
 
                   newMode = weatherState.value.phase === 'Day' ? config.dayMode : config.nightMode;
                 }
@@ -117,19 +117,19 @@ module.exports = (function () {
           if ((newMode) && (values.value.mode !== newMode)) {
             if (newMode === 'Away') {
               setTimeout(function () {
-                var currentState = deviceState.getDeviceState(device),
+                var currentState = deviceState.getDeviceState(deviceId),
                     present      = that.isPresent(currentState.value.devices);
 
                 if ((that.stillAway) && (present.length === 0)) {
                   that.stillAway = false;
 
-                  that.changeMode(device, newMode, present, controllers, lang);
+                  that.changeMode(deviceId, newMode, present, controllers, lang);
                 }
               }, delay * 60000);
             }
 
             else {
-              this.changeMode(device, newMode, present, controllers, lang);
+              this.changeMode(deviceId, newMode, present, controllers, lang);
             }
           }
         }

@@ -54,6 +54,7 @@ module.exports = (function () {
           CANCEL         : "Cancel",
           CHANNEL_DOWN   : "Channel Down",
           CHANNEL_UP     : "Channel Up",
+          CLOSE          : "Close",
           DOWN           : "Down",
           ENTER          : "Enter",
           EXIT           : "Exit",
@@ -264,7 +265,10 @@ module.exports = (function () {
           CAMERA_DISARMED : "Camera disarmed",
           DISARM          : "Disarm",
           PRESET          : "Preset",
-          TAKE            : "Take"
+          SCREENSHOT      : "Screenshot",
+          TAKE            : "Take",
+          THUMBNAIL       : "Thumbnail",
+          VIDEO           : "Video"
         },
         gerty : {
           GERTY        : "Gerty",

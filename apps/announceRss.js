@@ -31,7 +31,7 @@ module.exports = (function () {
   var RssArticles = '';
 
   return {
-    version : 20160329,
+    version : 20161101,
 
     translate : function (token, lang) {
       var translate = require(__dirname + '/../lib/translate');
@@ -39,7 +39,7 @@ module.exports = (function () {
       return translate.translate('{{i18n_' + token + '}}', 'rss', lang);
     },
 
-    announceRss : function (device, command, controllers, values) {
+    announceRss : function (deviceId, command, controllers, values) {
       var articleTitle = '',
           notify,
           lang         = controllers.config.language,
@@ -53,10 +53,10 @@ module.exports = (function () {
             notify     = require(__dirname + '/../lib/notify');
 
             message = this.translate('NEW_ARTICLE', lang);
-            message = message.split('{{DEVICE}}').join(controllers[device].config.title);
+            message = message.split('{{DEVICE}}').join(controllers[deviceId].config.title);
             message = message.split('{{TITLE}}').join(articleTitle);
 
-            notify.notify(message, controllers, device);
+            notify.notify(message, controllers, deviceId);
           }
 
           RssArticles = articleTitle;

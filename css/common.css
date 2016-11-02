@@ -117,17 +117,17 @@ button {
   border-radius: 2px;
   color: #FFF;
   cursor: pointer;
-  font-size: .5em;
+  font-size: 0.5em;
   *font-size: 90%; /*IE 6/7 - To reduce IE's oversized button text*/
   *overflow: visible; /*IE 6/7 - Because of IE's overly large left/right padding on buttons */
-  padding: .5em 1.5em .5em;
+  padding: 0.5em 1.5em .5em;
   text-decoration: none;
   /* Transitions */
-  -webkit-transition: .1s linear -webkit-box-shadow;
-  -moz-transition: .1s linear -moz-box-shadow;
-  -ms-transition: .1s linear box-shadow;
-  -o-transition: .1s linear box-shadow;
-  transition: .1s linear box-shadow;
+  -webkit-transition: 0.1s linear -webkit-box-shadow;
+  -moz-transition: 0.1s linear -moz-box-shadow;
+  -ms-transition: 0.1s linear box-shadow;
+  -o-transition: 0.1s linear box-shadow;
+  transition: 0.1s linear box-shadow;
 }
 
 button:hover,
@@ -145,7 +145,8 @@ button:focus {
 }
 
 button:active {
-  box-shadow: 0 0 0 1px rgba(0,0,0,.15) inset, 0 0 6px rgba(0,0,0,.2) inset;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15) inset,
+              0 0 6px rgba(0, 0, 0, 0.2) inset;
 }
 
 /* Firefox: Get rid of the inner focus border */
@@ -176,13 +177,13 @@ form textarea {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   display: inline-block;
-  font-size: .5em;
-  padding: .5em .6em;
-  -webkit-transition: .3s linear border;
-  -moz-transition: .3s linear border;
-  -ms-transition: .3s linear border;
-  -o-transition: .3s linear border;
-  transition: .3s linear border;
+  font-size: 0.5em;
+  padding: 0.5em 0.6em;
+  -webkit-transition: 0.3s linear border;
+  -moz-transition: 0.3s linear border;
+  -ms-transition: 0.3s linear border;
+  -o-transition: 0.3s linear border;
+  transition: 0.3s linear border;
 }
 
 form input[type="text"]:focus,
@@ -258,13 +259,13 @@ form select[multiple] {
 
 form label {
   font-size: 90%;
-  margin: .5em 0 .2em;
+  margin: 0.5em 0 0.2em;
 }
 
 form fieldset {
   border: 0;
   margin: 0;
-  padding: .35em 0 .75em;
+  padding: 0.35em 0 0.75em;
 }
 
 form legend {
@@ -272,14 +273,14 @@ form legend {
   color: #444;
   display: block;
   font-size: 125%;
-  margin-bottom: .3em;
-  padding: .3em 0;
+  margin-bottom: 0.3em;
+  padding: 0.3em 0;
   width: 100%;
 }
 
 @media only screen and (max-width : 480px) {
   form button[type="submit"] {
-    margin: .7em 0 0;
+    margin: 0.7em 0 0;
   }
 
   form input[type="text"],
@@ -291,7 +292,7 @@ form legend {
   form input[type="color"],
   form label {
     display: block;
-    margin-bottom: .3em;
+    margin-bottom: 0.3em;
   }
 }
 
@@ -381,7 +382,7 @@ header {
 
 header h1 {
   float: left;
-  padding-right: .5em;
+  padding-right: 0.5em;
   text-transform: uppercase;
 }
 
@@ -405,14 +406,14 @@ header nav ul li {
 
 header h1,
 header ul li {
-  margin: 1em .2em .4em .2em;
+  margin: 1em 0.2em 0.4em 0.2em;
 }
 
 header ul li a {
   background-color: #DDD;
   border: 1px solid #FFF;
   border-width: 1px 1px 0 1px;
-  padding: .5em 1em;
+  padding: 0.5em 1em;
   position: relative;
 }
 
@@ -421,10 +422,11 @@ header #indicator {
   height: 1.5em;
   overflow: hidden;
   position: fixed;
-  right: .5em;
+  right: 0.5em;
   text-indent: -999em;
-  top: .5em;
+  top: 0.5em;
   width: 1.5em;
+  z-index: 2;
 }
 
 header .disconnected {
@@ -452,6 +454,7 @@ header .connected {
 section {
   clear: both;
   font-size: 300%;
+  position: relative;
 }
 
 .dashboard section {
@@ -473,9 +476,9 @@ section .text-block h1 {
 .device-off {
   -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=50)';
   filter: alpha(opacity=50);
-  -moz-opacity: .5;
-  -webkit-opacity: .5;
-  opacity: .5;
+  -moz-opacity: 0.5;
+  -webkit-opacity: 0.5;
+  opacity: 0.5;
 }
 
 section > div {
@@ -511,6 +514,38 @@ section .text-control li {
   display: inline-block;
   font-size: 50%;
   width: 22%;
+}
+
+section .curtain {
+  background: rgba(0, 0, 0, 0.75);
+  bottom: 0;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+}
+
+section .curtain .modal {
+  left: 50%;
+  max-width: 80%;
+  position: fixed;
+  top: 50vh;
+  transform: translateX(-50%) translateY(-50%);
+  width: 640px;
+}
+
+section .modal img,
+section .modal audio,
+section .modal video {
+  max-width: 100%;
+}
+
+section .curtain .modal .close-modal {
+  position: absolute;
+  right: -1em;
+  top: -1em;
 }
 
 section iframe {
@@ -551,7 +586,7 @@ section .text-block a:visited {
 }
 
 section .text-block p {
-  padding: .5em 0;
+  padding: 0.5em 0;
 }
 
 section .text-block h2 {
@@ -560,12 +595,12 @@ section .text-block h2 {
 
 section .text-block h2,
 section .text-block li {
-  margin: .5em 0;
+  margin: 0.5em 0;
 }
 
 section .text-block h2 .fa,
 section .text-block li .fa {
-  margin-right: .5em;
+  margin-right: 0.5em;
 }
 
 section .text-block li.loss .fa,
@@ -586,7 +621,7 @@ section .text-block li .name {
 
 section .text-list li,
 section .text-list li h2 {
-  margin: .5em 0;
+  margin: 0.5em 0;
 }
 
 section .text-list li .text-group {
@@ -594,7 +629,7 @@ section .text-list li .text-group {
 }
 
 section .text-list li .text-group li {
-  margin: .3em .5%;
+  margin: 0.3em 0.5%;
   position: relative;
 }
 
@@ -647,7 +682,7 @@ section .dialog {
   margin: 0 auto;
   max-height: 10em;
   overflow-y: auto;
-  padding: .25em;
+  padding: 0.25em;
   text-align: left;
   width: 90%;
 }
@@ -662,9 +697,9 @@ section .dialog .time {
   filter: alpha(opacity=50);
   font-size: 70%;
   min-width: 7.5em;
-  -moz-opacity: .5;
-  -webkit-opacity: .5;
-  opacity: .5;
+  -moz-opacity: 0.5;
+  -webkit-opacity: 0.5;
+  opacity: 0.5;
   vertical-align: middle;
 }
 
@@ -714,7 +749,9 @@ section .dialog .user-9 {
 
 section .installed,
 section .installed-list,
-section .image-list {
+section .image-list,
+section .video-list {
+  clear: both;
   float: none;
   margin: 0 auto;
   text-align: center;
@@ -724,7 +761,7 @@ section .image-list {
 section .installed .sub-device-list li,
 section .text-list .text-group li {
   display: inline-block;
-  margin: .1em .5%;
+  margin: 0.1em 0.5%;
   vertical-align: middle;
   width: 28%;
 }
@@ -733,9 +770,10 @@ section .installed .sub-device-group,
 section .installed .sub-device-group li,
 section .installed-list li,
 section .image-list li,
+section .video-list li,
 section .text-list .text-group li {
   display: inline-block;
-  margin: .1em .5%;
+  margin: 0.1em 0.5%;
   max-width: 30%;
   vertical-align: middle;
   width: 500px;
@@ -747,7 +785,8 @@ section .text-list .text-group li dl {
 }
 
 section .installed-list li,
-section .image-list li {
+section .image-list li,
+section .video-list li {
   max-width: 100%;
   width: auto;
 }
@@ -763,9 +802,58 @@ section .installed-list li img {
   width: 250px;
 }
 
-section .image-list li img {
+section .image-list li img,
+section .video-list li img {
   max-height: 250px;
   max-width: 100%;
+}
+
+section .video-list li {
+  font-size: 30%;
+  margin: 0.75em 0.5em;
+  position: relative;
+}
+
+section .video-list li img,
+section .video-list li span {
+  max-width: 200px;
+  width: 100%;
+}
+
+section .video-list li .thumb,
+section .video-list li .video a {
+  bottom: 0;
+  display: none;
+  height: 100%;
+  left: 0;
+  overflow: hidden;
+  position: absolute;
+  right: 0;
+  text-indent: -999em;
+  top: 0;
+  width: 100%;
+}
+
+section .video-list li .thumb span {
+  height: 150px;
+  margin: 0 auto;
+  width: 200px;
+}
+
+section .video-list li:hover .thumb span {
+  transform: scale(1.25);
+}
+
+section .video-list li .video a,
+section .video-list li:hover .thumb,
+section .video-list li:hover .thumb span  {
+  display: block;
+}
+
+section .video-list li:hover .thumb span {
+  -moz-transform: scale(1.25);
+  -webkit-transform: scale(1.25);
+  transform: scale(1.25);
 }
 
 section ol,
@@ -776,10 +864,10 @@ section ul {
 
 section a,
 section span {
-  -moz-transition: all .1s ease-in-out;
-  -o-transition: all .1s ease-in-out;
-  -webkit-transition: all .1s ease-in-out;
-  transition: all .1s ease-in-out;
+  -moz-transition: all 0.1s ease-in-out;
+  -o-transition: all 0.1s ease-in-out;
+  -webkit-transition: all 0.1s ease-in-out;
+  transition: all 0.1s ease-in-out;
 }
 
 section a {
@@ -834,7 +922,7 @@ section a.power-on {
 }
 
 section .control-block {
-  margin: .5em 0;
+  margin: 0.5em 0;
 }
 
 section .control-block:only-child,
@@ -844,7 +932,7 @@ section .control-block.full {
 }
 
 section .channel {
-  padding-top: .65em;
+  padding-top: 0.65em;
 }
 
 section .presets li {
@@ -856,11 +944,11 @@ section .channel a,
 section .presets a,
 section .mode a {
   display: block;
-  margin: .4em auto;
+  margin: 0.4em auto;
 }
 
 section .alarm a {
-  margin: .15em auto;
+  margin: 0.15em auto;
 }
 
 section .presence a {
@@ -870,7 +958,7 @@ section .presence a {
 
 section .navigation a {
   float: left;
-  margin: .2em auto;
+  margin: 0.2em auto;
   width: 33%;
 }
 
@@ -936,7 +1024,7 @@ section .media a {
 
 section .shortcuts a {
   float: left;
-  margin: .3em 0;
+  margin: 0.3em 0;
   width: 20%;
 }
 
@@ -950,12 +1038,12 @@ section .control-block .shortcuts a,
 section .control-block .control a,
 section .control-block .buttons a {
   float: none;
-  margin: .4em auto;
+  margin: 0.4em auto;
   width: auto;
 }
 
 section .control-block .compact a {
-  margin: .15em auto;
+  margin: 0.15em auto;
 }
 
 section .media a.red {
@@ -1009,7 +1097,7 @@ section .emoji span {
   cursor: pointer;
   display: block;
   margin: 0 auto;
-  padding: .5em;
+  padding: 0.5em;
   /* Emoji size can't be adjusted by font-size */
   -moz-transform: scale(2);
   -webkit-transform: scale(2);
@@ -1209,8 +1297,8 @@ section .emoji span {
   }
 
   75% {
-    -moz-transform: translate(.5em, 0) scale(2);
-    transform: translate(.5em, 0) scale(2);
+    -moz-transform: translate(0.5em, 0) scale(2);
+    transform: translate(0.5em, 0) scale(2);
   }
 
   100% {
@@ -1226,8 +1314,8 @@ section .emoji span {
   }
 
   25% {
-    -webkit-transform: translate(-.5em, 0) scale(2);
-    transform: translate(-.5em, 0) scale(2);
+    -webkit-transform: translate(-0.5em, 0) scale(2);
+    transform: translate(-0.5em, 0) scale(2);
   }
 
   50% {
@@ -1236,8 +1324,8 @@ section .emoji span {
   }
 
   75% {
-    -webkit-transform: translate(.5em, 0) scale(2);
-    transform: translate(.5em, 0) scale(2);
+    -webkit-transform: translate(0.5em, 0) scale(2);
+    transform: translate(0.5em, 0) scale(2);
   }
 
   100% {
@@ -1252,7 +1340,7 @@ section .emoji span {
   }
 
   25% {
-    transform: translate(-.5em, 0) scale(2);
+    transform: translate(-0.5em, 0) scale(2);
   }
 
   50% {
@@ -1260,7 +1348,7 @@ section .emoji span {
   }
 
   75% {
-    transform: translate(.5em, 0) scale(2);
+    transform: translate(0.5em, 0) scale(2);
   }
 
   100% {
@@ -1314,9 +1402,9 @@ section .emoji .shrink {
 }
 
 section .emoji .shake {
-  -moz-animation-duration: .3s;
-  -webkit-animation-duration: .3s;
-  animation-duration: .3s;
+  -moz-animation-duration: 0.3s;
+  -webkit-animation-duration: 0.3s;
+  animation-duration: 0.3s;
   -moz-animation-iteration-count: 10;
   -webkit-animation-iteration-count: 10;
   animation-iteration-count: 10;
@@ -1336,15 +1424,15 @@ section .text-list .text-group li {
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;
-  padding: .4em .1em;
-  margin: .1em 0;
+  padding: 0.4em .1em;
+  margin: 0.1em 0;
 }
 
 section .sub-device-list h2,
 section .sub-device-group h2,
 section .sub-device-group dt {
   font-size: 50%;
-  margin-bottom: .5em;
+  margin-bottom: 0.5em;
 }
 
 section .sub-device-group li {
@@ -1379,10 +1467,10 @@ section .sub-device-list li dl dd.icon {
                -2px 2px 1px #286EA0,
                2px -2px 1px #286EA0,
                2px 2px 1px #286EA0;
-  -moz-transition: text-shadow .1s ease-in-out;
-  -o-transition: text-shadow .1s ease-in-out;
-  -webkit-transition: text-shadow .1s ease-in-out;
-  transition: text-shadow .1s ease-in-out;
+  -moz-transition: text-shadow 0.1s ease-in-out;
+  -o-transition: text-shadow 0.1s ease-in-out;
+  -webkit-transition: text-shadow 0.1s ease-in-out;
+  transition: text-shadow 0.1s ease-in-out;
 }
 
 .device-active.heat .fa:before,
@@ -1485,9 +1573,9 @@ a.device-active:focus:before {
 }
 
 .device-vibrate.fa:before {
-  -moz-animation-duration: .2s;
-  -webkit-animation-duration: .2s;
-  animation-duration: .2s;
+  -moz-animation-duration: 0.2s;
+  -webkit-animation-duration: 0.2s;
+  animation-duration: 0.2s;
   -moz-animation-iteration-count: infinite;
   -webkit-animation-iteration-count: infinite;
   animation-iteration-count: infinite;
@@ -1534,7 +1622,7 @@ section.ps3 .media a {
 }
 
 section.nest .navigation {
-  margin-top: .5em;
+  margin-top: 0.5em;
 }
 
 section.nest .text-input {
@@ -1543,7 +1631,7 @@ section.nest .text-input {
 
 section.nest .control-block .navigation a {
   float: none;
-  margin: .1em auto;
+  margin: 0.1em auto;
 }
 
 section.nest .sub-device-list .sub-device-group,
@@ -1594,16 +1682,16 @@ section.pioneer .text-control li a {
 
 section,
 .subdevice {
-  -moz-transition: opacity .5s ease-in-out;
-  -o-transition: opacity .5s ease-in-out;
-  -webkit-transition: opacity .5s ease-in-out;
-  transition: opacity .5s ease-in-out;
+  -moz-transition: opacity 0.5s ease-in-out;
+  -o-transition: opacity 0.5s ease-in-out;
+  -webkit-transition: opacity 0.5s ease-in-out;
+  transition: opacity 0.5s ease-in-out;
 }
 
 .dashboard header,
 section {
   display: none;
-  margin: 0 .5em;
+  margin: 0 0.5em;
 }
 
 body.rich section.selected,
@@ -1620,8 +1708,8 @@ section:target {
 
 .dashboard section {
   border: 1px solid #444;
-  margin: .25em;
-  padding: .25em;
+  margin: 0.25em;
+  padding: 0.25em;
   vertical-align: middle;
 }
 
@@ -1663,7 +1751,7 @@ header .selected a {
 }
 
 .theme-dark header {
-  padding-bottom: .5em;
+  padding-bottom: 0.5em;
 }
 
 .theme-dark header h1 a,
@@ -1702,11 +1790,11 @@ header .selected a {
   *overflow: visible; /*IE 6/7 - Because of IE's overly large left/right padding on buttons */
   text-decoration: none;
   /* Transitions */
-  -webkit-transition: .1s linear -webkit-box-shadow;
-  -moz-transition: .1s linear -moz-box-shadow;
-  -ms-transition: .1s linear box-shadow;
-  -o-transition: .1s linear box-shadow;
-  transition: .1s linear box-shadow;
+  -webkit-transition: 0.1s linear -webkit-box-shadow;
+  -moz-transition: 0.1s linear -moz-box-shadow;
+  -ms-transition: 0.1s linear box-shadow;
+  -o-transition: 0.1s linear box-shadow;
+  transition: 0.1s linear box-shadow;
 }
 
 .theme-dark header .selected a:hover,
@@ -1810,7 +1898,7 @@ header nav li.screenSaver {
   }
 
   section .shortcuts {
-    padding-top: .5em;
+    padding-top: 0.5em;
   }
 
   section .installed .sub-device-list .sub-device-group {

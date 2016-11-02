@@ -31,7 +31,7 @@ SB.spec = (function () {
   'use strict';
 
   return {
-    version : 20160730,
+    version : 20161102,
 
     state     : {},
     parsers   : {},
@@ -166,7 +166,7 @@ SB.spec = (function () {
 
         if (markup) {
           innerMarkup.innerHTML = markup;
-          innerMarkup = SB.getByTag('section', innerMarkup)[0];
+          innerMarkup  = SB.getByTag('section', innerMarkup)[0];
           deviceHeader = SB.getByTag('h1', innerMarkup)[0];
           deviceHeader.parentNode.removeChild(deviceHeader);
 
@@ -696,6 +696,94 @@ SB.spec = (function () {
     },
 
     /**
+     * Takes in a modal initiating element and builds out the modal content.
+     */
+    openModal : function (elm) {
+      var containerId = elm.getAttribute('data-modal-container'),
+          container   = SB.get(containerId),
+          description = elm.getAttribute('title'),
+          resource    = elm.href,
+          type        = resource.split('.').pop(),
+          existing    = SB.getByClass('close-modal', container, 'a') || [],
+          asset,
+          curtain,
+          modal,
+          close,
+          text;
+
+      if (existing.length) {
+        this.closeModal(existing[0]);
+      }
+
+      switch (type.toLowerCase()) {
+        case 'jpg'  :
+        case 'jpeg' :
+        case 'gif'  :
+        case 'png'  :
+          asset     = document.createElement('img');
+          asset.src = resource;
+          asset.alt = description;
+        break;
+
+        case 'mkv' :
+        case 'mp4' :
+        case 'ogg' :
+          asset       = document.createElement('video');
+          asset.src   = resource;
+          asset.title = description;
+          asset.setAttribute('controls', '');
+          asset.setAttribute('autoplay', '');
+          asset.setAttribute('type', 'video/mp4');
+        break;
+
+        case 'mp3' :
+          asset       = document.createElement('video');
+          asset.src   = resource;
+          asset.title = description;
+          asset.setAttribute('controls', '');
+          asset.setAttribute('autoplay', '');
+          asset.setAttribute('type', 'audio/mp3');
+        break;
+      }
+
+      if (asset) {
+        curtain           = document.createElement('div');
+        curtain.className = 'curtain';
+        curtain.setAttribute('data-modal-container', containerId);
+        modal             = document.createElement('div');
+        modal.className   = 'modal';
+        close             = document.createElement('a');
+        close.className   = 'close-modal fa fa-close device-active';
+        close.href        = '#';
+        close.title       = SB.spec.strings.CLOSE;
+        close.setAttribute('data-modal-container', containerId);
+        text              = document.createElement('span');
+        SB.putText(text, SB.spec.strings.CLOSE);
+
+        close.appendChild(text);
+        modal.appendChild(close);
+        modal.appendChild(asset);
+        curtain.appendChild(modal);
+        container.appendChild(curtain);
+
+        // Hack for race condition where .focus() happens before close is made
+        // available in the DOM.
+        setTimeout(function () {
+          close.focus();
+        }, 10);
+      }
+    },
+
+    /**
+     * Takes in a modal closing element and destroys the modal container.
+     */
+    closeModal : function (elm) {
+      var container = SB.get(elm.getAttribute('data-modal-container'));
+
+      container.removeChild(SB.getByClass('curtain', container, 'div')[0]);
+    },
+
+    /**
      * Builds event handler to delegate click events for standard commands.
      */
     command : function (demoMode) {
@@ -746,6 +834,10 @@ SB.spec = (function () {
             elm = tagName === 'span' ? elm.parentNode : elm;
 
             if (elm.tagName.toLowerCase() === 'a') {
+              validElm = elm;
+            }
+
+            else if (elm.className === 'curtain') {
               validElm = elm;
             }
 
@@ -812,6 +904,14 @@ SB.spec = (function () {
                 newWindow = window.open();
                 newWindow.opener = null;
                 newWindow.location = elm.href;
+              }
+
+              else if (SB.hasClass(elm, 'modal')) {
+                SB.spec.openModal(elm);
+              }
+
+              else if ((SB.hasClass(elm, 'close-modal')) || (SB.hasClass(elm, 'curtain'))) {
+                SB.spec.closeModal(elm);
               }
 
               else {
@@ -1037,6 +1137,7 @@ SB.spec = (function () {
                           INACTIVE     : bodyData.stringInactive,
                           ON           : bodyData.stringOn,
                           OFF          : bodyData.stringOff,
+                          CLOSE        : bodyData.stringClose,
                           AM           : bodyData.stringAm,
                           PM           : bodyData.stringPm,
                           SUN          : bodyData.stringSun,

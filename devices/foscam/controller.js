@@ -39,6 +39,16 @@ module.exports = (function () {
     keymap  : ['ALARM_OFF', 'ALARM_ON', 'DOWN', 'LEFT', 'PRESET1', 'PRESET2', 'PRESET3', 'RIGHT', 'STOP', 'UP', 'TAKE'],
 
     /**
+     * Reference template fragments to be used by the parser.
+     */
+    fragments : function () {
+      var fs = require('fs');
+
+      return { videos : fs.readFileSync(__dirname + '/fragments/videos.tpl', 'utf-8'),
+               video  : fs.readFileSync(__dirname + '/fragments/video.tpl',  'utf-8') };
+    },
+
+    /**
      * Prepare a request for command execution.
      */
     postPrepare : function (config) {
@@ -116,11 +126,14 @@ module.exports = (function () {
           if (filename.split('.').pop() === 'gif') {
             filename = self.getFilename(filename);
 
-            videos.push({
-              video  : 'images/foscam/dvr/' + filename + '.mkv',
-              thumb  : 'images/foscam/thumb/' + filename + '.gif',
-              screen : 'images/foscam/thumb/' + filename + '.jpg'
-            });
+            if (filename.indexOf(foscam.deviceId + '-') === 0) {
+              videos.push({
+                name   : filename,
+                video  : 'images/foscam/dvr/' + filename + '.mkv',
+                thumb  : 'images/foscam/thumb/' + filename + '.gif',
+                screen : 'images/foscam/thumb/' + filename + '.jpg'
+              });
+            }
           }
         }
 

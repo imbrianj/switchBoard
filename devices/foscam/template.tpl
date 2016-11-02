@@ -1,5 +1,5 @@
 
-      <section id="{{DEVICE_ID}}" class="{{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}" data-string-camera_armed="{{i18n_CAMERA_ARMED}}" data-string-camera_disarmed="{{i18n_CAMERA_DISARMED}}">
+      <section id="{{DEVICE_ID}}" class="{{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}" data-string-camera_armed="{{i18n_CAMERA_ARMED}}" data-string-camera_disarmed="{{i18n_CAMERA_DISARMED}}" data-string-screenshot="{{i18n_SCREENSHOT}}" data-string-thumbnail="{{i18n_THUMBNAIL}}" data-string-video="{{i18n_VIDEO}}">
         <h1>{{i18n_FOSCAM}} <em>{{DEVICE_ACTIVE}}</em></h1>
         <div class="control-block">
           <div class="presets">
@@ -33,4 +33,5 @@
         <div class="preview-image">
           <img {{LAZY_LOAD_IMAGE}}="{{FOSCAM_DYNAMIC}}" alt="{{DEVICE_ID}} Preview" class="streaming" />
         </div>
+        {{FOSCAM_DYNAMIC}}
       </section>

@@ -29,15 +29,15 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20151108,
+    version : 20161101,
 
-    gerty : function (device, command, controllers, values, config, appParams) {
+    gerty : function (deviceId, command, controllers, values, config, appParams) {
       var translate       = require(__dirname + '/../lib/translate'),
           runCommand      = require(__dirname + '/../lib/runCommand'),
           gertyRunCommand = require(__dirname + '/gerty/runCommand'),
           gertyMood       = require(__dirname + '/gerty/mood'),
           utterance       = translate.findSynonyms('gerty', controllers.config.language),
-          deviceConfig    = ((controllers[device]) && (controllers[device].config)) || {},
+          deviceConfig    = ((controllers[deviceId]) && (controllers[deviceId].config)) || {},
           ignoreNegative  = deviceConfig.ignoreNegative,
           text            = '',
           tempDevice      = '',
@@ -51,9 +51,9 @@ module.exports = (function () {
         if ((!deviceConfig.address) || ((deviceConfig.address) && (command.toUpperCase().indexOf(deviceConfig.title.toUpperCase()) !== -1))) {
           text = command.replace('text-', '').toUpperCase();
 
-          gertyMood.setEmotion(text, device, controllers.config.language);
+          gertyMood.setEmotion(text, deviceId, controllers.config.language);
 
-          acted = gertyRunCommand.setDevice(text, controllers, device, config.macros, controllers.config.language);
+          acted = gertyRunCommand.setDevice(text, controllers, deviceId, config.macros, controllers.config.language);
 
           if (acted === true) {
             utterance = utterance.AFFIRMATIVE[Math.floor(Math.random() * utterance.AFFIRMATIVE.length)];
@@ -81,7 +81,7 @@ module.exports = (function () {
       // that Gerty is delegated on.
       else if(deviceConfig) {
         if(deviceConfig.typeClass !== 'gerty') {
-          gertyRunCommand.setDeviceUpdate(device, deviceConfig.typeClass, command, values, controllers);
+          gertyRunCommand.setDeviceUpdate(deviceId, deviceConfig.typeClass, command, values, controllers);
         }
       }
     }

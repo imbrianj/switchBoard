@@ -32,9 +32,9 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20160516,
+    version : 20161101,
 
-    homeWatch : function (device, command, controllers, values, config) {
+    homeWatch : function (deviceId, command, controllers, values, config) {
       var notify      = require(__dirname + '/../lib/notify'),
           translate   = require(__dirname + '/../lib/translate'),
           message     = '',
@@ -56,7 +56,7 @@ module.exports = (function () {
           },
           isSecure    = function () {
             var deviceState      = require(__dirname + '/../lib/deviceState'),
-                smartThingsState = deviceState.getDeviceState(device),
+                smartThingsState = deviceState.getDeviceState(deviceId),
                 isSecure         = false;
 
             if ((smartThingsState) && (smartThingsState.value) && (smartThingsState.value.mode)) {
@@ -77,10 +77,10 @@ module.exports = (function () {
         // positives as much as possible.
         setTimeout(function () {
           if(isSecure()) {
-            console.log('\x1b[35m' + controllers[device].config.title + '\x1b[0m: Home Watch found something suspicous');
+            console.log('\x1b[35m' + controllers[deviceId].config.title + '\x1b[0m: Home Watch found something suspicous');
 
             message = translate.translate('{{i18n_HOME_WATCH}}', 'smartthings', controllers.config.language).split('{{LABEL}}').join(trigger);
-            notify.notify(message, controllers, device);
+            notify.notify(message, controllers, deviceId);
           }
         }, delay);
       }

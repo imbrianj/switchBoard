@@ -23,13 +23,18 @@
 (function (exports){
   'use strict';
 
-  exports.foscam = function (deviceId, markup, state, value, language) {
-    var stateOn   = '',
-        stateOff  = '',
-        status    = '',
+  exports.foscam = function (deviceId, markup, state, value, fragments, language) {
+    var video      = fragments.video,
+        videos     = fragments.videos,
+        stateOn    = '',
+        stateOff   = '',
+        status     = '',
         arm,
         disarm,
-        translate = function (message) {
+        videoList,
+        tempMarkup = '',
+        i          = 0,
+        translate  = function (message) {
           var util;
 
           if ((typeof SB === 'object') && (typeof SB.util === 'object')) {
@@ -61,9 +66,43 @@
     markup = markup.split('{{ARMED_STATUS}}').join(status);
     markup = markup.split('{{DISARMED_STATUS}}').join(status);
 
+    markup = markup.split('{{SCREENSHOT}}').join(translate('SCREENSHOT'));
+    markup = markup.split('{{THUMBNAIL}}').join(translate('THUMBNAIL'));
+    markup = markup.split('{{VIDEO}}').join(translate('VIDEO'));
+
+    if (value.videos) {
+      for (i; i < value.videos.length; i += 1) {
+        tempMarkup = tempMarkup + video.split('{{VIDEO_NAME}}').join(value.videos[i].name);
+        tempMarkup = tempMarkup.split('{{SCREEN_URL}}').join(value.videos[i].screen);
+        tempMarkup = tempMarkup.split('{{THUMB_URL}}').join(value.videos[i].thumb);
+        tempMarkup = tempMarkup.split('{{VIDEO_URL}}').join(value.videos[i].video);
+      }
+
+      tempMarkup = tempMarkup.split('{{SCREENSHOT}}').join(translate('SCREENSHOT'));
+      tempMarkup = tempMarkup.split('{{THUMBNAIL}}').join(translate('THUMBNAIL'));
+      tempMarkup = tempMarkup.split('{{VIDEO}}').join(translate('VIDEO'));
+      tempMarkup = videos.split('{{FOSCAM_VIDEOS}}').join(tempMarkup);
+    }
+
+    markup = markup.split('{{FOSCAM_DYNAMIC}}').join(tempMarkup);
+
     if (typeof SB === 'object') {
-      arm    = SB.getByClass('fa-lock',   SB.get(deviceId), 'a')[0];
-      disarm = SB.getByClass('fa-unlock', SB.get(deviceId), 'a')[0];
+      if (SB.hasClass(SB.getByClass('selected', null, 'li')[0], deviceId)) {
+        tempMarkup = tempMarkup.split('{{LAZY_LOAD_IMAGE}}').join('src');
+        markup     = markup.split('{{LAZY_LOAD_IMAGE}}').join('src');
+      }
+
+      else {
+        markup = markup.split('{{LAZY_LOAD_IMAGE}}').join('data-src');
+      }
+
+      arm       = SB.getByClass('fa-lock',   SB.get(deviceId), 'a')[0];
+      disarm    = SB.getByClass('fa-unlock', SB.get(deviceId), 'a')[0];
+      videoList = SB.getByClass('videoList', SB.get(deviceId), 'ol')[0] || {};
+
+      if (tempMarkup !== videoList.outerHTML) {
+        videoList.outerHTML = tempMarkup;
+      }
 
       if ((value.alarm === 'on') && (!SB.hasClass(arm, 'device-on'))) {
         SB.addClass(arm,       'device-active');
@@ -79,16 +118,6 @@
         SB.putText(SB.getByTag('em', arm)[0],    status);
         SB.putText(SB.getByTag('em', disarm)[0], status);
         markup = '';
-      }
-
-      else {
-        if (SB.hasClass(SB.getByClass('selected', null, 'li')[0], deviceId)) {
-          markup = markup.split('{{LAZY_LOAD_IMAGE}}').join('src');
-        }
-
-        else {
-          markup = markup.split('{{LAZY_LOAD_IMAGE}}').join('data-src');
-        }
       }
     }
 

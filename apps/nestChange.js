@@ -31,16 +31,16 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20160329,
+    version : 20161101,
 
-    nestChange : function (device, command) {
+    nestChange : function (deviceId, command) {
       var runCommand = require(__dirname + '/../lib/runCommand');
 
       if (command !== 'LIST') {
         // We want to grab the state from the source of truth (the actual
         // API), but we need to wait a short time for it to register.
         setTimeout(function () {
-          runCommand.runCommand(device, 'list', device, false);
+          runCommand.runCommand(deviceId, 'list', deviceId, false);
         }, 1000);
       }
     }

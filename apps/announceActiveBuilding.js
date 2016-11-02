@@ -31,7 +31,7 @@ module.exports = (function () {
   var ActiveBuildingPackages = {};
 
   return {
-    version : 20160328,
+    version : 20161101,
 
     translate : function (token, lang) {
       var translate = require(__dirname + '/../lib/translate');
@@ -39,7 +39,7 @@ module.exports = (function () {
       return translate.translate('{{i18n_' + token + '}}', 'activeBuilding', lang);
     },
 
-    announceActiveBuilding : function (device, command, controllers, values) {
+    announceActiveBuilding : function (deviceId, command, controllers, values) {
       var sharedUtil = require(__dirname + '/../lib/sharedUtil').util,
           notify,
           lang       = controllers.config.language,
@@ -50,10 +50,10 @@ module.exports = (function () {
       if ((values) && (values.value)) {
         packages = values.value;
 
-        if (JSON.stringify(ActiveBuildingPackages[device]) !== JSON.stringify(packages)) {
+        if (JSON.stringify(ActiveBuildingPackages[deviceId]) !== JSON.stringify(packages)) {
           senders = sharedUtil.arrayList(values.value, 'activeBuilding', lang);
 
-          ActiveBuildingPackages[device] = packages;
+          ActiveBuildingPackages[deviceId] = packages;
 
           if (senders) {
             notify     = require(__dirname + '/../lib/notify');
@@ -68,7 +68,7 @@ module.exports = (function () {
 
             message = message.split('{{SENDERS}}').join(senders);
 
-            notify.notify(message, controllers, device);
+            notify.notify(message, controllers, deviceId);
           }
         }
       }

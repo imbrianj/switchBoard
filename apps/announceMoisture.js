@@ -30,9 +30,9 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20160329,
+    version : 20161101,
 
-    announceMoisture : function (device, command, controllers) {
+    announceMoisture : function (deviceId, command, controllers) {
       var translate  = require(__dirname + '/../lib/translate'),
           notify     = require(__dirname + '/../lib/notify'),
           message    = '',
@@ -49,7 +49,7 @@ module.exports = (function () {
         }
 
         if (message) {
-          notify.notify(message, controllers, device);
+          notify.notify(message, controllers, deviceId);
         }
       }
     }

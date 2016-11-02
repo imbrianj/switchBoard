@@ -47,15 +47,15 @@
 
     // https://developer.yahoo.com/weather/documentation.html#codes
     translateCode = function (code) {
-      var warning    = 'warning',  // Tropical Storm
-          lightning  = 'bolt',     // Thunderstorm
-          snow       = 'asterisk', // Snow
-          rain       = 'tint',     // Rain
-          smoke      = 'fire',     // Smoke
-          wind       = 'flag',     // Wind
-          cloud      = 'cloud',    // Cloudy
-          clearNight = 'moon-o',   // Clear Night
-          clearDay   = 'sun-o',    // Clear Day
+      var warning    = 'warning',     // Tropical Storm
+          lightning  = 'bolt',        // Thunderstorm
+          snow       = 'snowflake-o', // Snow
+          rain       = 'tint',        // Rain
+          smoke      = 'fire',        // Smoke
+          wind       = 'flag',        // Wind
+          cloud      = 'cloud',       // Cloudy
+          clearNight = 'moon-o',      // Clear Night
+          clearDay   = 'sun-o',       // Clear Day
           codes = {
             0  : warning,
             1  : warning,

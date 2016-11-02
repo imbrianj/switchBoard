@@ -32,11 +32,11 @@ module.exports = (function () {
   var SmartthingsMode = {};
 
   return {
-    version : 20150613,
+    version : 20161101,
 
-    smartthingsModeChange : function (device, command, controllers, values, config) {
+    smartthingsModeChange : function (deviceId, command, controllers, values, config) {
       var deviceState      = require(__dirname + '/../lib/deviceState'),
-          smartthingsState = deviceState.getDeviceState(device),
+          smartthingsState = deviceState.getDeviceState(deviceId),
           runCommand,
           rawMacro,
           macro;
@@ -44,15 +44,15 @@ module.exports = (function () {
       if ((smartthingsState) && (smartthingsState.value) && (smartthingsState.value.mode)) {
         // We'll check the SmartThings state and compare to the last time we
         // ran this to see if things have changed, regardless of source.
-        if (smartthingsState.value.mode !== SmartthingsMode[device]) {
-          SmartthingsMode[device] = smartthingsState.value.mode;
+        if (smartthingsState.value.mode !== SmartthingsMode[deviceId]) {
+          SmartthingsMode[deviceId] = smartthingsState.value.mode;
 
           // If you have a macro assigned to this specific Mode, we'll act upon
           // it.
-          if (config[SmartthingsMode[device]]) {
+          if (config[SmartthingsMode[deviceId]]) {
             runCommand = require(__dirname + '/../lib/runCommand');
 
-            rawMacro = config[SmartthingsMode[device]].split(';');
+            rawMacro = config[SmartthingsMode[deviceId]].split(';');
 
             for (macro in rawMacro) {
               if (rawMacro.hasOwnProperty(macro)) {

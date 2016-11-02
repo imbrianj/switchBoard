@@ -29,13 +29,13 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20161027,
+    version : 20161101,
 
-    announceFoscam : function (device, command, controllers) {
+    announceFoscam : function (deviceId, command, controllers) {
       var translate    = require(__dirname + '/../lib/translate'),
           deviceState  = require(__dirname + '/../lib/deviceState'),
           notify       = require(__dirname + '/../lib/notify'),
-          currentState = deviceState.getDeviceState(device),
+          currentState = deviceState.getDeviceState(deviceId),
           message      = '';
 
       if ((currentState) && (currentState.value)) {
@@ -49,7 +49,7 @@ module.exports = (function () {
           }
 
           if (message) {
-            notify.notify(message, controllers, device);
+            notify.notify(message, controllers, deviceId);
           }
         }
       }

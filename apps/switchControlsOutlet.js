@@ -30,44 +30,43 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150628,
+    version : 20161101,
 
     lastState : {},
 
-    switchControlsOutlet : function (device, command, controllers, values, config) {
+    switchControlsOutlet : function (deviceId, command, controllers, values, config) {
       var that        = this,
           deviceState = require(__dirname + '/../lib/deviceState'),
           runCommand  = require(__dirname + '/../lib/runCommand'),
           checkState,
           status,
-          deviceId,
+          currDevice,
           subdevice,
           currentDeviceState,
           state;
 
       checkState = function () {
-        var deviceId,
+        var currDevice,
             currentDevice = {},
             status,
             subDeviceId,
             subDevice;
 
-        for (deviceId in controllers) {
-          if (controllers[deviceId].config) {
-            currentDevice = deviceState.getDeviceState(deviceId);
+        for (currDevice in controllers) {
+          if (controllers[currDevice].config) {
+            currentDevice = deviceState.getDeviceState(currDevice);
 
             if ((currentDevice.value) && (currentDevice.value.devices)) {
               for (subDeviceId in currentDevice.value.devices) {
-                if (currentDevice.value.devices.hasOwnProperty(deviceId)) {
+                if (currentDevice.value.devices.hasOwnProperty(currDevice)) {
                   subDevice = currentDevice.value.devices[subDeviceId];
 
                   if (config.trigger === subDevice.label) {
                     status = subDevice.state;
 
-                    if (!that.lastState[device]) {
-
-                      that.lastState[device] = {};
-                      that.lastState[device][config.trigger] = status;
+                    if (!that.lastState[deviceId]) {
+                      that.lastState[deviceId] = {};
+                      that.lastState[deviceId][config.trigger] = status;
                     }
 
                     break;
@@ -83,19 +82,19 @@ module.exports = (function () {
 
       status = checkState();
 
-      if (status !== this.lastState[device][config.trigger]) {
-        this.lastState[device][config.trigger] = status;
+      if (status !== this.lastState[deviceId][config.trigger]) {
+        this.lastState[deviceId][config.trigger] = status;
 
-        for (deviceId in controllers) {
-          if (controllers.hasOwnProperty(deviceId)) {
-            state = deviceState.getDeviceState(deviceId);
+        for (currDevice in controllers) {
+          if (controllers.hasOwnProperty(currDevice)) {
+            state = deviceState.getDeviceState(currDevice);
 
-            if (controllers[deviceId].config) {
-              switch (controllers[deviceId].config.typeClass) {
+            if (controllers[currDevice].config) {
+              switch (controllers[currDevice].config.typeClass) {
                 case 'smartthings'     :
                 case 'wemo'            :
                 case 'raspberryRemote' :
-                  currentDeviceState = deviceState.getDeviceState(deviceId);
+                  currentDeviceState = deviceState.getDeviceState(currDevice);
                 break;
               }
 
@@ -103,7 +102,7 @@ module.exports = (function () {
                 for (subdevice in currentDeviceState.value.devices) {
                   if (config.action.indexOf(currentDeviceState.value.devices[subdevice].label) !== -1) {
                     if (currentDeviceState.value.devices[subdevice].state !== status) {
-                      runCommand.runCommand(deviceId, 'subdevice-' + status + '-' + state.value.devices[subdevice].label);
+                      runCommand.runCommand(currDevice, 'subdevice-' + status + '-' + state.value.devices[subdevice].label);
                     }
                   }
                 }

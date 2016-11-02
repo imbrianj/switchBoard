@@ -31,7 +31,7 @@ module.exports = (function () {
   var GithubCommits = '';
 
   return {
-    version : 20160329,
+    version : 20161101,
 
     translate : function (token, lang) {
       var translate = require(__dirname + '/../lib/translate');
@@ -39,7 +39,7 @@ module.exports = (function () {
       return translate.translate('{{i18n_' + token + '}}', 'github', lang);
     },
 
-    announceGithub : function (device, command, controllers, values) {
+    announceGithub : function (deviceId, command, controllers, values) {
       var commitMessage  = '',
           i              = 0,
           notify,
@@ -56,7 +56,7 @@ module.exports = (function () {
 
               message = this.translate('NEWER', lang);
 
-              notify.notify(message, controllers, device);
+              notify.notify(message, controllers, deviceId);
 
               break;
             }

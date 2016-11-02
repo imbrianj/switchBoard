@@ -31,11 +31,11 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20151228,
+    version : 20161101,
 
     lastEvents : { presence : 0, open : 0 },
 
-    hallLightHome : function (device, command, controllers, values, config) {
+    hallLightHome : function (deviceId, command, controllers, values, config) {
       var deviceState = require(__dirname + '/../lib/deviceState'),
           runCommand  = require(__dirname + '/../lib/runCommand'),
           now         = new Date().getTime(),
@@ -43,7 +43,7 @@ module.exports = (function () {
           rawMacro    = (config.macro || '').split(';'),
           macro,
           currentDeviceState,
-          deviceId,
+          currDevice,
           subdevice,
           state,
           isIn        = function (command, collection, prefix) {
@@ -77,23 +77,23 @@ module.exports = (function () {
           }
         }
 
-        for (deviceId in controllers) {
-          if (controllers.hasOwnProperty(deviceId)) {
-            state = deviceState.getDeviceState(deviceId);
+        for (currDevice in controllers) {
+          if (controllers.hasOwnProperty(currDevice)) {
+            state = deviceState.getDeviceState(currDevice);
 
-            if (controllers[deviceId].config) {
-              switch (controllers[deviceId].config.typeClass) {
+            if (controllers[currDevice].config) {
+              switch (controllers[currDevice].config.typeClass) {
                 case 'smartthings'     :
                 case 'wemo'            :
                 case 'raspberryRemote' :
-                  currentDeviceState = deviceState.getDeviceState(deviceId);
+                  currentDeviceState = deviceState.getDeviceState(currDevice);
                 break;
               }
 
               if ((currentDeviceState.value) && (currentDeviceState.value.devices)) {
                 for (subdevice in currentDeviceState.value.devices) {
                   if (config.action.indexOf(currentDeviceState.value.devices[subdevice].label) !== -1) {
-                    runCommand.runCommand(deviceId, 'subdevice-on-' + currentDeviceState.value.devices[subdevice].label);
+                    runCommand.runCommand(currDevice, 'subdevice-on-' + currentDeviceState.value.devices[subdevice].label);
                   }
                 }
               }
