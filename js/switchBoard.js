@@ -443,7 +443,7 @@ SB.spec = (function () {
         iframes = Array.prototype.slice.call(SB.getByTag('iframe', container));
         elms    = images.concat(iframes);
 
-        for (i = 0; i < elms.length; i += 1) {
+        for (i; i < elms.length; i += 1) {
           if ((elms[i].getAttribute('data-src')) && (!elms[i].src)) {
             elms[i].src = elms[i].getAttribute('data-src');
           }
@@ -1176,8 +1176,7 @@ SB.spec = (function () {
         }
       }
 
-      SB.spec.lazyLoad(document.body.className);
-
+      SB.spec.lazyLoad(active || document.body.className);
       SB.spec.buildSliders();
       SB.spec.command(demoMode);
       SB.spec.formInput(demoMode);

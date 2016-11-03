@@ -33,5 +33,8 @@
         <div class="preview-image">
           <img {{LAZY_LOAD_IMAGE}}="{{FOSCAM_DYNAMIC}}" alt="{{DEVICE_ID}} Preview" class="streaming" />
         </div>
-        {{FOSCAM_DYNAMIC}}
+
+        <div class="video-list">
+          {{FOSCAM_LIST}}
+        </div>
       </section>

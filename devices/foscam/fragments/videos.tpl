@@ -1,4 +1,4 @@
 
-        <ol class="video-list">
+        <ol>
           {{FOSCAM_VIDEOS}}
         </ol>

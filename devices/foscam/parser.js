@@ -31,8 +31,9 @@
         status     = '',
         arm,
         disarm,
-        videoList,
         tempMarkup = '',
+        videoList,
+        videoListParent,
         i          = 0,
         translate  = function (message) {
           var util;
@@ -70,7 +71,7 @@
     markup = markup.split('{{THUMBNAIL}}').join(translate('THUMBNAIL'));
     markup = markup.split('{{VIDEO}}').join(translate('VIDEO'));
 
-    if (value.videos) {
+    if ((value.videos) && (value.videos.length)) {
       for (i; i < value.videos.length; i += 1) {
         tempMarkup = tempMarkup + video.split('{{VIDEO_NAME}}').join(value.videos[i].name);
         tempMarkup = tempMarkup.split('{{SCREEN_URL}}').join(value.videos[i].screen);
@@ -81,27 +82,39 @@
       tempMarkup = tempMarkup.split('{{SCREENSHOT}}').join(translate('SCREENSHOT'));
       tempMarkup = tempMarkup.split('{{THUMBNAIL}}').join(translate('THUMBNAIL'));
       tempMarkup = tempMarkup.split('{{VIDEO}}').join(translate('VIDEO'));
+      tempMarkup = tempMarkup.split('{{DEVICE_ID}}').join(deviceId);
       tempMarkup = videos.split('{{FOSCAM_VIDEOS}}').join(tempMarkup);
+
+      markup = markup.split('{{FOSCAM_LIST}}').join(tempMarkup);
     }
 
-    markup = markup.split('{{FOSCAM_DYNAMIC}}').join(tempMarkup);
+    markup = markup.split('{{FOSCAM_LIST}}').join('');
 
     if (typeof SB === 'object') {
-      if (SB.hasClass(SB.getByClass('selected', null, 'li')[0], deviceId)) {
-        tempMarkup = tempMarkup.split('{{LAZY_LOAD_IMAGE}}').join('src');
-        markup     = markup.split('{{LAZY_LOAD_IMAGE}}').join('src');
+      videoListParent = SB.getByClass('video-list', SB.get(deviceId), 'div')[0];
+      videoList       = SB.getByTag('ol', videoListParent)[0];
+
+      markup = markup.split('{{LAZY_LOAD_IMAGE}}').join('data-src');
+
+      arm    = SB.getByClass('fa-lock',   SB.get(deviceId), 'a')[0];
+      disarm = SB.getByClass('fa-unlock', SB.get(deviceId), 'a')[0];
+
+      if ((videoList) && (tempMarkup !== videoList.outerHTML)) {
+        videoListParent.removeChild(videoList);
       }
 
-      else {
-        markup = markup.split('{{LAZY_LOAD_IMAGE}}').join('data-src');
-      }
+      if ((value.videos) && ((!videoList) || (tempMarkup !== videoList.outerHTML))) {
+        // Since this markup is explicitly inserted via the parser, we'll also
+        // have to explicitly set the lazyload property.
+        if (SB.hasClass(SB.getByClass('selected', null, 'li')[0], deviceId)) {
+          tempMarkup = tempMarkup.split('{{LAZY_LOAD_IMAGE}}').join('src');
+        }
 
-      arm       = SB.getByClass('fa-lock',   SB.get(deviceId), 'a')[0];
-      disarm    = SB.getByClass('fa-unlock', SB.get(deviceId), 'a')[0];
-      videoList = SB.getByClass('videoList', SB.get(deviceId), 'ol')[0] || {};
+        else {
+          tempMarkup = tempMarkup.split('{{LAZY_LOAD_IMAGE}}').join('data-src');
+        }
 
-      if (tempMarkup !== videoList.outerHTML) {
-        videoList.outerHTML = tempMarkup;
+        videoListParent.innerHTML = tempMarkup;
       }
 
       if ((value.alarm === 'on') && (!SB.hasClass(arm, 'device-on'))) {

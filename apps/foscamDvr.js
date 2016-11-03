@@ -38,7 +38,7 @@ module.exports = (function () {
   var Devices = {};
 
   return {
-    version : 201611101,
+    version : 201611103,
 
     lastEvents : { space : 0, thumbnail : 0 },
 
@@ -130,6 +130,8 @@ module.exports = (function () {
       // Thumbnails take longer than screenshots, so we'll run the list command
       // after it's completed.
       thumbProcess.once('close', function () {
+        console.log('\x1b[35m' + controller.config.title + '\x1b[0m: DVR thumbnails created for ' + filename);
+
         runCommand.runCommand(controller.config.deviceId, 'list');
       });
 
@@ -137,7 +139,7 @@ module.exports = (function () {
         data = data.toString();
 
         // If you need help debugging ffmpeg, uncomment the following line:
-        // console.log(data)
+        // console.log(data);
       });
     },
 
@@ -180,10 +182,10 @@ module.exports = (function () {
     translateVideoCommand : function (config, videoLength) {
       var now       = new Date(),
           year      = now.getFullYear(),
-          month     = now.getMonth() + 1,
-          day       = now.getDate(),
-          hour      = now.getHours(),
-          minute    = now.getMinutes(),
+          month     = ('0' + (now.getMonth() + 1)).slice(-2),
+          day       = ('0' + (now.getDate())).slice(-2),
+          hour      = ('0' + (now.getHours())).slice(-2),
+          minute    = ('0' + (now.getMinutes())).slice(-2),
           deviceId  = config.deviceId,
           videoPath = 'http://' + config.deviceIp + '/videostream.cgi?user=' + config.username + '&pwd=' + config.password,
           audioPath = 'http://' + config.deviceIp + '/videostream.asf?user=' + config.username + '&pwd=' + config.password,
@@ -232,7 +234,7 @@ module.exports = (function () {
         data = data.toString();
 
         // If you need help debugging ffmpeg, uncomment the following line:
-        // console.log(data)
+        // console.log(data);
       });
 
       Devices[deviceId].dvrProcess.once('close', function () {
