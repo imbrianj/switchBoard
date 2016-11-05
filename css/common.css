@@ -787,7 +787,7 @@ section .text-list .text-group li dl {
 section .installed-list li,
 section .image-list li,
 section .video-list li {
-  max-width: 100%;
+  max-width: 45%;
   width: auto;
 }
 
@@ -1860,9 +1860,7 @@ header nav li.screenSaver {
 
   section .installed .sub-device-group,
   section .installed .sub-device-group li,
-  section .text-list .text-group li,
-  section .installed-list li,
-  section .image-list li {
+  section .text-list .text-group li {
     max-width: 45%;
   }
 
@@ -1942,9 +1940,7 @@ header nav li.screenSaver {
 
   section .installed .sub-device-group,
   section .installed .sub-device-group li,
-  section .text-list .text-group li,
-  section .installed-list li,
-  section .image-list li {
+  section .text-list .text-group li {
     max-width: 45%;
   }
 
