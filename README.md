@@ -1,8 +1,10 @@
-[![Build Status](https://secure.travis-ci.org/imbrianj/switchBoard.png)](http://travis-ci.org/imbrianj/switchBoard)
+[![Chat on IRC](https://img.shields.io/badge/irc-%23%23switchboard-blue.svg)](https://webchat.freenode.net/?channels=#%23switchboard)
+[![Build Status](https://secure.travis-ci.org/imbrianj/switchBoard.png)](https://travis-ci.org/imbrianj/switchBoard)
 [![Dependencies Status](https://david-dm.org/imbrianj/switchboard.svg)](https://david-dm.org/imbrianj/switchboard#info=dependencies)
 [![Dev Dependencies Status](https://david-dm.org/imbrianj/switchboard/dev-status.svg)](https://david-dm.org/imbrianj/switchboard#info=devDependencies)
 [![npm version](https://badge.fury.io/js/switchboard-automation.svg)](https://badge.fury.io/js/switchboard-automation)
 [![Known Vulnerabilities](https://snyk.io/test/npm/switchboard-automation/badge.svg)](https://snyk.io/test/npm/switchboard-automation)
+[![Package Quality](http://npm.packagequality.com/shield/switchboard-automation.svg)](http://packagequality.com/#?package=switchboard-automation)
 
 SwitchBoard
 ---
@@ -13,7 +15,7 @@ Video demonstration:
 [![Demonstration of SwitchBoard](https://img.youtube.com/vi/Ni_YgL4hcgI/0.jpg)](https://www.youtube.com/watch?v=Ni_YgL4hcgI)
 
 Or you may browse through a static version:
-http://imbrianj.github.io/switchBoard/
+https://imbrianj.github.io/switchBoard/
 
 Setup
 ---
@@ -72,21 +74,21 @@ Supported Devices/Services
 
 ### How to Contribute
 
-I'm always looking to add devices and services.  Even if you're not a developer, you can help by testing, doing documentation, translating or even just expressing interest in something to help guide the effort.  Join [##switchboard on irc.freenode.net](http://webchat.freenode.net/?channels=#%23switchboard) If you'd like to reach out.  If you work for a device manufacturer - let me know if I can beg, borrow or steal a device from you to integrate!
+I'm always looking to add devices and services.  Even if you're not a developer, you can help by testing, doing documentation, translating or even just expressing interest in something to help guide the effort.  Join [##switchboard on irc.freenode.net](https://webchat.freenode.net/?channels=#%23switchboard) If you'd like to reach out.  If you work for a device manufacturer - let me know if I can beg, borrow or steal a device from you to integrate!
 
 ### Controlling your PS3 -- General instructions
 
   Overview: You'll need to have your SwitchBoard device (computer, raspberry pi, etc.) *pretend* to be a PS3 controller (aka Sixaxis Controller) that communicates with the PS3 via Bluetooth.
-   * You'll need a supported Bluetooth dongle that plugs into your device and communicates with the console (the CSR bluecore4-rom is recommended): http://gimx.fr/wiki/index.php?title=Bluetooth_dongle
+   * You'll need a supported Bluetooth dongle that plugs into your device and communicates with the console (the CSR bluecore4-rom is recommended): https://gimx.fr/wiki/index.php?title=Bluetooth_dongle
    * [Install GIMX](https://github.com/matlo/GIMX/releases) version 2.0x+ (earlier versions won't work)
-   * Refer to the [detailed instruction for spoofing your Bluetooth dongle's MAC address](http://gimx.fr/wiki/index.php?title=Command_line#Linux_.2B_bluetooth_.2B_PS3).
+   * Refer to the [detailed instruction for spoofing your Bluetooth dongle's MAC address](https://gimx.fr/wiki/index.php?title=Command_line#Linux_.2B_bluetooth_.2B_PS3).
    * :point_up: Tips:
      * The above instructions assume you have plugged your Sixaxis into your PS3, pressed the controller's PS button to pair it, unplugged the controller from the PS3, and pluged back into your SwitchBoard device.
      * Keep note of the Bluetooth addresses of both your PS3 controller (aka Current Bluetooth Device Address, or sixaxis_bt_address) and PS3 console (aka Current Bluetooth master, or ps3_bt_address).  You'll need to add the PS3 Bluetooth address in your config/config.js file and you'll need the controller address to copy over to your dongle
 
 ### Controlling your PS3 -- via a Raspberry Pi set up as a presistent server
 - `cd switchBoard && npm update && sudo apt-get update && sudo apt-get --yes dist-upgrade && sudo apt-get clean all && sudo updatedb && reboot` # Make sure your Raspberry Pi is up to date
-- You'll need a supported Bluetooth dongle that plugs into your device and communicates with the console (the CSR bluecore4-rom is recommended): http://gimx.fr/wiki/index.php?title=Bluetooth_dongle
+- You'll need a supported Bluetooth dongle that plugs into your device and communicates with the console (the CSR bluecore4-rom is recommended): https://gimx.fr/wiki/index.php?title=Bluetooth_dongle
 - `wget https://github.com/matlo/GIMX/releases/download/v3.2/gimx_3.2-1_armhf.deb && sudo dpkg -i gimx_3.2-1_armhf.deb` # install gimx
 - Plug your PS3 controller (aka Sixaxis) into your PS3, press the controller's PS button to pair it.  Then, unplug the controller from the PS3 and plug into your Raspberry Pi.
 - `sixaddr`
@@ -99,7 +101,7 @@ I'm always looking to add devices and services.  Even if you're not a developer,
 - Your Raspberry's dongle will now pretend to be the Sixaxis controller.
 - `switchBoard -c config/config.js` # power up your controller, hit the Raspberry Pi via your browser
 - You should now see the PS3 tab, click on it, click on the power button (equivalent to the PS3's start button), and profit.
-- Reference: [Installing on a Raspberry Pi](http://gimx.fr/wiki/index.php?title=RPi) (retrieved on 9.10.2014)
+- Reference: [Installing on a Raspberry Pi](https://gimx.fr/wiki/index.php?title=RPi) (retrieved on 9.10.2014)
 
 ### More Device Installation Info
 
@@ -107,11 +109,11 @@ For details about each device's specific requirements for installation, refer to
 
 Credit
 ---
-Thank you to [Matlo from GIMX](http://blog.gimx.fr/) for his huge help in getting the PS3 control working.  If you use the PS3 functionality and enjoy it, consider a donation to his project.
+Thank you to [Matlo from GIMX](https://blog.gimx.fr/) for his huge help in getting the PS3 control working.  If you use the PS3 functionality and enjoy it, consider a donation to his project.
 
 Nearly every controller was inspired by hard work from others.  Trolling forums and seeing people's proof of concept code made many of them possible.  For each controller file, a relevant link to the given forum/blog/post/article/page is available in a comment at the top.
 
-MP3 sounds were taken from [freesound.org](http://freesound.org/).  Specific attributions for each file are in the [attribution.txt](mp3/attribution.txt).
+MP3 sounds were taken from [freesound.org](https://freesound.org/).  Specific attributions for each file are in the [attribution.txt](mp3/attribution.txt).
 
 Also thanks to purecss.io and fontawesome.io for their assets.
 
@@ -119,7 +121,7 @@ Contact
 ---
 If you have questions, comments or want to complain, email me at brian@bevey.org
 
-If you require more immediate assistance, you can join [##switchboard on irc.freenode.net](http://webchat.freenode.net/?channels=#%23switchboard)
+If you require more immediate assistance, you can join [##switchboard on irc.freenode.net](https://webchat.freenode.net/?channels=#%23switchboard)
 
 FAQ
 ---
