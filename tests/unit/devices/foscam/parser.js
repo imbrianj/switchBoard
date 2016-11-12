@@ -30,16 +30,32 @@ exports.foscamParserTest = {
     'use strict';
 
     var foscamParser = require(__dirname + '/../../../../devices/foscam/parser'),
-        markup       = '<h1>Foo</h1> <span class="{{DEVICE_STATE_ON}}">On</span> <span class="{{DEVICE_STATE_OFF}}">Off</span>',
-        fragments    = { video  : '<li>{{VIDEO_NAME}}</li>',
-                         videos : '<ol>{{FOSCAM_DYNAMIC}}</ol>' },
-        onMarkup     = foscamParser.foscam('dummy', markup, 'ok', { alarm: 'on' }, fragments),
+        markup       = '<h1>Foo</h1> <span class="{{DEVICE_STATE_ON}}">On</span> <span class="{{DEVICE_STATE_OFF}}">Off</span> <div>{{FOSCAM_PHOTO_LIST}}</div> <div>{{FOSCAM_VIDEO_LIST}}</div>',
+        fragments    = { photo  : '<li>{{PHOTO_NAME}}</li>',
+                         photos : '<ol>{{FOSCAM_PHOTOS}}</ol>',
+                         video  : '<li>{{VIDEO_NAME}}</li>',
+                         videos : '<ol>{{FOSCAM_VIDEOS}}</ol>' },
+        photos       = [{ name  : 'photo-1',
+                          photo : 'images/foscam/photos/1.jpg' },
+                        { name  : 'photo-2',
+                          photo : 'images/foscam/photos/2.jpg' }],
+        videos       = [{ name   : 'video-1',
+                          video  : 'images/foscam/dvr/1.mkv',
+                          thumb  : 'images/foscam/thumb/1.gif',
+                          screen : 'images/foscam/thumb/1.jpg' },
+                        { name   : 'video-2',
+                          video  : 'images/foscam/dvr/2.mkv',
+                          thumb  : 'images/foscam/thumb/2.gif',
+                          screen : 'images/foscam/thumb/2.jpg' }],
+        onMarkup     = foscamParser.foscam('dummy', markup, 'ok', { alarm: 'on', photos: photos, videos: videos }, fragments),
         offMarkup    = foscamParser.foscam('dummy', markup, 'ok', { alarm: 'off' }, fragments);
 
     test.strictEqual(onMarkup.indexOf('{{'),                                                                   -1, 'All values replaced');
     test.notStrictEqual(onMarkup.indexOf('<span class=" device-active">On</span> <span class="">Off</span>'),  -1, 'Passed markup validated');
     test.strictEqual(offMarkup.indexOf('{{'),                                                                  -1, 'All values replaced');
     test.notStrictEqual(offMarkup.indexOf('<span class="">On</span> <span class=" device-active">Off</span>'), -1, 'Passed markup validated');
+    test.notStrictEqual(onMarkup.indexOf('<ol><li>photo-1</li><li>photo-2</li></ol>'),                         -1, 'Photos displayed');
+    test.notStrictEqual(onMarkup.indexOf('<ol><li>video-1</li><li>video-2</li></ol>'),                         -1, 'Videos displayed');
 
     test.done();
   }

@@ -32,6 +32,9 @@ exports.foscamControllerTest = {
     var foscamController = require(__dirname + '/../../../../devices/foscam/controller'),
         fragments        = foscamController.fragments();
 
+
+    test.strictEqual(typeof fragments.photos, 'string', 'Fragment verified');
+    test.strictEqual(typeof fragments.photo,  'string', 'Fragment verified');
     test.strictEqual(typeof fragments.videos, 'string', 'Fragment verified');
     test.strictEqual(typeof fragments.video,  'string', 'Fragment verified');
 

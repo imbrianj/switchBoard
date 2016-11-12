@@ -808,6 +808,7 @@ section .video-list li img {
   max-width: 100%;
 }
 
+section .image-list li,
 section .video-list li {
   font-size: 30%;
   margin: 0.75em 0.5em;
@@ -820,6 +821,7 @@ section .video-list li span {
   width: 100%;
 }
 
+section .image-list li .photo a,
 section .video-list li .thumb,
 section .video-list li .video a {
   bottom: 0;
@@ -844,6 +846,7 @@ section .video-list li:hover .thumb span {
   transform: scale(1.25);
 }
 
+section .image-list li .photo a,
 section .video-list li .video a,
 section .video-list li:hover .thumb,
 section .video-list li:hover .thumb span  {

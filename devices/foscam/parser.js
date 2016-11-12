@@ -24,18 +24,24 @@
   'use strict';
 
   exports.foscam = function (deviceId, markup, state, value, fragments, language) {
-    var video      = fragments.video,
-        videos     = fragments.videos,
-        stateOn    = '',
-        stateOff   = '',
-        status     = '',
+    var photo           = fragments.photo,
+        photos          = fragments.photos,
+        video           = fragments.video,
+        videos          = fragments.videos,
+        stateOn         = '',
+        stateOff        = '',
+        status          = '',
         arm,
         disarm,
-        tempMarkup = '',
+        tempPhotoMarkup = '',
+        tempVideoMarkup = '',
+        photoList,
+        photoListParent,
         videoList,
         videoListParent,
-        i          = 0,
-        translate  = function (message) {
+        i               = 0,
+        j               = 0,
+        translate       = function (message) {
           var util;
 
           if ((typeof SB === 'object') && (typeof SB.util === 'object')) {
@@ -71,26 +77,43 @@
     markup = markup.split('{{THUMBNAIL}}').join(translate('THUMBNAIL'));
     markup = markup.split('{{VIDEO}}').join(translate('VIDEO'));
 
-    if ((value.videos) && (value.videos.length)) {
-      for (i; i < value.videos.length; i += 1) {
-        tempMarkup = tempMarkup + video.split('{{VIDEO_NAME}}').join(value.videos[i].name);
-        tempMarkup = tempMarkup.split('{{SCREEN_URL}}').join(value.videos[i].screen);
-        tempMarkup = tempMarkup.split('{{THUMB_URL}}').join(value.videos[i].thumb);
-        tempMarkup = tempMarkup.split('{{VIDEO_URL}}').join(value.videos[i].video);
+    if ((value.photos) && (value.photos.length)) {
+      for (i; i < value.photos.length; i += 1) {
+        tempPhotoMarkup = tempPhotoMarkup + photo.split('{{PHOTO_NAME}}').join(value.photos[i].name);
+        tempPhotoMarkup = tempPhotoMarkup.split('{{PHOTO_URL}}').join(value.photos[i].photo);
       }
 
-      tempMarkup = tempMarkup.split('{{SCREENSHOT}}').join(translate('SCREENSHOT'));
-      tempMarkup = tempMarkup.split('{{THUMBNAIL}}').join(translate('THUMBNAIL'));
-      tempMarkup = tempMarkup.split('{{VIDEO}}').join(translate('VIDEO'));
-      tempMarkup = tempMarkup.split('{{DEVICE_ID}}').join(deviceId);
-      tempMarkup = videos.split('{{FOSCAM_VIDEOS}}').join(tempMarkup);
+      tempPhotoMarkup = tempPhotoMarkup.split('{{PHOTO}}').join(translate('PHOTO'));
+      tempPhotoMarkup = tempPhotoMarkup.split('{{DEVICE_ID}}').join(deviceId);
+      tempPhotoMarkup = photos.split('{{FOSCAM_PHOTOS}}').join(tempPhotoMarkup);
 
-      markup = markup.split('{{FOSCAM_LIST}}').join(tempMarkup);
+      markup = markup.split('{{FOSCAM_PHOTO_LIST}}').join(tempPhotoMarkup);
     }
 
-    markup = markup.split('{{FOSCAM_LIST}}').join('');
+    markup = markup.split('{{FOSCAM_PHOTO_LIST}}').join('');
+
+    if ((value.videos) && (value.videos.length)) {
+      for (j; j < value.videos.length; j += 1) {
+        tempVideoMarkup = tempVideoMarkup + video.split('{{VIDEO_NAME}}').join(value.videos[j].name);
+        tempVideoMarkup = tempVideoMarkup.split('{{SCREEN_URL}}').join(value.videos[j].screen);
+        tempVideoMarkup = tempVideoMarkup.split('{{THUMB_URL}}').join(value.videos[j].thumb);
+        tempVideoMarkup = tempVideoMarkup.split('{{VIDEO_URL}}').join(value.videos[j].video);
+      }
+
+      tempVideoMarkup = tempVideoMarkup.split('{{SCREENSHOT}}').join(translate('SCREENSHOT'));
+      tempVideoMarkup = tempVideoMarkup.split('{{THUMBNAIL}}').join(translate('THUMBNAIL'));
+      tempVideoMarkup = tempVideoMarkup.split('{{VIDEO}}').join(translate('VIDEO'));
+      tempVideoMarkup = tempVideoMarkup.split('{{DEVICE_ID}}').join(deviceId);
+      tempVideoMarkup = videos.split('{{FOSCAM_VIDEOS}}').join(tempVideoMarkup);
+
+      markup = markup.split('{{FOSCAM_VIDEO_LIST}}').join(tempVideoMarkup);
+    }
+
+    markup = markup.split('{{FOSCAM_VIDEO_LIST}}').join('');
 
     if (typeof SB === 'object') {
+      photoListParent = SB.getByClass('image-list', SB.get(deviceId), 'div')[0];
+      photoList       = SB.getByTag('ol', photoListParent)[0];
       videoListParent = SB.getByClass('video-list', SB.get(deviceId), 'div')[0];
       videoList       = SB.getByTag('ol', videoListParent)[0];
 
@@ -99,22 +122,40 @@
       arm    = SB.getByClass('fa-lock',   SB.get(deviceId), 'a')[0];
       disarm = SB.getByClass('fa-unlock', SB.get(deviceId), 'a')[0];
 
-      if ((videoList) && (tempMarkup !== videoList.outerHTML)) {
-        videoListParent.removeChild(videoList);
+      if ((photoList) && (tempPhotoMarkup !== photoList.outerHTML)) {
+        photoListParent.removeChild(photoList);
       }
 
-      if ((value.videos) && ((!videoList) || (tempMarkup !== videoList.outerHTML))) {
+      if ((value.photos) && ((!photoList) || (tempPhotoMarkup !== photoList.outerHTML))) {
         // Since this markup is explicitly inserted via the parser, we'll also
         // have to explicitly set the lazyload property.
         if (SB.hasClass(SB.getByClass('selected', null, 'li')[0], deviceId)) {
-          tempMarkup = tempMarkup.split('{{LAZY_LOAD_IMAGE}}').join('src');
+          tempPhotoMarkup = tempPhotoMarkup.split('{{LAZY_LOAD_IMAGE}}').join('src');
         }
 
         else {
-          tempMarkup = tempMarkup.split('{{LAZY_LOAD_IMAGE}}').join('data-src');
+          tempPhotoMarkup = tempPhotoMarkup.split('{{LAZY_LOAD_IMAGE}}').join('data-src');
         }
 
-        videoListParent.innerHTML = tempMarkup;
+        photoListParent.innerHTML = tempPhotoMarkup;
+      }
+
+      if ((videoList) && (tempVideoMarkup !== videoList.outerHTML)) {
+        videoListParent.removeChild(videoList);
+      }
+
+      if ((value.videos) && ((!videoList) || (tempVideoMarkup !== videoList.outerHTML))) {
+        // Since this markup is explicitly inserted via the parser, we'll also
+        // have to explicitly set the lazyload property.
+        if (SB.hasClass(SB.getByClass('selected', null, 'li')[0], deviceId)) {
+          tempVideoMarkup = tempVideoMarkup.split('{{LAZY_LOAD_IMAGE}}').join('src');
+        }
+
+        else {
+          tempVideoMarkup = tempVideoMarkup.split('{{LAZY_LOAD_IMAGE}}').join('data-src');
+        }
+
+        videoListParent.innerHTML = tempVideoMarkup;
       }
 
       if ((value.alarm === 'on') && (!SB.hasClass(arm, 'device-on'))) {

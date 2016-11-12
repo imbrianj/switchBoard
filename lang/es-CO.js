@@ -268,6 +268,7 @@ module.exports = (function () {
           CAMERA_ARMED    : "Cámara armada",
           CAMERA_DISARMED : "Cámara desarmada",
           DISARM          : "Desarmar",
+          PHOTO           : "Foto",
           PRESET          : "Configurar",
           SCREENSHOT      : "Captura de Pantalla",
           TAKE            : "Tomar",

@@ -39,7 +39,7 @@ module.exports = (function () {
     fragments : function () {
       var fs = require('fs');
 
-      return { group  : fs.readFileSync(__dirname + '/fragments/smartthingsGroups.tpl', 'utf-8'),
+      return { group  : fs.readFileSync(__dirname + '/fragments/smartthingsGroups.tpl',     'utf-8'),
                action : fs.readFileSync(__dirname + '/fragments/smartthingsListAction.tpl', 'utf-8'),
                static : fs.readFileSync(__dirname + '/fragments/smartthingsListStatic.tpl', 'utf-8') };
     },

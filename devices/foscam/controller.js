@@ -29,7 +29,7 @@ module.exports = (function () {
    * @fileoverview Basic control of Foscam IP camera.
    */
   return {
-    version : 20161027,
+    version : 20161108,
 
     inputs  : ['command', 'list'],
 
@@ -44,7 +44,9 @@ module.exports = (function () {
     fragments : function () {
       var fs = require('fs');
 
-      return { videos : fs.readFileSync(__dirname + '/fragments/videos.tpl', 'utf-8'),
+      return { photos : fs.readFileSync(__dirname + '/fragments/photos.tpl', 'utf-8'),
+               photo  : fs.readFileSync(__dirname + '/fragments/photo.tpl',  'utf-8'),
+               videos : fs.readFileSync(__dirname + '/fragments/videos.tpl', 'utf-8'),
                video  : fs.readFileSync(__dirname + '/fragments/video.tpl',  'utf-8') };
     },
 
@@ -110,13 +112,13 @@ module.exports = (function () {
       var fs          = require('fs'),
           deviceState = require(__dirname + '/../../lib/deviceState'),
           path        = 'images/foscam/thumb',
-          self        = this,
+          that        = this,
           videos      = [],
           filename;
 
       fs.readdir(path, function(err, items) {
         var foscamData = deviceState.getDeviceState(foscam.deviceId) || { value : null },
-            i = 0;
+            i          = 0;
 
         foscamData.value = foscamData.value || {};
 
@@ -124,7 +126,7 @@ module.exports = (function () {
           filename = items[i];
 
           if (filename.split('.').pop() === 'gif') {
-            filename = self.getFilename(filename);
+            filename = that.getFilename(filename);
 
             if (filename.indexOf(foscam.deviceId + '-') === 0) {
               videos.push({
@@ -142,6 +144,48 @@ module.exports = (function () {
 
         // But we want to chop off any beyond a decent threshold.
         foscamData.value.videos = videos.slice(0, foscam.maxCount);
+
+        foscam.callback(null, foscamData.value);
+      });
+    },
+
+    /**
+     * Grab all snapshot photo paths.
+     */
+    getStoredPhotos : function (foscam) {
+      var fs          = require('fs'),
+          deviceState = require(__dirname + '/../../lib/deviceState'),
+          path        = 'images/foscam/photos',
+          that        = this,
+          photos      = [],
+          filename;
+
+      fs.readdir(path, function(err, items) {
+        var foscamData = deviceState.getDeviceState(foscam.deviceId) || { value : null },
+            i          = 0;
+
+        foscamData.value = foscamData.value || {};
+
+        for (i; i < items.length; i += 1) {
+          filename = items[i];
+
+          if (filename.split('.').pop() === 'jpg') {
+            filename = that.getFilename(filename);
+
+            if (filename.indexOf(foscam.deviceId + '-') === 0) {
+              photos.push({
+                name  : filename,
+                photo : path + '/' + filename + '.jpg'
+              });
+            }
+          }
+        }
+
+        // We want reverse chron for more natural display.
+        photos.reverse();
+
+        // But we want to chop off any beyond a decent threshold.
+        foscamData.value.photos = photos.slice(0, foscam.maxCount);
 
         foscam.callback(null, foscamData.value);
       });
@@ -192,7 +236,15 @@ module.exports = (function () {
       var http      = require('http'),
           fs        = require('fs'),
           that      = this,
-          filePath  = __dirname + '/../../images/foscam/images/' + Date.now() + '.jpg',
+          now       = new Date(),
+          year      = now.getFullYear(),
+          month     = ('0' + (now.getMonth() + 1)).slice(-2),
+          day       = ('0' + (now.getDate())).slice(-2),
+          hour      = ('0' + (now.getHours())).slice(-2),
+          minute    = ('0' + (now.getMinutes())).slice(-2),
+          second    = ('0' + (now.getSeconds())).slice(-2),
+          localPath = __dirname + '/../../images/foscam/photos/',
+          output    = localPath + '/' + config.device.deviceId + '-' + year + '-' + month + '-' + day + '-' + hour + '-' + minute + '-' + second + '.jpg',
           foscam    = {},
           dataReply = '',
           request;
@@ -213,21 +265,26 @@ module.exports = (function () {
       }
 
       else if (foscam.command === 'TAKE') {
-        fs.stat(filePath, function(err, data) {
+        fs.stat(output, function(err, data) {
           var request,
-              postData;
+              postData,
+              writeStream;
 
           if (err) {
             request = require('request');
             postData = that.postPrepare(foscam);
 
-            console.log('\x1b[35m' + config.device.title + '\x1b[0m: Saved image');
+            writeStream = request('http://' + postData.host + ':' + postData.port + postData.path).pipe(fs.createWriteStream(output));
 
-            request('http://' + postData.host + ':' + postData.port + postData.path).pipe(fs.createWriteStream(filePath));
+            writeStream.on('finish', function () {
+              that.getStoredPhotos(foscam);
+
+              console.log('\x1b[35m' + config.device.title + '\x1b[0m: Saved photo');
+            });
           }
 
           else if (data) {
-            console.log('\x1b[35m' + config.device.title + '\x1b[0m: Skipping image - already exists');
+            console.log('\x1b[35m' + config.device.title + '\x1b[0m: Skipping photo - already exists');
           }
         });
       }
