@@ -149,7 +149,7 @@ module.exports = (function () {
           execute = { command : 'ffmpeg', params : [] };
 
       execute.params.push('-ss');
-      execute.params.push('00:00:15');
+      execute.params.push('00:00:01');
       execute.params.push('-i');
       execute.params.push(input);
       execute.params.push('-vframes');
