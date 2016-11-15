@@ -31,7 +31,7 @@ module.exports = (function () {
    * @requires net
    */
   return {
-    version : 20160330,
+    version : 20161115,
 
     inputs : ['command', 'list', 'subdevice'],
 
@@ -111,91 +111,99 @@ module.exports = (function () {
         var util            = require(__dirname + '/../../lib/sharedUtil').util,
             rex             = '',
             state           = 'err',
+            i,
             encodeTranslate = function (message) {
               message = util.encodeName(message);
 
               return util.translate(message, 'denon', config.language);
             };
 
-        for (var i in reply) {
-          if (reply[i].match(/PW.+/)) {
-            if (reply[i].match(/PW(ON|OFF|STANDBY)/)) {
-              rex = reply[i].match(/PW(ON|OFF|STANDBY)/);
+        if (reply) {
+          for (i in reply) {
+            if (reply[i].match(/PW.+/)) {
+              if (reply[i].match(/PW(ON|OFF|STANDBY)/)) {
+                rex = reply[i].match(/PW(ON|OFF|STANDBY)/);
 
-              if (util.encodeName(rex[1]) === 'ON') {
-                state = 'ok';
+                if (util.encodeName(rex[1]) === 'ON') {
+                  state = 'ok';
+                }
+
+                denonState.value.power = encodeTranslate(rex[1]);
+              }
+            }
+
+            else if (reply[i].match(/MU.+/)) {
+              if (reply[i].match(/MU(ON|OFF)/)) {
+                rex = reply[i].match(/MU(ON|OFF)/);
+                denonState.value.ZONE1.mute = encodeTranslate(rex[1]);
+              }
+            }
+
+            else if (reply[i].match(/ZM.+/)) {
+              if (reply[i].match(/ZM(ON|OFF)/)) {
+                rex = reply[i].match(/ZM(ON|OFF)/);
+                denonState.value.ZONE1.power = encodeTranslate(rex[1]);
+              }
+            }
+
+            else if (reply[i].match(/MV.+/)) {
+              if (reply[i].match(/MV([0-9]+)/)) {
+                rex = reply[i].match(/MV([0-9]+)/);
+                denonState.value.ZONE1.volume = rex[1];
               }
 
-              denonState.value.power = encodeTranslate(rex[1]);
+              else if (reply[i].match(/MVMAX.([0-9]+)/)) {
+                rex = reply[i].match(/MVMAX.([0-9]+)/);
+                denonState.value.ZONE1.maxvolume = rex[1];
+              }
             }
-          }
 
-          else if (reply[i].match(/MU.+/)) {
-            if (reply[i].match(/MU(ON|OFF)/)) {
-              rex = reply[i].match(/MU(ON|OFF)/);
-              denonState.value.ZONE1.mute = encodeTranslate(rex[1]);
+            else if (reply[i].match(/SI.+/)) {
+              if (reply[i].match(/SI(.+)/)) {
+                rex = reply[i].match(/SI(.+)/);
+                denonState.value.ZONE1.input = encodeTranslate(rex[1]);
+              }
             }
-          }
 
-          else if (reply[i].match(/ZM.+/)) {
-            if (reply[i].match(/ZM(ON|OFF)/)) {
-              rex = reply[i].match(/ZM(ON|OFF)/);
-              denonState.value.ZONE1.power = encodeTranslate(rex[1]);
+            else if (reply[i].match(/MS.+/)) {
+              if (reply[i].match(/MS(.+)/)) {
+                rex = reply[i].match(/MS(.+)/);
+                denonState.value.ZONE1.mode = encodeTranslate(rex[1]);
+              }
             }
-          }
 
-          else if (reply[i].match(/MV.+/)) {
-            if (reply[i].match(/MV([0-9]+)/)) {
-              rex = reply[i].match(/MV([0-9]+)/);
-              denonState.value.ZONE1.volume = rex[1];
-            }
-            else if (reply[i].match(/MVMAX.([0-9]+)/)) {
-              rex = reply[i].match(/MVMAX.([0-9]+)/);
-              denonState.value.ZONE1.maxvolume = rex[1];
-            }
-          }
+            else if (reply[i].match(/Z2.+/)) {
+              if (reply[i].match(/Z2(ON|OFF)/)) {
+                rex = reply[i].match(/Z2(ON|OFF)/);
+                denonState.value.ZONE2.power = encodeTranslate(rex[1]);
+              }
 
-          else if (reply[i].match(/SI.+/)) {
-            if (reply[i].match(/SI(.+)/)) {
-              rex = reply[i].match(/SI(.+)/);
-              denonState.value.ZONE1.input = encodeTranslate(rex[1]);
-            }
-          }
+              else if (reply[i].match(/Z2([0-9]+)/)) {
+                rex = reply[i].match(/Z2([0-9]+)/);
+                denonState.value.ZONE2.volume = rex[1];
+              }
 
-          else if (reply[i].match(/MS.+/)) {
-            if (reply[i].match(/MS(.+)/)) {
-              rex = reply[i].match(/MS(.+)/);
-              denonState.value.ZONE1.mode = encodeTranslate(rex[1]);
+              else if (reply[i].match(/Z2(.+)/)) {
+                rex = reply[i].match(/Z2(.+)/);
+                denonState.value.ZONE2.input = encodeTranslate(rex[1]);
+              }
             }
-          }
 
-          else if (reply[i].match(/Z2.+/)) {
-            if (reply[i].match(/Z2(ON|OFF)/)) {
-              rex = reply[i].match(/Z2(ON|OFF)/);
-              denonState.value.ZONE2.power = encodeTranslate(rex[1]);
-            }
-            else if (reply[i].match(/Z2([0-9]+)/)) {
-              rex = reply[i].match(/Z2([0-9]+)/);
-              denonState.value.ZONE2.volume = rex[1];
-            }
-            else if (reply[i].match(/Z2(.+)/)) {
-              rex = reply[i].match(/Z2(.+)/);
-              denonState.value.ZONE2.input = encodeTranslate(rex[1]);
-            }
-          }
+            else if (reply[i].match(/Z3.+/)) {
+              if (reply[i].match(/Z3(ON|OFF)/)) {
+                rex = reply[i].match(/Z3(ON|OFF)/);
+                denonState.value.ZONE3.power = encodeTranslate(rex[1]);
+              }
 
-          else if (reply[i].match(/Z3.+/)) {
-            if (reply[i].match(/Z3(ON|OFF)/)) {
-              rex = reply[i].match(/Z3(ON|OFF)/);
-              denonState.value.ZONE3.power = encodeTranslate(rex[1]);
-            }
-            else if (reply[i].match(/Z3([0-9]+)/)) {
-              rex = reply[i].match(/Z3([0-9]+)/);
-              denonState.value.ZONE3.volume = rex[1];
-            }
-            else if (reply[i].match(/Z3(.+)/)) {
-              rex = reply[i].match(/Z3(.+)/);
-              denonState.value.ZONE3.input = encodeTranslate(rex[1]);
+              else if (reply[i].match(/Z3([0-9]+)/)) {
+                rex = reply[i].match(/Z3([0-9]+)/);
+                denonState.value.ZONE3.volume = rex[1];
+              }
+
+              else if (reply[i].match(/Z3(.+)/)) {
+                rex = reply[i].match(/Z3(.+)/);
+                denonState.value.ZONE3.input = encodeTranslate(rex[1]);
+              }
             }
           }
         }
@@ -294,11 +302,8 @@ module.exports = (function () {
         });
 
         Socket.once('error', function (err) {
-          var deviceState = require(__dirname + '/../../lib/deviceState'),
-              denonState  = deviceState.getDeviceState(config.deviceId);
-
           if ((err.code !== 'ETIMEDOUT') || (denon.command !== 'state')) {
-            denon.callback(err, denonState);
+            denon.callback(err);
           }
         });
       }
