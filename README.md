@@ -80,7 +80,7 @@ I'm always looking to add devices and services.  Even if you're not a developer,
 
   Overview: You'll need to have your SwitchBoard device (computer, raspberry pi, etc.) *pretend* to be a PS3 controller (aka Sixaxis Controller) that communicates with the PS3 via Bluetooth.
    * You'll need a supported Bluetooth dongle that plugs into your device and communicates with the console (the CSR bluecore4-rom is recommended): https://gimx.fr/wiki/index.php?title=Bluetooth_dongle
-   * [Install GIMX](https://github.com/matlo/GIMX/releases) version 2.0x+ (earlier versions won't work).  I would suggest 5.9 as there are permissions issues with version 6.
+   * [Install GIMX](https://github.com/matlo/GIMX/releases) version 2.0x+ (earlier versions won't work).
    * Refer to the [detailed instruction for spoofing your Bluetooth dongle's MAC address](https://gimx.fr/wiki/index.php?title=Command_line#Linux_.2B_bluetooth_.2B_PS3).
    * :point_up: Tips:
      * The above instructions assume you have plugged your Sixaxis into your PS3, pressed the controller's PS button to pair it, unplugged the controller from the PS3, and pluged back into your SwitchBoard device.
