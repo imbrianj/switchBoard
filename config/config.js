@@ -17,6 +17,9 @@ exports.config = {
     macroPause   : 1500,
     pollMinutes  : 5,
     pollSeconds  : 15,
+    // Age (in days) to store database records of events.  A 0 means database
+    // logging will be disabled.
+    dbDayAge     : 14,
     localTimeout : 1500,
     // Your SSL key and SCR will be generated for you.  If you want to use one
     // you've manually created, drop "ssl.key" and "ssl.csr" into /cache/.
@@ -86,6 +89,7 @@ exports.config = {
     typeClass : 'samsung',
     title     : 'Samsung SmartTV',
     deviceIp  : '192.168.1.1',
+    power     : 60,
     disabled  : true
   },
 
@@ -93,6 +97,7 @@ exports.config = {
     typeClass : 'roku',
     title     : 'Roku',
     deviceIp  : '192.168.1.3',
+    power     : 5,
     disabled  : true
   },
 
@@ -110,6 +115,7 @@ exports.config = {
     // specific if you need, but this should be fine.
     serviceIp   : '127.0.0.1',
     servicePort : 8181,
+    power       : 230,
     disabled    : true
   },
 
@@ -117,6 +123,7 @@ exports.config = {
     typeClass : 'panasonic',
     title     : 'Panasonic',
     deviceIp  : '192.168.1.5',
+    power     : 60,
     disabled  : true
   },
 
@@ -129,6 +136,7 @@ exports.config = {
     title     : 'LG TV',
     deviceIp  : '192.168.1.6',
     pairKey   : '123456',
+    power     : 60,
     disabled  : true
   },
 
@@ -140,6 +148,7 @@ exports.config = {
     typeClass : 'pioneer',
     title     : 'Pioneer Amp',
     deviceIp  : '192.168.1.6',
+    power     : 60,
     disabled  : true
   },
 
@@ -151,6 +160,7 @@ exports.config = {
     typeClass : 'denon',
     title     : 'Denon Receiver',
     deviceIp  : '192.168.1.6',
+    power     : 60,
     disabled  : true
   },
 
@@ -216,7 +226,7 @@ exports.config = {
     deviceIp  : '192.168.1.7',
     username  : 'user',
     password  : 'password',
-    maxCount  : 50,
+    maxCount  : 20,
     apps      : { 'Announce'      : { id            : 'announceFoscam',
                                       controllerIds : ['speech', 'clientSpeech', 'clientNotify', 'gerty'] },
                   'Foscam Change' : { id            : 'foscamChange' },
@@ -224,6 +234,7 @@ exports.config = {
                                       delay         : 300, /* Delay for file check */
                                       videoLength   : 600,
                                       byteLimit     : 25600 /* Measured in MB */ } },
+    power     : 6,
     disabled  : true
   },
 
@@ -421,6 +432,14 @@ exports.config = {
                      },
     */
     className      : { Goblin : 'fa-female' },
+    power          : { 'Bedroom Lamps'    : 18,
+                       'Office Switch'    : 15,
+                       'Hall Light'       : 240,
+                       'Living Room Lamp' : 15,
+                       'Chandelier'       : 80,
+                       'Credenza'         : 60,
+                       'Kitchen Light'    : 30,
+                       'Dining Lights'    : 19 },
     disabledMarkup : false,
     disabled       : true
   },
@@ -441,6 +460,17 @@ exports.config = {
                                       controllerIds : ['pushover', 'sms', 'speech', 'clientSpeech', 'clientNotify', 'gerty'] }
     */
                 },
+    disabled  : true
+  },
+
+  powerView : {
+    typeClass : 'powerView',
+    title     : 'Blinds',
+    deviceIp  : '192.168.1.108',
+    order     : ['Dining Room 1', 'Dining Room 2', 'Balcony', 'Living Room 1', 'Living Room 2', 'Office', 'Bedroom'],
+    scenes    : [{ 'All Up'  : { icon : 'arrow-up',   devices : { 'Dining Room 1' : 100, 'Dining Room 2' : 100, 'Balcony' : 100, 'Living Room 1' : 100, 'Living Room 2' : 100, 'Office' : 100, 'Bedroom' : 100 } } },
+                 { 'All Down': { icon : 'arrow-down', devices : { 'Dining Room 1' : 0, 'Dining Room 2' : 0, 'Balcony' : 0, 'Living Room 1' : 0, 'Living Room 2' : 0, 'Office' : 0, 'Bedroom' : 0 } } },
+                 { 'TV'      : { icon : 'gamepad',    devices : { 'Balcony' : 0, 'Living Room 2' : 0 } } }],
     disabled  : true
   },
 
@@ -466,6 +496,7 @@ exports.config = {
     title      : 'XBMC',
     deviceIp   : '192.168.1.8',
     devicePort : 8080,
+    power      : 4,
     disabled   : true
   },
 
@@ -483,6 +514,11 @@ exports.config = {
                    'HDD'    : 4,
                    'Power'  : 5 },
     className  : { 'TV'     : 'fa-desktop' },
+    power      : { 'Lights' : 60,
+                   'TV'     : 60,
+                   'LED'    : 15,
+                   'HDD'    : 15,
+                   'Power'  : 60 },
     disabled   : true
   },
 
@@ -632,14 +668,14 @@ exports.config = {
     names          : { '192.168.1.1'   : 'Brian\'s Phone',
                        '192.168.1.2'   : 'Brian\'s Computer' },
     apps           : { 'Gerty' : { id            : 'gerty',
-                                   macros        : { 'Watch A Movie' : 'ps3=PowerOn;samsung=sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,HDMI4,sleep,RIGHT,sleep,RIGHT,sleep,RIGHT,sleep,RIGHT,sleep,RIGHT,sleep,DOWN,sleep,ENTER,sleep,RETURN,sleep,sleep,sleep,LEFT',
+                                   macros        : { 'Watch A Movie' : 'powerview=text-Movie;ps3=PowerOn;samsung=sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,HDMI4,sleep,RIGHT,sleep,RIGHT,sleep,RIGHT,sleep,RIGHT,sleep,RIGHT,sleep,DOWN,sleep,ENTER,sleep,RETURN,sleep,sleep,sleep,LEFT',
                                                      'Goodnight'     : 'smartthings=subdevice-mode-Night',
                                                      'Good Night'    : 'smartthings=subdevice-mode-Night',
                                                      'Goodbye'       : 'smartthings=subdevice-mode-Away;nest=Away',
                                                      'Good Bye'      : 'smartthings=subdevice-mode-Away;nest=Away',
                                                      'I\'m Back'     : 'smartthings=subdevice-mode-Home;nest=Home',
                                                      'Welcome Home'  : 'smartthings=subdevice-mode-Home;nest=Home' },
-                                   controllerIds : ['samsung', 'roku', 'ps3', 'panasonic', 'lg', 'pioneer', 'denon', 'speech', 'stocks', 'weather', 'foscam', 'mp3', 'sms', 'pushover', 'smartthings', 'nest', 'switchBoardCI', 'xbmc', 'raspberryRemote', 'wemo', 'activeBuilding', 'clientMp3', 'clientNotify', 'clientSpeech'] } },
+                                   controllerIds : ['samsung', 'roku', 'ps3', 'panasonic', 'lg', 'pioneer', 'denon', 'speech', 'stocks', 'weather', 'foscam', 'mp3', 'sms', 'pushover', 'smartthings', 'powerview', 'nest', 'switchBoardCI', 'xbmc', 'raspberryRemote', 'wemo', 'activeBuilding', 'clientMp3', 'clientNotify', 'clientSpeech'] } },
     disabled       : true
   },
 

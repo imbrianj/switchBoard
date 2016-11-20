@@ -29,7 +29,7 @@ module.exports = (function () {
    * @fileoverview Basic control of SmartThings endpoint.
    */
   return {
-    version : 20161027,
+    version : 20161116,
 
     inputs  : ['list', 'subdevice'],
 
@@ -156,14 +156,44 @@ module.exports = (function () {
      * of the world.
      */
     updateState : function (smartthings, response) {
-      var subDevices      = [],
-          smartthingsData = {},
-          deviceState     = require(__dirname + '/../../lib/deviceState'),
-          state           = 'err',
-          mode            = '',
-          i               = 0,
-          currDevice      = {},
-          device;
+      var subDevices       = [],
+          smartthingsData  = {},
+          deviceState      = require(__dirname + '/../../lib/deviceState'),
+          smartthingsState = deviceState.getDeviceState(smartthings.deviceId),
+          state            = 'err',
+          mode             = '',
+          i                = 0,
+          currDevice       = {},
+          device,
+          matched,
+          findByName       = function (find, i) {
+                               var found   = {},
+                                   device  = find[i],
+                                   devices = ((smartthingsState) && (smartthingsState.value)) ? smartthingsState.value.devices : null,
+                                   j       = 0;
+
+                               if ((devices) && (devices[i])) {
+                                 // It's likely that the array structure is the same.
+                                 // In that case, we can just quickly validate it's the
+                                 // same and pass that along.
+                                 if (device.id === devices[i].id) {
+                                   found = devices[i];
+                                 }
+
+                                 // Otherwise, let's search for it.
+                                 else {
+                                   for (j; j < devices.length; j += 1) {
+                                     if (device.id === devices[j].id) {
+                                       found = devices[j];
+
+                                       break;
+                                     }
+                                   }
+                                 }
+                               }
+
+                               return found;
+                             };
 
       if ((response) && (response.mode) && (response.devices)) {
         mode  = response.mode;
@@ -173,9 +203,13 @@ module.exports = (function () {
           device = response.devices[i];
 
           if ((device.values) && (device.id) && (device.label)) {
+            matched = findByName(response.devices, i);
+
             currDevice = {
-              id    : device.id,
-              label : device.label
+              id       : device.id,
+              label    : device.label,
+              lastOn   : matched.lastOn,
+              duration : matched.duration
             };
 
             if ((smartthings.className) && (smartthings.className[device.label])) {

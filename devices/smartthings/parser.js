@@ -34,7 +34,7 @@
         subDeviceMarkup = '',
         subDevices,
         subDeviceGroup,
-        encodeName = function (name) {
+        encodeName      = function (name) {
           var util;
 
           if (typeof SB === 'object') {
@@ -48,7 +48,7 @@
 
           return 'group-' + name;
         },
-        translate = function (message) {
+        translate       = function (message) {
           var util;
 
           if ((typeof SB === 'object') && (typeof SB.util === 'object')) {
@@ -62,7 +62,7 @@
 
           return message;
         },
-        findSubDevices = function (subDeviceLabel, subDevices) {
+        findSubDevices  = function (subDeviceLabel, subDevices) {
           var subDevice = {},
               collected = [],
               i         = 0,

@@ -12,6 +12,7 @@
                   <legend>{{i18n_VOLUME}}</legend>
                   <label for="{{DEVICE_ID}}-z1-input">{{i18n_VOLUME}}:</label>
                   <input id="{{DEVICE_ID}}-z1-input" class="text-input" type="number" max="{{DEVICE_Z1_MAXVOLUME}}" min="0" name="{{DEVICE_ID}}" value="{{DEVICE_Z1_VOLUME}}" required />
+                  <input type="range" max="DEVICE_Z1_MAXVOLUME" min="0" name="{{DEVICE_ID}}" value="{{DEVICE_Z1_VOLUME}}" />
                   <input class="input-type" type="hidden" value="subdevice-zone1" name="type" />
                   <button type="submit" class="button">{{i18n_SUBMIT}}</button>
                 </fieldset>
@@ -65,6 +66,7 @@
                   <legend>{{i18n_VOLUME}}</legend>
                   <label for="{{DEVICE_ID}}-z3-input">{{i18n_VOLUME}}:</label>
                   <input id="{{DEVICE_ID}}-z3-input" class="text-input" type="number" max="100" min="0" name="{{DEVICE_ID}}" value="{{DEVICE_Z3_VOLUME}}" required />
+                  <input type="range" max="100" min="0" name="{{DEVICE_ID}}" value="{{DEVICE_Z3_VOLUME}}" />
                   <input class="input-type" type="hidden" value="subdevice-zone3" name="type" />
                   <button type="submit" class="button">{{i18n_SUBMIT}}</button>
                 </fieldset>
@@ -107,6 +109,7 @@
                   <legend>{{i18n_VOLUME}}</legend>
                   <label for="{{DEVICE_ID}}-z2-input">{{i18n_VOLUME}}:</label>
                   <input id="{{DEVICE_ID}}-z2-input" class="text-input" type="number" max="80" min="0" name="{{DEVICE_ID}}" value="{{DEVICE_Z2_VOLUME}}" required />
+                  <input type="range" max="80" min="0" name="{{DEVICE_ID}}" value="{{DEVICE_Z2_VOLUME}}" />
                   <input class="input-type" type="hidden" value="subdevice-zone2" name="type" />
                   <button type="submit" class="button">{{i18n_SUBMIT}}</button>
                 </fieldset>

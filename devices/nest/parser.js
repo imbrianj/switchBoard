@@ -100,10 +100,6 @@
                   markup = '';
                 }
               }
-
-              else {
-                SB.spec.buildSliders(deviceId);
-              }
             }
 
             thermostatMarkup = thermostatMarkup + templateThermostat.split('{{SUB_DEVICE_ID}}').join(encodeName(device.label));

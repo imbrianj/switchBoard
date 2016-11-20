@@ -101,7 +101,7 @@ exports.smartthingsControllerTest = {
     test.strictEqual(newState.value.devices[1].type,              'contact', 'The first device is a contact sensor');
     test.strictEqual(newState.value.devices[1].peripheral.temp,    72,       'The second device has a peripheral function');
     test.strictEqual(newState.value.devices[1].peripheral.battery, 55,       'The second device has a battery');
-    test.strictEqual(newState.updated > (now.getTime() - 1),       true,     'State object should be newer than the initial time');
+    test.strictEqual(newState.updated > (Math.round(now.getTime() / 1000) - 1),       true,     'State object should be newer than the initial time');
 
     test.done();
   },

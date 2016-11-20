@@ -29,7 +29,7 @@ module.exports = (function () {
    * @requires querystring, fs, https
    */
   return {
-    version : 20161027,
+    version : 20161116,
 
     inputs : ['command', 'text', 'list', 'subdevice'],
 
@@ -189,8 +189,58 @@ module.exports = (function () {
      * just the parts we care about.
      */
     deviceList : function (config) {
-      var that     = this,
-          callback = config.callback || function () {};
+      var deviceState = require(__dirname + '/../../lib/deviceState'),
+          nestState   = deviceState.getDeviceState(config.deviceId),
+          that        = this,
+          callback    = config.callback || function () {},
+          findByName  = function (find, i) {
+                          var found   = {},
+                              device  = find[i],
+                              devices = ((nestState) && (nestState.value)) ? nestState.value.devices : null,
+                              j       = 0;
+
+                          if ((devices) && (devices[i])) {
+                            // It's likely that the array structure is the same.
+                            // In that case, we can just quickly validate it's the
+                            // same and pass that along.
+                            if (device.serial === devices[i].serial) {
+                              found = devices[i];
+                            }
+
+                            // Otherwise, let's search for it.
+                            else {
+                              for (j; j < devices.length; j += 1) {
+                                if (device.serial === devices[j].serial) {
+                                  found = devices[j];
+
+                                  break;
+                                }
+                              }
+                            }
+                          }
+
+                          return found;
+                        },
+          sortByTitle = function (a, b) {
+                          var labelA,
+                              labelB,
+                              value  = 0;
+
+                          if ((a.label) && (b.label)) {
+                            labelA = a.label.toUpperCase();
+                            labelB = b.label.toUpperCase();
+
+                            if (labelA < labelB) {
+                              value = -1;
+                            }
+
+                            else if (labelA > labelB) {
+                              value = 1;
+                            }
+                          }
+
+                          return value;
+                        };
 
       console.log('\x1b[35m' + config.title + '\x1b[0m: Fetching device info');
 
@@ -201,7 +251,10 @@ module.exports = (function () {
       config.device   = { auth : config.auth, deviceId : config.deviceId };
 
       config.callback = function (err, response) {
-        var nest = { devices : [] },
+        var nest        = { devices : [] },
+            protects    = [],
+            thermostats = [],
+            matched,
             i;
 
         if (response) {
@@ -216,21 +269,29 @@ module.exports = (function () {
           // "topaz" contains only smoke detectors.
           for (i in response.topaz) {
             if ((response.topaz[i]) && (response.topaz[i].serial_number)) {
-              nest.devices.push({
-                serial  : response.topaz[i].serial_number,
-                smoke   : response.topaz[i].smoke_status         === 0 ? 'ok' : 'err',
-                co      : response.topaz[i].co_status            === 0 ? 'ok' : 'err',
-                battery : response.topaz[i].battery_health_state === 0 ? 'ok' : 'err',
-                label   : that.findLabel(response.topaz[i].where_id, config.language),
-                type    : 'protect'
+              matched = findByName(response.topaz, i);
+
+              protects.push({
+                serial   : response.topaz[i].serial_number,
+                smoke    : response.topaz[i].smoke_status         === 0 ? 'ok' : 'err',
+                co       : response.topaz[i].co_status            === 0 ? 'ok' : 'err',
+                battery  : response.topaz[i].battery_health_state === 0 ? 'ok' : 'err',
+                label    : that.findLabel(response.topaz[i].where_id, config.language),
+                type     : 'protect',
+                lastOn   : matched.lastOn,
+                duration : matched.duration
               });
             }
           }
 
+          protects.sort(sortByTitle);
+
           // "device" contains only thermostats.
           for (i in response.device) {
             if ((response.device[i]) && (response.device[i].serial_number)) {
-              nest.devices.push({
+              matched = findByName(response.device, i);
+
+              thermostats.push({
                 serial       : response.device[i].serial_number,
                 state        : response.shared[response.device[i].serial_number].target_temperature_type,
                 active       : response.shared[response.device[i].serial_number].hvac_heater_state ? 'heat' : response.shared[response.device[i].serial_number].hvac_ac_state ? 'cool' : 'off',
@@ -241,10 +302,16 @@ module.exports = (function () {
                 timeToTarget : response.device[i].time_to_target,
                 leaf         : response.device[i].leaf,
                 label        : that.findLabel(response.device[i].where_id),
-                type         : 'thermostat'
+                type         : 'thermostat',
+                lastOn       : matched.lastOn,
+                duration     : matched.duration
               });
             }
           }
+
+          thermostats.sort(sortByTitle);
+
+          nest.devices = protects.concat(thermostats);
 
           callback(null, nest);
         }

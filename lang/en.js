@@ -304,15 +304,20 @@ module.exports = (function () {
           WHY          : "Why",
           SYNONYMS     : {
             AFFIRMATIVE : ["Yup",
+                           "Yup, I can do that",
+                           "Yup, I'm on it",
                            "OK",
-                           "Okay, I'm on it",
+                           "OK, I'm on it",
+                           "OK, you got it",
+                           "I\'m on it",
                            "I can do that",
                            "Sure thing",
                            "No problem",
+                           "Yeah, no problem",
                            "You got it",
                            "Alright",
                            "Sounds good",
-                           "Wilco"],
+                           "That sounds doable"],
             NEGATIVE    : ["Sorry, I don't understand",
                            "Say again?",
                            "Speak up!",
@@ -320,6 +325,7 @@ module.exports = (function () {
                            "I don't feel like it",
                            "I don't know what you're saying",
                            "I can't hear you",
+                           "You\'ll have to speak up",
                            "Do it yourself",
                            "Nope",
                            "Sorry"],
@@ -434,6 +440,10 @@ module.exports = (function () {
           TUNER          : "Tuner",
           TV_SAT         : "TV/Sat",
           VIDEO          : "Video"
+        },
+        powerView : {
+          POWERVIEW      : "PowerView",
+          SET_PERCENTAGE : "Set Percentage"
         },
         ps3 : {
           PS3      : "PS3",

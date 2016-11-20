@@ -47,6 +47,26 @@ exports.deviceState = {
     test.done();
   },
 
+  findDeviceOnTime : function (test) {
+    'use strict';
+
+    var deviceState = require(__dirname + '/../../../lib/deviceState'),
+        now         = new Date().getTime(),
+        newDeviceState;
+
+    deviceState.updateState('faux-device', 'faux-type', { state : 'ok', value : { devices : [{ title : 'thing 1', state : 'on' }, { title : 'thing 2' }]} });
+
+    setTimeout(function () {
+      deviceState.updateState('faux-device', 'faux-type', { state : 'ok', value : { devices : [{ title : 'thing 1', state : 'off', lastOn : now }, { title : 'thing 2', state : 'off' }]} });
+      newDeviceState = deviceState.getDeviceState('faux-device');
+
+      test.strictEqual(typeof newDeviceState.value.devices[0].duration, 'number', 'Correct duration recorded');
+      test.strictEqual(newDeviceState.value.devices[1].duration, undefined, 'No duration recorded');
+
+      test.done();
+    }, 10);
+  },
+
   newState : function (test) {
     'use strict';
 

@@ -35,6 +35,7 @@ var fs              = require('fs'),
     staticAssets    = require(__dirname + '/lib/staticAssets'),
     loadController  = require(__dirname + '/lib/loadController'),
     requestInit     = require(__dirname + '/lib/requestInit'),
+    db              = require(__dirname + '/lib/db'),
     webSockets      = require(__dirname + '/lib/webSockets'),
     controllers,
     server,
@@ -155,6 +156,8 @@ fs.stat(configFile, function (err, data) {
       console.log('\x1b[31mSSL\x1b[0m: Disabled');
       server = http.createServer(connection).listen(settings.config.config.serverPort, startup);
     }
+
+    db.readDb();
 
     // Or you're connecting with Web Sockets
     wsServer = new webSocketServer({ httpServer : server }, 'echo-protocol');

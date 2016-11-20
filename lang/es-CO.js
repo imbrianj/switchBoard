@@ -433,6 +433,10 @@ module.exports = (function () {
           TV_SAT         : "TV/Sat",
           VIDEO          : "Video"
         },
+        powerView : {
+          POWERVIEW      : "PowerView",
+          SET_PERCENTAGE : "Establecer Porcentaje"
+        },
         ps3 : {
           PS3      : "PS3",
           CIRCLE   : "Circulo",

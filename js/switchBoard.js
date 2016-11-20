@@ -31,7 +31,7 @@ SB.spec = (function () {
   'use strict';
 
   return {
-    version : 20161102,
+    version : 20161115,
 
     state     : {},
     parsers   : {},
@@ -78,8 +78,6 @@ SB.spec = (function () {
 
         SB.addClass(newNav,     'selected');
         SB.addClass(newContent, 'selected');
-
-        SB.spec.sliderSetWidths();
 
         SB.spec.lazyUnLoad(selectContent);
 
@@ -171,17 +169,7 @@ SB.spec = (function () {
           deviceHeader.parentNode.removeChild(deviceHeader);
 
           if (innerMarkup.innerHTML !== oldMarkup) {
-            if (SB.getByClass('sliderBar', node, 'div')[0]) {
-              SB.event.removeAll(SB.getByClass('sliderBar', node, 'div')[0].getElementsByTagName('span')[0]);
-
-              node.outerHTML = markup;
-
-              SB.spec.buildSliders(state.deviceId);
-            }
-
-            else {
-              node.outerHTML = markup;
-            }
+            node.outerHTML = markup;
           }
         }
       }
@@ -500,199 +488,6 @@ SB.spec = (function () {
       }
 
       return numberInputs;
-    },
-
-    /**
-     * Converts the numerical value in a number input into an x-offset to
-     * correctly show the slider indicator in the correct position.
-     *
-     * @param {Object} slider DOM node of the slider indicator.
-     * @param {Object} numberInput DOM node of the number input form element.
-     * @return {Integer} Pixel offset of the slider's "left" value.
-     */
-    findSliderPosition : function (slider, numberInput) {
-      var sliderWidth,
-          min,
-          max,
-          currentVal,
-          offset = 0;
-
-      if (numberInput) {
-        sliderWidth = slider.parentNode.offsetWidth - slider.offsetWidth;
-        min         = parseInt(numberInput.min, 10);
-        max         = parseInt(numberInput.max, 10);
-        currentVal  = parseInt(numberInput.value, 10);
-        offset      = ((currentVal - min) * sliderWidth) / (max - min);
-        offset      = offset < sliderWidth ? offset : sliderWidth;
-        offset      = offset > 0 ? offset : 0;
-      }
-
-      return Math.round(offset);
-    },
-
-    /**
-     * Converts the slider offset value into a numerical value to correctly
-     * show inside the number input form element.
-     *
-     * @param {Object} slider DOM node of the slider indicator.
-     * @param {Object} drag Drag object, passed in from the clickDrag
-     *                  method's callback.
-     * @return {Integer} Numerical value represented by the slider position.
-     */
-    findSliderValue : function (slider, drag) {
-      var numberInput = slider.parentNode.previousSibling,
-          sliderWidth = slider.parentNode.offsetWidth - slider.offsetWidth,
-          min         = parseInt(numberInput.min, 10),
-          max         = parseInt(numberInput.max, 10),
-          offset      = drag.newX,
-          currentVal  = (((max - min) / sliderWidth) * offset) + min;
-
-      return Math.round(currentVal);
-    },
-
-    /**
-     * Creates all sliders for all numerical inputs - then create the required
-     * event handlers.
-     *
-     * @param {String} id ID of (optional) parent node to render.  If no
-     *                  parent ID is present, sliders for all controllers will
-     *                  be built.
-     */
-    buildSliders : function (id) {
-      var numberInputs = SB.spec.findNumberInputs(),
-          buildSliderBar,
-          changeForm,
-          i;
-
-      buildSliderBar = function (slider, numberInput) {
-        slider.style.left = SB.spec.findSliderPosition(slider, numberInput) + 'px';
-
-        SB.clickDrag({ elm        : slider,
-                       restrict   : true,
-                       onTween    : function (drag) {
-                         var value = SB.spec.findSliderValue(slider, drag);
-
-                         numberInput.value = value;
-                         slider.setAttribute('aria-valuenow', value);
-                       },
-                       onComplete : function () {
-                         changeForm(numberInput);
-                       }
-                     });
-      };
-
-      changeForm = function (elm) {
-        var form = elm.parentNode,
-            slider;
-
-        if (SB.hasClass(elm.nextSibling, 'sliderBar')) {
-          slider = elm.nextSibling.getElementsByTagName('span')[0];
-          slider.style.left = SB.spec.findSliderPosition(slider, elm) + 'px';
-
-          while((form !== document) && (form.tagName.toLowerCase() !== 'form')) {
-            form = form.parentNode;
-          }
-
-          if (form.tagName.toLowerCase() === 'form') {
-            SB.spec.sendInput(form);
-          }
-        }
-      };
-
-      for (i = 0; i < numberInputs.length; i += 1) {
-        (function (numberInput) {
-          var sliderBar,
-              slider;
-
-          if ((numberInput.type === 'number') && (numberInput.min) && (numberInput.max)) {
-            if ((!id) || (SB.isChildOf(numberInput, SB.get(id)))) {
-              sliderBar           = document.createElement('div');
-              sliderBar.className = 'sliderBar';
-              slider              = document.createElement('span');
-              slider.setAttribute('role',          'slider');
-              slider.setAttribute('tabindex',      0);
-              slider.setAttribute('aria-valuenow', numberInput.value);
-              slider.setAttribute('aria-valuemin', numberInput.min);
-              slider.setAttribute('aria-valuemax', numberInput.max);
-              sliderBar.appendChild(slider);
-              numberInput.parentNode.insertBefore(sliderBar, numberInput.nextSibling);
-
-              if (id) {
-                buildSliderBar(slider, numberInput);
-              }
-
-              else {
-                SB.event.add(window, 'load', function () {
-                  buildSliderBar(slider, numberInput);
-                });
-              }
-            }
-          }
-        }(numberInputs[i]));
-      }
-
-      if (!id) {
-        SB.event.add(SB.spec.uiComponents.body, 'keydown', function (e) {
-          var elm    = SB.getTarget(e),
-              newVal = null,
-              numInput;
-
-          if (SB.hasClass(elm.parentNode, 'sliderBar')) {
-            numInput = elm.parentNode.previousSibling;
-
-            if ((e.keyCode === 38) || (e.keyCode === 39)) {
-              newVal = parseInt(numInput.value, 10) + 1;
-              newVal = newVal <= numInput.max ? newVal : numInput.max;
-            }
-
-            else if ((e.keyCode === 37) || (e.keyCode === 40)) {
-              newVal = parseInt(numInput.value, 10) - 1;
-              newVal = newVal >= numInput.min ? newVal : numInput.min;
-            }
-
-            if ((newVal) && (newVal >= numInput.min) && (newVal <= numInput.max)) {
-              e.preventDefault();
-
-              numInput.value = newVal;
-            }
-          }
-        });
-
-        SB.event.add(SB.spec.uiComponents.body, 'keyup', function (e) {
-          var elm = SB.getTarget(e);
-
-          if (SB.hasClass(elm.parentNode, 'sliderBar')) {
-            changeForm(elm.parentNode.previousSibling);
-          }
-        });
-
-        SB.event.add(window, 'resize', function () {
-          SB.spec.sliderSetWidths(numberInputs);
-        });
-
-        /* If you change the form value, we should change the slider position. */
-        SB.event.add(SB.spec.uiComponents.body, 'change', function (e) {
-          changeForm(SB.getTarget(e));
-        });
-      }
-    },
-
-    /**
-     * Sets slider positions to the appropriate location.  Used when a form
-     * value changes or if the scroll bar changes width.
-     */
-    sliderSetWidths : function () {
-      var numberInputs = SB.spec.findNumberInputs(),
-          slider,
-          i;
-
-      for (i = 0; i < numberInputs.length; i += 1) {
-        if (SB.hasClass(numberInputs[i].nextSibling, 'sliderBar')) {
-          slider = numberInputs[i].nextSibling.getElementsByTagName('span')[0];
-
-          slider.style.left = SB.spec.findSliderPosition(slider, numberInputs[i]) + 'px';
-        }
-      }
     },
 
     /**
@@ -1083,6 +878,41 @@ SB.spec = (function () {
           SB.spec.sendInput(elm);
         }
       });
+
+      SB.event.add(SB.spec.uiComponents.body, 'change', function (e) {
+        var elm  = SB.getTarget(e),
+            type = elm.type,
+            slider,
+            number;
+
+        // We assume any number input with an explicit min and max is paired
+        // with a range input after for convenient input.
+        if ((type === 'range') || ((type === 'number') && (elm.max !== undefined) && (elm.min !== undefined))) {
+          if (type === 'range') {
+            number = elm.previousElementSibling;
+
+            if (number.type === 'number') {
+              number.value = elm.value;
+            }
+          }
+
+          else if (type === 'number') {
+            slider = elm.nextElementSibling;
+
+            if (slider.type === 'range') {
+              slider.value = elm.value;
+            }
+          }
+
+          if (demoMode) {
+            SB.log('Issued', 'Demo Form Command', 'success');
+          }
+
+          else {
+            SB.spec.sendInput(elm.form);
+          }
+        }
+      });
     },
 
     /**
@@ -1177,7 +1007,6 @@ SB.spec = (function () {
       }
 
       SB.spec.lazyLoad(active || document.body.className);
-      SB.spec.buildSliders();
       SB.spec.command(demoMode);
       SB.spec.formInput(demoMode);
       SB.spec.nav();

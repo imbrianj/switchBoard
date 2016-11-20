@@ -157,7 +157,14 @@ button::-moz-focus-inner{
 
 form fieldset label,
 form fieldset legend {
-  display: none;
+  display: block;
+  height: 0;
+  left: -999em;
+  margin: 0;
+  overflow: hidden;
+  position: absolute;
+  text-indent: -999em;
+  width: 0;
 }
 
 /* Copy form styling from purecss.io */
@@ -269,10 +276,8 @@ form fieldset {
 }
 
 form legend {
-  border-bottom: 1px solid #E5E5E5;
   color: #444;
   display: block;
-  font-size: 125%;
   margin-bottom: 0.3em;
   padding: 0.3em 0;
   width: 100%;
@@ -287,7 +292,6 @@ form legend {
   form input[type="password"],
   form input[type="email"],
   form input[type="url"],
-  form input[type="number"],
   form input[type="search"],
   form input[type="color"],
   form label {
@@ -296,34 +300,105 @@ form legend {
   }
 }
 
-.sliderBar {
-  background: #0078E7;
-  background: #444;
-  border-radius: 1em;
-  font-size: 25%;
-  height: 2em;
-  margin: 3em 0 0 0;
-  position: relative;
+.rich input[type=range] ~ button[type="submit"]:first-of-type {
+  display: none;
+}
+
+input[type=range] {
+  -webkit-appearance: none;
+  background: transparent;
+  margin: 3em auto;
   width: 100%;
 }
 
-.sliderBar span {
+input[type=range]::-webkit-slider-runnable-track {
+  background: #444;
+  border-radius: 1.3em;
+  cursor: pointer;
+  height: 2.6em;
+  width: 100%;
+}
+
+input.temp[type=range]::-webkit-slider-runnable-track {
+  background: -webkit-linear-gradient(left, #0078E7 0, #F00 100%);
+  background: linear-gradient(to right, #0078E7 0, #F00 100%);
+}
+
+input.light[type=range]::-webkit-slider-runnable-track {
+  background: -webkit-linear-gradient(left, #111 0, #aaa 100%);
+  background: linear-gradient(to right, #111 0, #aaa 100%);
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
   background: #000;
   border-radius: 50%;
   box-shadow: inset -2px -2px 1px #286EA0, inset -2px 2px 1px #286EA0, inset 2px -2px 1px #286EA0, inset 2px 2px 1px #286EA0;
   cursor: pointer;
   display: block;
-  height: 2em;
-  position: absolute;
-  -moz-transition: none;
-  -o-transition: none;
-  -webkit-transition: none;
-  transition: none;
-  width: 2em;
+  height: 2.6em;
+  width: 2.6em;
 }
 
-.sliderBar ~ button[type="submit"]:first-of-type {
-  display: none;
+input[type=range]::-moz-range-track {
+  background: #444;
+  border-radius: 1.3em;
+  cursor: pointer;
+  height: 2.6em;
+  width: 100%;
+}
+
+input.temp[type=range]::-moz-range-track {
+  background: -moz-linear-gradient(left, #0078E7 0, #F00 100%);
+  background: linear-gradient(to right, #0078E7 0, #F00 100%);
+}
+
+input.light[type=range]::-moz-range-track {
+  background: -moz-linear-gradient(left, #111 0, #aaa 100%);
+  background: linear-gradient(to right, #111 0, #aaa 100%);
+}
+
+input[type=range]::-moz-range-thumb {
+  background: #000;
+  border-radius: 50%;
+  box-shadow: inset -2px -2px 1px #286EA0, inset -2px 2px 1px #286EA0, inset 2px -2px 1px #286EA0, inset 2px 2px 1px #286EA0;
+  cursor: pointer;
+  display: block;
+  height: 2.6em;
+  width: 2.6em;
+}
+
+input[type=range]::-ms-track {
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+  cursor: pointer;
+  width: 100%;
+}
+
+input[type=range]::-ms-fill {
+  background: #444;
+  border-radius: 1.3em;
+}
+
+input.temp[type=range]::-ms-fill {
+  background: -ms-linear-gradient(left, #0078E7 0, #F00 100%);
+  background: linear-gradient(to right, #0078E7 0, #F00 100%);
+}
+
+input.light[type=range]::-ms-fill {
+  background: -ms-linear-gradient(left, #111 0, #aaa 100%);
+  background: linear-gradient(to right, #111 0, #aaa 100%);
+}
+
+input[type=range]::-ms-thumb {
+  background: #000;
+  border-radius: 50%;
+  box-shadow: inset -2px -2px 1px #286EA0, inset -2px 2px 1px #286EA0, inset 2px -2px 1px #286EA0, inset 2px 2px 1px #286EA0;
+  cursor: pointer;
+  display: block;
+  height: 2.6em;
+  width: 2.6em;
 }
 
 @-moz-keyframes breath {
@@ -508,6 +583,10 @@ section .control-block .presence {
 section .control-block .navigation {
   float: left;
   width: 70%;
+}
+
+section .control-block fieldset {
+  padding-bottom: 0;
 }
 
 section .text-control li {
@@ -1421,6 +1500,10 @@ section .current {
   text-align: center;
 }
 
+section .columns {
+  column-count: 3;
+}
+
 section .sub-device-list .sub-device-group,
 section .text-list .text-group li {
   border: 1px solid #444;
@@ -1650,8 +1733,8 @@ section.nest .sub-device-list .control-device-status li {
 }
 
 section.nest .sub-device-list .control-device-status li:only-child {
-  max-width: 60%;
-  width: 60%;
+  max-width: 80%;
+  width: 80%;
 }
 
 section.nest .sub-device-list .text-device-status {
@@ -1663,12 +1746,18 @@ section.nest .text-device-status .text-device-status li {
   max-width: 22%;
 }
 
-.nest .sliderBar {
-  background: -moz-linear-gradient(left, #0078E7 0, #F00 100%);
-  background: -webkit-linear-gradient(left, #0078E7 0, #F00 100%);
-  background: -o-linear-gradient(left, #0078E7 0, #F00 100%);
-  background: -ms-linear-gradient(left, #0078E7 0, #F00 100%);
-  background: linear-gradient(to right, #0078E7 0, #F00 100%);
+section.powerView form {
+  text-align: center;
+}
+
+section.powerView legend {
+  font-size: 50%;
+  height: auto;
+  left: 0;
+  overflow: visible;
+  position: static;
+  text-indent: 0;
+  width: auto;
 }
 
 section.weather li span.fa {
@@ -1847,14 +1936,14 @@ header nav li.screenSaver {
     font-size: 250%;
   }
 
-  .sliderBar {
-    font-size: 40%;
-  }
-
   section > div {
     clear: both;
     float: none;
     width: 100%;
+  }
+
+  section .columns {
+    column-count: 2;
   }
 
   section .control-block {
@@ -1932,10 +2021,6 @@ header nav li.screenSaver {
     font-size: 300%;
   }
 
-  .sliderBar {
-    font-size: 33.333%;
-  }
-
   section > div {
     float: left;
     width: 50%;
@@ -1959,10 +2044,6 @@ header nav li.screenSaver {
 @media (min-width: 1000px) {
   section {
     font-size: 400%;
-  }
-
-  .sliderBar {
-    font-size: 25%;
   }
 
   section .installed .sub-device-group,

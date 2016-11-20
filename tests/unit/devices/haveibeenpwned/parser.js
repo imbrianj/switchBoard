@@ -22,7 +22,7 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview Unit test for devices/haveibeenpwnedParser/parser.js
+ * @fileoverview Unit test for devices/haveibeenpwned/parser.js
  */
 
 exports.haveibeenpwnedParserTest = {
