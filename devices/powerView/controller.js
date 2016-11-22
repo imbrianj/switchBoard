@@ -92,7 +92,7 @@ module.exports = (function () {
       var percentage = null;
 
       if (!isNaN(value)) {
-        percentage = Math.max(0, Math.min(100, Math.floor((value * 100) / 65535)));
+        percentage = Math.max(0, Math.min(100, Math.round((value * 100) / 65535)));
       }
 
       return percentage;
@@ -106,7 +106,7 @@ module.exports = (function () {
       var value = null;
 
       if (!isNaN(percent)) {
-        value = Math.min(65535, Math.max(0, Math.floor((65535 * percent) / 100)));
+        value = Math.min(65535, Math.max(0, Math.round((65535 * percent) / 100)));
       }
 
       return value;

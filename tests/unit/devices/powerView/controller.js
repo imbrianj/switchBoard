@@ -69,7 +69,7 @@ exports.powerViewControllerTest = {
     test.strictEqual(powerViewController.valueToPercent(65535), 100,  'Convert 65535');
     test.strictEqual(powerViewController.valueToPercent(0),     0,    'Convert 0');
     test.strictEqual(powerViewController.valueToPercent(-50),   0,    'Convert -50%');
-    test.strictEqual(powerViewController.valueToPercent(16385), 25,   'Convert 25%');
+    test.strictEqual(powerViewController.valueToPercent(16384), 25,   'Convert 25%');
     test.strictEqual(powerViewController.valueToPercent(false), 0,    'Convert boolean');
     test.strictEqual(powerViewController.valueToPercent('dog'), null, 'Convert string');
 
@@ -85,7 +85,7 @@ exports.powerViewControllerTest = {
     test.strictEqual(powerViewController.percentToValue(999),   65535, 'Convert 999%');
     test.strictEqual(powerViewController.percentToValue(0),     0,     'Convert 0%');
     test.strictEqual(powerViewController.percentToValue(-50),   0,     'Convert -50%');
-    test.strictEqual(powerViewController.percentToValue(25),    16383, 'Convert 25%');
+    test.strictEqual(powerViewController.percentToValue(25),    16384, 'Convert 25%');
     test.strictEqual(powerViewController.percentToValue(false), 0,     'Convert boolean');
     test.strictEqual(powerViewController.percentToValue('dog'), null,  'Convert string');
 

@@ -1500,10 +1500,6 @@ section .current {
   text-align: center;
 }
 
-section .columns {
-  column-count: 3;
-}
-
 section .sub-device-list .sub-device-group,
 section .text-list .text-group li {
   border: 1px solid #444;
@@ -1942,10 +1938,6 @@ header nav li.screenSaver {
     width: 100%;
   }
 
-  section .columns {
-    column-count: 2;
-  }
-
   section .control-block {
     margin: 0;
   }
@@ -1962,6 +1954,10 @@ header nav li.screenSaver {
 
   section .shortcuts {
     padding-top: 0;
+  }
+
+  section.powerView .installed .sub-device-list li {
+    min-width: 40%;
   }
 
   section.nest .sub-device-list .sub-device-group {

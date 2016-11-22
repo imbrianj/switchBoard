@@ -1,4 +1,4 @@
 
-          <ol class="columns">
+          <ol class="sub-device-list">
             {{POWERVIEW_BLINDS}}
           </ol>
