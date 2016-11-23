@@ -287,6 +287,8 @@ module.exports = (function () {
           DO           : "Sabes",
           DOWN         : "Bajar",
           ENTER        : "Entrar",
+          HALF         : "Mitad",
+          HALFWAY      : "Medio Camino",
           HEAT         : "Calentar",
           HOW          : "Como",
           LEFT         : "Izquierda",

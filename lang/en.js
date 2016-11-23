@@ -283,6 +283,8 @@ module.exports = (function () {
           DO           : "Do",
           DOWN         : "Down",
           ENTER        : "Enter",
+          HALF         : "Half",
+          HALFWAY      : "Halfway",
           HEAT         : "Heat",
           HOW          : "How",
           LEFT         : "Left",

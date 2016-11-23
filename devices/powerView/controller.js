@@ -378,10 +378,6 @@ module.exports = (function () {
             runCommand.runCommand(powerView.deviceId, 'subdevice-' + commands[j].label + '-' + commands[j].percentage, powerView.deviceId);
           }
         }
-
-        else {
-          powerView.list = true;
-        }
       }
 
       if (powerView.list) {

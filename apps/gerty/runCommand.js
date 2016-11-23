@@ -29,7 +29,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20150829,
+    version : 20161122,
 
     /**
      * Take in a typeClass and return the type of device it's categorized as.
@@ -40,6 +40,10 @@ module.exports = (function () {
       switch (typeClass) {
         case 'smartthings' :
           deviceType = 'smartthings';
+        break;
+
+        case 'powerView' :
+          deviceType = 'blinds';
         break;
 
         case 'nest' :
@@ -134,6 +138,21 @@ module.exports = (function () {
         if ((commands.length > 1) && (text[i] === implied.toUpperCase())) {
           commands[j].action  = commands[(j - 1)].action;
           commands[j].implied = true;
+        }
+
+        // Check if a given word is a number and treat it like an action,
+        // setting thermostat temp or blind percentage, etc.
+        if ((text[i]) && (!isNaN(text[i]))) {
+          commands[j].action = text[i];
+
+          // When we have a pair of action + command, we can start looking for
+          // our next command.
+          if ((commands[j].action) && (devices[j].device)) {
+            j += 1;
+
+            commands[j] = { action : null, implied : false };
+            devices[j]  = { device : null, typeClass : null, subDevice : null };
+          }
         }
 
         // Loop through looking for action words.  Once we have one, store it
@@ -337,10 +356,31 @@ module.exports = (function () {
                   commands[i].action   = 'mode';
                 }
 
-                commands[i].action = 'subdevice-' + commands[i].action.toLowerCase() + '-' + devices[i].subDevice;
+                if (this.findDeviceType(devices[i].typeClass) !== 'blinds') {
+                  commands[i].action = 'subdevice-' + devices[i].subDevice + '-' + commands[i].action.toLowerCase();
+                }
               }
 
               switch (this.findDeviceType(devices[i].typeClass)) {
+                case 'blinds' :
+                  switch (commands[i].action.toUpperCase()) {
+                    case 'OFF'  :
+                    case 'DOWN' :
+                      commands[i].action = 'subdevice-' + devices[i].subDevice + '-0';
+                    break;
+
+                    case 'HALF'    :
+                    case 'HALFWAY' :
+                      commands[i].action = 'subdevice-' + devices[i].subDevice + '-50';
+                    break;
+
+                    case 'ON' :
+                    case 'UP' :
+                      commands[i].action = 'subdevice-' + devices[i].subDevice + '-100';
+                    break;
+                  }
+                break;
+
                 case 'tv'            :
                 case 'entertainment' :
                 case 'stereo'        :

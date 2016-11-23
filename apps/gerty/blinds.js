@@ -22,22 +22,39 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview Unit test for apps/gerty/activeBuilding.js
+ * @fileoverview Execute Gerty commands based on Blinds interactions.
  */
 
-exports.activeBuildingTest = {
-  activeBuilding : function (test) {
-    'use strict';
+module.exports = (function () {
+  'use strict';
 
-    var activeBuilding = require(__dirname + '/../../../../apps/gerty/activeBuilding'),
-        deviceGood     = activeBuilding.activeBuilding({ value : ['USPS', 'UPS', 'Dry Cleaning']}),
-        deviceOk       = activeBuilding.activeBuilding({ value : ['USPS']}),
-        deviceBad      = activeBuilding.activeBuilding({ value : []});
+  return {
+    blinds : function (state) {
+      var entertained = 0,
+          blind       = 0,
+          blinds      = 0,
+          device,
+          i           = 0;
 
-    test.deepEqual(deviceGood, { excited: 6 }, 'How exciting.  You have several packages');
-    test.deepEqual(deviceOk,   { excited: 2 }, 'You have one package waiting');
-    test.deepEqual(deviceBad,  { excited: 0 }, 'Nothing special here');
+      if ((state) && (state.value) && (state.value.devices)) {
+        for (i; i < state.value.devices.length; i += 1) {
+          device = state.value.devices[i];
 
-    test.done();
-  }
-};
+          if (device.percentage) {
+            blind  += device.percentage;
+            blinds += 1;
+          }
+        }
+      }
+
+      if (blinds) {
+        // I like having the blinds open, usually.
+        if (blind / blinds > 80) {
+          entertained += 2;
+        }
+      }
+
+      return { entertained : entertained };
+    }
+  };
+}());
