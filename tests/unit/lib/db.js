@@ -26,15 +26,32 @@
  */
 
 exports.db = {
+  abbreviateState : function (test) {
+    'use strict';
+
+    var db          = require(__dirname + '/../../../lib/db'),
+        goodState   = { device1 : { deviceId : 'device', typeClass : 'foo' },
+                        device2 : { value : { devices : [{ title : 'Something', value : 'on' }, { title : 'Thing', value : 'off' }] } } },
+        abbreviated = db.abbreviateState(goodState);
+
+    test.strictEqual(abbreviated[0].devices,          undefined,   'No devices found');
+    test.strictEqual(abbreviated[0].deviceId,         'device1',   'Kept deviceId');
+    test.strictEqual(abbreviated[1].deviceId,         'device2',   'Kept deviceId');
+    test.strictEqual(abbreviated[1].devices[0].title, 'Something', 'Found subdevice');
+    test.strictEqual(abbreviated[1].devices[1].title, 'Thing',     'Found subdevice');
+
+    test.done();
+  },
+
   addRecord : function (test) {
     'use strict';
 
     var db = require(__dirname + '/../../../lib/db'),
         allValues;
 
-    db.addRecord('old-device', 'something', {}, 1000);
-    db.addRecord('faux-device');
-    db.addRecord('another-faux-device');
+    db.addRecord('old-device',          'something', { 'old-device' : {} }, 1000);
+    db.addRecord('faux-device',         'test',      { 'faux-device' : {} });
+    db.addRecord('another-faux-device', 'test',      { 'another-faux-device' : {} });
 
     allValues = db.returnAllValues();
 
