@@ -668,7 +668,7 @@ exports.config = {
     names          : { '192.168.1.1'   : 'Brian\'s Phone',
                        '192.168.1.2'   : 'Brian\'s Computer' },
     apps           : { 'Gerty' : { id            : 'gerty',
-                                   macros        : { 'Watch A Movie' : 'powerView=text-Movie;ps3=PowerOn;samsung=sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,HDMI4,sleep,RIGHT,sleep,RIGHT,sleep,RIGHT,sleep,RIGHT,sleep,RIGHT,sleep,DOWN,sleep,ENTER,sleep,RETURN,sleep,sleep,sleep,LEFT',
+                                   macros        : { 'Watch A Movie' : 'powerView=text-TV;ps3=PowerOn;samsung=sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,sleep,HDMI4,sleep,RIGHT,sleep,RIGHT,sleep,RIGHT,sleep,RIGHT,sleep,RIGHT,sleep,DOWN,sleep,ENTER,sleep,RETURN,sleep,sleep,sleep,LEFT',
                                                      'Goodnight'     : 'smartthings=subdevice-mode-Night',
                                                      'Good Night'    : 'smartthings=subdevice-mode-Night',
                                                      'Goodbye'       : 'smartthings=subdevice-mode-Away;nest=Away',
