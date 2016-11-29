@@ -29,7 +29,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20161126,
+    version : 20161128,
 
     /**
      * Take in a typeClass and return the type of device it's categorized as.
@@ -383,6 +383,7 @@ module.exports = (function () {
                       if ((commands[i].action) && (!isNaN(commands[i].action))) {
                         commands[i].action = 'subdevice-' + devices[i].subDevice + '-' + commands[i].action;
                       }
+                    break;
                   }
                 break;
 
@@ -419,7 +420,9 @@ module.exports = (function () {
                 break;
               }
 
-              runCommand.runCommand(devices[i].device, commands[i].action);
+              if ((devices[i].device) && (commands[i].action)) {
+                runCommand.runCommand(devices[i].device, commands[i].action);
+              }
             }
           }
         }

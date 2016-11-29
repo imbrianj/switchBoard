@@ -1,2 +1,2 @@
 
-                <li><a href="/?{{DEVICE_ID}}=subdevice-toggle-{{SUB_DEVICE_ID}}" class="fa {{SUB_DEVICE_CLASS}}{{SUB_DEVICE_STATE}}" title="{{SUB_DEVICE_NAME}}: {{SUB_DEVICE_STATUS}}"><span>{{SUB_DEVICE_NAME}}</span> <em>{{SUB_DEVICE_STATUS}}</em></a></li>
+                <li><a href="/?{{DEVICE_ID}}=subdevice-{{SUB_DEVICE_ID}}-toggle" class="fa {{SUB_DEVICE_CLASS}}{{SUB_DEVICE_STATE}}" title="{{SUB_DEVICE_NAME}}: {{SUB_DEVICE_STATUS}}"><span>{{SUB_DEVICE_NAME}}</span> <em>{{SUB_DEVICE_STATUS}}</em></a></li>

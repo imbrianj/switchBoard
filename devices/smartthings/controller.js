@@ -29,7 +29,7 @@ module.exports = (function () {
    * @fileoverview Basic control of SmartThings endpoint.
    */
   return {
-    version : 20161116,
+    version : 20161128,
 
     inputs  : ['list', 'subdevice'],
 
@@ -351,32 +351,8 @@ module.exports = (function () {
         subDevices = smartThingsState.value.devices;
       }
 
-      if (command.indexOf('mode-') === 0) {
-        command = command.replace('mode-', '');
-        path    = config.device.auth.url + '/mode/' + command + '?access_token=' + config.device.auth.accessToken;
-      }
-
-      else if (command.indexOf('toggle-') === 0) {
-        commandType = 'toggle';
-      }
-
-      else if (command.indexOf('on-') === 0) {
-        commandType = 'on';
-      }
-
-      else if (command.indexOf('off-') === 0) {
-        commandType = 'off';
-      }
-
-      else if (command.indexOf('lock-') === 0) {
-        commandType = 'lock';
-      }
-
-      else if (command.indexOf('unlock-') === 0) {
-        commandType = 'unlock';
-      }
-
-      else if (command.indexOf('state-mode-') === 0) {
+      // Update states.
+      if (command.indexOf('state-mode-') === 0) {
         command = command.replace('state-mode-', '');
 
         if ((command === 'Home') || (command === 'Away') || (command === 'Night')) {
@@ -414,6 +390,32 @@ module.exports = (function () {
 
       else if (command.indexOf('state-presence-') === 0) {
         commandType = 'presence';
+      }
+
+      // These are issued commands - not state changes.
+      else if (command.indexOf('mode-') === 0) {
+        command = command.replace('mode-', '');
+        path    = config.device.auth.url + '/mode/' + command + '?access_token=' + config.device.auth.accessToken;
+      }
+
+      else if (command.indexOf('-toggle', command.length - 7) !== -1) {
+        commandType = 'toggle';
+      }
+
+      else if (command.indexOf('-on', command.length - 3) !== -1) {
+        commandType = 'on';
+      }
+
+      else if (command.indexOf('-off', command.length - 4) !== -1) {
+        commandType = 'off';
+      }
+
+      else if (command.indexOf('-lock', command.length - 5) !== -1) {
+        commandType = 'lock';
+      }
+
+      else if (command.indexOf('-unlock', command.length - 7) !== -1) {
+        commandType = 'unlock';
       }
 
       if (commandType === 'temp') {
@@ -475,7 +477,7 @@ module.exports = (function () {
       }
 
       else if (commandType) {
-        command   = command.replace(commandType + '-', '');
+        command   = command.replace('-' + commandType, '');
         subDevice = this.findSubDevices(command, subDevices);
 
         if ((subDevice) && (subDevice[0])) {
