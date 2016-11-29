@@ -29,7 +29,7 @@ module.exports = (function () {
    * @requires child_process, raspberry-remote
    */
   return {
-    version : 20150921,
+    version : 20161128,
 
     inputs : ['subdevice'],
 
@@ -55,16 +55,16 @@ module.exports = (function () {
           commandType = '',
           subdevice;
 
-      if (rremote.subdevice.indexOf('on-') === 0) {
+      if (rremote.subdevice.indexOf('-on', rremote.subdevice.length - 3) !== -1) {
         commandType = 'on';
       }
 
-      else if (rremote.subdevice.indexOf('off-') === 0) {
+      else if (rremote.subdevice.indexOf('-off', rremote.subdevice.length - 4) !== -1) {
         commandType = 'off';
       }
 
       if (commandType) {
-        subdevice   = rremote.subdevice.replace(commandType + '-', '');
+        subdevice   = rremote.subdevice.replace('-' + commandType, '');
         subdevice   = rremote.subdevices[subdevice];
 
         if ((rremote.system) && (subdevice) && (commandType)) {

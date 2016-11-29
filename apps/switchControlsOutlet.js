@@ -102,7 +102,7 @@ module.exports = (function () {
                 for (subdevice in currentDeviceState.value.devices) {
                   if (config.action.indexOf(currentDeviceState.value.devices[subdevice].label) !== -1) {
                     if (currentDeviceState.value.devices[subdevice].state !== status) {
-                      runCommand.runCommand(currDevice, 'subdevice-' + status + '-' + state.value.devices[subdevice].label);
+                      runCommand.runCommand(currDevice, 'subdevice-' + state.value.devices[subdevice].label + '-' + status);
                     }
                   }
                 }

@@ -29,7 +29,7 @@ module.exports = (function () {
    * @requires http, xml2js
    */
   return {
-    version : 20150921,
+    version : 20161128,
 
     inputs  : ['subdevice'],
 
@@ -170,20 +170,20 @@ module.exports = (function () {
       wemo.callback   = config.callback            || function () {};
 
       if (wemo.subdevice) {
-        if (wemo.subdevice.indexOf('toggle-') === 0) {
+        if (wemo.subdevice.indexOf('-toggle', wemo.subdevice.length - 7) !== -1) {
           commandType = 'toggle';
         }
 
-        else if (wemo.subdevice.indexOf('on-') === 0) {
+        else if (wemo.subdevice.indexOf('-on', wemo.subdevice.length - 3) !== -1) {
           commandType = 'on';
         }
 
-        else if (wemo.subdevice.indexOf('off-') === 0) {
+        else if (wemo.subdevice.indexOf('-off', wemo.subdevice.length - 4) !== -1) {
           commandType = 'off';
         }
 
         if (commandType) {
-          wemo.subdevice = wemo.subdevice.replace(commandType + '-', '');
+          wemo.subdevice = wemo.subdevice.replace('-' + commandType, '');
 
           if (commandType === 'toggle') {
             deviceState = require(__dirname + '/../../lib/deviceState');

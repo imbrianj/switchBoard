@@ -58,7 +58,7 @@ module.exports = (function () {
               if (config.action.indexOf(smartthingsState.value.devices[subdevice].label) !== -1) {
                 if ((smartthingsState.value.devices[subdevice].state !== deviceAction) &&
                     (smartthingsState.value.devices[subdevice].label !== deviceName)) {
-                  runCommand.runCommand(deviceId, 'subdevice-' + deviceAction + '-' + smartthingsState.value.devices[subdevice].label);
+                  runCommand.runCommand(deviceId, 'subdevice-' + smartthingsState.value.devices[subdevice].label + '-' + deviceAction);
                 }
               }
             }
