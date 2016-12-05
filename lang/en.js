@@ -141,7 +141,7 @@ module.exports = (function () {
         debug : {
           DEBUG             : "Debug",
           CLIENTS_CONNECTED : "Clients Connected",
-          CPU               : "CPU",
+          CPU               : "CPU Load",
           LAST_UPDATE       : "Last Update",
           MEMORY_USED       : "Memory Used",
           NA                : "N/A",
@@ -444,8 +444,10 @@ module.exports = (function () {
           VIDEO          : "Video"
         },
         powerView : {
-          POWERVIEW      : "PowerView",
-          SET_PERCENTAGE : "Set Percentage"
+          POWERVIEW            : "PowerView",
+          LOWER_AS_FAR_AS_ABLE : "{{WINDOW}} is open.  Lowering blind as far as able.",
+          SET_PERCENTAGE       : "Set Percentage",
+          UNABLE_TO_LOWER      : "{{WINDOW}} is open.  Unable to adjust blinds safely."
         },
         ps3 : {
           PS3      : "PS3",

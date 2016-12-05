@@ -26,6 +26,16 @@
  */
 
 exports.db = {
+  getCurrentFilename : function (test) {
+    'use strict';
+
+    var db    = require(__dirname + '/../../../lib/db'),
+        value = db.getCurrentFilename(1480901700363);
+
+    test.strictEqual(value, '2016-12-04', 'Converted timestamp to usable name');
+    test.done();
+  },
+
   abbreviateState : function (test) {
     'use strict';
 
@@ -139,20 +149,6 @@ exports.db = {
     deviceValues = db.returnLatestRecord();
 
     test.strictEqual(deviceValues.deviceId, 'another-faux-device', 'Returned value should match set value.');
-
-    test.done();
-  },
-
-  prunDb : function (test) {
-    'use strict';
-
-    var db = require(__dirname + '/../../../lib/db'),
-        deviceValues;
-
-    db.pruneDb({});
-    deviceValues = db.returnAllValues();
-
-    test.strictEqual(deviceValues.length, 2, 'One old record should have been removed.');
 
     test.done();
   },

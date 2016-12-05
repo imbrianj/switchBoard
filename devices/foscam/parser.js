@@ -28,6 +28,7 @@
         photos          = fragments.photos,
         video           = fragments.video,
         videos          = fragments.videos,
+        thumb           = fragments.thumb,
         stateOn         = '',
         stateOff        = '',
         status          = '',
@@ -39,6 +40,7 @@
         photoListParent,
         videoList,
         videoListParent,
+        thumbPath,
         i               = 0,
         j               = 0,
         translate       = function (message) {
@@ -94,12 +96,19 @@
 
     if ((value.videos) && (value.videos.length)) {
       for (j; j < value.videos.length; j += 1) {
+        thumbPath = value.videos[j].thumb || '';
+
+        if (thumbPath) {
+          tempVideoMarkup = tempVideoMarkup.split('{{VIDEO_THUMB}}').join(thumb);
+          tempVideoMarkup = tempVideoMarkup.split('{{THUMB_URL}}').join(thumbPath);
+        }
+
         tempVideoMarkup = tempVideoMarkup + video.split('{{VIDEO_NAME}}').join(value.videos[j].name);
         tempVideoMarkup = tempVideoMarkup.split('{{SCREEN_URL}}').join(value.videos[j].screen);
-        tempVideoMarkup = tempVideoMarkup.split('{{THUMB_URL}}').join(value.videos[j].thumb);
         tempVideoMarkup = tempVideoMarkup.split('{{VIDEO_URL}}').join(value.videos[j].video);
       }
 
+      tempVideoMarkup = tempVideoMarkup.split('{{VIDEO_THUMB}}').join('');
       tempVideoMarkup = tempVideoMarkup.split('{{SCREENSHOT}}').join(translate('SCREENSHOT'));
       tempVideoMarkup = tempVideoMarkup.split('{{THUMBNAIL}}').join(translate('THUMBNAIL'));
       tempVideoMarkup = tempVideoMarkup.split('{{VIDEO}}').join(translate('VIDEO'));

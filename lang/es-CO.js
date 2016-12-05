@@ -145,7 +145,7 @@ module.exports = (function () {
         debug : {
           DEBUG             : "Depurar",
           CLIENTS_CONNECTED : "Clientes Conectados",
-          CPU               : "CPU",
+          CPU               : "Carga de la CPU",
           LAST_UPDATE       : "Última Actualización",
           MEMORY_USED       : "Memoria Utilizada",
           NA                : "N/A",
@@ -436,8 +436,10 @@ module.exports = (function () {
           VIDEO          : "Video"
         },
         powerView : {
-          POWERVIEW      : "PowerView",
-          SET_PERCENTAGE : "Establecer Porcentaje"
+          POWERVIEW            : "PowerView",
+          LOWER_AS_FAR_AS_ABLE : "{{WINDOW}} está abierta. Bajar la ciega lo más lejos posible.",
+          SET_PERCENTAGE       : "Establecer Porcentaje",
+          UNABLE_TO_LOWER      : "{{WINDOW}} está abierta.  No es posible ajustar las persianas de forma segura"
         },
         ps3 : {
           PS3      : "PS3",

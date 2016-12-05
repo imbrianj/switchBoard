@@ -38,7 +38,7 @@ module.exports = (function () {
   var Devices = {};
 
   return {
-    version : 201611103,
+    version : 20161203,
 
     lastEvents : { space : 0, thumbnail : 0 },
 
@@ -87,7 +87,7 @@ module.exports = (function () {
       });
     },
 
-    checkThumbnails : function (controller, thumbByteLimit) {
+    checkThumbnails : function (controller, thumbByteLimit, enableThumbnail) {
       var fs           = require('fs'),
           staticAssets = require(__dirname + '/../lib/staticAssets'),
           path         = 'images/foscam/',
@@ -104,7 +104,7 @@ module.exports = (function () {
                     // If we don't have a thumbnail for a video file larger than
                     // the defined threshold, let's generate them.
                     if (!stats) {
-                      self.buildThumbnails(controller, filename);
+                      self.buildThumbnails(controller, filename, enableThumbnail);
                     }
                   });
                 }
@@ -115,27 +115,38 @@ module.exports = (function () {
       });
     },
 
-    buildThumbnails : function (controller, filename) {
+    buildThumbnails : function (controller, filename, enableThumbnail) {
       var spawn             = require('child_process').spawn,
           runCommand        = require(__dirname + '/../lib/runCommand'),
           screenshotCommand = this.translateScreenshotCommand(filename),
           thumbCommand      = this.translateThumbCommand(filename),
-          thumbProcess;
+          imageProcess;
 
       console.log('\x1b[35m' + controller.config.title + '\x1b[0m: Creating DVR thumbnails for ' + filename);
 
-      spawn(screenshotCommand.command, screenshotCommand.params);
-      thumbProcess = spawn(thumbCommand.command, thumbCommand.params);
+      // Thumbnail processing can be extremely expensive.  If you don't want to
+      // show any thumbnails, let's just skip that step to keep things speedy.
+      // We will continue to generate thumbnails and store video since you can
+      // still access those without an interface - and thumbnails are cheaply
+      // generated.
+      if ((enableThumbnail) && (controller.config.maxCount) && (!isNaN(controller.config.maxCount))) {
+        spawn(screenshotCommand.command, screenshotCommand.params);
+        imageProcess = spawn(thumbCommand.command, thumbCommand.params);
+      }
+
+      else {
+        imageProcess = spawn(screenshotCommand.command, screenshotCommand.params);
+      }
 
       // Thumbnails take longer than screenshots, so we'll run the list command
       // after it's completed.
-      thumbProcess.once('close', function () {
+      imageProcess.once('close', function () {
         console.log('\x1b[35m' + controller.config.title + '\x1b[0m: DVR thumbnails created for ' + filename);
 
         runCommand.runCommand(controller.config.deviceId, 'list');
       });
 
-      thumbProcess.stderr.on('data', function (data) {
+      imageProcess.stderr.on('data', function (data) {
         data = data.toString();
 
         // If you need help debugging ffmpeg, uncomment the following line:
@@ -149,7 +160,7 @@ module.exports = (function () {
           execute = { command : 'ffmpeg', params : [] };
 
       execute.params.push('-ss');
-      execute.params.push('00:00:01');
+      execute.params.push('00:00:00');
       execute.params.push('-i');
       execute.params.push(input);
       execute.params.push('-vframes');
@@ -206,9 +217,12 @@ module.exports = (function () {
       execute.params.push('-map');
       execute.params.push('1:a');
       execute.params.push('-acodec');
-      execute.params.push('aac');
+      // This codec isn't very good, but finding something with wide HTML5
+      // support doesn't seem likely.  We'll just use what's fed to us and
+      // assume we'll view in an external app (VLC, for example).
+      execute.params.push('copy');
       execute.params.push('-vcodec');
-      execute.params.push('libx264');
+      execute.params.push('copy');
       execute.params.push('-f');
       execute.params.push('segment');
       execute.params.push('-segment_time');
@@ -258,21 +272,22 @@ module.exports = (function () {
     },
 
     foscamDvr : function (deviceId, command, controllers, values, config) {
-      var deviceState    = require(__dirname + '/../lib/deviceState'),
-          controller     = controllers[deviceId],
-          currentState   = deviceState.getDeviceState(deviceId),
-          now            = new Date().getTime(),
-          delay          = (config.delay || 300) * 1000,
-          videoLength    = config.videoLength || 600,
-          bytePerMeg     = 1048576,
-          roughMbPerMin  = 15,
+      var deviceState     = require(__dirname + '/../lib/deviceState'),
+          controller      = controllers[deviceId],
+          currentState    = deviceState.getDeviceState(deviceId),
+          now             = new Date().getTime(),
+          delay           = (config.delay      || 300) * 1000,
+          enableThumbnail = config.thumbnail   || false,
+          videoLength     = config.videoLength || 600,
+          bytePerMeg      = 1048576,
+          roughMbPerMin   = 15,
           // Maximum MB limit for all stored videos before we start deleting
           // old files till we fall below that threshold.
-          byteLimit      = (config.byteLimit || 5120) * bytePerMeg,
+          byteLimit       = (config.byteLimit || 5120) * bytePerMeg,
           // Minimum MB limit for a video file before we bother building a
           // thumbnail set for it.  Any files that are smaller than this size
           // will have thumbnails generated when recordig has ended.
-          thumbByteLimit = (config.thumbByteLimit || (roughMbPerMin * (videoLength / 60))) * bytePerMeg;
+          thumbByteLimit  = (config.thumbByteLimit || (roughMbPerMin * (videoLength / 60))) * bytePerMeg;
 
       Devices[deviceId] = Devices[deviceId] || {dvrProcess: null, lastEvents : { space : 0, thumbnail : 0 } };
 
@@ -296,7 +311,7 @@ module.exports = (function () {
         }
 
         if (now > (this.lastEvents.thumbnail + delay)) {
-          this.checkThumbnails(controller, thumbByteLimit);
+          this.checkThumbnails(controller, thumbByteLimit, enableThumbnail);
           this.lastEvents.thumbnail = now;
         }
       }

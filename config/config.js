@@ -17,9 +17,6 @@ exports.config = {
     macroPause   : 1500,
     pollMinutes  : 5,
     pollSeconds  : 15,
-    // Age (in days) to store database records of events.  A 0 means database
-    // logging will be disabled.
-    dbDayAge     : 14,
     localTimeout : 1500,
     // Your SSL key and SCR will be generated for you.  If you want to use one
     // you've manually created, drop "ssl.key" and "ssl.csr" into /cache/.
@@ -231,9 +228,14 @@ exports.config = {
                                       controllerIds : ['speech', 'clientSpeech', 'clientNotify', 'gerty'] },
                   'Foscam Change' : { id            : 'foscamChange' },
                   'Foscam DVR'    : { id            : 'foscamDvr',
-                                      delay         : 300, /* Delay for file check */
+                                      // Gif thumbnails are expensive to build -
+                                      // enable only on a fast system
+                                      thumbnail     : false,
+                                      // Delay for file check
+                                      delay         : 300,
                                       videoLength   : 600,
-                                      byteLimit     : 25600 /* Measured in MB */ } },
+                                      // Measured in MB
+                                      byteLimit     : 25600 } },
     power     : 6,
     disabled  : true
   },
@@ -464,14 +466,21 @@ exports.config = {
   },
 
   powerView : {
-    typeClass : 'powerView',
-    title     : 'Blinds',
-    deviceIp  : '192.168.1.108',
-    order     : ['Dining Room 1', 'Dining Room 2', 'Balcony', 'Living Room 1', 'Living Room 2', 'Office', 'Bedroom'],
-    scenes    : [{ 'All Up'  : { icon : 'arrow-up',   devices : { 'Dining Room 1' : 100, 'Dining Room 2' : 100, 'Balcony' : 100, 'Living Room 1' : 100, 'Living Room 2' : 100, 'Office' : 100, 'Bedroom' : 100 } } },
-                 { 'All Down': { icon : 'arrow-down', devices : { 'Dining Room 1' : 0, 'Dining Room 2' : 0, 'Balcony' : 0, 'Living Room 1' : 0, 'Living Room 2' : 0, 'Office' : 0, 'Bedroom' : 0 } } },
-                 { 'TV'      : { icon : 'gamepad',    devices : { 'Balcony' : 0, 'Living Room 2' : 0 } } }],
-    disabled  : true
+    typeClass       : 'powerView',
+    title           : 'Blinds',
+    deviceIp        : '192.168.1.108',
+    order           : ['Dining Room 1', 'Dining Room 2', 'Balcony', 'Living Room 1', 'Living Room 2', 'Office', 'Bedroom'],
+    scenes          : [{ 'All Up'  : { icon : 'arrow-up',   devices : { 'Dining Room 1' : 100, 'Dining Room 2' : 100, 'Balcony' : 100, 'Living Room 1' : 100, 'Living Room 2' : 100, 'Office' : 100, 'Bedroom' : 100 } } },
+                       { 'All Down': { icon : 'arrow-down', devices : { 'Dining Room 1' : 0, 'Dining Room 2' : 0, 'Balcony' : 0, 'Living Room 1' : 0, 'Living Room 2' : 0, 'Office' : 0, 'Bedroom' : 0 } } },
+                       { 'TV'      : { icon : 'gamepad',    devices : { 'Balcony' : 0, 'Living Room 2' : 0 } } }],
+    conditionalApps : { 'Window Check' : { id            : 'blindsWindowOpen',
+                                           windows       : [{ blind : 'Dining Room 1', contact : 'Dining Room Window', limit : 81 },
+                                                            { blind : 'Living Room 2', contact : 'Living Room Window', limit : 81 },
+                                                            { blind : 'Office',        contact : 'Office Window',      limit : 81 },
+                                                            { blind : 'Bedroom',       contact : 'Bedroom Window',     limit : 81 }],
+                                           controllerIds : ['smartthings', 'speech', 'clientSpeech', 'clientNotify', 'gerty'] }
+                      },
+    disabled        : true
   },
 
   switchBoardCI : {

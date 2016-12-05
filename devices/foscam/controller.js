@@ -47,7 +47,8 @@ module.exports = (function () {
       return { photos : fs.readFileSync(__dirname + '/fragments/photos.tpl', 'utf-8'),
                photo  : fs.readFileSync(__dirname + '/fragments/photo.tpl',  'utf-8'),
                videos : fs.readFileSync(__dirname + '/fragments/videos.tpl', 'utf-8'),
-               video  : fs.readFileSync(__dirname + '/fragments/video.tpl',  'utf-8') };
+               video  : fs.readFileSync(__dirname + '/fragments/video.tpl',  'utf-8'),
+               thumb  : fs.readFileSync(__dirname + '/fragments/thumb.tpl',  'utf-8') };
     },
 
     /**
@@ -109,11 +110,12 @@ module.exports = (function () {
      * Grab all thumbnail path and assume corresponding screenshot and videos.
      */
     getStoredVideos : function (foscam) {
-      var fs          = require('fs'),
-          deviceState = require(__dirname + '/../../lib/deviceState'),
-          path        = 'images/foscam/thumb',
-          that        = this,
-          videos      = [],
+      var fs           = require('fs'),
+          deviceState  = require(__dirname + '/../../lib/deviceState'),
+          path         = 'images/foscam/thumb',
+          that         = this,
+          videos       = [],
+          currentVideo = {},
           filename;
 
       fs.readdir(path, function(err, items) {
@@ -125,16 +127,21 @@ module.exports = (function () {
         for (i; i < items.length; i += 1) {
           filename = items[i];
 
-          if (filename.split('.').pop() === 'gif') {
+          if (filename.split('.').pop() === 'jpg') {
             filename = that.getFilename(filename);
 
             if (filename.indexOf(foscam.deviceId + '-') === 0) {
-              videos.push({
+              currentVideo = {
                 name   : filename,
                 video  : 'images/foscam/dvr/' + filename + '.mkv',
-                thumb  : 'images/foscam/thumb/' + filename + '.gif',
                 screen : 'images/foscam/thumb/' + filename + '.jpg'
-              });
+              };
+
+              if (fs.existsSync('images/foscam/thumb/' + filename + '.gif')) {
+                currentVideo.thumb = 'images/foscam/thumb/' + filename + '.gif';
+              }
+
+              videos.push(currentVideo);
             }
           }
         }
