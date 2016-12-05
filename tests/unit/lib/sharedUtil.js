@@ -123,7 +123,7 @@ exports.sharedUtilTest = {
           return token;
         },
         weekend   = new Date('July 20, 2014 12:00:00'),
-        shortTime = util.displayTime(1451073600000, translate, null, weekend),
+        shortTime = util.displayTime(1451073600000, translate, null,   weekend),
         longTime  = util.displayTime(1451073600000, translate, 'long', weekend);
 
     test.strictEqual(shortTime, 'sun @ 12:00am',    'Convert time');

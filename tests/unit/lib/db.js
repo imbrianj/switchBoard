@@ -30,9 +30,10 @@ exports.db = {
     'use strict';
 
     var db    = require(__dirname + '/../../../lib/db'),
-        value = db.getCurrentFilename(1480901700363);
+        day   = new Date('July 20, 2014 12:00:00'),
+        value = db.getCurrentFilename(day);
 
-    test.strictEqual(value, '2016-12-04', 'Converted timestamp to usable name');
+    test.strictEqual(value, '2014-07-20', 'Converted timestamp to usable name');
     test.done();
   },
 
