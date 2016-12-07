@@ -447,22 +447,29 @@ exports.config = {
   },
 
   nest : {
-    typeClass : 'nest',
-    title     : 'Nest',
-    username  : 'user@example.com',
-    password  : 'password',
-    apps      : { 'Nest Change'   : { id            : 'nestChange' },
+    typeClass       : 'nest',
+    title           : 'Nest',
+    username        : 'user@example.com',
+    password        : 'password',
+    apps            : { 'Nest Change'   : { id            : 'nestChange' },
     /*
-                  'Window Open'   : { id            : 'windowOpen',
-                                      thermostats   : ['Living Room'],
-                                      contact       : ['Balcony Door', 'Office Window', 'Bedroom Window', 'Dining Room Window', 'Living Room Window'],
-                                      controllerIds : ['smartthings', 'pushover', 'speech', 'clientSpeech', 'clientNotify', 'gerty'] },
-                  'Protect Alarm' : { id            : 'announceNest',
-                                      macro         : 'smartthings=subdevice-on-Hall+Light',
-                                      controllerIds : ['pushover', 'sms', 'speech', 'clientSpeech', 'clientNotify', 'gerty'] }
+                        'Window Open'   : { id            : 'windowOpen',
+                                            thermostats   : ['Living Room'],
+                                            contact       : ['Balcony Door', 'Office Window', 'Bedroom Window', 'Dining Room Window', 'Living Room Window'],
+                                            controllerIds : ['smartthings', 'pushover', 'speech', 'clientSpeech', 'clientNotify', 'gerty'] },
+                        'Protect Alarm' : { id            : 'announceNest',
+                                            macro         : 'smartthings=subdevice-on-Hall+Light',
+                                            controllerIds : ['pushover', 'sms', 'speech', 'clientSpeech', 'clientNotify', 'gerty'] }
     */
-                },
-    disabled  : true
+                      },
+    /*
+    conditionalApps : { 'Window Open' : { id              : 'nestWindowOpen',
+                                          thermostats     : ['Living Room'],
+                                          contact         : ['Balcony Door', 'Office Window', 'Bedroom Window', 'Dining Room Window', 'Living Room Window'],
+                                          controllerIds   : ['smartthings', 'speech', 'clientSpeech', 'clientNotify', 'gerty'] }
+                      },
+    */
+    disabled        : true
   },
 
   powerView : {

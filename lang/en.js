@@ -65,6 +65,7 @@ module.exports = (function () {
           HDMI           : "HDMI",
           HEAT           : "heat",
           HOME           : "Home",
+          HVAC_ABORT     : "{{WINDOW}} open; {{HVAC}} aborting {{COMMAND}} command.",
           HVAC_OFF       : "{{WINDOW}} open; {{HVAC}} turned off.",
           HVAC_ON        : "{{WINDOW}} open and {{HVAC}} is on.",
           INACTIVE       : "Inactive",
