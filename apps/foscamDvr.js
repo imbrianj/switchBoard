@@ -100,7 +100,7 @@ module.exports = (function () {
             if (filename) {
               fs.stat(path + 'dvr/' + filename + '.mkv', function (err, stats) {
                 if (stats.size >= thumbByteLimit) {
-                  fs.stat(path + 'thumb/' + filename + '.gif', function (err, stats) {
+                  fs.stat(path + 'thumb/' + filename + (enableThumbnail ? '.gif' : '.jpg'), function (err, stats) {
                     // If we don't have a thumbnail for a video file larger than
                     // the defined threshold, let's generate them.
                     if (!stats) {
@@ -122,7 +122,7 @@ module.exports = (function () {
           thumbCommand      = this.translateThumbCommand(filename),
           imageProcess;
 
-      console.log('\x1b[35m' + controller.config.title + '\x1b[0m: Creating DVR thumbnails for ' + filename);
+      console.log('\x1b[35m' + controller.config.title + '\x1b[0m: Creating DVR thumbnail for ' + filename);
 
       // Thumbnail processing can be extremely expensive.  If you don't want to
       // show any thumbnails, let's just skip that step to keep things speedy.
@@ -138,20 +138,22 @@ module.exports = (function () {
         imageProcess = spawn(screenshotCommand.command, screenshotCommand.params);
       }
 
-      // Thumbnails take longer than screenshots, so we'll run the list command
-      // after it's completed.
-      imageProcess.once('close', function () {
-        console.log('\x1b[35m' + controller.config.title + '\x1b[0m: DVR thumbnails created for ' + filename);
+      if (imageProcess) {
+        // Thumbnails take longer than screenshots, so we'll run the list command
+        // after it's completed.
+        imageProcess.once('close', function () {
+          console.log('\x1b[35m' + controller.config.title + '\x1b[0m: DVR thumbnails created for ' + filename);
 
-        runCommand.runCommand(controller.config.deviceId, 'list');
-      });
+          runCommand.runCommand(controller.config.deviceId, 'list');
+        });
 
-      imageProcess.stderr.on('data', function (data) {
-        data = data.toString();
+        imageProcess.stderr.on('data', function (data) {
+          data = data.toString();
 
-        // If you need help debugging ffmpeg, uncomment the following line:
-        // console.log(data);
-      });
+          // If you need help debugging ffmpeg, uncomment the following line:
+          // console.log(data);
+        });
+      }
     },
 
     translateScreenshotCommand : function (filename) {
@@ -283,7 +285,7 @@ module.exports = (function () {
           roughMbPerMin   = 15,
           // Maximum MB limit for all stored videos before we start deleting
           // old files till we fall below that threshold.
-          byteLimit       = (config.byteLimit || 5120) * bytePerMeg,
+          byteLimit       = (config.byteLimit || 5000) * bytePerMeg,
           // Minimum MB limit for a video file before we bother building a
           // thumbnail set for it.  Any files that are smaller than this size
           // will have thumbnails generated when recordig has ended.
