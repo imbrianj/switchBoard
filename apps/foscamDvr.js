@@ -71,6 +71,7 @@ module.exports = (function () {
     // My testing has shown about 15MB per minute of video.
     checkDisc : function (controller, byteLimit) {
       var fs         = require('fs'),
+          self       = this,
           path       = 'images/foscam/dvr',
           totalBytes = 0,
           i          = 0;
@@ -80,7 +81,7 @@ module.exports = (function () {
           totalBytes += fs.statSync(path + '/' + filenames[i]).size;
 
           if (totalBytes >= byteLimit) {
-            this.deleteOldest(controller);
+            self.deleteOldest(controller);
             break;
           }
         }
