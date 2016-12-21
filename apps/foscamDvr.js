@@ -38,32 +38,59 @@ module.exports = (function () {
   var Devices = {};
 
   return {
-    version : 20161203,
+    version : 20161219,
 
     lastEvents : { space : 0, thumbnail : 0 },
 
     dvrProcess : null,
 
+    getFirstFile : function (files) {
+      var staticAssets = require(__dirname + '/../lib/staticAssets'),
+          i            = 0,
+          file         = null;
+
+      for (i; i < files.length; i += 1) {
+        file = staticAssets.getFilename(files[i], ['jpg', 'gif', 'mkv']);
+
+        if (file) {
+          break;
+        }
+      }
+
+      return file;
+    },
+
+    deleteFile : function (filename, title) {
+      var fs = require('fs');
+
+      fs.stat(filename, function (err) {
+        if (!err) {
+          fs.unlink(filename);
+
+          console.log('\x1b[35m' + title + '\x1b[0m: DVR files for ' + filename + ' deleted');
+        }
+      });
+    },
+
     deleteOldest : function (controller) {
-      var fs           = require('fs'),
-          runCommand   = require(__dirname + '/../lib/runCommand'),
-          staticAssets = require(__dirname + '/../lib/staticAssets'),
-          mkvPath      = 'images/foscam/dvr',
-          gifPath      = 'images/foscam/thumb',
-          jpgPath      = gifPath,
+      var fs         = require('fs'),
+          self       = this,
+          runCommand = require(__dirname + '/../lib/runCommand'),
+          mkvPath    = 'images/foscam/dvr',
+          gifPath    = 'images/foscam/thumb',
+          jpgPath    = gifPath,
+          title      = controller.config.title,
           filename;
 
       fs.readdir(mkvPath, function(err, items) {
-        filename = staticAssets.getFilename(items[0], ['jpg', 'gif', 'mkv']);
+        filename = self.getFirstFile(items);
 
         if (filename) {
-          fs.unlink(mkvPath + '/' + filename + '.mkv');
-          fs.unlink(gifPath + '/' + filename + '.gif');
-          fs.unlink(jpgPath + '/' + filename + '.jpg');
+          self.deleteFile(mkvPath + '/' + filename + '.mkv', title);
+          self.deleteFile(gifPath + '/' + filename + '.gif', title);
+          self.deleteFile(jpgPath + '/' + filename + '.jpg', title);
 
           runCommand.runCommand(controller.config.deviceId, 'list');
-
-          console.log('\x1b[35m' + controller.config.title + '\x1b[0m: DVR files for ' + filename + ' deleted');
         }
       });
     },

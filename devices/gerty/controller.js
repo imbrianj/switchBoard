@@ -200,15 +200,31 @@ module.exports = (function () {
     /**
      * Speech dictation can be a bit rough, so we'll try to do some simple text
      * replacement to convert "bedroom lambs" to "bedroom lamps", etc.
+     *
+     * For temperatures and percentags, we likely mean "Set the blind to 42
+     * percent" instead of "Set the blind 242 percent" - so we'll try to clean
+     * up numeric values as well.
      */
     getCorrectedText : function (text, config) {
       var correctionHash = config.corrections || {},
-          term           = '';
+          term           = '',
+          textParts,
+          i              = 0;
 
       if (text) {
+        textParts = text.split(' ');
+
         for (term in correctionHash) {
-          if (correctionHash.hasOwnProperty(term)) {
-            text = text.split(term).join(correctionHash[term]);
+          if (term) {
+            if (correctionHash.hasOwnProperty(term)) {
+              text = text.split(term).join(correctionHash[term]);
+            }
+          }
+        }
+
+        for (i; i < textParts.length; i += 1) {
+          if ((textParts[i]) && (!isNaN(textParts[i])) && (textParts[i].indexOf('2') === 0) && (textParts[i].length > 2)) {
+            text = text.split(textParts[i]).join(textParts[i].substring(1));
           }
         }
       }
