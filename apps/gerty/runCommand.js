@@ -277,8 +277,8 @@ module.exports = (function () {
           if (keyword !== 'config') {
             // Look ahead for device names that may be multiple words.
             if (text[i] + ' ' + text[(i + 1)] + ' ' + text[(i + 2)] === controllers[keyword].config.title.toUpperCase()) {
-              commands[j].device    = keyword;
-              commands[j].typeClass = controllers[keyword].config.typeClass;
+              devices[j].device    = keyword;
+              devices[j].typeClass = controllers[keyword].config.typeClass;
 
               i += 2;
 
@@ -286,8 +286,8 @@ module.exports = (function () {
             }
 
             else if (text[i] + ' ' + text[(i + 1)] === controllers[keyword].config.title.toUpperCase()) {
-              commands[j].device    = keyword;
-              commands[j].typeClass = controllers[keyword].config.typeClass;
+              devices[j].device    = keyword;
+              devices[j].typeClass = controllers[keyword].config.typeClass;
 
               i += 1;
 
@@ -295,8 +295,8 @@ module.exports = (function () {
             }
 
             else if (text[i] === controllers[keyword].config.title.toUpperCase()) {
-              commands[j].device    = keyword;
-              commands[j].typeClass = controllers[keyword].config.typeClass;
+              devices[j].device    = keyword;
+              devices[j].typeClass = controllers[keyword].config.typeClass;
             }
 
             // When we have a pair of action + command, we can start looking for
@@ -304,7 +304,8 @@ module.exports = (function () {
             if ((commands[j].action) && (commands[j].device)) {
               j += 1;
 
-              commands[j] = { action : null, device : null, typeClass: null, subDevice : null };
+              commands[j] = { action : null, implied : false };
+              devices[j]  = { device : null, typeClass : null, subDevice : null };
             }
           }
         }
@@ -346,17 +347,9 @@ module.exports = (function () {
         if (commands.length === devices.length) {
           for (i = 0; i < commands.length; i += 1) {
             if ((devices[i].device) && (commands[i].action)) {
-              // Only at this point should we assume a command will actually be
-              // acted upon.
-              acted = true;
-
               if (devices[i].subDevice) {
-                if (devices[i].typeClass === 'nest') {
-                  devices[i].subDevice = devices[i].subDevice + '-' + commands[i].action.toLowerCase();
-                  commands[i].action   = 'mode';
-                }
-
-                if (this.findDeviceType(devices[i].typeClass) !== 'blinds') {
+                if ((this.findDeviceType(devices[i].typeClass) !== 'blinds') &&
+                    (this.findDeviceType(devices[i].typeClass) !== 'nest')) {
                   commands[i].action = 'subdevice-' + devices[i].subDevice + '-' + commands[i].action.toLowerCase();
                 }
               }
@@ -388,8 +381,14 @@ module.exports = (function () {
                 break;
 
                 case 'nest' :
-                  if ((commands[i].action) && (!isNaN(commands[i].action))) {
-                    commands[i].action = 'subdevice-' + devices[i].subDevice + '-' + commands[i].action;
+                  if (commands[i].action) {
+                    if (!isNaN(commands[i].action)) {
+                      commands[i].action = 'subdevice-temp-' + devices[i].subDevice + '-' + commands[i].action;
+                    }
+
+                    else {
+                      commands[i].action = 'subdevice-mode-' + devices[i].subDevice + '-' + commands[i].action.toLowerCase();
+                    }
                   }
                 break;
 
@@ -421,6 +420,10 @@ module.exports = (function () {
               }
 
               if ((devices[i].device) && (commands[i].action)) {
+                // Only at this point should we assume a command will actually be
+                // acted upon.
+                acted = true;
+
                 runCommand.runCommand(devices[i].device, commands[i].action);
               }
             }

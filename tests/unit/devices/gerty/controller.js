@@ -73,14 +73,12 @@ exports.gertyControllerTest = {
         noTerms         = gertyController.getCorrectedText('no terms',  replaceConfig),
         someTerms       = gertyController.getCorrectedText('something changed', replaceConfig),
         allTerms        = gertyController.getCorrectedText('something foo baz foo bang', replaceConfig),
-        numberTerms     = gertyController.getCorrectedText('set something 242 degrees', replaceConfig),
         emptyTerms      = gertyController.getCorrectedText(null, replaceConfig);
 
     test.strictEqual(noConfig,    'no config',                 'No config changes, so string remains the same');
     test.strictEqual(noTerms,     'no terms',                  'No phrases present,so string remains the same');
     test.strictEqual(someTerms,   'nothing changed',           'One small change');
     test.strictEqual(allTerms,    'nothing bar bang bar bang', 'String changed by every config');
-    test.strictEqual(numberTerms, 'set nothing 42 degrees',    'String changed number to more likely meaning');
     test.strictEqual(emptyTerms,  null,                        'Doesn\'t choke on null values');
 
     test.done();

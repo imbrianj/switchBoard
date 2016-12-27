@@ -30,7 +30,7 @@ module.exports = (function () {
    * @fileoverview Register comments to Gerty.
    */
   return {
-    version : 20161027,
+    version : 20161221,
 
     inputs  : ['command', 'text'],
 
@@ -207,24 +207,14 @@ module.exports = (function () {
      */
     getCorrectedText : function (text, config) {
       var correctionHash = config.corrections || {},
-          term           = '',
-          textParts,
-          i              = 0;
+          term           = '';
 
       if (text) {
-        textParts = text.split(' ');
-
         for (term in correctionHash) {
           if (term) {
             if (correctionHash.hasOwnProperty(term)) {
               text = text.split(term).join(correctionHash[term]);
             }
-          }
-        }
-
-        for (i; i < textParts.length; i += 1) {
-          if ((textParts[i]) && (!isNaN(textParts[i])) && (textParts[i].indexOf('2') === 0) && (textParts[i].length > 2)) {
-            text = text.split(textParts[i]).join(textParts[i].substring(1));
           }
         }
       }

@@ -29,19 +29,31 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20161101,
+    version : 20161221,
 
     gerty : function (deviceId, command, controllers, values, config, appParams) {
-      var translate       = require(__dirname + '/../lib/translate'),
-          runCommand      = require(__dirname + '/../lib/runCommand'),
-          gertyRunCommand = require(__dirname + '/gerty/runCommand'),
-          gertyMood       = require(__dirname + '/gerty/mood'),
-          utterance       = translate.findSynonyms('gerty', controllers.config.language),
-          deviceConfig    = ((controllers[deviceId]) && (controllers[deviceId].config)) || {},
-          ignoreNegative  = deviceConfig.ignoreNegative,
-          text            = '',
-          tempDevice      = '',
-          acted           = false;
+      var translate        = require(__dirname + '/../lib/translate'),
+          runCommand       = require(__dirname + '/../lib/runCommand'),
+          gertyRunCommand  = require(__dirname + '/gerty/runCommand'),
+          gertyMood        = require(__dirname + '/gerty/mood'),
+          utterance        = translate.findSynonyms('gerty', controllers.config.language),
+          deviceConfig     = ((controllers[deviceId]) && (controllers[deviceId].config)) || {},
+          ignoreNegative   = deviceConfig.ignoreNegative,
+          text             = '',
+          tempDevice       = '',
+          acted            = false,
+          getCorrectedText = function (text) {
+            var textParts = text.split(' '),
+                i         = 0;
+
+            for (i; i < textParts.length; i += 1) {
+              if ((textParts[i]) && (!isNaN(textParts[i])) && (textParts[i].indexOf('2') === 0) && (textParts[i].length > 2)) {
+                text = text.split(textParts[i]).join(textParts[i].substring(1));
+              }
+            }
+
+            return text;
+          };
 
       // If it's a command explicitly sent to Gerty to act on.
       if ((deviceConfig.typeClass === 'gerty') && (command.indexOf('text-') === 0) &&
@@ -51,26 +63,30 @@ module.exports = (function () {
         if ((!deviceConfig.address) || ((deviceConfig.address) && (command.toUpperCase().indexOf(deviceConfig.title.toUpperCase()) !== -1))) {
           text = command.replace('text-', '').toUpperCase();
 
-          gertyMood.setEmotion(text, deviceId, controllers.config.language);
+          if (text) {
+            text = getCorrectedText(text);
 
-          acted = gertyRunCommand.setDevice(text, controllers, deviceId, config.macros, controllers.config.language);
+            gertyMood.setEmotion(text, deviceId, controllers.config.language);
 
-          if (acted === true) {
-            utterance = utterance.AFFIRMATIVE[Math.floor(Math.random() * utterance.AFFIRMATIVE.length)];
-          }
+            acted = gertyRunCommand.setDevice(text, controllers, deviceId, config.macros, controllers.config.language);
 
-          else if ((acted === false) && (!ignoreNegative)) {
-            utterance = utterance.NEGATIVE[Math.floor(Math.random() * utterance.NEGATIVE.length)];
-          }
+            if (acted === true) {
+              utterance = utterance.AFFIRMATIVE[Math.floor(Math.random() * utterance.AFFIRMATIVE.length)];
+            }
 
-          else {
-            utterance = acted || '';
-          }
+            else if ((acted === false) && (!ignoreNegative)) {
+              utterance = utterance.NEGATIVE[Math.floor(Math.random() * utterance.NEGATIVE.length)];
+            }
 
-          for (tempDevice in controllers) {
-            if (tempDevice !== 'config') {
-              if ((controllers[tempDevice].config.typeClass === 'speech') || (controllers[tempDevice].config.typeClass === 'clientSpeech')) {
-                runCommand.runCommand(tempDevice, 'text-' + utterance);
+            else {
+              utterance = acted || '';
+            }
+
+            for (tempDevice in controllers) {
+              if (tempDevice !== 'config') {
+                if ((controllers[tempDevice].config.typeClass === 'speech') || (controllers[tempDevice].config.typeClass === 'clientSpeech')) {
+                  runCommand.runCommand(tempDevice, 'text-' + utterance);
+                }
               }
             }
           }
