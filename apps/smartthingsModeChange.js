@@ -60,7 +60,7 @@ module.exports = (function () {
 
             // If you have a macro assigned to this specific Mode, we'll act
             // upon it.
-            if (config[SmartthingsMode[deviceId]]) {
+            if (config[newMode]) {
               runCommand = require(__dirname + '/../lib/runCommand');
 
               rawMacro = config[newMode].split(';');

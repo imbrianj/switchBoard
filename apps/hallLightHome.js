@@ -31,9 +31,9 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20161101,
+    version : 20161231,
 
-    lastEvents : { presence : 0, open : 0 },
+    lastEvents : { acted : 0, presence : 0, open : 0 },
 
     hallLightHome : function (deviceId, command, controllers, values, config) {
       var deviceState = require(__dirname + '/../lib/deviceState'),
@@ -68,7 +68,7 @@ module.exports = (function () {
         this.lastEvents.open = now;
       }
 
-      if ((now < delay + this.lastEvents.presence) && (now < delay + this.lastEvents.open)) {
+      if ((now > delay + this.lastEvents.acted) && (now < delay + this.lastEvents.presence) && (now < delay + this.lastEvents.open)) {
         if (config.macro) {
           for (macro in rawMacro) {
             if (rawMacro.hasOwnProperty(macro)) {
@@ -88,12 +88,17 @@ module.exports = (function () {
                 case 'raspberryRemote' :
                   currentDeviceState = deviceState.getDeviceState(currDevice);
                 break;
+
+                default :
+                  currentDeviceState = null;
               }
 
               if ((currentDeviceState.value) && (currentDeviceState.value.devices)) {
                 for (subdevice in currentDeviceState.value.devices) {
                   if (config.action.indexOf(currentDeviceState.value.devices[subdevice].label) !== -1) {
-                    runCommand.runCommand(currDevice, 'subdevice-' + currentDeviceState.value.devices[subdevice].label + '-on');
+                    this.lastEvents.acted = now;
+
+                    runCommand.runCommand(currDevice, 'subdevice-' + currentDeviceState.value.devices[subdevice].label + '-on', currDevice);
                   }
                 }
               }
