@@ -489,6 +489,7 @@ module.exports = (function () {
           HOME               : "En Casa",
           HOME_WATCH         : "{{LABEL}} se prendió!",
           LEFT               : "{{LABEL}} acabo de salir",
+          MODE_CHANGE        : "Modo cambiado a {MODE}",
           NIGHT              : "Noche",
           NOBODY_HOME        : "Estatus por fuera - no hay nadie en casa",
           SAFE_WATCH_CONTACT : "{{LABEL}} se abrió!",

@@ -497,6 +497,7 @@ module.exports = (function () {
           HOME               : "Home",
           HOME_WATCH         : "{{LABEL}} has been triggered!",
           LEFT               : "{{LABEL}} has just left",
+          MODE_CHANGE        : "Mode changed to {{MODE}}",
           NIGHT              : "Night",
           NOBODY_HOME        : "Set to Away - nobody is home",
           SAFE_WATCH_CONTACT : "{{LABEL}} has been opened!",

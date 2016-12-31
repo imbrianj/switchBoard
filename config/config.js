@@ -399,7 +399,7 @@ exports.config = {
                                                controllerIds : ['nest', 'pushover', 'speech', 'gerty'],
                                                disabled      : true },
                        'Mode Change'       : { id            : 'smartthingsModeChange',
-                                               controllerIds : [],
+                                               controllerIds : ['clientNotify', 'gerty'],
                                                Away          : 'nest=Away;foscam=Preset1,Sleep,Sleep,Alarm_On',
                                                Night         : 'nest=Home;foscam=Alarm_Off,Preset3',
                                                Home          : 'nest=Home;foscam=Alarm_Off,Preset3',

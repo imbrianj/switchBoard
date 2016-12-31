@@ -31,7 +31,7 @@ SB.spec = (function () {
   'use strict';
 
   return {
-    version : 20161115,
+    version : 20161230,
 
     state     : {},
     parsers   : {},
@@ -467,30 +467,6 @@ SB.spec = (function () {
     },
 
     /**
-     * Simply find all text fields inside any controller.
-     */
-    findTextInputs : function () {
-      return SB.spec.uiComponents.body.getElementsByTagName('input');
-    },
-
-    /**
-     * Find all number input fields inside any controller.
-     */
-    findNumberInputs : function () {
-      var textInputs   = SB.spec.findTextInputs(),
-          numberInputs = [],
-          i;
-
-      for (i = 0; i < textInputs.length; i += 1) {
-        if (textInputs[i].type === 'number') {
-          numberInputs.push(textInputs[i]);
-        }
-      }
-
-      return numberInputs;
-    },
-
-    /**
      * Takes in a modal initiating element and builds out the modal content.
      */
     openModal : function (elm) {
@@ -588,7 +564,7 @@ SB.spec = (function () {
           tapped           = false,
           touched          = false,
           interrupt        = false,
-          done             = false,
+          done             = true,
           touchStartX      = 0,
           touchStartY      = 0,
           touchThreshold   = 5,
@@ -604,7 +580,7 @@ SB.spec = (function () {
             commandIteration = 0;
             interrupt        = true;
             touched          = false;
-            done             = false;
+            done             = true;
             touchStartX      = 0;
             touchStartY      = 0;
           },
@@ -724,6 +700,7 @@ SB.spec = (function () {
           // For quick taps of commands, we need to set a flag.
           tapped  = true;
           touched = true;
+          done    = false;
 
           if (findCommand(e)) {
             interrupt   = false;

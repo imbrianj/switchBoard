@@ -32,12 +32,16 @@ module.exports = (function () {
   var SmartthingsMode = {};
 
   return {
-    version : 20161101,
+    version : 20161230,
 
     smartthingsModeChange : function (deviceId, command, controllers, values, config) {
       var deviceState      = require(__dirname + '/../lib/deviceState'),
           smartthingsState = deviceState.getDeviceState(deviceId),
+          newMode,
+          translate,
+          notify,
           runCommand,
+          message,
           rawMacro,
           macro;
 
@@ -45,21 +49,31 @@ module.exports = (function () {
         // We'll check the SmartThings state and compare to the last time we
         // ran this to see if things have changed, regardless of source.
         if (smartthingsState.value.mode !== SmartthingsMode[deviceId]) {
-          SmartthingsMode[deviceId] = smartthingsState.value.mode;
+          if (SmartthingsMode[deviceId]) {
+            newMode   = smartthingsState.value.mode;
 
-          // If you have a macro assigned to this specific Mode, we'll act upon
-          // it.
-          if (config[SmartthingsMode[deviceId]]) {
-            runCommand = require(__dirname + '/../lib/runCommand');
+            translate = require(__dirname + '/../lib/translate');
+            notify    = require(__dirname + '/../lib/notify');
+            message   = translate.translate('{{i18n_MODE_CHANGE}}', 'smartthings', controllers.config.language).replace('{{MODE}}', newMode);
 
-            rawMacro = config[SmartthingsMode[deviceId]].split(';');
+            notify.notify(message, controllers, deviceId);
 
-            for (macro in rawMacro) {
-              if (rawMacro.hasOwnProperty(macro)) {
-                runCommand.macroCommands(rawMacro[macro]);
+            // If you have a macro assigned to this specific Mode, we'll act
+            // upon it.
+            if (config[SmartthingsMode[deviceId]]) {
+              runCommand = require(__dirname + '/../lib/runCommand');
+
+              rawMacro = config[newMode].split(';');
+
+              for (macro in rawMacro) {
+                if (rawMacro.hasOwnProperty(macro)) {
+                  runCommand.macroCommands(rawMacro[macro]);
+                }
               }
             }
           }
+
+          SmartthingsMode[deviceId] = smartthingsState.value.mode;
         }
       }
     }
