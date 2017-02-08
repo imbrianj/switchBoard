@@ -41,7 +41,7 @@ Supported Devices/Services
 | Client Notify       | Stable      | Sends a Desktop Notification to all Websocket connected clients                   |
 | Client Screen Saver | Development | For use with OLED display fixtures - blacks out screen when not in use.           |
 | Client Speech       | Stable      | Sends text to be speech synthesized to all Websocket connected clients            |
-| Client Vibrate      | Testing     | Sends a command to vibrate all Websocket connected clients (phones, tablets, etc) |
+| Client Vibrate      | Stable      | Sends a command to vibrate all Websocket connected clients (phones, tablets, etc) |
 | Debug               | Stable      | Display basic system information (memory, cpu, uptime)                            |
 | Denon               | Stable      | New controller and still in testing                                               |
 | Foscam              | Stable      | Works with FI8910W (if you have another version that this does not work with, let me know and I can add support).  Arm, Disarm, Go to presets, etc. *INSECURE* Exposes camera credentials to users |
@@ -64,13 +64,13 @@ Supported Devices/Services
 | SmartThings         | Stable      | Control devices and monitor real-time states. Requires [companion app](https://github.com/imbrianj/oauth_controller/blob/master/oauth_controller.groovy) |
 | SMS                 | Stable      | Uses Twilio. Requires ID and token                                                |
 | Speech              | Stable      | Uses espeak for *nix, say on OSX.  Win not supported                              |
-| Sports              | Testing     | Pull sports scores from ESPN (please don't hammer this endpoint)                  |
+| Sports              | Stable      | Pull sports scores from ESPN (please don't hammer this endpoint)                  |
 | Stocks              | Stable      | Uses Yahoo Finance                                                                |
 | Traffic Cams        | Stable      | View multiple traffic webcams                                                     |
 | Travis CI           | Stable      |                                                                                   |
 | Twitter             | Development | Present mentions of your Twitter handle                                           |
 | Weather             | Stable      | Uses Yahoo Weather                                                                |
-| Website             | Testing     | Simple controller to load an external site as an iframe                           |
+| Website             | Stable      | Simple controller to load an external site as an iframe                           |
 | XBMC                | Stable      | Basic controls work                                                               |
 
 ### How to Contribute

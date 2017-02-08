@@ -29,14 +29,16 @@
 module.exports = (function () {
   'use strict';
 
-  var SmartthingsMode = {};
-
   return {
-    version : 20161230,
+    version : 20170202,
+
+    lastEvents : {},
 
     smartthingsModeChange : function (deviceId, command, controllers, values, config) {
       var deviceState      = require(__dirname + '/../lib/deviceState'),
           smartthingsState = deviceState.getDeviceState(deviceId),
+          now              = new Date().getTime(),
+          delay            = (config.delay || 5) * 1000,
           newMode,
           translate,
           notify,
@@ -46,10 +48,14 @@ module.exports = (function () {
           macro;
 
       if ((smartthingsState) && (smartthingsState.value) && (smartthingsState.value.mode)) {
+        this.lastEvents[deviceId] = this.lastEvents[deviceId] || { time : 0 };
+
         // We'll check the SmartThings state and compare to the last time we
         // ran this to see if things have changed, regardless of source.
-        if (smartthingsState.value.mode !== SmartthingsMode[deviceId]) {
-          if (SmartthingsMode[deviceId]) {
+        // Add a delay since any latency from the SmartThings API may cause the
+        // mode to be somewhat unpredictable with some race conditions.
+        if ((now > this.lastEvents[deviceId].time + delay) && (smartthingsState.value.mode !== this.lastEvents[deviceId].mode)) {
+          if (this.lastEvents[deviceId].mode) {
             newMode   = smartthingsState.value.mode;
 
             translate = require(__dirname + '/../lib/translate');
@@ -73,8 +79,10 @@ module.exports = (function () {
             }
           }
 
-          SmartthingsMode[deviceId] = smartthingsState.value.mode;
+          this.lastEvents[deviceId].mode = smartthingsState.value.mode;
         }
+
+        this.lastEvents[deviceId].time = now;
       }
     }
   };

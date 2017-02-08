@@ -235,7 +235,7 @@ exports.config = {
                                       delay         : 300,
                                       videoLength   : 600,
                                       // Measured in MB
-                                      byteLimit     : 25600 } },
+                                      byteLimit     : 20480 } },
     power     : 6,
     disabled  : true
   },

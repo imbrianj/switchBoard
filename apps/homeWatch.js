@@ -77,7 +77,7 @@ module.exports = (function () {
         // positives as much as possible.
         setTimeout(function () {
           if(isSecure()) {
-            console.log('\x1b[35m' + controllers[deviceId].config.title + '\x1b[0m: Home Watch found something suspicous');
+            console.log('\x1b[35m' + controllers[deviceId].config.title + '\x1b[0m: Home Watch found something suspicious');
 
             message = translate.translate('{{i18n_HOME_WATCH}}', 'smartthings', controllers.config.language).split('{{LABEL}}').join(trigger);
             notify.notify(message, controllers, deviceId);
