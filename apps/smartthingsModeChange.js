@@ -38,7 +38,7 @@ module.exports = (function () {
       var deviceState      = require(__dirname + '/../lib/deviceState'),
           smartthingsState = deviceState.getDeviceState(deviceId),
           now              = new Date().getTime(),
-          delay            = (config.delay || 5) * 1000,
+          delay            = (config.delay || 1) * 1000,
           newMode,
           translate,
           notify,
@@ -80,6 +80,11 @@ module.exports = (function () {
           }
 
           this.lastEvents[deviceId].mode = smartthingsState.value.mode;
+        }
+
+        else if (smartthingsState.value.mode !== this.lastEvents[deviceId].mode) {
+          notify = require(__dirname + '/../lib/notify');
+          notify.notify('Smartthings thought the mode was ' + smartthingsState.value.mode + ' but was ignored.', controllers, deviceId);
         }
 
         this.lastEvents[deviceId].time = now;
