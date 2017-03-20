@@ -31,7 +31,7 @@ SB.spec = (function () {
   'use strict';
 
   return {
-    version : 20161230,
+    version : 20170319,
 
     state     : {},
     parsers   : {},
@@ -63,7 +63,7 @@ SB.spec = (function () {
      * @param {String} selected Name of the new tab that should be selected.
      */
     navChange : function (selected) {
-      var newNav        = SB.getByClass(selected, SB.spec.uiComponents.header, 'li')[0],
+      var newNav        = SB.getByClass(selected, SB.spec.uiComponents.header,   'li')[0],
           newContent    = SB.get(selected),
           selectNav     = SB.getByClass('selected', SB.spec.uiComponents.header, 'li')[0],
           selectContent = SB.getByClass('selected', SB.spec.uiComponents.body,   'section')[0];
@@ -172,6 +172,8 @@ SB.spec = (function () {
             node.outerHTML = markup;
           }
         }
+
+        innerMarkup.remove();
       }
     },
 
@@ -255,8 +257,6 @@ SB.spec = (function () {
 
           SB.log('Reconnected', 'WebSocket', 'success');
         }
-
-        SB.event.add(SB.spec.socket, 'close', close);
       };
 
       message = function (e) {
