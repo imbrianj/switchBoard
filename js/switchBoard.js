@@ -100,19 +100,22 @@ SB.spec = (function () {
           selected,
           markup,
           innerMarkup = document.createElement('div'),
-          oldMarkup;
+          oldMarkup,
+          oldInnerMarkup;
 
       SB.spec.state[state.deviceId] = state;
 
       SB.log('Updated', state.deviceId, 'success');
 
       if (node) {
-        markup       = SB.spec.uiComponents.templates[state.typeClass].markup;
-        selected     = SB.hasClass(node, 'selected') ? ' selected' : '';
-        oldMarkup    = node.cloneNode(true);
-        deviceHeader = SB.getByTag('h1', oldMarkup)[0];
+        markup         = SB.spec.uiComponents.templates[state.typeClass].markup;
+        selected       = SB.hasClass(node, 'selected') ? ' selected' : '';
+        oldMarkup      = node.cloneNode(true);
+        deviceHeader   = SB.getByTag('h1', oldMarkup)[0];
         deviceHeader.parentNode.removeChild(deviceHeader);
-        oldMarkup    = oldMarkup.innerHTML;
+        oldInnerMarkup = oldMarkup.innerHTML;
+
+        oldMarkup.remove();
 
         if (parser) {
           markup = parser(state.deviceId, markup, deviceState, value, SB.spec.uiComponents.templates[state.typeClass].fragments);
@@ -168,13 +171,13 @@ SB.spec = (function () {
           deviceHeader = SB.getByTag('h1', innerMarkup)[0];
           deviceHeader.parentNode.removeChild(deviceHeader);
 
-          if (innerMarkup.innerHTML !== oldMarkup) {
+          if (innerMarkup.innerHTML !== oldInnerMarkup) {
             node.outerHTML = markup;
           }
         }
-
-        innerMarkup.remove();
       }
+
+      innerMarkup.remove();
     },
 
     /**
@@ -615,8 +618,7 @@ SB.spec = (function () {
             return validElm;
           },
           sendCommand      = function () {
-            var ts = new Date().getTime(),
-                ajaxRequest;
+            var ajaxRequest;
 
             if ((commandIssued) && (!interrupt)) {
               SB.vibrate();
@@ -635,7 +637,7 @@ SB.spec = (function () {
               else {
                 ajaxRequest = {
                   path   : commandIssued,
-                  param  : 'ts=' + ts,
+                  param  : 'ts=' + new Date().getTime(),
                   method : 'GET',
                   onComplete : function () {
                     SB.log(ajaxRequest.response);
@@ -810,8 +812,7 @@ SB.spec = (function () {
      * have an active connection, we'll use that.  If not, we'll use XHR.
      */
     sendTextInput : function (text, device, type) {
-      var ts = new Date().getTime(),
-          ajaxRequest;
+      var ajaxRequest;
 
       type = type || 'text';
 
@@ -826,7 +827,7 @@ SB.spec = (function () {
       else {
         ajaxRequest = {
           path       : '/',
-          param      : device + '=' + type + '-' + text + '&ts=' + ts,
+          param      : device + '=' + type + '-' + text + '&ts=' + new Date().getTime(),
           method     : 'POST',
           onComplete : function () {
             SB.log(ajaxRequest.response);

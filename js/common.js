@@ -28,22 +28,7 @@ SB = (function () {
   'use strict';
 
   return {
-    version : 20160329,
-
-   /**
-    * Stops event bubbling further.
-    *
-    * @param {Event} e Event to prevent from bubbling further.
-    */
-    cancelBubble : function (e) {
-      e = e || window.event;
-
-      e.cancelBubble = true;
-
-      if (e.stopPropagation) {
-        e.stopPropagation();
-      }
-    },
+    version : 20170320,
 
    /**
     * Determines if an element is an ancestor to another element.
