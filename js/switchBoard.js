@@ -55,6 +55,8 @@ SB.spec = (function () {
           ariaText  = SB.spec.strings.CURRENT.split('{{DEVICE}}').join(SB.getText(newNav));
 
       SB.putText(ariaTitle, ariaText);
+
+      ariaText = null;
     },
 
     /**
@@ -101,7 +103,8 @@ SB.spec = (function () {
           markup,
           innerMarkup = document.createElement('div'),
           oldMarkup,
-          oldInnerMarkup;
+          oldInnerMarkup,
+          hasUpdated  = false;
 
       SB.spec.state[state.deviceId] = state;
 
@@ -115,8 +118,6 @@ SB.spec = (function () {
         deviceHeader.parentNode.removeChild(deviceHeader);
         oldInnerMarkup = oldMarkup.innerHTML;
 
-        oldMarkup.remove();
-
         if (parser) {
           markup = parser(state.deviceId, markup, deviceState, value, SB.spec.uiComponents.templates[state.typeClass].fragments);
         }
@@ -124,20 +125,20 @@ SB.spec = (function () {
         if (deviceState === 'ok') {
           markup = markup.split('{{DEVICE_ACTIVE}}').join(SB.spec.strings.ACTIVE);
 
-          if (SB.hasClass(node,   'device-off')) {
-             SB.removeClass(node, 'device-off');
-             SB.addClass(node,    'device-on');
-             SB.putText(SB.getByTag('em', SB.getByTag('h1', node)[0])[0], SB.spec.strings.ACTIVE);
+          if (SB.hasClass(node,  'device-off')) {
+            SB.removeClass(node, 'device-off');
+            SB.addClass(node,    'device-on');
+            SB.putText(SB.getByTag('em', SB.getByTag('h1', node)[0])[0], SB.spec.strings.ACTIVE);
           }
         }
 
         else {
           markup = markup.split('{{DEVICE_ACTIVE}}').join(SB.spec.strings.INACTIVE);
 
-          if (SB.hasClass(node,   'device-on')) {
-             SB.removeClass(node, 'device-on');
-             SB.addClass(node,    'device-off');
-             SB.putText(SB.getByTag('em', SB.getByTag('h1', node)[0])[0], SB.spec.strings.INACTIVE);
+          if (SB.hasClass(node,  'device-on')) {
+            SB.removeClass(node, 'device-on');
+            SB.addClass(node,    'device-off');
+            SB.putText(SB.getByTag('em', SB.getByTag('h1', node)[0])[0], SB.spec.strings.INACTIVE);
           }
         }
 
@@ -173,11 +174,23 @@ SB.spec = (function () {
 
           if (innerMarkup.innerHTML !== oldInnerMarkup) {
             node.outerHTML = markup;
+            hasUpdated     = true;
           }
         }
       }
 
-      innerMarkup.remove();
+      node           = null;
+      parser         = null;
+      value          = null;
+      deviceState    = null;
+      deviceHeader   = null;
+      selected       = null;
+      markup         = null;
+      innerMarkup    = null;
+      oldMarkup      = null;
+      oldInnerMarkup = null;
+
+      return hasUpdated;
     },
 
     /**
