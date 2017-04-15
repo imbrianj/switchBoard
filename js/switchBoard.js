@@ -31,7 +31,7 @@ SB.spec = (function () {
   'use strict';
 
   return {
-    version : 20170319,
+    version : 20170414,
 
     state     : {},
     parsers   : {},
@@ -359,14 +359,14 @@ SB.spec = (function () {
       cleanup = function () {
         SB.event.remove(SB.spec.socket, 'open',    open);
         SB.event.remove(SB.spec.socket, 'message', message);
-        SB.event.remove(SB.spec.socket, 'error',   error);
-        SB.event.remove(SB.spec.socket, 'close',   cleanup);
+        SB.event.remove(SB.spec.socket, 'close',   close);
+        SB.event.remove(SB.spec.socket, 'error',   cleanup);
       };
 
       SB.event.add(SB.spec.socket, 'open',    open);
       SB.event.add(SB.spec.socket, 'message', message);
-      SB.event.add(SB.spec.socket, 'error',   error);
-      SB.event.add(SB.spec.socket, 'close',   cleanup);
+      SB.event.add(SB.spec.socket, 'close',   close);
+      SB.event.add(SB.spec.socket, 'error',   cleanup);
     },
 
     /**

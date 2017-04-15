@@ -14,6 +14,7 @@ exports.config = {
     language     : 'en',
     region       : 'us',
     default      : 'welcome',
+    eventLogging : false,
     macroPause   : 1500,
     pollMinutes  : 5,
     pollSeconds  : 15,
