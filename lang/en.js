@@ -383,6 +383,13 @@ module.exports = (function () {
           FEET     : "Feet",
           MPH      : "mph"
         },
+        monoPrice3dPrinter : {
+          MONOPRICE3DPRINTER : 'MonoPrice 3d Printer',
+          BED                : 'Bed',
+          COMPLETE           : 'Complete',
+          EXTRUDER           : 'Extruder',
+          PRINTER_STATUS     : 'Printer Status',
+        },
         mp3 : {
           MP3 : "MP3"
         },

@@ -20,24 +20,18 @@
  * IN THE SOFTWARE.
  */
 
-/**
- * @author brian@bevey.org
- * @fileoverview Simple script to fire for each scheduled interval.
- */
-
-module.exports = (function () {
+(function (exports){
   'use strict';
 
-  return {
-    version : 20151006,
+  exports.monoPrice3dPrinter = function (deviceId, markup, state, value) {
+    value  = value || {};
 
-    /**
-     * On poll, check the location data feed.
-     */
-    poll : function (deviceId) {
-      var runCommand  = require(__dirname + '/../../lib/runCommand');
+    markup = markup.split('{{EXTRUDER_TEMP}}').join(value.extruderTemp);
+    markup = markup.split('{{EXTRUDER_TARGET}}').join(value.extruderTarget);
+    markup = markup.split('{{BED_TEMP}}').join(value.bedTemp);
+    markup = markup.split('{{BED_TARGET}}').join(value.bedTarget);
+    markup = markup.split('{{PERCENT_COMPLETE}}').join(value.percent);
 
-      runCommand.runCommand(deviceId, 'list');
-    }
+    return markup;
   };
-}());
+})(typeof exports === 'undefined' ? this.SB.spec.parsers : exports);

@@ -270,6 +270,18 @@ exports.config = {
   },
 
   /*
+   * View state of your MonoPrice Mini Select (or similar) 3d printer.
+   * I've found it easiest to set up my printer via GCode:
+   * http://mpselectmini.com/wifi/g-code_file
+   */
+  monoPrice3dPrinter : {
+    typeClass : 'monoPrice3dPrinter',
+    title     : '3d Printer',
+    deviceIp  : '192.168.1.22',
+    disabled  : true
+  },
+
+  /*
    * Simple device type to include a website in an iframe.
    * Visit this link to find the specific Waze params that work for you:
    * https://support.google.com/waze/partners/answer/6287370
