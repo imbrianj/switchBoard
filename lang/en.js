@@ -387,8 +387,7 @@ module.exports = (function () {
           MONOPRICE3DPRINTER : 'MonoPrice 3d Printer',
           BED                : 'Bed',
           COMPLETE           : 'Complete',
-          EXTRUDER           : 'Extruder',
-          PRINTER_STATUS     : 'Printer Status',
+          EXTRUDER           : 'Extruder'
         },
         mp3 : {
           MP3 : "MP3"
