@@ -29,7 +29,7 @@ module.exports = (function () {
    * @fileoverview Basic stocks information, courtesy of Yahoo.
    */
   return {
-    version : 20160204,
+    version : 20170525,
 
     inputs  : ['list'],
 
@@ -118,7 +118,7 @@ module.exports = (function () {
       stocks.deviceId = config.device.deviceId;
       stocks.stocks   = config.device.stocks ? config.device.stocks.join('","') : null;
       stocks.host     = config.host     || 'query.yahooapis.com';
-      stocks.path     = config.path     || '/v1/public/yql?format=json&env=http://datatables.org/alltables.env&q=select symbol, LastTradePriceOnly, AskRealtime, BidRealtime, Change, DaysLow, DaysHigh, YearLow, YearHigh, ChangeinPercent, Change from yahoo.finance.quotes where symbol in ("' + stocks.stocks + '")';
+      stocks.path     = config.path     || '/v1/public/yql?format=json&env=store://datatables.org/alltableswithkeys&q=select symbol, LastTradePriceOnly, AskRealtime, BidRealtime, Change, DaysLow, DaysHigh, YearLow, YearHigh, ChangeinPercent, Change from yahoo.finance.quotes where symbol in ("' + stocks.stocks + '")';
       stocks.port     = config.port     || 443;
       stocks.method   = config.method   || 'GET';
       stocks.callback = config.callback || function () {};

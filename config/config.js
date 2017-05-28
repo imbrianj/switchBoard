@@ -278,6 +278,9 @@ exports.config = {
     typeClass : 'monoPrice3dPrinter',
     title     : '3d Printer',
     deviceIp  : '192.168.1.22',
+    apps      : { 'Announce' : { id            : 'announce3dPrinter',
+                                 controllerIds : ['speech', 'clientSpeech', 'clientNotify', 'gerty'] } },
+    power     : 35,
     disabled  : true
   },
 

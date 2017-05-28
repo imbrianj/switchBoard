@@ -22,55 +22,41 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview If you receive a new package, send a Desktop Notification.
+ * @fileoverview Announce when your 3d printer is finished.
  */
 
 module.exports = (function () {
   'use strict';
 
-  var ActiveBuildingPackages = {};
+  var PrintProgress = {};
 
   return {
-    version : 20161101,
+    version : 20170527,
 
     translate : function (token, lang) {
       var translate = require(__dirname + '/../lib/translate');
 
-      return translate.translate('{{i18n_' + token + '}}', 'activeBuilding', lang);
+      return translate.translate('{{i18n_' + token + '}}', 'monoPrice3dPrinter', lang);
     },
 
-    announceActiveBuilding : function (deviceId, command, controllers, values) {
-      var sharedUtil = require(__dirname + '/../lib/sharedUtil').util,
-          notify,
+    announce3dPrinter : function (deviceId, command, controllers, values) {
+      var notify,
           lang       = controllers.config.language,
-          senders    = '',
           message    = '',
-          packages   = [];
+          percent;
 
       if ((values) && (values.value)) {
-        packages = values.value;
+        percent = values.value.percent;
 
-        if (JSON.stringify(ActiveBuildingPackages[deviceId]) !== JSON.stringify(packages)) {
-          senders = sharedUtil.arrayList(values.value, 'activeBuilding', lang);
+        if ((PrintProgress[deviceId] !== percent) && (percent === '100')) {
+          notify = require(__dirname + '/../lib/notify');
 
-          ActiveBuildingPackages[deviceId] = packages;
+          message = this.translate('PRINT_COMPLETED', lang);
 
-          if (senders) {
-            notify     = require(__dirname + '/../lib/notify');
-
-            if (packages.length === 1) {
-              message = this.translate('SINGLE_PACKAGE', lang);
-            }
-
-            else if (packages.length > 1) {
-              message = this.translate('PLURAL_PACKAGES', lang);
-            }
-
-            message = message.split('{{SENDERS}}').join(senders);
-
-            notify.notify(message, controllers, deviceId);
-          }
+          notify.notify(message, controllers, deviceId);
         }
+
+        PrintProgress[deviceId] = percent;
       }
     }
   };
