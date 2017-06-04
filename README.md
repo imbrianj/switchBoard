@@ -18,7 +18,7 @@ https://imbrianj.github.io/switchBoard/
 
 Setup
 ---
-###Easy
+### Easy
 - You'll need to install node.js.  You can grab it from the [Node.js website](https://nodejs.org/download/)
 - `npm install -g git+https://github.com/imbrianj/switchBoard.git`
 - Add a config file anywhere on the device you want to run the app on. See the [default](config/config.js) file for examples
@@ -26,7 +26,7 @@ Setup
 - Open your favorite browser on any device within your wireless network, and point it to the IP and port of the device hosting switchBoard (default is 8080). E.g. `http://192.168.2.13:8080/` (Remember to bookmark)
 - Profit
 
-###Advanced
+### Advanced
 Download the source, edit config/config.js to reflect your node server IP, desired port to hit when you visit the remote and web mac address of the server (used for authenticating against Samsung TVs).  If you don't have a specific device, just comment out or remove the configuration for it.  If you do have a device you'd like to control, just populate the given fields - they should all be pretty obvious in their use.  Run node app.js then visit your node page.  Run a command from the remote and Allow access on your TV.
 
 Supported Devices/Services
