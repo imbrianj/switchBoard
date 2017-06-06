@@ -49,7 +49,7 @@ Supported Devices/Services
 | have i been pwned?   | Testing     | Query haveibeenpwned.com to see if your username has been part of a data breach.  |
 | LG TVs               | Development | Still need work on authentication                                                 |
 | Location             | Stable      | Uses [switchboard-phpServer](https://github.com/imbrianj/switchboard-phpServer) and [Tasker](https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm) to track your GPS position
-| MonoPrice 3d Printer | Development | Probably works with other brands and models, but tested on Mini Select v2.        |
+| MonoPrice 3d Printer | Testing     | Probably works with other brands and models, but tested on Mini Select v2.        |
 | MP3                  | Stable      | Works on *nix with mpg123 or OSX with afplay. Win not supported                   |
 | Nest                 | Stable      | Works with Nest thermostat and Protect smoke / CO detectors                       |
 | Panasonic            | Stable      | Text input and basic controls                                                     |

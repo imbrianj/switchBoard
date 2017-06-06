@@ -117,7 +117,7 @@ button {
   border-radius: 2px;
   color: #FFF;
   cursor: pointer;
-  font-size: 0.5em;
+  font-size: 1.75rem;
   *font-size: 90%; /*IE 6/7 - To reduce IE's oversized button text*/
   *overflow: visible; /*IE 6/7 - Because of IE's overly large left/right padding on buttons */
   padding: 0.5em 1.5em .5em;
@@ -184,7 +184,7 @@ form textarea {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   display: inline-block;
-  font-size: 0.5em;
+  font-size: 1.75rem;
   padding: 0.5em 0.6em;
   -webkit-transition: 0.3s linear border;
   -moz-transition: 0.3s linear border;
@@ -647,8 +647,8 @@ section .modal video {
 
 section .curtain .modal .close-modal {
   position: absolute;
-  right: -1em;
-  top: -1em;
+  right: -1rem;
+  top: -1rem;
 }
 
 section iframe {
@@ -1202,6 +1202,7 @@ section .emoji {
 section .emoji span {
   cursor: pointer;
   display: block;
+  font-size: 1.75rem;
   margin: 0 auto;
   padding: 0.5em;
   /* Emoji size can't be adjusted by font-size */
@@ -1530,8 +1531,8 @@ section .text-list .text-group li {
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;
-  padding: 0.4em .1em;
   margin: 0.1em 0;
+  padding: 0.4em .1em;
 }
 
 section .sub-device-list h2,
@@ -1947,6 +1948,20 @@ header nav li.screenSaver {
 }
 
 @media (max-width: 650px) {
+  section .text-form input[type="text"],
+  section .text-form input[type="password"],
+  section .text-form input[type="email"],
+  section .text-form input[type="url"],
+  section .text-form input[type="number"],
+  section .text-form input[type="search"],
+  section .text-form input[type="color"],
+  section .text-form select,
+  section .text-form textarea {
+    font-size: 1.25rem;
+    margin: 0 auto;
+    width: 90%;
+  }
+
   header ul {
     clear: both;
     float: none;
@@ -2001,12 +2016,6 @@ header nav li.screenSaver {
     display: none;
   }
 
-  section .text input,
-  section .text button {
-    margin: 0 auto;
-    width: 90%;
-  }
-
   section .shortcuts {
     padding-top: 0.5em;
   }
@@ -2055,10 +2064,6 @@ header nav li.screenSaver {
   section.nest .sub-device-list .sub-device-group {
     max-width: 100%;
   }
-
-  section .emoji span {
-    font-size: 80%;
-  }
 }
 
 @media (min-width: 1000px) {
@@ -2076,10 +2081,6 @@ header nav li.screenSaver {
 
   section.nest .text-device-status .text-device-status li {
     max-width: 22%;
-  }
-
-  section .emoji span {
-    font-size: 60%;
   }
 }
 
