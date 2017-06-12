@@ -1956,7 +1956,8 @@ header nav li.screenSaver {
   section .text-form input[type="search"],
   section .text-form input[type="color"],
   section .text-form select,
-  section .text-form textarea {
+  section .text-form textarea,
+  button {
     font-size: 1.25rem;
     margin: 0 auto;
     width: 90%;
