@@ -73,8 +73,8 @@
             if (typeof SB === 'object') {
               if (SB.getByClass(encodeName(device.label), SB.get(deviceId), 'li')[0]) {
                 off  = SB.getByClass(encodeName(device.label), SB.get(deviceId), 'li')[0];
-                heat = SB.getByClass('fa-sun-o',    off, 'a')[0];
-                cool = SB.getByClass('fa-asterisk', off, 'a')[0];
+                heat = SB.getByClass('fa-sun-o',       off, 'a')[0];
+                cool = SB.getByClass('fa-snowflake-o', off, 'a')[0];
 
                 if ((device.state === 'cool') && (!SB.hasClass(cool, 'device-active'))) {
                   SB.addClass(cool,    'device-active');
