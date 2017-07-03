@@ -1,4 +1,4 @@
-/*global SB, document, window, ActiveXObject, XMLHttpRequest, localStorage, Notification, Audio, SpeechSynthesisUtterance, webkitSpeechRecognition */
+/*global SB, document, window, ActiveXObject, XMLHttpRequest, localStorage, Notification, Audio, SpeechSynthesisUtterance */
 /*jslint white: true */
 /*jshint -W020 */
 
@@ -390,27 +390,6 @@ SB = (function () {
     },
 
    /**
-    * Sugar function to remove units of measure from a given string.
-    *
-    * @param {String} property Measurement property to have it's units removed.
-    * @return {Integer} Integer value of measurement entered - but without
-    *          units of measure.
-    */
-    stripUnits : function (property) {
-      var value = '';
-
-      if (typeof property === 'string') {
-        value = parseInt(property.replace(new RegExp('(%|px|em)'), ''), 10);
-      }
-
-      else {
-        value = property;
-      }
-
-      return value;
-    },
-
-   /**
     * Removes extra whitespace at the beginning or end of a given string.
     *
     * @param {String} string String of text that may have leading or trailing
@@ -422,20 +401,6 @@ SB = (function () {
       string = string || '';
 
       return string.toString().replace(/^\s\s*/, '').replace(/\s\s*$/, '');
-    },
-
-    /**
-     * Replace all instances of a substring within a larger string by a new
-     * string.  Basically .replace, but for all instances of the substring.
-     */
-    replaceAll : function (text, find, replace) {
-      var value = text;
-
-      if (typeof text === 'string') {
-        value = text.replace(new RegExp(find, 'g'), replace);
-      }
-
-      return value;
     },
 
    /**
@@ -650,17 +615,18 @@ SB = (function () {
     */
     transcribe : function (callback) {
       var transcribe,
-          process;
+          process,
+          recognition = window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition || null;
 
-      if ('webkitSpeechRecognition' in window) {
+      if (recognition) {
         SB.log('Supported', 'Transcribe', 'info');
 
-        transcribe = new webkitSpeechRecognition();
+        transcribe = new (recognition)();
 
         process = function (e) {
           callback(e.results[0][0].transcript, e.results[0][0].confidence);
 
-          SB.event.remove(document, 'result', process);
+          SB.event.remove(transcribe, 'result', process);
         };
 
         SB.event.add(transcribe, 'result', process);
