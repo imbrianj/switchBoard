@@ -5,33 +5,38 @@ exports.config = {
   //
   // NOTE: DO NOT EXPOSE CREDENTIALS TO A PUBLIC PLACE - LIKE GITHUB.
   config : {
-    serverPort   : 8080,
-    serverIp     : '192.168.1.145',
-    serverMac    : '00:00:00:00:00:00',
-    appCaching   : true,
-    delegate     : ['gerty'],
-    theme        : 'dark',
-    language     : 'en',
-    region       : 'us',
-    default      : 'welcome',
-    eventLogging : false,
-    macroPause   : 1500,
-    pollMinutes  : 5,
-    pollSeconds  : 15,
-    localTimeout : 1500,
+    serverPort           : 8080,
+    serverIp             : '192.168.1.145',
+    serverMac            : '00:00:00:00:00:00',
+    appCaching           : true,
+    delegate             : ['gerty'],
+    theme                : 'dark',
+    language             : 'en',
+    region               : 'us',
+    default              : 'welcome',
+    macroPause           : 1500,
+    pollMinutes          : 5,
+    pollSeconds          : 15,
+    localTimeout         : 1500,
     // Your SSL key and SCR will be generated for you.  If you want to use one
     // you've manually created, drop "ssl.key" and "ssl.csr" into /cache/.
     //
     // If you're using self-signed certs, be aware that appCaching may not work
     // in all (or any) browsers.  Also note that SmartThings cannot contact
     // SwitchBoard for real-time updates.
-    ssl          : {
+    ssl                  : {
       country  : 'US',
       state    : 'Washington',
       city     : 'Seattle',
       org      : 'Switchboard',
       name     : 'Switchboard',
       disabled : true
+    },
+    ai                   : {
+      eventLogging         : false,
+      eventLogDelaySeconds : 60,
+      minimumThreshold     : 100,
+      confidence           : 90
     }
   },
 

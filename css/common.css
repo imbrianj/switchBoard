@@ -193,6 +193,10 @@ form textarea {
   transition: 0.3s linear border;
 }
 
+form input[type="number"] {
+  text-align: center;
+}
+
 form input[type="text"]:focus,
 form input[type="password"]:focus,
 form input[type="email"]:focus,

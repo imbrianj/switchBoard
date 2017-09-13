@@ -30,9 +30,9 @@ exports.runCommandTest = {
     'use strict';
 
     var runCommand  = require(__dirname + '/../../../lib/runCommand'),
-        controllers = { config  : { eventLogging : false },
+        controllers = { config  : { ai : { eventLogging : false } },
                         samsung : { config       : { deviceId : 'TEST-deviceId',
-                                                     title : 'TEST-title' },
+                                                     title    : 'TEST-title' },
                                     markup       : '<span>{{DEVICE_ID}} {{TEST_KEY}}</span>',
                                     controller   : { inputs : ['command'],
                                                      keymap : ['VOLUP'],
