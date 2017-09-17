@@ -40,15 +40,15 @@ module.exports = (function () {
           notify      = require(__dirname + '/../lib/notify'),
           message     = '',
           tempMessage = '',
-          subDevice,
+          subdevice,
           rawMacro,
           macro;
 
       if (values.protect) {
-        for (subDevice in values.protect) {
-          if (values.protect.hasOwnProperty(subDevice)) {
-            if (values.protect[subDevice].smoke !== 'ok') {
-              tempMessage = translate.translate('{{i18n_SMOKE_DETECTED}}', 'nest', controllers.config.language).replace('{{LABEL}}', values.protect[subDevice].label);
+        for (subdevice in values.protect) {
+          if (values.protect.hasOwnProperty(subdevice)) {
+            if (values.protect[subdevice].smoke !== 'ok') {
+              tempMessage = translate.translate('{{i18n_SMOKE_DETECTED}}', 'nest', controllers.config.language).replace('{{LABEL}}', values.protect[subdevice].label);
 
               if (message) {
                 message = message + ' ';
@@ -57,8 +57,8 @@ module.exports = (function () {
               message = message + tempMessage;
             }
 
-            if (values.protect[subDevice].co !== 'ok') {
-              tempMessage = translate.translate('{{i18n_CO_DETECTED}}', 'nest', controllers.config.language).replace('{{LABEL}}', values.protect[subDevice].label);
+            if (values.protect[subdevice].co !== 'ok') {
+              tempMessage = translate.translate('{{i18n_CO_DETECTED}}', 'nest', controllers.config.language).replace('{{LABEL}}', values.protect[subdevice].label);
 
               if (message) {
                 message = message + ' ';

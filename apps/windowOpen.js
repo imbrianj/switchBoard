@@ -71,20 +71,20 @@ module.exports = (function () {
         var currDevice,
             currentDevice = {},
             status        = { thermostat : [], contact : [] },
-            subDeviceId,
-            subDevice;
+            subdeviceId,
+            subdevice;
 
         for (currDevice in controllers) {
           if ((controllers[currDevice].config) && (controllers[currDevice].config.typeClass === 'nest')) {
             currentDevice = deviceState.getDeviceState(currDevice);
 
             if (currentDevice.value) {
-              for (subDeviceId in currentDevice.value.devices) {
-                if (currentDevice.value.devices.hasOwnProperty(subDeviceId)) {
-                  subDevice = currentDevice.value.devices[subDeviceId];
+              for (subdeviceId in currentDevice.value.devices) {
+                if (currentDevice.value.devices.hasOwnProperty(subdeviceId)) {
+                  subdevice = currentDevice.value.devices[subdeviceId];
 
-                  if ((config.thermostat.indexOf(subDevice.label) !== -1) && (subDevice.type === 'thermostat') && (subDevice.state !== 'off') && (currentDevice.state !== 'err')) {
-                    status.thermostat.push({ label : subDevice.label, state : subDevice.state });
+                  if ((config.thermostat.indexOf(subdevice.label) !== -1) && (subdevice.type === 'thermostat') && (subdevice.state !== 'off') && (currentDevice.state !== 'err')) {
+                    status.thermostat.push({ label : subdevice.label, state : subdevice.state });
                   }
                 }
               }
@@ -95,12 +95,12 @@ module.exports = (function () {
             currentDevice = deviceState.getDeviceState(currDevice);
 
             if (currentDevice.value) {
-              for (subDeviceId in currentDevice.value.devices) {
-                if (currentDevice.value.devices.hasOwnProperty(subDeviceId)) {
-                  subDevice = currentDevice.value.devices[subDeviceId];
+              for (subdeviceId in currentDevice.value.devices) {
+                if (currentDevice.value.devices.hasOwnProperty(subdeviceId)) {
+                  subdevice = currentDevice.value.devices[subdeviceId];
 
-                  if ((config.contact.indexOf(subDevice.label) !== -1) && (subDevice.type === 'contact') && (subDevice.state === 'on')) {
-                    status.contact.push(subDevice.label);
+                  if ((config.contact.indexOf(subdevice.label) !== -1) && (subdevice.type === 'contact') && (subdevice.state === 'on')) {
+                    status.contact.push(subdevice.label);
                   }
                 }
               }

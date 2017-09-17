@@ -49,20 +49,20 @@ module.exports = (function () {
         var currDevice,
             currentDevice = {},
             status,
-            subDeviceId,
-            subDevice;
+            subdeviceId,
+            subdevice;
 
         for (currDevice in controllers) {
           if (controllers[currDevice].config) {
             currentDevice = deviceState.getDeviceState(currDevice);
 
             if ((currentDevice.value) && (currentDevice.value.devices)) {
-              for (subDeviceId in currentDevice.value.devices) {
+              for (subdeviceId in currentDevice.value.devices) {
                 if (currentDevice.value.devices.hasOwnProperty(currDevice)) {
-                  subDevice = currentDevice.value.devices[subDeviceId];
+                  subdevice = currentDevice.value.devices[subdeviceId];
 
-                  if (config.trigger === subDevice.label) {
-                    status = subDevice.state;
+                  if (config.trigger === subdevice.label) {
+                    status = subdevice.state;
 
                     if (!that.lastState[deviceId]) {
                       that.lastState[deviceId] = {};

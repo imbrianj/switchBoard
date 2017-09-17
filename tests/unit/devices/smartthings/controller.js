@@ -106,17 +106,17 @@ exports.smartthingsControllerTest = {
     test.done();
   },
 
-  findSubDevice : function (test) {
+  findSubdevice : function (test) {
     'use strict';
 
     var smartthingsController = require(__dirname + '/../../../../devices/smartthings/controller'),
-        subDevicesRepeat      = { 0 : { label : 'Some Light' }, 1 : { label : 'Some Light' }, 2 : { label : 'Light 3' } },
-        subDevicesUnique      = { 0 : { label : 'Light 1' },    1 : { label : 'Light 2' },    2 : { label : 'Light 3' } },
-        testSubDevicesRepeat  = smartthingsController.findSubDevices('Some Light', subDevicesRepeat),
-        testSubDevicesUnique  = smartthingsController.findSubDevices('Light 2',    subDevicesUnique);
+        subdevicesRepeat      = { 0 : { label : 'Some Light' }, 1 : { label : 'Some Light' }, 2 : { label : 'Light 3' } },
+        subdevicesUnique      = { 0 : { label : 'Light 1' },    1 : { label : 'Light 2' },    2 : { label : 'Light 3' } },
+        testSubdevicesRepeat  = smartthingsController.findSubdevices('Some Light', subdevicesRepeat),
+        testSubdevicesUnique  = smartthingsController.findSubdevices('Light 2',    subdevicesUnique);
 
-    test.deepEqual(testSubDevicesRepeat, [{ label: 'Some Light' }, { label: 'Some Light' }], 'Two lights should be returned if they both have the same name');
-    test.deepEqual(testSubDevicesUnique, [{ label: 'Light 2' }],                             'Only one light is returned as its unique');
+    test.deepEqual(testSubdevicesRepeat, [{ label: 'Some Light' }, { label: 'Some Light' }], 'Two lights should be returned if they both have the same name');
+    test.deepEqual(testSubdevicesUnique, [{ label: 'Light 2' }],                             'Only one light is returned as its unique');
 
     test.done();
   },

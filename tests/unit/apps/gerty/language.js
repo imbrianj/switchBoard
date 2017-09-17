@@ -44,20 +44,20 @@ exports.languageTest = {
     test.done();
   },
 
-  getSubDevices : function (test) {
+  getSubdevices : function (test) {
     'use strict';
 
     var language    = require(__dirname + '/../../../../apps/gerty/language'),
         deviceState = require(__dirname + '/../../../../lib/deviceState'),
         controllers = { 'FOO' : {} },
-        subDevices;
+        subdevices;
 
     deviceState.updateState('FOO', 'faux-type', { value : { devices : { 0 : { label : 'Test Switch' },
                                                                         1 : { label : 'Random Thing' } } } });
 
-    subDevices = language.getSubDevices(controllers);
+    subdevices = language.getSubdevices(controllers);
 
-    test.deepEqual(subDevices.FOO.subDevices, ['Test Switch', 'Random Thing'], 'Should have subdevice list populated from State var');
+    test.deepEqual(subdevices.FOO.subdevices, ['Test Switch', 'Random Thing'], 'Should have subdevice list populated from State var');
 
     test.done();
   },

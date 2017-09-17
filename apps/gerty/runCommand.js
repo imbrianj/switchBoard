@@ -95,14 +95,14 @@ module.exports = (function () {
           runCommand     = require(__dirname + '/../../lib/runCommand'),
           gertyLanguage  = require(__dirname + '/language'),
           genericDevices = gertyLanguage.getGenericDevices(controllers),
-          subDevices     = gertyLanguage.getSubDevices(controllers),
+          subdevices     = gertyLanguage.getSubdevices(controllers),
           genericTerms   = gertyLanguage.getGenericTerms(language),
           verbs          = gertyLanguage.getVerbs(language),
           inquiry        = gertyLanguage.getInquiry(language),
           implied        = translate.translate('{{i18n_AND}}', 'gerty', language),
           commands       = [{ action : null, implied : false }],
           questions      = [{ action : null, implied : false }],
-          devices        = [{ device : null, typeClass : null, subDevice : null }],
+          devices        = [{ device : null, typeClass : null, subdevice : null }],
           rawMacro       = [],
           macro          = '',
           text           = [],
@@ -151,7 +151,7 @@ module.exports = (function () {
             j += 1;
 
             commands[j] = { action : null, implied : false };
-            devices[j]  = { device : null, typeClass : null, subDevice : null };
+            devices[j]  = { device : null, typeClass : null, subdevice : null };
           }
         }
 
@@ -180,7 +180,7 @@ module.exports = (function () {
               j += 1;
 
               commands[j] = { action : null, implied : false };
-              devices[j]  = { device : null, typeClass : null, subDevice : null };
+              devices[j]  = { device : null, typeClass : null, subdevice : null };
             }
           }
         }
@@ -201,7 +201,7 @@ module.exports = (function () {
               x += 1;
 
               questions[x] = { action : null, implied : false };
-              devices[j]   = { device : null, typeClass : null, subDevice : null };
+              devices[j]   = { device : null, typeClass : null, subdevice : null };
             }
           }
         }
@@ -219,7 +219,7 @@ module.exports = (function () {
                 j += 1;
 
                 commands[j] = { action : null, implied : false };
-                devices[j]  = { device : null, typeClass : null, subDevice : null };
+                devices[j]  = { device : null, typeClass : null, subdevice : null };
               }
             }
           }
@@ -229,33 +229,33 @@ module.exports = (function () {
         // upon.
         for (keyword in controllers) {
           if (keyword !== 'config') {
-            if ((subDevices) && (subDevices[keyword]) && (subDevices[keyword].subDevices)) {
-              for (k = 0; k < subDevices[keyword].subDevices.length; k += 1) {
+            if ((subdevices) && (subdevices[keyword]) && (subdevices[keyword].subdevices)) {
+              for (k = 0; k < subdevices[keyword].subdevices.length; k += 1) {
                 // Look ahead for device names that may be multiple words.
-                if (text[i] + ' ' + text[(i + 1)] + ' ' + text[(i + 2)] === subDevices[keyword].subDevices[k].toUpperCase()) {
+                if (text[i] + ' ' + text[(i + 1)] + ' ' + text[(i + 2)] === subdevices[keyword].subdevices[k].toUpperCase()) {
                   devices[j].device    = keyword;
                   devices[j].typeClass = controllers[keyword].config.typeClass;
-                  devices[j].subDevice = subDevices[keyword].subDevices[k];
+                  devices[j].subdevice = subdevices[keyword].subdevices[k];
 
                   i += 2;
 
                   break;
                 }
 
-                else if (text[i] + ' ' + text[(i + 1)] === subDevices[keyword].subDevices[k].toUpperCase()) {
+                else if (text[i] + ' ' + text[(i + 1)] === subdevices[keyword].subdevices[k].toUpperCase()) {
                   devices[j].device    = keyword;
                   devices[j].typeClass = controllers[keyword].config.typeClass;
-                  devices[j].subDevice = subDevices[keyword].subDevices[k];
+                  devices[j].subdevice = subdevices[keyword].subdevices[k];
 
                   i += 1;
 
                   break;
                 }
 
-                else if (text[i] === subDevices[keyword].subDevices[k].toUpperCase()) {
+                else if (text[i] === subdevices[keyword].subdevices[k].toUpperCase()) {
                   devices[j].device = keyword;
                   devices[j].typeClass = controllers[keyword].config.typeClass;
-                  devices[j].subDevice = subDevices[keyword].subDevices[k];
+                  devices[j].subdevice = subdevices[keyword].subdevices[k];
                 }
 
                 // When we have a pair of action + command, we can start looking for
@@ -264,7 +264,7 @@ module.exports = (function () {
                   j += 1;
 
                   commands[j] = { action : null, implied : false };
-                  devices[j]  = { device : null, typeClass : null, subDevice : null };
+                  devices[j]  = { device : null, typeClass : null, subdevice : null };
                 }
               }
             }
@@ -305,7 +305,7 @@ module.exports = (function () {
               j += 1;
 
               commands[j] = { action : null, implied : false };
-              devices[j]  = { device : null, typeClass : null, subDevice : null };
+              devices[j]  = { device : null, typeClass : null, subdevice : null };
             }
           }
         }
@@ -347,10 +347,10 @@ module.exports = (function () {
         if (commands.length === devices.length) {
           for (i = 0; i < commands.length; i += 1) {
             if ((devices[i].device) && (commands[i].action)) {
-              if (devices[i].subDevice) {
+              if (devices[i].subdevice) {
                 if ((this.findDeviceType(devices[i].typeClass) !== 'blinds') &&
                     (this.findDeviceType(devices[i].typeClass) !== 'nest')) {
-                  commands[i].action = 'subdevice-' + devices[i].subDevice + '-' + commands[i].action.toLowerCase();
+                  commands[i].action = 'subdevice-' + devices[i].subdevice + '-' + commands[i].action.toLowerCase();
                 }
               }
 
@@ -359,22 +359,22 @@ module.exports = (function () {
                   switch (commands[i].action.toUpperCase()) {
                     case 'OFF'  :
                     case 'DOWN' :
-                      commands[i].action = 'subdevice-' + devices[i].subDevice + '-0';
+                      commands[i].action = 'subdevice-' + devices[i].subdevice + '-0';
                     break;
 
                     case 'HALF'    :
                     case 'HALFWAY' :
-                      commands[i].action = 'subdevice-' + devices[i].subDevice + '-50';
+                      commands[i].action = 'subdevice-' + devices[i].subdevice + '-50';
                     break;
 
                     case 'ON' :
                     case 'UP' :
-                      commands[i].action = 'subdevice-' + devices[i].subDevice + '-100';
+                      commands[i].action = 'subdevice-' + devices[i].subdevice + '-100';
                     break;
 
                     default :
                       if ((commands[i].action) && (!isNaN(commands[i].action))) {
-                        commands[i].action = 'subdevice-' + devices[i].subDevice + '-' + commands[i].action;
+                        commands[i].action = 'subdevice-' + devices[i].subdevice + '-' + commands[i].action;
                       }
                     break;
                   }
@@ -383,11 +383,11 @@ module.exports = (function () {
                 case 'nest' :
                   if (commands[i].action) {
                     if (!isNaN(commands[i].action)) {
-                      commands[i].action = 'subdevice-temp-' + devices[i].subDevice + '-' + commands[i].action;
+                      commands[i].action = 'subdevice-temp-' + devices[i].subdevice + '-' + commands[i].action;
                     }
 
                     else {
-                      commands[i].action = 'subdevice-mode-' + devices[i].subDevice + '-' + commands[i].action.toLowerCase();
+                      commands[i].action = 'subdevice-mode-' + devices[i].subdevice + '-' + commands[i].action.toLowerCase();
                     }
                   }
                 break;

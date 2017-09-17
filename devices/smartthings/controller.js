@@ -156,7 +156,7 @@ module.exports = (function () {
      * of the world.
      */
     updateState : function (smartthings, response) {
-      var subDevices       = [],
+      var subdevices       = [],
           smartthingsData  = {},
           deviceState      = require(__dirname + '/../../lib/deviceState'),
           smartthingsState = deviceState.getDeviceState(smartthings.deviceId),
@@ -295,11 +295,11 @@ module.exports = (function () {
               }
             }
 
-            subDevices.push(currDevice);
+            subdevices.push(currDevice);
           }
         }
 
-        smartthingsData = { state : state, value : { devices : subDevices, mode : mode, groups : response.groups } };
+        smartthingsData = { state : state, value : { devices : subdevices, mode : mode, groups : response.groups } };
         deviceState.updateState(smartthings.deviceId, 'smartthings', smartthingsData);
       }
 
@@ -311,17 +311,17 @@ module.exports = (function () {
      * interacted with in concert, we'll not use a hash table - and return an
      * object of applicable sub devices to act upon.
      */
-    findSubDevices : function (subDeviceLabel, subDevices) {
-      var subDevice = {},
+    findSubdevices : function (subdeviceLabel, subdevices) {
+      var subdevice = {},
           collected = [],
           i         = 0;
 
-      for (i in subDevices) {
-        if (subDevices.hasOwnProperty(i)) {
-          subDevice = subDevices[i];
+      for (i in subdevices) {
+        if (subdevices.hasOwnProperty(i)) {
+          subdevice = subdevices[i];
 
-          if (subDevice.label === subDeviceLabel) {
-            collected.push(subDevice);
+          if (subdevice.label === subdeviceLabel) {
+            collected.push(subdevice);
           }
         }
       }
@@ -340,15 +340,15 @@ module.exports = (function () {
     getDevicePath : function (command, config, callback) {
       var deviceState      = require(__dirname + '/../../lib/deviceState'),
           smartThingsState = deviceState.getDeviceState(config.device.deviceId),
-          subDevices       = {},
+          subdevices       = {},
           commandType      = '',
-          subDevice        = {},
+          subdevice        = {},
           path             = '',
           i                = 1,
           value            = '';
 
       if ((smartThingsState.value) && (smartThingsState.value.devices)) {
-        subDevices = smartThingsState.value.devices;
+        subdevices = smartThingsState.value.devices;
       }
 
       // Update states.
@@ -356,7 +356,7 @@ module.exports = (function () {
         command = command.replace('state-mode-', '');
 
         if ((command === 'Home') || (command === 'Away') || (command === 'Night')) {
-          callback(null, { devices : subDevices, mode : command, groups : config.device.groups });
+          callback(null, { devices : subdevices, mode : command, groups : config.device.groups });
         }
       }
 
@@ -425,23 +425,23 @@ module.exports = (function () {
         value   = value[1];
 
         if (!isNaN(value)) {
-          for (i in subDevices) {
-            if (subDevices.hasOwnProperty(i)) {
-              subDevice = subDevices[i];
+          for (i in subdevices) {
+            if (subdevices.hasOwnProperty(i)) {
+              subdevice = subdevices[i];
 
-              if (subDevice.label === command) {
+              if (subdevice.label === command) {
                 // If you have a proper state, temp is peripheral sensor.
-                if (subDevice.state) {
-                  subDevices[i].peripheral = subDevices[i].peripheral || {};
-                  subDevices[i].peripheral.temp = value;
+                if (subdevice.state) {
+                  subdevices[i].peripheral = subdevices[i].peripheral || {};
+                  subdevices[i].peripheral.temp = value;
                 }
 
                 // If you have no proper state, you're just a temperature sensor.
                 else {
-                  subDevices[i].state = value;
+                  subdevices[i].state = value;
                 }
 
-                callback(null, { devices : subDevices, mode : smartThingsState.value.mode, groups : config.device.groups });
+                callback(null, { devices : subdevices, mode : smartThingsState.value.mode, groups : config.device.groups });
               }
             }
           }
@@ -454,23 +454,23 @@ module.exports = (function () {
         command = value[0];
         value   = value[1];
 
-        for (i in subDevices) {
-          if (subDevices.hasOwnProperty(i)) {
-            subDevice = subDevices[i];
+        for (i in subdevices) {
+          if (subdevices.hasOwnProperty(i)) {
+            subdevice = subdevices[i];
 
-            if (subDevice.label === command) {
+            if (subdevice.label === command) {
               // If you have a proper state, vibrate is peripheral sensor.
-              if ((commandType === 'vibrate') && (subDevice.state)) {
-                subDevices[i].peripheral = subDevices[i].peripheral || {};
-                subDevices[i].peripheral.vibrate = value;
+              if ((commandType === 'vibrate') && (subdevice.state)) {
+                subdevices[i].peripheral = subdevices[i].peripheral || {};
+                subdevices[i].peripheral.vibrate = value;
               }
 
               // If you have no proper state, you're just a temperature sensor.
               else {
-                subDevices[i].state = value;
+                subdevices[i].state = value;
               }
 
-              callback(null, { devices : subDevices, mode : smartThingsState.value.mode, groups : config.device.groups });
+              callback(null, { devices : subdevices, mode : smartThingsState.value.mode, groups : config.device.groups });
             }
           }
         }
@@ -478,29 +478,29 @@ module.exports = (function () {
 
       else if (commandType) {
         command   = command.replace('-' + commandType, '');
-        subDevice = this.findSubDevices(command, subDevices);
+        subdevice = this.findSubdevices(command, subdevices);
 
-        if ((subDevice) && (subDevice[0])) {
-          if (subDevice[0].type === 'switch') {
-            path = config.device.auth.url + '/switches/' + subDevice[0].id + '/' + commandType + '?access_token=' + config.device.auth.accessToken;
+        if ((subdevice) && (subdevice[0])) {
+          if (subdevice[0].type === 'switch') {
+            path = config.device.auth.url + '/switches/' + subdevice[0].id + '/' + commandType + '?access_token=' + config.device.auth.accessToken;
           }
 
-          else if (subDevice[0].type === 'lock') {
-            path = config.device.auth.url + '/locks/' + subDevice[0].id + '/' + commandType + '?access_token=' + config.device.auth.accessToken;
+          else if (subdevice[0].type === 'lock') {
+            path = config.device.auth.url + '/locks/' + subdevice[0].id + '/' + commandType + '?access_token=' + config.device.auth.accessToken;
           }
 
           // For same-named devices, we want them to operate in concert, so
           // we'll send along the same command to each of them.
-          if (subDevice.length > 1) {
-            for (i; i < subDevice.length; i += 1) {
+          if (subdevice.length > 1) {
+            for (i; i < subdevice.length; i += 1) {
               config.subdevice = '';
 
-              if (subDevice[i].type === 'switch') {
-                config.path = config.device.auth.url + '/switches/' + subDevice[i].id + '/' + commandType + '?access_token=' + config.device.auth.accessToken;
+              if (subdevice[i].type === 'switch') {
+                config.path = config.device.auth.url + '/switches/' + subdevice[i].id + '/' + commandType + '?access_token=' + config.device.auth.accessToken;
               }
 
-              else if (subDevice[i].type === 'lock') {
-                config.path = config.device.auth.url + '/locks/' + subDevice[i].id + '/' + commandType + '?access_token=' + config.device.auth.accessToken;
+              else if (subdevice[i].type === 'lock') {
+                config.path = config.device.auth.url + '/locks/' + subdevice[i].id + '/' + commandType + '?access_token=' + config.device.auth.accessToken;
               }
 
               this.send(config);

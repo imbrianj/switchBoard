@@ -31,9 +31,9 @@
         j               = 0,
         tempMarkup      = '',
         mode            = '',
-        subDeviceMarkup = '',
-        subDevices,
-        subDeviceGroup,
+        subdeviceMarkup = '',
+        subdevices,
+        subdeviceGroup,
         encodeName      = function (name) {
           var util;
 
@@ -62,18 +62,18 @@
 
           return message;
         },
-        findSubDevices  = function (subDeviceLabel, subDevices) {
-          var subDevice = {},
+        findSubdevices  = function (subdeviceLabel, subdevices) {
+          var subdevice = {},
               collected = [],
               i         = 0,
               j         = 0;
 
-          for (i in subDevices) {
-            if (subDevices.hasOwnProperty(i)) {
-              subDevice = subDevices[i];
+          for (i in subdevices) {
+            if (subdevices.hasOwnProperty(i)) {
+              subdevice = subdevices[i];
 
-              if (subDevice.label === subDeviceLabel) {
-                collected[j] = subDevice;
+              if (subdevice.label === subdeviceLabel) {
+                collected[j] = subdevice;
                 j += 1;
               }
             }
@@ -149,38 +149,38 @@
 
     if ((value) && (typeof value === 'object') && (typeof value.mode === 'string')) {
       mode       = value.mode;
-      subDevices = value.devices;
+      subdevices = value.devices;
 
-      if (subDevices) {
+      if (subdevices) {
         // You want to display SmartThings devices in groups.
         if (value.groups) {
           for (i in value.groups) {
             if (value.groups.hasOwnProperty(i)) {
               tempMarkup      = tempMarkup + templateGroup;
-              subDeviceMarkup = '';
+              subdeviceMarkup = '';
 
               for (j in value.groups[i]) {
                 if (value.groups[i].hasOwnProperty(j)) {
-                  subDeviceGroup = findSubDevices(value.groups[i][j], subDevices);
+                  subdeviceGroup = findSubdevices(value.groups[i][j], subdevices);
 
-                  if (subDeviceGroup && subDeviceGroup[0]) {
-                    subDeviceMarkup = subDeviceMarkup + getDeviceMarkup(subDeviceGroup[0]);
+                  if (subdeviceGroup && subdeviceGroup[0]) {
+                    subdeviceMarkup = subdeviceMarkup + getDeviceMarkup(subdeviceGroup[0]);
                   }
                 }
               }
 
               tempMarkup = tempMarkup.split('{{GROUP_CLASS}}').join(encodeName(i));
               tempMarkup = tempMarkup.split('{{GROUP_TITLE}}').join(i);
-              tempMarkup = tempMarkup.split('{{SUB_DEVICE_LIST}}').join(subDeviceMarkup);
+              tempMarkup = tempMarkup.split('{{SUB_DEVICE_LIST}}').join(subdeviceMarkup);
             }
           }
         }
 
         // Otherwise, you want to show them in a list.
         else {
-          for (i in subDevices) {
-            if (subDevices.hasOwnProperty(i)) {
-              tempMarkup = tempMarkup + getDeviceMarkup(subDevices[i]);
+          for (i in subdevices) {
+            if (subdevices.hasOwnProperty(i)) {
+              tempMarkup = tempMarkup + getDeviceMarkup(subdevices[i]);
             }
           }
         }

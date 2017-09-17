@@ -27,7 +27,7 @@
     var templateSwitch = fragments.switch,
         i              = 0,
         tempMarkup     = '',
-        subDevices,
+        subdevices,
         getDeviceMarkup = function (device) {
           var deviceTemplate = templateSwitch,
               deviceMarkup   = '';
@@ -39,13 +39,13 @@
         };
 
     if ((value) && (typeof value === 'object')) {
-      subDevices = value.devices;
+      subdevices = value.devices;
 
-      if (subDevices) {
-        for (i in subDevices) {
-          if (subDevices.hasOwnProperty(i)) {
-            tempMarkup = tempMarkup + getDeviceMarkup(subDevices[i]);
-            tempMarkup = tempMarkup.split('{{SUB_DEVICE_CLASS}}').join(subDevices[i].className || 'fa-lightbulb-o');
+      if (subdevices) {
+        for (i in subdevices) {
+          if (subdevices.hasOwnProperty(i)) {
+            tempMarkup = tempMarkup + getDeviceMarkup(subdevices[i]);
+            tempMarkup = tempMarkup.split('{{SUB_DEVICE_CLASS}}').join(subdevices[i].className || 'fa-lightbulb-o');
           }
         }
       }

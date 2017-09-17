@@ -30,8 +30,8 @@
         j               = 0,
         tempMarkup      = '',
         stateClass      = '',
-        subDeviceMarkup = '',
-        subDevice,
+        subdeviceMarkup = '',
+        subdevice,
         encodeName = function (name) {
           var util;
 
@@ -60,13 +60,13 @@
 
           return message;
         },
-        findSubDevice = function (subDeviceLabel, subDevices) {
+        findSubdevice = function (subdeviceLabel, subdevices) {
           var collected = {},
               i         = 0;
 
-          for (i in subDevices) {
-            if (subDevices[i].label === subDeviceLabel) {
-              collected = subDevices[i];
+          for (i in subdevices) {
+            if (subdevices[i].label === subdeviceLabel) {
+              collected = subdevices[i];
 
               break;
             }
@@ -109,21 +109,21 @@
         for (i in value.groups) {
           if (value.groups.hasOwnProperty(i)) {
             tempMarkup      = tempMarkup + templateGroup;
-            subDeviceMarkup = '';
+            subdeviceMarkup = '';
 
             for (j in value.groups[i]) {
               if (value.groups[i].hasOwnProperty(j)) {
-                subDevice = findSubDevice(value.groups[i][j], value.devices);
+                subdevice = findSubdevice(value.groups[i][j], value.devices);
 
-                if (subDevice) {
-                  subDeviceMarkup = subDeviceMarkup + getDeviceMarkup(subDevice);
+                if (subdevice) {
+                  subdeviceMarkup = subdeviceMarkup + getDeviceMarkup(subdevice);
                 }
               }
             }
 
             tempMarkup = tempMarkup.split('{{GROUP_CLASS}}').join(encodeName(i));
             tempMarkup = tempMarkup.split('{{GROUP_TITLE}}').join(i);
-            tempMarkup = tempMarkup.split('{{SUB_DEVICE_LIST}}').join(subDeviceMarkup);
+            tempMarkup = tempMarkup.split('{{SUB_DEVICE_LIST}}').join(subdeviceMarkup);
           }
         }
       }

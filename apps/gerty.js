@@ -36,6 +36,7 @@ module.exports = (function () {
           runCommand       = require(__dirname + '/../lib/runCommand'),
           gertyRunCommand  = require(__dirname + '/gerty/runCommand'),
           gertyMood        = require(__dirname + '/gerty/mood'),
+          gertyAI,
           utterance        = translate.findSynonyms('gerty', controllers.config.language),
           deviceConfig     = ((controllers[deviceId]) && (controllers[deviceId].config)) || {},
           ignoreNegative   = deviceConfig.ignoreNegative,
@@ -96,7 +97,10 @@ module.exports = (function () {
       // Otherwise, see if it's a command that's sent to another controller
       // that Gerty is delegated on.
       else if(deviceConfig) {
-        if(deviceConfig.typeClass !== 'gerty') {
+        if (deviceConfig.typeClass !== 'gerty') {
+          gertyAI = require(__dirname + '/gerty/ai');
+          gertyAI.findIntent(deviceId, command, controllers);
+
           gertyRunCommand.setDeviceUpdate(deviceId, deviceConfig.typeClass, command, values, controllers);
         }
       }

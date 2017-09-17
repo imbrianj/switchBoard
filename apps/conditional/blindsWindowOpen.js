@@ -84,8 +84,8 @@ module.exports = (function () {
         var currDevice,
             currentDevice = {},
             status        = {},
-            subDeviceId,
-            subDevice,
+            subdeviceId,
+            subdevice,
             i;
 
         for (currDevice in controllers) {
@@ -96,13 +96,13 @@ module.exports = (function () {
               currentDevice = deviceState.getDeviceState(currDevice);
 
               if (currentDevice.value) {
-                for (subDeviceId in currentDevice.value.devices) {
-                  if (currentDevice.value.devices.hasOwnProperty(subDeviceId)) {
-                    subDevice = currentDevice.value.devices[subDeviceId];
+                for (subdeviceId in currentDevice.value.devices) {
+                  if (currentDevice.value.devices.hasOwnProperty(subdeviceId)) {
+                    subdevice = currentDevice.value.devices[subdeviceId];
 
                     for (i = 0; i < config.windows.length; i += 1) {
-                      if ((subDevice.state === 'on') && (config.windows[i].blind === commandSubdevice) && (config.windows[i].contact === subDevice.label)) {
-                        status.contact = subDevice.label;
+                      if ((subdevice.state === 'on') && (config.windows[i].blind === commandSubdevice) && (config.windows[i].contact === subdevice.label)) {
+                        status.contact = subdevice.label;
                       }
                     }
                   }
@@ -115,23 +115,23 @@ module.exports = (function () {
               currentDevice = deviceState.getDeviceState(currDevice);
 
               if (currentDevice.value) {
-                for (subDeviceId in currentDevice.value.devices) {
-                  if (currentDevice.value.devices.hasOwnProperty(subDeviceId)) {
-                    subDevice = currentDevice.value.devices[subDeviceId];
+                for (subdeviceId in currentDevice.value.devices) {
+                  if (currentDevice.value.devices.hasOwnProperty(subdeviceId)) {
+                    subdevice = currentDevice.value.devices[subdeviceId];
 
                     for (i = 0; i < config.windows.length; i += 1) {
-                      if ((config.windows[i].blind === commandSubdevice) && (config.windows[i].blind === subDevice.label)) {
+                      if ((config.windows[i].blind === commandSubdevice) && (config.windows[i].blind === subdevice.label)) {
                         // If the blind is rolled down past the limit, we can't
                         // safely do anything.
-                        if (subDevice.percentage < config.windows[i].limit) {
-                          status.blind = subDevice.label;
+                        if (subdevice.percentage < config.windows[i].limit) {
+                          status.blind = subdevice.label;
                           status.type  = 'abort';
                         }
 
                         // ...but if the blind is above the threshold, we can
                         // adjust safely within that area.
-                        else if ((subDevice.percentage >= config.windows[i].limit) && (commandPercent < config.windows[i].limit)) {
-                          status.blind = subDevice.label;
+                        else if ((subdevice.percentage >= config.windows[i].limit) && (commandPercent < config.windows[i].limit)) {
+                          status.blind = subdevice.label;
                           status.limit = config.windows[i].limit;
                           status.type  = 'warn';
                         }

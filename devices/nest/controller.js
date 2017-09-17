@@ -329,19 +329,19 @@ module.exports = (function () {
      * interacted with in concert, we'll not use a hash table - and return an
      * object of applicable sub devices to act upon.
      */
-    findSubDevices : function (subDeviceLabel, subDevices) {
-      var subDevice = {},
+    findSubdevices : function (subdeviceLabel, subdevices) {
+      var subdevice = {},
           collected = [],
           i         = 0;
 
-      for (i in subDevices) {
-        if (subDevices.hasOwnProperty(i)) {
-          subDevice = subDevices[i];
+      for (i in subdevices) {
+        if (subdevices.hasOwnProperty(i)) {
+          subdevice = subdevices[i];
 
           // Thermostat is the only interactive type, so we'll assume that's what
           // you're looking for.
-          if ((subDevice.label === subDeviceLabel) && (subDevice.type === 'thermostat')) {
-            collected.push(subDevice);
+          if ((subdevice.label === subdeviceLabel) && (subdevice.type === 'thermostat')) {
+            collected.push(subdevice);
           }
         }
       }
@@ -358,7 +358,7 @@ module.exports = (function () {
     getDevicePath : function (config) {
       var deviceState = require(__dirname + '/../../lib/deviceState'),
           nestState   = deviceState.getDeviceState(config.deviceId),
-          subDevices  = {},
+          subdevices  = {},
           commandType = '',
           value       = '',
           command     = config.command,
@@ -366,7 +366,7 @@ module.exports = (function () {
 
       // We can only send commands to thermostats.
       if ((nestState.value) && (nestState.value.devices)) {
-        subDevices = nestState.value.devices;
+        subdevices = nestState.value.devices;
       }
 
       if (nestState.value) {
@@ -411,7 +411,7 @@ module.exports = (function () {
         value       = command.split('-');
         command     = value[0];
         value       = value[1];
-        subdevice   = this.findSubDevices(command, subDevices);
+        subdevice   = this.findSubdevices(command, subdevices);
 
         if ((subdevice) && (subdevice[0]) && (subdevice[0].type === 'thermostat')) {
           switch (commandType) {

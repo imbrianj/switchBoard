@@ -79,7 +79,7 @@ module.exports = (function () {
      * "Turn off the Hall Light" - we'll know which services to send that
      * request through.
      */
-    getSubDevices : function (controllers) {
+    getSubdevices : function (controllers) {
       var deviceState = require(__dirname + '/../../lib/deviceState'),
           subdevices  = {},
           currentState,
@@ -93,11 +93,11 @@ module.exports = (function () {
 
           if ((currentState) && (currentState.value) && (currentState.value.devices)) {
             i = 0;
-            subdevices[device] = { subDevices : [] };
+            subdevices[device] = { subdevices : [] };
 
             for (subdevice in currentState.value.devices) {
               if (currentState.value.devices.hasOwnProperty(subdevice)) {
-                subdevices[device].subDevices[i] = currentState.value.devices[subdevice].label;
+                subdevices[device].subdevices[i] = currentState.value.devices[subdevice].label;
                 i += 1;
               }
             }

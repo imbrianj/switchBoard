@@ -35,6 +35,7 @@ var fs              = require('fs'),
     staticAssets    = require(__dirname + '/lib/staticAssets'),
     loadController  = require(__dirname + '/lib/loadController'),
     requestInit     = require(__dirname + '/lib/requestInit'),
+    ai              = require(__dirname + '/lib/ai'),
     db              = require(__dirname + '/lib/db'),
     webSockets      = require(__dirname + '/lib/webSockets'),
     controllers,
@@ -157,6 +158,7 @@ fs.stat(configFile, function (err, data) {
       server = http.createServer(connection).listen(settings.config.config.serverPort, startup);
     }
 
+    ai.processFiles();
     db.readDb();
 
     // Or you're connecting with Web Sockets
