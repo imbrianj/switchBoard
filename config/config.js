@@ -36,7 +36,8 @@ exports.config = {
       eventLogging         : false,
       eventLogDelaySeconds : 60,
       minimumThreshold     : 100,
-      confidence           : 90
+      confidence           : 90,
+      disable              : false
     }
   },
 

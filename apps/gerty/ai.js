@@ -36,29 +36,34 @@ module.exports = (function () {
      * Take in a typeClass and return the type of device it's categorized as.
      */
     findIntent : function (deviceId, command, controllers) {
-      var ai     = require(__dirname + '/../../lib/ai'),
+      var ai,
           config = controllers.config,
-          intent = ai.findActionConfidence(deviceId, command, config),
+          intent,
           runCommand,
           translate,
           tempDevice,
           utterance,
           i      = 0;
 
-      if (intent.length) {
-        for (tempDevice in controllers) {
-          if ((tempDevice !== 'config') && (controllers[tempDevice].config.typeClass === 'gerty')) {
-            runCommand = require(__dirname + '/../../lib/runCommand');
-            translate  = require(__dirname + '/../../lib/translate');
+      if (!config.ai.disable) {
+        ai     = require(__dirname + '/../../lib/ai');
+        intent = ai.findActionConfidence(deviceId, command, config);
 
-            for (i; i < intent.length; i += 1) {
-              utterance = translate.translate('{{i18n_AI_INTENT}}', 'gerty', controllers.config.language).replace('{{CONFIDENCE}}', intent[i].confidence).replace('{{DEVICE}}', intent[i].subdevice).replace('{{COMMAND}}', intent[i].command);
-              runCommand.runCommand(tempDevice, 'text-' + utterance);
+        if (intent.length) {
+          for (tempDevice in controllers) {
+            if ((tempDevice !== 'config') && (controllers[tempDevice].config.typeClass === 'gerty')) {
+              runCommand = require(__dirname + '/../../lib/runCommand');
+              translate  = require(__dirname + '/../../lib/translate');
+
+              for (i; i < intent.length; i += 1) {
+                utterance = translate.translate('{{i18n_AI_INTENT}}', 'gerty', config.language).replace('{{CONFIDENCE}}', intent[i].confidence).replace('{{DEVICE}}', intent[i].subdevice).replace('{{COMMAND}}', intent[i].command);
+                runCommand.runCommand(tempDevice, 'text-' + utterance);
+              }
+
+              // Eventually fired intent should note that this was an AI command,
+              // so the intended event doesn't cascade to others (?)
+              break;
             }
-
-            // Eventually fired intent should note that this was an AI command,
-            // so the intended event doesn't cascade to others (?)
-            break;
           }
         }
       }
