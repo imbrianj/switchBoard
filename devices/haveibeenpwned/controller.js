@@ -32,6 +32,8 @@ module.exports = (function () {
   return {
     version : 20160904,
 
+    readOnly: true,
+
     inputs  : ['list'],
 
     /**

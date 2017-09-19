@@ -185,7 +185,6 @@ module.exports = (function () {
                                    for (j; j < devices.length; j += 1) {
                                      if (device.id === devices[j].id) {
                                        found = devices[j];
-
                                        break;
                                      }
                                    }
@@ -234,26 +233,30 @@ module.exports = (function () {
 
             else if (device.values.contact) {
               // You're a contact sensor
-              currDevice.type  = 'contact';
-              currDevice.state = device.values.contact.value === 'open' ? 'on' : 'off';
+              currDevice.type     = 'contact';
+              currDevice.state    = device.values.contact.value === 'open' ? 'on' : 'off';
+              currDevice.readOnly = true;
             }
 
             else if (device.values.water) {
               // You're a moisture sensor
-              currDevice.type  = 'water';
-              currDevice.state = device.values.water.value === 'wet' ? 'on' : 'off';
+              currDevice.type     = 'water';
+              currDevice.state    = device.values.water.value === 'wet' ? 'on' : 'off';
+              currDevice.readOnly = true;
             }
 
             else if (device.values.motion) {
               // You're a motion sensor
-              currDevice.type  = 'motion';
-              currDevice.state = device.values.motion.value === 'active' ? 'on' : 'off';
+              currDevice.type     = 'motion';
+              currDevice.state    = device.values.motion.value === 'active' ? 'on' : 'off';
+              currDevice.readOnly = true;
             }
 
             else if (device.values.presence) {
               // You're a presence sensor
-              currDevice.type  = 'presence';
-              currDevice.state = device.values.presence.value === 'present' ? 'on' : 'off';
+              currDevice.type     = 'presence';
+              currDevice.state    = device.values.presence.value === 'present' ? 'on' : 'off';
+              currDevice.readOnly = true;
             }
 
             // These are commonly secondary sensors for a given device.

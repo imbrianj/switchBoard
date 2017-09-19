@@ -32,8 +32,9 @@ module.exports = (function () {
   return {
     version : 20170507,
 
-    inputs  : ['state'],
+    readOnly: true,
 
+    inputs  : ['state'],
 
     /**
      * Prepare a request for command execution.

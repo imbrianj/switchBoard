@@ -44,9 +44,9 @@ module.exports = (function () {
     fragments : function () {
       var fs = require('fs');
 
-      return { group      : fs.readFileSync(__dirname + '/fragments/nestGroups.tpl', 'utf-8'),
+      return { group      : fs.readFileSync(__dirname + '/fragments/nestGroups.tpl',     'utf-8'),
                thermostat : fs.readFileSync(__dirname + '/fragments/nestThermostat.tpl', 'utf-8'),
-               protect    : fs.readFileSync(__dirname + '/fragments/nestProtect.tpl', 'utf-8') };
+               protect    : fs.readFileSync(__dirname + '/fragments/nestProtect.tpl',    'utf-8') };
     },
 
     /**
@@ -279,7 +279,8 @@ module.exports = (function () {
                 label    : that.findLabel(response.topaz[i].where_id, config.language),
                 type     : 'protect',
                 lastOn   : matched.lastOn,
-                duration : matched.duration
+                duration : matched.duration,
+                readOnly : true
               });
             }
           }

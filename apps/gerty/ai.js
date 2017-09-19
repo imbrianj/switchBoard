@@ -30,7 +30,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20170917,
+    version : 20170918,
 
     /**
      * Take in a typeClass and return the type of device it's categorized as.
@@ -47,7 +47,7 @@ module.exports = (function () {
 
       if (!config.ai.disable) {
         ai     = require(__dirname + '/../../lib/ai');
-        intent = ai.findActionConfidence(deviceId, command, config);
+        intent = ai.findActionConfidence(deviceId, command, config, controllers);
 
         if (intent.length) {
           for (tempDevice in controllers) {
