@@ -105,10 +105,10 @@ exports.db = {
     'use strict';
 
     var db  = require(__dirname + '/../../../lib/db'),
-        now = Math.round(new Date().getTime()),
+        now = new Date().getTime(),
         deviceValues;
 
-    deviceValues = db.findByTime((now - 1), 5);
+    deviceValues = db.findByTime((now - 10), 5);
 
     test.strictEqual(deviceValues.length, 2, 'Returned both values since they\'re both new.');
 
