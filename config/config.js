@@ -35,6 +35,7 @@ exports.config = {
     ai                   : {
       eventLogging         : false,
       eventLogDelaySeconds : 60,
+      executeDelaySeconds  : 1,
       minimumThreshold     : 100,
       confidence           : 90,
       disable              : false

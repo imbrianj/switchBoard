@@ -2,6 +2,7 @@ CACHE MANIFEST
 #
 
 CACHE:
+/manifest.json
 /css/combo.min.css
 /js/combo.min.js
 /images/loading.gif

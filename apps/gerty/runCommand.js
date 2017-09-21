@@ -315,6 +315,7 @@ module.exports = (function () {
       // "What time is it?"
       // "What is the date?"
       // "Do I need a coat?"
+      // "Is it sunny/raining/rainy?"
       // "How are you doing?"
       if ((!devices[0].device) && (!commands[0].action) && (questions[0].action)) {
 // Register questions

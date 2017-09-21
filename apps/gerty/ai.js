@@ -30,42 +30,43 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20170918,
+    version : 20170920,
 
     /**
      * Take in a typeClass and return the type of device it's categorized as.
      */
     findIntent : function (deviceId, command, controllers) {
-      var ai,
-          config = controllers.config,
-          intent,
-          runCommand,
-          translate,
-          tempDevice,
-          utterance,
-          i      = 0;
+      var config = controllers.config,
+          delay  = config.ai.executeDelaySeconds || 1;
 
       if (!config.ai.disable) {
-        ai     = require(__dirname + '/../../lib/ai');
-        intent = ai.findActionConfidence(deviceId, command, config, controllers);
+        setTimeout(function() {
+          var ai     = require(__dirname + '/../../lib/ai'),
+              intent = ai.findActionConfidence(deviceId, command, config, controllers),
+              runCommand,
+              translate,
+              tempDevice,
+              utterance,
+              i      = 0;
 
-        if (intent.length) {
-          for (tempDevice in controllers) {
-            if ((tempDevice !== 'config') && (controllers[tempDevice].config.typeClass === 'gerty')) {
-              runCommand = require(__dirname + '/../../lib/runCommand');
-              translate  = require(__dirname + '/../../lib/translate');
+          if (intent.length) {
+            for (tempDevice in controllers) {
+              if ((tempDevice !== 'config') && (controllers[tempDevice].config.typeClass === 'gerty')) {
+                runCommand = require(__dirname + '/../../lib/runCommand');
+                translate  = require(__dirname + '/../../lib/translate');
 
-              for (i; i < intent.length; i += 1) {
-                utterance = translate.translate('{{i18n_AI_INTENT}}', 'gerty', config.language).replace('{{CONFIDENCE}}', intent[i].confidence).replace('{{DEVICE}}', intent[i].subdevice).replace('{{COMMAND}}', intent[i].command);
-                runCommand.runCommand(tempDevice, 'text-' + utterance);
+                for (i; i < intent.length; i += 1) {
+                  utterance = translate.translate('{{i18n_AI_INTENT}}', 'gerty', config.language).replace('{{COMMAND}}', command).replace('{{CONFIDENCE}}', intent[i].confidence).replace('{{DEVICE}}', intent[i].subdevice).replace('{{COMMAND}}', intent[i].command);
+                  runCommand.runCommand(tempDevice, 'text-' + utterance);
+                }
+
+                // Eventually fired intent should note that this was an AI command,
+                // so the intended event doesn't cascade to others (?)
+                break;
               }
-
-              // Eventually fired intent should note that this was an AI command,
-              // so the intended event doesn't cascade to others (?)
-              break;
             }
           }
-        }
+        }, delay * 1000);
       }
     }
   };

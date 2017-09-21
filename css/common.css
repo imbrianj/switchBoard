@@ -1206,7 +1206,7 @@ section .emoji {
 section .emoji span {
   cursor: pointer;
   display: block;
-  font-size: 1.75rem;
+  font-size: 29px;
   margin: 0 auto;
   padding: 0.5em;
   /* Emoji size can't be adjusted by font-size */

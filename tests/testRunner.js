@@ -74,6 +74,7 @@ module.exports = (function () {
                 'tests/unit/devices/weather/controller.js',
                 'tests/unit/devices/wemo/controller.js',
                 'tests/unit/devices/xbmc/controller.js',
+                'tests/unit/lib/ai.js',
                 'tests/unit/lib/db.js',
                 'tests/unit/lib/deviceState.js',
                 'tests/unit/lib/loadController.js',
