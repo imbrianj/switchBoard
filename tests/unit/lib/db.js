@@ -60,7 +60,7 @@ exports.db = {
     var db = require(__dirname + '/../../../lib/db'),
         allValues;
 
-    db.addRecord('old-device',          'something', { 'old-device' : {} }, 1000);
+    db.addRecord('old-device',          'something', { 'old-device' : {} }, 1);
     db.addRecord('faux-device',         'test',      { 'faux-device' : {} });
     db.addRecord('another-faux-device', 'test',      { 'another-faux-device' : {} });
 
@@ -105,7 +105,7 @@ exports.db = {
     'use strict';
 
     var db  = require(__dirname + '/../../../lib/db'),
-        now = Math.round(new Date().getTime() / 1000),
+        now = Math.round(new Date().getTime()),
         deviceValues;
 
     deviceValues = db.findByTime((now - 1), 5);

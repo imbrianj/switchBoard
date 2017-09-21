@@ -29,12 +29,12 @@ exports.ai = {
   getTimeCategory : function (test) {
     'use strict';
 
-    var ai          = require(__dirname + '/../../../lib/ai'),
-        workdayMorn = ai.getTimeCategory(1451073600),
-        workdayEve  = ai.getTimeCategory(1451023600);
+    var ai     = require(__dirname + '/../../../lib/ai'),
+        dayOne = ai.getTimeCategory(1451073600000),
+        dayTwo = ai.getTimeCategory(1451023600000);
 
-    test.strictEqual(workdayMorn, 'workday-morning-', 'Find workday morning category name');
-    test.strictEqual(workdayEve,  'workday-evening-', 'Find workday evening category name');
+    test.notEqual(dayOne, dayTwo,                   'Ensure returned categories differ');
+    test.strictEqual(dayOne.indexOf('workday-'), 0, 'Validate part of category name');
     test.done();
   }
 };
