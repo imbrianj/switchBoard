@@ -1,0 +1,13 @@
+{
+  "name"             : "SwitchBoard",
+  "short_name"       : "SwitchBoard",
+  "start_url"        : ".",
+  "display"          : "standalone",
+  "background_color" : "#000",
+  "description"      : "SwitchBoard home automation system",
+  "icons"            : [{
+    "src"   : "images/icons/apple-touch-icon.png",
+    "sizes" : "192x192",
+    "type"  : "image/png"
+  }]
+}
