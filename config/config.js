@@ -617,6 +617,10 @@ exports.config = {
     port      : 443,
     path      : '/news?cf=all&hl=en&pz=1&ned=us&output=atom',
     maxCount  : 10,
+    apps      : { 'Announce Trending' : { id            : 'announceTrendingNews',
+                                          threshold     : 10,
+                                          delay         : 30,
+                                          controllerIds : ['clientNotify', 'gerty'] } },
     disabled  : true
   },
 

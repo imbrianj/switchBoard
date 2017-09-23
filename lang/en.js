@@ -484,8 +484,10 @@ module.exports = (function () {
           INSTANT_REPLAY : "Instant Replay"
         },
         rss : {
-          RSS         : "RSS",
-          NEW_ARTICLE : "New article from {{DEVICE}}: {{TITLE}}"
+          RSS            : "RSS",
+          NEW_ARTICLE    : "New article from {{DEVICE}}: {{TITLE}}",
+          TRENDING_WORD  : "Looks like {{TRENDING}} is trending.",
+          TRENDING_WORDS : "Looks like {{TRENDING}} are trending."
         },
         samsung : {
           SAMSUNG          : "Samsung",

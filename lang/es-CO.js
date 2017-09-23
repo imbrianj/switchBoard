@@ -476,8 +476,10 @@ module.exports = (function () {
           INSTANT_REPLAY : "Repetición instantánea"
         },
         rss : {
-          RSS         : "RSS",
-          NEW_ARTICLE : "Nuevo articulo en su {{DEVICE}}: {{TITLE}}"
+          RSS            : "RSS",
+          NEW_ARTICLE    : "Nuevo articulo en su {{DEVICE}}: {{TITLE}}",
+          TRENDING_WORD  : "Parece que {{TRENDING}} está en tendencia.",
+          TRENDING_WORDS : "Parece que {{TRENDING}} están en tendencia."
         },
         samsung : {
           SAMSUNG          : "Samsung",
