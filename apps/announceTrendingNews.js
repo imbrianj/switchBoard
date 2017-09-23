@@ -37,7 +37,7 @@ module.exports = (function () {
     translate : function (token, lang) {
       var translate = require(__dirname + '/../lib/translate');
 
-      return translate.translate('{{i18n_' + token + '}}', 'news', lang);
+      return translate.translate('{{i18n_' + token + '}}', 'rss', lang);
     },
 
     findProperNouns : function (articleParts, blacklist) {
@@ -107,18 +107,18 @@ module.exports = (function () {
           blacklist    = config.blacklist      || [],
           lang         = controllers.config.language,
           message      = '',
-          i            = 0,
+          word         = '',
           now          = new Date().getTime();
 
       if ((values) && (values.value) && (values.value[0]) && (values.value[0].title)) {
         popularWords = this.findPopularWords(values.value, blacklist);
 
-        for (i; i < popularWords.length; i += 1) {
-          if (popularWords[i] > threshold) {
-            if (CooldownWords[popularWords[i]] < (now + delay)) {
-              CooldownWords[popularWords[i]] = now;
+        for (word in popularWords) {
+          if (popularWords[word] > threshold) {
+            if ((!CooldownWords[word]) || (CooldownWords[word] < (now + delay))) {
+              CooldownWords[word] = now;
 
-              notifyWords.push(popularWords[i]);
+              notifyWords.push(word);
             }
           }
         }
@@ -127,7 +127,7 @@ module.exports = (function () {
           notify  = require(__dirname + '/../lib/notify');
 
           message = this.translate(notifyWords.length > 1 ? 'TRENDING_WORDS' : 'TRENDING_WORD', lang);
-          message = message.split('{{TRENDING}}').join(popularWords.join(', '));
+          message = message.split('{{TRENDING}}').join(notifyWords.join(', '));
 
           notify.notify(message, controllers, deviceId);
         }
