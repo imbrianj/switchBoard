@@ -115,7 +115,7 @@ module.exports = (function () {
 
         for (word in popularWords) {
           if (popularWords[word] > threshold) {
-            if ((!CooldownWords[word]) || (CooldownWords[word] < (now + delay))) {
+            if ((!CooldownWords[word]) || ((CooldownWords[word] + delay) < now)) {
               CooldownWords[word] = now;
 
               notifyWords.push(word);
