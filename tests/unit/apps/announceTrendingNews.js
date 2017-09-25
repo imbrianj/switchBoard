@@ -43,11 +43,13 @@ exports.foscamDvr = {
     var announceTrendingNews = require(__dirname + '/../../../apps/announceTrendingNews'),
         number               = announceTrendingNews.isWordCapitalized('3rd'),
         specialChar          = announceTrendingNews.isWordCapitalized('-something'),
+        undefinedChar        = announceTrendingNews.isWordCapitalized(undefined),
         lowercaseWord        = announceTrendingNews.isWordCapitalized('dog'),
         capitalizedWord      = announceTrendingNews.isWordCapitalized('Sam');
 
     test.deepEqual(number,          false, 'Numbers are not Capitalized');
     test.deepEqual(specialChar,     false, 'Special chars are not Capitalized');
+    test.deepEqual(undefinedChar,   false, 'Undefined chars are not Capitalized');
     test.deepEqual(lowercaseWord,   false, 'Lower case letters are not Capitalized');
     test.deepEqual(capitalizedWord, true,  'Capitalized words are Capitalized');
 

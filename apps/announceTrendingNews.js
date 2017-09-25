@@ -59,10 +59,12 @@ module.exports = (function () {
     isWordCapitalized : function (string) {
       var isCapitalized = false;
 
-      if (string[0] === string[0].toUpperCase()) {
-        // Filter out numbers and special chars.
-        if (string[0] !== string[0].toLowerCase()) {
-          isCapitalized = true;
+      if (string) {
+        if (string[0] === string[0].toUpperCase()) {
+          // Filter out numbers and special chars.
+          if (string[0] !== string[0].toLowerCase()) {
+            isCapitalized = true;
+          }
         }
       }
 
