@@ -741,7 +741,6 @@ section .text-list li .text-group li {
 }
 
 section .text-group li dt a {
-  content: '.';
   display: block;
   height: 100%;
   left: 0;
@@ -750,6 +749,10 @@ section .text-group li dt a {
   text-indent: -999em;
   top: 0;
   width: 100%;
+}
+
+section .text-group li dt a:hover {
+  outline: 1px solid #0078e7;
 }
 
 section.sports .text-group .away,

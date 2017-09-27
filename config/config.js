@@ -618,8 +618,9 @@ exports.config = {
     path      : '/news?cf=all&hl=en&pz=1&ned=us&output=atom',
     maxCount  : 10,
     apps      : { 'Announce Trending' : { id            : 'announceTrendingNews',
+                                          blacklist     : ['New', 'A', 'An', 'The'],
                                           threshold     : 10,
-                                          delay         : 30,
+                                          delay         : 120,
                                           controllerIds : ['clientNotify', 'gerty'] } },
     disabled  : true
   },
