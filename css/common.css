@@ -416,6 +416,7 @@ progress {
   height: 1em;
   margin: 1em auto;
   overflow: hidden;
+  transition: all 0.2s ease-in-out
   width: 100%;
 }
 

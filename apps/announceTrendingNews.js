@@ -32,7 +32,7 @@ module.exports = (function () {
   var CooldownWords = {};
 
   return {
-    version : 20170921,
+    version : 20170929,
 
     translate : function (token, lang) {
       var translate = require(__dirname + '/../lib/translate');
@@ -104,10 +104,11 @@ module.exports = (function () {
       var popularWords = [],
           notifyWords  = [],
           notify,
+          sharedUtil,
+          lang         = controllers.config.language,
           threshold    = config.threshold      || 10,
           delay        = 60000 * (config.delay || 30),
           blacklist    = config.blacklist      || [],
-          lang         = controllers.config.language,
           message      = '',
           word         = '',
           now          = new Date().getTime();
@@ -126,10 +127,11 @@ module.exports = (function () {
         }
 
         if (notifyWords.length) {
-          notify  = require(__dirname + '/../lib/notify');
+          notify     = require(__dirname + '/../lib/notify');
+          sharedUtil = require(__dirname + '/../lib/sharedUtil').util;
 
-          message = this.translate(notifyWords.length > 1 ? 'TRENDING_WORDS' : 'TRENDING_WORD', lang);
-          message = message.split('{{TRENDING}}').join(notifyWords.join(', '));
+          message    = this.translate(notifyWords.length > 1 ? 'TRENDING_WORDS' : 'TRENDING_WORD', lang);
+          message    = message.split('{{TRENDING}}').join(sharedUtil.arrayList(notifyWords, 'rss', lang));
 
           notify.notify(message, controllers, deviceId);
         }

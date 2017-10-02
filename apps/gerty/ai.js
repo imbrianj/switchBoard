@@ -56,7 +56,7 @@ module.exports = (function () {
                 translate  = require(__dirname + '/../../lib/translate');
 
                 for (i; i < intent.length; i += 1) {
-                  utterance = translate.translate('{{i18n_AI_INTENT}}', 'gerty', config.language).replace('{{COMMAND}}', command).replace('{{CONFIDENCE}}', intent[i].confidence).replace('{{DEVICE}}', intent[i].subdevice).replace('{{COMMAND}}', intent[i].command);
+                  utterance = translate.translate('{{i18n_AI_INTENT}}', 'gerty', config.language).replace('{{INPUT}}', command).replace('{{CONFIDENCE}}', intent[i].confidence).replace('{{DEVICE}}', intent[i].subdevice).replace('{{COMMAND}}', intent[i].command);
                   runCommand.runCommand(tempDevice, 'text-' + utterance);
                 }
 
