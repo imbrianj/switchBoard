@@ -33,8 +33,8 @@ exports.ai = {
         dayOne = ai.getTimeCategory(1451073600000),
         dayTwo = ai.getTimeCategory(1451023600000);
 
-    test.notEqual(dayOne, dayTwo,                   'Ensure returned categories differ');
-    test.strictEqual(dayOne.indexOf('workday-'), 0, 'Validate part of category name');
+    test.notEqual(dayOne, dayTwo,                  'Ensure returned categories differ');
+    test.strictEqual(dayOne.indexOf('weekday'), 0, 'Validate part of category name');
     test.done();
   }
 };
