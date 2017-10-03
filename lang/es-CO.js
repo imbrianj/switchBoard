@@ -278,7 +278,7 @@ module.exports = (function () {
         },
         gerty : {
           GERTY        : "Gerty",
-          AI_INTENT    : "Estoy {{CONFIDENCE}}% seguro de que quieres {{DEVICE}} {{COMMAND}}",
+          AI_INTENT    : "Debido a {{INPUT}}, estoy {{CONFIDENCE}}% seguro de que quieres lo {{DEVICE}} {{COMMAND}}",
           AND          : "Y",
           ARM          : "Armar",
           CAMERA       : "Cámara",
