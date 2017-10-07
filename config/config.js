@@ -36,6 +36,7 @@ exports.config = {
       eventLogging         : false,
       eventLogDelaySeconds : 60,
       executeDelaySeconds  : 1,
+      eventCooldownMinutes : 120,
       minimumThreshold     : 100,
       confidence           : 90,
       disable              : false
