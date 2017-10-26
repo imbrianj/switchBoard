@@ -1,7 +1,7 @@
 {
   "name": "switchboard-automation",
   "description": "Universal Remote Controller powered by Node.js",
-  "version": "0.1.10",
+  "version": "0.2.0",
   "author": "Brian J.",
   "contributors": [
     "Akshay Patel"
@@ -20,7 +20,7 @@
   "preferGlobal": true,
   "dependencies": {
     "request": "~2.83.0",
-    "websocket": "~1.0.24",
+    "websocket": "~1.0.25",
     "xml2js": "~0.4.19"
   },
   "devDependencies": {
@@ -32,7 +32,7 @@
     "grunt-contrib-nodeunit": "~1.0.0",
     "grunt-contrib-uglify": "~3.1.0",
     "grunt-contrib-watch": "~1.0.0",
-    "nodeunit": "~0.11.1"
+    "nodeunit": "~0.11.2"
   },
   "scripts": {
     "test": "grunt test-suite"
