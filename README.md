@@ -14,7 +14,7 @@ Video demonstration:
 [![Demonstration of SwitchBoard](https://img.youtube.com/vi/Ni_YgL4hcgI/0.jpg)](https://www.youtube.com/watch?v=Ni_YgL4hcgI)
 
 Or you may browse through a static version:
-https://imbrianj.github.io/switchBoard/
+https://imbrianj.github.io/switchBoard/demo/
 
 Setup
 ---
