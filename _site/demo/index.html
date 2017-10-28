@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" class="theme-dark" manifest="/demo/manifest.appcache">
+  <head>
+    <title>SwitchBoard</title>
+    <link rel="stylesheet" href="css/combo.min.css" />
+    <link rel="icon" type="image/x-icon" href="images/icons/favicon.ico" />
+    <link rel="icon" sizes="192x192" href="images/icons/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" href="images/icons/apple-touch-icon.png" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta http-equiv="content-language" content="en" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="description" content="SwitchBoard is a universal remote and home automation system" />
+    <meta name="keywords" content="SwitchBoard, home automation, network, remote control" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  </head>
+  <body>
+    <a href="https://github.com/imbrianj/switchBoard" target="_blank"><img alt="Fork me on GitHub" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" style="position: absolute; top: 0; right: 0; border: 0;"></a>
+    <header data-string-current="Current Device: {{DEVICE}}" data-string-inactive="Inactive" data-string-connected="Connected" data-string-connecting="Connecting" data-string-disconnected="Disconnected">
+      <h1><a href="/">SwitchBoard</a></h1>
+      <h2 id="current" aria-live="assertive">Current Device: SmartThings</h2>
+      <nav>
+        <ul aria-labelledby="current">
+
+          <li class="screenSaver"><a href="#screenSaver">Screen Saver</a></li>
+          <li class="smartthings selected"><a href="#smartthings">SmartThings</a></li>
+          <li class="powerView"><a href="#powerView">Blinds</a></li>
+          <li class="nest"><a href="#nest">Nest</a></li>
+          <li class="samsung"><a href="#samsung">SmartTV</a></li>
+          <li class="ps3"><a href="#ps3">PS3</a></li>
+          <li class="roku"><a href="#roku">Roku</a></li>
+          <li class="foscam"><a href="#foscam">Camera</a></li>
+          <li class="traffic"><a href="#traffic">Traffic Cams</a></li>
+          <li class="website"><a href="#website">Waze</a></li>
+          <li class="location"><a href="#location">Location</a></li>
+          <li class="stocks"><a href="#stocks">Stocks</a></li>
+          <li class="weather"><a href="#weather">Weather</a></li>
+          <li class="news"><a href="#news">News</a></li>
+          <li class="sports"><a href="#sports">Sports</a></li>
+          <li class="switchBoardCI"><a href="#switchBoardCI">Travis</a></li>
+          <li class="activeBuilding"><a href="#activeBuilding">Packages</a></li>
+          <li class="rss"><a href="#rss">Gym</a></li>
+          <li class="gerty"><a href="#gerty">Gerty</a></li>
+          <li class="debug"><a href="#debug">Debug</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main data-string-on="On" data-string-off="Off" data-string-active="Active" data-string-inactive="Inactive" data-string-am="am" data-string-pm="pm" data-string-sun="Sun" data-string-mon="Mon" data-string-tue="Tue" data-string-wed="Wed" data-string-thur="Thur" data-string-fri="Fri" data-string-sat="Sat">
+
+      <section id="screenSaver" class="clientScreenSaver device-off">
+        <h1>Screen Saver <em>Inactive</em></h1>
+      </section>
+      <section id="smartthings" class="smartthings selected device-on">
+        <h1>SmartThings <em>Active</em></h1>
+        <div class="installed">
+          <ul class="sub-device-list">
+
+            <li class="sub-device-group group-presence">
+              <h2>Presence</h2>
+              <ul>
+
+                <li><span class="fa fa-male device-active" title="Brian: Active"><span>Brian</span> <em>Active</em></span></li>
+                <li><span class="fa fa-female device-active" title="Brianne: Active"><span>Brianne</span> <em>Active</em></span></li>
+                <li><span class="fa fa-paw device-active" title="Goblin: Active"><span>Goblin</span> <em>Active</em></span></li>
+              </ul>
+            </li>
+            <li class="sub-device-group group-bedroom">
+              <h2>Bedroom</h2>
+              <ul>
+
+                <li><a href="/?smartthings=subdevice-toggle-Bedroom+Lamps" class="fa fa-lightbulb-o" title="Bedroom Lamps: Inactive"><span>Bedroom Lamps</span> <em>Inactive</em></a></li>
+                <li><a href="/?smartthings=subdevice-toggle-Bedroom+Switch" class="fa fa-lightbulb-o" title="Bedroom Switch: Inactive"><span>Bedroom Switch</span> <em>Inactive</em></a></li>
+                <li><span class="fa fa-columns device-active" title="Bedroom Window: Active"><span>Bedroom Window</span> <em>Active</em></span></li>
+              </ul>
+            </li>
+            <li class="sub-device-group group-office">
+              <h2>Office</h2>
+              <ul>
+
+                <li><a href="/?smartthings=subdevice-toggle-Office+Switch" class="fa fa-lightbulb-o device-active" title="Office Switch: Active"><span>Office Switch</span> <em>Active</em></a></li>
+                <li><span class="fa fa-columns" title="Office Window: Inactive"><span>Office Window</span> <em>Inactive</em></span></li>
+                <li><span class="fa fa-columns" title="Office Door (74&deg;): Inactive"><span>Office Door (74&deg;)</span> <em>Inactive</em></span></li>
+              </ul>
+            </li>
+            <li class="sub-device-group group-hallway">
+              <h2>Hallway</h2>
+              <ul>
+
+                <li><a href="/?smartthings=subdevice-toggle-Hall+Light" class="fa fa-lightbulb-o" title="Hall Light: Inactive"><span>Hall Light</span> <em>Inactive</em></a></li>
+                <li><span class="fa fa-columns" title="Front Door (72&deg;): Inactive"><span>Front Door (72&deg;)</span> <em>Inactive</em></span></li>
+                <li><span class="fa fa-tint" title="Laundry Room Moisture: Inactive"><span>Laundry Room Moisture</span> <em>Inactive</em></span></li>
+                <li><span class="fa fa-tint" title="Storage Moisture: Inactive"><span>Storage Moisture</span> <em>Inactive</em></span></li>
+              </ul>
+            </li>
+            <li class="sub-device-group group-living_room">
+              <h2>Living Room</h2>
+              <ul>
+
+                <li><a href="/?smartthings=subdevice-toggle-Living+Room+Switch" class="fa fa-lightbulb-o" title="Living Room Switch: Inactive"><span>Living Room Switch</span> <em>Inactive</em></a></li>
+                <li><a href="/?smartthings=subdevice-toggle-Living+Room+Lamp" class="fa fa-lightbulb-o" title="Living Room Lamp: Inactive"><span>Living Room Lamp</span> <em>Inactive</em></a></li>
+                <li><span class="fa fa-columns" title="Living Room Window: Inactive"><span>Living Room Window</span> <em>Inactive</em></span></li>
+                <li><span class="fa fa-columns device-active" title="Balcony Door (71&deg;): Active"><span>Balcony Door (71&deg;)</span> <em>Active</em></span></li>
+                <li><span class="fa fa-paw" title="Living Room Motion: Inactive"><span>Living Room Motion</span> <em>Inactive</em></span></li>
+              </ul>
+            </li>
+            <li class="sub-device-group group-kitchen">
+              <h2>Kitchen</h2>
+              <ul>
+
+                <li><a href="/?smartthings=subdevice-toggle-Kitchen+Light" class="fa fa-lightbulb-o" title="Kitchen Light: Inactive"><span>Kitchen Light</span> <em>Inactive</em></a></li>
+                <li><a href="/?smartthings=subdevice-toggle-Dining+Lights" class="fa fa-lightbulb-o" title="Dining Lights: Inactive"><span>Dining Lights</span> <em>Inactive</em></a></li>
+                <li><a href="/?smartthings=subdevice-toggle-Chandelier" class="fa fa-lightbulb-o" title="Chandelier: Inactive"><span>Chandelier</span> <em>Inactive</em></a></li>
+                <li><a href="/?smartthings=subdevice-toggle-Credenza" class="fa fa-lightbulb-o" title="Credenza: Inactive"><span>Credenza</span> <em>Inactive</em></a></li>
+                <li><span class="fa fa-columns" title="Dining Room Window: Inactive"><span>Dining Room Window</span> <em>Inactive</em></span></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="sub-device-list">
+            <li><a href="/?smartthings=subdevice-mode-Home" class="fa fa-home device-active" title="Home: Home"><span>Home</span> <em>Active</em></a></li>
+            <li><a href="/?smartthings=subdevice-mode-Away" class="fa fa-compass" title="Away: Inactive"><span>Away</span> <em>Inactive</em></a></li>
+            <li><a href="/?smartthings=subdevice-mode-Night" class="fa fa-moon-o" title="Night: Inactive"><span>Night</span> <em>Inactive</em></a></li>
+          </ul>
+        </div>
+      </section>
+      <section id="powerView" class="powerView device-on" data-string-set_percentage="Set Percentage">
+        <h1>PowerView <em>Active</em></h1>
+        <div class="installed">
+
+          <ol class="sub-device-list">
+
+              <li>
+                <form class="text-form" action="/" method="get">
+                  <fieldset>
+                    <legend>Dining Room 1</legend>
+                    <label for="powerview-dining_room_1-percentage">Set Percentage:</label>
+                    <input id="powerview-dining_room_1-percentage" class="text-input" type="number" max="100" min="0" name="powerView" value="0" required />
+                    <input class="light" type="range" max="100" min="0" name="powerView" value="0" />
+                    <input class="input-type" type="hidden" value="subdevice-Dining Room 1" name="type" />
+                    <button type="submit" class="button">Submit</button>
+                  </fieldset>
+                </form>
+              </li>
+              <li>
+                <form class="text-form" action="/" method="get">
+                  <fieldset>
+                    <legend>Dining Room 2</legend>
+                    <label for="powerview-dining_room_2-percentage">Set Percentage:</label>
+                    <input id="powerview-dining_room_2-percentage" class="text-input" type="number" max="100" min="0" name="powerView" value="0" required />
+                    <input class="light" type="range" max="100" min="0" name="powerView" value="0" />
+                    <input class="input-type" type="hidden" value="subdevice-Dining Room 2" name="type" />
+                    <button type="submit" class="button">Submit</button>
+                  </fieldset>
+                </form>
+              </li>
+              <li>
+                <form class="text-form" action="/" method="get">
+                  <fieldset>
+                    <legend>Balcony</legend>
+                    <label for="powerview-balcony-percentage">Set Percentage:</label>
+                    <input id="powerview-balcony-percentage" class="text-input" type="number" max="100" min="0" name="powerView" value="100" required />
+                    <input class="light" type="range" max="100" min="0" name="powerView" value="100" />
+                    <input class="input-type" type="hidden" value="subdevice-Balcony" name="type" />
+                    <button type="submit" class="button">Submit</button>
+                  </fieldset>
+                </form>
+              </li>
+              <li>
+                <form class="text-form" action="/" method="get">
+                  <fieldset>
+                    <legend>Living Room 1</legend>
+                    <label for="powerview-living_room_1-percentage">Set Percentage:</label>
+                    <input id="powerview-living_room_1-percentage" class="text-input" type="number" max="100" min="0" name="powerView" value="0" required />
+                    <input class="light" type="range" max="100" min="0" name="powerView" value="0" />
+                    <input class="input-type" type="hidden" value="subdevice-Living Room 1" name="type" />
+                    <button type="submit" class="button">Submit</button>
+                  </fieldset>
+                </form>
+              </li>
+              <li>
+                <form class="text-form" action="/" method="get">
+                  <fieldset>
+                    <legend>Living Room 2</legend>
+                    <label for="powerview-living_room_2-percentage">Set Percentage:</label>
+                    <input id="powerview-living_room_2-percentage" class="text-input" type="number" max="100" min="0" name="powerView" value="0" required />
+                    <input class="light" type="range" max="100" min="0" name="powerView" value="0" />
+                    <input class="input-type" type="hidden" value="subdevice-Living Room 2" name="type" />
+                    <button type="submit" class="button">Submit</button>
+                  </fieldset>
+                </form>
+              </li>
+              <li>
+                <form class="text-form" action="/" method="get">
+                  <fieldset>
+                    <legend>Office</legend>
+                    <label for="powerview-office-percentage">Set Percentage:</label>
+                    <input id="powerview-office-percentage" class="text-input" type="number" max="100" min="0" name="powerView" value="20" required />
+                    <input class="light" type="range" max="100" min="0" name="powerView" value="20" />
+                    <input class="input-type" type="hidden" value="subdevice-Office" name="type" />
+                    <button type="submit" class="button">Submit</button>
+                  </fieldset>
+                </form>
+              </li>
+              <li>
+                <form class="text-form" action="/" method="get">
+                  <fieldset>
+                    <legend>Bedroom</legend>
+                    <label for="powerview-bedroom-percentage">Set Percentage:</label>
+                    <input id="powerview-bedroom-percentage" class="text-input" type="number" max="100" min="0" name="powerView" value="0" required />
+                    <input class="light" type="range" max="100" min="0" name="powerView" value="0" />
+                    <input class="input-type" type="hidden" value="subdevice-Bedroom" name="type" />
+                    <button type="submit" class="button">Submit</button>
+                  </fieldset>
+                </form>
+              </li>
+          </ol>
+          <ol class="sub-device-list">
+
+              <li><a href="/?powerView=text-All Up" class="fa fa-arrow-up" title="All Up"><span>All Up</span></a></li>
+              <li><a href="/?powerView=text-All Down" class="fa fa-arrow-down" title="All Down"><span>All Down</span></a></li>
+              <li><a href="/?powerView=text-TV" class="fa fa-gamepad" title="TV"><span>TV</span></a></li>
+          </ol>
+        </div>
+      </section>
+      <section id="nest" class="nest device-on" data-string-thermostat="Thermostat" data-string-protect="Protect" data-string-heat="Heat" data-string-cool="Cool">
+        <h1>Nest <em>Active</em></h1>
+        <div class="installed">
+          <ul class="sub-device-list text-device-status">
+
+            <li class="sub-device-group control-device-status">
+              <h2>Thermostat</h2>
+              <ul>
+
+                <li class="thermostat subdevice group-living_room device-off">
+                  <dl>
+                    <dt>Living Room <em>Off</em></dt>
+                    <dd class="control-block full icon">
+                      <div class="mode">
+                        <a href="/?nest=subdevice-mode-Living Room-heat" class="fa fa-sun-o" title="Heat"><span>Heat</span></a>
+                        <a href="/?nest=subdevice-mode-Living Room-off" class="fa fa-power-off" title="Power Off"><span>Power Off</span></a>
+                        <a href="/?nest=subdevice-mode-Living Room-cool" class="fa fa-asterisk" title="Cool"><span>Cool</span></a>
+                      </div>
+                      <div class="navigation">
+                        <span class="fa fa-leaf device-active" title="Leaf"><span>Leaf</span></span>
+                        <form class="text-form" action="/" method="get">
+                          <fieldset>
+                            <legend>Set Temperature</legend>
+                            <label for="nest-group-living_room-target">Target Temperature:</label>
+                            <input id="nest-group-living_room-target" class="text-input" type="number" max="90" min="50" name="nest" value="70" required />
+                            <input class="temp" type="range" max="90" min="50" name="nest" value="73" />
+                            <input class="input-type" type="hidden" value="subdevice-temp-Living Room" name="type" />
+                            <button type="submit" class="button">Submit</button>
+                          </fieldset>
+                        </form>
+                      </div>
+                      <div class="presence">
+                        <a href="/?nest=Home" class="fa fa-home device-active" title="Home"><span>Home</span></a>
+                        <a href="/?nest=Away" class="fa fa-compass" title="Away"><span>Away</span></a>
+                      </div>
+                    </dd>
+                    <dd class="target">Target: 70&deg;</dd>
+                    <dd class="temp">Temp: 78&deg;</dd>
+                    <dd class="humidity">Humidity: 38%</dd>
+                  </dl>
+                </li>
+              </ul>
+            </li>
+            <li class="sub-device-group text-device-status">
+              <h2>Protect</h2>
+              <ul>
+
+                <li class="protect subdevice ">
+                  <dl>
+                    <dt>Living Room</dt>
+                    <dd class="fa fa-fire"></dd>
+                    <dd class="smoke">Smoke: ok</dd>
+                    <dd class="co">CO: ok</dd>
+                    <dd class="batt">Batt: ok</dd>
+                  </dl>
+                </li>
+                <li class="protect subdevice ">
+                  <dl>
+                    <dt>Bedroom</dt>
+                    <dd class="fa fa-fire"></dd>
+                    <dd class="smoke">Smoke: ok</dd>
+                    <dd class="co">CO: ok</dd>
+                    <dd class="batt">Batt: ok</dd>
+                  </dl>
+                </li>
+                <li class="protect subdevice ">
+                  <dl>
+                    <dt>Hallway</dt>
+                    <dd class="fa fa-fire"></dd>
+                    <dd class="smoke">Smoke: ok</dd>
+                    <dd class="co">CO: ok</dd>
+                    <dd class="batt">Batt: ok</dd>
+                  </dl>
+                </li>
+                <li class="protect subdevice ">
+                  <dl>
+                    <dt>Office</dt>
+                    <dd class="fa fa-fire"></dd>
+                    <dd class="smoke">Smoke: ok</dd>
+                    <dd class="co">CO: ok</dd>
+                    <dd class="batt">Batt: ok</dd>
+                  </dl>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section id="samsung" class="samsung device-off">
+        <h1>Samsung <em>Inactive</em></h1>
+        <div class="control-block">
+          <div class="volume">
+            <a href="/?samsung=VolUp" class="fa fa-volume-up" title="Volume Up"><span>Volume Up</span></a>
+            <a href="/?samsung=VolDown" class="fa fa-volume-down" title="Volume Down"><span>Volume Down</span></a>
+            <a href="/?samsung=Mute" class="fa fa-volume-off" title="Mute"><span>Mute</span></a>
+          </div>
+          <div class="navigation">
+            <a href="/?samsung=Up" class="fa fa-arrow-up" title="Up"><span>Up</span></a>
+            <a href="/?samsung=Left" class="fa fa-arrow-left" title="Left"><span>Left</span></a>
+            <a href="/?samsung=Enter" class="fa-stack" title="Enter">
+              <i class="fa fa-square-o fa-stack-2x"></i>
+              <i class="fa fa-level-up fa-rotate-90"></i>
+              <span>Enter</span>
+            </a>
+            <a href="/?samsung=Right" class="fa fa-arrow-right" title="Right"><span>Right</span></a>
+            <a href="/?samsung=Down" class="fa fa-arrow-down" title="Down"><span>Down</span></a>
+          </div>
+          <div class="channel">
+            <a href="/?samsung=ChUp" class="fa fa-chevron-up" title="Channel Up"><span>Channel Up</span></a>
+            <a href="/?samsung=ChDown" class="fa fa-chevron-down" title="Channel Down"><span>Channel Down</span></a>
+          </div>
+        </div>
+        <div class="shortcuts">
+          <ul>
+            <li><a href="/?samsung=PowerOff" class="fa fa-power-off" title="Power Off"><span>Power Off</span></a></li>
+            <li><a href="/?samsung=Contents" class="fa fa-th" title="Smart Hub"><span>Smart Hub</span></a></li>
+            <li><a href="/?samsung=Source" class="fa fa-desktop" title="Source"><span>Source</span></a></li>
+            <li><a href="/?samsung=Convergence" class="fa fa-globe" title="Web Browser"><span>Web Browser</span></a></li>
+            <li><a href="/?samsung=HDMI4" class="fa fa-sitemap" title="More"><span>More</span></a></li>
+            <li><a href="/?samsung=Tools" class="fa fa-cog" title="Tools"><span>Tools</span></a></li>
+            <li><a href="/?samsung=Menu" class="fa fa-list-ul" title="Menu"><span>Menu</span></a></li>
+            <li><a href="/?samsung=Exit" class="fa fa-sign-out" title="Exit"><span>Exit</span></a></li>
+            <li><a href="/?samsung=Return" class="fa fa-undo" title="Return"><span>Return</span></a></li>
+            <li><a href="/?samsung=HDMI4,Down,Enter" class="fa fa-link" title="CEC Speakers"><span>CEC Speakers</span></a></li>
+          </ul>
+        </div>
+        <div class="text">
+          <form class="text-form" action="/" method="get">
+            <fieldset>
+              <legend>Text Input</legend>
+              <label for="samsung-text-input">Text Input:</label>
+              <input id="samsung-text-input" class="text-input" type="text" name="samsung" placeholder="Text Input" required />
+              <input class="input-type" type="hidden" value="text" name="type" />
+              <button type="submit" class="button">Submit</button>
+            </fieldset>
+          </form>
+        </div>
+        <div class="numeric-controls">
+          <ol>
+            <li><a href="/?samsung=1" title="1"><span>1</span></a></li>
+            <li><a href="/?samsung=2" title="2"><span>2</span></a></li>
+            <li><a href="/?samsung=3" title="3"><span>3</span></a></li>
+            <li><a href="/?samsung=4" title="4"><span>4</span></a></li>
+            <li><a href="/?samsung=5" title="5"><span>5</span></a></li>
+            <li><a href="/?samsung=6" title="6"><span>6</span></a></li>
+            <li><a href="/?samsung=7" title="7"><span>7</span></a></li>
+            <li><a href="/?samsung=8" title="8"><span>8</span></a></li>
+            <li><a href="/?samsung=9" title="9"><span>9</span></a></li>
+            <li><a href="/?samsung=0" title="0"><span>0</span></a></li>
+          </ol>
+          <ul>
+            <li><a href="/?samsung=PreCh" class="fa fa-reply" title="Previous Channel"><span>Previous Channel</span></a></li>
+            <li><a href="/?samsung=Ch_List" class="fa fa-list" title="Channel Listing"><span>Channel Listing</span></a></li>
+          </ul>
+        </div>
+        <div class="media">
+          <ul>
+            <li><a href="/?samsung=Rewind" class="fa fa-backward" title="Rewind"><span>Rewind</span></a></li>
+            <li><a href="/?samsung=Stop" class="fa fa-stop" title="Stop"><span>Stop</span></a></li>
+            <li><a href="/?samsung=Pause" class="fa fa-pause" title="Pause"><span>Pause</span></a></li>
+            <li><a href="/?samsung=Play" class="fa fa-play" title="Play"><span>Play</span></a></li>
+            <li><a href="/?samsung=FF" class="fa fa-forward" title="Fast Forward"><span>Fast Forward</span></a></li>
+            <li><a href="/?samsung=Rec" class="fa fa-circle" title="Record"><span>Record</span></a></li>
+            <li><a href="/?samsung=Red" class="fa fa-stop red" title="Red"><span>Red</span></a></li>
+            <li><a href="/?samsung=Green" class="fa fa-stop green" title="Green"><span>Green</span></a></li>
+            <li><a href="/?samsung=Yellow" class="fa fa-stop yellow" title="Yellow"><span>Yellow</span></a></li>
+            <li><a href="/?samsung=Blue" class="fa fa-stop blue" title="Blue"><span>Blue</span></a></li>
+          </ul>
+        </div>
+      </section>
+      <section id="ps3" class="ps3 device-off">
+        <h1>PS3 <em>Inactive</em></h1>
+        <div class="control-block">
+          <div class="control">
+            <ul>
+              <li><a href="/?ps3=PowerOn" class="fa fa-power-off power-on" title="Power On"><span>Power On</span></a></li>
+              <li><a href="/?ps3=PS,Sleep,Down,Down,Down,Up,Cross,Cross" class="fa fa-power-off power-off" title="Power Off"><span>Power Off</span></a></li>
+              <li><a href="/?ps3=Select" class="fa fa-th" title="Select"><span>Select</span></a></li>
+              <li><a href="/?ps3=Start" class="fa fa-sign-in" title="Start"><span>Start</span></a></li>
+            </ul>
+          </div>
+          <div class="navigation">
+            <a href="/?ps3=Up" class="fa fa-arrow-up" title="Up"><span>Up</span></a>
+            <a href="/?ps3=Left" class="fa fa-arrow-left" title="Left"><span>Left</span></a>
+            <a href="/?ps3=Cross" class="fa-stack" title="Cross">
+              <i class="fa fa-square-o fa-stack-2x"></i>
+              <i class="fa fa-level-up fa-rotate-90"></i>
+              <span>Cross</span>
+            </a>
+            <a href="/?ps3=Right" class="fa fa-arrow-right" title="Right"><span>Right</span></a>
+            <a href="/?ps3=Down" class="fa fa-arrow-down" title="Down"><span>Down</span></a>
+          </div>
+          <div class="buttons">
+            <ul>
+              <li><a href="/?ps3=PS" class="fa fa-cog" title="PS"><span>PS</span></a></li>
+              <li><a href="/?ps3=Triangle" class="fa fa-sitemap" title="Triangle"><span>Triangle</span></a></li>
+              <li><a href="/?ps3=Circle" class="fa fa-undo" title="Circle"><span>Circle</span></a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="media">
+          <ul>
+            <li><a href="/?ps3=L1" class="fa fa-step-backward" title="L1"><span>L1</span></a></li>
+            <li><a href="/?ps3=L2" class="fa fa-backward" title="L2"><span>L2</span></a></li>
+            <li><a href="/?ps3=R2" class="fa fa-forward" title="R2"><span>R2</span></a></li>
+            <li><a href="/?ps3=R1" class="fa fa-step-forward" title="R1"><span>R1</span></a></li>
+          </ul>
+        </div>
+      </section>
+      <section id="roku" class="roku device-on">
+        <h1>Roku <em>Active</em></h1>
+        <div class="control-block full">
+          <div class="media">
+            <ul>
+              <li><a href="/?roku=Instant_Replay" class="fa fa-backward" title="Instant Replay"><span>Instant Replay</span></a></li>
+              <li><a href="/?roku=Play" class="fa fa-play" title="Play"><span>Play</span></a></li>
+              <li><a href="/?roku=Fwd" class="fa fa-forward" title="Forward"><span>Forward</span></a></li>
+            </ul>
+          </div>
+          <div class="navigation">
+            <a href="/?roku=Up" class="fa fa-arrow-up" title="Up"><span>Up</span></a>
+            <a href="/?roku=Left" class="fa fa-arrow-left" title="Left"><span>Left</span></a>
+            <a href="/?roku=Select" class="fa-stack" title="Select">
+              <i class="fa fa-square-o fa-stack-2x"></i>
+              <i class="fa fa-level-up fa-rotate-90"></i>
+              <span>Select</span>
+            </a>
+            <a href="/?roku=Right" class="fa fa-arrow-right" title="Right"><span>Right</span></a>
+            <a href="/?roku=Down" class="fa fa-arrow-down" title="Down"><span>Down</span></a>
+          </div>
+          <div class="shortcuts">
+            <ul>
+              <li><a href="/?roku=Back" class="fa fa-undo" title="Back"><span>Back</span></a></li>
+              <li><a href="/?roku=Home" class="fa fa-home" title="Home"><span>Home</span></a></li>
+              <li><a href="/?roku=Backspace" class="fa fa-long-arrow-left" title="Backspace"><span>Backspace</span></a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="text">
+          <form class="text-form" action="/" method="get">
+            <fieldset>
+              <legend>Text Input</legend>
+              <label for="roku-text-input">Text Input:</label>
+              <input id="roku-text-input" class="text-input" type="text" name="roku" placeholder="Text Input" required />
+              <input class="input-type" type="hidden" value="text" name="type" />
+              <button type="submit" class="button">Submit</button>
+            </fieldset>
+          </form>
+        </div>
+        <div class="installed-list">
+          <ul class="roku-launch">
+
+            <li><a href="/?roku=launch-12"><img data-src="images/roku/icon_12.png" alt="Netflix" title="Netflix" /></a></li>
+            <li><a href="/?roku=launch-13"><img data-src="images/roku/icon_13.png" alt="Amazon Video" title="Amazon Video" /></a></li>
+            <li><a href="/?roku=launch-28"><img data-src="images/roku/icon_28.png" alt="Pandora" title="Pandora" /></a></li>
+            <li><a href="/?roku=launch-1616"><img data-src="images/roku/icon_1616.png" alt="NASA TV" title="NASA TV" /></a></li>
+            <li><a href="/?roku=launch-1688"><img data-src="images/roku/icon_1688.png" alt="Roku Newscaster" title="Roku Newscaster" /></a></li>
+            <li><a href="/?roku=launch-1968"><img data-src="images/roku/icon_1968.png" alt="Flixster" title="Flixster" /></a></li>
+            <li><a href="/?roku=launch-2285"><img data-src="images/roku/icon_2285.png" alt="Hulu" title="Hulu" /></a></li>
+            <li><a href="/?roku=launch-2946"><img data-src="images/roku/icon_2946.png" alt="Fox News Channel" title="Fox News Channel" /></a></li>
+            <li><a href="/?roku=launch-4070"><img data-src="images/roku/icon_4070.png" alt="TED" title="TED" /></a></li>
+            <li><a href="/?roku=launch-6578"><img data-src="images/roku/icon_6578.png" alt="Russia Today Europe" title="Russia Today Europe" /></a></li>
+            <li><a href="/?roku=launch-8378"><img data-src="images/roku/icon_8378.png" alt="HBO GO" title="HBO GO" /></a></li>
+            <li><a href="/?roku=launch-8838"><img data-src="images/roku/icon_8838.png" alt="Showtime" title="Showtime" /></a></li>
+            <li><a href="/?roku=launch-13842"><img data-src="images/roku/icon_13842.png" alt="VUDU" title="VUDU" /></a></li>
+            <li><a href="/?roku=launch-31012"><img data-src="images/roku/icon_31012.png" alt="Movie Store and TV Store" title="Movie Store and TV Store" /></a></li>
+            <li><a href="/?roku=launch-31863"><img data-src="images/roku/icon_31863.png" alt="Roku Home News" title="Roku Home News" /></a></li>
+            <li><a href="/?roku=launch-46041"><img data-src="images/roku/icon_46041.png" alt="Sling TV " title="Sling TV " /></a></li>
+            <li><a href="/?roku=launch-61322"><img data-src="images/roku/icon_61322.png" alt="HBO NOW" title="HBO NOW" /></a></li>
+          </ul>
+        </div>
+      </section>
+      <section id="foscam" class="foscam device-on" data-string-camera_armed="Camera armed" data-string-camera_disarmed="Camera disarmed">
+        <h1>Foscam <em>Active</em></h1>
+        <div class="control-block">
+          <div class="presets">
+            <ol>
+              <li><a href="/?foscam=Preset1" title="Preset 1"><span>1</span></a></li>
+              <li><a href="/?foscam=Preset2" title="Preset 2"><span>2</span></a></li>
+              <li><a href="/?foscam=Preset3" title="Preset 3"><span>3</span></a></li>
+            </ol>
+          </div>
+          <div class="navigation">
+            <a href="/?foscam=Up" class="fa fa-arrow-up" title="Up"><span>Up</span></a>
+            <a href="/?foscam=Left" class="fa fa-arrow-left" title="Left"><span>Left</span></a>
+            <a href="/?foscam=Stop" class="fa-stack" title="Stop">
+              <i class="fa fa-square-o fa-stack-2x"></i>
+              <i class="fa fa-level-up fa-rotate-90"></i>
+              <span>Stop</span>
+            </a>
+            <a href="/?foscam=Right" class="fa fa-arrow-right" title="Right"><span>Right</span></a>
+            <a href="/?foscam=Down" class="fa fa-arrow-down" title="Down"><span>Down</span></a>
+          </div>
+          <div class="alarm">
+            <ul>
+              <li><a href="/?foscam=Preset1,Sleep,Sleep,Alarm_On" class="fa fa-lock" title="Arm"><span>Arm</span> <em>Camera disarmed</em></a></li>
+              <li><a href="/?foscam=Take" class="fa fa-camera" title="Take"><span>Take</span></a></li>
+              <li><a href="/?foscam=Take,Take,Take,Take,Take" class="fa fa-bolt" title="Burst"><span>Burst</span></a></li>
+              <li><a href="/?foscam=Alarm_Off,Preset3" class="fa fa-unlock device-active" title="Disarm"><span>Disarm</span> <em>Camera disarmed</em></a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="preview-image">
+          <img data-src="images/foscam/placeholder.jpg" alt="foscam Preview" class="streaming" />
+        </div>
+      </section>
+      <section id="traffic" class="traffic device-on">
+        <h1>Traffic <em>Active</em></h1>
+        <div class="image-list">
+          <ul>
+
+            <li><img data-src="http://images.wsdot.wa.gov/nw/005vc16645.jpg?1467613605176" alt="I-5 &amp; Denny" title="I-5 &amp; Denny" /></li>
+            <li><img data-src="http://images.wsdot.wa.gov/nw/005vc16607.jpg?1467613605176" alt="I-5 &amp; Pine" title="I-5 &amp; Pine" /></li>
+            <li><img data-src="http://images.wsdot.wa.gov/nw/005vc16702.jpg?1467613605176" alt="I-5 &amp; Mercer" title="I-5 &amp; Mercer" /></li>
+            <li><img data-src="http://images.wsdot.wa.gov/nw/005vc17277.jpg?1467613605176" alt="I-5 &amp; Northgate" title="I-5 &amp; Northgate" /></li>
+            <li><img data-src="http://images.wsdot.wa.gov/nw/005vc16802.jpg?1467613605176" alt="I-5 &amp; Roanoke" title="I-5 &amp; Roanoke" /></li>
+            <li><img data-src="http://images.wsdot.wa.gov/nw/005vc16508.jpg?1467613605176" alt="I-5 &amp; Yesler" title="I-5 &amp; Yesler" /></li>
+            <li><img data-src="http://images.wsdot.wa.gov/nw/099vc03072.jpg?1467613605176" alt="99 &amp; S King" title="99 &amp; S King" /></li>
+            <li><img data-src="http://images.wsdot.wa.gov/nw/099vc03015.jpg?1467613605176" alt="99 &amp; Atlantic" title="99 &amp; Atlantic" /></li>
+            <li><img data-src="https://www.seattle.gov/trafficcams/images/Western_Elliott.jpg?1467613605176" alt="Western &amp; Elliott" title="Western &amp; Elliott" /></li>
+            <li><img data-src="https://www.seattle.gov/trafficcams/images/1_Stewart.jpg?1467613605176" alt="1st &amp; Stewart" title="1st &amp; Stewart" /></li>
+            <li><img data-src="https://www.seattle.gov/trafficcams/images/2_Stewart.jpg?1467613605176" alt="2nd &amp; Stewart" title="2nd &amp; Stewart" /></li>
+            <li><img data-src="https://www.seattle.gov/trafficcams/images/1_Denny.jpg?1467613605176" alt="1st &amp; Denny" title="1st &amp; Denny" /></li>
+            <li><img data-src="https://www.seattle.gov/trafficcams/images/SR99_King_SB.jpg?1467613605176" alt="Viaduct Southbound" title="Viaduct Southbound" /></li>
+            <li><img data-src="https://www.seattle.gov/trafficcams/images/SR99_King_NB.jpg?1467613605176" alt="Viaduct Northbound" title="Viaduct Northbound" /></li>
+            <li><img data-src="https://www.seattle.gov/trafficcams/images/Elliott_Broad.jpg?1467613605176" alt="Elliot &amp; Broad" title="Elliot &amp; Broad" /></li>
+            <li><img data-src="https://www.seattle.gov/trafficcams/images/Yale_Denny.jpg?1467613605176" alt="Stewart, Yale &amp; Denny" title="Stewart, Yale &amp; Denny" /></li>
+            <li><img data-src="https://www.seattle.gov/trafficcams/images/15W_Emerson.jpg?1467613605176" alt="15th &amp; Emerson" title="15th &amp; Emerson" /></li>
+            <li><img data-src="http://archive.king5.com/weather/images/core/webcam/seatac.jpg?1467613605176" alt="SeaTac Airport" title="SeaTac Airport" /></li>
+          </ul>
+        </div>
+      </section>
+      <section id="website" class="website device-on">
+        <h1>Website <em>Active</em></h1>
+        <iframe data-src="https://embed.waze.com/iframe?zoom=14&lat=47.6205819&lon=-122.3493387"></iframe>
+      </section>
+      <section id="location" class="location device-on">
+        <h1>Location <em>Active</em></h1>
+        <div class="text-block">
+          <ol>
+
+            <li>
+              <dl>
+                <dd>Brian</dd>
+                <dt><a href="https://maps.google.com/?q=47.62401978,-122.35672991" rel="external">Sun @ 8:58pm</a></dt>
+                <dd>22.0 Feet, 8 mph</dd>
+              </dl>
+            </li>
+            <li>
+              <dl>
+                <dd>Brian</dd>
+                <dt><a href="https://maps.google.com/?q=47.63239981,-122.36157586" rel="external">Sun @ 8:55pm</a></dt>
+                <dd>133.0 Feet, 0 mph</dd>
+              </dl>
+            </li>
+            <li>
+              <dl>
+                <dd>Brian</dd>
+                <dt><a href="https://maps.google.com/?q=47.63222314,-122.36129471" rel="external">Sun @ 7:33pm</a></dt>
+                <dd>96.0 Feet, 0 mph</dd>
+              </dl>
+            </li>
+            <li>
+              <dl>
+                <dd>Brian</dd>
+                <dt><a href="https://maps.google.com/?q=47.63222314,-122.36129471" rel="external">Sun @ 7:30pm</a></dt>
+                <dd>96.0 Feet, 0 mph</dd>
+              </dl>
+            </li>
+            <li>
+              <dl>
+                <dd>Brian</dd>
+                <dt><a href="https://maps.google.com/?q=47.63196248,-122.36059701" rel="external">Sun @ 7:27pm</a></dt>
+                <dd>94.0 Feet, 1 mph</dd>
+              </dl>
+            </li>
+            <li>
+              <dl>
+                <dd>Brian</dd>
+                <dt><a href="https://maps.google.com/?q=47.63164884,-122.36310616" rel="external">Sun @ 7:24pm</a></dt>
+                <dd>100.0 Feet, 8 mph</dd>
+              </dl>
+            </li>
+            <li>
+              <dl>
+                <dd>Brian</dd>
+                <dt><a href="https://maps.google.com/?q=47.62829886,-122.35660126" rel="external">Sun @ 7:21pm</a></dt>
+                <dd>53.0 Feet, 14 mph</dd>
+              </dl>
+            </li>
+          </ol>
+        </div>
+      </section>
+      <section id="stocks" class="stocks device-off" data-string-loss="Loss" data-string-neutral="Neutral" data-string-gain="Gain">
+        <h1>Stocks <em>Inactive</em></h1>
+        <div class="text-block">
+          <ul>
+
+            <li class="loss"><span class="fa fa-arrow-down" title="Loss"><span>Loss</span></span> <span class="name">YHOO</span> <span class="price">42.87</span> <span class="change">(-0.08 -0.19%)</span></li>
+            <li class="gain"><span class="fa fa-arrow-up" title="Gain"><span>Gain</span></span> <span class="name">JWN</span> <span class="price">80.36</span> <span class="change">(+0.08 +0.10%)</span></li>
+            <li class="loss"><span class="fa fa-arrow-down" title="Loss"><span>Loss</span></span> <span class="name">TSLA</span> <span class="price">188.68</span> <span class="change">(-2.39 -1.25%)</span></li>
+            <li class="loss"><span class="fa fa-arrow-down" title="Loss"><span>Loss</span></span> <span class="name">SCTY</span> <span class="price">48.39</span> <span class="change">(-1.31 -2.64%)</span></li>
+            <li class="loss"><span class="fa fa-arrow-down" title="Loss"><span>Loss</span></span> <span class="name">Z</span> <span class="price">105.49</span> <span class="change">(-2.51 -2.32%)</span></li>
+            <li class="loss"><span class="fa fa-arrow-down" title="Loss"><span>Loss</span></span> <span class="name">BABA</span> <span class="price">81.86</span> <span class="change">(-0.06 -0.07%)</span></li>
+            <li class="loss"><span class="fa fa-arrow-down" title="Loss"><span>Loss</span></span> <span class="name">GOOG</span> <span class="price">547.32</span> <span class="change">(-8.19 -1.47%)</span></li>
+            <li class="gain"><span class="fa fa-arrow-up" title="Gain"><span>Gain</span></span> <span class="name">GLD</span> <span class="price">110.88</span> <span class="change">(+0.16 +0.14%)</span></li>
+          </ul>
+        </div>
+      </section>
+      <section id="weather" class="weather device-on" data-string-current="Current Weather" data-string-unavailable="Weather data unavailable">
+        <h1>Weather <em>Active</em></h1>
+        <div class="text-block">
+          <h2><span class="fa fa-cloud"></span> Seattle Current Weather: 62&deg; Mostly Cloudy (5:17 am/9:10 pm)</h2>
+          <ul>
+
+            <li><span class="fa fa-tint"></span> Sun: Rain 65&deg;/58&deg;</li>
+            <li><span class="fa fa-cloud"></span> Mon: Mostly Cloudy 65&deg;/57&deg;</li>
+            <li><span class="fa fa-cloud"></span> Tue: Mostly Cloudy 66&deg;/57&deg;</li>
+            <li><span class="fa fa-cloud"></span> Wed: Mostly Cloudy 69&deg;/55&deg;</li>
+            <li><span class="fa fa-cloud"></span> Thu: Cloudy 69&deg;/58&deg;</li>
+            <li><span class="fa fa-bolt"></span> Fri: Scattered Showers 64&deg;/59&deg;</li>
+            <li><span class="fa fa-bolt"></span> Sat: Scattered Showers 62&deg;/56&deg;</li>
+            <li><span class="fa fa-bolt"></span> Sun: Scattered Showers 64&deg;/56&deg;</li>
+            <li><span class="fa fa-cloud"></span> Mon: Mostly Cloudy 66&deg;/57&deg;</li>
+            <li><span class="fa fa-cloud"></span> Tue: Partly Cloudy 69&deg;/57&deg;</li>
+          </ul>
+        </div>
+      </section>
+      <section id="news" class="rss device-on">
+        <h1>RSS <em>Active</em></h1>
+        <div class="text-block">
+          <ol>
+
+            <li>
+              <blockquote>
+                <h5><a href="http://news.google.com/news/url?sa=t&fd=R&ct2=us&usg=AFQjCNE19He-lInSOMdKyHz5OT3akyR_3g&clid=c3a7d30bb8a4878e06b80cf16b898331&cid=52779146927058&ei=pQF6V-D3IYKkuAKWwqfgAg&url=http://www.cnn.com/2016/07/02/middleeast/baghdad-car-bombs/" rel="external">Baghdad bombing kills at least 125; ISIS claims responsibility - CNN</a></h5>
+                <p>
+                  CNNBaghdad bombing kills at least 125; ISIS claims responsibilityCNN(CNN) A suicide truck bomb ripped through a busy shopping district in Baghdad over the weekend, killing more than 100 in what was the deadliest single attack in the war-weary country in years. The brazen Saturday night attack in the heart of the packed&nbsp;...More than 120 killed in Islamic State&#39;s worst ever bomb attack in the Iraqi capitalWashington PostBaghdad Bombing in Karada Kills More Than 100, Injures ScoresNBCNews.comBaghdad suicide bombing kills 115; ISIL claims responsibilityUSA TODAYBBC News&nbsp;-Breitbart News&nbsp;-NPR&nbsp;-New York Daily Newsall 570 news articles&nbsp;&raquo;
+                </p>
+              </blockquote>
+            </li>
+            <li>
+              <blockquote>
+                <h5><a href="http://news.google.com/news/url?sa=t&fd=R&ct2=us&usg=AFQjCNEg9LT6APADPw_eh6lkeoLTc4LL3g&clid=c3a7d30bb8a4878e06b80cf16b898331&cid=52779148213798&ei=pQF6V-D3IYKkuAKWwqfgAg&url=http://abcnews.go.com/International/wireStory/suicide-bomber-hits-us-diplomatic-site-saudi-arabia-40322049" rel="external">Suicide Bomber Hits Near US Diplomatic Site in Saudi Arabia - ABC News</a></h5>
+                <p>
+                  NBCNews.comSuicide Bomber Hits Near US Diplomatic Site in Saudi ArabiaABC NewsA suicide bomber carried out an attack early on Monday near a U.S. diplomatic site in the western Saudi city of Jiddah, according to the Interior Ministry. The ministry said the attacker detonated his suicide vest when security guards approached him ...Suicide bomber in Saudi Arabia detonates explosive near US consulateCNNBomber Dies in Explosion Near US Consulate in Jeddah, Saudi ArabiaNBCNews.comA Suicide Bomber Has Blown Himself Up Near a US Consulate in Saudi ArabiaTIMEHuffington Post&nbsp;-New York Times&nbsp;-USA TODAY&nbsp;-Wall Street Journalall 73 news articles&nbsp;&raquo;
+                </p>
+              </blockquote>
+            </li>
+            <li>
+              <blockquote>
+                <h5><a href="http://news.google.com/news/url?sa=t&fd=R&ct2=us&usg=AFQjCNHB6KSCQAGZmdXdWx6ITWTZqqWLGg&clid=c3a7d30bb8a4878e06b80cf16b898331&cid=52779147749527&ei=pQF6V-D3IYKkuAKWwqfgAg&url=http://www.cnn.com/2016/07/03/us/new-york-central-park-explosion/" rel="external">Man severely injured in explosion in New York's Central Park - CNN</a></h5>
+                <p>
+                  CNNMan severely injured in explosion in New York&#39;s Central ParkCNN(CNN) Members of the New York Police Department bomb squad are investigating the cause of an explosion in Central Park on Sunday that nearly blew a man&#39;s leg off, police said. Preliminary investigation suggests the explosion was an &quot;experiment with&nbsp;...Officials believe blast that injured man in New York&#39;s Central Park was an &#39;experiment&#39;Fox NewsCollege kid&#39;s foot &#39;mutilated&#39; after freak explosion in Central ParkNew York PostPolice: Central Park firework probably an &#39;experiment&#39;Omaha World-HeraldUSA TODAY&nbsp;-New York Times&nbsp;-Washington Post&nbsp;-ABC Newsall 208 news articles&nbsp;&raquo;
+                </p>
+              </blockquote>
+            </li>
+            <li>
+              <blockquote>
+                <h5><a href="http://news.google.com/news/url?sa=t&fd=R&ct2=us&usg=AFQjCNGEs_QRVeIcD3t6lIEka365-1Hjmg&clid=c3a7d30bb8a4878e06b80cf16b898331&cid=52779145726106&ei=pQF6V-D3IYKkuAKWwqfgAg&url=http://www.cnn.com/2016/07/03/asia/bangladesh-terror-attack-moments/" rel="external">'God wants you to die': Dhaka's long night of terror - CNN</a></h5>
+                <p>
+                  CNN&#39;God wants you to die&#39;: Dhaka&#39;s long night of terrorCNNTo recreate this narrative we used witness accounts, shared directly with CNN or with friends and family who recounted them to us. We also used information from news briefings and gathered by CNN staffers in London, Hong Kong, Dhaka and Atlanta.After Slaughter, Bangladesh Reels at Revelations About AttackersNew York TimesWeek of terror underscores a &#39;desperate&#39; Islamic StateUSA TODAYBangladesh gunmen made no demands, Islamic State not involved: ministerReutersWashington Post&nbsp;-Quartz&nbsp;-Wall Street Journal&nbsp;-BBC Newsall 3,578 news articles&nbsp;&raquo;
+                </p>
+              </blockquote>
+            </li>
+            <li>
+              <blockquote>
+                <h5><a href="http://news.google.com/news/url?sa=t&fd=R&ct2=us&usg=AFQjCNHrkbL1dLaVB4_rSxGs9C0I_MLN-Q&clid=c3a7d30bb8a4878e06b80cf16b898331&cid=52779146497267&ei=pQF6V-D3IYKkuAKWwqfgAg&url=http://www.people.com/article/disney-world-alligator-attack-second-gator-bit-lane-graves-father" rel="external">Father was Attacked by Second Alligator as He Tried to Rescue Son Lane Graves at Disney World: Report - People Magazine</a></h5>
+                <p>
+                  People MagazineFather was Attacked by Second Alligator as He Tried to Rescue Son Lane Graves at Disney World: ReportPeople MagazineThe father of 2-year-old Lane Graves was attacked by a second alligator as he tried to fight to free his son from the jaws of the beast that snatched and dragged the boy under water at Walt Disney World last month, the toddler&#39;s father told authorities.Toddler&#39;s father says two gators involved in Disney attackUSA TODAYFather of boy killed by alligator at Disney World says 2 gators involved in attackWashington PostOrlando alligator: &#39;Second&#39; animal involved in attackBBC NewsReuters&nbsp;-Hollywood Life&nbsp;-TheWrap&nbsp;-New York's PIX11 / WPIX-TVall 36 news articles&nbsp;&raquo;
+                </p>
+              </blockquote>
+            </li>
+            <li>
+              <blockquote>
+                <h5><a href="http://news.google.com/news/url?sa=t&fd=R&ct2=us&usg=AFQjCNHSrGwLQPzLW0Zbyh2swhhW8bt1jg&clid=c3a7d30bb8a4878e06b80cf16b898331&cid=52779146648626&ei=pQF6V-D3IYKkuAKWwqfgAg&url=http://www.foxnews.com/us/2016/07/03/two-girls-and-their-father-fatally-shot-in-suburban-chicago-home.html" rel="external">Two girls and their father fatally shot in suburban Chicago home - Fox News</a></h5>
+                <p>
+                  Fox NewsTwo girls and their father fatally shot in suburban Chicago homeFox NewsTwo young children and their father were shot and killed early Saturday in a suburban Chicago home, according to a report. Neighbors in Hazel Crest are wondering why anyone would want to kill the two little girls, India Neely, 3, and Elle Neely, 10 ...and more&nbsp;&raquo;
+                </p>
+              </blockquote>
+            </li>
+            <li>
+              <blockquote>
+                <h5><a href="http://news.google.com/news/url?sa=t&fd=R&ct2=us&usg=AFQjCNH787MkY39curbCsVBXV53FLnlAKg&clid=c3a7d30bb8a4878e06b80cf16b898331&cid=52779143643290&ei=pQF6V-D3IYKkuAKWwqfgAg&url=http://www.wsj.com/articles/australian-election-looks-like-a-cliffhanger-1467455986" rel="external">Australian Election Result Unclear as Gamble on Early Polls Backfires - Wall Street Journal</a></h5>
+                <p>
+                  Wall Street JournalAustralian Election Result Unclear as Gamble on Early Polls BackfiresWall Street JournalSYDNEY—Australian Prime Minister Malcolm Turnbull&#39;s gamble of holding early elections appeared to have backfired, with his conservatives struggling to secure enough seats in Parliament to form a government outright. The tight election, whose result ...Even if he keeps his job, Malcolm Turnbull&#39;s problems have just begunCNNPopulist Rebuff Sparks Turmoil Amid Deadlocked Aussie VoteBloombergAustralia in limbo as vote counting in tight election to take daysReutersThe Australian&nbsp;-TIME&nbsp;-Sioux City Journal&nbsp;-The Guardianall 1,866 news articles&nbsp;&raquo;
+                </p>
+              </blockquote>
+            </li>
+            <li>
+              <blockquote>
+                <h5><a href="http://news.google.com/news/url?sa=t&fd=R&ct2=us&usg=AFQjCNHqqvvcC_cpfontPXiCwk-042-kDw&clid=c3a7d30bb8a4878e06b80cf16b898331&cid=52779148263565&ei=pQF6V-D3IYKkuAKWwqfgAg&url=http://losangeles.cbslocal.com/2016/07/03/9-year-old-girl-loses-hand-several-fingers-possibly-due-to-illegal-fireworks-deputies-say/" rel="external">9-Year-Old Girl Loses Hand, Several Fingers Possibly Due To Illegal Fireworks, Deputies Say - CBS Local</a></h5>
+                <p>
+                  CBS Local9-Year-Old Girl Loses Hand, Several Fingers Possibly Due To Illegal Fireworks, Deputies SayCBS LocalCOMPTON (CBSLA.com) — Authorities say they&#39;re investigating an explosion that caused a 9-year-old girl to sustain serious injuries in Compton. Deputies with the Los Angeles County Sheriff&#39;s Department said the girl&#39;s left hand was amputated as a ...Girl, 9, lost hand and fingers in blast; fireworks suspectedRoanoke Times9-year-old girl loses hand, fingers after fireworks accident in CaliforniaFox News9-Year-Old Girl Loses Hand, Sustains Blast Injuries To Her Face From FireworksThe Inquisitrall 15 news articles&nbsp;&raquo;
+                </p>
+              </blockquote>
+            </li>
+            <li>
+              <blockquote>
+                <h5><a href="http://news.google.com/news/url?sa=t&fd=R&ct2=us&usg=AFQjCNEQU5sZ51xYB3xl6vLakUrNTCpbUQ&clid=c3a7d30bb8a4878e06b80cf16b898331&cid=52779146837146&ei=pQF6V-D3IYKkuAKWwqfgAg&url=http://www.hollywoodreporter.com/news/critics-notebook-michael-cimino-a-908220" rel="external">Critic's Notebook: Michael Cimino, a Comet that Blazed Brightly, Briefly - Hollywood Reporter</a></h5>
+                <p>
+                  Hollywood ReporterCritic&#39;s Notebook: Michael Cimino, a Comet that Blazed Brightly, BrieflyHollywood ReporterThe writer-director of &#39;The Deer Hunter&#39; and &#39;Heaven&#39;s Gate&#39; hit a dazzling early career peak before his long decline into elusive, reclusive, eccentric behavior. Beyond a certain level, blazing early success can cause more damage than failure. And so ...Michael Cimino, an appreciation: From Oscar triumph to Hollywood exileEntertainment WeeklyHow Michael Cimino&#39;s &#39;The Deer Hunter&#39; Pioneered The Modern Day Oscar Campaign – And WonDeadlineMichael Cimino, a &#39;Hunter&#39; in pursuit of an uncompromising visionLos Angeles TimesHuffington Post&nbsp;-CNN&nbsp;-USA TODAY&nbsp;-New York Timesall 174 news articles&nbsp;&raquo;
+                </p>
+              </blockquote>
+            </li>
+            <li>
+              <blockquote>
+                <h5><a href="http://news.google.com/news/url?sa=t&fd=R&ct2=us&usg=AFQjCNE04Y1BUfVPamUPL6_jAmSc_gZ6ow&clid=c3a7d30bb8a4878e06b80cf16b898331&cid=52779145952780&ei=pQF6V-D3IYKkuAKWwqfgAg&url=http://www.cnn.com/2016/07/04/health/juno-jupiter/" rel="external">Giant spacecraft nears Jupiter - CNN</a></h5>
+                <p>
+                  CNNGiant spacecraft nears JupiterCNN(CNN) It&#39;s been speeding toward Jupiter for nearly five years. Now -- can it slow down? On Monday, NASA&#39;s Juno spacecraft -- a spinning, robotic probe as wide as a basketball court -- will perform what the space agency calls a 35-minute long ...Juno spacecraft to go closer to Jupiter than ever beforeThe Denver PostJuno mission: Jupiter probe nears critical orbit manoeuvreBBC News3-2-1: A look at NASA&#39;s Jupiter mission by the numbersBusiness InsidercollectSPACE.com&nbsp;-SpaceCoastDaily.com&nbsp;-The Seattle Times&nbsp;-News & Observerall 236 news articles&nbsp;&raquo;
+                </p>
+              </blockquote>
+            </li>
+          </ol>
+        </div>
+      </section>
+      <section id="sports" class="sports device-on" data-string-title="{{AWAY}} vs. {{HOME}}" data-string-final="Final" data-string-upcoming="Upcoming" data-string-live="Live">
+        <h1>Sports <em>Active</em></h1>
+          <ul class="text-list">
+
+              <li>
+                <h2>Women's National Basketball Assoc.</h2>
+                <ul class="text-group">
+
+                  <li class="final">
+                    <dl>
+                      <dt><h2><a href="" rel="external">Storm vs. Liberty</a></h2></dt>
+                      <dd class="away">
+                        <h3>Storm</h3>
+                        <img data-src="images/sports/wnba_sea_dark.png" alt="Away Team Logo" title="Away Team Logo" />
+                        <span>74</span>
+                      </dd>
+                      <dd class="home winner">
+                        <h3>Liberty</h3>
+                        <img data-src="images/sports/wnba_ny_dark.png" alt="Home Team Logo" title="Home Team Logo" />
+                        <span>78</span>
+                      </dd>
+                      <dd class="state">Wed @ 4:00pm: Final</dd>
+                    </dl>
+                  </li>
+                  <li class="final">
+                    <dl>
+                      <dt><h2><a href="" rel="external">Mystics vs. Stars</a></h2></dt>
+                      <dd class="away">
+                        <h3>Mystics</h3>
+                        <img data-src="images/sports/wnba_wsh_dark.png" alt="Away Team Logo" title="Away Team Logo" />
+                        <span>70</span>
+                      </dd>
+                      <dd class="home winner">
+                        <h3>Stars</h3>
+                        <img data-src="images/sports/wnba_sa_dark.png" alt="Home Team Logo" title="Home Team Logo" />
+                        <span>77</span>
+                      </dd>
+                      <dd class="state">Wed @ 5:00pm: Final</dd>
+                    </dl>
+                  </li>
+                  <li class="final">
+                    <dl>
+                      <dt><h2><a href="" rel="external">Fever vs. Sparks</a></h2></dt>
+                      <dd class="away">
+                        <h3>Fever</h3>
+                        <img data-src="images/sports/wnba_ind_dark.png" alt="Away Team Logo" title="Away Team Logo" />
+                        <span>88</span>
+                      </dd>
+                      <dd class="home winner">
+                        <h3>Sparks</h3>
+                        <img data-src="images/sports/wnba_la_dark.png" alt="Home Team Logo" title="Home Team Logo" />
+                        <span>94</span>
+                      </dd>
+                      <dd class="state">Wed @ 7:30pm: Final</dd>
+                    </dl>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <h2>Major League Baseball</h2>
+                <ul class="text-group">
+
+                  <li class="final">
+                    <dl>
+                      <dt><h2><a href="" rel="external">Tigers vs. Indians</a></h2></dt>
+                      <dd class="away winner">
+                        <h3>Tigers</h3>
+                        <img data-src="images/sports/mlb_det_dark.png" alt="Away Team Logo" title="Away Team Logo" />
+                        <span>12</span>
+                      </dd>
+                      <dd class="home">
+                        <h3>Indians</h3>
+                        <img data-src="images/sports/mlb_cle_dark.png" alt="Home Team Logo" title="Home Team Logo" />
+                        <span>2</span>
+                      </dd>
+                      <dd class="state">Wed @ 9:10am: Final</dd>
+                    </dl>
+                  </li>
+                  <li class="final">
+                    <dl>
+                      <dt><h2><a href="" rel="external">Orioles vs. Dodgers</a></h2></dt>
+                      <dd class="away winner">
+                        <h3>Orioles</h3>
+                        <img data-src="images/sports/mlb_bal_dark.png" alt="Away Team Logo" title="Away Team Logo" />
+                        <span>6</span>
+                      </dd>
+                      <dd class="home">
+                        <h3>Dodgers</h3>
+                        <img data-src="images/sports/mlb_lad_dark.png" alt="Home Team Logo" title="Home Team Logo" />
+                        <span>4</span>
+                      </dd>
+                      <dd class="state">Wed @ 12:10am: Final</dd>
+                    </dl>
+                  </li>
+                  <li class="final">
+                    <dl>
+                      <dt><h2><a href="" rel="external">Rangers vs. Red Sox</a></h2></dt>
+                      <dd class="away">
+                        <h3>Rangers</h3>
+                        <img data-src="images/sports/mlb_tex_dark.png" alt="Away Team Logo" title="Away Team Logo" />
+                        <span>6</span>
+                      </dd>
+                      <dd class="home winner">
+                        <h3>Red Sox</h3>
+                        <img data-src="images/sports/mlb_bos_dark.png" alt="Home Team Logo" title="Home Team Logo" />
+                        <span>11</span>
+                      </dd>
+                      <dd class="state">Wed @ 4:00pm: Final</dd>
+                    </dl>
+                  </li>
+                  <li class="final">
+                    <dl>
+                      <dt><h2><a href="" rel="external">Royals vs. Blue Jays</a></h2></dt>
+                      <dd class="away">
+                        <h3>Royals</h3>
+                        <img data-src="images/sports/mlb_kc_dark.png" alt="Away Team Logo" title="Away Team Logo" />
+                        <span>2</span>
+                      </dd>
+                      <dd class="home winner">
+                        <h3>Blue Jays</h3>
+                        <img data-src="images/sports/mlb_tor_dark.png" alt="Home Team Logo" title="Home Team Logo" />
+                        <span>4</span>
+                      </dd>
+                      <dd class="state">Wed @ 4:07pm: Final</dd>
+                    </dl>
+                  </li>
+                  <li class="final">
+                    <dl>
+                      <dt><h2><a href="" rel="external">Yankees vs. White Sox</a></h2></dt>
+                      <dd class="away">
+                        <h3>Yankees</h3>
+                        <img data-src="images/sports/mlb_nyy_dark.png" alt="Away Team Logo" title="Away Team Logo" />
+                        <span>0</span>
+                      </dd>
+                      <dd class="home winner">
+                        <h3>White Sox</h3>
+                        <img data-src="images/sports/mlb_chw_dark.png" alt="Home Team Logo" title="Home Team Logo" />
+                        <span>5</span>
+                      </dd>
+                      <dd class="state">Wed @ 5:10pm: Final</dd>
+                    </dl>
+                  </li>
+                  <li class="final">
+                    <dl>
+                      <dt><h2><a href="" rel="external">Rockies vs. Giants</a></h2></dt>
+                      <dd class="away">
+                        <h3>Rockies</h3>
+                        <img data-src="images/sports/mlb_col_dark.png" alt="Away Team Logo" title="Away Team Logo" />
+                        <span>1</span>
+                      </dd>
+                      <dd class="home winner">
+                        <h3>Giants</h3>
+                        <img data-src="images/sports/mlb_sf_dark.png" alt="Home Team Logo" title="Home Team Logo" />
+                        <span>5</span>
+                      </dd>
+                      <dd class="state">Wed @ 7:15pm: Final</dd>
+                    </dl>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <h2>Association of Tennis Professionals</h2>
+                <ul class="text-group">
+
+                  <li class="final">
+                    <dl>
+                      <dt><h2><a href="" rel="external">M. Cilic vs. R. Federer</a></h2></dt>
+                      <dd class="away">
+                        <h3>M. Cilic</h3>
+                        <img data-src="images/sports/atp__dark.png" alt="Away Team Logo" title="Away Team Logo" />
+                        <span>7-6(7-4) 6-4 3-6 6-7(9-11) 3-6</span>
+                      </dd>
+                      <dd class="home winner">
+                        <h3>R. Federer</h3>
+                        <img data-src="images/sports/atp__dark.png" alt="Home Team Logo" title="Home Team Logo" />
+                        <span>6-7(4-7) 4-6 6-3 7-6(11-9) 6-3</span>
+                      </dd>
+                      <dd class="state">Wed @ 5:00am: Final</dd>
+                    </dl>
+                  </li>
+                  <li class="final">
+                    <dl>
+                      <dt><h2><a href="" rel="external">M. Raonic vs. S. Querrey</a></h2></dt>
+                      <dd class="away winner">
+                        <h3>M. Raonic</h3>
+                        <img data-src="images/sports/atp__dark.png" alt="Away Team Logo" title="Away Team Logo" />
+                        <span>6-4 7-5 5-7 6-4</span>
+                      </dd>
+                      <dd class="home">
+                        <h3>S. Querrey</h3>
+                        <img data-src="images/sports/atp__dark.png" alt="Home Team Logo" title="Home Team Logo" />
+                        <span>4-6 5-7 7-5 4-6</span>
+                      </dd>
+                      <dd class="state">Wed @ 5:00am: Final</dd>
+                    </dl>
+                  </li>
+                  <li class="final">
+                    <dl>
+                      <dt><h2><a href="" rel="external">A. Murray vs. J. Tsonga</a></h2></dt>
+                      <dd class="away winner">
+                        <h3>A. Murray</h3>
+                        <img data-src="images/sports/atp__dark.png" alt="Away Team Logo" title="Away Team Logo" />
+                        <span>7-6(12-10) 6-1 3-6 4-6 6-1</span>
+                      </dd>
+                      <dd class="home">
+                        <h3>J. Tsonga</h3>
+                        <img data-src="images/sports/atp__dark.png" alt="Home Team Logo" title="Home Team Logo" />
+                        <span>6-7(10-12) 1-6 6-3 6-4 1-6</span>
+                      </dd>
+                      <dd class="state">Wed @ 7:30am: Final</dd>
+                    </dl>
+                  </li>
+                  <li class="final">
+                    <dl>
+                      <dt><h2><a href="" rel="external">L. Pouille vs. T. Berdych</a></h2></dt>
+                      <dd class="away">
+                        <h3>L. Pouille</h3>
+                        <img data-src="images/sports/atp__dark.png" alt="Away Team Logo" title="Away Team Logo" />
+                        <span>6-7(4-7) 3-6 2-6</span>
+                      </dd>
+                      <dd class="home winner">
+                        <h3>T. Berdych</h3>
+                        <img data-src="images/sports/atp__dark.png" alt="Home Team Logo" title="Home Team Logo" />
+                        <span>7-6(7-4) 6-3 6-2</span>
+                      </dd>
+                      <dd class="state">Wed @ 7:30am: Final</dd>
+                    </dl>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <h2>European Championship</h2>
+                <ul class="text-group">
+
+                  <li class="final">
+                    <dl>
+                      <dt><h2><a href="" rel="external">Wales vs. Portugal</a></h2></dt>
+                      <dd class="away">
+                        <h3>Wales</h3>
+                        <img data-src="images/sports/uefa_euro_wal_dark.png" alt="Away Team Logo" title="Away Team Logo" />
+                        <span>0</span>
+                      </dd>
+                      <dd class="home winner">
+                        <h3>Portugal</h3>
+                        <img data-src="images/sports/uefa_euro_por_dark.png" alt="Home Team Logo" title="Home Team Logo" />
+                        <span>2</span>
+                      </dd>
+                      <dd class="state">Wed @ 12:00am: Final</dd>
+                    </dl>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <h2>Major League Soccer</h2>
+                <ul class="text-group">
+
+                  <li class="final">
+                    <dl>
+                      <dt><h2><a href="" rel="external">New York City FC vs. New England Revolution</a></h2></dt>
+                      <dd class="away winner">
+                        <h3>New York City FC</h3>
+                        <img data-src="images/sports/usa_1_nyc_dark.png" alt="Away Team Logo" title="Away Team Logo" />
+                        <span>1</span>
+                      </dd>
+                      <dd class="home">
+                        <h3>New England Revolution</h3>
+                        <img data-src="images/sports/usa_1_nwe_dark.png" alt="Home Team Logo" title="Home Team Logo" />
+                        <span>0</span>
+                      </dd>
+                      <dd class="state">Wed @ 4:30pm: Final</dd>
+                    </dl>
+                  </li>
+                </ul>
+              </li>
+          </ul>
+      </section>
+      <section id="switchBoardCI" class="travis device-on">
+        <h1>Travis <em>Active</em></h1>
+        <div class="text-block">
+          <ul>
+
+            <li class="state-ok"><span class="fa fa-check" title="Build Status: ok"><span>Build Status: ok</span></span> <a href="http://travis-ci.org/imbrianj/switchBoard/builds/140394047" class="state-ok" rel="external">Playing around with adding a screensaver for a potential OLED wall mounted display (345s)</a></li>
+            <li class="state-ok"><span class="fa fa-check" title="Build Status: ok"><span>Build Status: ok</span></span> <a href="http://travis-ci.org/imbrianj/switchBoard/builds/135365860" class="state-ok" rel="external">Merge pull request #65 from akshayp/masterProtect against missing data and fix config path passed through CLI (444s)</a></li>
+            <li class="state-ok"><span class="fa fa-check" title="Build Status: ok"><span>Build Status: ok</span></span> <a href="http://travis-ci.org/imbrianj/switchBoard/builds/135365739" class="state-ok" rel="external">Protect against missing data and fix config path passed through CLI (427s)</a></li>
+          </ul>
+        </div>
+      </section>
+      <section id="activeBuilding" class="activeBuilding device-on" data-string-and="and" data-string-no_packages="No packages available." data-string-single_package="You have a package from: {{SENDERS}}" data-string-plural_packages="You have packages from: {{SENDERS}}">
+        <h1>Active Building <em>Active</em></h1>
+        <div class="text-block">
+          <p class="state-err">
+            <span class="fa fa-times"></span> No packages available.
+          </p>
+        </div>
+      </section>
+      <section id="rss" class="rss device-on">
+        <h1>RSS <em>Active</em></h1>
+        <div class="text-block">
+          <ol>
+
+            <li>
+              <blockquote>
+                <h5><a href="http://crossfitbelltown.com/2016/07/03/monday-july-4-2016/#utm_source=feed&utm_medium=feed&utm_campaign=feed" rel="external">Monday, July 4, 2016</a></h5>
+                <p>
+                  Workout:&#8220;DG&#8221;As many rounds as possible in 10 minutes of:8 Toes-to-Bar8 Dumbbell Thrusters, (35, 20)12 Dumbbell Walking Lunges, (30, 20)-OR-&#8220;Nate&#8221;Complete as many rounds in 20 minutes as you can of:2 Muscle-Ups4 Handstand Push-Ups8 Kettlebell Swings (72,55)Happy 4th of July!CrossFit Belltown will only be hosting one class today at 10:30am. Please be sure to register for class in advance. [...]
+                </p>
+              </blockquote>
+            </li>
+            <li>
+              <blockquote>
+                <h5><a href="http://crossfitbelltown.com/2016/07/01/member-spotlight-tom-graff/#utm_source=feed&utm_medium=feed&utm_campaign=feed" rel="external">Member Spotlight: Tom Graff</a></h5>
+                <p>
+                  Name: Tom GraffDOB:  December 17, 1959Gig:  Husband, Father of 2, Son, Brother of 7, US Navy Captain Retired, Commercial Real Estate Broker, member of 4 non-profit boards, parishioner at Christ Our Hope at 2nd &#38; Stewart&#8230; basically I am too much.CrossFitting Since:  Feb 2011 (at the McGuire!)First Memorable CrossFit Experience: 2 early events: In the [...]
+                </p>
+              </blockquote>
+            </li>
+            <li>
+              <blockquote>
+                <h5><a href="http://crossfitbelltown.com/2016/07/01/saturday-july-2-2016/#utm_source=feed&utm_medium=feed&utm_campaign=feed" rel="external">Saturday, July 2, 2016</a></h5>
+                <p>
+                  Track WODCrossFit Belltown will be hosting class outside today at Queen Anne Bowl Play-field. This will  be our first track workout of the summer season. The workout will take place at 9:30am. All other Saturday classes are being cancelled; no class will be held at the gym today in observance of a CrossFit Level One Seminar.Queen Anne Bowl [...]
+                </p>
+              </blockquote>
+            </li>
+          </ol>
+        </div>
+      </section>
+      <section id="gerty" class="gerty device-on">
+        <h1>Gerty <em>Active</em></h1>
+        <div class="emoji" role="button"><span>😶</span></div>
+        <div class="text">
+          <ol class="dialog">
+
+            <li><span class="time">Wed @ 12:10am</span> <span class="user user-0">Brian</span>: cool the living room</li>
+            <li><span class="time">Wed @ 12:10am</span> <span class="user gerty">Gerty</span>: Balcony Door open and air conditioner is on.</li>
+            <li><span class="time">Wed @ 12:11am</span> <span class="user gerty">Gerty</span>: Balcony Door open; air conditioner turned off.</li>
+            <li><span class="time">Wed @ 12:17am</span> <span class="user user-0">Brian</span>: cool the living room</li>
+            <li><span class="time">Wed @ 12:19am</span> <span class="user gerty">Gerty</span>: Brian has just left</li>
+            <li><span class="time">Wed @ 12:21am</span> <span class="user gerty">Gerty</span>: Brian has just arrived</li>
+            <li><span class="time">Wed @ 5:17am</span> <span class="user gerty">Gerty</span>: Set to Home - sun has come up</li>
+            <li><span class="time">Wed @ 9:00am</span> <span class="user gerty">Gerty</span>: Brian has just left</li>
+            <li><span class="time">Wed @ 9:06am</span> <span class="user gerty">Gerty</span>: Brian has just arrived</li>
+            <li><span class="time">Wed @ 2:35pm</span> <span class="user gerty">Gerty</span>: Balcony Door open and air conditioner is on.</li>
+            <li><span class="time">Wed @ 2:36pm</span> <span class="user gerty">Gerty</span>: Balcony Door open; air conditioner turned off.</li>
+            <li><span class="time">Wed @ 4:27pm</span> <span class="user gerty">Gerty</span>: You have a package from: UPS</li>
+            <li><span class="time">Wed @ 4:32pm</span> <span class="user gerty">Gerty</span>: You have packages from: UPS and USPS</li>
+            <li><span class="time">Wed @ 5:32pm</span> <span class="user gerty">Gerty</span>: New article from Gym: Thursday, June 30, 2016</li>
+            <li><span class="time">Wed @ 5:48pm</span> <span class="user gerty">Gerty</span>: Brian has just left</li>
+            <li><span class="time">Wed @ 5:58pm</span> <span class="user gerty">Gerty</span>: Set to Away - nobody is home</li>
+            <li><span class="time">Wed @ 5:58pm</span> <span class="user gerty">Gerty</span>: Camera armed</li>
+            <li><span class="time">Wed @ 6:02pm</span> <span class="user gerty">Gerty</span>: Set to Home - Brian is home</li>
+            <li><span class="time">Wed @ 6:02pm</span> <span class="user gerty">Gerty</span>: Brian has just arrived</li>
+            <li><span class="time">Wed @ 6:02pm</span> <span class="user gerty">Gerty</span>: Camera disarmed</li>
+            <li><span class="time">Wed @ 6:02pm</span> <span class="user gerty">Gerty</span>: Camera disarmed</li>
+            <li><span class="time">Wed @ 6:02pm</span> <span class="user gerty">Gerty</span>: Camera armed</li>
+            <li><span class="time">Wed @ 6:24pm</span> <span class="user gerty">Gerty</span>: Brian has just left</li>
+            <li><span class="time">Wed @ 6:34pm</span> <span class="user gerty">Gerty</span>: Set to Away - nobody is home</li>
+            <li><span class="time">Wed @ 10:37pm</span> <span class="user gerty">Gerty</span>: Set to Home - Brian is home</li>
+            <li><span class="time">Wed @ 10:37pm</span> <span class="user gerty">Gerty</span>: Brian has just arrived</li>
+            <li><span class="time">Wed @ 10:37pm</span> <span class="user gerty">Gerty</span>: Camera disarmed</li>
+            <li><span class="time">Thur @ 12:10am</span> <span class="user user-0">Brian</span>: turn on the bedroom lamps and turn on cool the living room</li>
+            <li><span class="time">Thur @ 12:13am</span> <span class="user gerty">Gerty</span>: Brian has just left</li>
+            <li><span class="time">Thur @ 12:15am</span> <span class="user gerty">Gerty</span>: Brian has just arrived</li>
+            <li><span class="time">Thur @ 5:18am</span> <span class="user gerty">Gerty</span>: Set to Home - sun has come up</li>
+            <li><span class="time">Thur @ 9:09am</span> <span class="user gerty">Gerty</span>: Balcony Door open and air conditioner is on.</li>
+            <li><span class="time">Thur @ 9:10am</span> <span class="user gerty">Gerty</span>: Balcony Door open; air conditioner turned off.</li>
+            <li><span class="time">Thur @ 9:14am</span> <span class="user gerty">Gerty</span>: Brian has just left</li>
+            <li><span class="time">Thur @ 9:20am</span> <span class="user gerty">Gerty</span>: Brian has just arrived</li>
+            <li><span class="time">Thur @ 10:23am</span> <span class="user gerty">Gerty</span>: You have a package from: USPS</li>
+            <li><span class="time">Thur @ 5:05pm</span> <span class="user gerty">Gerty</span>: Brian has just left</li>
+            <li><span class="time">Thur @ 5:15pm</span> <span class="user gerty">Gerty</span>: Set to Away - nobody is home</li>
+            <li><span class="time">Thur @ 5:15pm</span> <span class="user gerty">Gerty</span>: Camera armed</li>
+            <li><span class="time">Thur @ 5:18pm</span> <span class="user gerty">Gerty</span>: Set to Home - Brian is home</li>
+            <li><span class="time">Thur @ 5:18pm</span> <span class="user gerty">Gerty</span>: Brian has just arrived</li>
+            <li><span class="time">Thur @ 5:18pm</span> <span class="user gerty">Gerty</span>: Camera disarmed</li>
+            <li><span class="time">Thur @ 5:28pm</span> <span class="user gerty">Gerty</span>: Brian has just left</li>
+            <li><span class="time">Thur @ 5:33pm</span> <span class="user gerty">Gerty</span>: New article from Gym: Friday, July 1, 2016</li>
+            <li><span class="time">Thur @ 5:38pm</span> <span class="user gerty">Gerty</span>: Set to Away - nobody is home</li>
+            <li><span class="time">Thur @ 5:38pm</span> <span class="user gerty">Gerty</span>: Camera armed</li>
+            <li><span class="time">Thur @ 6:44pm</span> <span class="user gerty">Gerty</span>: Set to Home - Brian is home</li>
+            <li><span class="time">Thur @ 6:44pm</span> <span class="user gerty">Gerty</span>: Brian has just arrived</li>
+            <li><span class="time">Thur @ 6:44pm</span> <span class="user gerty">Gerty</span>: Camera disarmed</li>
+            <li><span class="time">Thur @ 7:20pm</span> <span class="user gerty">Gerty</span>: Brian has just left</li>
+            <li><span class="time">Thur @ 7:30pm</span> <span class="user gerty">Gerty</span>: Set to Away - nobody is home</li>
+            <li><span class="time">Thur @ 7:31pm</span> <span class="user gerty">Gerty</span>: Camera armed</li>
+            <li><span class="time">Thur @ 9:08pm</span> <span class="user gerty">Gerty</span>: Set to Home - Brian is home</li>
+            <li><span class="time">Thur @ 9:08pm</span> <span class="user gerty">Gerty</span>: Brian has just arrived</li>
+            <li><span class="time">Thur @ 9:08pm</span> <span class="user gerty">Gerty</span>: Set to Home - Brian and Brianne are home</li>
+            <li><span class="time">Thur @ 9:08pm</span> <span class="user gerty">Gerty</span>: Brianne has just arrived</li>
+            <li><span class="time">Thur @ 9:08pm</span> <span class="user gerty">Gerty</span>: Camera disarmed</li>
+            <li><span class="time">Thur @ 9:08pm</span> <span class="user gerty">Gerty</span>: Camera disarmed</li>
+            <li><span class="time">Thur @ 9:08pm</span> <span class="user gerty">Gerty</span>: Camera armed</li>
+            <li><span class="time">Thur @ 9:38pm</span> <span class="user user-0">Brian</span>: cool the living room</li>
+            <li><span class="time">Fri @ 12:13am</span> <span class="user gerty">Gerty</span>: Brian has just left</li>
+            <li><span class="time">Fri @ 12:14am</span> <span class="user gerty">Gerty</span>: Brian has just arrived</li>
+            <li><span class="time">Fri @ 12:16am</span> <span class="user user-0">Brian</span>: goodnight</li>
+            <li><span class="time">Fri @ 12:16am</span> <span class="user gerty">Gerty</span>: Camera disarmed</li>
+            <li><span class="time">Fri @ 5:19am</span> <span class="user gerty">Gerty</span>: Set to Home - sun has come up</li>
+            <li><span class="time">Fri @ 7:35am</span> <span class="user gerty">Gerty</span>: Brianne has just left</li>
+            <li><span class="time">Fri @ 9:11am</span> <span class="user gerty">Gerty</span>: Balcony Door open and air conditioner is on.</li>
+            <li><span class="time">Fri @ 9:12am</span> <span class="user gerty">Gerty</span>: Balcony Door open; air conditioner turned off.</li>
+            <li><span class="time">Fri @ 9:14am</span> <span class="user gerty">Gerty</span>: Brian has just left</li>
+            <li><span class="time">Fri @ 9:19am</span> <span class="user gerty">Gerty</span>: Brian has just arrived</li>
+            <li><span class="time">Fri @ 1:14pm</span> <span class="user gerty">Gerty</span>: You have a package from: UPS</li>
+            <li><span class="time">Fri @ 4:56pm</span> <span class="user gerty">Gerty</span>: Brian has just left</li>
+            <li><span class="time">Fri @ 5:06pm</span> <span class="user gerty">Gerty</span>: Set to Away - nobody is home</li>
+            <li><span class="time">Fri @ 5:06pm</span> <span class="user gerty">Gerty</span>: Camera armed</li>
+            <li><span class="time">Fri @ 5:17pm</span> <span class="user gerty">Gerty</span>: Set to Home - Brianne is home</li>
+            <li><span class="time">Fri @ 5:17pm</span> <span class="user gerty">Gerty</span>: Brianne has just arrived</li>
+            <li><span class="time">Fri @ 5:17pm</span> <span class="user gerty">Gerty</span>: Camera disarmed</li>
+            <li><span class="time">Fri @ 5:17pm</span> <span class="user gerty">Gerty</span>: Brian has just arrived</li>
+            <li><span class="time">Fri @ 5:25pm</span> <span class="user gerty">Gerty</span>: Brian has just left</li>
+            <li><span class="time">Fri @ 5:39pm</span> <span class="user gerty">Gerty</span>: New article from Gym: Saturday, July 2, 2016</li>
+            <li><span class="time">Fri @ 6:42pm</span> <span class="user gerty">Gerty</span>: Brian has just arrived</li>
+            <li><span class="time">Fri @ 7:56pm</span> <span class="user gerty">Gerty</span>: Brian has just left</li>
+            <li><span class="time">Fri @ 7:58pm</span> <span class="user gerty">Gerty</span>: Brian has just arrived</li>
+            <li><span class="time">Fri @ 7:59pm</span> <span class="user gerty">Gerty</span>: You have packages from: UPS and USPS</li>
+            <li><span class="time">Fri @ 8:13pm</span> <span class="user gerty">Gerty</span>: Brian has just left</li>
+            <li><span class="time">Fri @ 8:16pm</span> <span class="user gerty">Gerty</span>: Brian has just arrived</li>
+            <li><span class="time">Fri @ 8:19pm</span> <span class="user gerty">Gerty</span>: New article from Gym: Member Spotlight: Tom Graff</li>
+            <li><span class="time">Fri @ 8:28pm</span> <span class="user gerty">Gerty</span>: Someone is at the Front Door</li>
+            <li><span class="time">Fri @ 8:30pm</span> <span class="user gerty">Gerty</span>: Brian has just left</li>
+            <li><span class="time">Fri @ 9:02pm</span> <span class="user gerty">Gerty</span>: Camera armed</li>
+            <li><span class="time">Sun @ 4:48pm</span> <span class="user gerty">Gerty</span>: Set to Home - Brian and Brianne are home</li>
+            <li><span class="time">Sun @ 4:48pm</span> <span class="user gerty">Gerty</span>: Brian has just arrived</li>
+            <li><span class="time">Sun @ 4:48pm</span> <span class="user gerty">Gerty</span>: Camera disarmed</li>
+            <li><span class="time">Sun @ 5:06pm</span> <span class="user gerty">Gerty</span>: Brian has just left</li>
+            <li><span class="time">Sun @ 5:15pm</span> <span class="user gerty">Gerty</span>: Brian has just arrived</li>
+            <li><span class="time">Sun @ 7:15pm</span> <span class="user gerty">Gerty</span>: Brian has just left</li>
+            <li><span class="time">Sun @ 9:03pm</span> <span class="user gerty">Gerty</span>: Brian has just arrived</li>
+            <li><span class="time">Sun @ 9:06pm</span> <span class="user gerty">Gerty</span>: New article from Gym: Monday, July 4, 2016</li>
+            <li><span class="time">Sun @ 10:21pm</span> <span class="user gerty">Gerty</span>: Brian has just left</li>
+            <li><span class="time">Sun @ 10:21pm</span> <span class="user gerty">Gerty</span>: Brian has just arrived</li>
+          </ol>
+          <form class="text-form" action="/" method="get">
+            <fieldset>
+              <legend>Text Input</legend>
+              <label for="gerty-text-input">Text Input:</label>
+              <input id="gerty-text-input" class="text-input" type="text" name="gerty" placeholder="Text Input" required />
+              <input class="input-type" type="hidden" value="text" name="type" />
+              <button type="submit" class="button">Submit</button>
+            </fieldset>
+          </form>
+        </div>
+      </section>
+      <section id="debug" class="debug device-on">
+        <h1>Debug <em>Active</em></h1>
+        <ul class="text-block">
+          <li><span>Last Update:</span> Sun @ 11:29pm</li>
+          <li><span>Uptime:</span> 18 01:55:29</li>
+          <li><span>Runtime:</span> 07 11:09:53</li>
+          <li><span>Memory Used:</span> 592/973 (61%)</li>
+          <li><span>CPU:</span> 16%</li>
+          <li><span>Clients Connected:</span> 0</li>
+        </ul>
+      </section>
+    </main>
+    <script type="text/javascript" src="js/combo.min.js"></script>
+  </body>
+</html>

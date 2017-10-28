@@ -1,0 +1,2107 @@
+/**
+ * Copyright (c) 2014 brian@bevey.org
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to
+ * deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+ * sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+ * IN THE SOFTWARE.
+ */
+
+/* Reset */
+html,
+body,
+div,
+span,
+object,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+blockquote,
+p,
+a,
+abbr,
+acronym,
+em,
+img,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend {
+  border: 0;
+  font-family: inherit;
+  font-size: 100%;
+  font-style: inherit;
+  font-weight: inherit;
+  margin: 0;
+  outline: 0;
+  padding: 0;
+  vertical-align: baseline;
+}
+
+:focus {
+  outline: #0078E7 dotted thin;
+}
+
+a,
+a:link,
+a:visited {
+  color: #286EA0;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+header,
+nav,
+section,
+main {
+  display: block;
+}
+
+body {
+  font-family: helvetica;
+  line-height: 1;
+  touch-action: pan-y;
+}
+
+.theme-dark body {
+  background: #000;
+  color: #444;
+  /* Not needed till light-level queries supported */
+  /*
+  -moz-transition: background 2s ease-in-out, color 2s ease-in-out;
+  -o-transition: background 2s ease-in-out, color 2s ease-in-out;
+  -webkit-transition: background 2s ease-in-out, color 2s ease-in-out;
+  transition: background 2s ease-in-out, color 2s ease-in-out;
+  */
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+.fa {
+  text-align: center;
+}
+
+/* Copy button styling from purecss.io */
+button {
+  background-color: rgb(0,120,231);
+  border: 1px solid #999;  /*IE 6/7/8*/
+  border: none rgba(0,0,0,0);  /*IE9 + everything else*/
+  border-radius: 2px;
+  color: #FFF;
+  cursor: pointer;
+  font-size: 1.75rem;
+  *font-size: 90%; /*IE 6/7 - To reduce IE's oversized button text*/
+  *overflow: visible; /*IE 6/7 - Because of IE's overly large left/right padding on buttons */
+  padding: 0.5em 1.5em .5em;
+  text-decoration: none;
+  /* Transitions */
+  -webkit-transition: 0.1s linear -webkit-box-shadow;
+  -moz-transition: 0.1s linear -moz-box-shadow;
+  -ms-transition: 0.1s linear box-shadow;
+  -o-transition: 0.1s linear box-shadow;
+  transition: 0.1s linear box-shadow;
+}
+
+button:hover,
+button:focus {
+  background-image: -webkit-linear-gradient(transparent, rgba(0,0,0,.05) 40%, rgba(0,0,0,.1));
+  background-image: -moz-linear-gradient(top, rgba(0,0,0,.05) 0%, rgba(0,0,0,.1));
+  background-image: -o-linear-gradient(transparent, rgba(0,0,0,.05) 40%, rgba(0,0,0,.1));
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(transparent), color-stop(40%, rgba(0,0,0,.05)), to(rgba(0,0,0,.1)));
+  background-image: linear-gradient(transparent, rgba(0,0,0,.05) 40%, rgba(0,0,0,.1));
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#1a000000',GradientType=0);
+}
+
+button:focus {
+  outline: 0;
+}
+
+button:active {
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15) inset,
+              0 0 6px rgba(0, 0, 0, 0.2) inset;
+}
+
+/* Firefox: Get rid of the inner focus border */
+button::-moz-focus-inner{
+  padding: 0;
+  border: 0;
+}
+
+form fieldset label,
+form fieldset legend {
+  display: block;
+  height: 0;
+  left: -999em;
+  margin: 0;
+  overflow: hidden;
+  position: absolute;
+  text-indent: -999em;
+  width: 0;
+}
+
+/* Copy form styling from purecss.io */
+form input[type="text"],
+form input[type="password"],
+form input[type="email"],
+form input[type="url"],
+form input[type="number"],
+form input[type="search"],
+form input[type="color"],
+form select,
+form textarea {
+  border: 1px solid #CCC;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 3px #DDD;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  display: inline-block;
+  font-size: 1.75rem;
+  padding: 0.5em 0.6em;
+  -webkit-transition: 0.3s linear border;
+  -moz-transition: 0.3s linear border;
+  -ms-transition: 0.3s linear border;
+  -o-transition: 0.3s linear border;
+  transition: 0.3s linear border;
+}
+
+form input[type="number"] {
+  text-align: center;
+}
+
+form input[type="text"]:focus,
+form input[type="password"]:focus,
+form input[type="email"]:focus,
+form input[type="url"]:focus,
+form input[type="number"]:focus,
+form input[type="search"]:focus,
+form input[type="color"]:focus,
+form select:focus,
+form textarea:focus {
+  border-color: #129FEA;
+  outline: 0;
+  outline: thin dotted \9; /* IE6-9 */
+}
+
+form input[type="file"]:focus,
+form input[type="radio"]:focus,
+form input[type="checkbox"]:focus {
+  outline: thin dotted #444;
+  outline: 1px auto #129FEA;
+}
+
+form input[type="text"][disabled],
+form input[type="password"][disabled],
+form input[type="email"][disabled],
+form input[type="url"][disabled],
+form input[type="number"][disabled],
+form input[type="search"][disabled],
+form input[type="color"][disabled],
+form select[disabled],
+form textarea[disabled] {
+  background-color: #EAEDED;
+  color: #CAD2D3;
+  cursor: not-allowed;
+}
+
+form input[readonly],
+form select[readonly],
+form textarea[readonly] {
+  background: #EEE; /* menu hover bg color */
+  border-color: #CCC;
+  color: #777; /* menu text color */
+}
+
+form input:focus:invalid,
+form textarea:focus:invalid,
+form select:focus:invalid {
+  border: 1px solid #EE5F5B;
+  color: #B94A48;
+}
+
+form input:focus:invalid:focus,
+form textarea:focus:invalid:focus,
+form select:focus:invalid:focus {
+  border-color: #E9322D;
+}
+
+form input[type="file"]:focus:invalid:focus,
+form input[type="radio"]:focus:invalid:focus,
+form input[type="checkbox"]:focus:invalid:focus {
+  outline-color: #E9322D;
+}
+
+form select {
+  border: 1px solid #CCC;
+  background-color: #FFF;
+}
+
+form select[multiple] {
+  height: auto;
+}
+
+form label {
+  font-size: 90%;
+  margin: 0.5em 0 0.2em;
+}
+
+form fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0.35em 0 0.75em;
+}
+
+form legend {
+  color: #444;
+  display: block;
+  margin-bottom: 0.3em;
+  padding: 0.3em 0;
+  width: 100%;
+}
+
+@media only screen and (max-width : 480px) {
+  form button[type="submit"] {
+    margin: 0.7em 0 0;
+  }
+
+  form input[type="text"],
+  form input[type="password"],
+  form input[type="email"],
+  form input[type="url"],
+  form input[type="search"],
+  form input[type="color"],
+  form label {
+    display: block;
+    margin-bottom: 0.3em;
+  }
+}
+
+.rich input[type=range] ~ button[type="submit"]:first-of-type {
+  display: none;
+}
+
+input[type=range] {
+  -webkit-appearance: none;
+  background: transparent;
+  margin: 3em auto;
+  width: 100%;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  background: #444;
+  border-radius: 1.3em;
+  cursor: pointer;
+  height: 2.6em;
+  width: 100%;
+}
+
+input.temp[type=range]::-webkit-slider-runnable-track {
+  background: -webkit-linear-gradient(left, #0078E7 0, #F00 100%);
+  background: linear-gradient(to right, #0078E7 0, #F00 100%);
+}
+
+input.light[type=range]::-webkit-slider-runnable-track {
+  background: -webkit-linear-gradient(left, #111 0, #aaa 100%);
+  background: linear-gradient(to right, #111 0, #aaa 100%);
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  background: #000;
+  border-radius: 50%;
+  box-shadow: inset -2px -2px 1px #286EA0, inset -2px 2px 1px #286EA0, inset 2px -2px 1px #286EA0, inset 2px 2px 1px #286EA0;
+  cursor: pointer;
+  display: block;
+  height: 2.6em;
+  width: 2.6em;
+}
+
+input[type=range]::-moz-range-track {
+  background: #444;
+  border-radius: 1.3em;
+  cursor: pointer;
+  height: 2.6em;
+  width: 100%;
+}
+
+input.temp[type=range]::-moz-range-track {
+  background: -moz-linear-gradient(left, #0078E7 0, #F00 100%);
+  background: linear-gradient(to right, #0078E7 0, #F00 100%);
+}
+
+input.light[type=range]::-moz-range-track {
+  background: -moz-linear-gradient(left, #111 0, #aaa 100%);
+  background: linear-gradient(to right, #111 0, #aaa 100%);
+}
+
+input[type=range]::-moz-range-thumb {
+  background: #000;
+  border-radius: 50%;
+  box-shadow: inset -2px -2px 1px #286EA0, inset -2px 2px 1px #286EA0, inset 2px -2px 1px #286EA0, inset 2px 2px 1px #286EA0;
+  cursor: pointer;
+  display: block;
+  height: 2.6em;
+  width: 2.6em;
+}
+
+input[type=range]::-ms-track {
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+  cursor: pointer;
+  width: 100%;
+}
+
+input[type=range]::-ms-fill {
+  background: #444;
+  border-radius: 1.3em;
+}
+
+input.temp[type=range]::-ms-fill {
+  background: -ms-linear-gradient(left, #0078E7 0, #F00 100%);
+  background: linear-gradient(to right, #0078E7 0, #F00 100%);
+}
+
+input.light[type=range]::-ms-fill {
+  background: -ms-linear-gradient(left, #111 0, #aaa 100%);
+  background: linear-gradient(to right, #111 0, #aaa 100%);
+}
+
+input[type=range]::-ms-thumb {
+  background: #000;
+  border-radius: 50%;
+  box-shadow: inset -2px -2px 1px #286EA0, inset -2px 2px 1px #286EA0, inset 2px -2px 1px #286EA0, inset 2px 2px 1px #286EA0;
+  cursor: pointer;
+  display: block;
+  height: 2.6em;
+  width: 2.6em;
+}
+
+progress {
+  -webkit-appearance: none;
+  appearance: none;
+  background: #444;
+  border: none;
+  border-radius: 0.5em;
+  color: #444;
+  display: block;
+  font-size: 2rem;
+  height: 1em;
+  margin: 1em auto;
+  overflow: hidden;
+  transition: all 0.2s ease-in-out;
+  width: 100%;
+}
+
+progress[value]::-webkit-progress-bar {
+  background: #444;
+  border-radius: 3px;
+}
+
+progress[value]::-webkit-progress-value {
+  background: #0078E7;
+  color: #0078E7;
+}
+
+@-moz-keyframes breath {
+  0% {
+    -moz-box-shadow: none;
+    box-shadow: none;
+  }
+
+  50% {
+    -moz-box-shadow: 0 0 15px 5px #286EA0;
+    box-shadow: 0 0 15px 5px #286EA0;
+  }
+
+  100% {
+    -moz-box-shadow: none;
+    box-shadow: none;
+  }
+}
+
+@-webkit-keyframes breath {
+  0% {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+
+  50% {
+    -webkit-box-shadow: 0 0 15px 5px #286EA0;
+    box-shadow: 0 0 15px 5px #286EA0;
+  }
+
+  100% {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+}
+
+@keyframes breath {
+  0% {
+    box-shadow: none;
+  }
+
+  50% {
+    box-shadow: 0 0 15px 5px #286EA0;
+  }
+
+  100% {
+    box-shadow: none;
+  }
+}
+
+header {
+  border-bottom: 1px solid #DDD;
+  clear: both;
+  padding: 1em 1em 1px 1em;
+}
+
+header h1 {
+  float: left;
+  padding-right: 0.5em;
+  text-transform: uppercase;
+}
+
+header h1 a {
+  color: #000;
+  font-weight: bold;
+}
+
+header h2#current {
+  height: 0;
+  left: -999em;
+  position: absolute;
+  width: 0;
+}
+
+header nav,
+header nav ul,
+header nav ul li {
+  float: left;
+}
+
+header h1,
+header ul li {
+  margin: 1em 0.2em 0.4em 0.2em;
+}
+
+header ul li a {
+  background-color: #DDD;
+  border: 1px solid #FFF;
+  border-width: 1px 1px 0 1px;
+  padding: 0.5em 1em;
+  position: relative;
+}
+
+header #indicator {
+  border-radius: 50%;
+  height: 1.5em;
+  overflow: hidden;
+  position: fixed;
+  right: 0.5em;
+  text-indent: -999em;
+  top: 0.5em;
+  width: 1.5em;
+  z-index: 2;
+}
+
+header .disconnected {
+  background: #F00;
+  cursor: pointer;
+  -moz-animation-duration: 6s;
+  -moz-animation-iteration-count: infinite;
+  -moz-animation-name: breath;
+  -webkit-animation-duration: 6s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-name: breath;
+  animation-duration: 6s;
+  animation-iteration-count: infinite;
+  animation-name: breath;
+}
+
+header .connecting {
+  background: #444;
+}
+
+header .connected {
+  background: #0078E7;
+}
+
+section {
+  clear: both;
+  font-size: 300%;
+  position: relative;
+}
+
+.dashboard section {
+  clear: none;
+  display: inline-block;
+}
+
+section h1 {
+  height: 0;
+  overflow: hidden;
+  text-indent: -999em;
+}
+
+section .text-block h1 {
+  height: auto;
+  text-indent: 0;
+}
+
+.device-off {
+  -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=50)';
+  filter: alpha(opacity=50);
+  -moz-opacity: 0.5;
+  -webkit-opacity: 0.5;
+  opacity: 0.5;
+}
+
+section > div {
+  float: left;
+  width: 50%;
+}
+
+.dashboard section > div {
+  float: none;
+  width: 100%;
+}
+
+section .control-block .volume,
+section .control-block .channel,
+section .control-block .media,
+section .control-block .shortcuts,
+section .control-block .control,
+section .control-block .buttons,
+section .control-block .presets,
+section .control-block .alarm,
+section .control-block .mode,
+section .control-block .presence {
+  float: left;
+  width: 15%;
+}
+
+section .control-block .navigation {
+  float: left;
+  width: 70%;
+}
+
+section .control-block fieldset {
+  padding-bottom: 0;
+}
+
+section .text-control li {
+  display: inline-block;
+  font-size: 50%;
+  width: 22%;
+}
+
+section .curtain {
+  background: rgba(0, 0, 0, 0.75);
+  bottom: 0;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+}
+
+section .curtain .modal {
+  left: 50%;
+  max-width: 80%;
+  position: fixed;
+  top: 50vh;
+  transform: translateX(-50%) translateY(-50%);
+  width: 640px;
+}
+
+section .modal img,
+section .modal audio,
+section .modal video {
+  max-width: 100%;
+}
+
+section .curtain .modal .close-modal {
+  position: absolute;
+  right: -1rem;
+  top: -1rem;
+}
+
+section iframe {
+  border: 1px solid #444;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  display: block;
+  height: 10em;
+  margin: 0 auto;
+  max-width: 100%;
+  width: 15em;
+}
+
+section .text,
+section .text-block,
+section .text-list {
+  clear: both;
+  float: none;
+  margin: 0 auto;
+  text-align: center;
+  width: 100%;
+}
+
+section .text-block,
+section .text-list {
+  font-size: 50%;
+  line-height: 1.2em;
+  max-width: 40em;
+  text-align: left;
+  width: 90%;
+}
+
+section .text-block a:link,
+section .text-block a:visited {
+  color: #0078E7;
+  display: inline;
+}
+
+section .text-block p {
+  padding: 0.5em 0;
+}
+
+section .text-block h2 {
+  font-weight: bold;
+}
+
+section .text-block h2,
+section .text-block li {
+  margin: 0.5em 0;
+}
+
+section .text-block h2 .fa,
+section .text-block li .fa {
+  margin-right: 0.5em;
+}
+
+section .text-block li.loss .fa,
+section .state-err .fa {
+  color: #F00;
+}
+
+section .text-block h2 .fa,
+section .text-block li.gain .fa,
+section .state-ok .fa {
+  color: #0078E7;
+}
+
+section .text-block li .name {
+  display: inline-block;
+  min-width: 3.5em;
+}
+
+section .text-list li,
+section .text-list li h2 {
+  margin: 0.5em 0;
+}
+
+section .text-list li .text-group {
+  text-align: center;
+}
+
+section .text-list li .text-group li {
+  margin: 0.3em 0.5%;
+  position: relative;
+}
+
+section .text-group li dt a {
+  display: block;
+  height: 100%;
+  left: 0;
+  overflow: hidden;
+  position: absolute;
+  text-indent: -999em;
+  top: 0;
+  width: 100%;
+}
+
+section .text-group li dt a:hover {
+  outline: 1px solid #0078e7;
+}
+
+section.sports .text-group .away,
+section.sports .text-group .home {
+  display: inline-block;
+  text-align: left;
+  width: 48%;
+}
+
+section.sports .text-group .home {
+  text-align: right;
+}
+
+section.sports .text-group .away span,
+section.sports .text-group .home span {
+  display: block;
+}
+
+section.sports .text-group .state {
+  text-align: center;
+}
+
+section.sports .text-group img {
+  max-width: 100%;
+}
+
+section.sports .winner,
+section.sports .live .state {
+  color: #0078E7;
+}
+
+section .dialog {
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  font-size: 50%;
+  margin: 0 auto;
+  max-height: 10em;
+  overflow-y: auto;
+  padding: 0.25em;
+  text-align: left;
+  width: 90%;
+}
+
+section .dialog:not(:empty) {
+  border: 1px solid #444;
+}
+
+section .dialog .time {
+  display: inline-block;
+  -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=50)';
+  filter: alpha(opacity=50);
+  font-size: 70%;
+  min-width: 7.5em;
+  -moz-opacity: 0.5;
+  -webkit-opacity: 0.5;
+  opacity: 0.5;
+  vertical-align: middle;
+}
+
+section .dialog .gerty {
+  color: #0078E7;
+}
+
+section .dialog .user-0 {
+  color: #F8F;
+}
+
+section .dialog .user-1 {
+  color: #F00;
+}
+
+section .dialog .user-2 {
+  color: #0F0;
+}
+
+section .dialog .user-3 {
+  color: #00F;
+}
+
+section .dialog .user-4 {
+  color: #FF0;
+}
+
+section .dialog .user-5 {
+  color: #F0F;
+}
+
+section .dialog .user-6 {
+  color: #0FF;
+}
+
+section .dialog .user-7 {
+  color: #F88;
+}
+
+section .dialog .user-8 {
+  color: #8F8;
+}
+
+section .dialog .user-9 {
+  color: #88F;
+}
+
+section .installed,
+section .installed-list,
+section .image-list,
+section .video-list {
+  clear: both;
+  float: none;
+  margin: 0 auto;
+  text-align: center;
+  width: 100%;
+}
+
+section .installed .sub-device-list li,
+section .text-list .text-group li {
+  display: inline-block;
+  margin: 0.1em 0.5%;
+  vertical-align: middle;
+  width: 28%;
+}
+
+section .installed .sub-device-group,
+section .installed .sub-device-group li,
+section .installed-list li,
+section .image-list li,
+section .video-list li,
+section .text-list .text-group li {
+  display: inline-block;
+  margin: 0.1em 0.5%;
+  max-width: 30%;
+  vertical-align: middle;
+  width: 500px;
+}
+
+section .text-list .text-group li dl {
+  font-size: 80%;
+  padding: 0 1em;
+}
+
+section .installed-list li,
+section .image-list li,
+section .video-list li {
+  max-width: 45%;
+  width: auto;
+}
+
+section .installed li a,
+section .installed-list li a {
+  width: auto;
+}
+
+section .installed-list li img {
+  max-height: 150px;
+  max-width: 100%;
+  width: 250px;
+}
+
+section .image-list li img,
+section .video-list li img {
+  max-height: 250px;
+  max-width: 100%;
+}
+
+section .image-list li,
+section .video-list li {
+  font-size: 30%;
+  margin: 0.75em 0.5em;
+  position: relative;
+}
+
+section .video-list li img,
+section .video-list li span {
+  max-width: 200px;
+  width: 100%;
+}
+
+section .image-list li .photo a,
+section .video-list li .thumb,
+section .video-list li .video a {
+  bottom: 0;
+  display: none;
+  height: 100%;
+  left: 0;
+  overflow: hidden;
+  position: absolute;
+  right: 0;
+  text-indent: -999em;
+  top: 0;
+  width: 100%;
+}
+
+section .video-list li .thumb span {
+  height: 150px;
+  margin: 0 auto;
+  width: 200px;
+}
+
+section .video-list li:hover .thumb span {
+  transform: scale(1.25);
+}
+
+section .image-list li .photo a,
+section .video-list li .video a,
+section .video-list li:hover .thumb,
+section .video-list li:hover .thumb span  {
+  display: block;
+}
+
+section .video-list li:hover .thumb span {
+  -moz-transform: scale(1.25);
+  -webkit-transform: scale(1.25);
+  transform: scale(1.25);
+}
+
+section ol,
+section ul {
+  margin: 0;
+  padding-left: 0;
+}
+
+section a,
+section span {
+  -moz-transition: all 0.1s ease-in-out;
+  -o-transition: all 0.1s ease-in-out;
+  -webkit-transition: all 0.1s ease-in-out;
+  transition: all 0.1s ease-in-out;
+}
+
+section a {
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+  -moz-touch-callout: none;
+  -ms-touch-callout: none;
+  -webkit-touch-callout: none;
+  touch-callout: none;
+  width: 1em;
+}
+
+section span em,
+section a em,
+section .text-block li .fa span {
+  display: block;
+  height: 0;
+  overflow: hidden;
+  text-indent: -999em;
+  width: 0;
+}
+
+section a span,
+section .sub-device-list .icon .fa span {
+  display: block;
+  height: 0;
+  overflow: hidden;
+  text-indent: -999em;
+  width: 0;
+}
+
+section a:link,
+section a:visited {
+  color: #444;
+  text-decoration: none;
+}
+
+section a:hover,
+section a:active,
+section a:focus {
+  color: #0078E7;
+  text-shadow: 0 0 5px rgba(0,70,135,.5);
+}
+
+section a.fa-power-off {
+  color: #F00;
+}
+
+section a.power-on {
+  color: #0078E7;
+}
+
+section .control-block {
+  margin: 0.5em 0;
+}
+
+section .control-block:only-child,
+section .control-block.full {
+  float: none;
+  margin: 0 auto;
+}
+
+section .channel {
+  padding-top: 0.65em;
+}
+
+section .presets li {
+  overflow: hidden;
+}
+
+section .volume a,
+section .channel a,
+section .presets a,
+section .mode a {
+  display: block;
+  margin: 0.4em auto;
+}
+
+section .alarm a {
+  margin: 0.15em auto;
+}
+
+section .presence a {
+  display: block;
+  margin: 1em auto;
+}
+
+section .navigation a {
+  float: left;
+  margin: 0.2em auto;
+  width: 33%;
+}
+
+section .navigation .fa-arrow-up,
+section .navigation .fa-arrow-down {
+  clear: both;
+  display: block;
+  float: none;
+}
+
+section .navigation .fa-arrow-left,
+section .navigation .fa-arrow-right {
+  line-height: 160%;
+}
+
+section .navigation .fa-check-empty {
+  font-size: 175%;
+}
+
+section .numeric-controls li {
+  float: left;
+  width: 33%;
+}
+
+section .numeric-controls ol li:last-child {
+  width: 100%;
+}
+
+.foscam .numeric-controls ol li:last-child {
+  width: 33%;
+}
+
+section .numeric-controls ul li {
+  margin-top: -1em;
+  text-align: center;
+}
+
+section .numeric-controls ul li:last-child {
+  float: right;
+}
+
+section .numeric-controls ol span,
+section .presets ol span {
+  display: inline;
+  height: auto;
+  overflow: visible;
+  text-indent: 0;
+  width: auto;
+}
+
+section .media {
+  padding-top: 1em;
+}
+
+section .shortcuts {
+  padding-top: 1.5em;
+}
+
+section .media a {
+  float: left;
+  width: 20%;
+}
+
+section .shortcuts a {
+  float: left;
+  margin: 0.3em 0;
+  width: 20%;
+}
+
+section .control-block .media,
+section .control-block .shortcuts {
+  padding-top: 0;
+}
+
+section .control-block .media a,
+section .control-block .shortcuts a,
+section .control-block .control a,
+section .control-block .buttons a {
+  float: none;
+  margin: 0.4em auto;
+  width: auto;
+}
+
+section .control-block .compact a {
+  margin: 0.15em auto;
+}
+
+section .media a.red {
+  color: red;
+}
+
+section .media a.green {
+  color: green;
+}
+
+section .media a.yellow {
+  color: yellow;
+}
+
+section .media a.blue {
+  color: blue;
+}
+
+section .preview-image {
+  background: #000 no-repeat url(../images/loading.gif) center;
+  position: relative;
+}
+
+section .preview-image:after {
+  content: '';
+  display: block;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+section .preview-image img {
+  color: transparent;
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  min-height: 200px;
+}
+
+section .emoji {
+  float: none;
+  font-size: 70%;
+  margin: 0 auto;
+  padding: 1em 0;
+  text-align: center;
+}
+
+section .emoji span {
+  cursor: pointer;
+  display: block;
+  font-size: 29px;
+  margin: 0 auto;
+  padding: 0.5em;
+  /* Emoji size can't be adjusted by font-size */
+  -moz-transform: scale(2);
+  -webkit-transform: scale(2);
+  transform: scale(2);
+  -moz-transition: none;
+  -webkit-transition: none;
+  transition: none;
+  width: 1em;
+}
+
+@-moz-keyframes bounce {
+  0% {
+    -moz-transform: translate(0, 0) scale(2);
+    transform: translate(0, 0) scale(2);
+  }
+
+  50% {
+    -moz-transform: translate(0, -1em) scale(2);
+    transform: translate(0, -1em) scale(2);
+  }
+
+  100% {
+    -moz-transform: translate(0, 0) scale(2);
+    transform: translate(0, 0) scale(2);
+  }
+}
+
+@-webkit-keyframes bounce {
+  0% {
+    -webkit-transform: translate(0, 0) scale(2);
+    transform: translate(0, 0) scale(2);
+  }
+
+  50% {
+    -webkit-transform: translate(0, -1em) scale(2);
+    transform: translate(0, -1em) scale(2);
+  }
+
+  100% {
+    -webkit-transform: translate(0, 0) scale(2);
+    transform: translate(0, 0) scale(2);
+  }
+}
+
+@keyframes bounce {
+  0% {
+    transform: translate(0, 0) scale(2);
+  }
+
+  50% {
+    transform: translate(0, -1em) scale(2);
+  }
+
+  100% {
+    transform: translate(0, 0) scale(2);
+  }
+}
+
+@-moz-keyframes roll {
+  0% {
+    -moz-transform: translate(0, 0) rotate(0deg) scale(2);
+    transform: translate(0, 0) rotate(0deg) scale(2);
+  }
+
+  25% {
+    -moz-transform: translate(3em, 0) rotate(360deg) scale(2);
+    transform: translate(3em, 0) rotate(360deg) scale(2);
+  }
+
+  50% {
+    -moz-transform: translate(0, 0) rotate(0deg) scale(2);
+    transform: translate(0, 0) rotate(0deg) scale(2);
+  }
+
+  75% {
+    -moz-transform: translate(-3em, 0) rotate(-360deg) scale(2);
+    transform: translate(-3em, 0) rotate(-360deg) scale(2);
+  }
+
+  100% {
+    -moz-transform: translate(0, 0) rotate(0deg) scale(2);
+    transform: translate(0, 0) rotate(0deg) scale(2);
+  }
+}
+
+@-webkit-keyframes roll {
+  0% {
+    -webkit-transform: translate(0, 0) rotate(0deg) scale(2);
+    transform: translate(0, 0) rotate(0deg) scale(2);
+  }
+
+  25% {
+    -webkit-transform: translate(3em, 0) rotate(360deg) scale(2);
+    transform: translate(3em, 0) rotate(360deg) scale(2);
+  }
+
+  50% {
+    -webkit-transform: translate(0, 0) rotate(0deg) scale(2);
+    transform: translate(0, 0) rotate(0deg) scale(2);
+  }
+
+  75% {
+    -webkit-transform: translate(-3em, 0) rotate(-360deg) scale(2);
+    transform: translate(-3em, 0) rotate(-360deg) scale(2);
+  }
+
+  100% {
+    -webkit-transform: translate(0, 0) rotate(0deg) scale(2);
+    transform: translate(0, 0) rotate(0deg) scale(2);
+  }
+}
+
+@keyframes roll {
+  0% {
+    transform: translate(0, 0) rotate(0deg) scale(2);
+  }
+
+  25% {
+    transform: translate(3em, 0) rotate(360deg) scale(2);
+  }
+
+  50% {
+    transform: translate(0, 0) rotate(0deg) scale(2);
+  }
+
+  75% {
+    transform: translate(-3em, 0) rotate(-360deg) scale(2);
+  }
+
+  100% {
+    transform: translate(0, 0) rotate(0deg) scale(2);
+  }
+}
+
+@-moz-keyframes shrink {
+  0% {
+    -moz-transform: scale(2);
+    transform: scale(2);
+  }
+
+  70% {
+    -moz-transform: scale(1);
+    transform: scale(1);
+  }
+
+  100% {
+    -moz-transform: scale(2);
+    transform: scale(2);
+  }
+}
+
+@-webkit-keyframes shrink {
+  0% {
+    -webkit-transform: scale(2);
+    transform: scale(2);
+  }
+
+  70% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+
+  100% {
+    -webkit-transform: scale(2);
+    transform: scale(2);
+  }
+}
+
+@keyframes shrink {
+  0% {
+    transform: scale(2);
+  }
+
+  70% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(2);
+  }
+}
+
+@-moz-keyframes shake {
+  0% {
+    -moz-transform: translate(0, 0) scale(2);
+    transform: translate(0, 0) scale(2);
+  }
+
+  25% {
+    -moz-transform: translate(-.5em, 0) scale(2);
+    transform: translate(-.5em, 0) scale(2);
+  }
+
+  50% {
+    -moz-transform: translate(0, 0) scale(2);
+    transform: translate(0, 0) scale(2);
+  }
+
+  75% {
+    -moz-transform: translate(0.5em, 0) scale(2);
+    transform: translate(0.5em, 0) scale(2);
+  }
+
+  100% {
+    -moz-transform: translate(0, 0) scale(2);
+    transform: translate(0, 0) scale(2);
+  }
+}
+
+@-webkit-keyframes shake {
+  0% {
+    -webkit-transform: translate(0, 0) scale(2);
+    transform: translate(0, 0) scale(2);
+  }
+
+  25% {
+    -webkit-transform: translate(-0.5em, 0) scale(2);
+    transform: translate(-0.5em, 0) scale(2);
+  }
+
+  50% {
+    -webkit-transform: translate(0, 0) scale(2);
+    transform: translate(0, 0) scale(2);
+  }
+
+  75% {
+    -webkit-transform: translate(0.5em, 0) scale(2);
+    transform: translate(0.5em, 0) scale(2);
+  }
+
+  100% {
+    -webkit-transform: translate(0, 0) scale(2);
+    transform: translate(0, 0) scale(2);
+  }
+}
+
+@keyframes shake {
+  0% {
+    transform: translate(0, 0) scale(2);
+  }
+
+  25% {
+    transform: translate(-0.5em, 0) scale(2);
+  }
+
+  50% {
+    transform: translate(0, 0) scale(2);
+  }
+
+  75% {
+    transform: translate(0.5em, 0) scale(2);
+  }
+
+  100% {
+    transform: translate(0, 0) scale(2);
+  }
+}
+
+section .emoji .bounce,
+section .emoji .roll,
+section .emoji .shrink,
+section .emoji .shake {
+  -moz-animation-duration: 1s;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -moz-animation-iteration-count: 1;
+  -webkit-animation-iteration-count: 1;
+  animation-iteration-count: 1;
+  -moz-animation-timing-function: ease-in-ou;
+  -webkit-animation-timing-function: ease-in-out;
+  animation-timing-function: ease-in-out;
+}
+
+section .emoji .bounce {
+  -moz-animation-iteration-count: 10;
+  -webkit-animation-iteration-count: 10;
+  animation-iteration-count: 10;
+  -moz-animation-name: bounce;
+  -webkit-animation-name: bounce;
+  animation-name: bounce;
+}
+
+section .emoji .roll {
+  -moz-animation-duration: 3s;
+  -webkit-animation-duration: 3s;
+  animation-duration: 3s;
+  -moz-animation-iteration-count: 2;
+  -webkit-animation-iteration-count: 2;
+  animation-iteration-count: 2;
+  -moz-animation-name: roll;
+  -webkit-animation-name: roll;
+  animation-name: roll;
+}
+
+section .emoji .shrink {
+  -moz-animation-duration: 3s;
+  -webkit-animation-duration: 3s;
+  animation-duration: 3s;
+  -moz-animation-name: shrink;
+  -webkit-animation-name: shrink;
+  animation-name: shrink;
+}
+
+section .emoji .shake {
+  -moz-animation-duration: 0.3s;
+  -webkit-animation-duration: 0.3s;
+  animation-duration: 0.3s;
+  -moz-animation-iteration-count: 10;
+  -webkit-animation-iteration-count: 10;
+  animation-iteration-count: 10;
+  -moz-animation-name: shake;
+  -webkit-animation-name: shake;
+  animation-name: shake;
+}
+
+section .current {
+  font-size: 50%;
+  text-align: center;
+}
+
+section .sub-device-list .sub-device-group,
+section .text-list .text-group li {
+  border: 1px solid #444;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  margin: 0.1em 0;
+  padding: 0.4em .1em;
+}
+
+section .sub-device-list h2,
+section .sub-device-group h2,
+section .sub-device-group dt {
+  font-size: 50%;
+  margin-bottom: 0.5em;
+}
+
+section .sub-device-group li {
+  max-width: 100%;
+  vertical-align: top;
+}
+
+section .sub-device-list li a span,
+section .sub-device-list li span span,
+section .sub-device-list li dl dd {
+  display: block;
+  font-size: 30%;
+  height: auto;
+  overflow: visible;
+  text-indent: 0;
+  width: auto;
+}
+
+section .sub-device-list li a span,
+section .sub-device-list li span span {
+  font-family: helvetica;
+}
+
+section .sub-device-list li dl dd.fa,
+section .sub-device-list li dl dd.icon {
+  font-size: 100%;
+}
+
+.device-active .fa:before,
+.fa.device-active:before {
+  text-shadow: -2px -2px 1px #286EA0,
+               -2px 2px 1px #286EA0,
+               2px -2px 1px #286EA0,
+               2px 2px 1px #286EA0;
+  -moz-transition: text-shadow 0.1s ease-in-out;
+  -o-transition: text-shadow 0.1s ease-in-out;
+  -webkit-transition: text-shadow 0.1s ease-in-out;
+  transition: text-shadow 0.1s ease-in-out;
+}
+
+.device-active.heat .fa:before,
+.device-active.smoke .fa:before,
+.device-active.co .fa:before,
+.device-active.batt .fa:before {
+  text-shadow: -2px -2px 1px #F00,
+               -2px 2px 1px #F00,
+               2px -2px 1px #F00,
+               2px 2px 1px #F00;
+}
+
+.device-active.smoke .smoke,
+.device-active.co .co,
+.device-active.batt .batt {
+  color: #F00;
+}
+
+a.device-active:hover:before,
+a.device-active:focus:before {
+  text-shadow: 0 0 0 #286EA0;
+}
+
+@-moz-keyframes vibrate {
+  0% {
+    -moz-transform: rotate(0deg) translate(0, 0);
+  }
+
+  20% {
+    -moz-transform: rotate(-5deg) translate(2px, -2px);
+  }
+
+  40% {
+    -moz-transform: rotate(3deg) translate(-1px, 0);
+  }
+
+  60% {
+    -moz-transform: rotate(-2deg) translate(0, 2px);
+  }
+
+  80% {
+    -moz-transform: rotate(5deg) translate(-2px, 1px);
+  }
+
+  100% {
+    -moz-transform: rotate(-4deg) translate(1px, 2px);
+  }
+}
+
+@-webkit-keyframes vibrate {
+  0% {
+    -webkit-transform: rotate(0deg) translate(0, 0);
+  }
+
+  20% {
+    -webkit-transform: rotate(-5deg) translate(2px, -2px);
+  }
+
+  40% {
+    -webkit-transform: rotate(3deg) translate(-1px, 0);
+  }
+
+  60% {
+    -webkit-transform: rotate(-2deg) translate(0, 2px);
+  }
+
+  80% {
+    -webkit-transform: rotate(5deg) translate(-2px, 1px);
+  }
+
+  100% {
+    -webkit-transform: rotate(-4deg) translate(1px, 2px);
+  }
+}
+
+@keyframes vibrate {
+  0% {
+    transform: rotate(0deg) translate(0, 0);
+  }
+
+  20% {
+    transform: rotate(-5deg) translate(2px, -2px);
+  }
+
+  40% {
+    transform: rotate(3deg) translate(-1px, 0);
+  }
+
+  60% {
+    transform: rotate(-2deg) translate(0, 2px);
+  }
+
+  80% {
+    transform: rotate(5deg) translate(-2px, 1px);
+  }
+
+  100% {
+    transform: rotate(-4deg) translate(1px, 2px);
+  }
+}
+
+.device-vibrate.fa:before {
+  -moz-animation-duration: 0.2s;
+  -webkit-animation-duration: 0.2s;
+  animation-duration: 0.2s;
+  -moz-animation-iteration-count: infinite;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -moz-animation-name: vibrate;
+  -webkit-animation-name: vibrate;
+  animation-name: vibrate;
+  -moz-animation-timing-function: linear;
+  -webkit-animation-timing-function: linear;
+  animation-timing-function: linear;
+  -moz-transform-origin: 50% 50%;
+  -webkit-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+  -moz-transition: all 2s ease-in-out;
+  -o-transition: all 2s ease-in-out;
+  -webkit-transition: all 2s ease-in-out;
+  transition: all 2s ease-in-out;
+}
+
+@media (max-width: 1000px), (max-height: 600px) {
+  section.samsung .numeric-controls,
+  section.samsung .media,
+  section.samsung .information {
+    display: none;
+  }
+}
+
+section.denon.device-on .power-on,
+section.denon.device-off .power-off,
+section.ps3.device-on .power-on,
+section.ps3.device-off .power-off {
+  display: none;
+}
+
+section.ps3 .media {
+  padding-top: 2.5em;
+}
+
+.dashboard section.ps3 .media {
+  padding-top: 0;
+}
+
+section.ps3 .media a {
+  width: 25%;
+}
+
+section.nest .navigation {
+  margin-top: 0.5em;
+}
+
+section.nest .text-input {
+  display: inline-block;
+}
+
+section.nest .control-block .navigation a {
+  float: none;
+  margin: 0.1em auto;
+}
+
+section.nest .sub-device-list .sub-device-group,
+section.nest .sub-device-list .sub-device-group li {
+  box-sizing: border-box;
+  max-width: 100%;
+  width: 100%;
+}
+
+section.nest .sub-device-list .control-device-status li {
+  max-width: 40%;
+  width: 40%;
+}
+
+section.nest .sub-device-list .control-device-status li:only-child {
+  max-width: 80%;
+  width: 80%;
+}
+
+section.nest .sub-device-list .text-device-status {
+  max-width: 100%;
+  width: 100%;
+}
+
+section.nest .text-device-status .text-device-status li {
+  max-width: 22%;
+}
+
+section.powerView form {
+  text-align: center;
+}
+
+section.powerView legend {
+  font-size: 50%;
+  height: auto;
+  left: 0;
+  overflow: visible;
+  position: static;
+  text-indent: 0;
+  width: auto;
+}
+
+section.weather li span.fa {
+  min-width: 1em;
+}
+
+section.denon .numeric-controls {
+  clear: left;
+}
+
+section.pioneer .text-control li a {
+  text-align: right;
+}
+
+section,
+.subdevice {
+  -moz-transition: opacity 0.5s ease-in-out;
+  -o-transition: opacity 0.5s ease-in-out;
+  -webkit-transition: opacity 0.5s ease-in-out;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.dashboard header,
+section {
+  display: none;
+  margin: 0 0.5em;
+}
+
+body.rich section.selected,
+section:target {
+  display: block;
+}
+
+.dashboard section h1 {
+  font-size: 50%;
+  height: auto;
+  overflow: visible;
+  text-indent: 0;
+}
+
+.dashboard section {
+  border: 1px solid #444;
+  margin: 0.25em;
+  padding: 0.25em;
+  vertical-align: middle;
+}
+
+.dashboard section
+.dashboard section.selected,
+.dashboard body.rich section.selected,
+.dashboard section:target {
+  display: inline-block;
+}
+
+header .selected a {
+  background-color: #FFF;
+  border-color: #DDD;
+  color: #000;
+}
+
+@media (light-level: washed) {
+  body,
+  .theme-dark body {
+    background: #DDD;
+    color: #444;
+  }
+}
+
+@media (light-level: normal) {
+  body,
+  .theme-dark body {
+    background: #444;
+    color: #222;
+  }
+}
+
+@media (light-level: dim) {
+  body,
+  .theme-dark body {
+    background: #000;
+    color: #444;
+  }
+}
+
+.theme-dark header {
+  padding-bottom: 0.5em;
+}
+
+.theme-dark header h1 a,
+.theme-dark input,
+.theme-dark button {
+  color: #444;
+}
+
+.theme-dark input {
+  background-color: #000;
+}
+
+.theme-dark button {
+  background-color: #0078E7;
+}
+
+.theme-dark header {
+  border: none;
+}
+
+.theme-dark header ul a {
+  background-color: #444;
+  border: none;
+  color: #888;
+  font-weight: bold;
+}
+
+.theme-dark header .selected a {
+  background-color: rgb(0,120,231);
+  border: 1px solid #999;  /*IE 6/7/8*/
+  border: none rgba(0,0,0,0);  /*IE9 + everything else*/
+  border-radius: 2px;
+  color: #444;
+  cursor: pointer;
+  *font-size: 90%; /*IE 6/7 - To reduce IE's oversized button text*/
+  *overflow: visible; /*IE 6/7 - Because of IE's overly large left/right padding on buttons */
+  text-decoration: none;
+  /* Transitions */
+  -webkit-transition: 0.1s linear -webkit-box-shadow;
+  -moz-transition: 0.1s linear -moz-box-shadow;
+  -ms-transition: 0.1s linear box-shadow;
+  -o-transition: 0.1s linear box-shadow;
+  transition: 0.1s linear box-shadow;
+}
+
+.theme-dark header .selected a:hover,
+.theme-dark header .selected a:focus {
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#1a000000',GradientType=0);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(transparent), color-stop(40%, rgba(0,0,0,.05)), to(rgba(0,0,0,.1)));
+  background-image: -webkit-linear-gradient(transparent, rgba(0,0,0,.05) 40%, rgba(0,0,0,.1));
+  background-image: -moz-linear-gradient(top, rgba(0,0,0,.05) 0%, rgba(0,0,0,.1));
+  background-image: -o-linear-gradient(transparent, rgba(0,0,0,.05) 40%, rgba(0,0,0,.1));
+  background-image: linear-gradient(transparent, rgba(0,0,0,.05) 40%, rgba(0,0,0,.1));
+}
+
+header nav li.screenSaver {
+  display: none;
+}
+
+.clientScreenSaver.device-off {
+  background: rgba(0, 0, 0, 0);
+  z-index: -1;
+}
+
+.clientScreenSaver {
+  background: rgba(0, 0, 0, 1);
+  bottom: 0;
+  display: block;
+  height: 100%;
+  left: 0;
+  margin: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  -moz-transition: background 5s ease-in-out, color 2s ease-in-out;
+  -o-transition: background 5s ease-in-out, color 2s ease-in-out;
+  -webkit-transition: background 5s ease-in-out, color 2s ease-in-out;
+  transition: background 5s ease-in-out, color 2s ease-in-out;
+  width: 100%;
+  z-index: 2;
+}
+
+@media (max-width: 650px) {
+  section .text-form input[type="text"],
+  section .text-form input[type="password"],
+  section .text-form input[type="email"],
+  section .text-form input[type="url"],
+  section .text-form input[type="number"],
+  section .text-form input[type="search"],
+  section .text-form input[type="color"],
+  section .text-form select,
+  section .text-form textarea,
+  button {
+    font-size: 1.25rem;
+    margin: 0 auto;
+    width: 90%;
+  }
+
+  header ul {
+    clear: both;
+    float: none;
+  }
+
+  section {
+    font-size: 250%;
+  }
+
+  section > div {
+    clear: both;
+    float: none;
+    width: 100%;
+  }
+
+  section .control-block {
+    margin: 0;
+  }
+
+  section .installed .sub-device-group,
+  section .installed .sub-device-group li,
+  section .text-list .text-group li {
+    max-width: 45%;
+  }
+
+  section.ps3 .media {
+    padding-top: 1em;
+  }
+
+  section .shortcuts {
+    padding-top: 0;
+  }
+
+  section.powerView .installed .sub-device-list li {
+    min-width: 40%;
+  }
+
+  section.nest .sub-device-list .sub-device-group {
+    max-width: 90%;
+    width: 90%;
+  }
+
+  section.nest .sub-device-list .control-device-status li {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+@media (max-width: 500px) {
+  header h1,
+  .nest .sub-device-list h2 {
+    display: none;
+  }
+
+  section .shortcuts {
+    padding-top: 0.5em;
+  }
+
+  section .installed .sub-device-list .sub-device-group {
+    width: 40%;
+  }
+
+  section .installed .sub-device-group li,
+  section .text-list .text-group li {
+    max-width: 90%;
+  }
+
+  section.nest .sub-device-list .sub-device-group,
+  section.nest .sub-device-list .control-device-status li,
+  section.nest .sub-device-list .control-device-status li:only-child {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  section.nest .text-device-status .text-device-status li {
+    max-width: 40%;
+  }
+
+  section .image-list li {
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 650px) {
+  section {
+    font-size: 300%;
+  }
+
+  section > div {
+    float: left;
+    width: 50%;
+  }
+
+  section .installed .sub-device-group,
+  section .installed .sub-device-group li,
+  section .text-list .text-group li {
+    max-width: 45%;
+  }
+
+  section.nest .sub-device-list .sub-device-group {
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 1000px) {
+  section {
+    font-size: 400%;
+  }
+
+  section .installed .sub-device-group,
+  section .installed .sub-device-group li,
+  section .text-list .text-group li,
+  section .installed-list li,
+  section .image-list li {
+    max-width: 30%;
+  }
+
+  section.nest .text-device-status .text-device-status li {
+    max-width: 22%;
+  }
+}
+
+header:after,
+header ul:after,
+section .control-block:after,
+section .media:after {
+  clear: both;
+  content: '.';
+  display: block;
+  height: 0;
+  visibility: hidden;
+  width: 0;
+}
