@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html" class="theme-dark" manifest="/manifest.appcache">
   <head>
@@ -28,6 +27,7 @@
 
           <li class="screenSaver"><a href="#screenSaver">Screen Saver</a></li>
           <li class="smartthings selected"><a href="#smartthings">SmartThings</a></li>
+          <li class="powerView"><a href="#powerView">Blinds</a></li>
           <li class="nest"><a href="#nest">Nest</a></li>
           <li class="samsung"><a href="#samsung">SmartTV</a></li>
           <li class="ps3"><a href="#ps3">PS3</a></li>
@@ -124,6 +124,105 @@
             <li><a href="/?smartthings=subdevice-mode-Away" class="fa fa-compass" title="Away: Inactive"><span>Away</span> <em>Inactive</em></a></li>
             <li><a href="/?smartthings=subdevice-mode-Night" class="fa fa-moon-o" title="Night: Inactive"><span>Night</span> <em>Inactive</em></a></li>
           </ul>
+        </div>
+      </section>
+      <section id="powerView" class="powerView device-on" data-string-set_percentage="Set Percentage">
+        <h1>PowerView <em>Active</em></h1>
+        <div class="installed">
+
+          <ol class="sub-device-list">
+
+              <li>
+                <form class="text-form" action="/" method="get">
+                  <fieldset>
+                    <legend>Dining Room 1</legend>
+                    <label for="powerview-dining_room_1-percentage">Set Percentage:</label>
+                    <input id="powerview-dining_room_1-percentage" class="text-input" type="number" max="100" min="0" name="powerView" value="0" required />
+                    <input class="light" type="range" max="100" min="0" name="powerView" value="0" />
+                    <input class="input-type" type="hidden" value="subdevice-Dining Room 1" name="type" />
+                    <button type="submit" class="button">Submit</button>
+                  </fieldset>
+                </form>
+              </li>
+              <li>
+                <form class="text-form" action="/" method="get">
+                  <fieldset>
+                    <legend>Dining Room 2</legend>
+                    <label for="powerview-dining_room_2-percentage">Set Percentage:</label>
+                    <input id="powerview-dining_room_2-percentage" class="text-input" type="number" max="100" min="0" name="powerView" value="0" required />
+                    <input class="light" type="range" max="100" min="0" name="powerView" value="0" />
+                    <input class="input-type" type="hidden" value="subdevice-Dining Room 2" name="type" />
+                    <button type="submit" class="button">Submit</button>
+                  </fieldset>
+                </form>
+              </li>
+              <li>
+                <form class="text-form" action="/" method="get">
+                  <fieldset>
+                    <legend>Balcony</legend>
+                    <label for="powerview-balcony-percentage">Set Percentage:</label>
+                    <input id="powerview-balcony-percentage" class="text-input" type="number" max="100" min="0" name="powerView" value="100" required />
+                    <input class="light" type="range" max="100" min="0" name="powerView" value="100" />
+                    <input class="input-type" type="hidden" value="subdevice-Balcony" name="type" />
+                    <button type="submit" class="button">Submit</button>
+                  </fieldset>
+                </form>
+              </li>
+              <li>
+                <form class="text-form" action="/" method="get">
+                  <fieldset>
+                    <legend>Living Room 1</legend>
+                    <label for="powerview-living_room_1-percentage">Set Percentage:</label>
+                    <input id="powerview-living_room_1-percentage" class="text-input" type="number" max="100" min="0" name="powerView" value="0" required />
+                    <input class="light" type="range" max="100" min="0" name="powerView" value="0" />
+                    <input class="input-type" type="hidden" value="subdevice-Living Room 1" name="type" />
+                    <button type="submit" class="button">Submit</button>
+                  </fieldset>
+                </form>
+              </li>
+              <li>
+                <form class="text-form" action="/" method="get">
+                  <fieldset>
+                    <legend>Living Room 2</legend>
+                    <label for="powerview-living_room_2-percentage">Set Percentage:</label>
+                    <input id="powerview-living_room_2-percentage" class="text-input" type="number" max="100" min="0" name="powerView" value="0" required />
+                    <input class="light" type="range" max="100" min="0" name="powerView" value="0" />
+                    <input class="input-type" type="hidden" value="subdevice-Living Room 2" name="type" />
+                    <button type="submit" class="button">Submit</button>
+                  </fieldset>
+                </form>
+              </li>
+              <li>
+                <form class="text-form" action="/" method="get">
+                  <fieldset>
+                    <legend>Office</legend>
+                    <label for="powerview-office-percentage">Set Percentage:</label>
+                    <input id="powerview-office-percentage" class="text-input" type="number" max="100" min="0" name="powerView" value="20" required />
+                    <input class="light" type="range" max="100" min="0" name="powerView" value="20" />
+                    <input class="input-type" type="hidden" value="subdevice-Office" name="type" />
+                    <button type="submit" class="button">Submit</button>
+                  </fieldset>
+                </form>
+              </li>
+              <li>
+                <form class="text-form" action="/" method="get">
+                  <fieldset>
+                    <legend>Bedroom</legend>
+                    <label for="powerview-bedroom-percentage">Set Percentage:</label>
+                    <input id="powerview-bedroom-percentage" class="text-input" type="number" max="100" min="0" name="powerView" value="0" required />
+                    <input class="light" type="range" max="100" min="0" name="powerView" value="0" />
+                    <input class="input-type" type="hidden" value="subdevice-Bedroom" name="type" />
+                    <button type="submit" class="button">Submit</button>
+                  </fieldset>
+                </form>
+              </li>
+          </ol>
+          <ol class="sub-device-list">
+
+              <li><a href="/?powerView=text-All Up" class="fa fa-arrow-up" title="All Up"><span>All Up</span></a></li>
+              <li><a href="/?powerView=text-All Down" class="fa fa-arrow-down" title="All Down"><span>All Down</span></a></li>
+              <li><a href="/?powerView=text-TV" class="fa fa-gamepad" title="TV"><span>TV</span></a></li>
+          </ol>
         </div>
       </section>
       <section id="nest" class="nest device-on" data-string-thermostat="Thermostat" data-string-protect="Protect" data-string-heat="Heat" data-string-cool="Cool">
