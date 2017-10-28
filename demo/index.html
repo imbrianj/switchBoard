@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html" class="theme-dark" manifest="/manifest.appcache">
+<html lang="en" xmlns="http://www.w3.org/1999/html" class="theme-dark" manifest="/demo/manifest.appcache">
   <head>
     <title>SwitchBoard</title>
     <link rel="stylesheet" href="css/combo.min.css" />
@@ -250,6 +250,7 @@
                             <legend>Set Temperature</legend>
                             <label for="nest-group-living_room-target">Target Temperature:</label>
                             <input id="nest-group-living_room-target" class="text-input" type="number" max="90" min="50" name="nest" value="70" required />
+                            <input class="temp" type="range" max="90" min="50" name="nest" value="73" />
                             <input class="input-type" type="hidden" value="subdevice-temp-Living Room" name="type" />
                             <button type="submit" class="button">Submit</button>
                           </fieldset>
