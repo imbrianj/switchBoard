@@ -620,8 +620,8 @@ exports.config = {
     maxCount  : 10,
     apps      : { 'Announce Trending' : { id            : 'announceTrendingNews',
                                           blacklist     : ['New', 'A', 'An', 'The'],
-                                          threshold     : 10,
-                                          delay         : 120,
+                                          threshold     : 12,
+                                          delay         : 480,
                                           controllerIds : ['clientNotify', 'gerty'] } },
     disabled  : true
   },
