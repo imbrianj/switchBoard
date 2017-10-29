@@ -107,7 +107,7 @@ module.exports = (function () {
 
           rssData[j] = { 'title'       : util.sanitize(article.title[0]._),
                          'url'         : util.sanitize(article.link[0].$.href),
-                         'description' : article.summary ? util.sanitize(article.summary[0]) : null,
+                         'description' : article.summary ? util.sanitize(article.summary[0]._) : null,
                          'text'        : util.sanitize(article.content[0]._) };
 
           j += 1;

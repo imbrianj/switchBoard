@@ -28,10 +28,10 @@
 module.exports = (function () {
   'use strict';
 
-  var RssArticles = '';
+  var RssArticles = {};
 
   return {
-    version : 20161101,
+    version : 20171029,
 
     translate : function (token, lang) {
       var translate = require(__dirname + '/../lib/translate');
@@ -48,8 +48,8 @@ module.exports = (function () {
       if ((values) && (values.value) && (values.value[0]) && (values.value[0].title)) {
         articleTitle = values.value[0].title;
 
-        if (RssArticles !== articleTitle) {
-          if ((articleTitle) && (RssArticles)) {
+        if (RssArticles[deviceId] !== articleTitle) {
+          if ((articleTitle) && (RssArticles[deviceId])) {
             notify     = require(__dirname + '/../lib/notify');
 
             message = this.translate('NEW_ARTICLE', lang);
@@ -59,7 +59,7 @@ module.exports = (function () {
             notify.notify(message, controllers, deviceId);
           }
 
-          RssArticles = articleTitle;
+          RssArticles[deviceId] = articleTitle;
         }
       }
     }
