@@ -71,5 +71,41 @@ exports.weatherControllerTest = {
     test.deepEqual(weatherController.fToC(57), 14);
 
     test.done();
+  },
+
+  formatForecast : function (test) {
+    'use strict';
+
+    var weatherController = require(__dirname + '/../../../../devices/weather/controller'),
+        forecast          = [{
+                              code : '10',
+                              date : '30 Oct 2017',
+                              day  : 'Mon',
+                              high : '58',
+                              low  : '44',
+                              text : 'Partly Cloudy'
+                            },
+                            {
+                              code : '11',
+                              date : '31 Oct 2017',
+                              day  : 'Tue',
+                              high : '55',
+                              low  : '40',
+                              text : 'Spooky'
+                            }],
+        results           = weatherController.formatForecast(forecast, false),
+        metricResults     = weatherController.formatForecast(forecast, true);
+
+    test.strictEqual(results[0].high, 58);
+    test.strictEqual(results[0].low,  44);
+    test.strictEqual(results[1].high, 55);
+    test.strictEqual(results[1].low,  40);
+
+    test.strictEqual(metricResults[0].high, 14);
+    test.strictEqual(metricResults[0].low,  7);
+    test.strictEqual(metricResults[1].high, 13);
+    test.strictEqual(metricResults[1].low,  4);
+
+    test.done();
   }
 };

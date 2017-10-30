@@ -110,7 +110,7 @@ fs.stat(configFile, function (err, data) {
       cert;
 
   if (err) {
-    console.log('\x1b[31mError\x1b[0m: No controllers found.  Is your config file setup correctly?');
+    console.log('\x1b[31mError\x1b[0m: Config file could not be read.  Ensure you edit the config/config.js or provide the correct path.');
     process.exit(1);
   }
 

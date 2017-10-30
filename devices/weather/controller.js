@@ -29,7 +29,7 @@ module.exports = (function () {
    * @fileoverview Basic weather information, courtesy of Yahoo.
    */
   return {
-    version : 20151207,
+    version : 20171029,
 
     readOnly: true,
 
@@ -82,6 +82,29 @@ module.exports = (function () {
      */
     fToC : function (f) {
       return Math.round((f - 32) / 1.8);
+    },
+
+    /**
+     * Accept a raw forecast object and celsius flag.  Parse through, sanitizing
+     * and converting values as necessary.
+     */
+    formatForecast : function (forecast, celsius) {
+      var util      = require(__dirname + '/../../lib/sharedUtil').util,
+          formatted = [],
+          i         = 0;
+
+      for (i; i < forecast.length; i += 1) {
+        formatted.push({
+          code : util.sanitize(forecast[i].code),
+          date : util.sanitize(forecast[i].date),
+          day  : util.sanitize(forecast[i].day),
+          high : util.sanitize(celsius ? this.fToC(forecast[i].high) : parseInt(forecast[i].high, 10)),
+          low  : util.sanitize(celsius ? this.fToC(forecast[i].low)  : parseInt(forecast[i].low,  10)),
+          text : util.sanitize(forecast[i].text)
+        });
+      }
+
+      return formatted;
     },
 
     /**
@@ -147,7 +170,8 @@ module.exports = (function () {
                     });
 
                     response.once('end', function () {
-                      var weatherData = {},
+                      var util        = require(__dirname + '/../../lib/sharedUtil').util,
+                          weatherData = {},
                           errMessage  = 'err',
                           temp,
                           data,
@@ -174,14 +198,14 @@ module.exports = (function () {
                               temp = that.fToC(temp);
                             }
 
-                            weatherData = { 'city'     : city.location.city,
-                                            'temp'     : temp,
-                                            'text'     : city.item.condition.text,
-                                            'humidity' : city.atmosphere.humidity,
-                                            'sunrise'  : city.astronomy.sunrise,
-                                            'sunset'   : city.astronomy.sunset,
-                                            'code'     : city.item.condition.code,
-                                            'forecast' : city.item.forecast,
+                            weatherData = { 'city'     : util.sanitize(city.location.city),
+                                            'temp'     : util.sanitize(parseInt(temp, 10)),
+                                            'text'     : util.sanitize(city.item.condition.text),
+                                            'humidity' : util.sanitize(parseInt(city.atmosphere.humidity, 10)),
+                                            'sunrise'  : util.sanitize(city.astronomy.sunrise),
+                                            'sunset'   : util.sanitize(city.astronomy.sunset),
+                                            'code'     : util.sanitize(parseInt(city.item.condition.code, 10)),
+                                            'forecast' : that.formatForecast(city.item.forecast, weather.celsius),
                                             'phase'    : that.findSunPhase(city.astronomy.sunrise, city.astronomy.sunset)
                                           };
                           }
