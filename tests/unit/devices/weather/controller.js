@@ -63,16 +63,6 @@ exports.weatherControllerTest = {
     test.done();
   },
 
-  fToC : function (test) {
-    'use strict';
-
-    var weatherController = require(__dirname + '/../../../../devices/weather/controller');
-
-    test.deepEqual(weatherController.fToC(57), 14);
-
-    test.done();
-  },
-
   formatForecast : function (test) {
     'use strict';
 

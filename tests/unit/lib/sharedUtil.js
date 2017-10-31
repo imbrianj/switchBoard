@@ -130,5 +130,29 @@ exports.sharedUtilTest = {
     test.strictEqual(longTime,  'sun 20 @ 12:00am', 'Long time should have date');
 
     test.done();
-  }
+  },
+
+  cToF : function (test) {
+    'use strict';
+
+    var util = require(__dirname + '/../../../lib/sharedUtil').util;
+
+    test.strictEqual(util.cToF(0),   32,  'Freezing point');
+    test.strictEqual(util.cToF(100), 212, 'Boiling point');
+    test.strictEqual(util.cToF(24),  75.2, 'A nice day');
+
+    test.done();
+  },
+
+  fToC : function (test) {
+    'use strict';
+
+    var util = require(__dirname + '/../../../lib/sharedUtil').util;
+
+    test.strictEqual(util.fToC(32),   0,   'Freezing point');
+    test.strictEqual(util.fToC(212),  100, 'Boiling point');
+    test.strictEqual(util.fToC(75.2), 24,  'A nice day');
+
+    test.done();
+  },
 };

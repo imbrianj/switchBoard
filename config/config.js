@@ -5,26 +5,27 @@ exports.config = {
   //
   // NOTE: DO NOT EXPOSE CREDENTIALS TO A PUBLIC PLACE - LIKE GITHUB.
   config : {
-    serverPort           : 8080,
-    serverIp             : '192.168.1.145',
-    serverMac            : '00:00:00:00:00:00',
-    appCaching           : true,
-    delegate             : ['gerty'],
-    theme                : 'dark',
-    language             : 'en',
-    region               : 'us',
-    default              : 'welcome',
-    macroPause           : 1500,
-    pollMinutes          : 5,
-    pollSeconds          : 15,
-    localTimeout         : 1500,
+    serverPort   : 8080,
+    serverIp     : '192.168.1.145',
+    serverMac    : '00:00:00:00:00:00',
+    appCaching   : true,
+    delegate     : ['gerty'],
+    theme        : 'dark',
+    celsius      : false,
+    language     : 'en',
+    region       : 'us',
+    default      : 'welcome',
+    macroPause   : 1500,
+    pollMinutes  : 5,
+    pollSeconds  : 15,
+    localTimeout : 1500,
     // Your SSL key and SCR will be generated for you.  If you want to use one
     // you've manually created, drop "ssl.key" and "ssl.csr" into /cache/.
     //
     // If you're using self-signed certs, be aware that appCaching may not work
     // in all (or any) browsers.  Also note that SmartThings cannot contact
     // SwitchBoard for real-time updates.
-    ssl                  : {
+    ssl          : {
       country  : 'US',
       state    : 'Washington',
       city     : 'Seattle',
@@ -32,7 +33,7 @@ exports.config = {
       name     : 'Switchboard',
       disabled : true
     },
-    ai                   : {
+    ai           : {
       eventLogging         : false,
       eventLogDelaySeconds : 60,
       executeDelaySeconds  : 1,
@@ -208,7 +209,6 @@ exports.config = {
     // It's also available in places that don't have Zip codes.
     // Find your location's WOEID from: http://woeid.factormystic.net/
     woeid     : 12798963,
-    celsius   : false,
     apps      : { 'Sun Phase' : { id            : 'sunPhase',
                                   macros        : { 'sunset' : 'smartthings=subdevice-mode-Night' },
                                   dayMode       : 'Home',
@@ -388,7 +388,7 @@ exports.config = {
    * "OAuth Client Secret" to the fields below.
    * Click "Create" to be presented with the SmartThings IDE.  Simply paste the
    * sourcecode from the companion app:
-   * https://github.com/imbrianj/oauth_controller/blob/master/oauth_controller.groovy
+   * https://raw.githubusercontent.com/imbrianj/oauth_controller/master/oauth_controller.groovy
    * Click "Save", then "Publish" in the upper right.
    *
    * On initial startup of SwitchBoard with this configuration, you'll be

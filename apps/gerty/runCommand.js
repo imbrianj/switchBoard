@@ -443,6 +443,7 @@ module.exports = (function () {
       var gertyMood   = require(__dirname + '/mood'),
           deviceState = require(__dirname + '/../../lib/deviceState'),
           mood        = { comfortable : 0, entertained : 0, excited : 0, scared : 0, social : 0, comments: [] },
+          celsius     = !!controllers.config.celsius,
           date,
           state,
           deviceType,
@@ -460,7 +461,7 @@ module.exports = (function () {
             if (deviceType) {
               state         = deviceState.getDeviceState(device);
               deviceCommand = require(__dirname + '/' + deviceType);
-              deviceMood    = deviceCommand[deviceType](state, command);
+              deviceMood    = deviceCommand[deviceType](state, command, celsius);
 
               if (deviceMood) {
                 mood.comfortable += deviceMood.comfortable || 0;

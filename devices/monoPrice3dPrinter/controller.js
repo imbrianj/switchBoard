@@ -30,7 +30,7 @@ module.exports = (function () {
    * @requires http
    */
   return {
-    version : 20170507,
+    version : 20171030,
 
     readOnly: true,
 
@@ -59,7 +59,7 @@ module.exports = (function () {
      * Accept the CSV formatted API response and parse through and returning an
      * object of sanitized values.
      */
-    getPrintStatus : function (reply) {
+    getPrintStatus : function (reply, celsius) {
       var util   = require(__dirname + '/../../lib/sharedUtil').util,
           status = { extruderTemp : 0, extruderTarget : 0, bedTemp : 0, bedTarget : 0, percent : 0 },
           parts  = [];
@@ -67,11 +67,18 @@ module.exports = (function () {
       parts = reply.split('/');
 
       if (parts.length === 4) {
-        status.extruderTemp   = util.sanitize(parts[0].split('T').join(''));
-        status.extruderTarget = util.sanitize(parts[1].split('P')[0]);
-        status.bedTemp        = util.sanitize(parts[1].split('P')[1]);
-        status.bedTarget      = util.sanitize(parts[2]);
-        status.percent        = util.sanitize(parts[3].split('P').join('').split('I').join(''));
+        status.extruderTemp   = parseInt(util.sanitize(parts[0].split('T').join('')), 10);
+        status.extruderTarget = parseInt(util.sanitize(parts[1].split('P')[0]), 10);
+        status.bedTemp        = parseInt(util.sanitize(parts[1].split('P')[1]), 10);
+        status.bedTarget      = parseInt(util.sanitize(parts[2]), 10);
+        status.percent        = parseInt(util.sanitize(parts[3].split('P').join('').split('I').join('')), 10);
+      }
+
+      if (!celsius) {
+        status.extruderTemp   = status.extruderTemp   ? util.cToF(status.extruderTemp)   : 0;
+        status.extruderTarget = status.extruderTarget ? util.cToF(status.extruderTarget) : 0;
+        status.bedTemp        = status.bedTemp        ? util.cToF(status.bedTemp)        : 0;
+        status.bedTarget      = status.bedTarget      ? util.cToF(status.bedTarget)      : 0;
       }
 
       return status;
@@ -79,6 +86,7 @@ module.exports = (function () {
 
     send : function (config) {
       var http               = require('http'),
+          celsius            = !!config.config.celsius,
           that               = this,
           monoPrice3dPrinter = {},
           dataReply          = '',
@@ -104,7 +112,7 @@ module.exports = (function () {
           var printerData;
 
           if (dataReply) {
-            printerData = that.getPrintStatus(dataReply);
+            printerData = that.getPrintStatus(dataReply, celsius);
 
             monoPrice3dPrinter.callback(null, printerData);
           }

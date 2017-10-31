@@ -29,7 +29,7 @@ module.exports = (function () {
    * @fileoverview Basic control of SmartThings endpoint.
    */
   return {
-    version : 20161128,
+    version : 20171030,
 
     inputs  : ['list', 'subdevice'],
 
@@ -146,6 +146,7 @@ module.exports = (function () {
       config.deviceId = config.deviceId;
       config.path     = config.path || config.auth.url + '/list';
       config.device   = { auth : config.auth, deviceId : config.deviceId, groups : config.groups, className : config.className };
+      config.config   = { celsius : config.config.celsius };
 
       this.send(config);
     },
@@ -159,6 +160,7 @@ module.exports = (function () {
       var subdevices       = [],
           smartthingsData  = {},
           deviceState      = require(__dirname + '/../../lib/deviceState'),
+          util             = require(__dirname + '/../../lib/sharedUtil').util,
           smartthingsState = deviceState.getDeviceState(smartthings.deviceId),
           state            = 'err',
           mode             = '',
@@ -195,7 +197,7 @@ module.exports = (function () {
                              };
 
       if ((response) && (response.mode) && (response.devices)) {
-        mode  = response.mode;
+        mode  = util.sanitize(response.mode);
         state = 'ok';
 
         for (i; i < response.devices.length; i += 1) {
@@ -205,10 +207,10 @@ module.exports = (function () {
             matched = findByName(response.devices, i);
 
             currDevice = {
-              id       : device.id,
-              label    : device.label,
-              lastOn   : matched.lastOn,
-              duration : matched.duration
+              id       : util.sanitize(device.id),
+              label    : util.sanitize(device.label),
+              lastOn   : util.sanitize(matched.lastOn),
+              duration : util.sanitize(matched.duration)
             };
 
             if ((smartthings.className) && (smartthings.className[device.label])) {
@@ -222,13 +224,13 @@ module.exports = (function () {
             if (device.values.switch) {
               // You're a switch
               currDevice.type  = 'switch';
-              currDevice.state = device.values.switch.value;
+              currDevice.state = util.sanitize(device.values.switch.value);
             }
 
             else if (device.values.lock) {
               // You're a lock
               currDevice.type  = 'lock';
-              currDevice.state = device.values.lock.value;
+              currDevice.state = util.sanitize(device.values.lock.value);
             }
 
             else if (device.values.contact) {
@@ -266,15 +268,19 @@ module.exports = (function () {
                 currDevice.peripheral = currDevice.peripheral || {};
 
                 if (device.values.temperature) {
-                  currDevice.peripheral.temp = parseInt(device.values.temperature.value, 10);
+                  currDevice.peripheral.temp = parseInt(util.sanitize(device.values.temperature.value), 10);
+
+                  if (smartthings.config.celsius) {
+                    currDevice.peripheral.temp = util.fToC(currDevice.peripheral.temp);
+                  }
                 }
 
                 if (device.values.vibrate) {
-                  currDevice.peripheral.vibrate = device.values.vibrate.value;
+                  currDevice.peripheral.vibrate = util.sanitize(device.values.vibrate.value);
                 }
 
                 if (device.values.battery) {
-                  currDevice.peripheral.battery = parseInt(device.values.battery.value, 10);
+                  currDevice.peripheral.battery = parseInt(util.sanitize(device.values.battery.value), 10);
                 }
               }
 
@@ -282,18 +288,22 @@ module.exports = (function () {
                 // If you have no proper state, you're just a temperature
                 // sensor.
                 if (device.values.temperature) {
-                  currDevice.state = parseInt(device.values.temperature.value, 10);
+                  currDevice.state = parseInt(util.sanitize(device.values.temperature.value), 10);
+
+                  if (smartthings.config.celsius) {
+                    currDevice.state = util.fToC(currDevice.state);
+                  }
                 }
 
                 // ...or a vibrate sensor.
                 if (device.values.vibrate) {
-                  currDevice.state = device.values.vibrate.value;
+                  currDevice.state = util.sanitize(device.values.vibrate.value);
                 }
 
                 // ...or something with a battery.
                 if (device.values.battery) {
                   currDevice.peripheral         = currDevice.peripheral || {};
-                  currDevice.peripheral.battery = parseInt(device.values.battery.value, 10);
+                  currDevice.peripheral.battery = parseInt(util.sanitize(device.values.battery.value), 10);
                 }
               }
             }
@@ -595,6 +605,7 @@ module.exports = (function () {
       smartthings.path      = config.path             || '';
       smartthings.method    = config.method           || 'GET';
       smartthings.callback  = config.callback         || function () {};
+      smartthings.config    = { celsius : !!config.config.celsius };
 
       if (smartthings.list) {
         this.oauthDeviceList(smartthings);

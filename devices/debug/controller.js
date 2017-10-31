@@ -30,7 +30,7 @@ module.exports = (function () {
    * @requires os, fs
    */
   return {
-    version : 20161008,
+    version : 20171030,
 
     readOnly: true,
 
@@ -57,6 +57,7 @@ module.exports = (function () {
 
       callback      = callback || function () {};
       debug.command = 'state';
+      debug.config  = { celsius : !!config.celsius };
 
       debug.callback = function (err, reply) {
         if (reply) {
@@ -74,6 +75,8 @@ module.exports = (function () {
     send : function (config) {
       var os         = require('os'),
           webSockets = require(__dirname + '/../../lib/webSockets'),
+          util       = require(__dirname + '/../../lib/sharedUtil').util,
+          celsius    = !!config.config.celsius,
           debug      = {},
           callback   = config.callback || function () {},
           tempPath   = '/sys/class/thermal/thermal_zone0/temp',
@@ -105,7 +108,9 @@ module.exports = (function () {
         }
 
         if (temp) {
-          debug.temperature = (temp / 1000) + '&deg;';
+          temp = temp / 1000;
+          temp = parseInt(celsius ? temp : util.cToF(temp), 10);
+          debug.temperature = temp + '&deg;';
         }
       }
 

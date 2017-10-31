@@ -61,7 +61,7 @@ exports.smartthingsControllerTest = {
     var smartthingsController = require(__dirname + '/../../../../devices/smartthings/controller'),
         deviceState           = require(__dirname + '/../../../../lib/deviceState'),
         now                   = new Date(),
-        smartthings           = { deviceId : 'FOO' },
+        smartthings           = { deviceId : 'FOO', config : { celsius : false } },
         response              = { mode     : 'Home',
                                   devices  : [
                                     {

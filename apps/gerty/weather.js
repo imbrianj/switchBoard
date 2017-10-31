@@ -29,15 +29,20 @@ module.exports = (function () {
   'use strict';
 
   return {
-    weather : function (state) {
-      var excited     = 0,
+    weather : function (state, command, celsius) {
+      var util        = require(__dirname + '/../../lib/sharedUtil').util,
+          excited     = 0,
           comfortable = 0,
           temp,
           weather;
 
       if ((state) && (state.value)) {
-        temp    = parseFloat(state.value.temp);
-        weather = parseFloat(state.value.code);
+        temp    = parseInt(state.value.temp, 10);
+        weather = parseInt(state.value.code, 10);
+
+        if (celsius) {
+          temp = parseInt(util.cToF(temp), 10);
+        }
 
         // This is a good temperature range for me.
         if ((temp > 60) && (temp < 75)) {

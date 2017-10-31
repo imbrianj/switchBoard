@@ -51,20 +51,27 @@ exports.monoPrice3dPrinterControllerTest = {
     'use strict';
 
     var monoPrice3dPrinterController = require(__dirname + '/../../../../devices/monoPrice3dPrinter/controller'),
-        testMonoPrice3dPrinterData   = monoPrice3dPrinterController.getPrintStatus('T190/195P29/0/7P'),
-        testBadData                  = monoPrice3dPrinterController.getPrintStatus('Garbage');
+        testMonoPrice3dPrinterData   = monoPrice3dPrinterController.getPrintStatus('T190/195P29/0/7P', true),
+        testMonoPrice3dPrinterFData  = monoPrice3dPrinterController.getPrintStatus('T190/195P29/0/7P', false),
+        testBadData                  = monoPrice3dPrinterController.getPrintStatus('Garbage', true);
 
-    test.deepEqual(testMonoPrice3dPrinterData, { extruderTemp   : '190',
-                                                  extruderTarget : '195',
-                                                  bedTemp        : '29',
-                                                  bedTarget      : '0',
-                                                  percent        : '7'
+    test.deepEqual(testMonoPrice3dPrinterData, { extruderTemp   : 190,
+                                                 extruderTarget : 195,
+                                                 bedTemp        : 29,
+                                                 bedTarget      : 0,
+                                                 percent        : 7
                                                }, 'Parse through printer data response');
-    test.deepEqual(testBadData, { extruderTemp   : '0',
-                                  extruderTarget : '0',
-                                  bedTemp        : '0',
-                                  bedTarget      : '0',
-                                  percent        : '0'
+   test.deepEqual(testMonoPrice3dPrinterFData, { extruderTemp   : 374,
+                                                 extruderTarget : 383,
+                                                 bedTemp        : 84.2,
+                                                 bedTarget      : 0,
+                                                 percent        : 7
+                                               }, 'Parse through printer data response');
+    test.deepEqual(testBadData, { extruderTemp   : 0,
+                                  extruderTarget : 0,
+                                  bedTemp        : 0,
+                                  bedTarget      : 0,
+                                  percent        : 0
                                }, 'Bad data should assume the device is off and return 0 values');
 
     test.done();

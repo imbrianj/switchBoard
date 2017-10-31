@@ -35,6 +35,22 @@
         heat,
         cool,
         off,
+        thermostatMin      = 50,
+        thermostatMax      = 90,
+        fToC = function (temp) {
+          var util;
+
+          if (typeof SB === 'object') {
+            temp = SB.util.fToC(temp);
+          }
+
+          else {
+            util = require(__dirname + '/../../lib/sharedUtil').util;
+            temp = util.fToC(temp);
+          }
+
+          return temp;
+        },
         encodeName = function (name) {
           var util;
 
@@ -104,6 +120,8 @@
 
             thermostatMarkup = thermostatMarkup + templateThermostat.split('{{SUB_DEVICE_ID}}').join(encodeName(device.label));
             thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_NAME}}').join(device.label);
+            thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_MAX}}').join(Math.round(device.celsius ? fToC(thermostatMax) : thermostatMax));
+            thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_MIN}}').join(Math.round(device.celsius ? fToC(thermostatMin) : thermostatMin));
             thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_TEMP}}').join(Math.round(device.temp));
             thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_TARGET}}').join(Math.round(device.target));
             thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_HUMIDITY}}').join(Math.round(device.humidity));

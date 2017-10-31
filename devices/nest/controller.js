@@ -29,7 +29,7 @@ module.exports = (function () {
    * @requires querystring, fs, https
    */
   return {
-    version : 20161116,
+    version : 20171030,
 
     inputs : ['command', 'text', 'list', 'subdevice'],
 
@@ -47,26 +47,6 @@ module.exports = (function () {
       return { group      : fs.readFileSync(__dirname + '/fragments/nestGroups.tpl',     'utf-8'),
                thermostat : fs.readFileSync(__dirname + '/fragments/nestThermostat.tpl', 'utf-8'),
                protect    : fs.readFileSync(__dirname + '/fragments/nestProtect.tpl',    'utf-8') };
-    },
-
-    /**
-     * Convert Celcius to Fahrenheit.
-     *
-     * The Nest API is all in Celcius, so we need to convert to Fahrenheit for
-     * display.
-     */
-    cToF : function (c) {
-      return (c * 1.8) + 32;
-    },
-
-    /**
-     * Convert Fahrenheit to Celcius.
-     *
-     * The Nest API is all in Celcius, so we need to convert from Fahrenheit for
-     * sending any temperature changes.
-     */
-    fToC : function (f) {
-      return (f - 32) / 1.8;
     },
 
     /**
@@ -190,7 +170,9 @@ module.exports = (function () {
      */
     deviceList : function (config) {
       var deviceState = require(__dirname + '/../../lib/deviceState'),
+          util        = require(__dirname + '/../../lib/sharedUtil').util,
           nestState   = deviceState.getDeviceState(config.deviceId),
+          celsius     = !!config.config.celsius,
           that        = this,
           callback    = config.callback || function () {},
           findByName  = function (find, i) {
@@ -298,14 +280,15 @@ module.exports = (function () {
                 active       : response.shared[response.device[i].serial_number].hvac_heater_state ? 'heat' : response.shared[response.device[i].serial_number].hvac_ac_state ? 'cool' : 'off',
                 fanMode      : response.device[i].fan_mode,
                 humidity     : response.device[i].current_humidity,
-                temp         : that.cToF(response.shared[response.device[i].serial_number].current_temperature),
-                target       : that.cToF(response.shared[response.device[i].serial_number].target_temperature),
+                temp         : celsius ? response.shared[response.device[i].serial_number].current_temperature : util.cToF(response.shared[response.device[i].serial_number].current_temperature),
+                target       : celsius ? response.shared[response.device[i].serial_number].target_temperature  : util.cToF(response.shared[response.device[i].serial_number].target_temperature),
                 timeToTarget : response.device[i].time_to_target,
                 leaf         : response.device[i].leaf,
                 label        : that.findLabel(response.device[i].where_id),
                 type         : 'thermostat',
                 lastOn       : matched.lastOn,
-                duration     : matched.duration
+                duration     : matched.duration,
+                celsius      : celsius
               });
             }
           }
@@ -358,9 +341,12 @@ module.exports = (function () {
      */
     getDevicePath : function (config) {
       var deviceState = require(__dirname + '/../../lib/deviceState'),
+          util        = require(__dirname + '/../../lib/sharedUtil').util,
           nestState   = deviceState.getDeviceState(config.deviceId),
+          celsius     = !!config.config.celsius,
           subdevices  = {},
           commandType = '',
+          valueParts  = [],
           value       = '',
           command     = config.command,
           subdevice   = config.subdevice;
@@ -409,9 +395,9 @@ module.exports = (function () {
 
         command     = subdevice.replace(commandType + '-', '');
 
-        value       = command.split('-');
-        command     = value[0];
-        value       = value[1];
+        valueParts  = command.split('-');
+        command     = valueParts[0];
+        value       = valueParts[1];
         subdevice   = this.findSubdevices(command, subdevices);
 
         if ((subdevice) && (subdevice[0]) && (subdevice[0].type === 'thermostat')) {
@@ -425,9 +411,9 @@ module.exports = (function () {
 
             case 'temp' :
               if (!isNaN(value)) {
-                if ((value >= 50) && (value <= 90)) {
+                if (((celsius ? util.cToF(value) : value) >= 50) && ((celsius ? util.cToF(value) : value) <= 90)) {
                   config.path = '/v2/put/shared.' + subdevice[0].serial;
-                  config.args = { target_change_pending : true, target_temperature : this.fToC(value) };
+                  config.args = { target_change_pending : true, target_temperature : celsius ? value : util.fToC(value) };
                 }
               }
             break;
@@ -509,6 +495,7 @@ module.exports = (function () {
       nest.password  = config.device.password || '';
       nest.auth      = config.device.auth     || {};
       nest.language  = config.language        || 'en';
+      nest.config    = { celsius : !!config.config.celsius };
 
       if ((nest.command) || (nest.subdevice)) {
         nest = this.getDevicePath(nest);

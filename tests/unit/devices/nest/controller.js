@@ -39,30 +39,6 @@ exports.nestControllerTest = {
     test.done();
   },
 
-  cToF : function (test) {
-    'use strict';
-
-    var nestController = require(__dirname + '/../../../../devices/nest/controller');
-
-    test.strictEqual(nestController.cToF(0),   32,  'Freezing point');
-    test.strictEqual(nestController.cToF(100), 212, 'Boiling point');
-    test.strictEqual(nestController.cToF(24),  75.2, 'A nice day');
-
-    test.done();
-  },
-
-  fToC : function (test) {
-    'use strict';
-
-    var nestController = require(__dirname + '/../../../../devices/nest/controller');
-
-    test.strictEqual(nestController.fToC(32),   0,   'Freezing point');
-    test.strictEqual(nestController.fToC(212),  100, 'Boiling point');
-    test.strictEqual(nestController.fToC(75.2), 24,  'A nice day');
-
-    test.done();
-  },
-
   postPrepare : function (test) {
     'use strict';
 

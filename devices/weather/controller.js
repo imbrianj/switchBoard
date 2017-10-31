@@ -78,13 +78,6 @@ module.exports = (function () {
     },
 
     /**
-     * Accept a temperature in fahrenheit and convert it to celsius.
-     */
-    fToC : function (f) {
-      return Math.round((f - 32) / 1.8);
-    },
-
-    /**
      * Accept a raw forecast object and celsius flag.  Parse through, sanitizing
      * and converting values as necessary.
      */
@@ -98,8 +91,8 @@ module.exports = (function () {
           code : util.sanitize(forecast[i].code),
           date : util.sanitize(forecast[i].date),
           day  : util.sanitize(forecast[i].day),
-          high : util.sanitize(celsius ? this.fToC(forecast[i].high) : parseInt(forecast[i].high, 10)),
-          low  : util.sanitize(celsius ? this.fToC(forecast[i].low)  : parseInt(forecast[i].low,  10)),
+          high : util.sanitize(celsius ? util.fToC(forecast[i].high) : parseInt(forecast[i].high, 10)),
+          low  : util.sanitize(celsius ? util.fToC(forecast[i].low)  : parseInt(forecast[i].low,  10)),
           text : util.sanitize(forecast[i].text)
         });
       }
@@ -152,7 +145,7 @@ module.exports = (function () {
       weather.deviceId = config.device.deviceId;
       weather.zip      = config.device.zip;
       weather.woeid    = config.device.woeid;
-      weather.celsius  = config.device.celsius || false;
+      weather.celsius  = config.config.celsius || false;
       weather.host     = config.host           || 'query.yahooapis.com';
       weather.path     = config.path           || '/v1/public/yql?format=json&q=select * from weather.forecast where ' + (weather.woeid ? 'woeid=' + weather.woeid : 'location=' + weather.zip);
       weather.port     = config.port           || 443;
@@ -195,7 +188,7 @@ module.exports = (function () {
                             temp        = city.item.condition.temp;
 
                             if (weather.celsius) {
-                              temp = that.fToC(temp);
+                              temp = util.fToC(temp);
                             }
 
                             weatherData = { 'city'     : util.sanitize(city.location.city),

@@ -63,7 +63,7 @@ module.exports = (function () {
         notify         = require(__dirname + '/../lib/notify');
         newPhase       = state === 'Day' ? 'Sunrise' : 'Sunset';
         newMode        = state === 'Day' ? config.dayMode : config.nightMode;
-        rawMacro       = config.macros[newPhase].split(';');
+        rawMacro       = ((config.macros) && (config.macros[newPhase])) ? config.macros[newPhase].split(';') : null;
 
         for (currDevice in controllers) {
           if ((controllers[currDevice].config) && (controllers[currDevice].config.typeClass === 'smartthings')) {

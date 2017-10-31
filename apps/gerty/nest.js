@@ -29,8 +29,9 @@ module.exports = (function () {
   'use strict';
 
   return {
-    nest : function (state) {
-      var comfortable = 0,
+    nest : function (state, command, celsius) {
+      var util        = require(__dirname + '/../../lib/sharedUtil').util,
+          comfortable = 0,
           social      = 0,
           scared      = 0,
           temp        = 0,
@@ -77,6 +78,10 @@ module.exports = (function () {
 
       if (temps) {
         temp = temp / temps;
+
+        if (celsius) {
+          temp = parseInt(util.cToF(temp), 10);
+        }
 
         // This is a good temperature range for me.
         if ((temp > 60) && (temp < 75)) {
