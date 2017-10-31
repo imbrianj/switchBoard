@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Installation – SwitchBoard Home Automation – Node.js home automation system with machine learning</title>
+
+        <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="To use SwitchBoard, you’ll need a working version of node.js and npm.  As node.js can run on a wide variety of platforms, I won’t go into the specifics of getting that set up.  There’s documentation available for most platforms that can do a better job of describing all the details there.  If you do have issues, I’m happy to try and point you in the right direction, though.
+
+" />
+    <meta property="og:description" content="To use SwitchBoard, you’ll need a working version of node.js and npm.  As node.js can run on a wide variety of platforms, I won’t go into the specifics of getting that set up.  There’s documentation available for most platforms that can do a better job of describing all the details there.  If you do have issues, I’m happy to try and point you in the right direction, though.
+
+" />
+    
+    <meta name="author" content="SwitchBoard Home Automation" />
+
+    
+    <meta property="og:title" content="Installation" />
+    <meta property="twitter:title" content="Installation" />
+    
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/switchBoard/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="SwitchBoard Home Automation - Node.js home automation system with machine learning" href="/switchBoard/feed.xml" />
+
+    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+  </head>
+
+  <body>
+    <div class="wrapper-masthead">
+      <div class="container">
+        <header class="masthead clearfix">
+          <a href="/switchBoard/" class="site-avatar"><img src="https://avatars3.githubusercontent.com/u/526531" /></a>
+
+          <div class="site-info">
+            <h1 class="site-name"><a href="/switchBoard/">SwitchBoard Home Automation</a></h1>
+            <p class="site-description">Node.js home automation system with machine learning</p>
+          </div>
+
+          <nav>
+            <a href="/switchBoard/">Blog</a>
+            <a href="/switchBoard/about">About</a>
+          </nav>
+        </header>
+      </div>
+    </div>
+
+    <div id="main" role="main" class="container">
+      <article class="post">
+  <h1>Installation</h1>
+
+  <div class="entry">
+    <p>To use SwitchBoard, you’ll need a working version of node.js and npm.  As node.js can run on a wide variety of platforms, I won’t go into the specifics of getting that set up.  There’s documentation available for most platforms that can do a better job of describing all the details there.  If you do have issues, I’m happy to try and point you in the right direction, though.</p>
+
+<p>Assuming you have <code class="highlighter-rouge">node</code> and <code class="highlighter-rouge">npm</code> installed, you should be able to run something like this:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>node <span class="nt">--version</span> <span class="o">&amp;&amp;</span> npm <span class="nt">--version</span>
+</code></pre></div></div>
+
+<p>and get an output similar to:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>v6.11.4
+3.5.2
+</code></pre></div></div>
+
+<p>SwitchBoard supports <a href="https://github.com/imbrianj/switchBoard/blob/master/.travis.yml#L4-L14">quite a range</a> of different versions, so don’t worry too much about the specifics there.  We’re just looking for validation that the basic tools are available to us.</p>
+
+<p>Next, you’ll need to get the SwitchBoard code.  I typically just grab it via <code class="highlighter-rouge">git</code> since it’s the easiest for me - but you can also <code class="highlighter-rouge">npm install switchboard-automation</code> or grab the downloadable release file from (https://github.com/imbrianj/switchBoard/releases)[the GitHub page].  If you use git, you can simply:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone git@github.com:imbrianj/switchBoard.git
+</code></pre></div></div>
+
+<p>and it’ll start downloading all the files.</p>
+
+<p><img src="/switchBoard/images/install/1.png" alt="First few steps of the SwitchBoard installation: checking that npm and node are installed, getting the SwitchBoard source code and getting ready to install dependency packages." title="First few steps of the SwitchBoard installation" /></p>
+
+<p>Once the source files are downloaded, you’ll need to install all the required npm dependencies.  There are only 12 used by SwitchBoard (and 9 of them are just for development).  However, each of these packages have their own dependencies, so it may take a couple minutes on a slow machine to download, compile and install all of them.</p>
+
+<p>Once the packages are done installing, you should be able to start up SwitchBoard to make sure it’s working as expected:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>switchboard/
+node app.js
+</code></pre></div></div>
+
+<p>Once this is done, you should see log messages showing up in the console.</p>
+
+<p><img src="/switchBoard/images/install/2.png" alt="Finish dependency installation and start up the unconfigured app." title="Make sure things are running" /></p>
+
+<p>If you don’t see any errors, you should be able to access the SwitchBoard web interface with the default URL of <a href="http://localhost:8080">http://localhost:8080</a>.  What you see should look like this:</p>
+
+<p><img src="/switchBoard/images/install/3.png" alt="Unconfigured SwitchBoard web interface." title="Unconfigured, but running" /></p>
+
+<p>We’ve just confirmed it’s up and running - the software and dependencies all seem to be working.  You can now kill the app and we can begin configuring your new system.  There’s a few basic things to address in the general config options:</p>
+
+<p><img src="/switchBoard/images/install/4.png" alt="Configuring SwitchBoard." title="Configuring SwitchBoard" /></p>
+
+<p>You’ll probably want to change at least the <code class="highlighter-rouge">serverIp</code>, but most everything else is set to pretty sane defaults.  Feel free to dabble with them - and if any are not clear, please let me know and I can either clarify, document or rename them to something more appropriate.</p>
+
+<p>SmartThings is a popular option to control and it works quite well with SwitchBoard - so let’s use that one as an example.  It has some atypical requirements, so we’ll have to first install it’s “companion app” that will live on the SmartThings server.  This companion app is the REST endpoing that SwitchBoard will send commands to and also have the hub send local commands to SwitchBoard to keep it synced up in real time.  Specific, step-by-step instructions are listed in the config file above the SmartThings entry.</p>
+
+<p>You’ll go to the URL provided in the SmartThings config comment and create a new app.  The SmartThings IDE interface will look something like this:</p>
+
+<p><img src="/switchBoard/images/install/5.png" alt="Setting up our SmartThings app." title="Setting up our SmartThings app" /></p>
+
+<p>When you finish setting up your app, you’ll be given an Oauth “Client ID” and “Client Secret”.  You’ll need to take each of these values and populate the appropriate fields in the config.  Be sure not to share these values with anyone.</p>
+
+<p>Once our SmartThings app is set up and we’ve gotten the <code class="highlighter-rouge">clientId</code> and <code class="highlighter-rouge">clientSecret</code> fields populated in our SwitchBoard config file, we can fire up the server to begin the authentication.  You should see a bright console prompt on the server telling you that you’ll need to click a URL to complete the authentication:</p>
+
+<p><img src="/switchBoard/images/install/6.png" alt="SwitchBoard prompting us to visit a URL to authenticate with SmartThings." title="Authenticate with SmartThings" /></p>
+
+<p>Once you click that URL, you’ll tell SmartThings which Hub and which devices within that hub to allow SwitchBoard to control.  When you’ve finished filling out the form, SmartThings should forward you back to your SwitchBoard interface.  It may take a second - and it may be helpful (but shouldn’t be necessary) to restart SwitchBoard at this point to ensure your devices are populated correctly.  Your interface should now be populated with all the devices you’ve told SmartThings you wanted to have controlled:</p>
+
+<p><img src="/switchBoard/images/install/7.png" alt="SwitchBoard interface with a linked SmartThings device." title="SwitchBoard with linked SmartThings device" /></p>
+
+<p>And that’s it!  You can go through the config file to enable and configure any other devices you wish.  You’ll probably want to mark the <code class="highlighter-rouge">welcome</code> device as <code class="highlighter-rouge">disabled: true</code> and change the <code class="highlighter-rouge">default</code> to a controller ID that’s your favorite (maybe <code class="highlighter-rouge">smartthings</code>?).</p>
+
+  </div>
+
+  <div class="date">
+    Written on October 30, 2017
+  </div>
+
+  
+</article>
+
+    </div>
+
+    <div class="wrapper-footer">
+      <div class="container">
+        <footer class="footer">
+          
+<a href="mailto:brian@bevey.org"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/imbrianj/switchBoard"><i class="svg-icon github"></i></a>
+
+
+
+
+
+
+
+
+        </footer>
+      </div>
+    </div>
+
+    
+
+  </body>
+</html>

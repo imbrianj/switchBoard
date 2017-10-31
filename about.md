@@ -13,10 +13,6 @@ SwitchBoard is a home automation system built in vanilla JS running on node.js. 
 * Capable of running on a low power machine (Raspberry Pi)
 * Accessible
 
-### More Information
-
-A place to include any other types of information that you'd like to include about yourself.
-
 ### Contact me
 
 [brian@bevey.org](mailto:brian@bevey.org)
