@@ -9,11 +9,13 @@ SwitchBoard
 ---
 SwitchBoard is a node.js based application intended to run on a device within a local network - preferably a dedicated server (such as a Raspberry Pi).  It allows all web capable devices within that same network to issue commands to any other configured device.  You may use your phone, tablet, desktop or laptop browser to interact with any controllable device - or issue simple GET commands programmatically.  It's able to (optionally) log actions for machine learning to determine usage patterns and automate some tasks.
 
+Follow along development in the [SwitchBoard blog](https://imbrianj.github.io/switchBoard/).
+
 Video demonstration:
 
 [![Demonstration of SwitchBoard](https://img.youtube.com/vi/Ni_YgL4hcgI/0.jpg)](https://www.youtube.com/watch?v=Ni_YgL4hcgI)
 
-Or you may browse through a static version:
+Or you may browse through a [static version](https://imbrianj.github.io/switchBoard/demo/):
 https://imbrianj.github.io/switchBoard/demo/
 
 Setup
