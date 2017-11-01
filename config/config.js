@@ -108,6 +108,14 @@ exports.config = {
     disabled  : true
   },
 
+  chromecast : {
+    typeClass : 'chromecast',
+    title     : 'Chromecast',
+    deviceIp  : '192.168.1.11',
+    power     : 1,
+    disabled  : true
+  },
+
   /*
    * PS3 support is supplied by Gimx and is available on Windows and Linux
    * only.  Refer to the README for information on setup.

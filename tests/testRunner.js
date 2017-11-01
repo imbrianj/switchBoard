@@ -45,6 +45,7 @@ module.exports = (function () {
                 'tests/unit/apps/gerty/tv.js',
                 'tests/unit/apps/gerty/weather.js',
                 'tests/unit/devices/activeBuilding/controller.js',
+                'tests/unit/devices/chromecast/controller.js',
                 'tests/unit/devices/denon/controller.js',
                 'tests/unit/devices/foscam/controller.js',
                 'tests/unit/devices/gerty/controller.js',

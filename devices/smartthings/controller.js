@@ -69,6 +69,7 @@ module.exports = (function () {
           that        = this,
           ssl         = config.ssl.disabled === false ? 'https' : 'http';
 
+      smartthings.config   = { celsius : config.celsius };
       smartthings.method   = 'POST';
       smartthings.path     = deviceConfig.path || '/oauth/token?grant_type=authorization_code&client_id=' + deviceConfig.clientId + '&client_secret=' + deviceConfig.clientSecret + '&redirect_uri=' + ssl + '://' + config.serverIp + ':' + config.serverPort + '/oauth/' + deviceId + '&code=' + oauthCode + '&scope=app';
       smartthings.callback = function (err, response) {

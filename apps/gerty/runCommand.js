@@ -54,9 +54,10 @@ module.exports = (function () {
           deviceType = 'security';
         break;
 
-        case 'samsung'   :
-        case 'lg'        :
-        case 'panasonic' :
+        case 'chromecast' :
+        case 'samsung'    :
+        case 'lg'         :
+        case 'panasonic'  :
           deviceType = 'tv';
         break;
 

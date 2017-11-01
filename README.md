@@ -38,6 +38,7 @@ Supported Devices/Services
 |----------------------|-------------|-----------------------------------------------------------------------------------|
 | ActiveBuilding       | Stable      | Checks for arrived packages to be picked up from your concierge                   |
 | Belkin Wemo          | Stable      |                                                                                   |
+| Chromecast           | Testing     | Limited functionality.  Determines if TV is on and allows sending of YouTube IDs. |
 | Client MP3           | Stable      | Sends an mp3 playback command to all Websocket connected clients                  |
 | Client Notify        | Stable      | Sends a Desktop Notification to all Websocket connected clients                   |
 | Client Screen Saver  | Development | For use with OLED display fixtures - blacks out screen when not in use.           |
