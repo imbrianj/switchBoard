@@ -123,6 +123,9 @@ module.exports = (function () {
           UPS             : "UPS",
           USPS            : "USPS"
         },
+        chromecast : {
+          CHROMECAST : "Chromecast"
+        },
         clientMp3 : {
           CLIENTMP3 : "Client MP3"
         },
