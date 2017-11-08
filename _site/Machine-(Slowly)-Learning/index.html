@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Machine (Slowly) Learning – SwitchBoard Home Automation – Node.js home automation system with machine learning</title>
+
+        <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="Is this thing on?
+
+" />
+    <meta property="og:description" content="Is this thing on?
+
+" />
+    
+    <meta name="author" content="SwitchBoard Home Automation" />
+
+    
+    <meta property="og:title" content="Machine (Slowly) Learning" />
+    <meta property="twitter:title" content="Machine (Slowly) Learning" />
+    
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/switchBoard/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="SwitchBoard Home Automation - Node.js home automation system with machine learning" href="/switchBoard/feed.xml" />
+
+    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+  </head>
+
+  <body>
+    <div class="wrapper-masthead">
+      <div class="container">
+        <header class="masthead clearfix">
+          <a href="/switchBoard/" class="site-avatar"><img src="https://avatars3.githubusercontent.com/u/526531" /></a>
+
+          <div class="site-info">
+            <h1 class="site-name"><a href="/switchBoard/">SwitchBoard Home Automation</a></h1>
+            <p class="site-description">Node.js home automation system with machine learning</p>
+          </div>
+
+          <nav>
+            <a href="/switchBoard/">Blog</a>
+            <a href="/switchBoard/about">About</a>
+          </nav>
+        </header>
+      </div>
+    </div>
+
+    <div id="main" role="main" class="container">
+      <article class="post">
+  <h1>Machine (Slowly) Learning</h1>
+
+  <div class="entry">
+    <p>Is this thing on?</p>
+
+<p>When I first started adding machine learning to SwitchBoard, I had the expectation that it’d start revealing some interesting usage patterns.  That it’d start taking over a bit and let me stop focusing on how I interacted with my house.  It seemed natural to think that if it had a reasonable sized data set that it’d be able to take the user out of the equation at least somewhat.</p>
+
+<p>I was right.  And…well, I was also wrong.  So far, the end result has been pretty underwhelming.  Early on, I did not consider time or day variables.  Any action would be mapped to all similar actions.  To add some more fidelity to those results, I created sub-categories that events would be categorized by.  There would be four time variables: dawn, morning, afternoon and evening.  There would also be two day variables: weekday and weekend.  This is all well and good.  My behaviors change drastically between weekend evenings and, say, weekday mornings.  What I had naively not expected was how insanely high this set the bar on how much useful data one would need to collect before a reasonable level of confidence could surmise some useful responses.  We went from one bucket full of random events into <code class="highlighter-rouge">4 x 2 = 8</code> buckets of events.  Some of these will be more full than others (I’m far more active in the afternoon than, say, dawn).  Because of this, I’ve been tweaking my confidence (how certain are we that, given the existing data, you want an intended action to be carried out?) and threshold numbers (how many events like this need to be logged before we should even consider acting on them?) down considerably to try and find where that happy level of usefulness is.</p>
+
+<p>Then there’s the issue of redundant scripts.  My house has learned that I like to have my hall light on after I arrive home.  But I already have written a script to enforce this - since I want it to do this before any learned behavior.  Why wait for 100 iterations when it’s something you automatically know will be desired 100% of the time?  So scriptable events still have their place - and they take over a fair bit of the work that machine learning otherwise would eventually handle.</p>
+
+<p>And then there’s the issue of redundant commands.  My house knows that when the motion sensor goes off during the day that my office light is on 95% of the time - so it should turn it on for me.  However, since the light is on 95% of the time, there’s a low likelihood that there’s anything to do at all.  Code has been written to prevent initiating an intent if the desired value is already the current state.  So it’s completely ignored.  So the machine learning reinforces existing behaviors and doesn’t leave a lot for it to do.  It silently dismisses an accurate but redundant intent.</p>
+
+<p>Things had been so quiet that I had to start adding logging data to my instance of SwitchBoard.  Watching the log as events fired, I could see it accurately reporting that either not enough data had been collected (something I can adjust numbers for and wait for more data to be collected), the confidence in that action was not high enough (which I can adjust - to a limit) or the target device already matched the intent.</p>
+
+<p>I still see huge potential in machine learning in this space.  My setup is, admittedly, fairly simple - and I still have only collected about a month of useful data.  I’ll be interested to see where things go once I collect more data, add in more functionality and find confidence and threshold values that make sense.  As this plays out, I intend to keep this blog updated.</p>
+
+  </div>
+
+  <div class="date">
+    Written on November  7, 2017
+  </div>
+
+  
+</article>
+
+    </div>
+
+    <div class="wrapper-footer">
+      <div class="container">
+        <footer class="footer">
+          
+<a href="mailto:brian@bevey.org"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/imbrianj/switchBoard"><i class="svg-icon github"></i></a>
+
+
+
+
+
+
+
+
+        </footer>
+      </div>
+    </div>
+
+    
+
+  </body>
+</html>
