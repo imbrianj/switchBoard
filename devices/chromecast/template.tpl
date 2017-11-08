@@ -6,7 +6,7 @@
             <fieldset>
               <legend>{{i18n_TEXT_INPUT}}</legend>
               <label for="{{DEVICE_ID}}-text-input">{{i18n_TEXT_INPUT}}:</label>
-              <input id="{{DEVICE_ID}}-text-input" class="text-input" type="text" name="{{DEVICE_ID}}" placeholder="{{i18n_TEXT_INPUT}}" required />
+              <input id="{{DEVICE_ID}}-text-input" class="text-input" type="text" name="{{DEVICE_ID}}" placeholder="{{i18n_TEXT_INPUT}}" required maxlength="11" />
               <input class="input-type" type="hidden" value="text" name="type" />
               <button type="submit" class="button">{{i18n_SUBMIT}}</button>
             </fieldset>

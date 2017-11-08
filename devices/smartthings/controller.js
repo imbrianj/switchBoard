@@ -29,7 +29,7 @@ module.exports = (function () {
    * @fileoverview Basic control of SmartThings endpoint.
    */
   return {
-    version : 20171030,
+    version : 20171105,
 
     inputs  : ['list', 'subdevice'],
 
@@ -157,7 +157,7 @@ module.exports = (function () {
      * every SwitchBoard command), we'll parse through it and set the new state
      * of the world.
      */
-    updateState : function (smartthings, response) {
+    updateState : function (smartthings, response, controller) {
       var subdevices       = [],
           smartthingsData  = {},
           deviceState      = require(__dirname + '/../../lib/deviceState'),
@@ -315,6 +315,10 @@ module.exports = (function () {
 
         smartthingsData = { state : state, value : { devices : subdevices, mode : mode, groups : response.groups } };
         deviceState.updateState(smartthings.deviceId, 'smartthings', smartthingsData);
+      }
+
+      else if (response.error) {
+        console.log('\x1b[31m' + controller.config.title + '\x1b[0m: ' + util.sanitize(response.message));
       }
 
       return smartthingsData;
@@ -648,13 +652,13 @@ module.exports = (function () {
                             // If we have a full device list, we should try and
                             // get a filtered data set.
                             if (smartthingsData.devices) {
-                              smartthingsData = that.updateState(smartthings, smartthingsData);
+                              smartthingsData = that.updateState(smartthings, smartthingsData, config.device);
                             }
 
                             // Otherwise, it's probably auth data - let's just
                             // pass that to the callback to handle.
                             else {
-                              that.updateState(smartthings, smartthingsData);
+                              that.updateState(smartthings, smartthingsData, config.device);
                             }
 
                             smartthings.callback(null, smartthingsData, true);
