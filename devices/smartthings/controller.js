@@ -29,7 +29,7 @@ module.exports = (function () {
    * @fileoverview Basic control of SmartThings endpoint.
    */
   return {
-    version : 20171105,
+    version : 20171108,
 
     inputs  : ['list', 'subdevice'],
 
@@ -70,6 +70,7 @@ module.exports = (function () {
           ssl         = config.ssl.disabled === false ? 'https' : 'http';
 
       smartthings.config   = { celsius : config.celsius };
+      smartthings.device   = { title   : deviceConfig.title };
       smartthings.method   = 'POST';
       smartthings.path     = deviceConfig.path || '/oauth/token?grant_type=authorization_code&client_id=' + deviceConfig.clientId + '&client_secret=' + deviceConfig.clientSecret + '&redirect_uri=' + ssl + '://' + config.serverIp + ':' + config.serverPort + '/oauth/' + deviceId + '&code=' + oauthCode + '&scope=app';
       smartthings.callback = function (err, response) {
@@ -84,7 +85,7 @@ module.exports = (function () {
             authData.accessToken = response.access_token;
             authData.expire      = response.expires_in;
 
-            that.oauthUrl(authData, { 'controller' : that, 'config' : deviceConfig });
+            that.oauthUrl(authData, { 'controller' : that, 'config' : deviceConfig }, config);
           }
         }
 
@@ -100,12 +101,13 @@ module.exports = (function () {
      * Use received OAuth2 access token to query for endpoint URL to be used
      * later.  Once we have all auth data, cache for future use.
      */
-    oauthUrl : function (auth, controller) {
+    oauthUrl : function (auth, controller, config) {
       var smartthings = {},
           that        = this;
 
       console.log('\x1b[35m' + controller.config.title + '\x1b[0m: Fetching device url');
 
+      smartthings.config   = { celsius : config.celsius };
       smartthings.path     = controller.config.path || '/api/smartapps/endpoints/' + controller.config.clientId + '?access_token=' + auth.accessToken;
       smartthings.callback = function (err, response) {
         var fs = require('fs'),
@@ -147,7 +149,7 @@ module.exports = (function () {
       config.deviceId = config.deviceId;
       config.path     = config.path || config.auth.url + '/list';
       config.device   = { auth : config.auth, deviceId : config.deviceId, groups : config.groups, className : config.className };
-      config.config   = { celsius : config.config.celsius };
+      config.config   = { celsius : config.celsius };
 
       this.send(config);
     },
@@ -318,7 +320,7 @@ module.exports = (function () {
       }
 
       else if (response.error) {
-        console.log('\x1b[31m' + controller.config.title + '\x1b[0m: ' + util.sanitize(response.message));
+        console.log('\x1b[31m' + controller.title + '\x1b[0m: ' + util.sanitize(response.message));
       }
 
       return smartthingsData;
@@ -571,7 +573,7 @@ module.exports = (function () {
                 }
 
                 else {
-                  controller.controller.oauthUrl(auth, controller);
+                  controller.controller.oauthUrl(auth, controller, config);
                 }
               }
 
