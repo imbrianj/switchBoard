@@ -30,7 +30,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20161101,
+    version : 20171111,
 
     lastState : {},
 
@@ -58,7 +58,7 @@ module.exports = (function () {
 
             if ((currentDevice.value) && (currentDevice.value.devices)) {
               for (subdeviceId in currentDevice.value.devices) {
-                if (currentDevice.value.devices.hasOwnProperty(currDevice)) {
+                if (currentDevice.value.devices[subdeviceId]) {
                   subdevice = currentDevice.value.devices[subdeviceId];
 
                   if (config.trigger === subdevice.label) {
@@ -82,7 +82,7 @@ module.exports = (function () {
 
       status = checkState();
 
-      if (status !== this.lastState[deviceId][config.trigger]) {
+      if ((this.lastState[deviceId]) && (status !== this.lastState[deviceId][config.trigger])) {
         this.lastState[deviceId][config.trigger] = status;
 
         for (currDevice in controllers) {
