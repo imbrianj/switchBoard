@@ -111,7 +111,7 @@
 
             case 'motion' :
               deviceTemplate = templateStatic;
-              deviceClass    = 'fa-paw';
+              deviceClass    = 'fa-street-view';
             break;
 
             case 'presence' :

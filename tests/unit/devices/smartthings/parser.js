@@ -62,7 +62,7 @@ exports.smartthingsParserTest = {
     test.strictEqual(goodMarkup.indexOf('{{'),        -1, 'All values replaced');
 
     test.notStrictEqual(goodMarkup.indexOf('<h4>GROUP1</h4><ul><a href="/?TEST=subdevice-toggle-Label+Foo" class="fa fa-lightbulb-o device-active"><span>Label Foo</span></a><a href="/?TEST=subdevice-toggle-Label+Bar" class="fa fa-unlock-alt"><span>Label Bar</span></a>'), -1, 'Passed markup validation 1');
-    test.notStrictEqual(goodMarkup.indexOf('<h4>GROUP2</h4><ul><span class="fa fa-columns device-active"><span>Label Baz (70&deg;)</span></span><span class="fa fa-tint"><span>Label Bang</span></span><span class="fa fa-paw"><span>Label Bif</span></span>'),                 -1, 'Passed markup validation 2');
+    test.notStrictEqual(goodMarkup.indexOf('<h4>GROUP2</h4><ul><span class="fa fa-columns device-active"><span>Label Baz (70&deg;)</span></span><span class="fa fa-tint"><span>Label Bang</span></span><span class="fa fa-street-view"><span>Label Bif</span></span>'),         -1, 'Passed markup validation 2');
     test.notStrictEqual(goodMarkup.indexOf('<h4>GROUP3</h4><ul><span class="fa fa-male device-active"><span>Label Bam + Temp (70&deg;)</span></span>'),                                                                                                                         -1, 'Passed markup validation 3');
 
     test.strictEqual(ungroupedMarkup.indexOf('{{'),   -1, 'All values replaced');
