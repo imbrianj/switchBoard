@@ -85,7 +85,8 @@
           var deviceTemplate = '',
               deviceMarkup   = '',
               deviceClass    = '',
-              temp           = '',
+              peripherals    = [],
+              peripheral     = '',
               vibrate        = '';
 
           switch (device.type) {
@@ -121,7 +122,15 @@
           }
 
           if ((device.peripheral) && (device.peripheral.temp)) {
-            temp = ' (' + device.peripheral.temp + '&deg;)';
+            peripherals.push(device.peripheral.temp + '&deg;');
+          }
+
+          if ((device.peripheral) && (device.peripheral.battery)) {
+            peripherals.push(device.peripheral.battery + '%');
+          }
+
+          if (peripherals.length) {
+            peripheral = ' (' + peripherals.join(' ') + ')';
           }
 
           if ((device.peripheral) && (device.peripheral.vibrate === 'on')) {
@@ -130,7 +139,7 @@
 
           if (deviceTemplate) {
             deviceMarkup = deviceTemplate.split('{{SUB_DEVICE_ID}}').join(device.label.split(' ').join('+'));
-            deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_NAME}}').join(device.label + temp);
+            deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_NAME}}').join(device.label + peripheral);
             deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_CLASS}}').join(device.className || deviceClass);
 
             if (device.state === 'on') {
