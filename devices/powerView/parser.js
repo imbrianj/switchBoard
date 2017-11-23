@@ -69,6 +69,7 @@
 
         blindsMarkup += templateBlind.split('{{SUB_DEVICE_ID}}').join(encodeName(device.label));
         blindsMarkup  = blindsMarkup.split('{{SUB_DEVICE_PERCENTAGE}}').join(device.percentage);
+        blindsMarkup  = blindsMarkup.split('{{SUB_DEVICE_STATE}}').join(device.battery ? ' (' + device.battery + '%)' : '');
         blindsMarkup  = blindsMarkup.split('{{SUB_DEVICE_NAME}}').join(device.label);
       }
 

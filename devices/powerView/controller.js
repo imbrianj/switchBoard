@@ -33,7 +33,7 @@ module.exports = (function () {
    *       http://forum.universal-devices.com/topic/16538-hunter-douglas-powerView-control-with-isy/
    */
   return {
-    version : 20161118,
+    version : 20171122,
 
     inputs  : ['command', 'list', 'subdevice', 'text'],
 
@@ -88,11 +88,12 @@ module.exports = (function () {
      * Convert unsigned short scaled value used by the API to percentage
      * opened.
      */
-    valueToPercent : function (value) {
-      var percentage = null;
+    valueToPercent : function (value, max) {
+      var percentage = null,
+          maxValue   = max || 65535;
 
       if (!isNaN(value)) {
-        percentage = Math.max(0, Math.min(100, Math.round((value * 100) / 65535)));
+        percentage = Math.max(0, Math.min(100, Math.round((value * 100) / maxValue)));
       }
 
       return percentage;
@@ -102,11 +103,12 @@ module.exports = (function () {
      * Convert percentage opening to max unsigned short scaled value required by
      * the API.
      */
-    percentToValue : function (percent) {
-      var value = null;
+    percentToValue : function (percent, max) {
+      var value    = null,
+          maxValue = max || 65535;
 
       if (!isNaN(percent)) {
-        value = Math.min(65535, Math.max(0, Math.round((65535 * percent) / 100)));
+        value = Math.min(maxValue, Math.max(0, Math.round((maxValue * percent) / 100)));
       }
 
       return value;
@@ -249,7 +251,8 @@ module.exports = (function () {
      * values, then return the array in a format we desire.
      */
     findBlinds : function (rawBlinds, deviceId, order) {
-      var devices = [],
+      var util    = require(__dirname + '/../../lib/sharedUtil').util,
+          devices = [],
           device,
           i;
 
@@ -258,12 +261,13 @@ module.exports = (function () {
           device = this.findBlindState(rawBlinds.shadeData[i].id, deviceId);
 
           devices.push({
-            id         : rawBlinds.shadeData[i].id,
-            label      : new Buffer.from(rawBlinds.shadeData[i].name, 'base64').toString(),
-            battery    : rawBlinds.shadeData[i].batteryStrength,
+            id           : parseInt(util.sanitize(rawBlinds.shadeData[i].id), 10),
+            label        : util.sanitize(new Buffer.from(rawBlinds.shadeData[i].name, 'base64').toString()),
+            battery      : this.valueToPercent(parseInt(util.sanitize(rawBlinds.shadeData[i].batteryStrength), 10), 168),
+            batteryIsLow : util.sanitize(rawBlinds.shadeData[i].batteryIsLow),
             // The API does not appear reliable in offering percentage
             // information, so we'll prioritize our own stored value first.
-            percentage : device.percentage || rawBlinds.shadeData[i].positions ? this.valueToPercent(rawBlinds.shadeData[i].positions.position1) : 0
+            percentage   : device.percentage || rawBlinds.shadeData[i].positions ? this.valueToPercent(parseInt(rawBlinds.shadeData[i].positions.position1, 10), 65535) : 0
           });
         }
       }
@@ -418,7 +422,7 @@ module.exports = (function () {
               }
 
               else if ((blinds) && (blinds.shade) && (blinds.shade.positions)) {
-                dataReply = that.updateBlind(powerView.deviceId, powerView.blindId, that.valueToPercent(blinds.shade.positions.position1));
+                dataReply = that.updateBlind(powerView.deviceId, powerView.blindId, that.valueToPercent(blinds.shade.positions.position1, 65535));
                 scenes    = that.findScenes(powerView.scenes);
 
                 powerView.callback(null, { devices : dataReply, scenes : scenes });

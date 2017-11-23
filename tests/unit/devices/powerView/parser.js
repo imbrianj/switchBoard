@@ -33,12 +33,12 @@ exports.powerViewParserTest = {
         markup          = '<h1>Foo</h1> <div>{{POWERVIEW_DYNAMIC}}</div>',
         value           = { scenes  : [{ icon: 'arrow-up', name : 'All Up' }, { icon: 'arrow-down', name : 'All Down' }],
                             devices : [
-                              { id : 1, label : 'Living Room', percentage : 0 },
+                              { id : 1, label : 'Living Room', percentage : 0, battery: 55 },
                               { id : 2, label : 'Office',      percentage : 100 },
                               { id : 3, label : 'Bedroom',     percentage : 50 }
                             ]
                           },
-        fragments       = { blind  : '<li><a href="{{SUB_DEVICE_ID}}">{{SUB_DEVICE_NAME}} <span>{{SUB_DEVICE_PERCENTAGE}}</span></li>',
+        fragments       = { blind  : '<li><a href="{{SUB_DEVICE_ID}}">{{SUB_DEVICE_NAME}}{{SUB_DEVICE_STATE}}<span>{{SUB_DEVICE_PERCENTAGE}}</span></li>',
                             blinds : '<ol>{{POWERVIEW_BLINDS}}</ol>',
                             scene  : '<li><a href="{{SCENE_NAME_COMMAND}}">{{SCENE_NAME}} <span>{{SCENE_ICON}}</span></li>',
                             scenes : '<ol>{{POWERVIEW_SCENES}}</ol>',
@@ -49,9 +49,10 @@ exports.powerViewParserTest = {
     test.strictEqual(noValue.indexOf('{{'),           -1, 'All values replaced');
     test.strictEqual(noValue, '<h1>Foo</h1> <div></div>', 'Empty values vaildated');
     test.strictEqual(goodMarkup.indexOf('{{'),        -1, 'All values replaced');
-    test.notStrictEqual(goodMarkup.indexOf('<li><a href="living_room">Living Room <span>0</span></li>'), -1, 'Device name and values validated');
-    test.notStrictEqual(goodMarkup.indexOf('<li><a href="office">Office <span>100</span></li>'),         -1, 'Device name and values validated');
-    test.notStrictEqual(goodMarkup.indexOf('<li><a href="bedroom">Bedroom <span>50</span></li>'),        -1, 'Device name and values validated');
+
+    test.notStrictEqual(goodMarkup.indexOf('<li><a href="living_room">Living Room (55%)<span>0</span></li>'), -1, 'Device name and values validated 1');
+    test.notStrictEqual(goodMarkup.indexOf('<li><a href="office">Office<span>100</span></li>'),               -1, 'Device name and values validated 2');
+    test.notStrictEqual(goodMarkup.indexOf('<li><a href="bedroom">Bedroom<span>50</span></li>'),              -1, 'Device name and values validated 3');
     test.notStrictEqual(goodMarkup.indexOf('<li><a href="All Up">All Up <span>arrow-up</span></li><li><a href="All Down">All Down <span>arrow-down</span></li>'), -1, 'Scene markup validated');
 
     test.done();
