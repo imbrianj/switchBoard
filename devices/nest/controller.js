@@ -29,7 +29,7 @@ module.exports = (function () {
    * @requires querystring, fs, https
    */
   return {
-    version : 20171030,
+    version : 20171127,
 
     inputs : ['command', 'text', 'list', 'subdevice'],
 
@@ -172,7 +172,7 @@ module.exports = (function () {
       var deviceState = require(__dirname + '/../../lib/deviceState'),
           util        = require(__dirname + '/../../lib/sharedUtil').util,
           nestState   = deviceState.getDeviceState(config.deviceId),
-          celsius     = !!config.config.celsius,
+          celsius     = config.config ? !!config.config.celsius : false,
           that        = this,
           callback    = config.callback || function () {},
           findByName  = function (find, i) {
@@ -231,6 +231,7 @@ module.exports = (function () {
       config.path     = '/v2/mobile/user.' + config.auth.userId;
       config.method   = 'GET';
       config.device   = { auth : config.auth, deviceId : config.deviceId };
+      config.config   = { celsius : celsius };
 
       config.callback = function (err, response) {
         var nest        = { devices : [] },
@@ -468,6 +469,10 @@ module.exports = (function () {
               }
             }
           }
+
+          else {
+            console.log('\x1b[31m' + controller.config.title + '\x1b[0m: Auth cache is empty.');
+          }
         });
       }
 
@@ -495,7 +500,7 @@ module.exports = (function () {
       nest.password  = config.device.password || '';
       nest.auth      = config.device.auth     || {};
       nest.language  = config.language        || 'en';
-      nest.config    = { celsius : !!config.config.celsius };
+      nest.config    = config.config ? { celsius : !!config.config.celsius } : false;
 
       if ((nest.command) || (nest.subdevice)) {
         nest = this.getDevicePath(nest);
@@ -547,9 +552,7 @@ module.exports = (function () {
             }
 
             else {
-              console.log('\x1b[31m' + config.device.title + '\x1b[0m: No data returned from API');
-
-              nest.callback(null, '');
+              nest.callback('No data returned from API');
             }
           });
         });
