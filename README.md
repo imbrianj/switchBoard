@@ -37,22 +37,23 @@ Supported Devices/Services
 | Name                 | Status      | Notes                                                                             |
 |----------------------|-------------|-----------------------------------------------------------------------------------|
 | ActiveBuilding       | Stable      | Checks for arrived packages to be picked up from your concierge                   |
+| Air Quality          | Testing     | Checks local air quality values from OpenAQ.org                                   |
 | Belkin Wemo          | Stable      |                                                                                   |
-| Chromecast           | Testing     | Limited functionality.  Determines if TV is on and allows sending of YouTube IDs. |
+| Chromecast           | Testing     | Limited functionality.  Determines if TV is on and allows sending of YouTube IDs  |
 | Client MP3           | Stable      | Sends an mp3 playback command to all Websocket connected clients                  |
 | Client Notify        | Stable      | Sends a Desktop Notification to all Websocket connected clients                   |
-| Client Screen Saver  | Development | For use with OLED display fixtures - blacks out screen when not in use.           |
+| Client Screen Saver  | Development | For use with OLED display fixtures - blacks out screen when not in use            |
 | Client Speech        | Stable      | Sends text to be speech synthesized to all Websocket connected clients            |
 | Client Vibrate       | Stable      | Sends a command to vibrate all Websocket connected clients (phones, tablets, etc) |
 | Debug                | Stable      | Display basic system information (memory, cpu, uptime)                            |
 | Denon                | Stable      | New controller and still in testing                                               |
 | Foscam               | Stable      | Works with FI8910W (if you have another version that this does not work with, let me know and I can add support).  Arm, Disarm, Go to presets, etc. *INSECURE* Exposes camera credentials to users |
-| Gerty                | Stable      | A simple interface for all devices that reacts to natural inputs.                 |
-| GitHub               | Testing     | Poll for commits to a given repository.  For Switchboard, can tell you if you should update. |
-| have i been pwned?   | Testing     | Query haveibeenpwned.com to see if your username has been part of a data breach.  |
+| Gerty                | Stable      | A simple interface for all devices that reacts to natural inputs                  |
+| GitHub               | Testing     | Poll for commits to a given repository.  For Switchboard, can tell you if you should update |
+| have i been pwned?   | Testing     | Query haveibeenpwned.com to see if your username has been part of a data breach   |
 | LG TVs               | Development | Still need work on authentication                                                 |
 | Location             | Stable      | Uses [switchboard-phpServer](https://github.com/imbrianj/switchboard-phpServer) and [Tasker](https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm) to track your GPS position
-| MonoPrice 3d Printer | Testing     | Probably works with other brands and models, but tested on Mini Select v2.        |
+| MonoPrice 3d Printer | Testing     | Probably works with other brands and models, but tested on Mini Select v2         |
 | MP3                  | Stable      | Works on *nix with mpg123 or OSX with afplay. Win not supported                   |
 | Nest                 | Stable      | Works with Nest thermostat and Protect smoke / CO detectors                       |
 | Panasonic            | Stable      | Text input and basic controls                                                     |

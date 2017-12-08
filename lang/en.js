@@ -123,6 +123,10 @@ module.exports = (function () {
           UPS             : "UPS",
           USPS            : "USPS"
         },
+        airQuality : {
+          AIRQUALITY        : 'Air Quality',
+          AIRQUALITY_UNSAFE : 'Unsafe levels of {{TYPE}} reported!'
+        },
         chromecast : {
           CHROMECAST : "Chromecast"
         },

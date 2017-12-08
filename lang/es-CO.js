@@ -127,6 +127,10 @@ module.exports = (function () {
           UPS             : "UPS",
           USPS            : "USPS"
         },
+        airQuality : {
+          AIRQUALITY        : 'Calidad del aire',
+          AIRQUALITY_UNSAFE : '¡Se informaron niveles inseguros de {{TYPE}}!'
+        },
         chromecast : {
           CHROMECAST : "Chromecast"
         },

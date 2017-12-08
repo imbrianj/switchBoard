@@ -229,6 +229,20 @@ exports.config = {
   },
 
   /*
+   * Although their website makes searching for specific locations difficult,
+   * you can look for a location you're interested here:
+   * https://openaq.org/#/locations?countries=US
+   */
+  airQuality : {
+    typeClass : 'airQuality',
+    title     : 'Air Quality',
+    location  : 'Seattle-10th %26 Welle',
+    apps      : { 'Air Quality Announce' : { id            : 'announceAirQuality',
+                                             controllerIds : ['speech', 'clientSpeech', 'clientNotify', 'gerty'] } },
+    disabled  : true
+  },
+
+  /*
    * This is insecure.  Your Foscam username and password will be sent in
    * plain-text and can be viewable within the source of the rendered
    * controller template.
