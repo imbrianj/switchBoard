@@ -238,7 +238,7 @@ exports.config = {
     title     : 'Air Quality',
     location  : 'Seattle-10th %26 Welle',
     apps      : { 'Air Quality Announce' : { id            : 'announceAirQuality',
-                                             controllerIds : ['speech', 'clientSpeech', 'clientNotify', 'gerty'] } },
+                                             controllerIds : ['clientNotify', 'gerty'] } },
     disabled  : true
   },
 

@@ -125,7 +125,7 @@ module.exports = (function () {
         },
         airQuality : {
           AIRQUALITY        : 'Air Quality',
-          AIRQUALITY_UNSAFE : 'Unsafe levels of {{TYPE}} reported!'
+          AIRQUALITY_UNSAFE : 'Unsafe levels of {{TYPE}} reported at {{VALUE}}!'
         },
         chromecast : {
           CHROMECAST : "Chromecast"

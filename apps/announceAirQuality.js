@@ -55,7 +55,7 @@ module.exports = (function () {
           if (levels[type] < values.value.report[i].value) {
             notify = require(__dirname + '/../lib/notify');
 
-            message = this.translate('AIRQUALITY_UNSAFE', lang).replace('{{TYPE}}', type);
+            message = this.translate('AIRQUALITY_UNSAFE', lang).replace('{{TYPE}}', type).replace('{{VALUE}}', values.value.report[i].value);
 
             notify.notify(message, controllers, deviceId);
           }
