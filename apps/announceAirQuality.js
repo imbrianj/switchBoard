@@ -28,8 +28,10 @@
 module.exports = (function () {
   'use strict';
 
+  var AirQualityValues = {};
+
   return {
-    version : 20171207,
+    version : 20171208,
 
     translate : function (token, lang) {
       var translate = require(__dirname + '/../lib/translate');
@@ -42,6 +44,7 @@ module.exports = (function () {
           lang         = controllers.config.language,
           message      = '',
           type,
+          value,
           i            = 0,
           configLevels = config.levels || {},
           levels       = { co   : configLevels.co   || 9,
@@ -50,15 +53,20 @@ module.exports = (function () {
 
       if ((values.value) && (values.value.report)) {
         for (i; i < values.value.report.length; i += 1) {
-          type = values.value.report[i].type;
+          type  = values.value.report[i].type;
+          value = values.value.report[i].value;
 
-          if (levels[type] < values.value.report[i].value) {
+          AirQualityValues[deviceId] = AirQualityValues[deviceId] || {};
+
+          if ((AirQualityValues[deviceId][type] !== value) && (levels[type] < value)) {
             notify = require(__dirname + '/../lib/notify');
 
-            message = this.translate('AIRQUALITY_UNSAFE', lang).replace('{{TYPE}}', type).replace('{{VALUE}}', values.value.report[i].value);
+            message = this.translate('AIRQUALITY_UNSAFE', lang).replace('{{TYPE}}', type).replace('{{VALUE}}', value);
 
             notify.notify(message, controllers, deviceId);
           }
+
+          AirQualityValues[deviceId][type] = value;
         }
       }
     }

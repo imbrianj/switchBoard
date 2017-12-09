@@ -33,6 +33,7 @@ module.exports = (function () {
   reporter.run(['tests/unit/apps/announceTrendingNews.js',
                 'tests/unit/apps/foscamDvr.js',
                 'tests/unit/apps/gerty/activeBuilding.js',
+                'tests/unit/apps/gerty/airQuality.js',
                 'tests/unit/apps/gerty/blinds.js',
                 'tests/unit/apps/gerty/entertainment.js',
                 'tests/unit/apps/gerty/language.js',

@@ -29,7 +29,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20161128,
+    version : 20171208,
 
     /**
      * Take in a typeClass and return the type of device it's categorized as.
@@ -77,6 +77,10 @@ module.exports = (function () {
 
         case 'weather' :
           deviceType = 'weather';
+        break;
+
+        case 'airQuality' :
+          deviceType = 'airQuality';
         break;
 
         case 'travis' :
