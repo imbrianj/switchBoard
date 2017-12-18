@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>A Look At Things To Come – SwitchBoard Home Automation – Node.js home automation system with machine learning</title>
+
+        <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="I’ve been trying to keep updating SwitchBoard with features and bug fixes.  There are a few things that seem logical to add that I’ve avoided - and there are a few that seem illogical that I have prioritized higher.  I thought I’d share a bit of what I have on my current “todo list” - and a few items that I probably will not be working on soon (and why).
+
+" />
+    <meta property="og:description" content="I’ve been trying to keep updating SwitchBoard with features and bug fixes.  There are a few things that seem logical to add that I’ve avoided - and there are a few that seem illogical that I have prioritized higher.  I thought I’d share a bit of what I have on my current “todo list” - and a few items that I probably will not be working on soon (and why).
+
+" />
+    
+    <meta name="author" content="SwitchBoard Home Automation" />
+
+    
+    <meta property="og:title" content="A Look At Things To Come" />
+    <meta property="twitter:title" content="A Look At Things To Come" />
+    
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/switchBoard/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="SwitchBoard Home Automation - Node.js home automation system with machine learning" href="/switchBoard/feed.xml" />
+
+    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+  </head>
+
+  <body>
+    <div class="wrapper-masthead">
+      <div class="container">
+        <header class="masthead clearfix">
+          <a href="/switchBoard/" class="site-avatar"><img src="https://avatars3.githubusercontent.com/u/526531" /></a>
+
+          <div class="site-info">
+            <h1 class="site-name"><a href="/switchBoard/">SwitchBoard Home Automation</a></h1>
+            <p class="site-description">Node.js home automation system with machine learning</p>
+          </div>
+
+          <nav>
+            <a href="/switchBoard/">Blog</a>
+            <a href="/switchBoard/about">About</a>
+            <a href="https://github.com/imbrianj/switchBoard">Code</a>
+          </nav>
+        </header>
+      </div>
+    </div>
+
+    <div id="main" role="main" class="container">
+      <article class="post">
+  <h1>A Look At Things To Come</h1>
+
+  <div class="entry">
+    <p>I’ve been trying to keep updating SwitchBoard with features and bug fixes.  There are a few things that seem logical to add that I’ve avoided - and there are a few that seem illogical that I have prioritized higher.  I thought I’d share a bit of what I have on my current “todo list” - and a few items that I probably will not be working on soon (and why).</p>
+
+<h3 id="things-high-on-my-list">Things High On My List</h3>
+
+<p>Twitter.  I’ve integrated a simple Twitter client into SwitchBoard, but it’s proven to be pretty unreliable.  About 30% of the time, the response from the server will come back with an error.  I hadn’t had the time or motivation to address this, but I want to move it from “Development” to “Testing” in the near future.  The use-case for this is that you could tweet your house and have it take action based on who sent it (a whitelist of who it will listen to).  Commands will likely be plain-text, similar to what Gerty accepts - including macros.  “Turn on the porch light and the hall light.”  “I’m coming home.” - these and similar commands could be a convenient way to issue commands from outside your local network.</p>
+
+<p>Service Workers.  Although they likely won’t be very functional, as SSL (discussed later) is required - I want to at least have the functionality built in the off-chance I can find a <em>reasonable</em> solution to the ongoing SSL woes.</p>
+
+<p>Interactive Chat.  You can currently tell Gerty what you want, but you cannot query for simple data.  I’ve started some very basic work for useful bidirectional communication here.  Asking questions like “Who is home?”, “What’s the weather like?”, “Do I need a jacket?”, “What’s going on?” should yield at least some reasonable responses.</p>
+
+<p>Screensaver.  At one time, I had envisioned mounting an Android phone or tablet to my wall to issue house commands.  With OLED screens, a purely black display would be effectively be turning that screen “off”.  I had started - but not finished - work on a client side screensaver that, after a timeout period of inactivity, would turn the screen black.  Tapping the screen would immediately reveal the normal interface.  This should be simple and hope to finish it soon.  I just lacked the motivation since other tasks took priority and I had no immediate use for this.  I’ll also have to consider those that want the screensaver for some clients but not others (client toggle’able?).</p>
+
+<h3 id="things-not-so-high-on-my-list">Things Not So High On My List</h3>
+
+<p>Samsung TVs.  They’ve updated their protocol so my device controller will not work with newer models.  There’s a <a href="https://github.com/imbrianj/switchBoard/issues/55">lengthy ongoing issue</a> that goes into greater detail for those interested.  TL;DR: It’s a tough problem that smarter people are working on - and I do not have access to the device.</p>
+
+<p>LG TVs.  I’d made some progress on this early on, but never got around the authentication.  The system itself is well documented, but requires just a bit of troubleshooting.  I don’t have access to the device which makes this testing difficult.  If anyone has interest in helping here, I’m happy to prioritize it.  Until then, I imagine it’ll stay in “Development”.</p>
+
+<p>SSL.  I’ve already gone into great detail about the <a href="https://imbrianj.github.io/switchBoard/Developing-on-a-Moving-Target/">issues with SSL on an Internet</a> so I won’t rehash those bad memories.  While it’s totally doable to set up an internal certificate authority, it’s not exactly scalable for an “out of the box” system.  While I have expectation that those using SwitchBoard can edit some simple JSON files, I think setting up a cert authority is a step too far.  If I have time and patience, I’ll look into maybe documenting the easiest method to get things working.  Being that each platform may be different, it could be of limited use.</p>
+
+  </div>
+
+  <div class="date">
+    Written on December 18, 2017
+  </div>
+
+  
+</article>
+
+    </div>
+
+    <div class="wrapper-footer">
+      <div class="container">
+        <footer class="footer">
+          
+<a href="mailto:brian@bevey.org"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/imbrianj/switchBoard"><i class="svg-icon github"></i></a>
+
+
+
+
+
+
+
+
+        </footer>
+      </div>
+    </div>
+
+    
+
+  </body>
+</html>

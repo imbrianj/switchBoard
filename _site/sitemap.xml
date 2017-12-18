@@ -33,6 +33,10 @@
 <lastmod>2017-12-06T00:00:00-08:00</lastmod>
 </url>
 <url>
+<loc>http://localhost:4000/switchBoard/A-Look-At-Things-To-Come/</loc>
+<lastmod>2017-12-18T00:00:00-08:00</lastmod>
+</url>
+<url>
 <loc>http://localhost:4000/switchBoard/404/</loc>
 </url>
 <url>
@@ -43,7 +47,7 @@
 </url>
 <url>
 <loc>http://localhost:4000/switchBoard/demo/index.html</loc>
-<lastmod>2017-12-06T22:44:17-08:00</lastmod>
+<lastmod>2017-12-18T12:38:07-08:00</lastmod>
 </url>
 <url>
 <loc>http://localhost:4000/switchBoard/node_modules/console-browserify/test/static/index.html</loc>
