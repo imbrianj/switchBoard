@@ -24,18 +24,31 @@
   'use strict';
 
   exports.airQuality = function (deviceId, markup, state, value, fragments) {
-    var template   = fragments.report,
-        i          = 0,
-        location   = '',
-        tempMarkup = '';
+    var report      = fragments.report,
+        graph       = fragments.graph,
+        i           = 0,
+        location    = '',
+        tempMarkup  = '',
+        graphMarkup = '',
+        max;
 
     if (value) {
       location = value.location;
 
       for (i in value.report) {
         if (value.report.hasOwnProperty(i)) {
-          tempMarkup = tempMarkup + template.split('{{AIR_QUALITY_TYPE}}').join(value.report[i].type);
-          tempMarkup = tempMarkup.split('{{AIR_QUALITY_VALUE}}').join(value.report[i].value + value.report[i].units);
+          graphMarkup = '';
+          max         = value.report[i].max;
+
+          if (max) {
+            graphMarkup = graph.split('{{MAX_VALUE}}').join(max);
+            graphMarkup = graphMarkup.split('{{PERCENT_QUALITY}}').join((value.report[i].value / max) * 100);
+          }
+
+          tempMarkup = tempMarkup + report.split('{{AIR_QUALITY_GRAPH}}').join(graphMarkup);
+          tempMarkup = tempMarkup.split('{{AIR_QUALITY_TYPE}}').join(value.report[i].type);
+          tempMarkup = tempMarkup.split('{{AIR_QUALITY_VALUE}}').join(value.report[i].value);
+          tempMarkup = tempMarkup.split('{{AIR_QUALITY_UNITS}}').join(value.report[i].units);
         }
       }
     }

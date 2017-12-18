@@ -29,7 +29,7 @@ module.exports = (function () {
    * @fileoverview Basic air quality information, courtesy of OpenAQ.
    */
   return {
-    version : 20171207,
+    version : 20171218,
 
     readOnly: true,
 
@@ -41,7 +41,8 @@ module.exports = (function () {
     fragments : function () {
       var fs = require('fs');
 
-      return { report : fs.readFileSync(__dirname + '/fragments/airQuality.tpl', 'utf-8') };
+      return { report : fs.readFileSync(__dirname + '/fragments/report.tpl', 'utf-8'),
+               graph  : fs.readFileSync(__dirname + '/fragments/graph.tpl',  'utf-8') };
     },
 
     /**
@@ -63,6 +64,8 @@ module.exports = (function () {
       runCommand.runCommand(controller.config.deviceId, 'list', controller.config.deviceId);
     },
 
+    maxQuality : { co : 100, no2 : 0.2, pm25 : 150 },
+
     /**
      * Accept a raw air quality report object.  Parse through, sanitizing values
      * as necessary.
@@ -70,14 +73,17 @@ module.exports = (function () {
     formatReport : function (report) {
       var util      = require(__dirname + '/../../lib/sharedUtil').util,
           formatted = [],
-          i         = 0;
+          i         = 0,
+          type;
 
       for (i; i < report.length; i += 1) {
+        type = util.sanitize(report[i].parameter);
         formatted.push({
-          type    : util.sanitize(report[i].parameter),
-          value   : util.sanitize(report[i].value),
+          type    : type,
+          value   : Number(util.sanitize(report[i].value).toFixed(3)),
           units   : util.sanitize(report[i].unit),
-          updated : new Date(util.sanitize(report[i].lastUpdated)).getTime()
+          updated : new Date(util.sanitize(report[i].lastUpdated)).getTime(),
+          max     : this.maxQuality[type]
         });
       }
 

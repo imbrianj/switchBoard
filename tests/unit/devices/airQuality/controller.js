@@ -33,6 +33,7 @@ exports.airQualityControllerTest = {
         fragments            = airQualityController.fragments();
 
     test.strictEqual(typeof fragments.report, 'string', 'Fragment verified');
+    test.strictEqual(typeof fragments.graph,  'string', 'Fragment verified');
 
     test.done();
   },
@@ -59,7 +60,7 @@ exports.airQualityControllerTest = {
     var airQualityController = require(__dirname + '/../../../../devices/airQuality/controller'),
         report               = [{
                                   parameter   : 'dogs',
-                                  value       : 2.2,
+                                  value       : 2.24423,
                                   lastUpdated : '2017-11-20T05:00:00.000Z',
                                   unit        : 'dgs'
                                 },
@@ -68,16 +69,29 @@ exports.airQualityControllerTest = {
                                   value       : 1.2,
                                   lastUpdated : '2017-11-20T04:00:00.000Z',
                                   unit        : 'cts'
+                                },
+                                {
+                                  parameter   : 'co',
+                                  value       : 90,
+                                  lastUpdated : '2017-11-20T04:00:00.000Z',
+                                  unit        : 'ppm'
                                 }],
         results              = airQualityController.formatReport(report);
 
     test.strictEqual(results[0].type,  'dogs');
-    test.strictEqual(results[0].value, 2.2);
+    test.strictEqual(results[0].value, 2.244);
     test.strictEqual(results[0].units, 'dgs');
+    test.strictEqual(results[0].max,   undefined);
 
     test.strictEqual(results[1].type,  'cats');
     test.strictEqual(results[1].value, 1.2);
     test.strictEqual(results[1].units, 'cts');
+    test.strictEqual(results[1].max,   undefined);
+
+    test.strictEqual(results[2].type,  'co');
+    test.strictEqual(results[2].value, 90);
+    test.strictEqual(results[2].units, 'ppm');
+    test.strictEqual(results[2].max,   100);
 
     test.done();
   }

@@ -620,11 +620,11 @@ exports.config = {
    */
   rss : {
     typeClass   : 'rss',
-    title       : 'Gym',
-    host        : 'crossfitbelltown.com',
-    port        : 80,
-    path        : '/feed/',
-    maxCount    : 3,
+    title       : 'Blog',
+    host        : 'imbrianj.github.io',
+    port        : 443,
+    path        : '/switchBoard/feed.xml',
+    maxCount    : 10,
     apps        : { 'Announce' : { id            : 'announceRss',
                                    controllerIds : ['speech', 'clientSpeech', 'clientNotify', 'gerty'] } },
     disabled    : true
