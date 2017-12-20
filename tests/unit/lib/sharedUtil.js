@@ -137,9 +137,9 @@ exports.sharedUtilTest = {
 
     var util = require(__dirname + '/../../../lib/sharedUtil').util;
 
-    test.strictEqual(util.cToF(0),   32,   'Freezing point');
-    test.strictEqual(util.cToF(100), 212,  'Boiling point');
-    test.strictEqual(util.cToF(24),  75.2, 'A nice day');
+    test.strictEqual(util.cToF(0),   32,  'Freezing point');
+    test.strictEqual(util.cToF(100), 212, 'Boiling point');
+    test.strictEqual(util.cToF(24),  75,  'A nice day');
 
     test.done();
   },

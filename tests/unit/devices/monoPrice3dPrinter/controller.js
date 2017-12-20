@@ -63,7 +63,7 @@ exports.monoPrice3dPrinterControllerTest = {
                                                }, 'Parse through printer data response');
    test.deepEqual(testMonoPrice3dPrinterFData, { extruderTemp   : 374,
                                                  extruderTarget : 383,
-                                                 bedTemp        : 84.2,
+                                                 bedTemp        : 84,
                                                  bedTarget      : 0,
                                                  percent        : 7
                                                }, 'Parse through printer data response');
