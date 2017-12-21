@@ -31,7 +31,7 @@ module.exports = (function () {
   var PrintProgress = {};
 
   return {
-    version : 20170527,
+    version : 20171220,
 
     translate : function (token, lang) {
       var translate = require(__dirname + '/../lib/translate');
@@ -41,14 +41,14 @@ module.exports = (function () {
 
     announce3dPrinter : function (deviceId, command, controllers, values) {
       var notify,
-          lang       = controllers.config.language,
-          message    = '',
+          lang    = controllers.config.language,
+          message = '',
           percent;
 
       if ((values) && (values.value)) {
         percent = values.value.percent;
 
-        if ((PrintProgress[deviceId] !== percent) && (percent === '100')) {
+        if ((PrintProgress[deviceId] !== percent) && (percent === 100)) {
           notify = require(__dirname + '/../lib/notify');
 
           message = this.translate('PRINT_COMPLETED', lang);
