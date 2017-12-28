@@ -36,7 +36,7 @@ Supported Devices/Services
 | Name                 | Status      | Notes                                                                             |
 |----------------------|-------------|-----------------------------------------------------------------------------------|
 | ActiveBuilding       | Stable      | Checks for arrived packages to be picked up from your concierge                   |
-| Air Quality          | Testing     | Checks local air quality values from OpenAQ.org                                   |
+| Air Quality          | Stable      | Checks local air quality values from OpenAQ.org                                   |
 | Belkin Wemo          | Stable      |                                                                                   |
 | Chromecast           | Testing     | Limited functionality.  Determines if TV is on and allows sending of YouTube IDs  |
 | Client MP3           | Stable      | Sends an mp3 playback command to all Websocket connected clients                  |
@@ -52,7 +52,7 @@ Supported Devices/Services
 | have i been pwned?   | Testing     | Query haveibeenpwned.com to see if your username has been part of a data breach   |
 | LG TVs               | Development | Still need work on authentication                                                 |
 | Location             | Stable      | Uses [switchboard-phpServer](https://github.com/imbrianj/switchboard-phpServer) and [Tasker](https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm) to track your GPS position
-| MonoPrice 3d Printer | Testing     | Probably works with other brands and models, but tested on Mini Select v2         |
+| MonoPrice 3d Printer | Stable      | Probably works with other brands and models, but tested on Mini Select v2         |
 | MP3                  | Stable      | Works on *nix with mpg123 or OSX with afplay. Win not supported                   |
 | Nest                 | Stable      | Works with Nest thermostat and Protect smoke / CO detectors                       |
 | Panasonic            | Stable      | Text input and basic controls                                                     |
