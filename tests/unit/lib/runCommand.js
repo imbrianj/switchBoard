@@ -22,7 +22,7 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview Unit test for loadMarkup.js
+ * @fileoverview Unit test for runCommand.js
  */
 
 exports.runCommandTest = {
@@ -88,11 +88,11 @@ exports.runCommandTest = {
     'use strict';
 
     var runCommand = require(__dirname + '/../../../lib/runCommand'),
-        empty      = runCommand.getCommandType(null, null),
-        text       = runCommand.getCommandType(null, 'text-TEST'),
-        launch     = runCommand.getCommandType(null, 'launch-TEST'),
-        list       = runCommand.getCommandType(null, 'list'),
-        command    = runCommand.getCommandType(null, 'TEST');
+        empty      = runCommand.getCommandType(null),
+        text       = runCommand.getCommandType('text-TEST'),
+        launch     = runCommand.getCommandType('launch-TEST'),
+        list       = runCommand.getCommandType('list'),
+        command    = runCommand.getCommandType('TEST');
 
     test.strictEqual(empty,   '',        'Should return an empty string');
     test.strictEqual(text,    'text',    'Should return text');

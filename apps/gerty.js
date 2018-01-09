@@ -29,7 +29,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20161221,
+    version : 20180107,
 
     gerty : function (deviceId, command, controllers, values, config, appParams) {
       var translate        = require(__dirname + '/../lib/translate'),
@@ -83,10 +83,12 @@ module.exports = (function () {
               utterance = acted || '';
             }
 
-            for (tempDevice in controllers) {
-              if (tempDevice !== 'config') {
-                if ((controllers[tempDevice].config.typeClass === 'speech') || (controllers[tempDevice].config.typeClass === 'clientSpeech')) {
-                  runCommand.runCommand(tempDevice, 'text-' + utterance);
+            if (utterance) {
+              for (tempDevice in controllers) {
+                if (tempDevice !== 'config') {
+                  if ((controllers[tempDevice].config.typeClass === 'speech') || (controllers[tempDevice].config.typeClass === 'clientSpeech')) {
+                    runCommand.runCommand(tempDevice, 'text-' + utterance);
+                  }
                 }
               }
             }

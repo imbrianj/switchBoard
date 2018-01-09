@@ -703,6 +703,13 @@ exports.config = {
     accessToken      : 'xxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
     consumerSecret   : 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
     oauthTokenSecret : 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+    // If any users listed under "senders" Tweets @ your user, it well send the
+    // text body of the tweet to all configured controllers.  If Gerty is
+    // included, it will attempt to execute macros and commands.
+    apps             : { 'Twitter Command' : { id            : 'twitterCommand',
+                                               senders       : ['imbrianj'],
+                                               controllerIds : ['gerty', 'clientNotify', 'speech', 'clientSpeech', 'pushover'],
+                                               disabled      : true } },
     disabledMarkup   : true,
     disabled         : true
   },

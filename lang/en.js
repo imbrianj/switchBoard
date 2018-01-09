@@ -557,7 +557,8 @@ module.exports = (function () {
           BUILD_STATUS  : "Build Status"
         },
         twitter : {
-          TWITTER : "Twitter"
+          TWITTER      : "Twitter",
+          FROM_TWITTER : "From Twitter: {{MESSAGE}}"
         },
         weather : {
           WEATHER     : "Weather",

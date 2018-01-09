@@ -26,6 +26,16 @@
  */
 
 exports.translateTest = {
+  stripPunctuation : function (test) {
+    'use strict';
+
+    var translate = require('../../../lib/translate');
+
+    test.deepEqual(translate.stripPunctuation('This, is; a ... test?'), 'This is a  test', 'Replaced punctuation');
+
+    test.done();
+  },
+
   findSynonyms : function (test) {
     'use strict';
 

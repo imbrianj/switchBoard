@@ -30,7 +30,7 @@ module.exports = (function () {
    * @fileoverview Register comments to Gerty.
    */
   return {
-    version : 20161221,
+    version : 20180107,
 
     inputs  : ['command', 'text'],
 
@@ -177,19 +177,13 @@ module.exports = (function () {
           now;
 
       if (gertyState && gertyState.value && gertyState.value.comments) {
-        allComments = gertyState.value.comments;
+        allComments = gertyState.value.comments || [];
       }
 
       if (comment) {
         now = new Date().getTime();
 
-        if (allComments.length) {
-          allComments.push({ text : comment, time : now, name : user.name, code : user.code });
-        }
-
-        else {
-          allComments = [{ text : comment, time : now, name : user.name, code : user.code }];
-        }
+        allComments.push({ text : comment, time : now, name : user.name, code : user.code });
       }
 
       // We don't need to keep a full log as it'd be too heavy to update with

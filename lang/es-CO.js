@@ -549,7 +549,8 @@ module.exports = (function () {
           BUILD_STATUS  : "Estado de construcción"
         },
         twitter : {
-          TWITTER : "Twitter"
+          TWITTER      : "Twitter",
+          FROM_TWITTER : "De Twitter: {{MESSAGE}}"
         },
         weather : {
           WEATHER     : "Tiempo",

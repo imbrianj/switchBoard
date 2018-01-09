@@ -29,7 +29,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20171208,
+    version : 20180107,
 
     /**
      * Take in a typeClass and return the type of device it's categorized as.
@@ -118,7 +118,8 @@ module.exports = (function () {
           k              = 0,
           x              = 0;
 
-      text = rawText.split(' ');
+      rawText = translate.stripPunctuation(rawText);
+      text    = rawText.split(' ');
 
       if (macros) {
         // Loop through all configured macros anywhere in the inputted text.

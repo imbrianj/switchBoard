@@ -68,7 +68,7 @@ Supported Devices/Services
 | SMS                  | Stable      | Uses Twilio. Requires ID and token                                                |
 | Speech               | Stable      | Uses espeak for *nix, say on OSX.  Win not supported                              |
 | Sports               | Stable      | Pull sports scores from ESPN (please don't hammer this endpoint)                  |
-| Stocks               | Stable      | Uses Yahoo Finance                                                                |
+| Stocks               | Unreliable  | Uses Yahoo Finance (API has been unreliable - looking for alternatives)           |
 | Traffic Cams         | Stable      | View multiple traffic webcams                                                     |
 | Travis CI            | Stable      |                                                                                   |
 | Twitter              | Development | Present mentions of your Twitter handle                                           |
