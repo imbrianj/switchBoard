@@ -1,4 +1,42 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/switchBoard/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/switchBoard/" rel="alternate" type="text/html" /><updated>2018-01-03T13:22:13-08:00</updated><id>http://localhost:4000/switchBoard/</id><title type="html">SwitchBoard Home Automation</title><subtitle>Node.js home automation system with machine learning</subtitle><entry><title type="html">So, What About Privacy?</title><link href="http://localhost:4000/switchBoard/So,-What-About-Privacy/" rel="alternate" type="text/html" title="So, What About Privacy?" /><published>2018-01-03T00:00:00-08:00</published><updated>2018-01-03T00:00:00-08:00</updated><id>http://localhost:4000/switchBoard/So,%20What%20About%20Privacy</id><content type="html" xml:base="http://localhost:4000/switchBoard/So,-What-About-Privacy/">&lt;p&gt;A big reason I build SwitchBoard is so I can do things the way I think they should be done.  I like having my data be within my walls as much as possible.  For external APIs, you often have little choice in rely on those outside data points, but if they’re varied, you at least lessen your exposure.  My personal setup consumes a decent number of APIs and no single one has any real useful bits - they’re tied together and the logic to act upon them remains within my network.  Maybe I’m paranoid, but that seems like a good default starting place when building something that deals with so much personal information.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/switchBoard/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/switchBoard/" rel="alternate" type="text/html" /><updated>2018-01-08T19:11:51-08:00</updated><id>http://localhost:4000/switchBoard/</id><title type="html">SwitchBoard Home Automation</title><subtitle>Node.js home automation system with machine learning</subtitle><entry><title type="html">Enabling Voice Commands On Android</title><link href="http://localhost:4000/switchBoard/Enabling-Voice-Commands-On-Android/" rel="alternate" type="text/html" title="Enabling Voice Commands On Android" /><published>2018-01-08T00:00:00-08:00</published><updated>2018-01-08T00:00:00-08:00</updated><id>http://localhost:4000/switchBoard/Enabling%20Voice%20Commands%20On%20Android</id><content type="html" xml:base="http://localhost:4000/switchBoard/Enabling-Voice-Commands-On-Android/">&lt;p&gt;I’m not a big fan of “always on” smart speakers such as Google Home, Alexa, etc.  To me, it’s just too creepy to have a speaker closely tied to the Internet, built by companies with a vested interest in knowing more about you that’s always on and listening.  If you’re paranoid like me, here are some steps to get on-demand (ie: requiring a button press) voice recognition on your smart phone that will work with SwitchBoard.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;You’ll need &lt;a href=&quot;https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm&quot;&gt;Tasker for Android&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;Open Tasker and go to the “Tasks” tab.&lt;/li&gt;
+  &lt;li&gt;Click the “+” in the bottom right to create a new task.  Enter “Voice” (or something) as the name.&lt;/li&gt;
+  &lt;li&gt;Inside the “Voice” task, click the “+” to create a new &lt;code class=&quot;highlighter-rouge&quot;&gt;Action&lt;/code&gt;.
+&lt;span class=&quot;images&quot;&gt;
+  &lt;a href=&quot;/switchBoard/images/voice/selectAction.png&quot;&gt;&lt;img src=&quot;/switchBoard/images/voice/selectAction.png&quot; alt=&quot;List of all Action Categories&quot; title=&quot;List of all Action Categories&quot; /&gt;&lt;/a&gt;
+&lt;/span&gt;&lt;/li&gt;
+  &lt;li&gt;Click &lt;code class=&quot;highlighter-rouge&quot;&gt;Input&lt;/code&gt;, then &lt;code class=&quot;highlighter-rouge&quot;&gt;Get Voice&lt;/code&gt;.  You can leave the settings for &lt;code class=&quot;highlighter-rouge&quot;&gt;Get Voice&lt;/code&gt; default.
+&lt;span class=&quot;images&quot;&gt;
+  &lt;a href=&quot;/switchBoard/images/voice/inputActions.png&quot;&gt;&lt;img src=&quot;/switchBoard/images/voice/inputActions.png&quot; alt=&quot;Creating a new &amp;quot;Get Voice&amp;quot; Action&quot; title=&quot;Creating a new &amp;quot;Get Voice&amp;quot; Action&quot; /&gt;&lt;/a&gt;
+  &lt;a href=&quot;/switchBoard/images/voice/voiceConfig.png&quot;&gt;&lt;img src=&quot;/switchBoard/images/voice/voiceConfig.png&quot; alt=&quot;My settings for Get Voice Action&quot; title=&quot;My settings for Get Voice Action&quot; /&gt;&lt;/a&gt;
+&lt;/span&gt;&lt;/li&gt;
+  &lt;li&gt;Go back to the “Voice” task and click the “+” again to create another new &lt;code class=&quot;highlighter-rouge&quot;&gt;Action&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;This time, click &lt;code class=&quot;highlighter-rouge&quot;&gt;Net&lt;/code&gt;, then &lt;code class=&quot;highlighter-rouge&quot;&gt;HTTP Get&lt;/code&gt;.
+&lt;span class=&quot;images&quot;&gt;
+  &lt;a href=&quot;/switchBoard/images/voice/networkActions.png&quot;&gt;&lt;img src=&quot;/switchBoard/images/voice/networkActions.png&quot; alt=&quot;Creating a new &amp;quot;HTTP GET&amp;quot; Action&quot; title=&quot;Creating a new &amp;quot;HTTP GET&amp;quot; Action&quot; /&gt;&lt;/a&gt;
+&lt;/span&gt;&lt;/li&gt;
+  &lt;li&gt;Inside the settings for the network action, specify your &lt;code class=&quot;highlighter-rouge&quot;&gt;Server:Port&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;For the &lt;code class=&quot;highlighter-rouge&quot;&gt;Path&lt;/code&gt;, enter: &lt;code class=&quot;highlighter-rouge&quot;&gt;?gerty=text-%VOICE&lt;/code&gt;.  Note, if you’ve changed Gerty’s deviceId from the default in SwitchBoard, change that here to match.
+&lt;span class=&quot;images&quot;&gt;
+  &lt;a href=&quot;/switchBoard/images/voice/networkConfig.png&quot;&gt;&lt;img src=&quot;/switchBoard/images/voice/networkConfig.png&quot; alt=&quot;My settings for HTTP GET Action&quot; title=&quot;My settings for HTTP GET Action&quot; /&gt;&lt;/a&gt;
+&lt;/span&gt;&lt;/li&gt;
+  &lt;li&gt;In the main “Voice” task page, you’ll see an icon in the bottom center.  Clicking this allows you to associate an icon.  I had chosen &lt;code class=&quot;highlighter-rouge&quot;&gt;Material&lt;/code&gt; and searched &lt;code class=&quot;highlighter-rouge&quot;&gt;Voice&lt;/code&gt;.
+&lt;span class=&quot;images&quot;&gt;
+  &lt;a href=&quot;/switchBoard/images/voice/iconChooser.png&quot;&gt;&lt;img src=&quot;/switchBoard/images/voice/iconChooser.png&quot; alt=&quot;Searching for &amp;quot;Voice&amp;quot; within the Material icon list&quot; title=&quot;Searching for &amp;quot;Voice&amp;quot; within the Material icon list&quot; /&gt;&lt;/a&gt;
+  &lt;a href=&quot;/switchBoard/images/voice/taskView.png&quot;&gt;&lt;img src=&quot;/switchBoard/images/voice/taskView.png&quot; alt=&quot;View of completed Task&quot; title=&quot;View of completed Task&quot; /&gt;&lt;/a&gt;
+&lt;/span&gt;&lt;/li&gt;
+  &lt;li&gt;Back at the home screen of your phone, long press on an empty space.  When the menu pops up, selected &lt;code class=&quot;highlighter-rouge&quot;&gt;Widgets&lt;/code&gt;.  Scroll down to &lt;code class=&quot;highlighter-rouge&quot;&gt;Tasker&lt;/code&gt; and hold the &lt;code class=&quot;highlighter-rouge&quot;&gt;Task&lt;/code&gt; icon and drag it to your home screen.&lt;/li&gt;
+  &lt;li&gt;In the &lt;code class=&quot;highlighter-rouge&quot;&gt;Task Selection&lt;/code&gt;, choose your new “Voice” task.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;You should now have an icon on your home screen allowing you to quickly fire voice commands to SwitchBoard.&lt;/p&gt;
+
+&lt;p&gt;&lt;span class=&quot;images&quot;&gt;
+  &lt;a href=&quot;/switchBoard/images/voice/voiceInput.png&quot;&gt;&lt;img src=&quot;/switchBoard/images/voice/voiceInput.png&quot; alt=&quot;Example of using Get Voice from a desktop icon&quot; title=&quot;Example of using Get Voice from a desktop icon&quot; /&gt;&lt;/a&gt;
+&lt;/span&gt;&lt;/p&gt;</content><author><name></name></author><category term="general" /><category term="howto" /><category term="home automation" /><category term="gerty" /><category term="voice" /><category term="android" /><summary type="html">I’m not a big fan of “always on” smart speakers such as Google Home, Alexa, etc. To me, it’s just too creepy to have a speaker closely tied to the Internet, built by companies with a vested interest in knowing more about you that’s always on and listening. If you’re paranoid like me, here are some steps to get on-demand (ie: requiring a button press) voice recognition on your smart phone that will work with SwitchBoard.</summary></entry><entry><title type="html">So, What About Privacy?</title><link href="http://localhost:4000/switchBoard/So,-What-About-Privacy/" rel="alternate" type="text/html" title="So, What About Privacy?" /><published>2018-01-03T00:00:00-08:00</published><updated>2018-01-03T00:00:00-08:00</updated><id>http://localhost:4000/switchBoard/So,%20What%20About%20Privacy</id><content type="html" xml:base="http://localhost:4000/switchBoard/So,-What-About-Privacy/">&lt;p&gt;A big reason I build SwitchBoard is so I can do things the way I think they should be done.  I like having my data be within my walls as much as possible.  For external APIs, you often have little choice in rely on those outside data points, but if they’re varied, you at least lessen your exposure.  My personal setup consumes a decent number of APIs and no single one has any real useful bits - they’re tied together and the logic to act upon them remains within my network.  Maybe I’m paranoid, but that seems like a good default starting place when building something that deals with so much personal information.&lt;/p&gt;
 
 &lt;h3 id=&quot;so-what-is-switchboard-doing-about-privacy&quot;&gt;So, what is SwitchBoard doing about privacy?&lt;/h3&gt;
 
@@ -99,66 +137,4 @@
 
 &lt;p&gt;Visit YouTube to &lt;a href=&quot;https://www.youtube.com/watch?v=B33KHgFjJsQ&quot;&gt;view it in full&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=B33KHgFjJsQ&quot;&gt;&lt;img src=&quot;https://img.youtube.com/vi/B33KHgFjJsQ/0.jpg&quot; alt=&quot;Early talk about SwitchBoard&quot; /&gt;&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><category term="general" /><category term="home automation" /><summary type="html">Several years ago, I gave a talk about Home Automation and the very beginnings of SwitchBoard (before that’s what it was called). Many of my initial beliefs still stand true as a direction and aims for the project.</summary></entry><entry><title type="html">Installation</title><link href="http://localhost:4000/switchBoard/Install/" rel="alternate" type="text/html" title="Installation" /><published>2017-10-30T00:00:00-07:00</published><updated>2017-10-30T00:00:00-07:00</updated><id>http://localhost:4000/switchBoard/Install</id><content type="html" xml:base="http://localhost:4000/switchBoard/Install/">&lt;p&gt;To use SwitchBoard, you’ll need a working version of node.js and npm.  As node.js can run on a wide variety of platforms, I won’t go into the specifics of getting that set up.  There’s documentation available for most platforms that can do a better job of describing all the details there.  If you do have issues, I’m happy to try and point you in the right direction, though.&lt;/p&gt;
-
-&lt;p&gt;Assuming you have &lt;code class=&quot;highlighter-rouge&quot;&gt;node&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;npm&lt;/code&gt; installed, you should be able to run something like this:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;node &lt;span class=&quot;nt&quot;&gt;--version&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; npm &lt;span class=&quot;nt&quot;&gt;--version&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;and get an output similar to:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;v6.11.4
-3.5.2
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;SwitchBoard supports &lt;a href=&quot;https://github.com/imbrianj/switchBoard/blob/master/.travis.yml#L4-L14&quot;&gt;quite a range&lt;/a&gt; of different versions, so don’t worry too much about the specifics there.  We’re just looking for validation that the basic tools are available to us.&lt;/p&gt;
-
-&lt;p&gt;Next, you’ll need to get the SwitchBoard code.  I typically just grab it via &lt;code class=&quot;highlighter-rouge&quot;&gt;git&lt;/code&gt; since it’s the easiest for me - but you can also &lt;code class=&quot;highlighter-rouge&quot;&gt;npm install switchboard-automation&lt;/code&gt; or grab the downloadable release file from (https://github.com/imbrianj/switchBoard/releases)[the GitHub page].  If you use git, you can simply:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git clone git@github.com:imbrianj/switchBoard.git
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;and it’ll start downloading all the files.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/switchBoard/images/install/1.png&quot; alt=&quot;First few steps of the SwitchBoard installation: checking that npm and node are installed, getting the SwitchBoard source code and getting ready to install dependency packages.&quot; title=&quot;First few steps of the SwitchBoard installation&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Once the source files are downloaded, you’ll need to install all the required npm dependencies.  There are only 12 used by SwitchBoard (and 9 of them are just for development).  However, each of these packages have their own dependencies, so it may take a couple minutes on a slow machine to download, compile and install all of them.&lt;/p&gt;
-
-&lt;p&gt;Once the packages are done installing, you should be able to start up SwitchBoard to make sure it’s working as expected:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;switchboard/
-node app.js
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Once this is done, you should see log messages showing up in the console.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/switchBoard/images/install/2.png&quot; alt=&quot;Finish dependency installation and start up the unconfigured app.&quot; title=&quot;Make sure things are running&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;If you don’t see any errors, you should be able to access the SwitchBoard web interface with the default URL of &lt;a href=&quot;http://localhost:8080&quot;&gt;http://localhost:8080&lt;/a&gt;.  What you see should look like this:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/switchBoard/images/install/3.png&quot; alt=&quot;Unconfigured SwitchBoard web interface.&quot; title=&quot;Unconfigured, but running&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;We’ve just confirmed it’s up and running - the software and dependencies all seem to be working.  You can now kill the app and we can begin configuring your new system.  There’s a few basic things to address in the general config options:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/switchBoard/images/install/4.png&quot; alt=&quot;Configuring SwitchBoard.&quot; title=&quot;Configuring SwitchBoard&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;You’ll probably want to change at least the &lt;code class=&quot;highlighter-rouge&quot;&gt;serverIp&lt;/code&gt;, but most everything else is set to pretty sane defaults.  Feel free to dabble with them - and if any are not clear, please let me know and I can either clarify, document or rename them to something more appropriate.&lt;/p&gt;
-
-&lt;p&gt;SmartThings is a popular option to control and it works quite well with SwitchBoard - so let’s use that one as an example.  It has some atypical requirements, so we’ll have to first install it’s “companion app” that will live on the SmartThings server.  This companion app is the REST endpoing that SwitchBoard will send commands to and also have the hub send local commands to SwitchBoard to keep it synced up in real time.  Specific, step-by-step instructions are listed in the config file above the SmartThings entry.&lt;/p&gt;
-
-&lt;p&gt;You’ll go to the URL provided in the SmartThings config comment and create a new app.  The SmartThings IDE interface will look something like this:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/switchBoard/images/install/5.png&quot; alt=&quot;Setting up our SmartThings app.&quot; title=&quot;Setting up our SmartThings app&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;When you finish setting up your app, you’ll be given an Oauth “Client ID” and “Client Secret”.  You’ll need to take each of these values and populate the appropriate fields in the config.  Be sure not to share these values with anyone.&lt;/p&gt;
-
-&lt;p&gt;Once our SmartThings app is set up and we’ve gotten the &lt;code class=&quot;highlighter-rouge&quot;&gt;clientId&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;clientSecret&lt;/code&gt; fields populated in our SwitchBoard config file, we can fire up the server to begin the authentication.  You should see a bright console prompt on the server telling you that you’ll need to click a URL to complete the authentication:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/switchBoard/images/install/6.png&quot; alt=&quot;SwitchBoard prompting us to visit a URL to authenticate with SmartThings.&quot; title=&quot;Authenticate with SmartThings&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Once you click that URL, you’ll tell SmartThings which Hub and which devices within that hub to allow SwitchBoard to control.  When you’ve finished filling out the form, SmartThings should forward you back to your SwitchBoard interface.  It may take a second - and it may be helpful (but shouldn’t be necessary) to restart SwitchBoard at this point to ensure your devices are populated correctly.  Your interface should now be populated with all the devices you’ve told SmartThings you wanted to have controlled:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/switchBoard/images/install/7.png&quot; alt=&quot;SwitchBoard interface with a linked SmartThings device.&quot; title=&quot;SwitchBoard with linked SmartThings device&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;And that’s it!  You can go through the config file to enable and configure any other devices you wish.  You’ll probably want to mark the &lt;code class=&quot;highlighter-rouge&quot;&gt;welcome&lt;/code&gt; device as &lt;code class=&quot;highlighter-rouge&quot;&gt;disabled: true&lt;/code&gt; and change the &lt;code class=&quot;highlighter-rouge&quot;&gt;default&lt;/code&gt; to a controller ID that’s your favorite (maybe &lt;code class=&quot;highlighter-rouge&quot;&gt;smartthings&lt;/code&gt;?).&lt;/p&gt;</content><author><name></name></author><category term="general" /><category term="setup" /><category term="home automation" /><category term="smartthings" /><summary type="html">To use SwitchBoard, you’ll need a working version of node.js and npm. As node.js can run on a wide variety of platforms, I won’t go into the specifics of getting that set up. There’s documentation available for most platforms that can do a better job of describing all the details there. If you do have issues, I’m happy to try and point you in the right direction, though.</summary></entry></feed>
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=B33KHgFjJsQ&quot;&gt;&lt;img src=&quot;https://img.youtube.com/vi/B33KHgFjJsQ/0.jpg&quot; alt=&quot;Early talk about SwitchBoard&quot; /&gt;&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><category term="general" /><category term="home automation" /><summary type="html">Several years ago, I gave a talk about Home Automation and the very beginnings of SwitchBoard (before that’s what it was called). Many of my initial beliefs still stand true as a direction and aims for the project.</summary></entry></feed>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Enabling Voice Commands On Android – SwitchBoard Home Automation – Node.js home automation system with machine learning</title>
+
+        <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="I’m not a big fan of “always on” smart speakers such as Google Home, Alexa, etc.  To me, it’s just too creepy to have a speaker closely tied to the Internet, built by companies with a vested interest in knowing more about you that’s always on and listening.  If you’re paranoid like me, here are some steps to get on-demand (ie: requiring a button press) voice recognition on your smart phone that will work with SwitchBoard.
+
+" />
+    <meta property="og:description" content="I’m not a big fan of “always on” smart speakers such as Google Home, Alexa, etc.  To me, it’s just too creepy to have a speaker closely tied to the Internet, built by companies with a vested interest in knowing more about you that’s always on and listening.  If you’re paranoid like me, here are some steps to get on-demand (ie: requiring a button press) voice recognition on your smart phone that will work with SwitchBoard.
+
+" />
+    
+    <meta name="author" content="SwitchBoard Home Automation" />
+
+    
+    <meta property="og:title" content="Enabling Voice Commands On Android" />
+    <meta property="twitter:title" content="Enabling Voice Commands On Android" />
+    
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/switchBoard/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="SwitchBoard Home Automation - Node.js home automation system with machine learning" href="/switchBoard/feed.xml" />
+
+    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+  </head>
+
+  <body>
+    <div class="wrapper-masthead">
+      <div class="container">
+        <header class="masthead clearfix">
+          <a href="/switchBoard/" class="site-avatar"><img src="https://avatars3.githubusercontent.com/u/526531" /></a>
+
+          <div class="site-info">
+            <h1 class="site-name"><a href="/switchBoard/">SwitchBoard Home Automation</a></h1>
+            <p class="site-description">Node.js home automation system with machine learning</p>
+          </div>
+
+          <nav>
+            <a href="/switchBoard/">Blog</a>
+            <a href="/switchBoard/about">About</a>
+            <a href="https://github.com/imbrianj/switchBoard">Code</a>
+          </nav>
+        </header>
+      </div>
+    </div>
+
+    <div id="main" role="main" class="container">
+      <article class="post">
+  <h1>Enabling Voice Commands On Android</h1>
+
+  <div class="entry">
+    <p>I’m not a big fan of “always on” smart speakers such as Google Home, Alexa, etc.  To me, it’s just too creepy to have a speaker closely tied to the Internet, built by companies with a vested interest in knowing more about you that’s always on and listening.  If you’re paranoid like me, here are some steps to get on-demand (ie: requiring a button press) voice recognition on your smart phone that will work with SwitchBoard.</p>
+
+<ol>
+  <li>You’ll need <a href="https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm">Tasker for Android</a>.</li>
+  <li>Open Tasker and go to the “Tasks” tab.</li>
+  <li>Click the “+” in the bottom right to create a new task.  Enter “Voice” (or something) as the name.</li>
+  <li>Inside the “Voice” task, click the “+” to create a new <code class="highlighter-rouge">Action</code>.
+<span class="images">
+  <a href="/switchBoard/images/voice/selectAction.png"><img src="/switchBoard/images/voice/selectAction.png" alt="List of all Action Categories" title="List of all Action Categories" /></a>
+</span></li>
+  <li>Click <code class="highlighter-rouge">Input</code>, then <code class="highlighter-rouge">Get Voice</code>.  You can leave the settings for <code class="highlighter-rouge">Get Voice</code> default.
+<span class="images">
+  <a href="/switchBoard/images/voice/inputActions.png"><img src="/switchBoard/images/voice/inputActions.png" alt="Creating a new &quot;Get Voice&quot; Action" title="Creating a new &quot;Get Voice&quot; Action" /></a>
+  <a href="/switchBoard/images/voice/voiceConfig.png"><img src="/switchBoard/images/voice/voiceConfig.png" alt="My settings for Get Voice Action" title="My settings for Get Voice Action" /></a>
+</span></li>
+  <li>Go back to the “Voice” task and click the “+” again to create another new <code class="highlighter-rouge">Action</code>.</li>
+  <li>This time, click <code class="highlighter-rouge">Net</code>, then <code class="highlighter-rouge">HTTP Get</code>.
+<span class="images">
+  <a href="/switchBoard/images/voice/networkActions.png"><img src="/switchBoard/images/voice/networkActions.png" alt="Creating a new &quot;HTTP GET&quot; Action" title="Creating a new &quot;HTTP GET&quot; Action" /></a>
+</span></li>
+  <li>Inside the settings for the network action, specify your <code class="highlighter-rouge">Server:Port</code>.</li>
+  <li>For the <code class="highlighter-rouge">Path</code>, enter: <code class="highlighter-rouge">?gerty=text-%VOICE</code>.  Note, if you’ve changed Gerty’s deviceId from the default in SwitchBoard, change that here to match.
+<span class="images">
+  <a href="/switchBoard/images/voice/networkConfig.png"><img src="/switchBoard/images/voice/networkConfig.png" alt="My settings for HTTP GET Action" title="My settings for HTTP GET Action" /></a>
+</span></li>
+  <li>In the main “Voice” task page, you’ll see an icon in the bottom center.  Clicking this allows you to associate an icon.  I had chosen <code class="highlighter-rouge">Material</code> and searched <code class="highlighter-rouge">Voice</code>.
+<span class="images">
+  <a href="/switchBoard/images/voice/iconChooser.png"><img src="/switchBoard/images/voice/iconChooser.png" alt="Searching for &quot;Voice&quot; within the Material icon list" title="Searching for &quot;Voice&quot; within the Material icon list" /></a>
+  <a href="/switchBoard/images/voice/taskView.png"><img src="/switchBoard/images/voice/taskView.png" alt="View of completed Task" title="View of completed Task" /></a>
+</span></li>
+  <li>Back at the home screen of your phone, long press on an empty space.  When the menu pops up, selected <code class="highlighter-rouge">Widgets</code>.  Scroll down to <code class="highlighter-rouge">Tasker</code> and hold the <code class="highlighter-rouge">Task</code> icon and drag it to your home screen.</li>
+  <li>In the <code class="highlighter-rouge">Task Selection</code>, choose your new “Voice” task.</li>
+</ol>
+
+<p>You should now have an icon on your home screen allowing you to quickly fire voice commands to SwitchBoard.</p>
+
+<p><span class="images">
+  <a href="/switchBoard/images/voice/voiceInput.png"><img src="/switchBoard/images/voice/voiceInput.png" alt="Example of using Get Voice from a desktop icon" title="Example of using Get Voice from a desktop icon" /></a>
+</span></p>
+
+  </div>
+
+  <div class="date">
+    Written on January  8, 2018
+  </div>
+
+  
+</article>
+
+    </div>
+
+    <div class="wrapper-footer">
+      <div class="container">
+        <footer class="footer">
+          
+<a href="mailto:brian@bevey.org"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/imbrianj/switchBoard"><i class="svg-icon github"></i></a>
+
+
+
+
+
+
+
+
+        </footer>
+      </div>
+    </div>
+
+    
+
+  </body>
+</html>
