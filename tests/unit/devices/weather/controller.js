@@ -91,10 +91,10 @@ exports.weatherControllerTest = {
     test.strictEqual(results[1].high, 55);
     test.strictEqual(results[1].low,  40);
 
-    test.strictEqual(metricResults[0].high, 14);
-    test.strictEqual(metricResults[0].low,  7);
-    test.strictEqual(metricResults[1].high, 13);
-    test.strictEqual(metricResults[1].low,  4);
+    test.strictEqual(metricResults[0].high, 14.4);
+    test.strictEqual(metricResults[0].low,  6.7);
+    test.strictEqual(metricResults[1].high, 12.8);
+    test.strictEqual(metricResults[1].low,  4.4);
 
     test.done();
   }

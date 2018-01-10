@@ -1,7 +1,7 @@
 {
   "name": "switchboard-automation",
   "description": "Universal Remote Controller powered by Node.js",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": "Brian J.",
   "contributors": [
     "Akshay Patel"
@@ -15,7 +15,7 @@
     "switchBoard": "bin/switchBoard"
   },
   "engines": {
-    "node": ">=0.9.0"
+    "node": ">=0.10.0"
   },
   "preferGlobal": true,
   "dependencies": {
