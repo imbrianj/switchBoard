@@ -29,7 +29,7 @@ module.exports = (function () {
    * @fileoverview Basic control of SmartThings endpoint.
    */
   return {
-    version : 20171108,
+    version : 20180109,
 
     inputs  : ['list', 'subdevice'],
 
@@ -213,6 +213,7 @@ module.exports = (function () {
               id       : util.sanitize(device.id),
               label    : util.sanitize(device.label),
               lastOn   : util.sanitize(matched.lastOn),
+              lastOff  : util.sanitize(matched.lastOff),
               duration : util.sanitize(matched.duration)
             };
 

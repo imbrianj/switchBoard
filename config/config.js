@@ -26,12 +26,13 @@ exports.config = {
     // in all (or any) browsers.  Also note that SmartThings cannot contact
     // SwitchBoard for real-time updates.
     ssl          : {
-      country  : 'US',
-      state    : 'Washington',
-      city     : 'Seattle',
-      org      : 'Switchboard',
-      name     : 'Switchboard',
-      disabled : true
+      country    : 'US',
+      state      : 'Washington',
+      city       : 'Seattle',
+      org        : 'SwitchBoard',
+      name       : 'SwitchBoard',
+      serverPort : 8181,
+      disabled   : false
     },
     ai           : {
       eventLogging         : false,
@@ -40,6 +41,9 @@ exports.config = {
       eventCooldownMinutes : 120,
       minimumThreshold     : 100,
       confidence           : 90,
+      // With trainingWheels on, Gerty will notify you of intent.  Set this to
+      // false and he will take action.
+      trainingWheels       : true,
       disable              : false
     }
   },
@@ -750,7 +754,7 @@ exports.config = {
                                                      'I\'m Back'     : 'smartthings=subdevice-mode-Home;nest=Home',
                                                      'Welcome Home'  : 'smartthings=subdevice-mode-Home;nest=Home' },
                                    controllerIds : ['samsung', 'roku', 'ps3', 'panasonic', 'lg', 'pioneer', 'denon', 'speech', 'stocks', 'weather', 'foscam', 'mp3', 'sms', 'pushover', 'smartthings', 'powerView', 'nest', 'switchBoardCI', 'xbmc', 'raspberryRemote', 'wemo', 'activeBuilding', 'clientMp3', 'clientNotify', 'clientSpeech'] } },
-    disabled       : true
+    disabled       : false
   },
 
   /*

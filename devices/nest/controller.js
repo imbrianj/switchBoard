@@ -29,7 +29,7 @@ module.exports = (function () {
    * @requires querystring, fs, https
    */
   return {
-    version : 20171127,
+    version : 20180109,
 
     inputs : ['command', 'text', 'list', 'subdevice'],
 
@@ -262,6 +262,7 @@ module.exports = (function () {
                 label    : that.findLabel(response.topaz[i].where_id, config.language),
                 type     : 'protect',
                 lastOn   : matched.lastOn,
+                lastOff  : matched.lastOff,
                 duration : matched.duration,
                 readOnly : true
               });
@@ -288,6 +289,7 @@ module.exports = (function () {
                 label        : that.findLabel(response.device[i].where_id),
                 type         : 'thermostat',
                 lastOn       : matched.lastOn,
+                lastOff      : matched.lastOff,
                 duration     : matched.duration,
                 celsius      : celsius
               });

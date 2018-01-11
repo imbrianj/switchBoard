@@ -32,7 +32,7 @@ module.exports = (function () {
   var CooldownWords = {};
 
   return {
-    version : 20171127,
+    version : 20180110,
 
     translate : function (token, lang) {
       var translate = require(__dirname + '/../lib/translate');
@@ -41,12 +41,13 @@ module.exports = (function () {
     },
 
     findProperNouns : function (articleParts, blacklist) {
-      var i           = 0,
+      var translate   = require(__dirname + '/../lib/translate'),
+          i           = 0,
           word,
           properNouns = [];
 
       for (i; i < articleParts.length; i += 1) {
-        word = articleParts[i].replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '');
+        word = translate.stripPunctuation(articleParts[i]);
         word = word.replace(/\s{2,}/g, ' ');
 
         if ((word) && (this.isWordCapitalized(word)) && (blacklist.indexOf(word.toLowerCase()) === -1)) {

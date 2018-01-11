@@ -30,14 +30,17 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20170920,
+    version : 20180109,
 
     /**
-     * Take in a typeClass and return the type of device it's categorized as.
+     * Take in a deviceId, command and set of controllers.  Determines if
+     * there's reasonable intent for a given action and will notify or act on
+     * that implied command.
      */
     findIntent : function (deviceId, command, controllers) {
-      var config = controllers.config,
-          delay  = config.ai.executeDelaySeconds || 1;
+      var config         = controllers.config,
+          trainingWheels = config.ai.trainingWheels      || false,
+          delay          = config.ai.executeDelaySeconds || 1;
 
       if (!config.ai.disable) {
         setTimeout(function() {
@@ -47,12 +50,14 @@ module.exports = (function () {
               translate,
               tempDevice,
               utterance,
-              i      = 0;
+              i      = 0,
+              j      = 0;
 
           if (intent.length) {
+            runCommand = require(__dirname + '/../../lib/runCommand');
+
             for (tempDevice in controllers) {
               if ((tempDevice !== 'config') && (controllers[tempDevice].config.typeClass === 'gerty')) {
-                runCommand = require(__dirname + '/../../lib/runCommand');
                 translate  = require(__dirname + '/../../lib/translate');
 
                 for (i; i < intent.length; i += 1) {
@@ -60,9 +65,13 @@ module.exports = (function () {
                   runCommand.runCommand(tempDevice, 'text-' + utterance);
                 }
 
-                // Eventually fired intent should note that this was an AI command,
-                // so the intended event doesn't cascade to others (?)
                 break;
+              }
+            }
+
+            if (!trainingWheels) {
+              for (j; j < intent.length; j += 1) {
+                runCommand.runCommand(intent[j].device, 'subdevice-' + intent[j].subdevice + '-' + intent[j].command);
               }
             }
           }

@@ -39,14 +39,17 @@ var fs              = require('fs'),
     db              = require(__dirname + '/lib/db'),
     webSockets      = require(__dirname + '/lib/webSockets'),
     controllers,
+    sslServer,
     server,
     wsServer,
+    sslWsServer,
     settings,
     configFile      = __dirname + '/config/config.js',
     arg,
     options,
     connection,
-    startup;
+    startup,
+    sslStartup;
 
 for (arg in process.argv) {
   if (process.argv.hasOwnProperty(arg)) {
@@ -103,6 +106,12 @@ startup = function () {
   }
 };
 
+sslStartup = function () {
+  'use strict';
+
+  console.log('\x1b[36mListening on port ' + settings.config.config.ssl.serverPort + ' for SSL\x1b[0m');
+};
+
 fs.stat(configFile, function (err, data) {
   'use strict';
 
@@ -146,27 +155,39 @@ fs.stat(configFile, function (err, data) {
       else if (process.platform === 'linux') {
         staticAssets.buildCerts(settings.config.config.ssl);
       }
+
+      if (options) {
+        console.log('\x1b[36mSSL\x1b[0m: Enabled');
+        sslServer = https.createServer(options, connection).listen(settings.config.config.ssl.serverPort, sslStartup);
+
+        // SSL will need it's own Web Sockets server.
+        if (sslServer) {
+          sslWsServer = new webSocketServer({ httpServer : sslServer }, 'echo-protocol');
+
+          sslWsServer.on('request', function (request) {
+            webSockets.newConnection(request, controllers);
+          });
+        }
+      }
     }
 
-    if (options) {
-      console.log('\x1b[36mSSL\x1b[0m: Enabled');
-      server = https.createServer(options, connection).listen(settings.config.config.serverPort, startup);
-    }
-
-    else {
-      console.log('\x1b[31mSSL\x1b[0m: Disabled');
+    if (settings.config.config.serverPort) {
       server = http.createServer(connection).listen(settings.config.config.serverPort, startup);
+
+      // Or you're connecting with Web Sockets
+      wsServer = new webSocketServer({ httpServer : server }, 'echo-protocol');
+
+      wsServer.on('request', function (request) {
+        webSockets.newConnection(request, controllers);
+      });
+    }
+
+    if ((!sslServer) && (!server)) {
+      console.log('\x1b[31mError\x1b[0m: No server started.  Do you have a serverPort configured?');
     }
 
     ai.processFiles();
     db.readDb();
-
-    // Or you're connecting with Web Sockets
-    wsServer = new webSocketServer({ httpServer : server }, 'echo-protocol');
-
-    wsServer.on('request', function (request) {
-      webSockets.newConnection(request, controllers);
-    });
   }
 
   else {
