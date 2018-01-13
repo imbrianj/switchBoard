@@ -30,14 +30,17 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20171111,
+    version : 20180110,
 
     lastState : {},
+    lastOff   : {},
 
     switchControlsOutlet : function (deviceId, command, controllers, values, config) {
       var that        = this,
           deviceState = require(__dirname + '/../lib/deviceState'),
           runCommand  = require(__dirname + '/../lib/runCommand'),
+          delay,
+          now,
           checkState,
           status,
           currDevice,
@@ -102,7 +105,18 @@ module.exports = (function () {
                 for (subdevice in currentDeviceState.value.devices) {
                   if (config.action.indexOf(currentDeviceState.value.devices[subdevice].label) !== -1) {
                     if (currentDeviceState.value.devices[subdevice].state !== status) {
-                      runCommand.runCommand(currDevice, 'subdevice-' + state.value.devices[subdevice].label + '-' + status);
+                      now = new Date().getTime();
+                      this.lastOff[deviceId] = now;
+                      // Turn a light on immediately.  But maybe wait if it's
+                      // being turned off.
+                      delay = status === 'off' ? (config.delay || 0) : 0;
+
+                      setTimeout(function(then, deviceId, currDevice, subdevice) {
+                        // "on" should always happen without delay.
+                        if ((status === 'on') || (then === that.lastOff[deviceId])) {
+                          runCommand.runCommand(currDevice, 'subdevice-' + state.value.devices[subdevice].label + '-' + status);
+                        }
+                      }, (delay * 1000), now, deviceId, currDevice, subdevice);
                     }
                   }
                 }

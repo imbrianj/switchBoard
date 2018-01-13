@@ -1,7 +1,7 @@
 [![Chat on IRC](https://img.shields.io/badge/irc-%23%23switchboard-blue.svg)](https://webchat.freenode.net/?channels=#%23switchboard)
 [![Build Status](https://secure.travis-ci.org/imbrianj/switchBoard.png)](https://travis-ci.org/imbrianj/switchBoard)
-[![Dependencies Status](https://david-dm.org/imbrianj/switchboard.svg)](https://david-dm.org/imbrianj/switchboard#info=dependencies)
-[![Dev Dependencies Status](https://david-dm.org/imbrianj/switchboard/dev-status.svg)](https://david-dm.org/imbrianj/switchboard#info=devDependencies)
+[![Dependencies Status](https://david-dm.org/imbrianj/switchboard.svg)](https://david-dm.org/imbrianj/switchboard)
+[![Dev Dependencies Status](https://david-dm.org/imbrianj/switchboard/dev-status.svg)](https://david-dm.org/imbrianj/switchboard?type=dev)
 [![npm version](https://badge.fury.io/js/switchboard-automation.svg)](https://badge.fury.io/js/switchboard-automation)
 [![Known Vulnerabilities](https://snyk.io/test/npm/switchboard-automation/badge.svg)](https://snyk.io/test/npm/switchboard-automation)
 
