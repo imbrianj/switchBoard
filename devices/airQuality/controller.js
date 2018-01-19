@@ -29,7 +29,7 @@ module.exports = (function () {
    * @fileoverview Basic air quality information, courtesy of OpenAQ.
    */
   return {
-    version : 20171218,
+    version : 20180118,
 
     readOnly: true,
 
@@ -83,7 +83,8 @@ module.exports = (function () {
           value   : Number(util.sanitize(report[i].value).toFixed(3)),
           units   : util.sanitize(report[i].unit),
           updated : new Date(util.sanitize(report[i].lastUpdated)).getTime(),
-          max     : this.maxQuality[type]
+          max     : this.maxQuality[type],
+          high    : Number((util.sanitize(this.maxQuality[type]) / 2).toFixed(3))
         });
       }
 

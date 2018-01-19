@@ -405,9 +405,8 @@ input[type=range]::-ms-thumb {
   width: 2.6em;
 }
 
-progress {
-  -webkit-appearance: none;
-  appearance: none;
+progress,
+meter {
   background: #444;
   border: none;
   border-radius: 0.5em;
@@ -421,14 +420,36 @@ progress {
   width: 100%;
 }
 
-progress[value]::-webkit-progress-bar {
+progress {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+progress[value]::-webkit-progress-bar,
+meter[value]::-webkit-meter-bar {
   background: #444;
   border-radius: 3px;
 }
 
-progress[value]::-webkit-progress-value {
+progress[value]::-webkit-progress-value,
+meter[value]::-webkit-meter-optimum-value {
   background: #0078E7;
   color: #0078E7;
+}
+
+meter[value]::-webkit-meter-suboptimum-value {
+  background: #E9322D;
+  color: #E9322D;
+}
+
+meter[value]::-moz-meter-bar {
+  background: #0078E7;
+  color: #0078E7;
+}
+
+meter[value]:-moz-meter-sub-optimum::-moz-meter-bar {
+  background: #E9322D;
+  color: #E9322D;
 }
 
 @-moz-keyframes breath {

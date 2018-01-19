@@ -30,7 +30,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20180109,
+    version : 20180115,
 
     /**
      * Take in a deviceId, command and set of controllers.  Determines if
@@ -40,6 +40,7 @@ module.exports = (function () {
     findIntent : function (deviceId, command, controllers) {
       var config         = controllers.config,
           trainingWheels = config.ai.trainingWheels      || false,
+          chime          = config.ai.chime               || false,
           delay          = config.ai.executeDelaySeconds || 1;
 
       if (!config.ai.disable) {
@@ -50,14 +51,22 @@ module.exports = (function () {
               translate,
               tempDevice,
               utterance,
+              mp3    = [],
               i      = 0,
-              j      = 0;
+              j      = 0,
+              k      = 0;
 
           if (intent.length) {
             runCommand = require(__dirname + '/../../lib/runCommand');
 
             for (tempDevice in controllers) {
-              if ((tempDevice !== 'config') && (controllers[tempDevice].config.typeClass === 'gerty')) {
+              if ((tempDevice !== 'config') &&
+                  ((controllers[tempDevice].config.typeClass === 'clientMp3') ||
+                   (controllers[tempDevice].config.typeClass === 'mp3'))) {
+                mp3.push(tempDevice);
+              }
+
+              else if ((tempDevice !== 'config') && (controllers[tempDevice].config.typeClass === 'gerty')) {
                 translate  = require(__dirname + '/../../lib/translate');
 
                 for (i; i < intent.length; i += 1) {
@@ -65,13 +74,21 @@ module.exports = (function () {
                   runCommand.runCommand(tempDevice, 'text-' + utterance);
                 }
 
-                break;
+                if (!chime) {
+                  break;
+                }
               }
             }
 
             if (!trainingWheels) {
               for (j; j < intent.length; j += 1) {
                 runCommand.runCommand(intent[j].device, 'subdevice-' + intent[j].subdevice + '-' + intent[j].command);
+              }
+
+              if ((chime) && (mp3.length)) {
+                for (k; k < mp3.length; k += 1) {
+                  runCommand.runCommand(mp3[k], 'text-bike');
+                }
               }
             }
           }

@@ -42,13 +42,14 @@
 
           if (max) {
             graphMarkup = graph.split('{{MAX_VALUE}}').join(max);
-            graphMarkup = graphMarkup.split('{{PERCENT_QUALITY}}').join((value.report[i].value / max) * 100);
+            graphMarkup = graphMarkup.split('{{PERCENT_QUALITY}}').join(Math.round((value.report[i].value / max) * 100));
           }
 
           tempMarkup = tempMarkup + report.split('{{AIR_QUALITY_GRAPH}}').join(graphMarkup);
           tempMarkup = tempMarkup.split('{{AIR_QUALITY_TYPE}}').join(value.report[i].type);
           tempMarkup = tempMarkup.split('{{AIR_QUALITY_VALUE}}').join(value.report[i].value);
           tempMarkup = tempMarkup.split('{{AIR_QUALITY_UNITS}}').join(value.report[i].units);
+          tempMarkup = tempMarkup.split('{{AIR_QUALITY_HIGH}}').join(value.report[i].high);
         }
       }
     }

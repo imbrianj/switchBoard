@@ -23,8 +23,10 @@ exports.config = {
     // you've manually created, drop "ssl.key" and "ssl.csr" into /cache/.
     //
     // If you're using self-signed certs, be aware that appCaching may not work
-    // in all (or any) browsers.  Also note that SmartThings cannot contact
-    // SwitchBoard for real-time updates.
+    // in all (or any) browsers.
+    // Even with ssl enabled, a non-ssl endpoint will be created to support
+    // SmartThings.  You may disable non-ssl by setting the `serverPort` to
+    // false.
     ssl          : {
       country    : 'US',
       state      : 'Washington',
@@ -44,7 +46,8 @@ exports.config = {
       // With trainingWheels on, Gerty will notify you of intent.  Set this to
       // false and he will take action.
       trainingWheels       : true,
-      disable              : false
+      chime                : true,
+      disable              : true
     }
   },
 
@@ -754,7 +757,7 @@ exports.config = {
                                                      'I\'m Back'     : 'smartthings=subdevice-mode-Home;nest=Home',
                                                      'Welcome Home'  : 'smartthings=subdevice-mode-Home;nest=Home' },
                                    controllerIds : ['samsung', 'roku', 'ps3', 'panasonic', 'lg', 'pioneer', 'denon', 'speech', 'stocks', 'weather', 'foscam', 'mp3', 'sms', 'pushover', 'smartthings', 'powerView', 'nest', 'switchBoardCI', 'xbmc', 'raspberryRemote', 'wemo', 'activeBuilding', 'clientMp3', 'clientNotify', 'clientSpeech'] } },
-    disabled       : false
+    disabled       : true
   },
 
   /*
