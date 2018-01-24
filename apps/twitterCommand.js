@@ -34,7 +34,7 @@ module.exports = (function () {
   var completed = [];
 
   return {
-    version : 20180107,
+    version : 20180119,
 
     twitterCommand : function (deviceId, command, controllers, values, config) {
       var senders = config.senders,
@@ -52,7 +52,7 @@ module.exports = (function () {
 
       // If you don't have any whitelist of Tweet senders, there's nothing we
       // can safely do.
-      if (senders) {
+      if ((senders) && (values) && (values.value)) {
         for (i; i < values.value.length; i += 1) {
           value = values.value[i];
 
