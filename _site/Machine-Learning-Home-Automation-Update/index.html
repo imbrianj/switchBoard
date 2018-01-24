@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Machine Learning Home Automation Update – SwitchBoard Home Automation – Node.js home automation system with machine learning</title>
+
+        <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="I’d recently taken the training wheels off my machine learning home automation system.  For quite a while, it was quietly collecting data and logging when it thought it had high enough confidence to actually take action.  Since that time, I’ve made some changes to the way things are executed - but they’ve all been relatively small changes.  I’ve also made some observations I thought might be worth sharing.
+
+" />
+    <meta property="og:description" content="I’d recently taken the training wheels off my machine learning home automation system.  For quite a while, it was quietly collecting data and logging when it thought it had high enough confidence to actually take action.  Since that time, I’ve made some changes to the way things are executed - but they’ve all been relatively small changes.  I’ve also made some observations I thought might be worth sharing.
+
+" />
+    
+    <meta name="author" content="SwitchBoard Home Automation" />
+
+    
+    <meta property="og:title" content="Machine Learning Home Automation Update" />
+    <meta property="twitter:title" content="Machine Learning Home Automation Update" />
+    
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/switchBoard/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="SwitchBoard Home Automation - Node.js home automation system with machine learning" href="/switchBoard/feed.xml" />
+
+    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+  </head>
+
+  <body>
+    <div class="wrapper-masthead">
+      <div class="container">
+        <header class="masthead clearfix">
+          <a href="/switchBoard/" class="site-avatar"><img src="https://avatars3.githubusercontent.com/u/526531" /></a>
+
+          <div class="site-info">
+            <h1 class="site-name"><a href="/switchBoard/">SwitchBoard Home Automation</a></h1>
+            <p class="site-description">Node.js home automation system with machine learning</p>
+          </div>
+
+          <nav>
+            <a href="/switchBoard/">Blog</a>
+            <a href="/switchBoard/about">About</a>
+            <a href="https://github.com/imbrianj/switchBoard">Code</a>
+          </nav>
+        </header>
+      </div>
+    </div>
+
+    <div id="main" role="main" class="container">
+      <article class="post">
+  <h1>Machine Learning Home Automation Update</h1>
+
+  <div class="entry">
+    <p>I’d recently <a href="https://imbrianj.github.io/switchBoard/The-Training-Wheels-Are-Off!/">taken the training wheels off</a> my machine learning home automation system.  For quite a while, it was quietly collecting data and logging when it thought it had high enough confidence to actually take action.  Since that time, I’ve made some changes to the way things are executed - but they’ve all been relatively small changes.  I’ve also made some observations I thought might be worth sharing.</p>
+
+<p>At first, actions would be logged in the Gerty dialog, but I might not notice them right away, making correcting the action more difficult.  If Gerty triggers an action, you have one minute to correct that action before it then takes the new state as the desired state.  If it does something you do not like, you have a minute to correct it, allowing it to learn what is preferred.  Ignoring it, the action will be reinforced.  I’ve since added a bike bell sound, so I hear a chime when it takes action.  This is configurable, but I’ve found it helpful while I’m still learning what it wants to be doing.  Just a quick “hey, I just did something!”</p>
+
+<p>A few interesting anecdotes:</p>
+
+<ul>
+  <li>I woke up late at night and went to the kitchen to grab a drink of water.  The light turned on automatically for me.  I could have done without it, but - hey, thanks!</li>
+  <li>Late at night, I was getting ready for bed and the bedroom lights turned off.  I would have hit the switch a minute later, but - sure, I’ll call it good now.</li>
+  <li>Several times, when I was staying up later than usual watching TV, the lights would start turning off.  You’re right - I should probably finish the episode tomorrow.</li>
+  <li>When I enter my office, depending on the day and time, the light typically turns on by itself.</li>
+  <li>A few other instances of “huh…I guess that’s nice”.</li>
+</ul>
+
+<p>These all sound positive - and most are.  At worst, they’re typically of neutral appeal (sure, the light turned off - that’s fine.  I’ll leave it off).  There have been a few instances where the triggered behavior was not as desired.  I have a light in my dining room I don’t typically use - so when I was actually using it, it would want to turn off every 30 minutes (the event cooldown time).  I’ve upped this to 60 minutes and I’ve found it to be decent.  I would say that roughly 5% of the actions it takes are undesirable.  On a typical day, it executes 5 - 10 actions on it’s own.  This could be increased at the cost of accuracy, but I’m still trying to find the sweet spot.</p>
+
+<p>A large number of the action triggers are simple temperature measurements.  From there, it finds interesting relationships.  It’s discovered that my office light is nearly always on when my laundry room is 70°.  When these actions happen, they’re usually not bad.  These temperature measurements are probably far more useful based on how the events are categorized.  Each event that’s learned is bucketed into either a weekday or weekend.  From there, it’s subcategorized into a time block (dawn, morning, afternoon, evening).  If an event is triggered in the evening, it will not add any weight to those considered for the morning.  These temperature readings are likely finding the overall averages “during the weekday, in the mornings - this light is usually off.” - as opposed to considering what the temperature actually is.  Certainly the temperature itself is a factor in the equation, but I suspect it plays only a minor part.  One could add more granularity by subdividing these categories further - but it would come at the cost of either having to collect vastly more data (since each bucket must hit a threshold of events before being deemed reliable).  I think the current categories are probably fine - but I may revisit this in the future, as I have more data collected.</p>
+
+<p>All in all, I’ve found the machine learning actions to be interesting.  Not super useful, but certainly a fun novelty to play with.  That being said, I’ve been happy with it and intend to continue experimenting.</p>
+
+  </div>
+
+  <div class="date">
+    Written on January 24, 2018
+  </div>
+
+  
+</article>
+
+    </div>
+
+    <div class="wrapper-footer">
+      <div class="container">
+        <footer class="footer">
+          
+<a href="mailto:brian@bevey.org"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/imbrianj/switchBoard"><i class="svg-icon github"></i></a>
+
+
+
+
+
+
+
+
+        </footer>
+      </div>
+    </div>
+
+    
+
+  </body>
+</html>
