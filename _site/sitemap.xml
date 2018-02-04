@@ -57,6 +57,10 @@
 <lastmod>2018-01-24T00:00:00-08:00</lastmod>
 </url>
 <url>
+<loc>http://localhost:4000/switchBoard/Seeking-Precision/</loc>
+<lastmod>2018-02-04T00:00:00-08:00</lastmod>
+</url>
+<url>
 <loc>http://localhost:4000/switchBoard/404/</loc>
 </url>
 <url>
@@ -67,7 +71,7 @@
 </url>
 <url>
 <loc>http://localhost:4000/switchBoard/demo/index.html</loc>
-<lastmod>2018-01-24T10:28:12-08:00</lastmod>
+<lastmod>2018-02-04T12:54:54-08:00</lastmod>
 </url>
 <url>
 <loc>http://localhost:4000/switchBoard/node_modules/console-browserify/test/static/index.html</loc>

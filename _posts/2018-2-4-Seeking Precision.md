@@ -1,0 +1,9 @@
+---
+layout: post
+title: Seeking Precision
+tags: [general, device, machine learning, home automation, gerty]
+---
+
+Running a bunch of data on a low power system with limited disc space is an exercise in balance.  When I first started building the machine learning component of SwitchBoard, I had made the assumption that four time categories (dawn, morning, afternoon, evening) would be sufficient to find some usefulness.  And this was true.  But, in an effort to make it more precise (thus, more useful), I've decided to experiment with upping the time categories to six (midnight, dawn, morning, afternoon, evening, night).  Since behaviors in your home are tied closely to time - you likely don't have your kitchen light on as much at 3am than you would at 5pm - I'm going to try and see if the predictions are more accurate.
+
+This, however, comes at the cost of data required for learning.  We now break things up into 6 time categories and 2 day categories (for a total of 12 discreet categories).  By default, we require 100 instances of any event for the system to even acknowledge it as a possible trigger of an action.  I may lower this now that we have more discreet time categories, since it may take a month or longer to see any results of a freshly configured system.  But this begs the question: would you rather see a system that's less accurate, but quietly learns for a relatively short time - or one that is more accurate, but takes longer to learn?  I suspect that the answer to this will differ greatly from person to person.  Thankfully, editing your config file's `ai.minimumThreshold` and `ai.confidence`, you can change these parameters at will.  They will require a restart, but nothing major.  If you do play around with these values and find something that works well, let me know and I can readjust the default values.
