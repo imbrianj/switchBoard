@@ -27,7 +27,7 @@ module.exports = (function () {
 
   /**
    * @author brian@bevey.org
-   * @requires http, fs, request
+   * @requires http, fs
    * @fileoverview Basic control of Hunter Douglas PowerView blinds.
    * @note Thanks to the endpoint discovery discussed here:
    *       http://forum.universal-devices.com/topic/16538-hunter-douglas-powerView-control-with-isy/

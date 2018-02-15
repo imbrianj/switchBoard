@@ -41,8 +41,8 @@ exports.config = {
       eventLogDelaySeconds : 60,
       executeDelaySeconds  : 1,
       eventCooldownMinutes : 120,
-      minimumThreshold     : 100,
-      confidence           : 90,
+      minimumThreshold     : 50,
+      confidence           : 85,
       // With trainingWheels on, Gerty will notify you of intent.  Set this to
       // false and he will take action.
       trainingWheels       : true,

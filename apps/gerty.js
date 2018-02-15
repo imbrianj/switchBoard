@@ -29,19 +29,18 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20180107,
+    version : 20180207,
 
     gerty : function (deviceId, command, controllers, values, config, appParams) {
       var translate        = require(__dirname + '/../lib/translate'),
-          runCommand       = require(__dirname + '/../lib/runCommand'),
           gertyRunCommand  = require(__dirname + '/gerty/runCommand'),
           gertyMood        = require(__dirname + '/gerty/mood'),
           gertyAI,
+          announceString   = translate.translate('{{i18n_ANNOUNCE}}', 'gerty', controllers.config.language),
           utterance        = translate.findSynonyms('gerty', controllers.config.language),
           deviceConfig     = ((controllers[deviceId]) && (controllers[deviceId].config)) || {},
           ignoreNegative   = deviceConfig.ignoreNegative,
           text             = '',
-          tempDevice       = '',
           acted            = false,
           getCorrectedText = function (text) {
             var textParts = text.split(' '),
@@ -54,6 +53,18 @@ module.exports = (function () {
             }
 
             return text;
+          },
+          gertyAnnounce    = function (controllers, utterance) {
+            var runCommand = require(__dirname + '/../lib/runCommand'),
+                tempDevice = '';
+
+            for (tempDevice in controllers) {
+              if (tempDevice !== 'config') {
+                if ((controllers[tempDevice].config.typeClass === 'speech') || (controllers[tempDevice].config.typeClass === 'clientSpeech')) {
+                  runCommand.runCommand(tempDevice, 'text-' + utterance);
+                }
+              }
+            }
           };
 
       // If it's a command explicitly sent to Gerty to act on.
@@ -67,37 +78,39 @@ module.exports = (function () {
           if (text) {
             text = getCorrectedText(text);
 
-            gertyMood.setEmotion(text, deviceId, controllers.config.language);
-
-            acted = gertyRunCommand.setDevice(text, controllers, deviceId, config.macros, controllers.config.language);
-
-            if (acted === true) {
-              utterance = utterance.AFFIRMATIVE[Math.floor(Math.random() * utterance.AFFIRMATIVE.length)];
-            }
-
-            else if ((acted === false) && (!ignoreNegative)) {
-              utterance = utterance.NEGATIVE[Math.floor(Math.random() * utterance.NEGATIVE.length)];
+            // If you prefix a command with an announce keyword, we won't
+            // execute anything - we'll just use this as a sort of intercom.
+            if (text.toUpperCase().indexOf(announceString.toUpperCase()) === 0) {
+              gertyAnnounce(controllers, text.replace(announceString, ''));
             }
 
             else {
-              utterance = acted || '';
-            }
+              gertyMood.setEmotion(text, deviceId, controllers.config.language);
 
-            if (utterance) {
-              for (tempDevice in controllers) {
-                if (tempDevice !== 'config') {
-                  if ((controllers[tempDevice].config.typeClass === 'speech') || (controllers[tempDevice].config.typeClass === 'clientSpeech')) {
-                    runCommand.runCommand(tempDevice, 'text-' + utterance);
-                  }
-                }
+              acted = gertyRunCommand.setDevice(text, controllers, deviceId, config.macros, controllers.config.language);
+
+              if (acted === true) {
+                utterance = utterance.AFFIRMATIVE[Math.floor(Math.random() * utterance.AFFIRMATIVE.length)];
+              }
+
+              else if ((acted === false) && (!ignoreNegative)) {
+                utterance = utterance.NEGATIVE[Math.floor(Math.random() * utterance.NEGATIVE.length)];
+              }
+
+              else {
+                utterance = acted || '';
+              }
+
+              if (utterance) {
+                gertyAnnounce(controllers, utterance);
               }
             }
           }
         }
       }
 
-      // Otherwise, see if it's a command that's sent to another controller
-      // that Gerty is delegated on.
+      // Otherwise, see if it's a command that's sent to another controller that
+      // Gerty is delegated on.
       else if(deviceConfig) {
         if (deviceConfig.typeClass !== 'gerty') {
           gertyAI = require(__dirname + '/gerty/ai');

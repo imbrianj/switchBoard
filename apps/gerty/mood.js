@@ -102,11 +102,6 @@ module.exports = (function () {
               runCommand.runCommand(deviceId, mood.emotion);
             }
 
-// Check timestamps of mood.comment elements against stored state.  If anything
-// is newer than a given minute threshhold, send that as a runCommand to gerty
-// controller to update the chat log.
-// In chat log - color code elements, make device name clickable.
-
             break;
           }
         }

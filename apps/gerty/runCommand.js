@@ -322,14 +322,15 @@ module.exports = (function () {
       // "What is the date?"
       // "Do I need a coat?"
       // "Is it sunny/raining/rainy?"
+      // "Is it going to be sunny/raining/rainy tomorrow?""
       // "How are you doing?"
       if ((!devices[0].device) && (!commands[0].action) && (questions[0].action)) {
-// Register questions
+// TODO Register questions
       }
 
       else if ((devices[0].device) && ((commands[0].action) || (questions[0].action))) {
 
-// Figure out how to coordinate "questions" with "commands"
+// TODO Figure out how to coordinate "questions" with "commands"
 
         // If we have more commands than devices, there's probably some
         // ambiguity with a conjunction, such as:
@@ -429,8 +430,8 @@ module.exports = (function () {
               }
 
               if ((devices[i].device) && (commands[i].action)) {
-                // Only at this point should we assume a command will actually be
-                // acted upon.
+                // Only at this point should we assume a command will actually
+                // be acted upon.
                 acted = true;
 
                 runCommand.runCommand(devices[i].device, commands[i].action);
@@ -477,7 +478,8 @@ module.exports = (function () {
                 mood.excited     += deviceMood.excited     || 0;
                 mood.scared      += deviceMood.scared      || 0;
                 mood.social      += deviceMood.social      || 0;
-
+// TODO If any value is over a threshold, consider it notable and record the
+// emotion and the device name that triggered it.
                 if (deviceMood.comment) {
                   date = new Date();
                   mood.comments.push({ comment : deviceMood.comment,

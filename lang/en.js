@@ -283,6 +283,7 @@ module.exports = (function () {
           GERTY        : "Gerty",
           AI_INTENT    : "Because of {{INPUT}}, I'm {{CONFIDENCE}}% sure you want the {{DEVICE}} {{COMMAND}}",
           AND          : "And",
+          ANNOUNCE     : "Announce",
           ARM          : "Arm",
           CAMERA       : "Camera",
           CHANNEL_DOWN : "Channel Down",

@@ -25,11 +25,11 @@ module.exports = (function () {
 
   /**
    * @author brian@bevey.org
-   * @requires http, fs, request
+   * @requires http, fs
    * @fileoverview Basic control of Foscam IP camera.
    */
   return {
-    version : 20161108,
+    version : 20180214,
 
     inputs  : ['command', 'list'],
 
@@ -251,10 +251,12 @@ module.exports = (function () {
           minute    = ('0' + (now.getMinutes())).slice(-2),
           second    = ('0' + (now.getSeconds())).slice(-2),
           localPath = __dirname + '/../../images/foscam/photos/',
-          output    = localPath + '/' + config.device.deviceId + '-' + year + '-' + month + '-' + day + '-' + hour + '-' + minute + '-' + second + '.jpg',
+          fileName  = localPath + '/' + config.device.deviceId + '-' + year + '-' + month + '-' + day + '-' + hour + '-' + minute + '-' + second + '.jpg',
+          imageUrl  = '',
           foscam    = {},
           dataReply = '',
-          request;
+          request,
+          title     = config.device.title;
 
       foscam.deviceId   = config.device.deviceId;
       foscam.deviceIp   = config.device.deviceIp;
@@ -272,26 +274,37 @@ module.exports = (function () {
       }
 
       else if (foscam.command === 'TAKE') {
-        fs.stat(output, function(err, data) {
-          var request,
-              postData,
-              writeStream;
+        fs.stat(fileName, function(err, data) {
+          var http,
+              postData;
 
           if (err) {
-            request = require('request');
+            http     = require('http');
             postData = that.postPrepare(foscam);
+            imageUrl = 'http://' + postData.host + ':' + postData.port + postData.path;
+            request  = http.request(imageUrl).on('response', function (response) {
+                        response.setEncoding('binary');
 
-            writeStream = request('http://' + postData.host + ':' + postData.port + postData.path).pipe(fs.createWriteStream(output));
+                        response.on('data', function (response) {
+                          dataReply += response;
+                        });
 
-            writeStream.on('finish', function () {
-              that.getStoredPhotos(foscam);
+                        response.once('end', function () {
+                          console.log('\x1b[35m' + title + '\x1b[0m: Saved image for ' + fileName);
 
-              console.log('\x1b[35m' + config.device.title + '\x1b[0m: Saved photo');
-            });
+                          fs.writeFile(fileName, dataReply, 'binary', function(err) {
+                            if (err) {
+                              console.log('\x1b[31m' + title + '\x1b[0m: Unable to save ' + fileName);
+                            }
+                          });
+                        });
+                      });
+
+            request.end();
           }
 
           else if (data) {
-            console.log('\x1b[35m' + config.device.title + '\x1b[0m: Skipping photo - already exists');
+            console.log('\x1b[35m' + title + '\x1b[0m: Skipping photo - already exists');
           }
         });
       }

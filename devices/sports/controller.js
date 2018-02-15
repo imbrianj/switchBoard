@@ -76,11 +76,13 @@ module.exports = (function () {
      * offline recall.  If the image is already cached, it will be retained.
      */
     cacheImage : function (league, team, theme, imageUrl, title) {
-      var fs       = require('fs'),
-          util     = require(__dirname + '/../../lib/sharedUtil').util,
-          fileName = util.encodeName(util.sanitize(league) + '_' + (util.sanitize(team.abbreviation) || '') + '_' + theme) + '.png',
-          filePath = __dirname + '/../../images/sports/' + fileName,
+      var fs        = require('fs'),
+          util      = require(__dirname + '/../../lib/sharedUtil').util,
+          fileName  = util.encodeName(util.sanitize(league) + '_' + (util.sanitize(team.abbreviation) || '') + '_' + theme) + '.png',
+          filePath  = __dirname + '/../../images/sports/' + fileName,
+          http,
           request,
+          dataReply = '',
           image;
 
       try {
@@ -88,10 +90,27 @@ module.exports = (function () {
       }
 
       catch (catchErr) {
-        request = require('request');
+        http = require('http');
 
-        console.log('\x1b[35m' + title + '\x1b[0m: Saved image for ' + fileName);
-        request(imageUrl).pipe(fs.createWriteStream(filePath));
+        request = http.request(imageUrl).on('response', function (response) {
+                    response.setEncoding('binary');
+
+                    response.on('data', function (response) {
+                      dataReply += response;
+                    });
+
+                    response.once('end', function () {
+                      console.log('\x1b[35m' + title + '\x1b[0m: Saved image for ' + fileName);
+
+                      fs.writeFile(filePath, dataReply, 'binary', function(err) {
+                        if (err) {
+                          console.log('\x1b[31m' + title + '\x1b[0m: Unable to save ' + fileName);
+                        }
+                      });
+                    });
+                  });
+
+        request.end();
       }
 
       return '/images/sports/' + fileName;

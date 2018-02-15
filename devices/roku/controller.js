@@ -27,10 +27,10 @@ module.exports = (function () {
    * @author brian@bevey.org
    * @fileoverview Basic control over Roku devices via TCP POST requests using
    *               Node.js.
-   * @requires xml2js, http, fs, request, path
+   * @requires xml2js, http, fs
    */
   return {
-    version : 20151129,
+    version : 20180214,
 
     inputs  : ['command', 'text', 'list', 'launch'],
 
@@ -123,20 +123,40 @@ module.exports = (function () {
      * already cached, it will be retained.
      */
     cacheImage : function (appName, appId, config) {
-      var fs       = require('fs'),
-          filePath = __dirname + '/../../images/roku/icon_' + appId + '.png',
+      var fs        = require('fs'),
+          filePath  = __dirname + '/../../images/roku/icon_' + appId + '.png',
+          http,
+          image,
           request,
-          image;
+          imageUrl,
+          dataReply = '';
 
       try {
         image = fs.statSync(filePath);
       }
 
       catch (catchErr) {
-        request = require('request');
+        http     = require('http');
+        imageUrl = 'http://' + config.deviceIp + ':8060/query/icon/' + appId;
+        request  = http.request(imageUrl).on('response', function (response) {
+                    response.setEncoding('binary');
 
-        console.log('\x1b[35m' + config.title + '\x1b[0m: Saved image for ' + appName);
-        request('http://' + config.deviceIp + ':8060/query/icon/' + appId).pipe(fs.createWriteStream(filePath));
+                    response.on('data', function (response) {
+                      dataReply += response;
+                    });
+
+                    response.once('end', function () {
+                      console.log('\x1b[35m' + config.title + '\x1b[0m: Saved image for ' + appName);
+
+                      fs.writeFile(filePath, dataReply, 'binary', function(err) {
+                        if (err) {
+                          console.log('\x1b[31m' + config.title + '\x1b[0m: Unable to save image for ' + appName);
+                        }
+                      });
+                    });
+                  });
+
+        request.end();
       }
     },
 
