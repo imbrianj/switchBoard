@@ -29,7 +29,7 @@ module.exports = (function () {
    * @fileoverview Basic control of Pushover notification API.
    */
   return {
-    version : 20150921,
+    version : 20180217,
 
     inputs  : ['text'],
 
@@ -37,6 +37,8 @@ module.exports = (function () {
      * Prepare a request for command execution.
      */
     postPrepare : function (config) {
+      var type = config.payload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
+
       return {
         host    : config.host,
         port    : config.port,
@@ -46,7 +48,7 @@ module.exports = (function () {
           'Accept'         : 'application/json',
           'Accept-Charset' : 'utf-8',
           'User-Agent'     : 'node-switchBoard',
-          'Content-Type'   : 'application/x-www-form-urlencoded',
+          'Content-Type'   : type,
           'Content-Length' : config.postRequest.length
         }
       };
@@ -56,13 +58,18 @@ module.exports = (function () {
      * Prepare the POST data to be sent.
      */
     postData : function (pushover) {
-      var querystring = require('querystring');
+      var querystring = require('querystring'),
+          data = {
+                   token   : pushover.token,
+                   user    : pushover.userKey,
+                   message : pushover.text
+                 };
 
-      return querystring.stringify({
-               token   : pushover.token,
-               user    : pushover.userKey,
-               message : pushover.text
-             });
+      if (pushover.payload) {
+        data.attachment = pushover.payload;
+      }
+
+      return querystring.stringify(data);
     },
 
     /**
@@ -87,6 +94,7 @@ module.exports = (function () {
       pushover.port        = config.port     || 443;
       pushover.method      = config.method   || 'POST';
       pushover.text        = config.text     || '';
+      pushover.payload     = config.payload  || null;
       pushover.callback    = config.callback || function () {};
       pushover.postRequest = this.postData(pushover);
 
