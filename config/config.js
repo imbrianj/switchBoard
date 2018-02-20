@@ -483,7 +483,7 @@ exports.config = {
                                                motion        : ['Living Room Motion'],
                                                secureModes   : ['Away'],
                                                delay         : 15,
-                                               controllerIds : ['pushover', 'sms', 'clientSpeech', 'clientNotify', 'gerty'] }
+                                               controllerIds : ['foscam', 'pushover', 'sms', 'clientSpeech', 'clientNotify', 'gerty'] }
                      },
     */
     className      : { Goblin : 'fa-female' },

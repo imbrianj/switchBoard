@@ -29,7 +29,7 @@ module.exports = (function () {
    *               clients.
    */
   return {
-    version : 20151007,
+    version : 20180219,
 
     inputs : ['text'],
 
@@ -58,7 +58,7 @@ module.exports = (function () {
           clientNotify = {};
 
       clientNotify.options      = {};
-      clientNotify.options.icon = config.device.image || '/images/icons/apple-touch-icon.png';
+      clientNotify.options.icon = config.payload      || '/images/icons/apple-touch-icon.png';
       clientNotify.options.body = config.text         || '';
       clientNotify.title        = config.device.title || 'SwitchBoard';
       clientNotify.deviceId     = config.source       || '';

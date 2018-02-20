@@ -97,6 +97,7 @@ exports.foscamControllerTest = {
                                             controller : { inputs   : ['state'],
                                             send       : function (request) { return request; } },
                                             config     : { deviceId : 'FOO',
+                                                           title    : 'Foscam',
                                                            deviceIp : '127.0.0.1',
                                                            username : 'USERNAME',
                                                            password : 'PASSWORD' } } };

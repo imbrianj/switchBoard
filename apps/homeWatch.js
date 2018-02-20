@@ -32,7 +32,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20161101,
+    version : 20180219,
 
     homeWatch : function (deviceId, command, controllers, values, config) {
       var notify      = require(__dirname + '/../lib/notify'),
@@ -54,33 +54,65 @@ module.exports = (function () {
 
             return found;
           },
-          isSecure    = function () {
+          isArmed     = function () {
             var deviceState      = require(__dirname + '/../lib/deviceState'),
                 smartThingsState = deviceState.getDeviceState(deviceId),
-                isSecure         = false;
+                isArmed          = false;
 
             if ((smartThingsState) && (smartThingsState.value) && (smartThingsState.value.mode)) {
               if (secureModes.indexOf(smartThingsState.value.mode) !== -1) {
-                isSecure = true;
+                isArmed = true;
               }
             }
 
-            return isSecure;
+            return isArmed;
+          },
+          findCamera  = function() {
+            var device,
+                camera;
+
+            for (device in controllers) {
+              if ((controllers[device]) && (controllers[device].config) && (controllers[device].config.typeClass === 'foscam')) {
+                camera = device;
+                break;
+              }
+            }
+
+            return camera;
           };
 
       trigger = isIn(command, config.motion, 'subdevice-state-motion-') ||
                 isIn(command, config.contact, 'subdevice-state-contact-');
 
-      if (trigger && isSecure()) {
+      if (trigger && isArmed()) {
         // We use a delay here of a few seconds, as Presence sensors may take a
         // few seconds to register and update the mode.  We want to avoid false
         // positives as much as possible.
         setTimeout(function () {
-          if(isSecure()) {
-            console.log('\x1b[35m' + controllers[deviceId].config.title + '\x1b[0m: Home Watch found something suspicious');
+          var camera = findCamera(controllers),
+              runCommand,
+              callback;
 
+          if(isArmed()) {
+            console.log('\x1b[35m' + controllers[deviceId].config.title + '\x1b[0m: Home Watch found something suspicious');
             message = translate.translate('{{i18n_HOME_WATCH}}', 'smartthings', controllers.config.language).split('{{LABEL}}').join(trigger);
-            notify.notify(message, controllers, deviceId);
+
+            if (camera) {
+              runCommand = require(__dirname + '/../lib/runCommand');
+
+              callback = function(err, dataReply) {
+                var rawImage = dataReply.rawImage,
+                    fileName = dataReply.fileName;
+
+                notify.notify(message, controllers, camera, fileName, rawImage);
+              };
+
+              runCommand.runCommand(camera, 'TAKE', deviceId, null, null, callback);
+            }
+
+            else {
+              notify.notify(message, controllers, deviceId);
+            }
           }
         }, delay);
       }

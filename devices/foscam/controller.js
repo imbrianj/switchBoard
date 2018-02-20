@@ -29,7 +29,7 @@ module.exports = (function () {
    * @fileoverview Basic control of Foscam IP camera.
    */
   return {
-    version : 20180214,
+    version : 20180219,
 
     inputs  : ['command', 'list'],
 
@@ -106,6 +106,32 @@ module.exports = (function () {
       return clean;
     },
 
+    getRawPhoto : function (foscam, fileName) {
+      var title     = foscam.title,
+          http      = require('http'),
+          postData  = this.postPrepare(foscam),
+          imageUrl  = 'http://' + postData.host + ':' + postData.port + postData.path,
+          request,
+          dataReply = '',
+          path      = '/images/foscam/photos/';
+
+      request  = http.request(imageUrl).on('response', function (response) {
+                   response.setEncoding('binary');
+
+                   response.on('data', function (response) {
+                     dataReply += response;
+                   });
+
+                   response.once('end', function () {
+                     console.log('\x1b[35m' + title + '\x1b[0m: Read raw image');
+
+                     foscam.callback(null, { rawImage : dataReply, fileName : path + fileName }, true);
+                   });
+                 });
+
+      request.end();
+    },
+
     /**
      * Grab all thumbnail path and assume corresponding screenshot and videos.
      */
@@ -162,7 +188,7 @@ module.exports = (function () {
     getStoredPhotos : function (foscam) {
       var fs          = require('fs'),
           deviceState = require(__dirname + '/../../lib/deviceState'),
-          path        = 'images/foscam/photos',
+          path        = '/images/foscam/photos/',
           that        = this,
           photos      = [],
           filename;
@@ -182,7 +208,7 @@ module.exports = (function () {
             if (filename.indexOf(foscam.deviceId + '-') === 0) {
               photos.push({
                 name  : filename,
-                photo : path + '/' + filename + '.jpg'
+                photo : path + filename + '.jpg'
               });
             }
           }
@@ -243,6 +269,10 @@ module.exports = (function () {
       var http      = require('http'),
           fs        = require('fs'),
           that      = this,
+          foscam    = {},
+          dataReply = '',
+          request,
+          title     = config.device.title,
           now       = new Date(),
           year      = now.getFullYear(),
           month     = ('0' + (now.getMonth() + 1)).slice(-2),
@@ -251,14 +281,11 @@ module.exports = (function () {
           minute    = ('0' + (now.getMinutes())).slice(-2),
           second    = ('0' + (now.getSeconds())).slice(-2),
           localPath = __dirname + '/../../images/foscam/photos/',
-          fileName  = localPath + '/' + config.device.deviceId + '-' + year + '-' + month + '-' + day + '-' + hour + '-' + minute + '-' + second + '.jpg',
-          imageUrl  = '',
-          foscam    = {},
-          dataReply = '',
-          request,
-          title     = config.device.title;
+          fileName  = config.device.deviceId + '-' + year + '-' + month + '-' + day + '-' + hour + '-' + minute + '-' + second + '.jpg',
+          callback  = config.callback || function () {};
 
       foscam.deviceId   = config.device.deviceId;
+      foscam.title      = config.device.title;
       foscam.deviceIp   = config.device.deviceIp;
       foscam.timeout    = config.device.localTimeout || config.config.localTimeout;
       foscam.username   = config.device.username;
@@ -267,40 +294,34 @@ module.exports = (function () {
       foscam.command    = config.command             || '';
       foscam.list       = config.list                || '';
       foscam.devicePort = config.device.devicePort   || 80;
-      foscam.callback   = config.callback            || function () {};
+      foscam.callback   = callback;
 
       if (foscam.list) {
         this.getStoredVideos(foscam);
       }
 
-      else if (foscam.command === 'TAKE') {
-        fs.stat(fileName, function(err, data) {
-          var http,
-              postData;
-
+      if (foscam.command === 'TAKE') {
+        fs.stat(localPath + fileName, function(err, data) {
           if (err) {
-            http     = require('http');
-            postData = that.postPrepare(foscam);
-            imageUrl = 'http://' + postData.host + ':' + postData.port + postData.path;
-            request  = http.request(imageUrl).on('response', function (response) {
-                        response.setEncoding('binary');
+            foscam.callback = function(err, dataReply) {
+              var rawImage = dataReply.rawImage;
 
-                        response.on('data', function (response) {
-                          dataReply += response;
-                        });
+              if (rawImage) {
+                fs.writeFile(localPath + fileName, rawImage, 'binary', function(err) {
+                  if (err) {
+                    console.log('\x1b[31m' + title + '\x1b[0m: Unable to save ' + fileName);
+                  }
 
-                        response.once('end', function () {
-                          console.log('\x1b[35m' + title + '\x1b[0m: Saved image for ' + fileName);
+                  else {
+                    console.log('\x1b[35m' + title + '\x1b[0m: Image saved as ' + fileName);
+                  }
+                });
+              }
 
-                          fs.writeFile(fileName, dataReply, 'binary', function(err) {
-                            if (err) {
-                              console.log('\x1b[31m' + title + '\x1b[0m: Unable to save ' + fileName);
-                            }
-                          });
-                        });
-                      });
+              callback(err, dataReply);
+            };
 
-            request.end();
+            that.getRawPhoto(foscam, fileName);
           }
 
           else if (data) {
