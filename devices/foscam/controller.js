@@ -29,7 +29,7 @@ module.exports = (function () {
    * @fileoverview Basic control of Foscam IP camera.
    */
   return {
-    version : 20180219,
+    version : 20180226,
 
     inputs  : ['command', 'list'],
 
@@ -115,19 +115,19 @@ module.exports = (function () {
           dataReply = '',
           path      = '/images/foscam/photos/';
 
-      request  = http.request(imageUrl).on('response', function (response) {
-                   response.setEncoding('binary');
+      request = http.request(imageUrl).on('response', function (response) {
+                  response.setEncoding('binary');
 
-                   response.on('data', function (response) {
-                     dataReply += response;
-                   });
+                  response.on('data', function (response) {
+                    dataReply += response;
+                  });
 
-                   response.once('end', function () {
-                     console.log('\x1b[35m' + title + '\x1b[0m: Read raw image');
+                  response.once('end', function () {
+                    console.log('\x1b[35m' + title + '\x1b[0m: Read raw image');
 
-                     foscam.callback(null, { rawImage : dataReply, fileName : path + fileName }, true);
-                   });
-                 });
+                    foscam.callback(null, { rawImage : dataReply, fileName : path + fileName }, true);
+                  });
+                });
 
       request.end();
     },
@@ -193,7 +193,7 @@ module.exports = (function () {
           photos      = [],
           filename;
 
-      fs.readdir(path, function(err, items) {
+      fs.readdir((__dirname + '/../..' + path), function(err, items) {
         var foscamData = deviceState.getDeviceState(foscam.deviceId) || { value : null },
             i          = 0;
 
@@ -295,8 +295,10 @@ module.exports = (function () {
       foscam.list       = config.list                || '';
       foscam.devicePort = config.device.devicePort   || 80;
       foscam.callback   = callback;
+      foscam.issuer     = config.issuer              || 'localhost';
 
       if (foscam.list) {
+        this.getStoredPhotos(foscam);
         this.getStoredVideos(foscam);
       }
 
@@ -313,12 +315,14 @@ module.exports = (function () {
                   }
 
                   else {
+                    that.getStoredPhotos(foscam);
+
                     console.log('\x1b[35m' + title + '\x1b[0m: Image saved as ' + fileName);
                   }
                 });
               }
 
-              callback(err, dataReply);
+              callback(err, dataReply, !dataReply.photos);
             };
 
             that.getRawPhoto(foscam, fileName);
