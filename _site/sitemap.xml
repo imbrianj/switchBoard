@@ -61,6 +61,10 @@
 <lastmod>2018-02-04T00:00:00-08:00</lastmod>
 </url>
 <url>
+<loc>http://localhost:4000/switchBoard/Another-One-Bites-The-Dust/</loc>
+<lastmod>2018-02-26T00:00:00-08:00</lastmod>
+</url>
+<url>
 <loc>http://localhost:4000/switchBoard/404/</loc>
 </url>
 <url>
@@ -71,7 +75,7 @@
 </url>
 <url>
 <loc>http://localhost:4000/switchBoard/demo/index.html</loc>
-<lastmod>2018-02-04T12:54:54-08:00</lastmod>
+<lastmod>2018-02-26T23:39:18-08:00</lastmod>
 </url>
 <url>
 <loc>http://localhost:4000/switchBoard/node_modules/console-browserify/test/static/index.html</loc>
