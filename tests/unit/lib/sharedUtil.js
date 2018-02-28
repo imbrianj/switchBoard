@@ -46,10 +46,6 @@ exports.sharedUtilTest = {
     test.strictEqual(util.stripTags('<span>Test</span>'),                         'Test',    'Text without HTML tags');
     test.strictEqual(util.stripTags('<a href="#" onclick="alert()">Testing</a>'), 'Testing', 'Text without HTML tags');
 
-    test.strictEqual(util.sanitize(12),                                           12,        'Don\'t choke on non-strings');
-    test.strictEqual(util.sanitize('<span>Test</span>'),                          'Test',    'Text without HTML tags');
-    test.strictEqual(util.sanitize('<a href="#" onclick="alert()">Testing</a>'),  'Testing', 'Text without HTML tags');
-
     test.done();
   },
 
@@ -61,10 +57,6 @@ exports.sharedUtilTest = {
     test.strictEqual(util.sanitize(12),                                          12,        'Don\'t choke on non-strings');
     test.strictEqual(util.sanitize('<span>Test</span>'),                         'Test',    'Text without HTML tags');
     test.strictEqual(util.sanitize('<a href="#" onclick="alert()">Testing</a>'), 'Testing', 'Text without HTML tags');
-
-    test.strictEqual(util.sanitize(12),                                           12,        'Don\'t choke on non-strings');
-    test.strictEqual(util.sanitize('<span>Test</span>'),                          'Test',    'Text without HTML tags');
-    test.strictEqual(util.sanitize('<a href="#" onclick="alert()">Testing</a>'),  'Testing', 'Text without HTML tags');
 
     test.done();
   },
