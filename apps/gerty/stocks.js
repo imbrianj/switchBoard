@@ -29,7 +29,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    stocks : function (state) {
+    mood : function (state) {
       var excited = 0,
           scared  = 0,
           stock,

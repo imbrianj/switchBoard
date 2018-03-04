@@ -30,8 +30,8 @@ exports.tvTest = {
     'use strict';
 
     var tv        = require(__dirname + '/../../../../apps/gerty/tv'),
-        deviceOn  = tv.tv({ state : 'ok' }),
-        deviceOff = tv.tv({ state : 'err' });
+        deviceOn  = tv.mood({ state : 'ok' }),
+        deviceOff = tv.mood({ state : 'err' });
 
     test.deepEqual(deviceOn,  { entertained : 3 }, 'You should feel entertained');
     test.deepEqual(deviceOff, { entertained : 0 }, 'You should feel bored');

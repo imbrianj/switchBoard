@@ -29,7 +29,7 @@ module.exports = (function () {
    * @fileoverview Basic control of Pushover notification API.
    */
   return {
-    version : 20180217,
+    version : 20180303,
 
     inputs  : ['text'],
 
@@ -37,8 +37,6 @@ module.exports = (function () {
      * Prepare a request for command execution.
      */
     postPrepare : function (config) {
-      var type = config.payload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
-
       return {
         host    : config.host,
         port    : config.port,
@@ -48,8 +46,8 @@ module.exports = (function () {
           'Accept'         : 'application/json',
           'Accept-Charset' : 'utf-8',
           'User-Agent'     : 'node-switchBoard',
-          'Content-Type'   : type,
-          'Content-Length' : config.postRequest.length
+          'Content-Type'   : 'multipart/form-data; boundary=' + config.boundary,
+          'Content-Length' : Buffer.byteLength(config.postRequest)
         }
       };
     },
@@ -58,18 +56,31 @@ module.exports = (function () {
      * Prepare the POST data to be sent.
      */
     postData : function (pushover) {
-      var querystring = require('querystring'),
-          data = {
-                   token   : pushover.token,
-                   user    : pushover.userKey,
-                   message : pushover.text
-                 };
+      var data      = new Buffer('--' + pushover.boundary + '\r\n'
+                    +            'Content-Disposition: form-data; name="user"\r\n\r\n'
+                    +            pushover.userKey + '\r\n'
+                    +            '--' + pushover.boundary + '\r\n'
+                    +            'Content-Disposition: form-data; name="token"\r\n\r\n'
+                    +            pushover.token + '\r\n'
+                    +            '--' + pushover.boundary + '\r\n'
+                    +            'Content-Disposition: form-data; name="message"\r\n\r\n'
+                    +            pushover.text + '\r\n'),
+          end       = new Buffer('\r\n--' + pushover.boundary + '--'),
+          imageData = new Buffer('--' + pushover.boundary + '\r\n'
+                    +            'Content-Disposition: form-data; name="attachment"; filename="image.jpg"\r\n'
+                    +            'Content-Type: image/jpeg\r\n\r\n'),
+          imageEnd  = new Buffer('\r\n--' + pushover.boundary + '--'),
+          image     = new Buffer('');
 
       if (pushover.payload) {
-        data.attachment = pushover.payload;
+        if (!Buffer.isBuffer(pushover.payload)) {
+          pushover.payload = new Buffer(pushover.payload);
+        }
+
+        image = new Buffer.concat([imageData, pushover.payload, imageEnd]);
       }
 
-      return querystring.stringify(data);
+      return Buffer.concat([data, image, end]);
     },
 
     /**
@@ -96,6 +107,7 @@ module.exports = (function () {
       pushover.text        = config.text     || '';
       pushover.payload     = config.payload  || null;
       pushover.callback    = config.callback || function () {};
+      pushover.boundary    = Math.random().toString(16);
       pushover.postRequest = this.postData(pushover);
 
       request = https.request(this.postPrepare(pushover), function (response) {

@@ -40,17 +40,17 @@ exports.smartthingsTest = {
                                   mode    : 'Home'
                                 },
                       },
-        deviceHome  = smartthings.smartthings(devices),
+        deviceHome  = smartthings.mood(devices),
         deviceSleep,
         deviceAway;
 
     devices.value.mode = 'Night';
-    deviceSleep = smartthings.smartthings(devices);
+    deviceSleep = smartthings.mood(devices);
 
     devices.value.mode = 'Away';
     devices.value.devices.BAM.state = 'off';
     devices.value.devices.BAZ.peripheral.temp = 40;
-    deviceAway = smartthings.smartthings(devices);
+    deviceAway = smartthings.mood(devices);
 
     test.deepEqual(deviceHome,  { social : 6,   comfortable : 4 },   'All is well in the world.  People are home and the temperature is comfortable');
     test.deepEqual(deviceSleep, { social : 5,   comfortable : 104 }, 'I\'m asleep - so I\'m very comfortable, but not as social');

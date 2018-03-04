@@ -29,7 +29,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    smartthings : function (state) {
+    mood : function (state) {
       var comfortable = 0,
           social      = 0,
           temp        = 0,

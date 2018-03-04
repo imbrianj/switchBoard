@@ -29,7 +29,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    activeBuilding : function (state) {
+    mood : function (state) {
       var excited = state.value ? (state.value.length * 2) : 0;
 
       return { excited : excited };

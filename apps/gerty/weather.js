@@ -29,7 +29,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    weather : function (state, command, celsius) {
+    mood : function (state, command, celsius) {
       var util        = require(__dirname + '/../../lib/sharedUtil').util,
           excited     = 0,
           comfortable = 0,

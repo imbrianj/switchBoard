@@ -29,7 +29,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    tv : function (state) {
+    mood : function (state) {
       var entertained = state.state === 'err' ? 0 : 3;
 
       return { entertained : entertained };

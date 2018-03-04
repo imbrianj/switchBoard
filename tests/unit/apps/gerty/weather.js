@@ -30,9 +30,9 @@ exports.weatherTest = {
     'use strict';
 
     var weather    = require(__dirname + '/../../../../apps/gerty/weather'),
-        deviceHot  = weather.weather({ value : { temp : 100, code : 40 } }),
-        deviceNice = weather.weather({ value : { temp : 70,  code : 26 } }),
-        deviceSnow = weather.weather({ value : { temp : 30,  code : 46 } });
+        deviceHot  = weather.mood({ value : { temp : 100, code : 40 } }),
+        deviceNice = weather.mood({ value : { temp : 70,  code : 26 } }),
+        deviceSnow = weather.mood({ value : { temp : 30,  code : 46 } });
 
     test.deepEqual(deviceHot,  { excited: -1, comfortable: -8.666666666666668 },  'This is just miserable weather');
     test.deepEqual(deviceNice, { excited: 0,  comfortable: 5 },                   'Sunny.  Comfy, but not too exciting');

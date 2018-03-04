@@ -30,9 +30,9 @@ exports.activeBuildingTest = {
     'use strict';
 
     var activeBuilding = require(__dirname + '/../../../../apps/gerty/activeBuilding'),
-        deviceGood     = activeBuilding.activeBuilding({ value : ['USPS', 'UPS', 'Dry Cleaning']}),
-        deviceOk       = activeBuilding.activeBuilding({ value : ['USPS']}),
-        deviceBad      = activeBuilding.activeBuilding({ value : []});
+        deviceGood     = activeBuilding.mood({ value : ['USPS', 'UPS', 'Dry Cleaning']}),
+        deviceOk       = activeBuilding.mood({ value : ['USPS']}),
+        deviceBad      = activeBuilding.mood({ value : []});
 
     test.deepEqual(deviceGood, { excited: 6 }, 'How exciting.  You have several packages');
     test.deepEqual(deviceOk,   { excited: 2 }, 'You have one package waiting');

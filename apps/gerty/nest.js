@@ -29,7 +29,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    nest : function (state, command, celsius) {
+    mood : function (state, command, celsius) {
       var util        = require(__dirname + '/../../lib/sharedUtil').util,
           comfortable = 0,
           social      = 0,

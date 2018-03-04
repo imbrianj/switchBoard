@@ -81,7 +81,7 @@ module.exports = (function () {
             return camera;
           };
 
-      trigger = isIn(command, config.motion, 'subdevice-state-motion-') ||
+      trigger = isIn(command, config.motion,  'subdevice-state-motion-') ||
                 isIn(command, config.contact, 'subdevice-state-contact-');
 
       if (trigger && isArmed()) {

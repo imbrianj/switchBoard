@@ -41,20 +41,20 @@ exports.nestTest = {
                                    6 : { label : 'TEST8', smoke : 'ok',  co : 'ok',   battery : 'ok',  type : 'protect' }
                                  }
                                } },
-        deviceAlarm = nest.nest(device),
+        deviceAlarm = nest.mood(device),
         deviceOk,
         deviceAway;
 
     device.value.devices[3].smoke   = 'ok';
     device.value.devices[4].co      = 'ok';
     device.value.devices[5].battery = 'ok';
-    deviceOk = nest.nest(device);
+    deviceOk = nest.mood(device);
 
     device.value.presence = 'off';
     device.value.devices[0].temp = 100;
     device.value.devices[1].temp = 90;
     device.value.devices[2].temp = 93;
-    deviceAway = nest.nest(device);
+    deviceAway = nest.mood(device);
 
     test.deepEqual(deviceAlarm, { social: 1,  comfortable: -3,                 scared: -20 }, 'A bunch of alarms going off.  Freak out');
     test.deepEqual(deviceOk,    { social: 1,  comfortable: 0,                  scared: 0 },   'Not much going on here');

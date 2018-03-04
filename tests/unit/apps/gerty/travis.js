@@ -30,8 +30,8 @@ exports.travisTest = {
     'use strict';
 
     var travis     = require(__dirname + '/../../../../apps/gerty/travis'),
-        deviceOk   = travis.travis({ values : { value : [{ status : 'ok' },  { status : 'err' }] } }),
-        deviceFail = travis.travis({ values : { value : [{ status : 'err' }, { status : 'ok' }] } });
+        deviceOk   = travis.mood({ values : { value : [{ status : 'ok' },  { status : 'err' }] } }),
+        deviceFail = travis.mood({ values : { value : [{ status : 'err' }, { status : 'ok' }] } });
 
     test.deepEqual(deviceOk,   { scared : 0 },  'All is well in the world (or at least the latest build)');
     test.deepEqual(deviceFail, { scared : -3 }, 'It\'s broken!');

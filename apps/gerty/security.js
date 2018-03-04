@@ -29,7 +29,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    security : function (state) {
+    mood : function (state) {
       var scared = state.value === 'off' ? 0 : -2;
 
       return { scared : scared };

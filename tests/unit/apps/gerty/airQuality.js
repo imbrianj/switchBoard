@@ -30,9 +30,9 @@ exports.airQualityTest = {
     'use strict';
 
     var airQuality = require(__dirname + '/../../../../apps/gerty/airQuality'),
-        allGood    = airQuality.airQuality({ value : { report : [{ type : 'no2', value : 0.015 }, { type : 'pm25', value : 10  }, { type : 'co', value : 2  }] } }),
-        allBad     = airQuality.airQuality({ value : { report : [{ type : 'no2', value : 0.25  }, { type : 'pm25', value : 160 }, { type : 'co', value : 25 }] } }),
-        mixed      = airQuality.airQuality({ value : { report : [{ type : 'no2', value : 0.015 }, { type : 'pm25', value : 160 }, { type : 'co', value : 2  }] } });
+        allGood    = airQuality.mood({ value : { report : [{ type : 'no2', value : 0.015 }, { type : 'pm25', value : 10  }, { type : 'co', value : 2  }] } }),
+        allBad     = airQuality.mood({ value : { report : [{ type : 'no2', value : 0.25  }, { type : 'pm25', value : 160 }, { type : 'co', value : 25 }] } }),
+        mixed      = airQuality.mood({ value : { report : [{ type : 'no2', value : 0.015 }, { type : 'pm25', value : 160 }, { type : 'co', value : 2  }] } });
 
     test.deepEqual(allGood, { scared : 0, comfortable :  3 }, 'All good');
     test.deepEqual(allBad,  { scared : 5, comfortable : -5 }, 'All bad');

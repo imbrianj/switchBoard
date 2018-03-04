@@ -37,7 +37,8 @@ exports.pushoverControllerTest = {
                                path        : '/TEST/',
                                method      : 'POST',
                                badData     : 'FAILURE',
-                               postRequest : 'Test message to send'
+                               postRequest : 'Test message to send',
+                               boundary    : 'abcd'
                              },
         testData           = pushoverController.postPrepare(config);
 
@@ -49,7 +50,7 @@ exports.pushoverControllerTest = {
                                 'Accept'         : 'application/json',
                                 'Accept-Charset' : 'utf-8',
                                 'User-Agent'     : 'node-switchBoard',
-                                'Content-Type'   : 'application/x-www-form-urlencoded',
+                                'Content-Type'   : 'multipart/form-data; boundary=abcd',
                                 'Content-Length' : 20
                               }
                             }, 'Additional params are filtered out.');
@@ -64,9 +65,16 @@ exports.pushoverControllerTest = {
         config             = { token   : '1234567891',
                                userKey : '1987654321',
                                text    : 'TEST Pushover body text' },
-        testData           = pushoverController.postData(config);
+        configAttachment   = { token   : '1234567891',
+                               userKey : '1987654321',
+                               text    : 'TEST Pushover body text',
+                               payload : new Buffer('RAW IMAGE')
+                              },
+        testData           = pushoverController.postData(config),
+        testAttachmentData = pushoverController.postData(configAttachment);
 
-    test.deepEqual(testData, 'token=1234567891&user=1987654321&message=TEST%20Pushover%20body%20text', 'Additional params are filtered out and params stringified');
+    test.deepEqual(Buffer.isBuffer(testData),           true, 'Ensure a buffer is returned without image');
+    test.deepEqual(Buffer.isBuffer(testAttachmentData), true, 'Ensure a buffer is returned with image');
 
     test.done();
   },

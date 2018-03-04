@@ -29,7 +29,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    travis : function (state) {
+    mood : function (state) {
       var scared = 0;
 
       if ((state) && (state.values) && (state.values.value) && (state.values.value.length)) {

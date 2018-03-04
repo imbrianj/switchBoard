@@ -30,9 +30,9 @@ exports.stocksTest = {
     'use strict';
 
     var stocks     = require(__dirname + '/../../../../apps/gerty/stocks'),
-        deviceGood = stocks.stocks({ value : { 'STOCK1' : { dayChangePercent : '5%' },  'STOCK2' : { dayChangePercent : '7%' } } }),
-        deviceOk   = stocks.stocks({ value : { 'STOCK1' : { dayChangePercent : '3%' },  'STOCK2' : { dayChangePercent : '1%' } } }),
-        deviceBad  = stocks.stocks({ value : { 'STOCK1' : { dayChangePercent : '-5%' }, 'STOCK2' : { dayChangePercent : '-7%' } } });
+        deviceGood = stocks.mood({ value : { 'STOCK1' : { dayChangePercent : '5%' },  'STOCK2' : { dayChangePercent : '7%' } } }),
+        deviceOk   = stocks.mood({ value : { 'STOCK1' : { dayChangePercent : '3%' },  'STOCK2' : { dayChangePercent : '1%' } } }),
+        deviceBad  = stocks.mood({ value : { 'STOCK1' : { dayChangePercent : '-5%' }, 'STOCK2' : { dayChangePercent : '-7%' } } });
 
     test.deepEqual(deviceGood, { excited: 5,  scared: 0 },  'Your stocks are doing well');
     test.deepEqual(deviceOk,   { excited: 2,  scared: 0 },  'Your stocks are doing ok');

@@ -30,8 +30,8 @@ exports.stereoTest = {
     'use strict';
 
     var stereo    = require(__dirname + '/../../../../apps/gerty/stereo'),
-        deviceOn  = stereo.stereo({ state : 'ok' }),
-        deviceOff = stereo.stereo({ state : 'err' });
+        deviceOn  = stereo.mood({ state : 'ok' }),
+        deviceOff = stereo.mood({ state : 'err' });
 
     test.deepEqual(deviceOn,  { entertained : 1 }, 'You should feel entertained');
     test.deepEqual(deviceOff, { entertained : 0 }, 'You should feel bored');

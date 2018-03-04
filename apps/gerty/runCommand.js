@@ -470,7 +470,7 @@ module.exports = (function () {
             if (deviceType) {
               state         = deviceState.getDeviceState(device);
               deviceCommand = require(__dirname + '/' + deviceType);
-              deviceMood    = deviceCommand[deviceType](state, command, celsius);
+              deviceMood    = deviceCommand.mood(state, command, celsius);
 
               if (deviceMood) {
                 mood.comfortable += deviceMood.comfortable || 0;

@@ -38,17 +38,18 @@ module.exports = function (grunt) {
         undef         : true,
         unused        : true,
         globals       : {
-          module      : true,
-          require     : true,
-          console     : true,
           __dirname   : true,
-          SB          : true,
-          exports     : true,
-          process     : true,
-          setTimeout  : true,
-          setInterval : true,
-          WebSocket   : true,
+          Buffer      : true,
+          console     : true,
           document    : true,
+          exports     : true,
+          module      : true,
+          process     : true,
+          require     : true,
+          SB          : true,
+          setInterval : true,
+          setTimeout  : true,
+          WebSocket   : true,
           window      : true
         }
       }

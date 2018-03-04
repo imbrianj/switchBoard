@@ -29,7 +29,7 @@ module.exports = (function () {
    * @fileoverview Basic control of Foscam IP camera.
    */
   return {
-    version : 20180226,
+    version : 20180303,
 
     inputs  : ['command', 'list'],
 
@@ -112,20 +112,18 @@ module.exports = (function () {
           postData  = this.postPrepare(foscam),
           imageUrl  = 'http://' + postData.host + ':' + postData.port + postData.path,
           request,
-          dataReply = '',
+          dataReply = [],
           path      = '/images/foscam/photos/';
 
       request = http.request(imageUrl).on('response', function (response) {
-                  response.setEncoding('binary');
-
                   response.on('data', function (response) {
-                    dataReply += response;
+                    dataReply.push(response);
                   });
 
                   response.once('end', function () {
                     console.log('\x1b[35m' + title + '\x1b[0m: Read raw image');
 
-                    foscam.callback(null, { rawImage : dataReply, fileName : path + fileName }, true);
+                    foscam.callback(null, { rawImage : Buffer.concat(dataReply), fileName : path + fileName }, true);
                   });
                 });
 
@@ -290,6 +288,7 @@ module.exports = (function () {
       foscam.timeout    = config.device.localTimeout || config.config.localTimeout;
       foscam.username   = config.device.username;
       foscam.password   = config.device.password;
+      foscam.payload    = config.payload;
       foscam.maxCount   = config.device.maxCount     || 20;
       foscam.command    = config.command             || '';
       foscam.list       = config.list                || '';
@@ -310,12 +309,17 @@ module.exports = (function () {
 
               if (rawImage) {
                 fs.writeFile(localPath + fileName, rawImage, 'binary', function(err) {
+                  var runCommand;
+
                   if (err) {
                     console.log('\x1b[31m' + title + '\x1b[0m: Unable to save ' + fileName);
                   }
 
                   else {
-                    that.getStoredPhotos(foscam);
+                    // Issue a full command to ensure we have the right
+                    // callback.
+                    runCommand = require(__dirname + '/../../lib/runCommand');
+                    runCommand.runCommand(foscam.deviceId, 'list', foscam.deviceId);
 
                     console.log('\x1b[35m' + title + '\x1b[0m: Image saved as ' + fileName);
                   }
