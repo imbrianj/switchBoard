@@ -30,7 +30,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20180122,
+    version : 20180312,
 
     /**
      * Some devices can be assumed - if you say "TV" and only have one TV
@@ -137,7 +137,7 @@ module.exports = (function () {
      * Grab each translated verb we're listening for.
      */
     getVerbs : function (language) {
-      var codes = ['ON', 'OFF', 'HALF', 'HALFWAY', 'HEAT', 'COOL', 'TOGGLE', 'UP', 'DOWN', 'RAISE', 'LOWER', 'LEFT', 'RIGHT', 'ENTER', 'ARM', 'DISARM'];
+      var codes = ['ON', 'OFF', 'HALF', 'HALFWAY', 'HEAT', 'COOL', 'TOGGLE', 'OPEN', 'CLOSE', 'UP', 'DOWN', 'RAISE', 'LOWER', 'LEFT', 'RIGHT', 'ENTER', 'ARM', 'DISARM'];
 
       return this.getKeywords(codes, language);
     },

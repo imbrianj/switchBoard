@@ -31,7 +31,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20160315,
+    version : 20180312,
 
     strings : function () {
       return {
@@ -288,6 +288,7 @@ module.exports = (function () {
           CAMERA       : "Camera",
           CHANNEL_DOWN : "Channel Down",
           CHANNEL_UP   : "Channel Up",
+          CLOSE        : "Close",
           COOL         : "Cool",
           DISARM       : "Disarm",
           DO           : "Do",
@@ -301,6 +302,7 @@ module.exports = (function () {
           LOWER        : "Lower",
           OFF          : "Off",
           ON           : "On",
+          OPEN         : "Open",
           PLAYSTATION  : "Playstation",
           RAISE        : "Raise",
           RIGHT        : "Right",
@@ -426,6 +428,7 @@ module.exports = (function () {
           KITCHEN            : "Kitchen",
           LEAF               : "Leaf",
           LIVING_ROOM        : "Living Room",
+          MAIN               : "Main",
           MASTER_BEDROOM     : "Master Bedroom",
           OFFICE             : "Office",
           PROTECT            : "Protect",

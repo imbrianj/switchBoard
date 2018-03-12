@@ -29,7 +29,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20180122,
+    version : 20180312,
 
     /**
      * Take in a typeClass and return the type of device it's categorized as.
@@ -367,6 +367,7 @@ module.exports = (function () {
                   switch (commands[i].action.toUpperCase()) {
                     case 'OFF'   :
                     case 'DOWN'  :
+                    case 'CLOSE' :
                     case 'LOWER' :
                       commands[i].action = 'subdevice-' + devices[i].subdevice + '-0';
                     break;
@@ -378,6 +379,7 @@ module.exports = (function () {
 
                     case 'ON'    :
                     case 'UP'    :
+                    case 'OPEN'  :
                     case 'RAISE' :
                       commands[i].action = 'subdevice-' + devices[i].subdevice + '-100';
                     break;

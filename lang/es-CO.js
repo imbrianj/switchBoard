@@ -35,7 +35,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20151109,
+    version : 20180312,
 
     strings : function () {
       return {
@@ -292,6 +292,7 @@ module.exports = (function () {
           CAMERA       : "Cámara",
           CHANNEL_DOWN : "Canal Previo",
           CHANNEL_UP   : "Siguiente Canal",
+          CLOSE        : "Cerca",
           COOL         : "Enfriar",
           DISARM       : "Desarmar",
           DO           : "Sabes",
@@ -305,6 +306,7 @@ module.exports = (function () {
           LOWER        : "Baje",
           OFF          : "Apagar",
           ON           : "Prender",
+          OPEN         : "Abierto",
           PLAYSTATION  : "Playstation",
           RAISE        : "Levanta",
           RIGHT        : "Derecha",
@@ -328,8 +330,7 @@ module.exports = (function () {
                            "Por supuesto",
                            "Claro que si",
                            "De una",
-                           "Dale"
-                          ],
+                           "Dale"],
             NEGATIVE    : ["Perdón, no entendí",
                            "Perdón?",
                            "Que?",
@@ -418,6 +419,7 @@ module.exports = (function () {
           KITCHEN            : "Cocina",
           LEAF               : "Se esta ahorrando energía",
           LIVING_ROOM        : "Sala de Estar",
+          MAIN               : "Principal",
           MASTER_BEDROOM     : "Cuarto principal",
           OFFICE             : "Oficina",
           PROTECT            : "Proteger",

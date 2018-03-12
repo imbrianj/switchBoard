@@ -29,7 +29,7 @@ module.exports = (function () {
    * @requires querystring, fs, https
    */
   return {
-    version : 20180109,
+    version : 20180307,
 
     inputs : ['command', 'text', 'list', 'subdevice'],
 
@@ -105,7 +105,7 @@ module.exports = (function () {
      */
     findLabel : function (id, language) {
       var translate = require(__dirname + '/../../lib/translate'),
-          key       = id.replace('00000000-0000-0000-0000-0001000000', ''),
+          key       = id ? id.replace('00000000-0000-0000-0000-0001000000', '') : 'xx',
           keymap    = { '01' : 'BASEMENT',
                         '0d' : 'BEDROOM',
                         '03' : 'DEN',
@@ -117,6 +117,7 @@ module.exports = (function () {
                         '08' : 'KIDS_ROOM',
                         '0a' : 'KITCHEN',
                         '0c' : 'LIVING_ROOM',
+                        'xx' : 'MAIN',
                         '05' : 'MASTER_BEDROOM',
                         '0e' : 'OFFICE',
                         '0f' : 'UPSTAIRS' };

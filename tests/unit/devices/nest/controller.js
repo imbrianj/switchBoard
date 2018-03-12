@@ -106,6 +106,7 @@ exports.nestControllerTest = {
 
     test.strictEqual(nestController.findLabel('00000000-0000-0000-0000-000100000003'), 'Den',      'Translate location');
     test.strictEqual(nestController.findLabel('00000000-0000-0000-0000-00010000000f'), 'Upstairs', 'Translate location');
+    test.strictEqual(nestController.findLabel(undefined),                              'Main',     'Translate location');
 
     test.done();
   }
