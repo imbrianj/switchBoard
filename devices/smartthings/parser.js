@@ -92,32 +92,32 @@
           switch (device.type) {
             case 'switch' :
               deviceTemplate = templateAction;
-              deviceClass    = 'fa-lightbulb-o';
+              deviceClass    = 'far fa-lightbulb';
             break;
 
             case 'lock' :
               deviceTemplate = templateAction;
-              deviceClass    = 'fa-unlock-alt';
+              deviceClass    = 'fa fa-unlock-alt';
             break;
 
             case 'contact' :
               deviceTemplate = templateStatic;
-              deviceClass    = 'fa-columns';
+              deviceClass    = 'fa fa-columns';
             break;
 
             case 'water' :
               deviceTemplate = templateStatic;
-              deviceClass    = 'fa-tint';
+              deviceClass    = 'fa fa-tint';
             break;
 
             case 'motion' :
               deviceTemplate = templateStatic;
-              deviceClass    = 'fa-street-view';
+              deviceClass    = 'fa fa-street-view';
             break;
 
             case 'presence' :
               deviceTemplate = templateStatic;
-              deviceClass    = 'fa-male';
+              deviceClass    = 'fa fa-male';
             break;
           }
 

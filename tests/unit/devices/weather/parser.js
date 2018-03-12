@@ -42,9 +42,9 @@ exports.weatherParserTest = {
         noValue    = weatherParser.weather('dummy', markup, 'ok', 'API Choked', fragments);
 
     test.strictEqual(goodMarkup.indexOf('{{'), -1, 'All values replaced');
-    test.notStrictEqual(goodMarkup.indexOf('Seattle Current Weather: 80&deg; Storm'),                            -1, 'Passed markup validated');
-    test.notStrictEqual(goodMarkup.indexOf('<span class="fa fa-snowflake-o"></span> Mon: Snow 30&deg;/20&deg;'), -1, 'Passed markup validated');
-    test.notStrictEqual(goodMarkup.indexOf('<span class="fa fa-sun-o"></span> Wed: Sun 75&deg;/70&deg;'),        -1, 'Passed markup validated');
+    test.notStrictEqual(goodMarkup.indexOf('Seattle Current Weather: 80&deg; Storm'),                          -1, 'Passed markup validated');
+    test.notStrictEqual(goodMarkup.indexOf('<span class="fa fa-snowflake"></span> Mon: Snow 30&deg;/20&deg;'), -1, 'Passed markup validated');
+    test.notStrictEqual(goodMarkup.indexOf('<span class="fa fa-sun"></span> Wed: Sun 75&deg;/70&deg;'),        -1, 'Passed markup validated');
     test.strictEqual(noValue.indexOf('{{'), -1, 'All values replaced');
     test.strictEqual(noValue, '<h1>Foo</h1> <div>Weather data unavailable</div> <div>API Choked</div>', 'Passed markup validated');
 

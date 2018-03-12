@@ -105,8 +105,13 @@ ul {
   list-style: none;
 }
 
-.fa {
+.icon {
   text-align: center;
+}
+
+.icon span,
+.icon em {
+  font-weight: normal;
 }
 
 /* Copy button styling from purecss.io */
@@ -728,19 +733,19 @@ section .text-block li {
   margin: 0.5em 0;
 }
 
-section .text-block h2 .fa,
-section .text-block li .fa {
+section .text-block h2 .icon,
+section .text-block li .icon {
   margin-right: 0.5em;
 }
 
-section .text-block li.loss .fa,
-section .state-err .fa {
+section .text-block li.loss .icon,
+section .state-err .icon {
   color: #F00;
 }
 
-section .text-block h2 .fa,
-section .text-block li.gain .fa,
-section .state-ok .fa {
+section .text-block h2 .icon,
+section .text-block li.gain .icon,
+section .state-ok .icon {
   color: #0078E7;
 }
 
@@ -1019,7 +1024,7 @@ section a {
 
 section span em,
 section a em,
-section .text-block li .fa span {
+section .text-block li .icon span {
   display: block;
   height: 0;
   overflow: hidden;
@@ -1028,7 +1033,7 @@ section .text-block li .fa span {
 }
 
 section a span,
-section .sub-device-list .icon .fa span {
+section .sub-device-list .icon .icon span {
   display: block;
   height: 0;
   overflow: hidden;
@@ -1593,13 +1598,13 @@ section .sub-device-list li span span {
   font-family: helvetica;
 }
 
-section .sub-device-list li dl dd.fa,
-section .sub-device-list li dl dd.icon {
+section .sub-device-list li dl dd.icon,
+section .sub-device-list li dl dd.icons {
   font-size: 100%;
 }
 
-.device-active .fa:before,
-.fa.device-active:before {
+.device-active .icon:before,
+.icon.device-active:before {
   text-shadow: -2px -2px 1px #286EA0,
                -2px 2px 1px #286EA0,
                2px -2px 1px #286EA0,
@@ -1610,10 +1615,10 @@ section .sub-device-list li dl dd.icon {
   transition: text-shadow 0.1s ease-in-out;
 }
 
-.device-active.heat .fa:before,
-.device-active.smoke .fa:before,
-.device-active.co .fa:before,
-.device-active.batt .fa:before {
+.device-active.heat .icon:before,
+.device-active.smoke .icon:before,
+.device-active.co .icon:before,
+.device-active.batt .icon:before {
   text-shadow: -2px -2px 1px #F00,
                -2px 2px 1px #F00,
                2px -2px 1px #F00,
@@ -1709,7 +1714,7 @@ a.device-active:focus:before {
   }
 }
 
-.device-vibrate.fa:before {
+.device-vibrate.icon:before {
   -moz-animation-duration: 0.2s;
   -webkit-animation-duration: 0.2s;
   animation-duration: 0.2s;
@@ -1811,7 +1816,7 @@ section.powerView legend {
   width: auto;
 }
 
-section.weather li span.fa {
+section.weather li span.icon {
   min-width: 1em;
 }
 

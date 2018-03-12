@@ -3,7 +3,7 @@
         <h1>{{i18n_ACTIVEBUILDING}} <em>{{DEVICE_ACTIVE}}</em></h1>
         <div class="text-block">
           <p class="state-{{ACTIVEBUILDING_STATE}}">
-            <span class="fa fa-{{ACTIVEBUILDING_ICON}}"></span> {{ACTIVEBUILDING_DYNAMIC}}
+            <span class="icon fa fa-{{ACTIVEBUILDING_ICON}}"></span> {{ACTIVEBUILDING_DYNAMIC}}
           </p>
         </div>
       </section>

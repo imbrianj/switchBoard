@@ -20,17 +20,17 @@
             </div>
             <li>
               <div class="button">
-                <a href="/?{{DEVICE_ID}}=Zone1_On" class="fa fa-power-off" title="Z1_ON"><span>Z1_ON</span></a>
+                <a href="/?{{DEVICE_ID}}=Zone1_On" class="icon fa fa-power-off" title="Z1_ON"><span>Z1_ON</span></a>
               </div>
             </li>
             <li>
               <div class="button">
-                <a href="/?{{DEVICE_ID}}=Zone1_Off" class="fa fa-times-circle-o" title="Z1_OFF"><span>Z1_OFF</span></a>
+                <a href="/?{{DEVICE_ID}}=Zone1_Off" class="icon fa fa-times-circle-o" title="Z1_OFF"><span>Z1_OFF</span></a>
               </div>
             </li>
             <li class="topmenu">
               <div class="button">
-                <a href="" class="fa fa-sign-in"><span>{{i18n_INPUT}}</span></a>
+                <span class="icon fa fa-sign-in-alt"><span>{{i18n_INPUT}}</span></span>
                 <ul>
                   <li class="submenu"><a href="/?{{DEVICE_ID}}=Input_Bluray">{{i18n_BD}}</a></li>
                   <li class="submenu"><a href="/?{{DEVICE_ID}}=Input_Mplayer">{{i18n_MPLAY}}</a></li>
@@ -44,7 +44,7 @@
             </li>
             <li class="topmenu">
               <div class="button">
-                <a href="" class="fa fa-music"><span>{{i18n_SOUNDMODE}}</span></a>
+                <span class="icon fa fa-music"><span>{{i18n_SOUNDMODE}}</span></span>
                 <ul>
                   <li class="submenu"><a href="/?{{DEVICE_ID}}=Sound_Movie">{{i18n_MOVIE}}</a></li>
                   <li class="submenu"><a href="/?{{DEVICE_ID}}=Sound_MCHStereo">{{i18n_MUSIC}}</a></li>
@@ -74,17 +74,17 @@
             </div>
             <li>
               <div class="button">
-                <a href="/?{{DEVICE_ID}}=Zone3_On" class="fa fa-power-off" title="Z3_ON"><span>Z3_ON</span></a>
+                <a href="/?{{DEVICE_ID}}=Zone3_On" class="icon fa fa-power-off" title="Z3_ON"><span>Z3_ON</span></a>
               </div>
             </li>
             <li>
               <div class="button">
-                <a href="/?{{DEVICE_ID}}=Zone3_Off" class="fa fa-times-circle-o" title="Z3_OFF"><span>Z3_OFF</span></a>
+                <a href="/?{{DEVICE_ID}}=Zone3_Off" class="icon fa fa-times-circle-o" title="Z3_OFF"><span>Z3_OFF</span></a>
               </div>
             </li>
             <li class="topmenu">
               <div class="button">
-                <a href="" class="fa fa-sign-in"><span>{{i18n_INPUT}}</span></a>
+                <span class="icon fa fa-sign-in-alt"><span>{{i18n_INPUT}}</span></span>
                 <ul>
                   <li class="submenu"><a href="/?{{DEVICE_ID}}=Input_Bluray">{{i18n_BD}}</a></li>
                   <li class="submenu"><a href="/?{{DEVICE_ID}}=Input_Mplayer">{{i18n_MPLAY}}</a></li>
@@ -117,17 +117,17 @@
             </div>
             <li>
               <div class="button">
-                <a href="/?{{DEVICE_ID}}=Zone2_On" class="fa fa-power-off" title="Z2_ON"><span>Z2_ON</span></a>
+                <a href="/?{{DEVICE_ID}}=Zone2_On" class="icon fa fa-power-off" title="Z2_ON"><span>Z2_ON</span></a>
               </div>
             </li>
             <li>
               <div class="button">
-                <a href="/?{{DEVICE_ID}}=Zone2_Off" class="fa fa-times-circle-o" title="Z2_OFF"><span>Z2_OFF</span></a>
+                <a href="/?{{DEVICE_ID}}=Zone2_Off" class="icon fa fa-times-circle-o" title="Z2_OFF"><span>Z2_OFF</span></a>
               </div>
             </li>
             <li class="topmenu">
               <div class="button">
-                <a href="" class="fa fa-sign-in"><span>{{i18n_INPUT}}</span></a>
+                <span class="icon fa fa-sign-in-alt"><span>{{i18n_INPUT}}</span></span>
                 <ul>
                   <li class="submenu"><a href="/?{{DEVICE_ID}}=Input_Bluray">{{i18n_BD}}</a></li>
                   <li class="submenu"><a href="/?{{DEVICE_ID}}=Input_Mplayer">{{i18n_MPLAY}}</a></li>

@@ -45,7 +45,7 @@
         for (i in subdevices) {
           if (subdevices.hasOwnProperty(i)) {
             tempMarkup = tempMarkup + getDeviceMarkup(subdevices[i]);
-            tempMarkup = tempMarkup.split('{{SUB_DEVICE_CLASS}}').join(subdevices[i].className || 'fa-lightbulb-o');
+            tempMarkup = tempMarkup.split('{{SUB_DEVICE_CLASS}}').join(subdevices[i].className || 'fa-lightbulb');
           }
         }
       }

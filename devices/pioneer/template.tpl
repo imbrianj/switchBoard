@@ -3,10 +3,10 @@
         <h1>{{i18n_PIONEER}} <em>{{DEVICE_ACTIVE}}</em></h1>
         <div class="shortcuts">
           <ul>
-            <li><a href="/?{{DEVICE_ID}}=Power" class="fa fa-power-off" title="{{i18n_POWER}}"><span>{{i18n_POWER}}</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=VolUp" class="fa fa-volume-up" title="{{i18n_VOLUME_UP}}"><span>{{i18n_VOLUME_UP}}</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=VolDown" class="fa fa-volume-down" title="{{i18n_VOLUME_DOWN}}"><span>{{i18n_VOLUME_DOWN}}</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=Mute" class="fa fa-volume-off" title="{{i18n_MUTE}}"><span>{{i18n_MUTE}}</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=Power" class="icon fa fa-power-off" title="{{i18n_POWER}}"><span>{{i18n_POWER}}</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=VolUp" class="icon fa fa-volume-up" title="{{i18n_VOLUME_UP}}"><span>{{i18n_VOLUME_UP}}</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=VolDown" class="icon fa fa-volume-down" title="{{i18n_VOLUME_DOWN}}"><span>{{i18n_VOLUME_DOWN}}</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=Mute" class="icon fa fa-volume-off" title="{{i18n_MUTE}}"><span>{{i18n_MUTE}}</span></a></li>
           </ul>
         </div>
         <div class="installed">
