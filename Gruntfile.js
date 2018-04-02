@@ -69,7 +69,7 @@ module.exports = function (grunt) {
 
     concat : {
       css : {
-        src  : ['css/common.css', 'css/font-awesome.css'],
+        src  : ['css/*.css', '!css/*.min.css'],
         dest : 'css/combo.min.css'
       }
     },

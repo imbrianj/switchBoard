@@ -31,7 +31,7 @@ module.exports = (function () {
   var AirQualityValues = {};
 
   return {
-    version : 20171208,
+    version : 20180402,
 
     translate : function (token, lang) {
       var translate = require(__dirname + '/../lib/translate');
@@ -41,7 +41,9 @@ module.exports = (function () {
 
     announceAirQuality : function (deviceId, command, controllers, values, config) {
       var notify,
+          runCommand,
           lang         = controllers.config.language,
+          macros       = config.macros || {},
           message      = '',
           type,
           value,
@@ -64,6 +66,11 @@ module.exports = (function () {
             message = this.translate('AIRQUALITY_UNSAFE', lang).replace('{{TYPE}}', type).replace('{{VALUE}}', value);
 
             notify.notify(message, controllers, deviceId);
+
+            if (macros[type]) {
+              runCommand = require(__dirname + '/../lib/runCommand');
+              runCommand.macroCommands(macros[type]);
+            }
           }
 
           AirQualityValues[deviceId][type] = value;

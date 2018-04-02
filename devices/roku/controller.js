@@ -25,8 +25,7 @@ module.exports = (function () {
 
   /**
    * @author brian@bevey.org
-   * @fileoverview Basic control over Roku devices via TCP POST requests using
-   *               Node.js.
+   * @fileoverview Basic control over Roku devices via TCP POST requests.
    * @requires xml2js, http, fs
    */
   return {
