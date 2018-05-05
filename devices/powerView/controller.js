@@ -410,7 +410,7 @@ module.exports = (function () {
                 blinds = JSON.parse(dataReply);
               }
 
-              catch (e) {
+              catch (catchErr) {
                 powerView.callback('Failed to parse JSON');
               }
 

@@ -133,7 +133,7 @@ module.exports = (function () {
               data = JSON.parse(dataReply);
             }
 
-            catch (err) {
+            catch (catchErr) {
               haveibeenpwned.callback('API returned an unexpected value');
             }
           }

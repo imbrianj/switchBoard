@@ -167,7 +167,7 @@ module.exports = (function () {
               locationData = JSON.parse(dataReply);
             }
 
-            catch (err) {
+            catch (catchErr) {
               location.callback('API returned an unexpected value');
             }
 

@@ -78,7 +78,7 @@ module.exports = (function () {
           controller.config.version = fs.readFileSync(__dirname + '/../../cache/version.txt', 'utf-8');
         }
 
-        catch (err) {
+        catch (catchErr) {
           console.log('\x1b[35m' + config.device.title + '\x1b[0m: No version file found.');
         }
       }
@@ -163,7 +163,7 @@ module.exports = (function () {
               data = JSON.parse(dataReply);
             }
 
-            catch (err) {
+            catch (catchErr) {
               github.callback('API returned an unexpected value');
             }
 

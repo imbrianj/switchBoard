@@ -531,7 +531,7 @@ module.exports = (function () {
                 nestData = JSON.parse(dataReply);
               }
 
-              catch (err) {
+              catch (catchErr) {
                 nest.callback('API returned an unexpected value');
               }
 

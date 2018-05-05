@@ -26,7 +26,7 @@ module.exports = (function () {
   /**
    * @author jfeiler87
    * @fileoverview Basic control of raspberry-remote's send command
-   * @requires child_process, raspberry-remote
+   * @requires child_process
    */
   return {
     version : 20161128,

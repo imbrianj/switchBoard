@@ -281,7 +281,7 @@ module.exports = (function () {
                         data = JSON.parse(dataReply);
                       }
 
-                      catch (err) {
+                      catch (catchErr) {
                         errMessage = 'API returned an unexpected value';
                       }
 

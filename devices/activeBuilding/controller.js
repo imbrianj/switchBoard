@@ -99,7 +99,7 @@ module.exports = (function () {
                           data = JSON.parse(dataReply);
                         }
 
-                        catch (err) {
+                        catch (catchErr) {
                           activeBuilding.callback('Failed to parse JSONP');
                         }
 

@@ -107,7 +107,7 @@ module.exports = (function () {
                 data = JSON.parse(dataReply);
               }
 
-              catch (err) {
+              catch (catchErr) {
                 travis.callback('Invalid data returned from API');
               }
             }

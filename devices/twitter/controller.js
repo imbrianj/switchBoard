@@ -187,7 +187,7 @@ module.exports = (function () {
                           data = JSON.parse(dataReply);
                         }
 
-                        catch (err) {
+                        catch (catchErr) {
                           twitter.callback('API returned an unexpected value');
                         }
 

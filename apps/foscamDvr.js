@@ -38,7 +38,7 @@ module.exports = (function () {
   var Devices = {};
 
   return {
-    version : 20161219,
+    version : 20180429,
 
     lastEvents : { space : 0, thumbnail : 0 },
 
@@ -287,6 +287,10 @@ module.exports = (function () {
         self.checkThumbnails(controller, 0);
 
         console.log('\x1b[35m' + deviceTitle + '\x1b[0m: DVR stopped');
+      });
+
+      Devices[deviceId].dvrProcess.once('error', function () {
+        console.log('\x1b[31m' + deviceTitle + '\x1b[0m: Exception in DVR.  Do you have ffmpeg installed?');
       });
     },
 
