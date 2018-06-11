@@ -483,7 +483,11 @@ exports.config = {
                                                motion        : ['Living Room Motion'],
                                                secureModes   : ['Away'],
                                                delay         : 15,
-                                               controllerIds : ['foscam', 'pushover', 'sms', 'clientSpeech', 'clientNotify', 'gerty'] }
+                                               controllerIds : ['foscam', 'pushover', 'sms', 'clientSpeech', 'clientNotify', 'gerty'] },
+                       'Dog Walk Reminder' : { id            : 'dogWalkReminder',
+                                               dogName       : 'Fido',
+                                               delayMinutes  : 600,
+                                               controllerIds : ['pushover', 'clientSpeech', 'speech', 'clientNotify', 'gerty'] }
                      },
     */
     className      : { Goblin : 'fa-female' },

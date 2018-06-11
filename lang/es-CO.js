@@ -507,6 +507,7 @@ module.exports = (function () {
           SMARTTHINGS        : "SmartThings",
           ARRIVED            : "{{LABEL}} acabo de llegar",
           AWAY               : "Por fuera",
+          DOG_WALK           : "¡Tienes que sacar a {{DOG_NAME}}! ¡Ya han pasado {{MINUTES}} minutos!",
           DOOR_KNOCK         : "Alguien está en la {{LABEL}}",
           HOME               : "En Casa",
           HOME_WATCH         : "{{LABEL}} se prendió!",
