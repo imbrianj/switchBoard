@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Current Status – SwitchBoard Home Automation – Node.js home automation system with machine learning</title>
+
+        <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="I haven’t posted anything for a while, so thought I’d give a quick update.  A lot of the latest changes are pretty limited to just bug fixes and updating of dependencies.  Much of my time is now spent trying to get the machine learning parameters tweaked so they are the most effective and minimizing inconvenient actions.  So far, I’ve been pretty happy with how things are working - but trying to teach new behaviors takes a bit more time than I’d like.  Otherwise, I’ve just been trying to address any of the little bugs that crop up.
+
+" />
+    <meta property="og:description" content="I haven’t posted anything for a while, so thought I’d give a quick update.  A lot of the latest changes are pretty limited to just bug fixes and updating of dependencies.  Much of my time is now spent trying to get the machine learning parameters tweaked so they are the most effective and minimizing inconvenient actions.  So far, I’ve been pretty happy with how things are working - but trying to teach new behaviors takes a bit more time than I’d like.  Otherwise, I’ve just been trying to address any of the little bugs that crop up.
+
+" />
+    
+    <meta name="author" content="SwitchBoard Home Automation" />
+
+    
+    <meta property="og:title" content="Current Status" />
+    <meta property="twitter:title" content="Current Status" />
+    
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/switchBoard/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="SwitchBoard Home Automation - Node.js home automation system with machine learning" href="/switchBoard/feed.xml" />
+
+    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+  </head>
+
+  <body>
+    <div class="wrapper-masthead">
+      <div class="container">
+        <header class="masthead clearfix">
+          <a href="/switchBoard/" class="site-avatar"><img src="https://avatars3.githubusercontent.com/u/526531" /></a>
+
+          <div class="site-info">
+            <h1 class="site-name"><a href="/switchBoard/">SwitchBoard Home Automation</a></h1>
+            <p class="site-description">Node.js home automation system with machine learning</p>
+          </div>
+
+          <nav>
+            <a href="/switchBoard/">Blog</a>
+            <a href="/switchBoard/about">About</a>
+            <a href="https://github.com/imbrianj/switchBoard">Code</a>
+          </nav>
+        </header>
+      </div>
+    </div>
+
+    <div id="main" role="main" class="container">
+      <article class="post">
+  <h1>Current Status</h1>
+
+  <div class="entry">
+    <p>I haven’t posted anything for a while, so thought I’d give a quick update.  A lot of the latest changes are pretty limited to just bug fixes and updating of dependencies.  Much of my time is now spent trying to get the machine learning parameters tweaked so they are the most effective and minimizing inconvenient actions.  So far, I’ve been pretty happy with how things are working - but trying to teach new behaviors takes a bit more time than I’d like.  Otherwise, I’ve just been trying to address any of the little bugs that crop up.</p>
+
+<p>I tag explicit versions for all dependencies so I’m able to see what affect each upgrade has.  I’ve recently upgraded <code class="highlighter-rouge">grunt</code> from 1.0.2 to 1.0.3.  With that upgrade, some of it’s dependencies apparently no longer work with very old version of Node.js.  As such, official support has been dropped for Node.js 0.12 and below as well as io.js.  This shouldn’t really bother most anyone as these are quite old - but, if for whatever reason, you do need to run on a very old instance, you may still find luck with <code class="highlighter-rouge">npm install --production</code> that should cut out much of the overhead and dependencies with no day-to-day impact.  You just won’t be able to run tasks or tests locally.</p>
+
+<p>I have begun work on Lutron support, but I haven’t found the time to finish it up.  I’ve been able to read device state, but have had some difficulties in figuring out how to write to devices (ie: I can see a dimmer switch is at 50%, but I’m unable to set it to 75%).</p>
+
+<p>Things I have in some state of development (with no promises of completion) are Lutron, asking simple questions (“do I need an umbrella?”, “who is home?”, “when is sunrise?”, etc) and continuing bug fixes and minor tweaks.</p>
+
+  </div>
+
+  <div class="date">
+    Written on June 25, 2018
+  </div>
+
+  
+</article>
+
+    </div>
+
+    <div class="wrapper-footer">
+      <div class="container">
+        <footer class="footer">
+          
+<a href="mailto:brian@bevey.org"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/imbrianj/switchBoard"><i class="svg-icon github"></i></a>
+
+
+
+
+
+
+
+
+        </footer>
+      </div>
+    </div>
+
+    
+
+  </body>
+</html>
