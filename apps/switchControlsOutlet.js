@@ -30,10 +30,10 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20180110,
+    version : 20180619,
 
-    lastState : {},
-    lastOff   : {},
+    lastState  : {},
+    lastChange : {},
 
     switchControlsOutlet : function (deviceId, command, controllers, values, config) {
       var that        = this,
@@ -90,7 +90,8 @@ module.exports = (function () {
 
         for (currDevice in controllers) {
           if (controllers.hasOwnProperty(currDevice)) {
-            state = deviceState.getDeviceState(currDevice);
+            currentDeviceState = {};
+            state              = deviceState.getDeviceState(currDevice);
 
             if (controllers[currDevice].config) {
               switch (controllers[currDevice].config.typeClass) {
@@ -104,20 +105,18 @@ module.exports = (function () {
               if ((currentDeviceState.value) && (currentDeviceState.value.devices)) {
                 for (subdevice in currentDeviceState.value.devices) {
                   if (config.action.indexOf(currentDeviceState.value.devices[subdevice].label) !== -1) {
-                    if (currentDeviceState.value.devices[subdevice].state !== status) {
-                      now = new Date().getTime();
-                      this.lastOff[deviceId] = now;
-                      // Turn a light on immediately.  But maybe wait if it's
-                      // being turned off.
-                      delay = status === 'off' ? (config.delay || 0) : 0;
+                    now = new Date().getTime();
+                    this.lastChange[deviceId] = now;
+                    // Turn a light on immediately.  But maybe wait if it's
+                    // being turned off.
+                    delay = status === 'off' ? (config.delay || 0) : 0;
 
-                      setTimeout(function(then, deviceId, currDevice, subdevice) {
-                        // "on" should always happen without delay.
-                        if ((status === 'on') || (then === that.lastOff[deviceId])) {
-                          runCommand.runCommand(currDevice, 'subdevice-' + state.value.devices[subdevice].label + '-' + status);
-                        }
-                      }, (delay * 1000), now, deviceId, currDevice, subdevice);
-                    }
+                    setTimeout(function(then, deviceId, currDevice, subdevice, status) {
+                      // "on" should always happen without delay.
+                      if ((status === 'on') || (then === that.lastChange[deviceId])) {
+                        runCommand.runCommand(currDevice, 'subdevice-' + state.value.devices[subdevice].label + '-' + status);
+                      }
+                    }, (delay * 1000), now, deviceId, currDevice, subdevice, status);
                   }
                 }
               }
