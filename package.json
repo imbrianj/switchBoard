@@ -31,7 +31,7 @@
     "grunt-contrib-nodeunit": "~2.0.0",
     "grunt-contrib-uglify": "~3.3.0",
     "grunt-contrib-watch": "~1.1.0",
-    "nodeunit": "~0.11.2"
+    "nodeunit": "~0.11.3"
   },
   "scripts": {
     "test": "grunt test-suite"
