@@ -37,16 +37,43 @@ exports.config = {
       disabled   : false
     },
     ai           : {
+      // AI will only work if you mark eventLogging to true.  It defaults to
+      // false as it may store uniquely identifiable information into
+      // cache/db/ directory.
+      // Setting this to true acknowledges that SwitchBoard will be overtly
+      // logging actions and device states and storing them locally.
       eventLogging         : false,
+      // When you trigger an action, SwitchBoard will wait this many seconds
+      // before logging the state of the world.  This delay enforces causality.
+      // If you enter a room and it logs the state immediately - you haven't had
+      // the opportunity to teach it that you want the light on.
       eventLogDelaySeconds : 60,
+      // Some scripts or apps may already fire an action with the desired
+      // changes.  This lets you wait just a bit to see if other methods are
+      // firing before we attempt any AI executions.
       executeDelaySeconds  : 1,
+      // If you get into an argument with your house as to the desired state of
+      // a device, this allows you to win that argument.  If a device has
+      // changed state within this many minutes, it will not take any action,
+      // regardless of it's confidence level.
       eventCooldownMinutes : 120,
-      minimumThreshold     : 50,
+      // Only take actions once we've built up some number of previous actions
+      // use as predictors.  Lower this number if you want to see more actions,
+      // increase it to see fewer.
+      // Hint: the higher the number, the more accurate (but fewer) actions will
+      // take place.
+      minimumThreshold     : 25,
+      // Percentage confidence before an action will take place.  By default,
+      // only take action if we're 85% or more certain it's a desired behavior.
+      // Hint: the higher the number, the more accurate (but fewer) actions will
+      // take place.
       confidence           : 85,
       // With trainingWheels on, Gerty will notify you of intent.  Set this to
       // false and he will take action.
       trainingWheels       : true,
+      // Requires mp3 controller to be configured.
       chime                : true,
+      // You can disable AI but still enable event logging.
       disable              : true
     }
   },
