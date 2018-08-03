@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Day Categories – SwitchBoard Home Automation – Node.js home automation system with machine learning</title>
+
+        <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="I’ve been making a lot of use from the machine learning aspects of SwitchBoard lately.  It’s been pretty handy (and sometimes borderline spooky) when a light turns on the second you think you want it on, without any explicit interactions at all.  While the good outweigh the bad actions by a fair margin, there have been a few notable “oh, that’s not good” moments.  Specifically when someone is asleep and a light turns on because Sunday is a weekend, I stay up late on weekends, and it’s 11:30pm…a work night.  Not good.
+
+" />
+    <meta property="og:description" content="I’ve been making a lot of use from the machine learning aspects of SwitchBoard lately.  It’s been pretty handy (and sometimes borderline spooky) when a light turns on the second you think you want it on, without any explicit interactions at all.  While the good outweigh the bad actions by a fair margin, there have been a few notable “oh, that’s not good” moments.  Specifically when someone is asleep and a light turns on because Sunday is a weekend, I stay up late on weekends, and it’s 11:30pm…a work night.  Not good.
+
+" />
+    
+    <meta name="author" content="SwitchBoard Home Automation" />
+
+    
+    <meta property="og:title" content="Day Categories" />
+    <meta property="twitter:title" content="Day Categories" />
+    
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/switchBoard/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="SwitchBoard Home Automation - Node.js home automation system with machine learning" href="/switchBoard/feed.xml" />
+
+    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+  </head>
+
+  <body>
+    <div class="wrapper-masthead">
+      <div class="container">
+        <header class="masthead clearfix">
+          <a href="/switchBoard/" class="site-avatar"><img src="https://avatars3.githubusercontent.com/u/526531" /></a>
+
+          <div class="site-info">
+            <h1 class="site-name"><a href="/switchBoard/">SwitchBoard Home Automation</a></h1>
+            <p class="site-description">Node.js home automation system with machine learning</p>
+          </div>
+
+          <nav>
+            <a href="/switchBoard/">Blog</a>
+            <a href="/switchBoard/about">About</a>
+            <a href="https://github.com/imbrianj/switchBoard">Code</a>
+          </nav>
+        </header>
+      </div>
+    </div>
+
+    <div id="main" role="main" class="container">
+      <article class="post">
+  <h1>Day Categories</h1>
+
+  <div class="entry">
+    <p>I’ve been making a lot of use from the machine learning aspects of SwitchBoard lately.  It’s been pretty handy (and sometimes borderline spooky) when a light turns on the second you think you want it on, without any explicit interactions at all.  While the good outweigh the bad actions by a fair margin, there have been a few notable “oh, that’s not good” moments.  Specifically when someone is asleep and a light turns on because Sunday is a weekend, I stay up late on weekends, and it’s 11:30pm…a work night.  Not good.</p>
+
+<p>Clearly, I needed to add some additional buckets of data to sort events into so that it’s clear that my Friday and Saturday nights, where I stay up late, are different than Sunday nights, where I go to bed at a reasonable hour.  Or what about those that work schedules that have their days off on days other than weekends?  I’ve just committed code to go from simple weekday/weekend time categories to one for each day of the week.</p>
+
+<p>All good, right?  Well, there are some drawbacks.  One big caveat is that, if you were using the machine learning up till now, you’ll have to rename your cache/db/processed.json file and restart SwitchBoard to let it generate the new processed file - which can take quite a while (on a Pi, maybe measured in hours depending on the amount of data).  I have about 10 months of data being processed.  The resulting file has roughly tripled in size.  As this file is stored in memory, you can expect about ~20MB of additional memory to be consumed if you consider my usage a yardstick.  Beyond this, since there are more discrete time categories in which events may be logged, you’ll need up to 5x more data logged before actions will be reliably learned.  I may tweak the default config settings to be a bit more loose as it begins to learn, allowing people to see actions sooner, even if they’re maybe not nearly as accurate as we’d like.</p>
+
+<p>This is just an experiment to see if the costs outweigh the benefits.  I expect this to be a positive change, given the accuracy and memory footprint.  The time to learn has increased a bunch, but I think the long-term benefits are pretty good.  While I would like to use both - broader categories for the early days of learning and the more granular as it begins to learn more about your patterns, I think a clean solution that doesn’t unnecessarily consume too much memory probably isn’t worth the effort.</p>
+
+<p>Once I think I’ve found the sweet-spot for the config defaults, I’ll roll out npm package 0.3.0.</p>
+
+  </div>
+
+  <div class="date">
+    Written on August  2, 2018
+  </div>
+
+  
+</article>
+
+    </div>
+
+    <div class="wrapper-footer">
+      <div class="container">
+        <footer class="footer">
+          
+<a href="mailto:brian@bevey.org"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/imbrianj/switchBoard"><i class="svg-icon github"></i></a>
+
+
+
+
+
+
+
+
+        </footer>
+      </div>
+    </div>
+
+    
+
+  </body>
+</html>
