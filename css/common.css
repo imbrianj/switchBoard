@@ -1591,11 +1591,13 @@ section .sub-device-list li dl dd {
 section .sub-device-list li a span,
 section .sub-device-list li span span {
   font-family: helvetica;
+  padding-top: 0.5em;
 }
 
 section .sub-device-list li dl dd.fa,
 section .sub-device-list li dl dd.icon {
   font-size: 100%;
+  margin-bottom: 0.25em;
 }
 
 .device-active .fa:before,
@@ -1613,7 +1615,8 @@ section .sub-device-list li dl dd.icon {
 .device-active.heat .fa:before,
 .device-active.smoke .fa:before,
 .device-active.co .fa:before,
-.device-active.batt .fa:before {
+.device-active.batt .fa:before,
+.peripheral.batt.fa:before {
   text-shadow: -2px -2px 1px #F00,
                -2px 2px 1px #F00,
                2px -2px 1px #F00,
@@ -1622,7 +1625,8 @@ section .sub-device-list li dl dd.icon {
 
 .device-active.smoke .smoke,
 .device-active.co .co,
-.device-active.batt .batt {
+.device-active.batt .batt,
+.peripheral.batt:not(.fa) {
   color: #F00;
 }
 

@@ -147,6 +147,11 @@
               deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_STATUS}}').join(translate('ACTIVE'));
             }
 
+            else if (device.peripheral && device.peripheral.battery && device.peripheral.battery < 10) {
+              deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_STATE}}').join(' peripheral batt' + vibrate);
+              deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_STATUS}}').join(translate('INACTIVE'));
+            }
+
             else {
               deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_STATE}}').join(vibrate);
               deviceMarkup = deviceMarkup.split('{{SUB_DEVICE_STATUS}}').join(translate('INACTIVE'));

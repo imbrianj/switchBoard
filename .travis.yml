@@ -1,5 +1,7 @@
 language: node_js
 sudo: false
+before_install:
+  - export TZ=America/Los_Angeles
 node_js:
   - "node"
   - "lts/*"
