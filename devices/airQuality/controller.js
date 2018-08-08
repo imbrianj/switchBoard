@@ -29,7 +29,7 @@ module.exports = (function () {
    * @fileoverview Basic air quality information, courtesy of OpenAQ.
    */
   return {
-    version : 20180118,
+    version : 20180807,
 
     readOnly: true,
 
@@ -64,7 +64,7 @@ module.exports = (function () {
       runCommand.runCommand(controller.config.deviceId, 'list', controller.config.deviceId);
     },
 
-    maxQuality : { co : 100, no2 : 0.2, pm25 : 150 },
+    maxQuality : { co : 100, no2 : 0.2, pm25 : 150, bc : 20 },
 
     /**
      * Accept a raw air quality report object.  Parse through, sanitizing values
