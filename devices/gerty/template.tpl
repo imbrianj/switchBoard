@@ -3,7 +3,7 @@
         <h1>{{i18n_GERTY}} <em>{{DEVICE_ACTIVE}}</em></h1>
         <div class="emoji" role="button"><span{{GERTY_ACTION}}>{{GERTY_DYNAMIC}}</span></div>
         <div class="text">
-          <ol class="dialog">
+          <ol class="dialog" role="log">
             {{GERTY_COMMENTS}}
           </ol>
           <form class="text-form" action="/" method="get">
