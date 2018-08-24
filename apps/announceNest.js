@@ -32,12 +32,12 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20161101,
+    version : 20180822,
 
     announceNest : function (deviceId, command, controllers, values, config) {
-      var runCommand  = require(__dirname + '/../lib/runCommand'),
+      var runCommand,
           translate   = require(__dirname + '/../lib/translate'),
-          notify      = require(__dirname + '/../lib/notify'),
+          notify,
           message     = '',
           tempMessage = '',
           subdevice,
@@ -70,12 +70,15 @@ module.exports = (function () {
         }
 
         if (message) {
+          runCommand = require(__dirname + '/../lib/runCommand');
+          notify     = require(__dirname + '/../lib/notify');
+
           notify.notify(message, controllers, deviceId);
 
           // If you have a macro assigned to this specific Mode, we'll act upon
           // it.
-          if (config.macro) {
-            rawMacro = config.macro.split(';');
+          if (config.macros) {
+            rawMacro = config.macros.split(';');
 
             for (macro in rawMacro) {
               if (rawMacro.hasOwnProperty(macro)) {

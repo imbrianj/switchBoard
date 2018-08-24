@@ -35,7 +35,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20161204,
+    version : 20180922,
 
     translate : function (token, lang) {
       var translate = require(__dirname + '/../../lib/translate');
@@ -90,56 +90,57 @@ module.exports = (function () {
 
         for (currDevice in controllers) {
           if (controllers[currDevice].config) {
-            // Look through SmartThings for any open contacts.
-            if (controllers[currDevice].config.typeClass === 'smartthings') {
+            switch (controllers[currDevice].config) {
+              // Look through powerView for any blinds that may be down.
+              case 'powerView' :
+                currentDevice = deviceState.getDeviceState(currDevice);
 
-              currentDevice = deviceState.getDeviceState(currDevice);
+                if (currentDevice.value) {
+                  for (subdeviceId in currentDevice.value.devices) {
+                    if (currentDevice.value.devices.hasOwnProperty(subdeviceId)) {
+                      subdevice = currentDevice.value.devices[subdeviceId];
 
-              if (currentDevice.value) {
-                for (subdeviceId in currentDevice.value.devices) {
-                  if (currentDevice.value.devices.hasOwnProperty(subdeviceId)) {
-                    subdevice = currentDevice.value.devices[subdeviceId];
+                      for (i = 0; i < config.windows.length; i += 1) {
+                        if ((config.windows[i].blind === commandSubdevice) && (config.windows[i].blind === subdevice.label)) {
+                          // If the blind is rolled down past the limit, we can't
+                          // safely do anything.
+                          if (subdevice.percentage < config.windows[i].limit) {
+                            status.blind = subdevice.label;
+                            status.type  = 'abort';
+                          }
 
-                    for (i = 0; i < config.windows.length; i += 1) {
-                      if ((subdevice.state === 'on') && (config.windows[i].blind === commandSubdevice) && (config.windows[i].contact === subdevice.label)) {
-                        status.contact = subdevice.label;
-                      }
-                    }
-                  }
-                }
-              }
-            }
-
-            // Look through powerView for any blinds that may be down.
-            else if (controllers[currDevice].config.typeClass === 'powerView') {
-              currentDevice = deviceState.getDeviceState(currDevice);
-
-              if (currentDevice.value) {
-                for (subdeviceId in currentDevice.value.devices) {
-                  if (currentDevice.value.devices.hasOwnProperty(subdeviceId)) {
-                    subdevice = currentDevice.value.devices[subdeviceId];
-
-                    for (i = 0; i < config.windows.length; i += 1) {
-                      if ((config.windows[i].blind === commandSubdevice) && (config.windows[i].blind === subdevice.label)) {
-                        // If the blind is rolled down past the limit, we can't
-                        // safely do anything.
-                        if (subdevice.percentage < config.windows[i].limit) {
-                          status.blind = subdevice.label;
-                          status.type  = 'abort';
-                        }
-
-                        // ...but if the blind is above the threshold, we can
-                        // adjust safely within that area.
-                        else if ((subdevice.percentage >= config.windows[i].limit) && (commandPercent < config.windows[i].limit)) {
-                          status.blind = subdevice.label;
-                          status.limit = config.windows[i].limit;
-                          status.type  = 'warn';
+                          // ...but if the blind is above the threshold, we can
+                          // adjust safely within that area.
+                          else if ((subdevice.percentage >= config.windows[i].limit) && (commandPercent < config.windows[i].limit)) {
+                            status.blind = subdevice.label;
+                            status.limit = config.windows[i].limit;
+                            status.type  = 'warn';
+                          }
                         }
                       }
                     }
                   }
                 }
-              }
+              break;
+
+              // Look through SmartThings for any open contacts.
+              case 'smartthings' :
+                currentDevice = deviceState.getDeviceState(currDevice);
+
+                if (currentDevice.value) {
+                  for (subdeviceId in currentDevice.value.devices) {
+                    if (currentDevice.value.devices.hasOwnProperty(subdeviceId)) {
+                      subdevice = currentDevice.value.devices[subdeviceId];
+
+                      for (i = 0; i < config.windows.length; i += 1) {
+                        if ((subdevice.state === 'on') && (config.windows[i].blind === commandSubdevice) && (config.windows[i].contact === subdevice.label)) {
+                          status.contact = subdevice.label;
+                        }
+                      }
+                    }
+                  }
+                }
+              break;
             }
           }
         }

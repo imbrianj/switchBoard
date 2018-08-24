@@ -31,7 +31,7 @@ module.exports = (function () {
   var AirQualityValues = {};
 
   return {
-    version : 20180402,
+    version : 20180822,
 
     translate : function (token, lang) {
       var translate = require(__dirname + '/../lib/translate');
@@ -44,6 +44,8 @@ module.exports = (function () {
           runCommand,
           lang         = controllers.config.language,
           macros       = config.macros || {},
+          macro,
+          rawMacro,
           message      = '',
           type,
           value,
@@ -69,7 +71,14 @@ module.exports = (function () {
 
             if (macros[type]) {
               runCommand = require(__dirname + '/../lib/runCommand');
-              runCommand.macroCommands(macros[type]);
+
+              rawMacro = config.macros[type].split(';');
+
+              for (macro in rawMacro) {
+                if (rawMacro.hasOwnProperty(macro)) {
+                  runCommand.macroCommands(rawMacro[macro]);
+                }
+              }
             }
           }
 

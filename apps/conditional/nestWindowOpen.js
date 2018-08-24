@@ -31,7 +31,7 @@
    'use strict';
 
    return {
-     version : 20161206,
+     version : 20180922,
 
      translate : function (token, lang) {
        var translate = require(__dirname + '/../../lib/translate');
@@ -80,35 +80,40 @@
              subdevice;
 
          for (currDevice in controllers) {
-           if ((controllers[currDevice].config) && (controllers[currDevice].config.typeClass === 'nest')) {
-             currentDevice = deviceState.getDeviceState(currDevice);
+           if (controllers[currDevice].config) {
+             switch (controllers[currDevice].config.typeClass) {
+               case 'nest' :
+                 currentDevice = deviceState.getDeviceState(currDevice);
 
-             if (currentDevice.value) {
-               for (subdeviceId in currentDevice.value.devices) {
-                 if (currentDevice.value.devices.hasOwnProperty(subdeviceId)) {
-                   subdevice = currentDevice.value.devices[subdeviceId];
+                 if (currentDevice.value) {
+                   for (subdeviceId in currentDevice.value.devices) {
+                     if (currentDevice.value.devices.hasOwnProperty(subdeviceId)) {
+                       subdevice = currentDevice.value.devices[subdeviceId];
 
-                   if ((config.thermostat.indexOf(subdevice.label) !== -1) && (subdevice.type === 'thermostat') && (subdevice.label === commandSubdevice) && (currentDevice.state !== 'err')) {
-                     status.thermostat.push(subdevice.label);
+                       if ((config.thermostat.indexOf(subdevice.label) !== -1) && (subdevice.type === 'thermostat') && (subdevice.label === commandSubdevice) && (currentDevice.state !== 'err')) {
+                         status.thermostat.push(subdevice.label);
+                       }
+                     }
                    }
                  }
-               }
-             }
-           }
+               break;
 
-           else if ((controllers[currDevice].config) && (controllers[currDevice].config.typeClass === 'smartthings')) {
-             currentDevice = deviceState.getDeviceState(currDevice);
+               // Look through SmartThings for any open contacts.
+               case 'smartthings' :
+                 currentDevice = deviceState.getDeviceState(currDevice);
 
-             if (currentDevice.value) {
-               for (subdeviceId in currentDevice.value.devices) {
-                 if (currentDevice.value.devices.hasOwnProperty(subdeviceId)) {
-                   subdevice = currentDevice.value.devices[subdeviceId];
+                 if (currentDevice.value) {
+                   for (subdeviceId in currentDevice.value.devices) {
+                     if (currentDevice.value.devices.hasOwnProperty(subdeviceId)) {
+                       subdevice = currentDevice.value.devices[subdeviceId];
 
-                   if ((config.contact.indexOf(subdevice.label) !== -1) && (subdevice.type === 'contact') && (subdevice.state === 'on')) {
-                     status.contact.push(subdevice.label);
+                       if ((config.contact.indexOf(subdevice.label) !== -1) && (subdevice.type === 'contact') && (subdevice.state === 'on')) {
+                         status.contact.push(subdevice.label);
+                       }
+                     }
                    }
                  }
-               }
+               break;
              }
            }
          }

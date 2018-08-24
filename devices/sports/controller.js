@@ -29,7 +29,7 @@ module.exports = (function () {
    * @fileoverview Basic sports information, from ESPN.
    */
   return {
-    version : 20160407,
+    version : 20180822,
 
     readOnly: true,
 
@@ -41,7 +41,8 @@ module.exports = (function () {
     fragments : function () {
       var fs = require('fs');
 
-      return { game   : fs.readFileSync(__dirname + '/fragments/game.tpl',   'utf-8'),
+      return { image  : fs.readFileSync(__dirname + '/fragments/image.tpl',  'utf-8'),
+               game   : fs.readFileSync(__dirname + '/fragments/game.tpl',   'utf-8'),
                league : fs.readFileSync(__dirname + '/fragments/league.tpl', 'utf-8') };
     },
 

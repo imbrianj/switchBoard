@@ -39,8 +39,8 @@ module.exports = (function () {
       var deviceState = require(__dirname + '/../lib/deviceState'),
           runCommand  = require(__dirname + '/../lib/runCommand'),
           now         = new Date().getTime(),
-          delay       = (config.delay || 15) * 1000,
-          rawMacro    = (config.macro || '').split(';'),
+          delay       = (config.delay  || 15) * 1000,
+          rawMacro    = (config.macros || '').split(';'),
           macro,
           currentDeviceState,
           currDevice,
@@ -69,7 +69,7 @@ module.exports = (function () {
       }
 
       if ((now > delay + this.lastEvents.acted) && (now < delay + this.lastEvents.presence) && (now < delay + this.lastEvents.open)) {
-        if (config.macro) {
+        if (config.macros) {
           for (macro in rawMacro) {
             if (rawMacro.hasOwnProperty(macro)) {
               runCommand.macroCommands(rawMacro[macro]);

@@ -103,6 +103,23 @@ exports.runCommandTest = {
     test.done();
   },
 
+  findSubdevice : function (test) {
+    'use strict';
+
+    var runCommand = require(__dirname + '/../../../lib/runCommand'),
+        empty      = runCommand.findSubdevice(null),
+        text       = runCommand.findSubdevice('text-TEST'),
+        subdevice  = runCommand.findSubdevice('subdevice-TEST-on'),
+        subdevice2 = runCommand.findSubdevice('subdevice-NAME-WITH-DASHES-on');
+
+    test.strictEqual(empty,      '',                 'Should return an empty string');
+    test.strictEqual(text,       '',                 'Should return an empty string');
+    test.strictEqual(subdevice,  'TEST',             'Should return the presumed subdevice name');
+    test.strictEqual(subdevice2, 'NAME-WITH-DASHES', 'Should return the presumed subdevice name');
+
+    test.done();
+  },
+
   validateCommand : function (test) {
     'use strict';
 

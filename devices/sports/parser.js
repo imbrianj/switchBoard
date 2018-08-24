@@ -24,7 +24,8 @@
   'use strict';
 
   exports.sports = function (deviceId, markup, state, value, fragments, language) {
-    var leagueTemplate  = fragments.league,
+    var imageTemplate   = fragments.image,
+        leagueTemplate  = fragments.league,
         gameTemplate    = fragments.game,
         i               = 0,
         j               = 0,
@@ -37,6 +38,8 @@
         homeWinner      = '',
         tempMarkup      = '',
         gameMarkup      = '',
+        awayImageMarkup = '',
+        homeImageMarkup = '',
         translate       = function (message) {
           var util;
 
@@ -80,22 +83,35 @@
             homeWinnerClass = game.home.winner ? ' winner' : '';
             awayWinner      = game.away.winner ? ' (' + translate('WINNER') + ')' : '';
             homeWinner      = game.home.winner ? ' (' + translate('WINNER') + ')' : '';
+            awayImageMarkup = '';
+            homeImageMarkup = '';
 
             gameMarkup = gameMarkup + gameTemplate.split('{{GAME_LINK}}').join(game.url || '#');
             gameMarkup = gameMarkup.split('{{GAME_TITLE}}').join(title);
             gameMarkup = gameMarkup.split('{{GAME_AWAY_WINNER_CLASS}}').join(awayWinnerClass);
             gameMarkup = gameMarkup.split('{{GAME_AWAY_WINNER}}').join(awayWinner);
             gameMarkup = gameMarkup.split('{{GAME_AWAY_TEAM}}').join(game.away.title);
-            gameMarkup = gameMarkup.split('{{GAME_AWAY_IMAGE}}').join(game.away.image);
             gameMarkup = gameMarkup.split('{{GAME_AWAY_SCORE}}').join(game.away.score);
             gameMarkup = gameMarkup.split('{{GAME_HOME_WINNER_CLASS}}').join(homeWinnerClass);
             gameMarkup = gameMarkup.split('{{GAME_HOME_WINNER}}').join(homeWinner);
             gameMarkup = gameMarkup.split('{{GAME_HOME_TEAM}}').join(game.home.title);
-            gameMarkup = gameMarkup.split('{{GAME_HOME_IMAGE}}').join(game.home.image);
             gameMarkup = gameMarkup.split('{{GAME_HOME_SCORE}}').join(game.home.score);
             gameMarkup = gameMarkup.split('{{GAME_TIME}}').join(displayTime(game.time));
             gameMarkup = gameMarkup.split('{{GAME_STATUS}}').join((game.status || '').toLowerCase());
             gameMarkup = gameMarkup.split('{{GAME_STATE}}').join(translate(game.status));
+
+            if (game.away.image) {
+              awayImageMarkup = imageTemplate.split('{{TEAM_IMAGE}}').join(game.away.image);
+              awayImageMarkup = awayImageMarkup.split('{{TEAM_NAME}}').join(translate('AWAY_TEAM_LOGO'));
+            }
+
+            if (game.home.image) {
+              homeImageMarkup = imageTemplate.split('{{TEAM_IMAGE}}').join(game.home.image);
+              homeImageMarkup = homeImageMarkup.split('{{TEAM_NAME}}').join(translate('HOME_TEAM_LOGO'));
+            }
+
+            gameMarkup = gameMarkup.split('{{GAME_AWAY_IMAGE}}').join(awayImageMarkup);
+            gameMarkup = gameMarkup.split('{{GAME_HOME_IMAGE}}').join(homeImageMarkup);
           }
 
           tempMarkup = tempMarkup + leagueTemplate.split('{{LEAGUE_NAME}}').join(league.title);
