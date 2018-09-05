@@ -24,7 +24,7 @@ Setup
 - `npm install -g git+https://github.com/imbrianj/switchBoard.git`
 - Add a config file anywhere on the device you want to run the app on. See the [default](config/config.js) file for examples
 - Run `switchBoard -c yournewconfigfile`
-- Open your favorite browser on any device within your wireless network, and point it to the IP and port of the device hosting switchBoard (default is 8080). E.g. `http://192.168.2.13:8080/` (Remember to bookmark)
+- Open your favorite browser on any device within your wireless network, and point it to the IP and port of the device hosting switchBoard (default is 8181). E.g. `https://192.168.2.13:8181/` (Remember to bookmark)
 - Profit
 
 ### Advanced
