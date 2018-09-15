@@ -29,12 +29,13 @@ module.exports = (function () {
    * @author brian@bevey.org
    * @fileoverview Read and send Tweets via Twitter
    * @requires https, crypto
-   * @note Refernce docs:
+   * @note Reference docs:
    *       https://dev.twitter.com/streaming/userstreams
-   *       https://dev.twitter.com/rest/reference/get/statuses/mentions_timeline
+   *       https://developer.twitter.com/en/docs/tweets/timelines/api-reference/get-statuses-user_timeline
+   *       https://developer.twitter.com/en/docs/tweets/timelines/api-reference/get-statuses-mentions_timeline
    */
   return {
-    version : 20160204,
+    version : 20180914,
 
     readOnly: true,
 
@@ -72,16 +73,19 @@ module.exports = (function () {
      */
     generateSignature : function (config) {
       var crypto     = require('crypto'),
-          method     = config.method.toUpperCase(),
           protocol   = config.port === 443 ? 'https' : 'http',
-          baseString = method + '&' + protocol + '%3A%2F%2F' + config.host + config.path.split('/').join('%2F') +
-                       '&count%3D' + config.maxCount +
-                       '%26oauth_consumer_key%3D' + config.consumerKey +
-                       '%26oauth_nonce%3D' + config.nonce +
-                       '%26oauth_signature_method%3D' + config.sigMethod +
-                       '%26oauth_timestamp%3D' + config.timestamp +
-                       '%26oauth_token%3D' + config.accessToken +
-                       '%26oauth_version%3D' + config.oauthVersion,
+          baseString = config.method.toUpperCase() +
+                       '&' +
+                       encodeURIComponent(protocol + '://' + config.host + config.path) +
+                       '&' +
+                       encodeURIComponent('count=' + config.maxCount) +
+                       encodeURIComponent('&oauth_consumer_key=' + config.consumerKey) +
+                       encodeURIComponent('&oauth_nonce=' + config.nonce) +
+                       encodeURIComponent('&oauth_signature_method=' + config.sigMethod) +
+                       encodeURIComponent('&oauth_timestamp=' + config.timestamp) +
+                       encodeURIComponent('&oauth_token=' + config.accessToken) +
+                       encodeURIComponent('&oauth_version=' + config.oauthVersion) +
+                       (config.params ? encodeURIComponent('&' + config.params) : ''),
           signingKey = config.consumerSec + '&' + config.oauthSec,
           signature  = crypto.createHmac('sha1', signingKey).update(baseString).digest('base64').split('=').join('%3D');
 
@@ -92,18 +96,18 @@ module.exports = (function () {
      * Prepare a request for command execution.
      */
     postPrepare : function (config) {
-      var request      = { host    : config.host,
-                           port    : config.port,
-                           path    : config.path,
-                           method  : config.method,
-                           headers : {
-                             'Accept'         : 'application/json',
-                             'Accept-Charset' : 'utf-8',
-                             'User-Agent'     : 'node-switchBoard',
-                             'Content-Type'   : 'application/x-www-form-urlencoded',
-                             'Connection'     : 'keep-alive'
-                           }
-                         },
+      var request     = { host    : config.host,
+                          port    : config.port,
+                          path    : config.path,
+                          method  : config.method,
+                          headers : {
+                            'Accept'         : 'application/json',
+                            'Accept-Charset' : 'utf-8',
+                            'User-Agent'     : 'node-switchBoard',
+                            'Content-Type'   : 'application/x-www-form-urlencoded',
+                            'Connection'     : 'keep-alive'
+                          }
+                        },
           consumerKey  = config.consumerKey,
           nonce        = config.nonce,
           signature    = this.generateSignature(config),
@@ -113,7 +117,7 @@ module.exports = (function () {
           oauthVersion = config.oauthVersion;
 
       if (config.maxCount) {
-        request.path = config.path + '?count=' + config.maxCount;
+        request.path = config.path + '?count=' + config.maxCount + (config.params ? '&' + config.params : '');
       }
 
       request.headers.Authorization = 'OAuth oauth_consumer_key="' + consumerKey + '", ' +
@@ -142,9 +146,12 @@ module.exports = (function () {
           dataReply = '',
           request;
 
+      twitter.feedType     = config.device.feedType     || 'user';
       twitter.deviceId     = config.device.deviceId;
       twitter.host         = config.device.host         || 'api.twitter.com';
-      twitter.path         = config.device.path         || '/1.1/statuses/mentions_timeline.json';
+      twitter.screenName   = config.device.screenName   || '';
+      twitter.path         = config.device.path         || twitter.feedType === 'user' ? '/1.1/statuses/user_timeline.json' : '/1.1/statuses/mentions_timeline.json';
+      twitter.params       = twitter.feedType === 'user' ? 'screen_name=' + twitter.screenName : '';
       twitter.port         = config.device.port         || 443;
       twitter.method       = config.device.method       || 'GET';
       twitter.maxCount     = config.device.maxCount     || 5;
@@ -158,7 +165,6 @@ module.exports = (function () {
       twitter.oauthSec     = config.device.oauthTokenSecret;
       twitter.sigMethod    = config.device.sigMethod    || 'HMAC-SHA1';
       twitter.oauthVersion = config.device.oauthVersion || '1.0';
-      twitter.params       = config.params              || '';
       twitter.nonce        = this.generateNonce();
       twitter.timestamp    = Math.floor((new Date().getTime() / 1000), 10);
 
@@ -201,7 +207,7 @@ module.exports = (function () {
                                                date   : new Date(data[i].created_at).getTime() });
                           }
 
-                          twitter.callback(null, twitterData);
+                          twitter.callback(null, twitterData, !twitterData.length);
                         }
 
                         else {

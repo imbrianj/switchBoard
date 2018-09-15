@@ -46,7 +46,7 @@ Supported Devices/Services
 | Client Vibrate       | Stable      | Sends a command to vibrate all Websocket connected clients (phones, tablets, etc) |
 | Debug                | Stable      | Display basic system information (memory, cpu, uptime)                            |
 | Denon                | Stable      | New controller and still in testing                                               |
-| Foscam               | Stable      | Works with FI8910W (if you have another version that this does not work with, let me know and I can add support).  Arm, Disarm, Go to presets, etc. *INSECURE* Exposes camera credentials to users |
+| Foscam               | Stable      | Works with MPEG versions such as FI8910W.  H.264 models are not supported.  Arm, Disarm, Go to presets, etc. *INSECURE* Exposes camera credentials to users |
 | Gerty                | Stable      | A simple interface for all devices that reacts to natural inputs                  |
 | GitHub               | Testing     | Poll for commits to a given repository.  For Switchboard, can tell you if you should update |
 | have i been pwned?   | Testing     | Query haveibeenpwned.com to see if your username has been part of a data breach   |

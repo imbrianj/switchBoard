@@ -56,7 +56,7 @@ exports.twitterControllerTest = {
     'use strict';
 
     var twitterController = require(__dirname + '/../../../../devices/twitter/controller'),
-        config            = { method       : 'get',
+        mentionsConfig    = { method       : 'get',
                               port         : 443,
                               host         : 'api.twitter.com',
                               path         : '/1.1/statuses/mentions_timeline.json',
@@ -69,9 +69,25 @@ exports.twitterControllerTest = {
                               oauthVersion : '1.0',
                               consumerSec  : '123456',
                               oauthSec     : '123456' },
-        signature         = twitterController.generateSignature(config);
+        userConfig        = { method       : 'get',
+                              port         : 443,
+                              host         : 'api.twitter.com',
+                              path         : '/1.1/statuses/user_timeline.json',
+                              params       : 'user_name=imbrianj',
+                              maxCount     : 5,
+                              consumerKey  : '123456',
+                              nonce        : '123456',
+                              sigMethod    : 'HMAC-SHA1',
+                              timestamp    : 12345678,
+                              accessToken  : '123456',
+                              oauthVersion : '1.0',
+                              consumerSec  : '123456',
+                              oauthSec     : '123456' },
+        mentionsSignature = twitterController.generateSignature(mentionsConfig),
+        userSignature     = twitterController.generateSignature(userConfig);
 
-    test.strictEqual(signature, '5QMMYaJWgY33ZzHv9lECRFZaSdA%3D', 'Signature should match');
+    test.strictEqual(mentionsSignature, '5QMMYaJWgY33ZzHv9lECRFZaSdA%3D', 'Mentions signature should match');
+    test.strictEqual(userSignature,     'LT0lc0XMd9Tjg2/lfpGwqYyr0lk%3D', 'User signature should match');
 
     test.done();
   },

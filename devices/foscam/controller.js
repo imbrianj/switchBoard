@@ -29,7 +29,7 @@ module.exports = (function () {
    * @fileoverview Basic control of Foscam IP camera.
    */
   return {
-    version : 20180303,
+    version : 20180913,
 
     inputs  : ['command', 'list'],
 
@@ -126,6 +126,10 @@ module.exports = (function () {
                     foscam.callback(null, { rawImage : Buffer.concat(dataReply), fileName : path + fileName }, true);
                   });
                 });
+
+      request.once('error', function () {
+        console.log('\x1b[31m' + title + '\x1b[0m: Error fetching raw photo');
+      });
 
       request.end();
     },

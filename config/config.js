@@ -725,7 +725,8 @@ exports.config = {
   },
 
   /*
-   * Subscribe to a feed of tweets mentioning a given user.
+   * Subscribe to a feed of tweets mentioning a given user or subscribe to a
+   * given user's feed.
    * To get your required keys and tokens, you'll need to visit:
    * https://apps.twitter.com/
    * Click "Create New App"
@@ -746,6 +747,10 @@ exports.config = {
     accessToken      : 'xxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
     consumerSecret   : 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
     oauthTokenSecret : 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+    // Can be either "user" to subscribe to a feed or "mentions" to subscribe to
+    // any mentions of the provided username.
+    feedType         : 'user',
+    screenName       : 'imbrianj',
     // If any users listed under "senders" Tweets @ your user, it well send the
     // text body of the tweet to all configured controllers.  If Gerty is
     // included, it will attempt to execute macros and commands.
