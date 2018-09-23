@@ -71,7 +71,7 @@ Supported Devices/Services
 | Stocks               | Unreliable  | Uses Yahoo Finance (API has been unreliable - looking for alternatives)           |
 | Traffic Cams         | Stable      | View multiple traffic webcams                                                     |
 | Travis CI            | Stable      |                                                                                   |
-| Twitter              | Development | Present mentions of your Twitter handle                                           |
+| Twitter              | Stable      | Present mentions of your Twitter handle or subscribe to a user's feed             |
 | Weather              | Stable      | Uses Yahoo Weather                                                                |
 | Website              | Stable      | Simple controller to load an external site as an iframe                           |
 | XBMC                 | Stable      | Basic controls work                                                               |

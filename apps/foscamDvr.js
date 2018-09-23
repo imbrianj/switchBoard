@@ -155,7 +155,7 @@ module.exports = (function () {
       // Thumbnail processing can be extremely expensive.  If you don't want to
       // show any thumbnails, let's just skip that step to keep things speedy.
       // We will continue to generate thumbnails and store video since you can
-      // still access those without an interface - and thumbnails are cheaply
+      // still access those without an interface - and screenshots are cheaply
       // generated.
       if ((enableThumbnail) && (controller.config.maxCount) && (!isNaN(controller.config.maxCount))) {
         spawn(screenshotCommand.command, screenshotCommand.params);
