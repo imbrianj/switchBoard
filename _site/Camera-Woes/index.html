@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Camera Woes – SwitchBoard Home Automation – Node.js home automation system with machine learning</title>
+
+        <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="The other week, the Foscam I’d been using for a number of years blew up.  It had an audible “pop” as something inside decided to give up.  I went on the hunt for a camera I could replace it with and found it to be pretty difficult.  Most are now using h.264 since it has much better quality than mjpeg - but it comes at the cost of compatibility.  For web stuff, mjpeg is pretty tough to beat, as long as you don’t care too too much about the quality - so I figured that was what I was aiming for.  Foscam - and their new company Amcrest - both have switched over entirely to h.264.  So that’s not a great option for this use-case.
+
+" />
+    <meta property="og:description" content="The other week, the Foscam I’d been using for a number of years blew up.  It had an audible “pop” as something inside decided to give up.  I went on the hunt for a camera I could replace it with and found it to be pretty difficult.  Most are now using h.264 since it has much better quality than mjpeg - but it comes at the cost of compatibility.  For web stuff, mjpeg is pretty tough to beat, as long as you don’t care too too much about the quality - so I figured that was what I was aiming for.  Foscam - and their new company Amcrest - both have switched over entirely to h.264.  So that’s not a great option for this use-case.
+
+" />
+    
+    <meta name="author" content="SwitchBoard Home Automation" />
+
+    
+    <meta property="og:title" content="Camera Woes" />
+    <meta property="twitter:title" content="Camera Woes" />
+    
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/switchBoard/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="SwitchBoard Home Automation - Node.js home automation system with machine learning" href="/switchBoard/feed.xml" />
+
+    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+  </head>
+
+  <body>
+    <div class="wrapper-masthead">
+      <div class="container">
+        <header class="masthead clearfix">
+          <a href="/switchBoard/" class="site-avatar"><img src="https://avatars3.githubusercontent.com/u/526531" /></a>
+
+          <div class="site-info">
+            <h1 class="site-name"><a href="/switchBoard/">SwitchBoard Home Automation</a></h1>
+            <p class="site-description">Node.js home automation system with machine learning</p>
+          </div>
+
+          <nav>
+            <a href="/switchBoard/">Blog</a>
+            <a href="/switchBoard/about">About</a>
+            <a href="https://github.com/imbrianj/switchBoard">Code</a>
+          </nav>
+        </header>
+      </div>
+    </div>
+
+    <div id="main" role="main" class="container">
+      <article class="post">
+  <h1>Camera Woes</h1>
+
+  <div class="entry">
+    <p>The other week, the Foscam I’d been using for a number of years blew up.  It had an audible “pop” as something inside decided to give up.  I went on the hunt for a camera I could replace it with and found it to be pretty difficult.  Most are now using h.264 since it has much better quality than mjpeg - but it comes at the cost of compatibility.  For web stuff, mjpeg is pretty tough to beat, as long as you don’t care too too much about the quality - so I figured that was what I was aiming for.  Foscam - and their new company Amcrest - both have switched over entirely to h.264.  So that’s not a great option for this use-case.</p>
+
+<p>I’ve opted to buy a couple D-Link DCS-5222L HD cameras.  They have very similar specs to the old Foscam, but the software seems more refined.  I have some basic controllers set up to pan / tilt / go to preset locations but haven’t hooked up streaming, DVR or anything else yet.</p>
+
+<p>They have their own integration problems, though.  Chrome has removed the ability to embed Basic Auth assets.  This means that I cannot directly reference the D-Link camera feed to the browser in the SwitchBoard interface.  As I can get the Basic Auth from node, I’m intending to pipe that output to a locale endpoint on the SwitchBoard instance.  We’ll see if that works and what the performance impact will be.  The interface already lazy loads and unloads dynamic images - so if you’re not viewing the image, it should automatically cease streaming.</p>
+
+<p>If you’re shopping for a camera, I’d hold off on a recommendation from me here, but these seem promising.  I just wish they allowed the authentication to be sent via GET params.  Even if done optionally, it’d widen the usefulness for when run on a secured network.  If the piping works efficiently enough, it’s just as well - it’ll help conceal credentials to the interface.  While that isn’t a value-add for me, maybe it is for someone else.</p>
+
+<p>I also intend to start picking at Lutron integration again - but no promises on delivering something usable.</p>
+
+  </div>
+
+  <div class="date">
+    Written on October 12, 2018
+  </div>
+
+  
+</article>
+
+    </div>
+
+    <div class="wrapper-footer">
+      <div class="container">
+        <footer class="footer">
+          
+<a href="mailto:brian@bevey.org"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/imbrianj/switchBoard"><i class="svg-icon github"></i></a>
+
+
+
+
+
+
+
+
+        </footer>
+      </div>
+    </div>
+
+    
+
+  </body>
+</html>
