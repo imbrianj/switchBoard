@@ -88,12 +88,15 @@ module.exports = (function () {
      * Convert unsigned short scaled value used by the API to percentage
      * opened.
      */
-    valueToPercent : function (value, max) {
-      var percentage = null,
-          maxValue   = max || 65535;
+    valueToPercent : function (value, min, max) {
+      var percentage    = null,
+          minValue      = min === undefined ? 51117 : min,
+          maxValue      = max === undefined ? 65535 : max,
+          adjustedMax   = maxValue - minValue,
+          adjustedValue = value - minValue;
 
       if (!isNaN(value)) {
-        percentage = Math.max(0, Math.min(100, Math.round((value * 100) / maxValue)));
+        percentage = Math.max(0, Math.min(100, Math.round((adjustedValue * 100) / adjustedMax)));
       }
 
       return percentage;
@@ -103,9 +106,9 @@ module.exports = (function () {
      * Convert percentage opening to max unsigned short scaled value required by
      * the API.
      */
-    percentToValue : function (percent, max) {
+    percentToValue : function (percent, min, max) {
       var value    = null,
-          maxValue = max || 65535;
+          maxValue = max === undefined ? 65535 : max;
 
       if (!isNaN(percent)) {
         value = Math.min(maxValue, Math.max(0, Math.round((maxValue * percent) / 100)));
@@ -263,11 +266,11 @@ module.exports = (function () {
           devices.push({
             id           : parseInt(util.sanitize(rawBlinds.shadeData[i].id), 10),
             label        : util.sanitize(new Buffer.from(rawBlinds.shadeData[i].name, 'base64').toString()),
-            battery      : this.valueToPercent(parseInt(util.sanitize(rawBlinds.shadeData[i].batteryStrength), 10), 168),
+            battery      : this.valueToPercent(parseInt(util.sanitize(rawBlinds.shadeData[i].batteryStrength), 10), 130, 168),
             batteryIsLow : util.sanitize(rawBlinds.shadeData[i].batteryIsLow),
             // The API does not appear reliable in offering percentage
             // information, so we'll prioritize our own stored value first.
-            percentage   : device.percentage || rawBlinds.shadeData[i].positions ? this.valueToPercent(parseInt(rawBlinds.shadeData[i].positions.position1, 10), 65535) : 0
+            percentage   : device.percentage || rawBlinds.shadeData[i].positions ? this.valueToPercent(parseInt(rawBlinds.shadeData[i].positions.position1, 10), 0) : 0
           });
         }
       }
@@ -422,7 +425,7 @@ module.exports = (function () {
               }
 
               else if ((blinds) && (blinds.shade) && (blinds.shade.positions)) {
-                dataReply = that.updateBlind(powerView.deviceId, powerView.blindId, that.valueToPercent(blinds.shade.positions.position1, 65535));
+                dataReply = that.updateBlind(powerView.deviceId, powerView.blindId, that.valueToPercent(blinds.shade.positions.position1, 0));
                 scenes    = that.findScenes(powerView.scenes);
 
                 powerView.callback(null, { devices : dataReply, scenes : scenes });

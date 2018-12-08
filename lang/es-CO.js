@@ -269,6 +269,20 @@ module.exports = (function () {
           Z2                : "Zona 2",
           Z3                : "Zona 3"
         },
+        dLinkCamera : {
+          DLINKCAMERA     : 'D-Link Cámara',
+          ARM             : "Armar",
+          BURST           : "Tomar fotos consecutivas",
+          CAMERA_ARMED    : "Cámara armada",
+          CAMERA_DISARMED : "Cámara desarmada",
+          DISARM          : "Desarmar",
+          PHOTO           : "Foto",
+          PRESET          : "Configurar",
+          SCREENSHOT      : "Captura de Pantalla",
+          TAKE            : "Tomar",
+          THUMBNAIL       : "Miniatura",
+          VIDEO           : "Vídeo"
+        },
         foscam : {
           FOSCAM          : "Foscam",
           ARM             : "Armar",

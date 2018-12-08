@@ -72,7 +72,7 @@
 
     if ((state) && (value)) {
       for (i in value) {
-        if (value.hasOwnProperty(i)) {
+        if ((value[i]) && (value[i].games.length)) {
           league = value[i];
           gameMarkup = '';
 

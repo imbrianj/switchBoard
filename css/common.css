@@ -1233,7 +1233,7 @@ section .emoji {
 section .emoji span {
   cursor: pointer;
   display: block;
-  font-size: 29px;
+  font-size: 27px;
   margin: 0 auto;
   padding: 0.5em;
   /* Emoji size can't be adjusted by font-size */
@@ -1243,7 +1243,7 @@ section .emoji span {
   -moz-transition: none;
   -webkit-transition: none;
   transition: none;
-  width: 1em;
+  width: 2em;
 }
 
 @-moz-keyframes bounce {

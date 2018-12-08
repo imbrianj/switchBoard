@@ -50,7 +50,8 @@ module.exports = (function () {
           deviceType = 'nest';
         break;
 
-        case 'foscam' :
+        case 'foscam'      :
+        case 'dLinkCamera' :
           deviceType = 'security';
         break;
 

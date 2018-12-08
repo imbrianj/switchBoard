@@ -31,6 +31,7 @@ module.exports = (function () {
   var reporter = require('nodeunit').reporters.default;
 
   reporter.run(['tests/unit/apps/announceTrendingNews.js',
+                'tests/unit/apps/dLinkCameraDvr.js',
                 'tests/unit/apps/foscamDvr.js',
                 'tests/unit/apps/gerty/activeBuilding.js',
                 'tests/unit/apps/gerty/airQuality.js',
@@ -49,6 +50,7 @@ module.exports = (function () {
                 'tests/unit/devices/airQuality/controller.js',
                 'tests/unit/devices/chromecast/controller.js',
                 'tests/unit/devices/denon/controller.js',
+                'tests/unit/devices/dLinkCamera/controller.js',
                 'tests/unit/devices/foscam/controller.js',
                 'tests/unit/devices/gerty/controller.js',
                 'tests/unit/devices/github/controller.js',
@@ -83,6 +85,7 @@ module.exports = (function () {
                 'tests/unit/lib/deviceState.js',
                 'tests/unit/lib/loadController.js',
                 'tests/unit/lib/loadMarkup.js',
+                'tests/unit/lib/requestInit.js',
                 'tests/unit/lib/runCommand.js',
                 'tests/unit/lib/schedule.js',
                 'tests/unit/lib/staticAssets.js',
@@ -91,6 +94,7 @@ module.exports = (function () {
                 'tests/unit/devices/airQuality/parser.js',
                 'tests/unit/devices/debug/parser.js',
                 'tests/unit/devices/denon/parser.js',
+                'tests/unit/devices/dLinkCamera/parser.js',
                 'tests/unit/devices/foscam/parser.js',
                 'tests/unit/devices/gerty/parser.js',
                 'tests/unit/devices/github/parser.js',

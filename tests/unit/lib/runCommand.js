@@ -74,12 +74,14 @@ exports.runCommandTest = {
         text       = runCommand.stripTypePrefix('text-TEST', 'text'),
         launch     = runCommand.stripTypePrefix('launch-TEST', 'launch'),
         list       = runCommand.stripTypePrefix('list', 'list'),
-        command    = runCommand.stripTypePrefix('TEST', 'command');
+        command    = runCommand.stripTypePrefix('TEST', 'command'),
+        stream     = runCommand.stripTypePrefix('stream', 'stream');
 
     test.strictEqual(text,    'TEST', 'Text should be returned without prefix');
     test.strictEqual(launch,  'TEST', 'Launch should be returned without prefix');
     test.strictEqual(list,    true,   'List should return a boolean');
     test.strictEqual(command, 'TEST', 'Commands should be returned without change');
+    test.strictEqual(stream,  true,   'Stream should return a boolean');
 
     test.done();
   },
@@ -92,13 +94,15 @@ exports.runCommandTest = {
         text       = runCommand.getCommandType('text-TEST'),
         launch     = runCommand.getCommandType('launch-TEST'),
         list       = runCommand.getCommandType('list'),
-        command    = runCommand.getCommandType('TEST');
+        command    = runCommand.getCommandType('TEST'),
+        stream     = runCommand.getCommandType('STREAM');
 
     test.strictEqual(empty,   '',        'Should return an empty string');
     test.strictEqual(text,    'text',    'Should return text');
     test.strictEqual(launch,  'launch',  'Should return launch');
     test.strictEqual(list,    'list',    'Should return list');
     test.strictEqual(command, 'command', 'Should return command');
+    test.strictEqual(stream,  'stream',  'Should return stream');
 
     test.done();
   },

@@ -1,0 +1,1 @@
+<dd class="thumb"><span style="background-image: url({{THUMB_URL}})">{{VIDEO_NAME}} {{THUMBNAIL}}</span></dd>

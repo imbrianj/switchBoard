@@ -40,7 +40,7 @@ module.exports = (function () {
       var genericTypes = { tv          : ['samsung', 'panasonic', 'lg'],
                            television  : ['samsung', 'panasonic', 'lg'],
                            stereo      : ['denon', 'pioneer'],
-                           camera      : ['foscam'],
+                           camera      : ['foscam', 'dLinkCamera'],
                            ps3         : ['ps3'],
                            playstation : ['ps3'],
                            stocks      : ['stocks'],

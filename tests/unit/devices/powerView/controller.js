@@ -67,13 +67,14 @@ exports.powerViewControllerTest = {
     var powerViewController = require(__dirname + '/../../../../devices/powerView/controller');
 
     test.strictEqual(powerViewController.valueToPercent(65535),   100,  'Convert 65535');
-    test.strictEqual(powerViewController.valueToPercent(0),       0,    'Convert 0');
+    test.strictEqual(powerViewController.valueToPercent(51117),   0,    'Convert 0');
     test.strictEqual(powerViewController.valueToPercent(-50),     0,    'Convert -50%');
-    test.strictEqual(powerViewController.valueToPercent(16384),   25,   'Convert 25%');
+    test.strictEqual(powerViewController.valueToPercent(55000),   27,   'Convert 25%');
     test.strictEqual(powerViewController.valueToPercent(false),   0,    'Convert boolean');
     test.strictEqual(powerViewController.valueToPercent('dog'),   null, 'Convert string');
 
-    test.strictEqual(powerViewController.valueToPercent(155, 168), 92, 'Convert other value types');
+    test.strictEqual(powerViewController.valueToPercent(100, 0, 168),   60, 'Convert other value types');
+    test.strictEqual(powerViewController.valueToPercent(131, 130, 168), 3,  'Battery percent covnersion');
 
     test.done();
   },

@@ -307,6 +307,42 @@ exports.config = {
   },
 
   /*
+   * D-Link IP Camera
+   * Your camera's "Video Profile 1" will be used for preview display in-browser
+   * and the "Video Profile 2" will be used for (optional) DVR recording.
+   *
+   * Set up the correct channels by:
+   *  - Go to [camera IP]/setup.htm
+   *  - Select "Audio and Video"
+   *  - For "Video Profile 1", select "JPEG" and optionally a desired resolution
+   *     (preferrably 800x448) and quality (Good)
+   *  - For "Video Profile 2", select "H.264" and optionally a desired
+   *     resoution (preferrably 800x448) and quality (Excellent)
+   */
+  dLinkCamera : {
+    typeClass : 'dLinkCamera',
+    title     : 'D-Link Camera',
+    deviceIp  : '192.168.1.12',
+    username  : 'admin',
+    password  : 'password',
+    maxCount  : 20,
+    apps      : { 'Announce'            : { id            : 'announceDLinkCamera',
+                                            controllerIds : ['speech', 'clientSpeech', 'clientNotify', 'gerty'] },
+                  'DLink Camera Change' : { id            : 'dLinkCameraChange' },
+                  'DLink Camera DVR'    : { id            : 'dLinkCameraDvr',
+                                            // Gif thumbnails are expensive to build -
+                                            // enable only on a fast system
+                                            thumbnail     : false,
+                                            // Delay for file check
+                                            delay         : 300,
+                                            videoLength   : 600,
+                                            // Measured in MB
+                                            byteLimit     : 10240 } },
+    power     : 6,
+    disabled  : true
+  },
+
+  /*
    * Most states have a DOT site with available traffic cams.  Drop in the
    * actual image URL and title for each that you're interested in.  Some images
    * will already include some sort of cache-busting suffix - be sure to omit

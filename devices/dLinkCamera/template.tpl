@@ -1,6 +1,6 @@
 
       <section id="{{DEVICE_ID}}" class="{{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}" data-string-camera_armed="{{i18n_CAMERA_ARMED}}" data-string-camera_disarmed="{{i18n_CAMERA_DISARMED}}" data-string-photo="{{i18n_PHOTO}}" data-string-screenshot="{{i18n_SCREENSHOT}}" data-string-thumbnail="{{i18n_THUMBNAIL}}" data-string-video="{{i18n_VIDEO}}">
-        <h1>{{i18n_FOSCAM}} <em>{{DEVICE_ACTIVE}}</em></h1>
+        <h1>{{i18n_DLINKCAMERA}} <em>{{DEVICE_ACTIVE}}</em></h1>
         <div class="control-block">
           <div class="presets">
             <ol>
@@ -31,14 +31,14 @@
         </div>
 
         <div class="preview-image">
-          <img {{LAZY_LOAD_IMAGE}}="{{FOSCAM_DYNAMIC}}" alt="{{DEVICE_ID}}" class="streaming" />
+          <img {{LAZY_LOAD_IMAGE}}="{{DLINKCAMERA_DYNAMIC}}" alt="{{DEVICE_ID}}" class="streaming" />
         </div>
 
         <div class="image-list">
-          {{FOSCAM_PHOTO_LIST}}
+          {{DLINKCAMERA_PHOTO_LIST}}
         </div>
 
         <div class="video-list">
-          {{FOSCAM_VIDEO_LIST}}
+          {{DLINKCAMERA_VIDEO_LIST}}
         </div>
       </section>

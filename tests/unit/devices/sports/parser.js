@@ -31,21 +31,25 @@ exports.sportsParserTest = {
 
     var sportsParser = require(__dirname + '/../../../../devices/sports/parser'),
         markup     = '<h1>Foo</h1> <div>{{SPORTS_DYNAMIC}}</div>',
-        value      = { quidditch : { name  : 'quidditch',
-                                     title : 'Quidditch League',
-                                     games : [
-                                       {
-                                         away : {
-                                           score : '111',
-                                           title : 'Gryffindor'
-                                         },
-                                         home : {
-                                           score : '110',
-                                           title : 'Slytherin'
+        value      = { quidditch   : { name  : 'quidditch',
+                                       title : 'Quidditch League',
+                                       games : [
+                                         {
+                                           away : {
+                                             score : '111',
+                                             title : 'Gryffindor'
+                                           },
+                                           home : {
+                                             score : '110',
+                                             title : 'Slytherin'
+                                           }
                                          }
-                                       }
-                                     ]
-                                   }
+                                       ]
+                                     },
+                       baseketball : { name  : 'baseketball',
+                                       title : 'Baseketball League',
+                                       games : []
+                                     }
                                  },
         fragments  = { league : '<h1>{{LEAGUE_NAME}}</h1><ul>{{GAME_LIST}}</ul>',
                        game   : '<span>{{GAME_TITLE}} {{GAME_AWAY_SCORE}}</span>' },
@@ -55,6 +59,7 @@ exports.sportsParserTest = {
     test.strictEqual(goodMarkup.indexOf('{{'),                                           -1, 'All values replaced');
     test.notStrictEqual(goodMarkup.indexOf('<h1>Quidditch League</h1>'),                 -1, 'Passed markup validated1');
     test.notStrictEqual(goodMarkup.indexOf('<span>Gryffindor vs. Slytherin 111</span>'), -1, 'Passed markup validated2');
+    test.strictEqual(goodMarkup.indexOf('Baseketball League'),                           -1, 'Leagues with no games should have title omitted');
     test.strictEqual(noValue.indexOf('{{'),                                              -1, 'All values replaced');
     test.strictEqual(noValue, '<h1>Foo</h1> <div></div>',                                    'Passed markup validated');
 
