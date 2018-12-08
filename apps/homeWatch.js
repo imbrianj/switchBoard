@@ -69,12 +69,12 @@ module.exports = (function () {
           },
           findCamera  = function() {
             var device,
-                camera,
-                typeClass = controllers[device].config.typeClass;
+                camera;
 
             for (device in controllers) {
               if ((controllers[device]) && (controllers[device].config) &&
-                  ((typeClass === 'foscam') || (typeClass === 'dLinkCamera'))) {
+                  ((controllers[device].config.typeClass === 'foscam') ||
+                   (controllers[device].config.typeClass === 'dLinkCamera'))) {
                 camera = device;
                 break;
               }

@@ -30,9 +30,9 @@ exports.requestInitTest = {
     'use strict';
 
     var requestInit  = require('../../../lib/requestInit'),
-        requestMixed = { url : 'http://localhost/?someDevice=sTrEaM'},
-        requestNo    = { url : 'http://localhost/?someDevice=VolUp'},
-        requestYes   = { url : 'http://localhost/?someDevice=stream'};
+        requestMixed = { url : 'http://localhost/?someDevice=sTrEaM' },
+        requestNo    = { url : 'http://localhost/?someDevice=VolUp' },
+        requestYes   = { url : 'http://localhost/?someDevice=stream' };
 
     test.strictEqual(requestInit.requestIsStream(requestMixed), true,  'Stream commands are case insensitive');
     test.strictEqual(requestInit.requestIsStream(requestNo),    false, 'Non-stream commands should return false');
