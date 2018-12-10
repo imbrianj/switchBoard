@@ -117,7 +117,7 @@ module.exports = (function () {
           postData  = this.postPrepare(dLinkCamera),
           request,
           dataReply = [],
-          path      = '/images/dlink/photos/';
+          path      = '/images/dLinkCamera/photos/';
 
       request = http.request(postData).on('response', function (response) {
                   response.on('data', function (response) {
@@ -165,12 +165,12 @@ module.exports = (function () {
             if (filename.indexOf(dLinkCamera.deviceId + '-') === 0) {
               currentVideo = {
                 name   : filename,
-                video  : 'images/dlink/dvr/' + filename + '.mp4',
-                screen : 'images/dlink/thumb/' + filename + '.jpg'
+                video  : 'images/dLinkCamera/dvr/' + filename + '.mp4',
+                screen : 'images/dLinkCamera/thumb/' + filename + '.jpg'
               };
 
-              if (fs.existsSync('images/dlink/thumb/' + filename + '.gif')) {
-                currentVideo.thumb = 'images/dlink/thumb/' + filename + '.gif';
+              if (fs.existsSync('images/dLinkCamera/thumb/' + filename + '.gif')) {
+                currentVideo.thumb = 'images/dLinkCamera/thumb/' + filename + '.gif';
               }
 
               videos.push(currentVideo);

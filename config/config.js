@@ -717,7 +717,7 @@ exports.config = {
     title     : 'News',
     host      : 'news.google.com',
     port      : 443,
-    path      : '/news?cf=all&hl=en&pz=1&ned=us&output=atom',
+    path      : '/_/atom?cf=all&pz=1&hl=en-US&gl=US&ceid=US:en',
     maxCount  : 10,
     apps      : { 'Announce Trending' : { id            : 'announceTrendingNews',
                                           blacklist     : ['New', 'A', 'An', 'The'],
