@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>D-Link Camera – SwitchBoard Home Automation – Node.js home automation system with machine learning</title>
+
+        <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="After my Foscam camera gave up, I was on the lookout for a new camera I could use with SwitchBoard.  It needed to be a pan / tilt camera, so I could make sure it was staring at a wall when not armed (because I’m paranoid).  It needed to support MJPEG or some other means of rendering live video to a wide set of browsers without a plugin.  And, finally, it needed to not be crappy.  Something built by a reputable manufacturer that was easily found.  I landed on the D-Link DCS-5222LB.  It can be had for about $85 right now on Amazon and other models that may or may not work can be found for less.
+
+" />
+    <meta property="og:description" content="After my Foscam camera gave up, I was on the lookout for a new camera I could use with SwitchBoard.  It needed to be a pan / tilt camera, so I could make sure it was staring at a wall when not armed (because I’m paranoid).  It needed to support MJPEG or some other means of rendering live video to a wide set of browsers without a plugin.  And, finally, it needed to not be crappy.  Something built by a reputable manufacturer that was easily found.  I landed on the D-Link DCS-5222LB.  It can be had for about $85 right now on Amazon and other models that may or may not work can be found for less.
+
+" />
+    
+    <meta name="author" content="SwitchBoard Home Automation" />
+
+    
+    <meta property="og:title" content="D-Link Camera" />
+    <meta property="twitter:title" content="D-Link Camera" />
+    
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/switchBoard/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="SwitchBoard Home Automation - Node.js home automation system with machine learning" href="/switchBoard/feed.xml" />
+
+    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+  </head>
+
+  <body>
+    <div class="wrapper-masthead">
+      <div class="container">
+        <header class="masthead clearfix">
+          <a href="/switchBoard/" class="site-avatar"><img src="https://avatars3.githubusercontent.com/u/526531" /></a>
+
+          <div class="site-info">
+            <h1 class="site-name"><a href="/switchBoard/">SwitchBoard Home Automation</a></h1>
+            <p class="site-description">Node.js home automation system with machine learning</p>
+          </div>
+
+          <nav>
+            <a href="/switchBoard/">Blog</a>
+            <a href="/switchBoard/about">About</a>
+            <a href="https://github.com/imbrianj/switchBoard">Code</a>
+          </nav>
+        </header>
+      </div>
+    </div>
+
+    <div id="main" role="main" class="container">
+      <article class="post">
+  <h1>D-Link Camera</h1>
+
+  <div class="entry">
+    <p>After my <a href="https://imbrianj.github.io/switchBoard/Camera-Woes/">Foscam camera gave up</a>, I was on the lookout for a new camera I could use with SwitchBoard.  It needed to be a pan / tilt camera, so I could make sure it was staring at a wall when not armed (because <a href="http://127.0.0.1:4000/switchBoard/So,-What-About-Privacy/">I’m paranoid</a>).  It needed to support MJPEG or some other means of rendering live video to a wide set of browsers without a plugin.  And, finally, it needed to not be crappy.  Something built by a reputable manufacturer that was easily found.  I landed on the D-Link DCS-5222LB.  It can be had for about <a href="https://smile.amazon.com/dp/B008915L2O">$85 right now on Amazon</a> and other models that may or may not work can be found for less.</p>
+
+<p>As this camera requires Basic Auth for every request, you <a href="https://bugs.chromium.org/p/chromium/issues/detail?id=303046#c54">cannot embed</a> the preview image directly into a webpage within most browsers now’a’days.  Makes sense.  As Foscam allowed auth credentials to be passed as simple GET parameters, I relied on that authentication method for Foscam preview images.  The thinking there is that we’re on a trusted internal network - it wasn’t a major concern.  The documentation should make it very clear that Foscam was insecure in this regard so one could make an educated decision on the security trade-offs.  Not so with the D-Link.  Which is fine.  I’ve set up a new STREAM command type that basically listens to an endpoint (that can be properly authed) and just writes those bytes straight to the client without any computation at all.  It doesn’t seem to be a major CPU burden - just a bit on bandwidth.  But if the SwitchBoard instance is on the same fast network as the camera, it’s probably nothing to worry about.  So now you can preview the D-Link camera and not expose any credentials.  Great.  I was considering updating the Foscam controller to support this as well, but seeing as they no longer sell cameras that support MJEPG, I don’t think I’ll bother.  The Foscam controller is probably pretty safely considered unsupported now.</p>
+
+<p>I had built SwitchBoard to specifically use the Raspberry Pi.  It’s a reasonably well equipped, low power, inexpensive and well known host so it fits the bill pretty well.  With multiple cameras, you may find it lacking in the CPU department.  I’m able to use dLinkCameraDvr with the lowest resolution and lowest quality for a single camera and the Raspberry Pi is able to mostly make use of it.  Increase quality or add another camera and the results are largely unusable.  I’m thinking now how to best handle this.  One option is to just buy a better performing SoC - but that strays from my original intent.  Another option is to have an instance of SwitchBoard running on another Raspberry Pi for each camera to record - and probably have some kind of network mount to share the videos / thumbnails with the instance running the primary interface.  This would solve most of the issues, most of the software is already set up for this and I have the extra device.</p>
+
+  </div>
+
+  <div class="date">
+    Written on December 15, 2018
+  </div>
+
+  
+</article>
+
+    </div>
+
+    <div class="wrapper-footer">
+      <div class="container">
+        <footer class="footer">
+          
+<a href="mailto:brian@bevey.org"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/imbrianj/switchBoard"><i class="svg-icon github"></i></a>
+
+
+
+
+
+
+
+
+        </footer>
+      </div>
+    </div>
+
+    
+
+  </body>
+</html>
