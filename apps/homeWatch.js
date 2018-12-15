@@ -32,7 +32,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20180219,
+    version : 20181213,
 
     homeWatch : function (deviceId, command, controllers, values, config) {
       var notify      = require(__dirname + '/../lib/notify'),
@@ -67,17 +67,29 @@ module.exports = (function () {
 
             return isArmed;
           },
-          findCamera  = function() {
-            var device,
-                camera;
+          findCamera = function(trigger) {
+            var cameras,
+                camera,
+                device;
 
             for (device in controllers) {
               if ((controllers[device]) && (controllers[device].config) &&
                   ((controllers[device].config.typeClass === 'foscam') ||
                    (controllers[device].config.typeClass === 'dLinkCamera'))) {
-                camera = device;
-                break;
+                // Keep track of all cameras in case there's a misconfigured
+                // target camera - so it'll at least pull something.
+                cameras.push(device);
+
+                if (config.camera && config.camera[trigger] && config.camera[trigger] === device) {
+                  camera = device;
+
+                  break;
+                }
               }
+            }
+
+            if (cameras.length && !camera) {
+              camera = cameras[0];
             }
 
             return camera;
@@ -91,12 +103,14 @@ module.exports = (function () {
         // few seconds to register and update the mode.  We want to avoid false
         // positives as much as possible.
         setTimeout(function () {
-          var camera = findCamera(controllers),
+          var camera,
               runCommand,
               callback;
 
           if(isArmed()) {
             console.log('\x1b[35m' + controllers[deviceId].config.title + '\x1b[0m: Home Watch found something suspicious');
+
+            camera = findCamera(trigger);
             message = translate.translate('{{i18n_HOME_WATCH}}', 'smartthings', controllers.config.language).split('{{LABEL}}').join(trigger);
 
             if (camera) {
@@ -109,7 +123,12 @@ module.exports = (function () {
                 notify.notify(message, controllers, camera, fileName, rawImage);
               };
 
+              // This command takes the photo and (optionally) sends it to
+              // Pushover.
               runCommand.runCommand(camera, 'TAKE', deviceId, null, null, callback);
+
+              // This command takes a few snapshots on the desired camera.
+              runCommand.macroCommands(camera + '=TAKE,TAKE,TAKE,TAKE,TAKE');
             }
 
             else {

@@ -546,6 +546,7 @@ exports.config = {
                         'Home Watch'        : { id            : 'homeWatch',
                                                 contact       : ['Front Door'],
                                                 motion        : ['Living Room Motion'],
+                                                camera        : { 'Office Motion': 'officeCam' },
                                                 secureModes   : ['Away'],
                                                 delay         : 15,
                                                 controllerIds : ['foscam', 'pushover', 'sms', 'clientSpeech', 'clientNotify', 'gerty'] },

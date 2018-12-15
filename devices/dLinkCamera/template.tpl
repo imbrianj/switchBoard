@@ -22,10 +22,10 @@
           </div>
           <div class="alarm">
             <ul>
-              <li><a href="/?{{DEVICE_ID}}=Preset1,Sleep,Sleep,Alarm_On" class="fa fa-lock{{DEVICE_STATE_ON}}" title="{{i18n_ARM}}"><span>{{i18n_ARM}}</span> <em>{{ARMED_STATUS}}</em></a></li>
+              <li><a href="/?{{DEVICE_ID}}=Preset2,Sleep,Sleep,Alarm_On" class="fa fa-lock{{DEVICE_STATE_ON}}" title="{{i18n_ARM}}"><span>{{i18n_ARM}}</span> <em>{{ARMED_STATUS}}</em></a></li>
               <li><a href="/?{{DEVICE_ID}}=Take" class="fa fa-camera" title="{{i18n_TAKE}}"><span>{{i18n_TAKE}}</span></a></li>
               <li><a href="/?{{DEVICE_ID}}=Take,Take,Take,Take,Take" class="fa fa-bolt" title="{{i18n_BURST}}"><span>{{i18n_BURST}}</span></a></li>
-              <li><a href="/?{{DEVICE_ID}}=Alarm_Off,Preset3" class="fa fa-unlock{{DEVICE_STATE_OFF}}" title="{{i18n_DISARM}}"><span>{{i18n_DISARM}}</span> <em>{{DISARMED_STATUS}}</em></a></li>
+              <li><a href="/?{{DEVICE_ID}}=Alarm_Off,Preset1" class="fa fa-unlock{{DEVICE_STATE_OFF}}" title="{{i18n_DISARM}}"><span>{{i18n_DISARM}}</span> <em>{{DISARMED_STATUS}}</em></a></li>
             </ul>
           </div>
         </div>

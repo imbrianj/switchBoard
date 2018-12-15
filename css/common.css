@@ -673,7 +673,7 @@ section .curtain .modal {
 section .modal img,
 section .modal audio,
 section .modal video {
-  max-width: 100%;
+  width: 100%;
 }
 
 section .curtain .modal .close-modal {

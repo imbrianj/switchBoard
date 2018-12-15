@@ -235,9 +235,6 @@ module.exports = (function () {
       execute.params.push(inputPath);
       execute.params.push('-use_wallclock_as_timestamps');
       execute.params.push(1);
-      // Finding something with wide HTML5 support doesn't seem likely.  We'll
-      // just use aac/h.264 and assume we'll view in an external app (VLC, for
-      // example).
       execute.params.push('-acodec');
       execute.params.push('aac');
       execute.params.push('-vcodec');
