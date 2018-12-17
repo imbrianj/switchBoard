@@ -630,6 +630,23 @@ SB.spec = (function () {
 
             return validElm;
           },
+          externalLink     = function (e) {
+            var elm      = SB.getTarget(e),
+                tagName  = elm.tagName.toLowerCase(),
+                external = false;
+
+            elm = tagName === 'img'  ? elm.parentNode : elm;
+            elm = tagName === 'i'    ? elm.parentNode : elm;
+            elm = tagName === 'span' ? elm.parentNode : elm;
+
+            if (elm.tagName.toLowerCase() === 'a') {
+              if (elm.target === '_blank') {
+                external = true;
+              }
+            }
+
+            return external;
+          },
           sendCommand      = function () {
             var ajaxRequest;
 
@@ -674,8 +691,7 @@ SB.spec = (function () {
             }
           },
           fireCommand      = function (e, speech) {
-            var elm = findCommand(e),
-                newWindow;
+            var elm = findCommand(e);
 
             if (speech) {
               SB.vibrate();
@@ -686,13 +702,7 @@ SB.spec = (function () {
             }
 
             else if ((elm) && (!interrupt)) {
-              if (elm.rel === 'external') {
-                newWindow = window.open();
-                newWindow.opener = null;
-                newWindow.location = elm.href;
-              }
-
-              else if (SB.hasClass(elm, 'modal')) {
+              if (SB.hasClass(elm, 'modal')) {
                 SB.spec.openModal(elm);
               }
 
@@ -787,7 +797,7 @@ SB.spec = (function () {
       });
 
       SB.event.add(SB.spec.uiComponents.body, 'click', function (e) {
-        if (findCommand(e)) {
+        if ((findCommand(e)) && (!externalLink(e))) {
           e.preventDefault();
         }
       });

@@ -1,2 +1,2 @@
 
-            <li class="state-{{TRAVIS_STATE}}"><span class="fa fa-{{TRAVIS_ICON}}" title="{{i18n_BUILD_STATUS}}: {{TRAVIS_STATE}}"><span>{{i18n_BUILD_STATUS}}: {{TRAVIS_STATE}}</span></span> <a href="{{TRAVIS_URL}}" class="state-{{TRAVIS_STATE}}" rel="external">{{TRAVIS_DESCRIPTION}}{{TRAVIS_DURATION}}</a></li>
+            <li class="state-{{TRAVIS_STATE}}"><span class="fa fa-{{TRAVIS_ICON}}" title="{{i18n_BUILD_STATUS}}: {{TRAVIS_STATE}}"><span>{{i18n_BUILD_STATUS}}: {{TRAVIS_STATE}}</span></span> <a href="{{TRAVIS_URL}}" class="state-{{TRAVIS_STATE}}" target="_blank" rel="noopener noreferrer">{{TRAVIS_DESCRIPTION}}{{TRAVIS_DURATION}}</a></li>

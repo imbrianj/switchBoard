@@ -68,7 +68,7 @@ module.exports = (function () {
             return isArmed;
           },
           findCamera = function(trigger) {
-            var cameras,
+            var cameras = [],
                 camera,
                 device;
 
