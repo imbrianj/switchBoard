@@ -92,8 +92,8 @@ exports.rssControllerTest = {
           },
         ]}},
         badData       = {},
-        testRssData   = rssController.getArticles(rssData, 1),
-        testAtomData  = rssController.getArticles(atomData),
+        testRssData   = rssController.getArticles(rssData,  1),
+        testAtomData  = rssController.getArticles(atomData, 3),
         testBadData   = rssController.getArticles(badData, 10);
 
     test.deepEqual(testRssData, [{ title       : 'Test 1',
