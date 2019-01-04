@@ -81,6 +81,10 @@
 <lastmod>2018-12-15T00:00:00-08:00</lastmod>
 </url>
 <url>
+<loc>http://localhost:4000/switchBoard/Weather-API/</loc>
+<lastmod>2019-01-03T00:00:00-08:00</lastmod>
+</url>
+<url>
 <loc>http://localhost:4000/switchBoard/404/</loc>
 </url>
 <url>
@@ -91,7 +95,7 @@
 </url>
 <url>
 <loc>http://localhost:4000/switchBoard/demo/</loc>
-<lastmod>2018-12-15T10:42:58-08:00</lastmod>
+<lastmod>2019-01-03T22:27:35-08:00</lastmod>
 </url>
 <url>
 <loc>http://localhost:4000/switchBoard/node_modules/argparse/node_modules/sprintf-js/demo/angular.html</loc>
