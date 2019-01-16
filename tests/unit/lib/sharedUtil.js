@@ -147,4 +147,32 @@ exports.sharedUtilTest = {
 
     test.done();
   },
+
+  safeGet : function (test) {
+    'use strict';
+
+    var util = require(__dirname + '/../../../lib/sharedUtil').util;
+
+    test.strictEqual(util.safeGet({ foo : 'dog' },                                  ['foo']),               'dog', 'Simple path');
+    test.strictEqual(util.safeGet({ foo : { fam : { fiz : 'dog' } } },              ['foo', 'fam', 'fiz']), 'dog', 'Longer path');
+    test.strictEqual(util.safeGet({ foo : 'bad', fam : { fam : { foo : 'dog' } } }, ['fam', 'fam', 'foo']), 'dog', 'Repeated property');
+
+    test.done();
+  },
+
+  safeSet : function (test) {
+    'use strict';
+
+    var util = require(__dirname + '/../../../lib/sharedUtil').util;
+
+    test.deepEqual(util.safeSet({ foo : 'dog' }, ['wiz', 'bang', 'boom'], 42),                   { foo : 'dog', wiz : { bang : { boom : 42 } } }, 'Simple path');
+    test.deepEqual(util.safeSet({ foo : 'dog' }, ['foo', 'bang', 'boom'], 42),                   false,                                           'Gracefully bail when not destructive');
+    test.deepEqual(util.safeSet({ foo : 'dog' }, ['foo', 'bang', 'boom'], 42, true),             { foo : { bang: { boom : 42 } } },               'Overwrite values if destructive');
+    test.deepEqual(util.safeSet({ foo : 'dog' }, ['foo', 'bang', 'boom'], { biz : 'bap'}, true), { foo : { bang: { boom : { biz : 'bap' } } } },  'Object as value');
+    test.deepEqual(util.safeSet('string', ['foo', 'bang', 'boom'], 42, false),                   false,                                           'Non destructive non-objects return false');
+    test.deepEqual(util.safeSet({ foo : 'dog' }, 'string', 42, false),                           false,                                           'Non destructive non-array return false');
+    test.deepEqual(util.safeSet({ foo : 'dog' }, ['bar', 'baz'], 42, false),                     { foo : 'dog', bar : { baz : 42 } },             'Non destructive with unique keys should set value');
+
+    test.done();
+  }
 };

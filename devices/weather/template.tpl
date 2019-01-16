@@ -3,6 +3,7 @@
         <h1>{{i18n_WEATHER}} <em>{{DEVICE_ACTIVE}}</em></h1>
         <div class="text-block">
           <h2><span class="fa fa-{{WEATHER_ICON}}"></span> {{WEATHER_CURRENT}} ({{WEATHER_SUNRISE}}/{{WEATHER_SUNSET}})</h2>
+          <p>{{WEATHER_SUMMARY}}</p>
           <ul>
             {{WEATHER_DYNAMIC}}
           </ul>

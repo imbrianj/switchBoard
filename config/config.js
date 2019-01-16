@@ -226,31 +226,24 @@ exports.config = {
   },
 
   /*
-   * Both stocks and weather are courtesy of Yahoo.
+   * Weather kindly provided for free by Dark Sky.
+   *
+   * You will need to provide your own Secret Key, but it's easy and free:
+   *  - Visit https://darksky.net/dev/register and create an account.  You will
+   *    need to validate the email address.
+   *  - Once created, visit https://darksky.net/dev/account and copy your
+   *    "Secret Key", which will be inputed as your "token" here.
+   *  - You will also need to provid your latitude and longitudinal coordinates
+   *    for the location you'd like to have weather reports for.  You can find
+   *    this on Google Maps by right-clicking and selecting "What's here?".  At
+   *    the bottom of the screen, you should see your chosen coordinates.
    */
-  stocks : {
-    typeClass : 'stocks',
-    title     : 'Stocks',
-    stocks    : ['YHOO', 'AAPL', 'GOOG', 'TSLA'],
-    // Not to be considered investment advice, but this shows how you can set
-    // stock prices to be notified of.
-    apps      : { 'Notify' : { id            : 'announceStocks',
-                               limits        : { YHOO : { buy : 30,  sell : 55 },
-                                                 TSLA : { buy : 200, sell : 350 } },
-                               controllerIds : ['pushover', 'speech', 'mp3', 'clientSpeech', 'clientMp3', 'clientNotify', 'gerty'] } },
-    disabled  : true
-  },
-
   weather : {
     typeClass : 'weather',
     title     : 'Weather',
-    // Zip isn't available everywhere - and is imprecise, but is very easy to
-    // recall and generally offers "good enough" precision.
-    zip       : 98121,
-    // WOEID can be more specific to a zip - so this will be used if available.
-    // It's also available in places that don't have Zip codes.
-    // Find your location's WOEID from: http://woeid.factormystic.net/
-    woeid     : 12798963,
+    token     : 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+    latitude  : 47.62,
+    longitude : -122.32,
     apps      : { 'Sun Phase' : { id            : 'sunPhase',
                                   macros        : { 'sunset' : 'smartthings=subdevice-mode-Night' },
                                   dayMode       : 'Home',
@@ -721,7 +714,7 @@ exports.config = {
     path      : '/atom?cf=all&pz=1&hl=en-US&gl=US&ceid=US:en',
     maxCount  : 10,
     apps      : { 'Announce Trending' : { id            : 'announceTrendingNews',
-                                          blacklist     : ['New', 'A', 'An', 'The'],
+                                          blacklist     : ['New', 'News', 'A', 'An', 'The'],
                                           threshold     : 12,
                                           delay         : 480,
                                           controllerIds : ['clientNotify', 'gerty'] } },
@@ -834,7 +827,7 @@ exports.config = {
                                                      'Good Bye'      : 'smartthings=subdevice-mode-Away;nest=Away',
                                                      'I\'m Back'     : 'smartthings=subdevice-mode-Home;nest=Home',
                                                      'Welcome Home'  : 'smartthings=subdevice-mode-Home;nest=Home' },
-                                   controllerIds : ['samsung', 'roku', 'ps3', 'panasonic', 'lg', 'pioneer', 'denon', 'speech', 'stocks', 'weather', 'foscam', 'mp3', 'sms', 'pushover', 'smartthings', 'powerView', 'nest', 'switchBoardCI', 'xbmc', 'raspberryRemote', 'wemo', 'activeBuilding', 'clientMp3', 'clientNotify', 'clientSpeech'] } },
+                                   controllerIds : ['samsung', 'roku', 'ps3', 'panasonic', 'lg', 'pioneer', 'denon', 'speech', 'weather', 'foscam', 'mp3', 'sms', 'pushover', 'smartthings', 'powerView', 'nest', 'switchBoardCI', 'xbmc', 'raspberryRemote', 'wemo', 'activeBuilding', 'clientMp3', 'clientNotify', 'clientSpeech'] } },
     disabled       : true
   },
 

@@ -27,6 +27,7 @@
     var template   = fragments.forecast,
         i          = 0,
         tempMarkup = '',
+        forecast,
         translate,
         translateCode;
 
@@ -45,87 +46,41 @@
       return message;
     };
 
-    // https://developer.yahoo.com/weather/documentation.html#codes
+    // https://darksky.net/dev/docs
     translateCode = function (code) {
-      var warning    = 'warning',     // Tropical Storm
-          lightning  = 'bolt',        // Thunderstorm
-          snow       = 'snowflake-o', // Snow
-          rain       = 'tint',        // Rain
-          smoke      = 'fire',        // Smoke
-          wind       = 'flag',        // Wind
-          cloud      = 'cloud',       // Cloudy
-          clearNight = 'moon-o',      // Clear Night
-          clearDay   = 'sun-o',       // Clear Day
-          codes = {
-            0  : warning,
-            1  : warning,
-            2  : warning,
-            3  : lightning,
-            4  : lightning,
-            5  : snow,
-            6  : snow,
-            7  : snow,
-            8  : snow,
-            9  : rain,
-            10 : rain,
-            11 : rain,
-            12 : rain,
-            13 : snow,
-            14 : snow,
-            15 : snow,
-            16 : snow,
-            17 : snow,
-            18 : snow,
-            19 : smoke,
-            20 : smoke,
-            21 : smoke,
-            22 : smoke,
-            23 : wind,
-            24 : wind,
-            25 : snow,
-            26 : cloud,
-            27 : cloud,
-            28 : cloud,
-            29 : cloud,
-            30 : cloud,
-            31 : clearNight,
-            32 : clearDay,
-            33 : clearNight,
-            34 : clearDay,
-            35 : snow,
-            36 : clearDay,
-            37 : lightning,
-            38 : lightning,
-            39 : lightning,
-            40 : rain,
-            41 : snow,
-            42 : snow,
-            43 : snow,
-            44 : cloud,
-            45 : lightning,
-            46 : snow,
-            47 : lightning
+      var codes = {
+            'clear-day'           : 'sun-o',
+            'clear-night'         : 'moon-o',
+            'rain'                : 'umbrella',
+            'snow'                : 'snowflake-o',
+            'sleet'               : 'snowflake-o',
+            'wind'                : 'flag',
+            'fog'                 : 'fire',
+            'cloudy'              : 'cloud',
+            'partly-cloudy-day'   : 'cloud',
+            'partly-cloudy-night' : 'cloud',
+            'hail'                : 'snowflake-o',
+            'thunderstorm'        : 'bolt',
+            'tornado'             : 'warning'
           };
-
-      code = parseInt(code, 10);
 
       return codes[code] || 'question';
     };
 
     if ((value) && (value.code)) {
       markup = markup.replace('{{WEATHER_ICON}}', translateCode(value.code));
-      markup = markup.replace('{{WEATHER_CURRENT}}', value.city + ' ' + translate('CURRENT') + ': ' + value.temp + '&deg; ' + value.text);
+      markup = markup.replace('{{WEATHER_CURRENT}}', translate('CURRENT') + ': ' + value.temp + '&deg; ' + value.text);
       markup = markup.replace('{{WEATHER_SUNRISE}}', value.sunrise);
       markup = markup.replace('{{WEATHER_SUNSET}}', value.sunset);
+      markup = markup.replace('{{WEATHER_SUMMARY}}', value.text + '.  ' + value.hourly);
 
-      for (i in value.forecast) {
-        if (value.forecast.hasOwnProperty(i)) {
-          tempMarkup = tempMarkup + template.split('{{WEATHER_ICON}}').join(translateCode(value.forecast[i].code));
-          tempMarkup = tempMarkup.split('{{WEATHER_DAY}}').join(value.forecast[i].day + ':');
-          tempMarkup = tempMarkup.split('{{WEATHER_TEXT}}').join(value.forecast[i].text);
-          tempMarkup = tempMarkup.split('{{WEATHER_HIGH}}').join(value.forecast[i].high + '&deg;');
-          tempMarkup = tempMarkup.split('{{WEATHER_LOW}}').join(value.forecast[i].low + '&deg;');
-        }
+      for (i; i < value.forecast.days.length; i += 1) {
+        forecast   = value.forecast.days[i];
+        tempMarkup = tempMarkup + template.split('{{WEATHER_ICON}}').join(translateCode(forecast.code));
+        tempMarkup = tempMarkup.split('{{WEATHER_DAY}}').join(translate(forecast.day) + ':');
+        tempMarkup = tempMarkup.split('{{WEATHER_TEXT}}').join(forecast.text);
+        tempMarkup = tempMarkup.split('{{WEATHER_HIGH}}').join(forecast.high + '&deg;');
+        tempMarkup = tempMarkup.split('{{WEATHER_LOW}}').join(forecast.low + '&deg;');
       }
     }
 

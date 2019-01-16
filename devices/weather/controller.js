@@ -26,10 +26,11 @@ module.exports = (function () {
   /**
    * @author brian@bevey.org
    * @requires fs, https
-   * @fileoverview Basic weather information, courtesy of Yahoo.
+   * @fileoverview Basic weather information, Powered by Dark Sky:
+   *               https://darksky.net/poweredby/
    */
   return {
-    version : 20171029,
+    version : 20190115,
 
     readOnly: true,
 
@@ -64,36 +65,35 @@ module.exports = (function () {
     },
 
     /**
-     * Accept a plain-text time ("7:52 pm") and find the unix timestamp for that
-     * time on the current day.
-     */
-    formatTime : function (time) {
-      var hour   = parseInt(time.split(':')[0], 10),
-          minute = parseInt(time.split(':')[1].split(' ')[0], 10),
-          ampm   = time.split(' ')[1];
-
-      hour = ampm === 'pm' ? (hour + 12) : hour;
-
-      return { hour : hour, minute : minute };
-    },
-
-    /**
      * Accept a raw forecast object and celsius flag.  Parse through, sanitizing
      * and converting values as necessary.
      */
     formatForecast : function (forecast, celsius) {
       var util      = require(__dirname + '/../../lib/sharedUtil').util,
-          formatted = [],
-          i         = 0;
+          formatted = { days : [] },
+          i         = 0,
+          days      = { 0 : 'SUN',
+                        1 : 'MON',
+                        2 : 'TUE',
+                        3 : 'WED',
+                        4 : 'THUR',
+                        5 : 'FRI',
+                        6 : 'SAT' },
+          day;
 
-      for (i; i < forecast.length; i += 1) {
-        formatted.push({
-          code : util.sanitize(forecast[i].code),
-          date : util.sanitize(forecast[i].date),
-          day  : util.sanitize(forecast[i].day),
-          high : util.sanitize(celsius ? util.fToC(forecast[i].high) : parseInt(forecast[i].high, 10)),
-          low  : util.sanitize(celsius ? util.fToC(forecast[i].low)  : parseInt(forecast[i].low,  10)),
-          text : util.sanitize(forecast[i].text)
+      formatted.summary = forecast.summary;
+      formatted.code    = forecast.icon;
+
+      for (i; i < forecast.data.length; i += 1) {
+        day = forecast.data[i];
+
+        formatted.days.push({
+          code : util.sanitize(day.icon),
+          date : parseInt(new Date(day.time * 1000).getDate()),
+          day  : days[(new Date(day.time * 1000).getDay())],
+          high : util.sanitize(celsius ? util.fToC(day.temperatureHigh) : parseInt(day.temperatureHigh, 10)),
+          low  : util.sanitize(celsius ? util.fToC(day.temperatureLow)  : parseInt(day.temperatureLow, 10)),
+          text : util.sanitize(day.summary)
         });
       }
 
@@ -101,29 +101,29 @@ module.exports = (function () {
     },
 
     /**
+     * Accept a Unix timestamp and convert to a string with hour / minute.
+     */
+    formatTime : function (unixTime) {
+      var date = new Date(unixTime * 1000);
+
+      return date.getHours() + ':' + ('0' + date.getMinutes()).substr(-2);
+    },
+
+    /**
      * Accept sunrise and sunset times as deliverd from the API - and determine
      * what the current sun phase is.  Can either be "Day" or "Night".
      */
-    findSunPhase : function (sunriseRaw, sunsetRaw) {
-      var sunrise = this.formatTime(sunriseRaw),
-          sunset  = this.formatTime(sunsetRaw),
-          now     = new Date(),
-          unixNow = now.getTime(),
-          year    = now.getFullYear(),
-          month   = now.getMonth(),
-          date    = now.getDate(),
-          state   = '';
-
-      sunrise.unix = new Date(year, month, date, sunrise.hour, sunrise.minute).getTime();
-      sunset.unix  = new Date(year, month, date, sunset.hour,  sunset.minute).getTime();
+    findSunPhase : function (sunrise, sunset) {
+      var now   = new Date().getTime(),
+          state = '';
 
       // The sun hasn't come up yet.
-      if (sunrise.unix > unixNow) {
+      if ((sunrise * 1000) > now) {
         state = 'Night';
       }
 
       // The sun has come up - but has not gone down.
-      else if (sunset.unix > unixNow) {
+      else if ((sunset * 1000) > now) {
         state = 'Day';
       }
 
@@ -142,17 +142,19 @@ module.exports = (function () {
           dataReply = '',
           request;
 
-      weather.deviceId = config.device.deviceId;
-      weather.zip      = config.device.zip;
-      weather.woeid    = config.device.woeid;
-      weather.celsius  = config.config.celsius || false;
-      weather.host     = config.host           || 'query.yahooapis.com';
-      weather.path     = config.path           || '/v1/public/yql?format=json&q=select * from weather.forecast where ' + (weather.woeid ? 'woeid=' + weather.woeid : 'location=' + weather.zip);
-      weather.port     = config.port           || 443;
-      weather.method   = config.method         || 'GET';
-      weather.callback = config.callback       || function () {};
+      weather.deviceId  = config.device.deviceId;
+      weather.token     = config.device.token;
+      weather.latitude  = config.device.latitude;
+      weather.longitude = config.device.longitude;
+      weather.language  = config.config.language ? config.config.language.split('-')[0] : 'en';
+      weather.celsius   = config.config.celsius || false;
+      weather.host      = config.host           || 'api.darksky.net';
+      weather.path      = config.path           || '/forecast/' + weather.token + '/' + weather.latitude + ',' + weather.longitude + '?lang=' + weather.language + '&exclude=minutely,alerts,flags';
+      weather.port      = config.port           || 443;
+      weather.method    = config.method         || 'GET';
+      weather.callback  = config.callback       || function () {};
 
-      if ((weather.zip !== null) || (weather.woeid !== null)) {
+      if ((weather.latitude !== null) || (weather.longitude !== null)) {
         console.log('\x1b[35m' + config.device.title + '\x1b[0m: Fetching device info');
 
         request = https.request(this.postPrepare(weather), function (response) {
@@ -167,8 +169,7 @@ module.exports = (function () {
                           weatherData = {},
                           errMessage  = 'err',
                           temp,
-                          data,
-                          city;
+                          data;
 
                       if (dataReply) {
                         try {
@@ -179,29 +180,26 @@ module.exports = (function () {
                           errMessage = 'API returned an unexpected value';
                         }
 
-                        if (data && data.query && data.query.results) {
-                          city = data.query.results.channel;
+                        if (data && data.currently && data.hourly && data.daily) {
+                          errMessage  = null;
 
-                          if (city && city.title && city.title.indexOf('Error') === -1) {
-                            errMessage  = null;
+                          temp        = data.currently.temperature;
 
-                            temp        = city.item.condition.temp;
-
-                            if (weather.celsius) {
-                              temp = util.fToC(temp);
-                            }
-
-                            weatherData = { 'city'     : util.sanitize(city.location.city),
-                                            'temp'     : util.sanitize(parseInt(temp, 10)),
-                                            'text'     : util.sanitize(city.item.condition.text),
-                                            'humidity' : util.sanitize(parseInt(city.atmosphere.humidity, 10)),
-                                            'sunrise'  : util.sanitize(city.astronomy.sunrise),
-                                            'sunset'   : util.sanitize(city.astronomy.sunset),
-                                            'code'     : util.sanitize(parseInt(city.item.condition.code, 10)),
-                                            'forecast' : that.formatForecast(city.item.forecast, weather.celsius),
-                                            'phase'    : that.findSunPhase(city.astronomy.sunrise, city.astronomy.sunset)
-                                          };
+                          if (weather.celsius) {
+                            temp = util.fToC(temp);
                           }
+
+                          weatherData = { 'temp'     : util.sanitize(parseInt(temp, 10)),
+                                          'text'     : util.sanitize(data.currently.summary),
+                                          'hourly'   : util.sanitize(data.hourly.summary),
+                                          'humidity' : util.sanitize(parseInt(data.currently.humidity, 10)),
+                                          'dew'      : util.sanitize(parseInt(data.currently.dewPoint, 10)),
+                                          'sunrise'  : that.formatTime(util.sanitize(parseInt(data.daily.data[0].sunriseTime, 10))),
+                                          'sunset'   : that.formatTime(util.sanitize(parseInt(data.daily.data[0].sunsetTime, 10))),
+                                          'code'     : util.sanitize(data.currently.icon),
+                                          'forecast' : that.formatForecast(data.daily, weather.celsius),
+                                          'phase'    : that.findSunPhase(data.daily.data[0].sunriseTime, data.daily.data[0].sunsetTime)
+                                        };
                         }
 
                         else {
@@ -225,7 +223,7 @@ module.exports = (function () {
       }
 
       else {
-        weather.callback('No zip code specified');
+        weather.callback('No latitude or longitude specified');
       }
     }
   };

@@ -58,7 +58,7 @@ exports.weatherControllerTest = {
 
     var weatherController = require(__dirname + '/../../../../devices/weather/controller');
 
-    test.deepEqual(weatherController.formatTime('4:22 pm'), { hour : '16', minute : '22' });
+    test.strictEqual(weatherController.formatTime(1546344000), '4:00', 'Return a string of the current time (hh:mm)');
 
     test.done();
   },
@@ -67,34 +67,32 @@ exports.weatherControllerTest = {
     'use strict';
 
     var weatherController = require(__dirname + '/../../../../devices/weather/controller'),
-        forecast          = [{
-                              code : '10',
-                              date : '30 Oct 2017',
-                              day  : 'Mon',
-                              high : '58',
-                              low  : '44',
-                              text : 'Partly Cloudy'
+        forecast          = { data: [{
+                              icon            : 'cloudy',
+                              time            : 1546761600,
+                              temperatureHigh : 58.55,
+                              temperatureLow  : 44.35,
+                              summary         : 'Partly Cloudy'
                             },
                             {
-                              code : '11',
-                              date : '31 Oct 2017',
-                              day  : 'Tue',
-                              high : '55',
-                              low  : '40',
-                              text : 'Spooky'
-                            }],
+                              code            : 'clear-night',
+                              time            : 1546934400,
+                              temperatureHigh : 55.44,
+                              temperatureLow  : 43.32,
+                              summary         : 'Spooky'
+                            }]},
         results           = weatherController.formatForecast(forecast, false),
         metricResults     = weatherController.formatForecast(forecast, true);
 
-    test.strictEqual(results[0].high, 58);
-    test.strictEqual(results[0].low,  44);
-    test.strictEqual(results[1].high, 55);
-    test.strictEqual(results[1].low,  40);
+    test.strictEqual(results.days[0].high, 58);
+    test.strictEqual(results.days[0].low,  44);
+    test.strictEqual(results.days[1].high, 55);
+    test.strictEqual(results.days[1].low,  43);
 
-    test.strictEqual(metricResults[0].high, 14.4);
-    test.strictEqual(metricResults[0].low,  6.7);
-    test.strictEqual(metricResults[1].high, 12.8);
-    test.strictEqual(metricResults[1].low,  4.4);
+    test.strictEqual(metricResults.days[0].high, 14.7);
+    test.strictEqual(metricResults.days[0].low,  6.9);
+    test.strictEqual(metricResults.days[1].high, 13);
+    test.strictEqual(metricResults.days[1].low,  6.3);
 
     test.done();
   }

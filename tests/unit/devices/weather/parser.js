@@ -33,16 +33,21 @@ exports.weatherParserTest = {
         markup     = '<h1>Foo</h1> <div>{{WEATHER_CURRENT}}</div> <div>{{WEATHER_DYNAMIC}}</div>',
         value      = { code : 47, city : 'Seattle', text : 'Storm', temp : 80,
                        forecast : {
-                         foo : { code : 43, day : 'Mon',  text : 'Snow',  high : 30, low : 20 },
-                         bar : { code : 31, day : 'Tues', text : 'Clear', high : 50, low : 40 },
-                         baz : { code : 32, day : 'Wed',  text : 'Sun',   high : 75, low : 70 } }
+                         summary : 'Rain and stuff',
+                         code    : 'snow',
+                         days    : [
+                           { code : 'snow',        day : 'MON', text : 'Snow',  high : 30, low : 20 },
+                           { code : 'clear-night', day : 'TUE', text : 'Clear', high : 50, low : 40 },
+                           { code : 'clear-day',   day : 'WED', text : 'Sun',   high : 75, low : 70 }
+                         ]
+                       }
                      },
         fragments  = { forecast : '<span class="fa fa-{{WEATHER_ICON}}"></span> {{WEATHER_DAY}} {{WEATHER_TEXT}} {{WEATHER_HIGH}}/{{WEATHER_LOW}}' },
         goodMarkup = weatherParser.weather('dummy', markup, 'ok', value,        fragments),
         noValue    = weatherParser.weather('dummy', markup, 'ok', 'API Choked', fragments);
 
     test.strictEqual(goodMarkup.indexOf('{{'), -1, 'All values replaced');
-    test.notStrictEqual(goodMarkup.indexOf('Seattle Current Weather: 80&deg; Storm'),                            -1, 'Passed markup validated');
+    test.notStrictEqual(goodMarkup.indexOf('Current Weather: 80&deg; Storm'),                                    -1, 'Passed markup validated');
     test.notStrictEqual(goodMarkup.indexOf('<span class="fa fa-snowflake-o"></span> Mon: Snow 30&deg;/20&deg;'), -1, 'Passed markup validated');
     test.notStrictEqual(goodMarkup.indexOf('<span class="fa fa-sun-o"></span> Wed: Sun 75&deg;/70&deg;'),        -1, 'Passed markup validated');
     test.strictEqual(noValue.indexOf('{{'), -1, 'All values replaced');
