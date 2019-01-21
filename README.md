@@ -69,11 +69,10 @@ Supported Devices/Services
 | SMS                  | Stable      | Uses Twilio. Requires ID and token                                                |
 | Speech               | Stable      | Uses espeak for *nix, say on OSX.  Win not supported                              |
 | Sports               | Stable      | Pull sports scores from ESPN (please don't hammer this endpoint)                  |
-| Stocks               | Unreliable  | Uses Yahoo Finance (API has been unreliable - looking for alternatives)           |
 | Traffic Cams         | Stable      | View multiple traffic webcams                                                     |
 | Travis CI            | Stable      |                                                                                   |
 | Twitter              | Stable      | Present mentions of your Twitter handle or subscribe to a user's feed             |
-| Weather              | Stable      | Uses Yahoo Weather                                                                |
+| Weather              | Stable      | Uses [Dark Sky API](https://darksky.net)                                          |
 | Website              | Stable      | Simple controller to load an external site as an iframe                           |
 | XBMC                 | Stable      | Basic controls work                                                               |
 
