@@ -32,7 +32,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20181213,
+    version : 20190121,
 
     homeWatch : function (deviceId, command, controllers, values, config) {
       var notify      = require(__dirname + '/../lib/notify'),
@@ -89,7 +89,7 @@ module.exports = (function () {
             }
 
             if (cameras.length && !camera) {
-              camera = cameras[0];
+              camera = cameras[Math.floor(Math.random() * cameras.length)];
             }
 
             return camera;

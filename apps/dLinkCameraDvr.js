@@ -36,7 +36,7 @@ module.exports = (function () {
   var Devices = {};
 
   return {
-    version : 20191207,
+    version : 20190228,
 
     lastEvents : { space : 0, thumbnail : 0 },
 
@@ -125,7 +125,7 @@ module.exports = (function () {
           (function (filename) {
             if (filename) {
               fs.stat(path + 'dvr/' + filename + '.mp4', function (err, stats) {
-                if (stats.size >= thumbByteLimit) {
+                if (stats && (stats.size >= thumbByteLimit)) {
                   fs.stat(path + 'thumb/' + filename + (enableThumbnail ? '.gif' : '.jpg'), function (err, stats) {
                     // If we don't have a thumbnail for a video file larger than
                     // the defined threshold, let's generate them.
