@@ -29,7 +29,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20181205,
+    version : 20190312,
 
     announceDLinkCamera : function (deviceId, command, controllers) {
       var translate    = require(__dirname + '/../lib/translate'),
@@ -49,7 +49,7 @@ module.exports = (function () {
           }
 
           if (message) {
-            notify.notify(message, controllers, deviceId);
+            notify.notify(message.split('{{CAMERA}}').join(controllers[deviceId].config.title), controllers, deviceId);
           }
         }
       }

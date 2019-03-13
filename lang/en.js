@@ -269,8 +269,8 @@ module.exports = (function () {
           DLINKCAMERA     : 'D-Link Camera',
           ARM             : "Arm",
           BURST           : "Burst",
-          CAMERA_ARMED    : "Camera armed",
-          CAMERA_DISARMED : "Camera disarmed",
+          CAMERA_ARMED    : "{{CAMERA}} armed",
+          CAMERA_DISARMED : "{{CAMERA}} disarmed",
           DISARM          : "Disarm",
           PHOTO           : "Photo",
           PRESET          : "Preset",
@@ -283,8 +283,8 @@ module.exports = (function () {
           FOSCAM          : "Foscam",
           ARM             : "Arm",
           BURST           : "Burst",
-          CAMERA_ARMED    : "Camera armed",
-          CAMERA_DISARMED : "Camera disarmed",
+          CAMERA_ARMED    : "{{CAMERA}} armed",
+          CAMERA_DISARMED : "{{CAMERA}} disarmed",
           DISARM          : "Disarm",
           PHOTO           : "Photo",
           PRESET          : "Preset",
@@ -419,6 +419,9 @@ module.exports = (function () {
         },
         mp3 : {
           MP3 : "MP3"
+        },
+        neato : {
+          NEATO : "Neato"
         },
         nest : {
           NEST               : "Nest",

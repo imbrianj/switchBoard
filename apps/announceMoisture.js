@@ -33,9 +33,9 @@ module.exports = (function () {
     version : 20161101,
 
     announceMoisture : function (deviceId, command, controllers) {
-      var translate  = require(__dirname + '/../lib/translate'),
-          notify     = require(__dirname + '/../lib/notify'),
-          message    = '',
+      var translate = require(__dirname + '/../lib/translate'),
+          notify    = require(__dirname + '/../lib/notify'),
+          message   = '',
           value;
 
       if (command.indexOf('subdevice-state-moisture-') === 0) {
