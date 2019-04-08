@@ -33,7 +33,7 @@ module.exports = (function () {
    *       http://forum.universal-devices.com/topic/16538-hunter-douglas-powerView-control-with-isy/
    */
   return {
-    version : 20171122,
+    version : 20190405,
 
     inputs  : ['command', 'list', 'subdevice', 'text'],
 
@@ -240,7 +240,7 @@ module.exports = (function () {
 
         for (i; i < devices.length; i += 1) {
           if (devices[i].id === blindId) {
-            devices[i].percentage = percentage;
+            devices[i].state = percentage;
             break;
           }
         }
@@ -270,7 +270,7 @@ module.exports = (function () {
             batteryIsLow : util.sanitize(rawBlinds.shadeData[i].batteryIsLow),
             // The API does not appear reliable in offering percentage
             // information, so we'll prioritize our own stored value first.
-            percentage   : device.percentage || rawBlinds.shadeData[i].positions ? this.valueToPercent(parseInt(rawBlinds.shadeData[i].positions.position1, 10), 0) : 0
+            state        : device.state || rawBlinds.shadeData[i].positions ? this.valueToPercent(parseInt(rawBlinds.shadeData[i].positions.position1, 10), 0) : 0
           });
         }
       }
