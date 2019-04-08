@@ -1,5 +1,3 @@
-/* global Buffer */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *

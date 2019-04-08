@@ -56,25 +56,25 @@ module.exports = (function () {
      * Prepare the POST data to be sent.
      */
     postData : function (pushover) {
-      var data      = new Buffer('--' + pushover.boundary + '\r\n'
-                    +            'Content-Disposition: form-data; name="user"\r\n\r\n'
-                    +            pushover.userKey + '\r\n'
-                    +            '--' + pushover.boundary + '\r\n'
-                    +            'Content-Disposition: form-data; name="token"\r\n\r\n'
-                    +            pushover.token + '\r\n'
-                    +            '--' + pushover.boundary + '\r\n'
-                    +            'Content-Disposition: form-data; name="message"\r\n\r\n'
-                    +            pushover.text + '\r\n'),
-          end       = new Buffer('\r\n--' + pushover.boundary + '--'),
-          imageData = new Buffer('--' + pushover.boundary + '\r\n'
+      var data      = Buffer.from('--' + pushover.boundary + '\r\n'
+                    +             'Content-Disposition: form-data; name="user"\r\n\r\n'
+                    +             pushover.userKey + '\r\n'
+                    +             '--' + pushover.boundary + '\r\n'
+                    +             'Content-Disposition: form-data; name="token"\r\n\r\n'
+                    +             pushover.token + '\r\n'
+                    +             '--' + pushover.boundary + '\r\n'
+                    +             'Content-Disposition: form-data; name="message"\r\n\r\n'
+                    +             pushover.text + '\r\n'),
+          end       = Buffer.from('\r\n--' + pushover.boundary + '--'),
+          imageData = Buffer.from('--' + pushover.boundary + '\r\n'
                     +            'Content-Disposition: form-data; name="attachment"; filename="image.jpg"\r\n'
                     +            'Content-Type: image/jpeg\r\n\r\n'),
-          imageEnd  = new Buffer('\r\n--' + pushover.boundary + '--'),
-          image     = new Buffer('');
+          imageEnd  = Buffer.from('\r\n--' + pushover.boundary + '--'),
+          image     = Buffer.from('');
 
       if (pushover.payload) {
         if (!Buffer.isBuffer(pushover.payload)) {
-          pushover.payload = new Buffer(pushover.payload);
+          pushover.payload = Buffer.from(pushover.payload);
         }
 
         image = new Buffer.concat([imageData, pushover.payload, imageEnd]);

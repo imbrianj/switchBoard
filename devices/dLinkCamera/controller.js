@@ -55,7 +55,7 @@ module.exports = (function () {
      * Prepare a request for command execution.
      */
     postPrepare : function (config) {
-      var auth   = new Buffer(config.username + ':' + config.password).toString('base64'),
+      var auth   = Buffer.from(config.username + ':' + config.password).toString('base64'),
           keymap = { 'ALARM_OFF' : '/config/motion.cgi?enable=no',
                      'ALARM_ON'  : '/config/motion.cgi?enable=yes',
                      'DOWN'      : '/cgi-bin/longcctvmove.cgi?action=move&direction=down&panstep=1&tiltstep=1',

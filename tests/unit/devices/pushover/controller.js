@@ -68,7 +68,7 @@ exports.pushoverControllerTest = {
         configAttachment   = { token   : '1234567891',
                                userKey : '1987654321',
                                text    : 'TEST Pushover body text',
-                               payload : new Buffer('RAW IMAGE')
+                               payload : Buffer.from('RAW IMAGE')
                               },
         testData           = pushoverController.postData(config),
         testAttachmentData = pushoverController.postData(configAttachment);

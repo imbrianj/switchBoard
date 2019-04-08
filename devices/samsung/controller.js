@@ -1,5 +1,3 @@
-/* global Buffer */
-
 /**
  * Copyright (c) 2014 brian@bevey.org
  *
@@ -47,7 +45,7 @@ module.exports = (function () {
      * data.
      */
     base64Encode : function (string) {
-      return new Buffer(string).toString('base64');
+      return Buffer.from(string).toString('base64');
     },
 
     /**
