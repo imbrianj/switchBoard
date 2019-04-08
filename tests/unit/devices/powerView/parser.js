@@ -33,9 +33,9 @@ exports.powerViewParserTest = {
         markup          = '<h1>Foo</h1> <div>{{POWERVIEW_DYNAMIC}}</div>',
         value           = { scenes  : [{ icon: 'arrow-up', name : 'All Up' }, { icon: 'arrow-down', name : 'All Down' }],
                             devices : [
-                              { id : 1, label : 'Living Room', percentage : 0, battery: 55 },
-                              { id : 2, label : 'Office',      percentage : 100 },
-                              { id : 3, label : 'Bedroom',     percentage : 50 }
+                              { id : 1, label : 'Living Room', state : 0, battery: 55 },
+                              { id : 2, label : 'Office',      state : 100 },
+                              { id : 3, label : 'Bedroom',     state : 50 }
                             ]
                           },
         fragments       = { blind  : '<li><a href="{{SUB_DEVICE_ID}}">{{SUB_DEVICE_NAME}}{{SUB_DEVICE_STATE}}<span>{{SUB_DEVICE_PERCENTAGE}}</span></li>',
