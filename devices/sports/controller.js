@@ -25,11 +25,11 @@ module.exports = (function () {
 
   /**
    * @author brian@bevey.org
-   * @requires fs, http
-   * @fileoverview Basic sports information, from ESPN.
+   * @requires fs, https
+   * @fileoverview Basic sports information from ESPN.
    */
   return {
-    version : 20180822,
+    version : 20190319,
 
     readOnly: true,
 
@@ -81,7 +81,7 @@ module.exports = (function () {
           util      = require(__dirname + '/../../lib/sharedUtil').util,
           fileName  = util.encodeName(util.sanitize(league) + '_' + (util.sanitize(team.abbreviation) || '') + '_' + theme) + '.png',
           filePath  = __dirname + '/../../images/sports/' + fileName,
-          http,
+          https,
           request,
           dataReply = '',
           image;
@@ -91,9 +91,9 @@ module.exports = (function () {
       }
 
       catch (catchErr) {
-        http = require('http');
+        https   = require('https');
 
-        request = http.request(imageUrl).on('response', function (response) {
+        request = https.request(imageUrl).on('response', function (response) {
                     response.setEncoding('binary');
 
                     response.on('data', function (response) {
@@ -131,19 +131,19 @@ module.exports = (function () {
         image = (theme === 'dark' && team.logoDark) ? team.logoDark : team.logo;
 
         if (team.type === 'team') {
-          parts = image.split('http://a.espncdn.com');
+          parts = image.split('https://a.espncdn.com');
         }
 
-        else if (image.indexOf('http://a.espncdn.com/combiner/i?img=') !== -1) {
-          parts = image.split('http://a.espncdn.com/combiner/i?img=');
+        else if (image.indexOf('https://a.espncdn.com/combiner/i?img=') !== -1) {
+          parts = image.split('https://a.espncdn.com/combiner/i?img=');
         }
 
         else {
           // Auto racing seems to come through differently
-          parts = image.split('http://a.espncdn.com/');
+          parts = image.split('https://a.espncdn.com/');
         }
 
-        path = this.cacheImage(league, team, theme, 'http://a1.espncdn.com/combiner/i?img=' + util.sanitize(parts[1]) + '&h=100&w=100', title);
+        path = this.cacheImage(league, team, theme, 'https://a1.espncdn.com/combiner/i?img=' + util.sanitize(parts[1]) + '&h=100&w=100', title);
       }
 
       return path;
@@ -244,7 +244,7 @@ module.exports = (function () {
 
     send : function (config) {
       var that      = this,
-          http      = require('http'),
+          https     = require('https'),
           language  = config.config.language || 'en',
           region    = config.config.region   || 'us',
           theme     = config.config.theme,
@@ -259,13 +259,13 @@ module.exports = (function () {
       sports.deviceId = config.device.deviceId;
       sports.host     = config.host     || 'site.api.espn.com';
       sports.path     = config.path     || '/apis/v2/scoreboard/header?lang=' + language + '&region=' + region;
-      sports.port     = config.port     || 80;
+      sports.port     = config.port     || 443;
       sports.method   = config.method   || 'GET';
       sports.callback = config.callback || function () {};
 
       console.log('\x1b[35m' + config.device.title + '\x1b[0m: Fetching device info');
 
-      request = http.request(this.postPrepare(sports), function (response) {
+      request = https.request(this.postPrepare(sports), function (response) {
                   response.setEncoding('utf8');
 
                   response.on('data', function (response) {
