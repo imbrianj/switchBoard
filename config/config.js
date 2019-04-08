@@ -343,30 +343,34 @@ exports.config = {
    * every request.
    *
    * You can use this site to look up any local webcams to use:
-   * http://www.leonardsworlds.com/traffic/traffic_camera_directory.htm
+   * https://www.leonardsworlds.com/traffic/traffic_camera_directory.htm
    * Simply right click on any standard .jpg image and "copy image URL".
    */
   traffic : {
     typeClass : 'traffic',
     title     : 'Traffic Cams',
-    cameras   : [{ title : 'I-5 &amp; Denny',           image : 'http://images.wsdot.wa.gov/nw/005vc16645.jpg' },
-                 { title : 'I-5 &amp; Pine',            image : 'http://images.wsdot.wa.gov/nw/005vc16607.jpg' },
-                 { title : 'I-5 &amp; Mercer',          image : 'http://images.wsdot.wa.gov/nw/005vc16702.jpg' },
-                 { title : 'I-5 &amp; Northgate',       image : 'http://images.wsdot.wa.gov/nw/005vc17277.jpg' },
-                 { title : 'I-5 &amp; Roanoke',         image : 'http://images.wsdot.wa.gov/nw/005vc16802.jpg' },
-                 { title : 'I-5 &amp; Yesler',          image : 'http://images.wsdot.wa.gov/nw/005vc16508.jpg' },
-                 { title : '99 &amp; S King',           image : 'http://images.wsdot.wa.gov/nw/099vc03072.jpg' },
-                 { title : 'Elliot &amp; Broad',        image : 'https://www.seattle.gov/trafficcams/images/Elliott_Broad.jpg' },
-                 { title : 'Stewart, Yale &amp; Denny', image : 'https://www.seattle.gov/trafficcams/images/Yale_Denny.jpg' },
-                 { title : '15th &amp; Emerson',        image : 'https://www.seattle.gov/trafficcams/images/15W_Emerson.jpg' },
-                 { title : 'SeaTac Airport',            image : 'http://archive.king5.com/weather/images/core/webcam/seatac.jpg' }],
+    cameras   : [{ title : '5th &amp; Pine',             image : 'https://www.seattle.gov/trafficcams/images/5_Pine_EW.jpg' },
+                 { title : '6th &amp; Lenora',           image : 'https://www.seattle.gov/trafficcams/images/6_Lenora_NS.jpg' },
+                 { title : '1st &amp; Broad',            image : 'https://www.seattle.gov/trafficcams/images/1_Broad_NS.jpg' },
+                 { title : '9th &amp; Mercer',           image : 'https://www.seattle.gov/trafficcams/images/9_N_Mercer_EW.jpg' },
+                 { title : 'Fairview &amp; Mercer',      image : 'https://www.seattle.gov/trafficcams/images/Fairview_Mercer_EW.jpg' },
+                 { title : 'I-5 &amp; Denny',            image : 'https://images.wsdot.wa.gov/nw/005vc16645.jpg' },
+                 { title : 'I-5 &amp; Pine',             image : 'https://images.wsdot.wa.gov/nw/005vc16607.jpg' },
+                 { title : 'I-5 &amp; Mercer',           image : 'https://images.wsdot.wa.gov/nw/005vc16702.jpg' },
+                 { title : 'I-5 &amp; Northgate',        image : 'https://images.wsdot.wa.gov/nw/005vc17277.jpg' },
+                 { title : 'I-5 &amp; Roanoke',          image : 'https://images.wsdot.wa.gov/nw/005vc16802.jpg' },
+                 { title : 'I-5 &amp; Yesler',           image : 'https://images.wsdot.wa.gov/nw/005vc16508.jpg' },
+                 { title : '99 &amp; Atlantic',          image : 'https://images.wsdot.wa.gov/nw/099vc03015.jpg' },
+                 { title : 'Tunnel North Portal',        image : 'https://images.wsdot.wa.gov/nw/099vc03271.jpg' },
+                 { title : 'Tunnel Northbound',          image : 'https://images.wsdot.wa.gov/nw/099vc03098.jpg' },
+                 { title : 'Tunnel Southbound',          image : 'https://images.wsdot.wa.gov/nw/099vc03188.jpg' }],
     disabled  : true
   },
 
   /*
    * View state of your MonoPrice Mini Select (or similar) 3d printer.
    * I've found it easiest to set up my printer via GCode:
-   * http://mpselectmini.com/wifi/g-code_file
+   * https://mpselectmini.com/wifi/g-code_file
    */
   monoPrice3dPrinter : {
     typeClass : 'monoPrice3dPrinter',
@@ -463,7 +467,7 @@ exports.config = {
   /*
    * SmartThings is a home automation system that integrates IP controlled,
    * Zigbee and Z-wave devices.  They allow OAuth control of their API.  Learn
-   * more at http://smartthings.com
+   * more at https://smartthings.com
    *
    * To use their OAuth API, you'll need to have an account on their site and
    * create the OAuth endpoint SmartApp:
@@ -637,7 +641,7 @@ exports.config = {
 
   /*
    * Use your Raspberry Pi GPIO pins to control lighting and devices via 434Mhz
-   * RF.  See http://xkonni.github.io/raspberry-remote/ for more details.
+   * RF.  See https://xkonni.github.io/raspberry-remote/ for more details.
    */
   raspberryRemote : {
     typeClass  : 'raspberryRemote',
