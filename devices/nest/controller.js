@@ -150,7 +150,7 @@ module.exports = (function () {
             auth.expire = new Date(response.expires_in).getTime();
             controller.config.auth = auth;
 
-            cache = fs.createWriteStream(__dirname + '/../../cache/nestAuth.json');
+            cache = fs.createWriteStream(__dirname + '/../../cache/nestAuth-' + controller.config.deviceId + '.json');
             cache.once('open', function () {
               console.log('\x1b[35m' + controller.config.title + '\x1b[0m: Auth data cached with URL');
 
@@ -440,7 +440,7 @@ module.exports = (function () {
           expired = true;
 
       if (typeof controller.config.username !== 'undefined' && controller.config.password !== 'undefined') {
-        fs.readFile(__dirname + '/../../cache/nestAuth.json', 'utf-8', function (err, data) {
+        fs.readFile(__dirname + '/../../cache/nestAuth-' + controller.config.deviceId + '.json', 'utf-8', function (err, data) {
           var runCommand  = require(__dirname + '/../../lib/runCommand');
 
           // We need to retrieve the auth token.
@@ -448,7 +448,8 @@ module.exports = (function () {
             that.getAuth({ device : { deviceId : controller.config.deviceId, username : controller.config.username, password : controller.config.password } }, controller);
           }
 
-          // If we have a presumed good auth token, we can populate the device list.
+          // If we have a presumed good auth token, we can populate the device
+          // list.
           else if (data) {
             try {
               controller.config.auth = JSON.parse(data);
@@ -537,7 +538,7 @@ module.exports = (function () {
 
               if (nestData) {
                 if (nestData.cmd === 'REINIT_STATE') {
-                  fs.unlink(__dirname + '/../../cache/nestAuth.json', function (err) {
+                  fs.unlink(__dirname + '/../../cache/nestAuth-' + nest.deviceId + '.json', function (err) {
                     if (err) {
                       nest.callback('Failed to remove expired auth');
                     }
