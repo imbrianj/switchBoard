@@ -1,14 +1,11 @@
 <!DOCTYPE html>
-<html lang="{{i18n_LANGUAGE}}" xmlns="http://www.w3.org/1999/html" class="theme-{{THEME}}"{{APP_CACHING}}>
+<html lang="{{i18n_LANGUAGE}}" class="theme-{{THEME}}"{{APP_CACHING}}>
   <head>
     <title>{{i18n_APPNAME}}</title>
     <link rel="stylesheet" href="/css/combo.min.css" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="icon" sizes="192x192" href="/images/icons/apple-touch-icon.png" />
     <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" />
-    <meta http-equiv="cache-control" content="no-cache" />
-    <meta http-equiv="pragma" content="no-cache" />
-    <meta http-equiv="content-language" content="{{i18n_LANGUAGE}}" />
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta name="description" content="SwitchBoard is a universal remote and home automation system" />
     <meta name="keywords" content="SwitchBoard, home automation, network, remote control" />
@@ -16,6 +13,7 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="manifest" href="/manifest.json" />
   </head>
   <body>
     <header data-string-inactive="{{i18n_INACTIVE}}" data-string-connected="{{i18n_CONNECTED}}" data-string-connecting="{{i18n_CONNECTING}}" data-string-disconnected="{{i18n_DISCONNECTED}}">
@@ -25,6 +23,6 @@
     <main data-string-on="{{i18n_ON}}" data-string-off="{{i18n_OFF}}" data-string-active="{{i18n_ACTIVE}}" data-string-inactive="{{i18n_INACTIVE}}">
       <h1>404: {{i18n_FILE_NOT_FOUND}}</h1>
     </main>
-    <script type="text/javascript" src="js/combo.min.js"></script>
+    <script src="js/combo.min.js"></script>
   </body>
 </html>
