@@ -114,7 +114,7 @@ SB.spec = (function () {
         markup         = SB.spec.uiComponents.templates[state.typeClass].markup;
         selected       = SB.hasClass(node, 'selected') ? ' selected' : '';
         oldMarkup      = node.cloneNode(true);
-        deviceHeader   = SB.getByTag('h1', oldMarkup)[0];
+        deviceHeader   = SB.getByTag('h2', oldMarkup)[0];
         deviceHeader.parentNode.removeChild(deviceHeader);
         oldInnerMarkup = oldMarkup.innerHTML;
 
@@ -128,7 +128,7 @@ SB.spec = (function () {
           if (SB.hasClass(node,  'device-off')) {
             SB.removeClass(node, 'device-off');
             SB.addClass(node,    'device-on');
-            SB.putText(SB.getByTag('em', SB.getByTag('h1', node)[0])[0], SB.spec.strings.ACTIVE);
+            SB.putText(SB.getByTag('em', SB.getByTag('h2', node)[0])[0], SB.spec.strings.ACTIVE);
           }
         }
 
@@ -138,7 +138,7 @@ SB.spec = (function () {
           if (SB.hasClass(node,  'device-on')) {
             SB.removeClass(node, 'device-on');
             SB.addClass(node,    'device-off');
-            SB.putText(SB.getByTag('em', SB.getByTag('h1', node)[0])[0], SB.spec.strings.INACTIVE);
+            SB.putText(SB.getByTag('em', SB.getByTag('h2', node)[0])[0], SB.spec.strings.INACTIVE);
           }
         }
 
@@ -169,7 +169,7 @@ SB.spec = (function () {
         if (markup) {
           innerMarkup.innerHTML = markup;
           innerMarkup  = SB.getByTag('section', innerMarkup)[0];
-          deviceHeader = SB.getByTag('h1', innerMarkup)[0];
+          deviceHeader = SB.getByTag('h2', innerMarkup)[0];
           deviceHeader.parentNode.removeChild(deviceHeader);
 
           if (innerMarkup.innerHTML !== oldInnerMarkup) {

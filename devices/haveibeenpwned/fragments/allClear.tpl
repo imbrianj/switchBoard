@@ -1,2 +1,2 @@
 
-            <h2>{{HAVEIBEENPWNED_ALL_CLEAR}}</h2>
+            <h3>{{HAVEIBEENPWNED_ALL_CLEAR}}</h3>

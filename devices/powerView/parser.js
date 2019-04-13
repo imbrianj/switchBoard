@@ -81,7 +81,7 @@
         for (j; j < value.scenes.length; j += 1) {
           scene = value.scenes[j];
 
-          scenesMarkup += templateScene.split('{{SCENE_NAME_COMMAND}}').join(scene.name);
+          scenesMarkup += templateScene.split('{{SCENE_NAME_COMMAND}}').join(scene.name.split(' ').join('+'));
           scenesMarkup  = scenesMarkup.split('{{SCENE_NAME}}').join(scene.name);
           scenesMarkup  = scenesMarkup.split('{{SCENE_ICON}}').join(scene.icon);
         }

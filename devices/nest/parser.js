@@ -118,7 +118,7 @@
               }
             }
 
-            thermostatMarkup = thermostatMarkup + templateThermostat.split('{{SUB_DEVICE_ID}}').join(encodeName(device.label));
+            thermostatMarkup = thermostatMarkup + templateThermostat.split('{{SUB_DEVICE_ID}}').join(device.label.split(' ').join('+'));
             thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_NAME}}').join(device.label);
             thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_MAX}}').join(Math.round(device.celsius ? fToC(thermostatMax) : thermostatMax));
             thermostatMarkup = thermostatMarkup.split('{{SUB_DEVICE_MIN}}').join(Math.round(device.celsius ? fToC(thermostatMin) : thermostatMin));

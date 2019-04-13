@@ -53,7 +53,7 @@ exports.powerViewParserTest = {
     test.notStrictEqual(goodMarkup.indexOf('<li><a href="living_room">Living Room (55%)<span>0</span></li>'), -1, 'Device name and values validated 1');
     test.notStrictEqual(goodMarkup.indexOf('<li><a href="office">Office<span>100</span></li>'),               -1, 'Device name and values validated 2');
     test.notStrictEqual(goodMarkup.indexOf('<li><a href="bedroom">Bedroom<span>50</span></li>'),              -1, 'Device name and values validated 3');
-    test.notStrictEqual(goodMarkup.indexOf('<li><a href="All Up">All Up <span>arrow-up</span></li><li><a href="All Down">All Down <span>arrow-down</span></li>'), -1, 'Scene markup validated');
+    test.notStrictEqual(goodMarkup.indexOf('<li><a href="All+Up">All Up <span>arrow-up</span></li><li><a href="All+Down">All Down <span>arrow-down</span></li>'), -1, 'Scene markup validated');
 
     test.done();
   }

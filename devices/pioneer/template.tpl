@@ -1,6 +1,6 @@
 
       <section id="{{DEVICE_ID}}" class="{{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
-        <h1>{{i18n_PIONEER}} <em>{{DEVICE_ACTIVE}}</em></h1>
+        <h2>{{i18n_PIONEER}} <em>{{DEVICE_ACTIVE}}</em></h2>
         <div class="shortcuts">
           <ul>
             <li><a href="/?{{DEVICE_ID}}=Power" class="fa fa-power-off" title="{{i18n_POWER}}"><span>{{i18n_POWER}}</span></a></li>

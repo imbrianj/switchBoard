@@ -1,6 +1,6 @@
 
       <section id="{{DEVICE_ID}}" class="{{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
-        <h1>{{i18n_GERTY}} <em>{{DEVICE_ACTIVE}}</em></h1>
+        <h2>{{i18n_GERTY}} <em>{{DEVICE_ACTIVE}}</em></h2>
         <div class="emoji" role="button"><span{{GERTY_ACTION}}>{{GERTY_DYNAMIC}}</span></div>
         <div class="text" role="log">
           <ol class="dialog">

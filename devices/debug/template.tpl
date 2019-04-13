@@ -1,6 +1,6 @@
 
       <section id="{{DEVICE_ID}}" class="{{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}">
-        <h1>{{i18n_DEBUG}} <em>{{DEVICE_ACTIVE}}</em></h1>
+        <h2>{{i18n_DEBUG}} <em>{{DEVICE_ACTIVE}}</em></h2>
         <ul class="text-block">
           <li><span>{{i18n_LAST_UPDATE}}:</span> {{DEBUG_UPDATE}}</li>
           <li><span>{{i18n_UPTIME}}:</span> {{DEBUG_UPTIME}}</li>

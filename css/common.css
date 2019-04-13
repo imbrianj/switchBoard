@@ -592,13 +592,13 @@ section {
   display: inline-block;
 }
 
-section h1 {
+section h2 {
   height: 0;
   overflow: hidden;
   text-indent: -999em;
 }
 
-section .text-block h1 {
+section .text-block h2 {
   height: auto;
   text-indent: 0;
 }
@@ -724,16 +724,16 @@ section .text-block p {
   padding: 0.5em 0;
 }
 
-section .text-block h2 {
+section .text-block h3 {
   font-weight: bold;
 }
 
-section .text-block h2,
+section .text-block h3,
 section .text-block li {
   margin: 0.5em 0;
 }
 
-section .text-block h2 .fa,
+section .text-block h3 .fa,
 section .text-block li .fa {
   margin-right: 0.5em;
 }
@@ -743,7 +743,7 @@ section .state-err .fa {
   color: #F00;
 }
 
-section .text-block h2 .fa,
+section .text-block h3 .fa,
 section .text-block li.gain .fa,
 section .state-ok .fa {
   color: #0078E7;
@@ -755,7 +755,7 @@ section .text-block li .name {
 }
 
 section .text-list li,
-section .text-list li h2 {
+section .text-list li h3 {
   margin: 0.5em 0;
 }
 
@@ -939,6 +939,11 @@ section .installed-list li img {
   max-height: 150px;
   max-width: 100%;
   width: 250px;
+}
+
+section .image-list li dt,
+section .video-list li dt {
+  padding-bottom: 1em;
 }
 
 section .image-list li img,
@@ -1571,8 +1576,8 @@ section .text-list .text-group li {
   padding: 0.4em .1em;
 }
 
-section .sub-device-list h2,
-section .sub-device-group h2,
+section .sub-device-list h3,
+section .sub-device-group h3,
 section .sub-device-group dt {
   font-size: 50%;
   margin-bottom: 0.5em;
@@ -1855,7 +1860,7 @@ section:target {
   display: block;
 }
 
-.dashboard section h1 {
+.dashboard section h2 {
   font-size: 50%;
   height: auto;
   overflow: visible;
@@ -2056,7 +2061,7 @@ header nav li.screenSaver {
 
 @media (max-width: 500px) {
   header h1,
-  .nest .sub-device-list h2 {
+  .nest .sub-device-list h3 {
     display: none;
   }
 

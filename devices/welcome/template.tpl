@@ -1,7 +1,7 @@
 
       <section id="{{DEVICE_ID}}" class="{{DEVICE_TYPE}}{{DEVICE_SELECTED}}">
         <div class="text-block">
-          <h1>{{i18n_HEADER}}</h1>
+          <h2>{{i18n_HEADER}}</h2>
           <p>
             {{i18n_SUCCESS}}
           </p>

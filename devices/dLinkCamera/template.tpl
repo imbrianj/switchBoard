@@ -1,6 +1,6 @@
 
       <section id="{{DEVICE_ID}}" class="{{DEVICE_TYPE}}{{DEVICE_SELECTED}}{{DEVICE_STATE}}" data-string-camera_armed="{{i18n_CAMERA_ARMED}}" data-string-camera_disarmed="{{i18n_CAMERA_DISARMED}}" data-string-photo="{{i18n_PHOTO}}" data-string-screenshot="{{i18n_SCREENSHOT}}" data-string-thumbnail="{{i18n_THUMBNAIL}}" data-string-video="{{i18n_VIDEO}}">
-        <h1>{{i18n_DLINKCAMERA}} <em>{{DEVICE_ACTIVE}}</em></h1>
+        <h2>{{i18n_DLINKCAMERA}} <em>{{DEVICE_ACTIVE}}</em></h2>
         <div class="control-block">
           <div class="presets">
             <ol>

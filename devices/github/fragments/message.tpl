@@ -1,2 +1,2 @@
 
-            <h2>{{GITHUB_MESSAGE}}</h2>
+            <h3>{{GITHUB_MESSAGE}}</h3>
