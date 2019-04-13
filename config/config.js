@@ -18,7 +18,7 @@ exports.config = {
     macroPause   : 1500,
     pollMinutes  : 5,
     pollSeconds  : 15,
-    localTimeout : 1500,
+    localTimeout : 5000,
     // Your SSL key and SCR will be generated for you.  If you want to use one
     // you've manually created, drop "ssl.key" and "ssl.csr" into /cache/.
     //
@@ -62,7 +62,7 @@ exports.config = {
       // increase it to see fewer.
       // Hint: the higher the number, the more accurate (but fewer) actions will
       // take place.
-      minimumThreshold     : 25,
+      minimumThreshold     : 15,
       // Percentage confidence before an action will take place.  By default,
       // only take action if we're 85% or more certain it's a desired behavior.
       // Hint: the higher the number, the more accurate (but fewer) actions will
