@@ -31,7 +31,7 @@
         </div>
 
         <div class="preview-image">
-          <img {{LAZY_LOAD_IMAGE}}="{{DLINKCAMERA_DYNAMIC}}" alt="{{DEVICE_ID}}" class="streaming" />
+          <img {{LAZY_LOAD_IMAGE}}="{{DLINKCAMERA_DYNAMIC}}" {{LAZY_PLACEHOLDER_IMAGE}}="/images/loading.gif" alt="{{DEVICE_ID}}" class="streaming" />
         </div>
 
         <div class="image-list">

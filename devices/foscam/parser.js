@@ -127,6 +127,7 @@
       videoList       = SB.getByTag('ol', videoListParent)[0];
 
       markup = markup.split('{{LAZY_LOAD_IMAGE}}').join('data-src');
+      markup = markup.split('{{LAZY_PLACEHOLDER_IMAGE}}').join('data-placeholder-image');
 
       arm    = SB.getByClass('fa-lock',   SB.get(deviceId), 'a')[0];
       disarm = SB.getByClass('fa-unlock', SB.get(deviceId), 'a')[0];
@@ -146,6 +147,7 @@
           tempPhotoMarkup = tempPhotoMarkup.split('{{LAZY_LOAD_IMAGE}}').join('data-src');
         }
 
+        tempPhotoMarkup = tempPhotoMarkup.split('{{LAZY_PLACEHOLDER_IMAGE}}').join('data-placeholder-src');
         photoListParent.innerHTML = tempPhotoMarkup;
       }
 
@@ -164,6 +166,7 @@
           tempVideoMarkup = tempVideoMarkup.split('{{LAZY_LOAD_IMAGE}}').join('data-src');
         }
 
+        tempPhotoMarkup = tempPhotoMarkup.split('{{LAZY_PLACEHOLDER_IMAGE}}').join('data-placeholder-image');
         videoListParent.innerHTML = tempVideoMarkup;
       }
 

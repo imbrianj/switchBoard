@@ -1210,7 +1210,6 @@ section .media a.blue {
 }
 
 section .preview-image {
-  background: #000 no-repeat url(../images/loading.gif) center;
   position: relative;
 }
 

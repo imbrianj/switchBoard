@@ -31,7 +31,7 @@ SB.spec = (function () {
   'use strict';
 
   return {
-    version : 20170414,
+    version : 20190414,
 
     state     : {},
     parsers   : {},
@@ -159,10 +159,12 @@ SB.spec = (function () {
 
           if (selected) {
             markup = markup.split('{{LAZY_LOAD_IMAGE}}').join('src');
+            markup = markup.split('{{LAZY_PLACEHOLDER_IMAGE}}').join('data-placeholder-src');
           }
 
           else {
             markup = markup.split('{{LAZY_LOAD_IMAGE}}').join('data-src');
+            markup = markup.split('{{LAZY_PLACEHOLDER_IMAGE}}').join('src');
           }
         }
 
@@ -448,8 +450,10 @@ SB.spec = (function () {
         elms    = images.concat(iframes);
 
         for (i; i < elms.length; i += 1) {
-          if ((elms[i].getAttribute('data-src')) && (!elms[i].src)) {
+          if ((elms[i].getAttribute('data-src')) && (!elms[i].getAttribute('data-placeholder-src'))) {
+            elms[i].setAttribute('data-placeholder-src', elms[i].src);
             elms[i].src = elms[i].getAttribute('data-src');
+            elms[i].removeAttribute('data-src');
           }
         }
       }
@@ -474,9 +478,13 @@ SB.spec = (function () {
         elms    = images.concat(iframes);
 
         for (i = 0; i < elms.length; i += 1) {
-          if ((elms[i].getAttribute('src')) && ((SB.hasClass(elms[i], 'streaming')) || (elms[i].tagName === 'IFRAME'))) {
+          if (elms[i].getAttribute('src')) {
             elms[i].setAttribute('data-src', elms[i].src);
-            elms[i].removeAttribute('src');
+
+            if (SB.hasClass(elms[i], 'streaming')) {
+              elms[i].src = elms[i].getAttribute('data-placeholder-src');
+              elms[i].removeAttribute('data-placeholder-src');
+            }
           }
         }
       }

@@ -127,6 +127,7 @@
       videoList       = SB.getByTag('ol', videoListParent)[0];
 
       markup = markup.split('{{LAZY_LOAD_IMAGE}}').join('data-src');
+      markup = markup.split('{{LAZY_PLACEHOLDER_IMAGE}}').join('data-placeholder-image');
 
       arm    = SB.getByClass('fa-lock',   SB.get(deviceId), 'a')[0];
       disarm = SB.getByClass('fa-unlock', SB.get(deviceId), 'a')[0];
@@ -140,10 +141,12 @@
         // have to explicitly set the lazyload property.
         if (SB.hasClass(SB.getByClass('selected', null, 'li')[0], deviceId)) {
           tempPhotoMarkup = tempPhotoMarkup.split('{{LAZY_LOAD_IMAGE}}').join('src');
+          tempPhotoMarkup = tempPhotoMarkup.split('{{LAZY_PLACEHOLDER_IMAGE}}').join('data-placeholder-src');
         }
 
         else {
           tempPhotoMarkup = tempPhotoMarkup.split('{{LAZY_LOAD_IMAGE}}').join('data-src');
+          tempPhotoMarkup = tempPhotoMarkup.split('{{LAZY_PLACEHOLDER_IMAGE}}').join('src');
         }
 
         photoListParent.innerHTML = tempPhotoMarkup;
@@ -158,10 +161,12 @@
         // have to explicitly set the lazyload property.
         if (SB.hasClass(SB.getByClass('selected', null, 'li')[0], deviceId)) {
           tempVideoMarkup = tempVideoMarkup.split('{{LAZY_LOAD_IMAGE}}').join('src');
+          tempVideoMarkup = tempVideoMarkup.split('{{LAZY_PLACEHOLDER_IMAGE}}').join('data-placeholder-src');
         }
 
         else {
           tempVideoMarkup = tempVideoMarkup.split('{{LAZY_LOAD_IMAGE}}').join('data-src');
+          tempVideoMarkup = tempVideoMarkup.split('{{LAZY_PLACEHOLDER_IMAGE}}').join('src');
         }
 
         videoListParent.innerHTML = tempVideoMarkup;

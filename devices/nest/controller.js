@@ -347,16 +347,17 @@ module.exports = (function () {
      * specific to one thermostat.
      */
     getDevicePath : function (config) {
-      var deviceState = require(__dirname + '/../../lib/deviceState'),
-          util        = require(__dirname + '/../../lib/sharedUtil').util,
-          nestState   = deviceState.getDeviceState(config.deviceId),
-          celsius     = !!config.config.celsius,
-          subdevices  = {},
-          commandType = '',
-          valueParts  = [],
-          value       = '',
-          command     = config.command,
-          subdevice   = config.subdevice;
+      var deviceState    = require(__dirname + '/../../lib/deviceState'),
+          util           = require(__dirname + '/../../lib/sharedUtil').util,
+          nestState      = deviceState.getDeviceState(config.deviceId),
+          celsius        = !!config.config.celsius,
+          subdevices     = {},
+          commandType    = '',
+          valueParts     = [],
+          value          = '',
+          command        = config.command,
+          subdevice      = config.subdevice,
+          subdeviceParts = subdevice.split('-');
 
       // We can only send commands to thermostats.
       if ((nestState.value) && (nestState.value.devices)) {
@@ -392,7 +393,7 @@ module.exports = (function () {
           commandType = 'mode';
         }
 
-        else if (subdevice.indexOf('temp-') === 0) {
+        else if ((subdeviceParts[1]) && (!isNaN(subdeviceParts[1]))) {
           commandType = 'temp';
         }
       }
