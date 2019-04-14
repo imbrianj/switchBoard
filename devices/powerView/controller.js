@@ -31,7 +31,7 @@ module.exports = (function () {
    *       http://forum.universal-devices.com/topic/16538-hunter-douglas-powerView-control-with-isy/
    */
   return {
-    version : 20190405,
+    version : 20190414,
 
     inputs  : ['command', 'list', 'subdevice', 'text'],
 
@@ -139,6 +139,8 @@ module.exports = (function () {
                                  values.push({ blindId    : devices[i].id,
                                                percentage : action,
                                                label      : devices[i].label });
+
+                                 deviceState.updateFreshness(conf.deviceId, devices[i].label);
                                }
                              }
 
@@ -252,23 +254,27 @@ module.exports = (function () {
      * values, then return the array in a format we desire.
      */
     findBlinds : function (rawBlinds, deviceId, order) {
-      var util    = require(__dirname + '/../../lib/sharedUtil').util,
-          devices = [],
+      var util        = require(__dirname + '/../../lib/sharedUtil').util,
+          deviceState = require(__dirname + '/../../lib/deviceState'),
+          devices     = [],
           device,
+          label,
           i;
 
       for (i in rawBlinds.shadeData) {
         if ((rawBlinds.shadeData[i]) && (rawBlinds.shadeData[i].id)) {
           device = this.findBlindState(rawBlinds.shadeData[i].id, deviceId);
+          label  = util.sanitize(new Buffer.from(rawBlinds.shadeData[i].name, 'base64').toString());
 
           devices.push({
             id           : parseInt(util.sanitize(rawBlinds.shadeData[i].id), 10),
-            label        : util.sanitize(new Buffer.from(rawBlinds.shadeData[i].name, 'base64').toString()),
+            label        : label,
             battery      : this.valueToPercent(parseInt(util.sanitize(rawBlinds.shadeData[i].batteryStrength), 10), 130, 168),
             batteryIsLow : util.sanitize(rawBlinds.shadeData[i].batteryIsLow),
             // The API does not appear reliable in offering percentage
             // information, so we'll prioritize our own stored value first.
-            state        : device.state || rawBlinds.shadeData[i].positions ? this.valueToPercent(parseInt(rawBlinds.shadeData[i].positions.position1, 10), 0) : 0
+            state        : device.state || rawBlinds.shadeData[i].positions ? this.valueToPercent(parseInt(rawBlinds.shadeData[i].positions.position1, 10), 0) : 0,
+            lastOn       : deviceState.getSubdeviceUpdate(deviceId, label, 'lastOn')
           });
         }
       }

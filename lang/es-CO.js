@@ -415,6 +415,7 @@ module.exports = (function () {
           NEST               : "Nest",
           AWAY               : "Afuera de Casa",
           BASEMENT           : "Sótano",
+          BATHROOM           : "Baño",
           BATT               : "Batería",
           BEDROOM            : "Cuarto",
           CO                 : "CO",

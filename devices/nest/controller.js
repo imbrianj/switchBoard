@@ -29,7 +29,7 @@ module.exports = (function () {
    * @requires querystring, fs, https
    */
   return {
-    version : 20180307,
+    version : 20190414,
 
     inputs : ['command', 'text', 'list', 'subdevice'],
 
@@ -107,6 +107,7 @@ module.exports = (function () {
       var translate = require(__dirname + '/../../lib/translate'),
           key       = id ? id.replace('00000000-0000-0000-0000-0001000000', '') : 'xx',
           keymap    = { '01' : 'BASEMENT',
+                        '09' : 'BATHROOM',
                         '0d' : 'BEDROOM',
                         '03' : 'DEN',
                         '10' : 'DINING_ROOM',
@@ -184,8 +185,8 @@ module.exports = (function () {
 
                           if ((devices) && (devices[i])) {
                             // It's likely that the array structure is the same.
-                            // In that case, we can just quickly validate it's the
-                            // same and pass that along.
+                            // In that case, we can just quickly validate it's
+                            // the same and pass that along.
                             if (device.serial === devices[i].serial) {
                               found = devices[i];
                             }
@@ -250,6 +251,35 @@ module.exports = (function () {
             }
           }
 
+          // "device" contains only thermostats.
+          for (i in response.device) {
+            if ((response.device[i]) && (response.device[i].serial_number)) {
+              matched = findByName(response.device, i);
+
+              thermostats.push({
+                serial        : response.device[i].serial_number,
+                state         : response.shared[response.device[i].serial_number].target_temperature_type,
+                active        : response.shared[response.device[i].serial_number].hvac_heater_state ? 'heat' : response.shared[response.device[i].serial_number].hvac_ac_state ? 'cool' : 'off',
+                fanMode       : response.device[i].fan_mode,
+                humidity      : response.device[i].current_humidity,
+                temp          : celsius ? response.shared[response.device[i].serial_number].current_temperature : util.cToF(response.shared[response.device[i].serial_number].current_temperature),
+                target        : celsius ? response.shared[response.device[i].serial_number].target_temperature  : util.cToF(response.shared[response.device[i].serial_number].target_temperature),
+                timeToTarget  : response.device[i].time_to_target,
+                leaf          : response.device[i].leaf,
+                label         : that.findLabel(response.device[i].where_id),
+                type          : 'thermostat',
+                lastReportOn  : matched.lastOn,
+                lastReportOff : matched.lastOff,
+                duration      : matched.duration,
+                celsius       : celsius,
+                lastOn        : deviceState.getSubdeviceUpdate(config.deviceId, that.findLabel(response.device[i].where_id), 'lastOn'),
+                lastOff       : deviceState.getSubdeviceUpdate(config.deviceId, that.findLabel(response.device[i].where_id), 'lastOff')
+              });
+            }
+          }
+
+          thermostats.sort(sortByTitle);
+
           // "topaz" contains only smoke detectors.
           for (i in response.topaz) {
             if ((response.topaz[i]) && (response.topaz[i].serial_number)) {
@@ -272,34 +302,7 @@ module.exports = (function () {
 
           protects.sort(sortByTitle);
 
-          // "device" contains only thermostats.
-          for (i in response.device) {
-            if ((response.device[i]) && (response.device[i].serial_number)) {
-              matched = findByName(response.device, i);
-
-              thermostats.push({
-                serial       : response.device[i].serial_number,
-                state        : response.shared[response.device[i].serial_number].target_temperature_type,
-                active       : response.shared[response.device[i].serial_number].hvac_heater_state ? 'heat' : response.shared[response.device[i].serial_number].hvac_ac_state ? 'cool' : 'off',
-                fanMode      : response.device[i].fan_mode,
-                humidity     : response.device[i].current_humidity,
-                temp         : celsius ? response.shared[response.device[i].serial_number].current_temperature : util.cToF(response.shared[response.device[i].serial_number].current_temperature),
-                target       : celsius ? response.shared[response.device[i].serial_number].target_temperature  : util.cToF(response.shared[response.device[i].serial_number].target_temperature),
-                timeToTarget : response.device[i].time_to_target,
-                leaf         : response.device[i].leaf,
-                label        : that.findLabel(response.device[i].where_id),
-                type         : 'thermostat',
-                lastOn       : matched.lastOn,
-                lastOff      : matched.lastOff,
-                duration     : matched.duration,
-                celsius      : celsius
-              });
-            }
-          }
-
-          thermostats.sort(sortByTitle);
-
-          nest.devices = protects.concat(thermostats);
+          nest.devices = thermostats.concat(protects);
 
           callback(null, nest);
         }
@@ -408,6 +411,7 @@ module.exports = (function () {
           switch (commandType) {
             case 'mode' :
               if ((value === 'off') || (value === 'heat') || (value === 'cool')) {
+                deviceState.updateFreshness(config.deviceId, subdevice[0].label, value === 'off' ? 'lastOff' : 'lastOn');
                 config.path = '/v2/put/shared.' + subdevice[0].serial;
                 config.args = { target_change_pending : true, target_temperature_type : value };
               }
@@ -416,6 +420,7 @@ module.exports = (function () {
             case 'temp' :
               if (!isNaN(value)) {
                 if (((celsius ? util.cToF(value) : value) >= 50) && ((celsius ? util.cToF(value) : value) <= 90)) {
+                  deviceState.updateFreshness(config.deviceId, subdevice[0].label, 'lastOn');
                   config.path = '/v2/put/shared.' + subdevice[0].serial;
                   config.args = { target_change_pending : true, target_temperature : celsius ? value : util.fToC(value) };
                 }
