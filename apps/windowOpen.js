@@ -32,7 +32,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20161101,
+    version : 20190415,
 
     governor : false,
 
@@ -131,7 +131,7 @@ module.exports = (function () {
               if (controllers[currDevice].config) {
                 if (controllers[currDevice].config.typeClass === 'nest') {
                   for (i; i < status.thermostat.length; i += 1) {
-                    runCommand.runCommand(currDevice, 'subdevice-mode-' + status.thermostat[i].label + '-off');
+                    runCommand.runCommand(currDevice, 'subdevice-' + status.thermostat[i].label + '-off');
                   }
 
                   message = that.formatMessage('off', status.contact, status.thermostat[0].state, controllers.config.language);

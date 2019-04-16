@@ -239,7 +239,9 @@ module.exports = (function () {
         var nest        = { devices : [] },
             protects    = [],
             thermostats = [],
+            currState,
             matched,
+            matchedLabel,
             i;
 
         if (response) {
@@ -254,22 +256,32 @@ module.exports = (function () {
           // "device" contains only thermostats.
           for (i in response.device) {
             if ((response.device[i]) && (response.device[i].serial_number)) {
-              matched = findByName(response.device, i);
+              matched      = findByName(response.device, i);
+              matchedLabel = that.findLabel(response.device[i].where_id);
+              currState    = { state  : response.shared[response.device[i].serial_number].hvac_heater_state ? 'heat' : response.shared[response.device[i].serial_number].hvac_ac_state ? 'cool' : 'off',
+                               target : celsius ? response.shared[response.device[i].serial_number].target_temperature  : util.cToF(response.shared[response.device[i].serial_number].target_temperature) };
+
+              // If the stored state differs from the API, a change probably
+              // happened on another device.  We should update that state and
+              // update the freshness to prevent immediate follow-up actions.
+              if ((matched.state !== currState) || (matched.target !== currState.target)) {
+                deviceState.updateFreshness(config.deviceId, matchedLabel, currState.state === 'off' ? 'lastOff' : 'lastOn');
+              }
 
               thermostats.push({
                 serial        : response.device[i].serial_number,
                 state         : response.shared[response.device[i].serial_number].target_temperature_type,
-                active        : response.shared[response.device[i].serial_number].hvac_heater_state ? 'heat' : response.shared[response.device[i].serial_number].hvac_ac_state ? 'cool' : 'off',
+                active        : currState.state,
                 fanMode       : response.device[i].fan_mode,
                 humidity      : response.device[i].current_humidity,
                 temp          : celsius ? response.shared[response.device[i].serial_number].current_temperature : util.cToF(response.shared[response.device[i].serial_number].current_temperature),
-                target        : celsius ? response.shared[response.device[i].serial_number].target_temperature  : util.cToF(response.shared[response.device[i].serial_number].target_temperature),
+                target        : currState.target,
                 timeToTarget  : response.device[i].time_to_target,
                 leaf          : response.device[i].leaf,
                 label         : that.findLabel(response.device[i].where_id),
                 type          : 'thermostat',
-                lastReportOn  : matched.lastOn,
-                lastReportOff : matched.lastOff,
+                lastReportOn  : deviceState.getSubdeviceUpdate(config.deviceId, matchedLabel, 'lastOn'),
+                lastReportOff : deviceState.getSubdeviceUpdate(config.deviceId, matchedLabel, 'lastOff'),
                 duration      : matched.duration,
                 celsius       : celsius,
                 lastOn        : deviceState.getSubdeviceUpdate(config.deviceId, that.findLabel(response.device[i].where_id), 'lastOn'),
@@ -389,7 +401,10 @@ module.exports = (function () {
           config.args = { fan_mode : 'auto' };
         }
 
-        else if (subdevice.indexOf('mode-') === 0) {
+        else if ((subdeviceParts[1]) &&
+                  ((subdeviceParts[1] === 'off')  ||
+                   (subdeviceParts[1] === 'cool') ||
+                   (subdeviceParts[1] === 'heat'))) {
           commandType = 'mode';
         }
 

@@ -29,7 +29,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20180312,
+    version : 20190415,
 
     /**
      * Take in a typeClass and return the type of device it's categorized as.
@@ -396,11 +396,11 @@ module.exports = (function () {
                 case 'nest' :
                   if (commands[i].action) {
                     if (!isNaN(commands[i].action)) {
-                      commands[i].action = 'subdevice-temp-' + devices[i].subdevice + '-' + commands[i].action;
+                      commands[i].action = 'subdevice-' + devices[i].subdevice + '-' + commands[i].action;
                     }
 
                     else {
-                      commands[i].action = 'subdevice-mode-' + devices[i].subdevice + '-' + commands[i].action.toLowerCase();
+                      commands[i].action = 'subdevice-' + devices[i].subdevice + '-' + commands[i].action.toLowerCase();
                     }
                   }
                 break;

@@ -4,9 +4,9 @@
                     <dt>{{SUB_DEVICE_NAME}} <em>{{SUB_DEVICE_STATUS}}</em></dt>
                     <dd class="control-block full icon">
                       <div class="mode">
-                        <a href="/?{{DEVICE_ID}}=subdevice-mode-{{SUB_DEVICE_ID}}-heat" class="fa fa-sun-o{{DEVICE_STATE_HEAT}}" title="{{i18n_HEAT}}"><span>{{i18n_HEAT}}</span></a>
-                        <a href="/?{{DEVICE_ID}}=subdevice-mode-{{SUB_DEVICE_ID}}-off" class="fa fa-power-off" title="{{i18n_POWER_OFF}}"><span>{{i18n_POWER_OFF}}</span></a>
-                        <a href="/?{{DEVICE_ID}}=subdevice-mode-{{SUB_DEVICE_ID}}-cool" class="fa fa-snowflake-o{{DEVICE_STATE_COOL}}" title="{{i18n_COOL}}"><span>{{i18n_COOL}}</span></a>
+                        <a href="/?{{DEVICE_ID}}=subdevice-{{SUB_DEVICE_ID}}-heat" class="fa fa-sun-o{{DEVICE_STATE_HEAT}}" title="{{i18n_HEAT}}"><span>{{i18n_HEAT}}</span></a>
+                        <a href="/?{{DEVICE_ID}}=subdevice-{{SUB_DEVICE_ID}}-off" class="fa fa-power-off" title="{{i18n_POWER_OFF}}"><span>{{i18n_POWER_OFF}}</span></a>
+                        <a href="/?{{DEVICE_ID}}=subdevice-{{SUB_DEVICE_ID}}-cool" class="fa fa-snowflake-o{{DEVICE_STATE_COOL}}" title="{{i18n_COOL}}"><span>{{i18n_COOL}}</span></a>
                       </div>
                       <div class="navigation">
                         <span class="fa fa-leaf{{DEVICE_STATE_LEAF}}" title="{{i18n_LEAF}}"><span>{{i18n_LEAF}}</span></span>

@@ -31,7 +31,7 @@
    'use strict';
 
    return {
-     version : 20180922,
+     version : 20190415,
 
      translate : function (token, lang) {
        var translate = require(__dirname + '/../../lib/translate');
@@ -67,7 +67,7 @@
            message          = '',
            status;
 
-       if ((commandParts.length === 4) && (command.indexOf('subdevice-mode-' === 0))) {
+       if ((commandParts.length === 4) && (command.indexOf('subdevice-' === 0))) {
          commandSubdevice = commandParts[2];
          commandType = commandParts[3];
        }
