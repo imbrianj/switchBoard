@@ -155,6 +155,7 @@ exports.sharedUtilTest = {
 
     test.strictEqual(util.safeGet({ foo : 'dog' },                                  ['foo']),               'dog', 'Simple path');
     test.strictEqual(util.safeGet({ foo : { fam : { fiz : 'dog' } } },              ['foo', 'fam', 'fiz']), 'dog', 'Longer path');
+    test.strictEqual(util.safeGet({ foo : { fam : [false] } },                      ['foo', 'fam', 0]),     false, 'Falsey path and value');
     test.strictEqual(util.safeGet({ foo : 'bad', fam : { fam : { foo : 'dog' } } }, ['fam', 'fam', 'foo']), 'dog', 'Repeated property');
 
     test.done();
