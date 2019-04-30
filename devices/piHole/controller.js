@@ -33,7 +33,7 @@ module.exports = (function () {
 
     readOnly: true,
 
-    inputs  : ['list'],
+    inputs  : ['state'],
 
     /**
      * Prepare a request for command execution.
