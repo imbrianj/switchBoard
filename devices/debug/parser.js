@@ -62,16 +62,17 @@
           return time;
         },
         displayRelativeTime = function (milliseconds) {
-          var util,
+          var seconds = milliseconds / 1000,
+              util,
               time;
 
           if ((typeof SB === 'object') && (typeof SB.util === 'object')) {
-            time = SB.util.displayRelativeTime(milliseconds);
+            time = SB.util.displayRelativeTime(seconds);
           }
 
           else {
             util = require(__dirname + '/../../lib/sharedUtil').util;
-            time = util.displayRelativeTime(milliseconds);
+            time = util.displayRelativeTime(seconds);
           }
 
           return time;
@@ -80,7 +81,7 @@
 
     if (value) {
       uptime        = displayRelativeTime(value.uptime);
-      runtime       = displayRelativeTime((now - value.startup) / 1000);
+      runtime       = displayRelativeTime(now - value.startup);
       memoryUsed    = value.memoryUsed;
       systemMemory  = value.totalMemory;
       memoryPercent = value.percentMemory;
@@ -89,15 +90,15 @@
       temperature   = value.temperature ? value.temperature : temperature;
     }
 
-    markup = markup.replace('{{DEBUG_UPDATE}}', displayTime(now));
-    markup = markup.replace('{{DEBUG_UPTIME}}', uptime);
-    markup = markup.replace('{{DEBUG_RUNTIME}}', runtime);
-    markup = markup.replace('{{DEBUG_MEMORY_USED}}', memoryUsed);
-    markup = markup.replace('{{DEBUG_SYSTEM_MEMORY}}', systemMemory);
+    markup = markup.replace('{{DEBUG_UPDATE}}',         displayTime(now));
+    markup = markup.replace('{{DEBUG_UPTIME}}',         uptime);
+    markup = markup.replace('{{DEBUG_RUNTIME}}',        runtime);
+    markup = markup.replace('{{DEBUG_MEMORY_USED}}',    memoryUsed);
+    markup = markup.replace('{{DEBUG_SYSTEM_MEMORY}}',  systemMemory);
     markup = markup.replace('{{DEBUG_MEMORY_PERCENT}}', memoryPercent);
-    markup = markup.replace('{{DEBUG_CPU}}', cpuLoad);
-    markup = markup.replace('{{DEBUG_CLIENT_TEMP}}', temperature);
-    markup = markup.replace('{{DEBUG_CLIENT_COUNT}}', clientCount);
+    markup = markup.replace('{{DEBUG_CPU}}',            cpuLoad);
+    markup = markup.replace('{{DEBUG_CLIENT_TEMP}}',    temperature);
+    markup = markup.replace('{{DEBUG_CLIENT_COUNT}}',   clientCount);
 
     return markup;
   };

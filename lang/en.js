@@ -467,6 +467,14 @@ module.exports = (function () {
           SUBMENU      : "Submenu",
           VIERA_LINK   : "Viera Link"
         },
+        piHole : {
+          PIHOLE          : "Pi-Hole",
+          DOMAINS_BLOCKED : "Domain Blocked",
+          LAST_UPDATE     : "Last Update",
+          PERCENT_BLOCKED : "Percent Blocked",
+          QUERIES_BLOCKED : "Queries Blocked",
+          QUERIES_TODAY   : "Queries Today"
+        },
         pioneer : {
           PIONEER        : "Pioneer",
           BD             : "BD",

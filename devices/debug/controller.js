@@ -90,7 +90,7 @@ module.exports = (function () {
       debug.memoryUsed    = (debug.totalMemory - debug.freeMemory);
       debug.percentMemory = Math.round(debug.memoryUsed * 100 / debug.totalMemory);
       debug.cpuLoad       = os.loadavg();
-      debug.uptime        = Math.round(os.uptime());
+      debug.uptime        = (Math.round(os.uptime()) * 1000);
       debug.startup       = this.startup;
       debug.clientCount   = webSockets.connectionCount();
 

@@ -57,6 +57,7 @@ Supported Devices/Services
 | MP3                  | Stable      | Works on *nix with mpg123 or OSX with afplay. Win not supported                   |
 | Nest                 | Stable      | Works with Nest thermostat and Protect smoke / CO detectors                       |
 | Panasonic            | Stable      | Text input and basic controls                                                     |
+| Pi-Hole              | Testing     | Display stats from Pi-Hole dashboard                                              |
 | PowerView            | Stable      | Hunter Douglas PowerView blinds control                                           |
 | Pioneer              | Testing     | Reportedly works, but unable to test                                              |
 | PS3                  | Stable      | Uses GIMX to emulate PS3 controller ([see below](https://github.com/imbrianj/switchBoard#faq)). OSX not supported  |

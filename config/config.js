@@ -796,6 +796,13 @@ exports.config = {
     disabled         : true
   },
 
+  piHole : {
+    typeClass : 'piHole',
+    title     : 'Pi-Hole',
+    host      : 'switchboard',
+    disabled  : true
+  },
+
   gerty : {
     typeClass      : 'gerty',
     title          : 'Gerty',
