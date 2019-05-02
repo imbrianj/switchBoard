@@ -31,9 +31,9 @@ module.exports = (function () {
    *       http://forum.samygo.tv/viewtopic.php?f=12&t=1792
    */
   return {
-    version : 20150921,
+    version : 20190430,
 
-    inputs  : ['command', 'text'],
+    inputs  : ['command', 'text', 'state'],
 
     /**
      * Whitelist of available key codes to use.
@@ -81,6 +81,17 @@ module.exports = (function () {
 
         return String.fromCharCode(0x01) + String.fromCharCode(samsung.appString.length) + String.fromCharCode(0x00) + samsung.appString + String.fromCharCode(message.length) + String.fromCharCode(0x00) + message;
       }
+    },
+
+    /**
+     * Grab the latest state as soon as SwitchBoard starts up.
+     */
+    init : function (controller) {
+      var runCommand = require(__dirname + '/../../lib/runCommand');
+
+      runCommand.runCommand(controller.config.deviceId, 'state', controller.config.deviceId);
+
+      return controller;
     },
 
     /**
@@ -141,17 +152,8 @@ module.exports = (function () {
         samsung.callback(null, 'ok');
       });
 
-      if (samsung.command === 'state') {
-        client.setTimeout(samsung.timeout, function () {
-          client.destroy();
-          samsung.callback({ code : 'ETIMEDOUT' });
-        });
-      }
-
       client.once('error', function (err) {
-        if ((err.code !== 'ETIMEDOUT') || (samsung.command !== 'state')) {
-          samsung.callback(err);
-        }
+        samsung.callback(err);
       });
     }
   };
