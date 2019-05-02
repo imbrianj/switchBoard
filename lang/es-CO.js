@@ -299,7 +299,7 @@ module.exports = (function () {
         },
         gerty : {
           GERTY        : "Gerty",
-          AI_INTENT    : "Debido a {{INPUT}}, estoy {{CONFIDENCE}}% seguro de que quieres lo {{DEVICE}} {{COMMAND}}",
+          AI_INTENT    : "Debido a {{INPUT}}, estoy {{CONFIDENCE}}% seguro de que quiere que {{DEVICE}} pase de {{CURRENT}} a {{COMMAND}}",
           AND          : "Y",
           ANNOUNCE     : "Anunciar",
           ARM          : "Armar",

@@ -60,7 +60,7 @@ module.exports = (function () {
     init : function (controller) {
       var runCommand = require(__dirname + '/../../lib/runCommand');
 
-      runCommand.runCommand(controller.config.deviceId, 'list', controller.config.deviceId);
+      runCommand.runCommand(controller.config.deviceId, 'state', controller.config.deviceId);
 
       return controller;
     },
