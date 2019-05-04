@@ -36,5 +36,19 @@ exports.ai = {
     test.notEqual(dayOne, dayTwo,              'Ensure returned categories differ');
     test.strictEqual(dayOne.indexOf('Fri'), 0, 'Validate part of category name');
     test.done();
+  },
+
+  convertKeyType : function (test) {
+    'use strict';
+
+    var ai     = require(__dirname + '/../../../lib/ai'),
+        string = ai.convertKeyType('not number'),
+        int    = ai.convertKeyType('123456'),
+        float  = ai.convertKeyType('123.456');
+
+    test.strictEqual(string, 'not number', 'Strings are passed back unchanged');
+    test.strictEqual(int,    123456,       'Integers are passed back type changed');
+    test.strictEqual(float,  123,          'Floats are passed back as ints');
+    test.done();
   }
 };
