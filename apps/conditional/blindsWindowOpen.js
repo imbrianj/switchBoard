@@ -35,7 +35,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20180922,
+    version : 20190507,
 
     translate : function (token, lang) {
       var translate = require(__dirname + '/../../lib/translate');
@@ -90,7 +90,7 @@ module.exports = (function () {
 
         for (currDevice in controllers) {
           if (controllers[currDevice].config) {
-            switch (controllers[currDevice].config) {
+            switch (controllers[currDevice].config.typeClass) {
               // Look through powerView for any blinds that may be down.
               case 'powerView' :
                 currentDevice = deviceState.getDeviceState(currDevice);
@@ -104,14 +104,14 @@ module.exports = (function () {
                         if ((config.windows[i].blind === commandSubdevice) && (config.windows[i].blind === subdevice.label)) {
                           // If the blind is rolled down past the limit, we can't
                           // safely do anything.
-                          if (subdevice.percentage < config.windows[i].limit) {
+                          if (subdevice.state < config.windows[i].limit) {
                             status.blind = subdevice.label;
                             status.type  = 'abort';
                           }
 
                           // ...but if the blind is above the threshold, we can
                           // adjust safely within that area.
-                          else if ((subdevice.percentage >= config.windows[i].limit) && (commandPercent < config.windows[i].limit)) {
+                          else if ((subdevice.state >= config.windows[i].limit) && (commandPercent < config.windows[i].limit)) {
                             status.blind = subdevice.label;
                             status.limit = config.windows[i].limit;
                             status.type  = 'warn';
