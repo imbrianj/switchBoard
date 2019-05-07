@@ -40,8 +40,8 @@ module.exports = (function () {
         for (i; i < state.value.devices.length; i += 1) {
           device = state.value.devices[i];
 
-          if (device.percentage) {
-            blind  += device.percentage;
+          if (device.state) {
+            blind  += device.state;
             blinds += 1;
           }
         }

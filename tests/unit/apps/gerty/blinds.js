@@ -30,8 +30,8 @@ exports.blindTest = {
     'use strict';
 
     var blinds     = require(__dirname + '/../../../../apps/gerty/blinds'),
-        deviceGood = blinds.mood({ value : { devices : [{ percentage : 90 }, { percentage : 95 }]}}),
-        deviceBad  = blinds.mood({ value : { devices : [{ percentage : 90 }, { percentage : 69 }]}});
+        deviceGood = blinds.mood({ value : { devices : [{ state : 90 }, { state : 95 }]}}),
+        deviceBad  = blinds.mood({ value : { devices : [{ state : 90 }, { state : 69 }]}});
 
     test.deepEqual(deviceGood, { entertained: 2 }, 'That\'s fun - you can enjoy your view');
     test.deepEqual(deviceBad,  { entertained: 0 }, 'Nothing special here');

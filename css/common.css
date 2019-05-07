@@ -555,10 +555,10 @@ header #indicator {
   right: 0.5em;
   text-indent: -999em;
   top: 0.5em;
-  -moz-transition: background 0.5s ease-in-out;
-  -o-transition: background 0.5s ease-in-out;
-  -webkit-transition: background 0.5s ease-in-out;
-  transition: background 0.5s ease-in-out;
+  -moz-transition: background 1s ease-in-out;
+  -o-transition: background 1s ease-in-out;
+  -webkit-transition: background 1s ease-in-out;
+  transition: background 1s ease-in-out;
   width: 1.5em;
   z-index: 2;
 }
