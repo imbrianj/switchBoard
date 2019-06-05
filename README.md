@@ -70,6 +70,7 @@ Supported Devices/Services
 | SMS                  | Stable      | Uses Twilio. Requires ID and token                                                |
 | Speech               | Stable      | Uses espeak for *nix, say on OSX.  Win not supported                              |
 | Sports               | Stable      | Pull sports scores from ESPN (please don't hammer this endpoint)                  |
+| TCL SmartTV          | Testing     | Uses the Roku controller, but it's own template with additional controls          |
 | Traffic Cams         | Stable      | View multiple traffic webcams                                                     |
 | Travis CI            | Stable      |                                                                                   |
 | Twitter              | Stable      | Present mentions of your Twitter handle or subscribe to a user's feed             |
