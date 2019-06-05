@@ -126,6 +126,14 @@ exports.config = {
     disabledMarkup : true
   },
 
+  tcl : {
+    typeClass : 'tcl',
+    title     : 'TCL SmartTV',
+    deviceIp  : '192.168.1.9',
+    power     : 60,
+    disabled  : true
+  },
+
   samsung : {
     typeClass : 'samsung',
     title     : 'Samsung SmartTV',

@@ -29,33 +29,44 @@ module.exports = (function () {
    * @requires xml2js, http, fs
    */
   return {
-    version : 20180214,
+    version : 20190604,
 
     inputs  : ['command', 'text', 'list', 'launch'],
 
     /**
      * Whitelist of available key codes to use.
      */
-    keymap  : ['HOME', 'REV', 'FWD', 'PLAY', 'SELECT', 'LEFT', 'RIGHT', 'DOWN', 'UP', 'BACK', 'INSTANTREPLAY', 'INFO', 'BACKSPACE', 'SEARCH', 'ENTER'],
+    keymap  : ['HOME', 'REV', 'FWD', 'PLAY', 'SELECT', 'LEFT', 'RIGHT', 'DOWN', 'UP', 'BACK', 'INSTANTREPLAY', 'INFO', 'BACKSPACE', 'SEARCH', 'ENTER', 'CHUP', 'CHDOWN', 'HDMI1', 'HDMI2', 'HDMI3', 'HDMI4', 'AV1', 'VOLUP', 'VOLDOWN', 'MUTE', 'POWEROFF'],
 
     /**
      * Map inputted commands to the values the device or API is expecting.
      */
-    hashTable : { 'BACK'           : 'Back',
+    hashTable : { 'AV1'            : 'InputAV1',
+                  'BACK'           : 'Back',
                   'BACKSPACE'      : 'Backspace',
+                  'CHDOWN'         : 'ChannelDown',
+                  'CHUP'           : 'ChannelUp',
                   'DOWN'           : 'Down',
                   'ENTER'          : 'Enter',
                   'FWD'            : 'Fwd',
+                  'HDMI1'          : 'InputHDMI1',
+                  'HDMI2'          : 'InputHDMI2',
+                  'HDMI3'          : 'InputHDMI3',
+                  'HDMI4'          : 'InputHDMI4',
                   'HOME'           : 'Home',
                   'INFO'           : 'Info',
                   'INSTANT_REPLAY' : 'InstantReplay',
                   'LEFT'           : 'Left',
+                  'MUTE'           : 'VolumeMute',
                   'PLAY'           : 'Play',
+                  'POWEROFF'       : 'PowerOff',
                   'REV'            : 'Rev',
                   'RIGHT'          : 'Right',
                   'SEARCH'         : 'Search',
                   'SELECT'         : 'Select',
                   'UP'             : 'Up',
+                  'VOLUP'          : 'VolumeUp',
+                  'VOLDOWN'        : 'VolumeDown'
                 },
 
     /**

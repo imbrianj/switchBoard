@@ -581,6 +581,14 @@ module.exports = (function () {
           NEUTRAL : "Neutral",
           SELL    : "Your {{LABEL}} stock is doing well at ${{PRICE}}.  Think about selling?"
         },
+        tcl : {
+          TCL            : "TCL",
+          BACKSPACE      : "Backspace",
+          BLURAY         : "Bluray",
+          FORWARD        : "Forward",
+          GAME           : "Game",
+          INSTANT_REPLAY : "Instant Replay"
+        },
         traffic : {
           TRAFFIC : "Traffic"
         },

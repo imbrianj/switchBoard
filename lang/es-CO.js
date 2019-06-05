@@ -569,6 +569,14 @@ module.exports = (function () {
           NEUTRAL : "Neutral",
           SELL    : "El valor de {{LABEL}} se ha incrementado mas de ${{PRICE}}.  ¿Considere una venta?"
         },
+        tcl : {
+          TCL            : "TCL",
+          BACKSPACE      : "Borrar",
+          BLURAY         : "Bluray",
+          FORWARD        : "Adelantar",
+          GAME           : "Juego",
+          INSTANT_REPLAY : "Repetición instantánea"
+        },
         traffic : {
           TRAFFIC : "Tráfico"
         },

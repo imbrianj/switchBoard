@@ -53,7 +53,7 @@ module.exports = (function () {
           configLevels = config.levels || {},
           levels       = { co   : configLevels.co   || 9,
                            pm25 : configLevels.pm25 || 34.4,
-                           no2  : configLevels.pm25 || 0.045 };
+                           no2  : configLevels.no2  || 0.045 };
 
       if ((values.value) && (values.value.report)) {
         for (i; i < values.value.report.length; i += 1) {
