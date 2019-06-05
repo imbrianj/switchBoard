@@ -29,7 +29,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20190415,
+    version : 20190604,
 
     /**
      * Take in a typeClass and return the type of device it's categorized as.
@@ -59,6 +59,7 @@ module.exports = (function () {
         case 'samsung'    :
         case 'lg'         :
         case 'panasonic'  :
+        case 'tcl'        :
           deviceType = 'tv';
         break;
 
