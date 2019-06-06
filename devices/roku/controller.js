@@ -48,6 +48,7 @@ module.exports = (function () {
                   'CHUP'           : 'ChannelUp',
                   'DOWN'           : 'Down',
                   'ENTER'          : 'Enter',
+                  'FIND_REMOTE'    : 'FindRemote',
                   'FWD'            : 'Fwd',
                   'HDMI1'          : 'InputHDMI1',
                   'HDMI2'          : 'InputHDMI2',
@@ -64,6 +65,7 @@ module.exports = (function () {
                   'RIGHT'          : 'Right',
                   'SEARCH'         : 'Search',
                   'SELECT'         : 'Select',
+                  'TUNER'          : 'InputTuner',
                   'UP'             : 'Up',
                   'VOLUP'          : 'VolumeUp',
                   'VOLDOWN'        : 'VolumeDown'

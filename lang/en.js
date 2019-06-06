@@ -587,7 +587,8 @@ module.exports = (function () {
           BLURAY         : "Bluray",
           FORWARD        : "Forward",
           GAME           : "Game",
-          INSTANT_REPLAY : "Instant Replay"
+          INSTANT_REPLAY : "Instant Replay",
+          TUNER          : "Tuner"
         },
         traffic : {
           TRAFFIC : "Traffic"
