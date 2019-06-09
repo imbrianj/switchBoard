@@ -576,6 +576,7 @@ module.exports = (function () {
           FORWARD        : "Adelantar",
           GAME           : "Juego",
           INSTANT_REPLAY : "Repetición instantánea",
+          REVERSE        : "Reverso",
           TUNER          : "Sintonizador"
         },
         traffic : {

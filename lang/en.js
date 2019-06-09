@@ -588,6 +588,7 @@ module.exports = (function () {
           FORWARD        : "Forward",
           GAME           : "Game",
           INSTANT_REPLAY : "Instant Replay",
+          REVERSE        : "Reverse",
           TUNER          : "Tuner"
         },
         traffic : {

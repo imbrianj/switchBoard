@@ -31,7 +31,8 @@
             <li><a href="/?{{DEVICE_ID}}=Backspace" class="fa fa-long-arrow-left" title="{{i18n_BACKSPACE}}"><span>{{i18n_BACKSPACE}}</span></a></li>
             <li><a href="/?{{DEVICE_ID}}=HDMI1" class="fa fa-gamepad" title="{{i18n_GAME}}"><span>{{i18n_GAME}}</span></a></li>
             <li><a href="/?{{DEVICE_ID}}=HDMI2" class="fa fa-video-camera" title="{{i18n_BLURAY}}"><span>{{i18n_BLURAY}}</span></a></li>
-            <li><a href="/?{{DEVICE_ID}}=Instant_Replay" class="fa fa-backward" title="{{i18n_INSTANT_REPLAY}}"><span>{{i18n_INSTANT_REPLAY}}</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=Tuner" class="fa fa-television" title="{{i18n_TUNER}}"><span>{{i18n_TUNER}}</span></a></li>
+            <li><a href="/?{{DEVICE_ID}}=Rev" class="fa fa-backward" title="{{i18n_REVERSE}}"><span>{{i18n_REVERSE}}</span></a></li>
             <li><a href="/?{{DEVICE_ID}}=Play" class="fa fa-play" title="{{i18n_PLAY}}"><span>{{i18n_PLAY}}</span></a></li>
             <li><a href="/?{{DEVICE_ID}}=Fwd" class="fa fa-forward" title="{{i18n_FORWARD}}"><span>{{i18n_FORWARD}}</span></a></li>
           </ul>
