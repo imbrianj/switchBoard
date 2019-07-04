@@ -19,7 +19,7 @@
   },
   "preferGlobal": true,
   "dependencies": {
-    "websocket": "^1.0.28",
+    "websocket": "^1.0.29",
     "xml2js": "^0.4.19"
   },
   "devDependencies": {
