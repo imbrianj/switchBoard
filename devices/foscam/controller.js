@@ -349,7 +349,7 @@ module.exports = (function () {
           });
 
           response.once('end', function () {
-            if(dataReply) {
+            if (dataReply) {
               foscam.callback(null, dataReply, true);
             }
           });

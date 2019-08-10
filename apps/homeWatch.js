@@ -107,7 +107,7 @@ module.exports = (function () {
               runCommand,
               callback;
 
-          if(isArmed()) {
+          if (isArmed()) {
             console.log('\x1b[35m' + controllers[deviceId].config.title + '\x1b[0m: Home Watch found something suspicious');
 
             camera = findCamera(trigger);

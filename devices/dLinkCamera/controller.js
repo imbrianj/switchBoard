@@ -23,13 +23,15 @@
 module.exports = (function () {
   'use strict';
 
+  var COUNT = {};
+
   /**
    * @author brian@bevey.org
-   * @requires http, fs
+   * @requires http, fs, crypto
    * @fileoverview Basic control of D-Link IP camera.
    */
   return {
-    version : 20181205,
+    version : 20190810,
 
     inputs  : ['command', 'list', 'stream'],
 
@@ -51,34 +53,109 @@ module.exports = (function () {
                thumb  : fs.readFileSync(__dirname + '/fragments/thumb.tpl',  'utf-8') };
     },
 
+    md5 : function (string) {
+      var crypto = require('crypto');
+
+      return crypto.createHash('md5').update(string).digest('hex');
+    },
+
+    decimalToHex : function (decimal) {
+      return ('0000000' + decimal.toString(16)).substr(-8).toUpperCase();
+    },
+
+    generateResponse : function (config) {
+      var nc  = this.decimalToHex(config.count),
+          ha1 = this.md5(config.username + ':' + config.auth.realm + ':' + config.password),
+          ha2 = this.md5('GET:' + config.uri);
+
+      return this.md5(ha1 + ':' + config.auth.nonce + ':' + nc + ':' + config.cnonce + ':auth:' + ha2);
+    },
+
+    getCNonce : function (config) {
+      return (config.count && config.cnonce) ? config.cnonce : Math.random().toString(36).substring(2, 10) + Math.random().toString(36).substring(2, 10);
+    },
+
+    /**
+     * Query - then cache your auth information into a file for later recall.
+     */
+    getAuth : function (controller, config) {
+      var authConfig = {
+        config   : config,
+        device   : controller.config,
+        command  : 'AUTH',
+        callback : function(err, data) {
+          var headerParts,
+              realm,
+              nonce;
+
+          if (data && data.headers) {
+            headerParts = data.headers['www-authenticate'].split(' ');
+            realm       = headerParts[1].split('realm="')[1].split('"')[0];
+            nonce       = headerParts[2].split('nonce="')[1].split('"')[0];
+
+            controller.config.auth = {
+              realm : realm,
+              nonce : nonce
+            };
+          }
+        }
+      };
+
+      this.send(authConfig);
+    },
+
     /**
      * Prepare a request for command execution.
      */
     postPrepare : function (config) {
-      var auth   = Buffer.from(config.username + ':' + config.password).toString('base64'),
-          keymap = { 'ALARM_OFF' : '/config/motion.cgi?enable=no',
-                     'ALARM_ON'  : '/config/motion.cgi?enable=yes',
-                     'DOWN'      : '/cgi-bin/longcctvmove.cgi?action=move&direction=down&panstep=1&tiltstep=1',
-                     'LEFT'      : '/cgi-bin/longcctvmove.cgi?action=move&direction=left&panstep=1&tiltstep=1',
-                     'PARAMS'    : '/config/motion.cgi',
-                     'PRESET1'   : '/cgi-bin/longcctvpst.cgi?action=goto&number=1',
-                     'PRESET2'   : '/cgi-bin/longcctvpst.cgi?action=goto&number=2',
-                     'PRESET3'   : '/cgi-bin/longcctvpst.cgi?action=goto&number=3',
-                     'RIGHT'     : '/cgi-bin/longcctvmove.cgi?action=move&direction=right&panstep=1&tiltstep=1',
-                     'STOP'      : '/cgi-bin/longcctvhome.cgi?action=gohome',
-                     'UP'        : '/cgi-bin/longcctvmove.cgi?action=move&direction=up&panstep=1&tiltstep=1',
-                     'STREAM'    : '/video/mjpg.cgi',
-                     'TAKE'      : '/image/jpeg.cgi' };
+      var basicAuth = ['ALARM_OFF', 'ALARM_ON', 'PARAMS', 'STREAM', 'TAKE'],
+          headers   = {},
+          keymap    = { 'ALARM_OFF' : '/config/motion.cgi?enable=no',
+                        'ALARM_ON'  : '/config/motion.cgi?enable=yes',
+                        'DOWN'      : '/cgi-bin/longcctvmove.cgi?action=move&direction=down&panstep=1&tiltstep=1',
+                        'LEFT'      : '/cgi-bin/longcctvmove.cgi?action=move&direction=left&panstep=1&tiltstep=1',
+                        'PARAMS'    : '/config/motion.cgi',
+                        'PRESET1'   : '/cgi-bin/longcctvpst.cgi?action=goto&number=1',
+                        'PRESET2'   : '/cgi-bin/longcctvpst.cgi?action=goto&number=2',
+                        'PRESET3'   : '/cgi-bin/longcctvpst.cgi?action=goto&number=3',
+                        'RIGHT'     : '/cgi-bin/longcctvmove.cgi?action=move&direction=right&panstep=1&tiltstep=1',
+                        'STOP'      : '/cgi-bin/longcctvhome.cgi?action=gohome',
+                        'UP'        : '/cgi-bin/longcctvmove.cgi?action=move&direction=up&panstep=1&tiltstep=1',
+                        'STREAM'    : '/video/mjpg.cgi',
+                        'TAKE'      : '/image/jpeg.cgi' };
 
       config.command = config.stream ? 'STREAM' : config.command;
+      config.uri     = keymap[config.command];
+
+      // Apparently the image feed still uses basic auth.
+      if ((basicAuth.indexOf(config.command) !== -1) || (!config.auth)) {
+        headers.Authorization = 'Basic ' + Buffer.from(config.username + ':' + config.password).toString('base64');
+      }
+
+      // But all controls go through Digest auth.
+      else if (config.auth.nonce) {
+        COUNT[config.deviceId] = COUNT[config.deviceId] || 0;
+        config.count           = COUNT[config.deviceId] + 1;
+        config.cnonce          = this.getCNonce(config);
+        COUNT[config.deviceId] = config.count;
+
+        headers.Authorization = 'Digest ' +
+                                'username="' + config.username + '", ' +
+                                'realm="' + config.auth.realm + '", ' +
+                                'nonce="' + config.auth.nonce + '", ' +
+                                'uri="' + config.uri + '", ' +
+                                'algorithm=MD5, ' +
+                                'response="' + this.generateResponse(config) + '", ' +
+                                'qop=auth, ' +
+                                'nc=' + this.decimalToHex(config.count) + ', ' +
+                                'cnonce="' + config.cnonce + '"';
+      }
 
       return { host    : config.deviceIp,
                port    : config.devicePort,
-               path    : keymap[config.command],
+               path    : keymap[config.command] || '/',
                method  : 'GET',
-               headers : {
-                 Authorization : 'Basic ' + auth
-               }
+               headers : headers
              };
     },
 
@@ -87,14 +164,19 @@ module.exports = (function () {
      * this opportunity to alter the default markup template with the correct
      * path for the image since it will always be part of a data attribute.
      */
-    init : function (controller) {
-      var runCommand = require(__dirname + '/../../lib/runCommand'),
+    init : function (controller, config) {
+      var that       = this,
+          runCommand = require(__dirname + '/../../lib/runCommand'),
           deviceId   = controller.config.deviceId;
+
+      controller.markup = controller.markup.replace('{{DLINKCAMERA_DYNAMIC}}', '/?' + deviceId + '=stream');
+
+      if (typeof controller.config.username !== 'undefined' && controller.config.password !== 'undefined') {
+        that.getAuth(controller, config);
+      }
 
       runCommand.runCommand(deviceId, 'state', deviceId);
       runCommand.runCommand(deviceId, 'list', deviceId);
-
-      controller.markup = controller.markup.replace('{{DLINKCAMERA_DYNAMIC}}', '/?' + deviceId + '=stream');
 
       return controller;
     },
@@ -238,7 +320,6 @@ module.exports = (function () {
           dLinkCamera      = { device : {}, config : {} };
 
       callback                        = callback || function () {};
-      dLinkCamera.command             = 'state';
       dLinkCamera.device.deviceId     = controller.config.deviceId;
       dLinkCamera.device.deviceIp     = controller.config.deviceIp;
       dLinkCamera.device.localTimeout = controller.config.localTimeout || config.localTimeout;
@@ -296,6 +377,7 @@ module.exports = (function () {
       dLinkCamera.timeout    = config.device.localTimeout || config.config.localTimeout;
       dLinkCamera.username   = config.device.username     || 'admin';
       dLinkCamera.password   = config.device.password;
+      dLinkCamera.auth       = config.device.auth         || {};
       dLinkCamera.payload    = config.payload;
       dLinkCamera.response   = config.response;
       dLinkCamera.request    = config.request;
@@ -380,6 +462,28 @@ module.exports = (function () {
         });
       }
 
+      else if (dLinkCamera.command === 'AUTH') {
+        request = http.request(this.postPrepare(dLinkCamera), function (response) {
+          response.on('data', function (response) {
+            dataReply += response;
+          });
+
+          response.once('end', function () {
+            if (response) {
+              dLinkCamera.callback(null, response, true);
+            }
+          });
+        });
+
+        request.once('error', function (err) {
+          if ((err.code !== 'ETIMEDOUT') || (dLinkCamera.command !== 'state')) {
+            dLinkCamera.callback(err, null, true);
+          }
+        });
+
+        request.end();
+      }
+
       else {
         request = http.request(this.postPrepare(dLinkCamera), function (response) {
           response.on('data', function (response) {
@@ -387,7 +491,7 @@ module.exports = (function () {
           });
 
           response.once('end', function () {
-            if(dataReply) {
+            if (dataReply) {
               dLinkCamera.callback(null, dataReply, true);
             }
           });

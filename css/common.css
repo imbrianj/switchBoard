@@ -83,7 +83,7 @@ main {
 }
 
 body {
-  font-family: helvetica;
+  font-family: helvetica, sans-serif;
   line-height: 1;
   touch-action: pan-y;
 }

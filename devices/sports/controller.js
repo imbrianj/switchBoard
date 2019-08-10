@@ -195,10 +195,10 @@ module.exports = (function () {
                   home = {};
                   away = {};
 
-                  if(game.competitors) {
+                  if (game.competitors) {
                     // It looks like "Home" is always the first
                     // element in the competitors array.
-                    if(game.competitors[0]) {
+                    if (game.competitors[0]) {
                       home = {
                         title  : util.sanitize(game.competitors[0].name),
                         score  : util.sanitize(game.competitors[0].score),
@@ -207,7 +207,7 @@ module.exports = (function () {
                       };
                     }
 
-                    if(game.competitors[1]) {
+                    if (game.competitors[1]) {
                       away = {
                         title  : util.sanitize(game.competitors[1].name),
                         score  : util.sanitize(game.competitors[1].score),

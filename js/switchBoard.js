@@ -31,7 +31,7 @@ SB.spec = (function () {
   'use strict';
 
   return {
-    version : 20190414,
+    version : 20190810,
 
     state     : {},
     parsers   : {},
@@ -111,7 +111,7 @@ SB.spec = (function () {
       SB.log('Updated', state.deviceId, 'success');
 
       if (node) {
-        markup         = SB.spec.uiComponents.templates[state.typeClass].markup;
+        markup         = SB.spec.uiComponents.templates[state.deviceId].markup;
         selected       = SB.hasClass(node, 'selected') ? ' selected' : '';
         oldMarkup      = node.cloneNode(true);
         deviceHeader   = SB.getByTag('h2', oldMarkup)[0];
@@ -119,7 +119,7 @@ SB.spec = (function () {
         oldInnerMarkup = oldMarkup.innerHTML;
 
         if (parser) {
-          markup = parser(state.deviceId, markup, deviceState, value, SB.spec.uiComponents.templates[state.typeClass].fragments);
+          markup = parser(state.deviceId, markup, deviceState, value, SB.spec.uiComponents.templates[state.deviceId].fragments);
         }
 
         if (deviceState === 'ok') {
@@ -323,21 +323,25 @@ SB.spec = (function () {
             }
           }
 
-          // State objects have specific deviceIds associated.
+          // State objects and template objects have specific deviceIds
+          // associated.
           if ((message[device]) && (message[device].deviceId)) {
             SB.log('Received', 'State', 'success');
 
             for (device in message) {
               if (message.hasOwnProperty(device)) {
-                SB.spec.updateTemplate(message[device]);
+                // If there's markup you're grabbing the templates.
+                if (message[device].markup) {
+                  SB.spec.uiComponents.templates = message;
+                  SB.storage('templates', SB.spec.uiComponents.templates);
+                }
+
+                // Otherwise, you're a state change update.
+                else {
+                  SB.spec.updateTemplate(message[device]);
+                }
               }
             }
-          }
-
-          // Otherwise, you're grabbing the templates.
-          else if ((message[device]) && (message[device].markup)) {
-            SB.spec.uiComponents.templates = message;
-            SB.storage('templates', SB.spec.uiComponents.templates);
           }
         }
       };

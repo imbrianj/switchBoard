@@ -126,6 +126,10 @@
       videoListParent = SB.getByClass('video-list', SB.get(deviceId), 'div')[0];
       videoList       = SB.getByTag('ol', videoListParent)[0];
 
+      if (SB.hasClass(SB.getByClass('selected', null, 'li')[0], deviceId)) {
+        markup = markup.split('{{LAZY_LOAD_IMAGE}}').join('src');
+      }
+
       markup = markup.split('{{LAZY_LOAD_IMAGE}}').join('data-src');
       markup = markup.split('{{LAZY_PLACEHOLDER_IMAGE}}').join('data-placeholder-image');
 

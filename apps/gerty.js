@@ -111,7 +111,7 @@ module.exports = (function () {
 
       // Otherwise, see if it's a command that's sent to another controller that
       // Gerty is delegated on.
-      else if(deviceConfig) {
+      else if (deviceConfig) {
         if (deviceConfig.typeClass !== 'gerty') {
           gertyAI = require(__dirname + '/gerty/ai');
           gertyAI.findIntent(deviceId, command, controllers);

@@ -41,6 +41,69 @@ exports.dLinkCameraControllerTest = {
     test.done();
   },
 
+  md5 : function (test) {
+    'use strict';
+
+    var dLinkCameraController = require(__dirname + '/../../../../devices/dLinkCamera/controller'),
+        md5                   = dLinkCameraController.md5('This is a test'),
+        anotherMd5            = dLinkCameraController.md5('This is another test');
+
+
+    test.strictEqual(md5,        'ce114e4501d2f4e2dcea3e17b546f339', 'MD5 summed');
+    test.strictEqual(anotherMd5, 'a87edc4866a7e4257e5912ba9735d20e', 'Different string doesn\'t match');
+
+    test.done();
+  },
+
+  decimalToHex : function (test) {
+    'use strict';
+
+    var dLinkCameraController = require(__dirname + '/../../../../devices/dLinkCamera/controller'),
+        smallDecimal          = dLinkCameraController.decimalToHex(1),
+        mediumDecimal         = dLinkCameraController.decimalToHex(10),
+        bigDecimal            = dLinkCameraController.decimalToHex(100);
+
+
+    test.strictEqual(smallDecimal,  '00000001', 'Small decimal to hex');
+    test.strictEqual(mediumDecimal, '0000000A', 'Medium decimal to hex');
+    test.strictEqual(bigDecimal,    '00000064', 'Larger decimal to hex');
+
+    test.done();
+  },
+
+  generateResponse : function (test) {
+    'use strict';
+
+    var dLinkCameraController = require(__dirname + '/../../../../devices/dLinkCamera/controller'),
+        testResponse          = dLinkCameraController.generateResponse({ username : 'test',
+                                                                         password : 'Testing123',
+                                                                         uri      : '/config/motion.cgi?enable=no',
+                                                                         count    : 2,
+                                                                         cnonce   : '0987654321',
+                                                                         auth     : {
+                                                                           nonce  : '1234567890',
+                                                                           realm  : 'SwitchBoard'
+                                                                         } });
+
+    test.strictEqual(testResponse, '9879b26fd7bf05843b81ac36b717a48e', 'Confirm response value is generated correctly.');
+
+    test.done();
+  },
+
+  getCNonce : function (test) {
+    'use strict';
+
+    var dLinkCameraController = require(__dirname + '/../../../../devices/dLinkCamera/controller'),
+        testHasNonce          = dLinkCameraController.getCNonce({ count : 2, cnonce : 1234567890123456 }),
+        testNoNonce           = dLinkCameraController.getCNonce({});
+
+    test.strictEqual(testHasNonce,       1234567890123456, 'Reuses original nonce if count is unchanged.');
+    test.strictEqual(testNoNonce.length, 16,               'Creates nonce of correct length.');
+    test.notStrictEqual(testNoNonce,     1234567890123456, 'Creates a unique nonce.');
+
+    test.done();
+  },
+
   postPrepare : function (test) {
     'use strict';
 
@@ -64,7 +127,16 @@ exports.dLinkCameraControllerTest = {
                                                                     devicePort : 80,
                                                                     username   : 'TEST-username',
                                                                     password   : 'TEST-password',
-                                                                    command    : 'TAKE' });
+                                                                    command    : 'TAKE' }),
+        testDigest            = dLinkCameraController.postPrepare({ deviceIp   : 'DIGEST-host',
+                                                                    devicePort : 80,
+                                                                    username   : 'TEST-username',
+                                                                    password   : 'TEST-password',
+                                                                    command    : 'LEFT',
+                                                                    auth       : {
+                                                                      nonce : '1234567890',
+                                                                      realm : 'SwitchBoard'
+                                                                    } });
 
     test.deepEqual(testAlarm, { host    : 'TEST-host',
                                 port    : 80,
@@ -89,6 +161,7 @@ exports.dLinkCameraControllerTest = {
                                path    : '/image/jpeg.cgi',
                                headers : { Authorization: 'Basic VEVTVC11c2VybmFtZTpURVNULXBhc3N3b3Jk' },
                                method  : 'GET' }, 'Additional params are filtered out.');
+    test.notStrictEqual(testDigest.headers.Authorization.indexOf('nonce'), -1, 'Digest auth returns Digest Authorization headers.');
 
     test.done();
   },
@@ -102,9 +175,8 @@ exports.dLinkCameraControllerTest = {
                                             send       : function (request) { return request; } },
                                             config     : { deviceId : 'FOO',
                                                            title    : 'DLink Camera',
-                                                           deviceIp : '127.0.0.1',
-                                                           username : 'USERNAME',
-                                                           password : 'PASSWORD' } } };
+                                                           deviceIp : '127.0.0.1'
+                                                         } } };
         controller.controller = require(__dirname + '/../../../../devices/dLinkCamera/controller');
 
     runCommand.init(controller);

@@ -29,7 +29,7 @@ module.exports = (function () {
    * @requires querystring, fs, https
    */
   return {
-    version : 20190414,
+    version : 20190714,
 
     inputs : ['command', 'text', 'list', 'subdevice'],
 
@@ -455,10 +455,9 @@ module.exports = (function () {
      * If you don't have registered auth information, we can check for that now.
      */
     init : function (controller) {
-      var fs      = require('fs'),
-          that    = this,
-          now     = new Date().getTime(),
-          expired = true;
+      var fs   = require('fs'),
+          that = this,
+          now  = new Date().getTime();
 
       if (typeof controller.config.username !== 'undefined' && controller.config.password !== 'undefined') {
         fs.readFile(__dirname + '/../../cache/nestAuth-' + controller.config.deviceId + '.json', 'utf-8', function (err, data) {
@@ -482,8 +481,6 @@ module.exports = (function () {
 
             if (controller.config.auth) {
               if ((controller.config.auth.expire) && (controller.config.auth.expire > now)) {
-                expired = false;
-
                 if (typeof controller.config.auth.url === 'string') {
                   runCommand.runCommand(controller.config.deviceId, 'list', controller.config.deviceId);
                 }
