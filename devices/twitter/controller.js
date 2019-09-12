@@ -35,7 +35,7 @@ module.exports = (function () {
    *       https://developer.twitter.com/en/docs/tweets/timelines/api-reference/get-statuses-mentions_timeline
    */
   return {
-    version : 20180914,
+    version : 20190905,
 
     readOnly: true,
 
@@ -50,22 +50,6 @@ module.exports = (function () {
       return { tweet : fs.readFileSync(__dirname + '/fragments/twitter.tpl', 'utf-8') };
     },
 
-    /**
-     * Generate a 32-byte string of random data.
-     * This is *not* cryptographically secure, but should suffice for use as a
-     * cache-buster.
-     */
-    generateNonce : function (length) {
-      var chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
-          nonce = '',
-          i     = length || 32;
-
-      for (i; i > 0; i -= 1) {
-        nonce += chars[Math.floor(Math.random() * chars.length)];
-      }
-
-      return nonce;
-    },
 
     /**
      * Generate a useable signature string.
@@ -142,6 +126,7 @@ module.exports = (function () {
 
     send : function (config) {
       var https     = require('https'),
+          auth      = require(__dirname + '/../../lib/auth'),
           twitter   = {},
           dataReply = '',
           request;
@@ -165,7 +150,7 @@ module.exports = (function () {
       twitter.oauthSec     = config.device.oauthTokenSecret;
       twitter.sigMethod    = config.device.sigMethod    || 'HMAC-SHA1';
       twitter.oauthVersion = config.device.oauthVersion || '1.0';
-      twitter.nonce        = this.generateNonce();
+      twitter.nonce        = auth.generateNonce(32);
       twitter.timestamp    = Math.floor((new Date().getTime() / 1000), 10);
 
       if (((twitter.list) && (OpenConnection === null)) || (twitter.command)) {

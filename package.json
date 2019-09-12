@@ -20,7 +20,7 @@
   "preferGlobal": true,
   "dependencies": {
     "websocket": "^1.0.29",
-    "xml2js": "^0.4.19"
+    "xml2js": "^0.4.22"
   },
   "devDependencies": {
     "grunt": "^1.0.4",

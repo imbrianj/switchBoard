@@ -53,26 +53,23 @@ module.exports = (function () {
                thumb  : fs.readFileSync(__dirname + '/fragments/thumb.tpl',  'utf-8') };
     },
 
-    md5 : function (string) {
-      var crypto = require('crypto');
-
-      return crypto.createHash('md5').update(string).digest('hex');
-    },
-
     decimalToHex : function (decimal) {
       return ('0000000' + decimal.toString(16)).substr(-8).toUpperCase();
     },
 
     generateResponse : function (config) {
-      var nc  = this.decimalToHex(config.count),
-          ha1 = this.md5(config.username + ':' + config.auth.realm + ':' + config.password),
-          ha2 = this.md5('GET:' + config.uri);
+      var auth = require(__dirname + '/../../lib/auth'),
+          nc   = this.decimalToHex(config.count),
+          ha1  = auth.md5(config.username + ':' + config.auth.realm + ':' + config.password),
+          ha2  = auth.md5('GET:' + config.uri);
 
-      return this.md5(ha1 + ':' + config.auth.nonce + ':' + nc + ':' + config.cnonce + ':auth:' + ha2);
+      return auth.md5(ha1 + ':' + config.auth.nonce + ':' + nc + ':' + config.cnonce + ':auth:' + ha2);
     },
 
     getCNonce : function (config) {
-      return (config.count && config.cnonce) ? config.cnonce : Math.random().toString(36).substring(2, 10) + Math.random().toString(36).substring(2, 10);
+      var auth = require(__dirname + '/../../lib/auth');
+
+      return (config.count && config.cnonce) ? config.cnonce : auth.generateNonce(16);
     },
 
     /**

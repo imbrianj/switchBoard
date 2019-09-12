@@ -41,20 +41,6 @@ exports.dLinkCameraControllerTest = {
     test.done();
   },
 
-  md5 : function (test) {
-    'use strict';
-
-    var dLinkCameraController = require(__dirname + '/../../../../devices/dLinkCamera/controller'),
-        md5                   = dLinkCameraController.md5('This is a test'),
-        anotherMd5            = dLinkCameraController.md5('This is another test');
-
-
-    test.strictEqual(md5,        'ce114e4501d2f4e2dcea3e17b546f339', 'MD5 summed');
-    test.strictEqual(anotherMd5, 'a87edc4866a7e4257e5912ba9735d20e', 'Different string doesn\'t match');
-
-    test.done();
-  },
-
   decimalToHex : function (test) {
     'use strict';
 

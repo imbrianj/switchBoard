@@ -411,6 +411,9 @@ module.exports = (function () {
         mp3 : {
           MP3 : "MP3"
         },
+        neato : {
+          NEATO : "Neato"
+        },
         nest : {
           NEST               : "Nest",
           AWAY               : "Afuera de Casa",

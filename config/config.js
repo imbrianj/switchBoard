@@ -56,7 +56,7 @@ exports.config = {
       // a device, this allows you to win that argument.  If a device has
       // changed state within this many minutes, it will not take any action,
       // regardless of it's confidence level.
-      eventCooldownMinutes : 120,
+      eventCooldownMinutes : 60,
       // Only take actions once we've built up some number of previous actions
       // use as predictors.  Lower this number if you want to see more actions,
       // increase it to see fewer.
@@ -68,6 +68,10 @@ exports.config = {
       // Hint: the higher the number, the more accurate (but fewer) actions will
       // take place.
       confidence           : 85,
+      // Specify an array of subdevice names that should be excluded from
+      // machine learning actions.  For example - if you want to keep your
+      // thermostat from being controlled, you can add the name of it here.
+      ignoreList           : ['Living Room'],
       // With trainingWheels on, Gerty will notify you of intent.  Set this to
       // false and he will take action.
       trainingWheels       : true,

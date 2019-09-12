@@ -37,21 +37,6 @@ exports.twitterControllerTest = {
     test.done();
   },
 
-  generateNonce : function (test) {
-    'use strict';
-
-    var twitterController = require(__dirname + '/../../../../devices/twitter/controller'),
-        nonceDefault      = twitterController.generateNonce(),
-        nonce64           = twitterController.generateNonce(64),
-        nonce5            = twitterController.generateNonce(5);
-
-    test.strictEqual(nonceDefault.length, 32, 'Default nonce length is 32 bytes');
-    test.strictEqual(nonce64.length,      64, 'Pass 64 and should get a 64 byte nonce');
-    test.strictEqual(nonce5.length,       5,  'Pass 5 and should get a 64 byte nonce');
-
-    test.done();
-  },
-
   generateSignature : function (test) {
     'use strict';
 
