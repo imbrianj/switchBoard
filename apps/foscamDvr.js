@@ -38,7 +38,7 @@ module.exports = (function () {
   var Devices = {};
 
   return {
-    version : 20180429,
+    version : 20190925,
 
     lastEvents : { space : 0, thumbnail : 0 },
 
@@ -65,9 +65,15 @@ module.exports = (function () {
 
       fs.stat(filename, function (err) {
         if (!err) {
-          fs.unlink(filename);
+          fs.unlink(filename, function (err) {
+            if (err) {
+              console.log('\x1b[31m' + title + '\x1b[0m: Failed to delete ' + filename + '!');
+            }
 
-          console.log('\x1b[35m' + title + '\x1b[0m: DVR files for ' + filename + ' deleted');
+            else {
+              console.log('\x1b[35m' + title + '\x1b[0m: DVR files for ' + filename + ' deleted');
+            }
+          });
         }
       });
     },
