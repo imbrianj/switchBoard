@@ -5,6 +5,9 @@ before_install:
 node_js:
   - "node"
   - "lts/*"
+  - "13"
+  - "12"
+  - "11"
   - "10"
   - "9"
   - "8"
