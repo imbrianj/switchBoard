@@ -233,6 +233,9 @@ exports.config = {
     typeClass      : 'speech',
     title          : 'Speech',
     voice          : 'male',
+    // If you have issues with speech playing, try using aplay by setting this
+    // value to true.
+    aplay          : true,
     disabledMarkup : true,
     disabled       : true
   },

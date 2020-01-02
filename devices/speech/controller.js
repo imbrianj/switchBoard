@@ -32,7 +32,7 @@ module.exports = (function () {
    *       sudo apt-get install espeak
    */
   return {
-    version : 20150921,
+    version : 20200101,
 
     inputs  : ['text'],
 
@@ -40,7 +40,7 @@ module.exports = (function () {
      * Find the correct path to execute the command to speak the given text on
      * the given platform with the given voice (male or female).
      */
-    translateCommand : function (voice, text, platform) {
+    translateCommand : function (voice, text, platform, aplay) {
       var execute = { command : '', params : [] };
 
       switch (platform) {
@@ -54,6 +54,10 @@ module.exports = (function () {
           }
 
           execute.params.push(text);
+
+          if (aplay) {
+            execute.params.push('--stdout');
+          }
         break;
 
         case 'darwin' :
@@ -92,7 +96,7 @@ module.exports = (function () {
             deviceState.updateState(controller.config.deviceId, controller.config.typeClass, { state : message });
           };
 
-      this.send({ text : 'Text to speech initiated', callback : callback, device : { voice : controller.config.voice } });
+      this.send({ text : 'Text to speech initiated', callback : callback, device : { voice : controller.config.voice, aplay : controller.config.aplay } });
     },
 
     send : function (config) {
@@ -103,8 +107,9 @@ module.exports = (function () {
       speech.text     = config.text         || '';
       speech.callback = config.callback     || function () {};
       speech.voice    = config.device.voice || 'male';
+      speech.aplay    = config.device.aplay || false;
       speech.platform = config.platform     || process.platform;
-      speech.execute  = this.translateCommand(speech.voice, speech.text, speech.platform);
+      speech.execute  = this.translateCommand(speech.voice, speech.text, speech.platform, speech.aplay);
 
       if (speech.platform) {
         if (speech.text && speech.execute) {
@@ -121,6 +126,10 @@ module.exports = (function () {
 
         else {
           speech.callback('No text specified');
+        }
+
+        if (speech.aplay) {
+          speak.stdout.pipe(spawn('aplay').stdin);
         }
       }
 
