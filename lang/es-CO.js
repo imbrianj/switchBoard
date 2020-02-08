@@ -35,7 +35,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20180312,
+    version : 20200208,
 
     strings : function () {
       return {
@@ -449,6 +449,13 @@ module.exports = (function () {
           TEMP               : "Temp",
           THERMOSTAT         : "Termostato",
           UPSTAIRS           : "Piso de arriba"
+        },
+        octoprint : {
+          OCTOPRINT       : "Octoprint",
+          BED             : 'Cama',
+          COMPLETE        : 'Completar',
+          EXTRUDER        : 'Extrusora',
+          PRINT_COMPLETED : 'Impresora 3d completar'
         },
         panasonic : {
           PANASONIC    : "Panasonic",

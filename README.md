@@ -56,6 +56,7 @@ Supported Devices/Services
 | MonoPrice 3d Printer | Stable      | Probably works with other brands and models, but tested on Mini Select v2         |
 | MP3                  | Stable      | Works on *nix with mpg123 or OSX with afplay. Win not supported                   |
 | Nest                 | Stable      | Works with Nest thermostat and Protect smoke / CO detectors                       |
+| Octoprint            | Testing     | Displays basic stats - completion percentage, temperatures                        |
 | Panasonic            | Stable      | Text input and basic controls                                                     |
 | Pi-Hole              | Testing     | Display stats from Pi-Hole dashboard                                              |
 | PowerView            | Stable      | Hunter Douglas PowerView blinds control                                           |

@@ -383,6 +383,21 @@ exports.config = {
   },
 
   /*
+   * View state of your Ocotprint status - tool temps, job progress.
+   * You will need your API key found under Settings -> API -> API Key.
+   */
+  octoprint : {
+    typeClass : 'octoprint',
+    title     : '3d Printer',
+    deviceIp  : 'octopi.local',
+    key       : 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+    apps      : { 'Announce' : { id            : 'announce3dPrinter',
+                                 controllerIds : ['speech', 'clientSpeech', 'clientNotify', 'gerty'] } },
+    power     : 35,
+    disabled  : false
+  },
+
+  /*
    * View state of your MonoPrice Mini Select (or similar) 3d printer.
    * I've found it easiest to set up my printer via GCode:
    * https://mpselectmini.com/wifi/g-code_file
