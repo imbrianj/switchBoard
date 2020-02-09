@@ -191,7 +191,7 @@ module.exports = (function () {
             });
 
             jobRequest.once('error', function (err) {
-              var printerData = that.getPrintStatus('');
+              var printerData = that.getJobStatus('', config);
 
               octoprint.callback(err, printerData);
             });
@@ -202,7 +202,7 @@ module.exports = (function () {
       });
 
       printerRequest.once('error', function (err) {
-        var printerData = that.getPrintStatus('');
+        var printerData = that.getPrintStatus('', config, celsius);
 
         octoprint.callback(err, printerData);
       });

@@ -153,10 +153,11 @@ exports.sharedUtilTest = {
 
     var util = require(__dirname + '/../../../lib/sharedUtil').util;
 
-    test.strictEqual(util.safeGet({ foo : 'dog' },                                  ['foo']),               'dog', 'Simple path');
-    test.strictEqual(util.safeGet({ foo : { fam : { fiz : 'dog' } } },              ['foo', 'fam', 'fiz']), 'dog', 'Longer path');
-    test.strictEqual(util.safeGet({ foo : { fam : [false] } },                      ['foo', 'fam', 0]),     false, 'Falsey path and value');
-    test.strictEqual(util.safeGet({ foo : 'bad', fam : { fam : { foo : 'dog' } } }, ['fam', 'fam', 'foo']), 'dog', 'Repeated property');
+    test.strictEqual(util.safeGet({ foo : 'dog' },                                  ['foo']),               'dog',           'Simple path');
+    test.strictEqual(util.safeGet({ foo : { fam : { fiz : 'dog' } } },              ['foo', 'fam', 'fiz']), 'dog',           'Longer path');
+    test.strictEqual(util.safeGet({ foo : { fam : [false] } },                      ['foo', 'fam', 0]),     false,           'Falsey path and value');
+    test.strictEqual(util.safeGet({ foo : 'bad', fam : { fam : { foo : 'dog' } } }, ['fam', 'fam', 'foo']), 'dog',           'Repeated property');
+    test.deepEqual(util.safeGet({ foo : 'bad' },                                    []),                    { foo : 'bad' }, 'Broken path');
 
     test.done();
   },
