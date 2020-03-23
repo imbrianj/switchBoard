@@ -25,13 +25,13 @@ module.exports = (function () {
 
   /**
    * @author brian@bevey.org
-   * @fileoverview Grabs location data provided by Tasker firing against this
-   *               API endpoint:
+   * @fileoverview Grabs geiger counter data provided by a GQ brand geiger
+   *               counter firing against this API endpoint:
    *               https://github.com/imbrianj/switchboard-phpServer
    * @requires http, https
    */
   return {
-    version : 20160204,
+    version : 20200322,
 
     readOnly: true,
 
@@ -43,7 +43,8 @@ module.exports = (function () {
     fragments : function () {
       var fs = require('fs');
 
-      return { item : fs.readFileSync(__dirname + '/fragments/location.tpl', 'utf-8') };
+      return { report : fs.readFileSync(__dirname + '/fragments/report.tpl', 'utf-8'),
+               graph  : fs.readFileSync(__dirname + '/fragments/graph.tpl', 'utf-8') };
     },
 
     /**
@@ -68,15 +69,15 @@ module.exports = (function () {
     /**
      * Prepare the POST data to be sent.
      */
-    postData : function (location) {
+    postData : function (geiger) {
       var value;
 
-      if (location.args) {
-        value = JSON.stringify(location.args);
+      if (geiger.args) {
+        value = JSON.stringify(geiger.args);
       }
 
       else {
-        value = 'type=location&user=' + location.username + '&pass=' + location.password + '&count=' + location.maxCount;
+        value = 'type=geiger&user=' + geiger.username + '&pass=' + geiger.password + '&count=' + geiger.maxCount;
       }
 
       return value;
@@ -91,68 +92,75 @@ module.exports = (function () {
       runCommand.runCommand(controller.config.deviceId, 'list', controller.config.deviceId);
     },
 
+    maxQuality : { cpm : 50,    acpm : 3000,     usv : 0.30 },
+    units      : { cpm : 'cpm', acpm : 'acpm', usv : 'μSv/h' },
+
     /**
      * Accept the JSON formatted API response and parse through and returning an
      * array of sanitized values.
      */
-    getLocations : function (reply, maxCount) {
-      var util         = require(__dirname + '/../../lib/sharedUtil').util,
-          location     = {},
-          locationData = [],
-          i            = 0,
-          j            = 0;
+    getReadings : function (reply, maxCount) {
+      var util       = require(__dirname + '/../../lib/sharedUtil').util,
+          geiger     = {},
+          geigerData = [],
+          i          = 0,
+          type;
 
       maxCount = maxCount || 10;
 
-      for (i in reply) {
+      for (i; i < reply.length; i += 1) {
         if (reply.hasOwnProperty(i)) {
-          location = reply[i];
-
-          if ((location.lat) && (location.long)) {
-            locationData[j] = { lat   : util.sanitize(location.lat),
-                                long  : util.sanitize(location.long),
-                                alt   : util.sanitize(location.alt),
-                                url   : util.sanitize(location.link),
-                                speed : util.sanitize(location.speed),
-                                name  : util.sanitize(location.user),
-                                time  : util.sanitize(location.time * 1000) };
-
-            j += 1;
+          if (i >= maxCount) {
+            break;
           }
 
-          if (j >= maxCount) {
-            break;
+          geiger        = reply[i];
+          geigerData[i] = [];
+
+          for (type in this.maxQuality) {
+            if (geiger[type]) {
+              geigerData[i].push({
+                gid   : util.sanitize(geiger.gid),
+                name  : util.sanitize(geiger.user),
+                time  : util.sanitize(geiger.time * 1000),
+                type  : type,
+                value : util.sanitize(geiger[type]),
+                units : util.sanitize(this.units[type]),
+                max   : util.sanitize(this.maxQuality[type]),
+                high  : Number((util.sanitize(this.maxQuality[type]) / 2).toFixed(3))
+              });
+            }
           }
         }
       }
 
-      return locationData;
+      return { report : geigerData };
     },
 
     send : function (config) {
       var http      = config.device.port === 443 ? require('https') : require('http'),
           that      = this,
-          location  = {},
+          geiger    = {},
           dataReply = '',
           request;
 
-      location.deviceId = config.device.deviceId;
-      location.host     = config.device.host;
-      location.path     = config.device.path     || '/location/';
-      location.port     = config.device.port     || 80;
-      location.method   = config.device.method   || 'POST';
-      location.username = config.device.username || '';
-      location.password = config.device.password || '';
-      location.maxCount = config.device.maxCount || 10;
-      location.callback = config.callback        || function () {};
+      geiger.deviceId = config.device.deviceId;
+      geiger.host     = config.device.host;
+      geiger.path     = config.device.path     || '/geiger.php';
+      geiger.port     = config.device.port     || 80;
+      geiger.method   = config.device.method   || 'POST';
+      geiger.username = config.device.username || '';
+      geiger.password = config.device.password || '';
+      geiger.maxCount = config.device.maxCount || 10;
+      geiger.callback = config.callback        || function () {};
 
       console.log('\x1b[35m' + config.device.title + '\x1b[0m: Fetching device info');
 
-      if (location.method === 'POST') {
-        location.postRequest = this.postData(location);
+      if (geiger.method === 'POST') {
+        geiger.postRequest = this.postData(geiger);
       }
 
-      request = http.request(this.postPrepare(location), function (response) {
+      request = http.request(this.postPrepare(geiger), function (response) {
         response.setEncoding('utf8');
 
         response.on('data', function (response) {
@@ -160,32 +168,32 @@ module.exports = (function () {
         });
 
         response.once('end', function () {
-          var locationData;
+          var geigerData;
 
           if (dataReply) {
             try {
-              locationData = JSON.parse(dataReply);
+              geigerData = JSON.parse(dataReply);
             }
 
             catch (catchErr) {
-              location.callback('API returned an unexpected value');
+              geiger.callback('API returned an unexpected value');
             }
 
-            if (locationData) {
-              locationData = that.getLocations(locationData, location.maxCount);
+            if (geigerData) {
+              geigerData = that.getReadings(geigerData, geiger.maxCount);
 
-              location.callback(null, locationData);
+              geiger.callback(null, geigerData);
             }
           }
         });
       });
 
       request.once('error', function (err) {
-        location.callback(err);
+        geiger.callback(err);
       });
 
-      if (location.method === 'POST') {
-        request.write(location.postRequest);
+      if (geiger.method === 'POST') {
+        request.write(geiger.postRequest);
       }
 
       request.end();

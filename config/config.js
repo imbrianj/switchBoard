@@ -286,6 +286,22 @@ exports.config = {
   },
 
   /*
+   * Requires a GQ brand geiger counter configured to use the configuration of
+   * a companion endpoint: https://github.com/imbrianj/switchboard-phpServer
+   */
+  geiger : {
+    typeClass : 'geiger',
+    title     : 'Geiger',
+    host      : 'example.com',
+    port      : 80,
+    path      : '/index.php',
+    username  : 'geiger',
+    password  : '1234567890',
+    maxCount  : 10,
+    disabled  : true
+  },
+
+  /*
    * This is insecure.  Your Foscam username and password will be sent in
    * plain-text and can be viewable within the source of the rendered
    * controller template.
@@ -389,12 +405,14 @@ exports.config = {
   octoprint : {
     typeClass : 'octoprint',
     title     : '3d Printer',
+    // 'transform' style applied to preview image in case you need to flip it.
+    styles    : 'rotate(180deg)',
     deviceIp  : 'octopi.local',
     key       : 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
     apps      : { 'Announce' : { id            : 'announce3dPrinter',
                                  controllerIds : ['speech', 'clientSpeech', 'clientNotify', 'gerty'] } },
     power     : 35,
-    disabled  : false
+    disabled  : true
   },
 
   /*

@@ -36,8 +36,8 @@ exports.octoprintParserTest = {
                             bedTemp        : '29',
                             bedTarget      : '0',
                             percent        : '7' },
-        goodMarkup      = octoprintParser.octoprint('dummy', markup, 'ok', value),
-        noValue         = octoprintParser.octoprint('dummy', markup, 'ok', null);
+        goodMarkup      = octoprintParser.octoprint('dummy', markup, 'ok', value, {}),
+        noValue         = octoprintParser.octoprint('dummy', markup, 'ok', null,  {});
 
     test.strictEqual(goodMarkup.indexOf('{{'),                  -1, 'All values replaced');
     test.notStrictEqual(goodMarkup.indexOf('<li>190/195</li>'), -1, 'Passed markup validated1');

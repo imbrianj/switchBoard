@@ -29,11 +29,20 @@ module.exports = (function () {
    * @requires http
    */
   return {
-    version : 20200208,
+    version : 20200314,
 
     readOnly: true,
 
     inputs  : ['state'],
+
+    /**
+     * Reference template fragments to be used by the parser.
+     */
+    fragments : function () {
+      var fs = require('fs');
+
+      return { video : fs.readFileSync(__dirname + '/fragments/video.tpl', 'utf-8') };
+    },
 
     /**
      * Prepare a request for command execution.
@@ -147,6 +156,7 @@ module.exports = (function () {
 
       octoprint.deviceId   = config.device.deviceId;
       octoprint.deviceIp   = config.device.deviceIp;
+      octoprint.styles     = config.device.styles;
       octoprint.key        = config.device.key;
       octoprint.path       = config.device.path       || '/api/printer';
       octoprint.devicePort = config.device.devicePort || 80;
@@ -180,12 +190,21 @@ module.exports = (function () {
               });
 
               response.once('end', function () {
-                var jobData;
+                var jobData,
+                    unix          = new Date().getTime(),
+                    printerStatus = {};
 
                 if (dataJobReply) {
-                  jobData = that.getJobStatus(dataJobReply, config);
+                  jobData       = that.getJobStatus(dataJobReply, config);
+                  printerStatus = that.getPrinterSummary(printerData, jobData);
 
-                  octoprint.callback(null, that.getPrinterSummary(printerData, jobData));
+                  printerStatus.imagePath = 'https://' + octoprint.deviceIp + '/webcam/?action=stream&' + unix;
+
+                  if (octoprint.styles) {
+                    printerStatus.styles = 'transform: ' + octoprint.styles;
+                  }
+
+                  octoprint.callback(null, printerStatus);
                 }
               });
             });

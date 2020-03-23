@@ -22,17 +22,18 @@
 
 /**
  * @author brian@bevey.org
- * @fileoverview Unit test for devices/location/controller.js
+ * @fileoverview Unit test for devices/geiger/controller.js
  */
 
-exports.locationControllerTest = {
+exports.geigerControllerTest = {
   fragments : function (test) {
     'use strict';
 
-    var locationController = require(__dirname + '/../../../../devices/location/controller'),
-        fragments          = locationController.fragments();
+    var geigerController = require(__dirname + '/../../../../devices/geiger/controller'),
+        fragments        = geigerController.fragments();
 
-    test.strictEqual(typeof fragments.item, 'string', 'Fragment verified');
+    test.strictEqual(typeof fragments.report, 'string', 'Fragment verified');
+    test.strictEqual(typeof fragments.graph,  'string', 'Fragment verified');
 
     test.done();
   },
@@ -40,14 +41,14 @@ exports.locationControllerTest = {
   postPrepare : function (test) {
     'use strict';
 
-    var locationController = require(__dirname + '/../../../../devices/location/controller'),
+    var geigerController = require(__dirname + '/../../../../devices/geiger/controller'),
         config             = { host        : 'example.com',
                                port        : '80',
                                path        : '/test/',
                                method      : 'POST',
                                badData     : 'FAILURE',
                                postRequest : 'hello :)'},
-        testPost           = locationController.postPrepare(config);
+        testPost           = geigerController.postPrepare(config);
 
     test.deepEqual(testPost, { host    : 'example.com',
                                port    : '80',
@@ -68,49 +69,42 @@ exports.locationControllerTest = {
   postData : function (test) {
     'use strict';
 
-    var locationController = require(__dirname + '/../../../../devices/location/controller'),
-        locationData       = { username: 'bar', password: 'baz', maxCount: 5 },
-        postData           = locationController.postData(locationData);
+    var geigerController = require(__dirname + '/../../../../devices/geiger/controller'),
+        geigerData       = { username: 'bar', password: 'baz', maxCount: 5 },
+        postData         = geigerController.postData(geigerData);
 
-    test.equal(postData, 'type=location&user=bar&pass=baz&count=5');
+    test.equal(postData, 'type=geiger&user=bar&pass=baz&count=5');
 
     test.done();
   },
 
-  getLocations : function (test) {
+  getReadings : function (test) {
     'use strict';
 
-    var locationController = require(__dirname + '/../../../../devices/location/controller'),
-        locationData       = [ {
-          lat   : "45.678901234",
-          long  : "-124.45678901",
-          alt   : "15.0",
-          link  : "https://maps.google.com/?q=45.678901234,-124.45678901",
-          speed : "5.67890123",
-          user  : "<b>Tester</b>",
-          time  : 1234567890
+    var geigerController = require(__dirname + '/../../../../devices/geiger/controller'),
+        geigerData       = [ {
+          aid  : "123456",
+          gid  : "2",
+          cpm  : "21.0123",
+          acpm : "20.1234",
+          usv  : "0.075",
+          name : "Ghandi",
+          time : 1234567890
         },
         {
-          lat   : "45.678901236",
-          long  : "-124.45678902",
-          alt   : "16.0",
-          link  : "https://maps.google.com/?q=45.678901236,-124.45678902",
-          speed : "15.67890123",
-          user  : "Tester",
-          time  : 1234568890
+          aid  : "123457",
+          gid  : "2",
+          cpm  : "21.0126",
+          acpm : "20.1237",
+          usv  : "0.077",
+          name : "Ghandi",
+          time : 1234569890
         } ],
-        testLocationData   = locationController.getLocations(locationData, 1),
-        testBadData        = locationController.getLocations({}, 10);
+        testGeigerData   = geigerController.getReadings(geigerData, 1),
+        testBadData      = geigerController.getReadings({}, 10);
 
-    test.deepEqual(testLocationData, [{ lat   : '45.678901234',
-                                        long  : '-124.45678901',
-                                        alt   : '15.0',
-                                        url   : 'https://maps.google.com/?q=45.678901234,-124.45678901',
-                                        speed : '5.67890123',
-                                        name  : 'Tester',
-                                        time  : 1234567890000
-                                     }], 'One article should be found for location feeds');
-    test.deepEqual(testBadData,  {}, 'Nothing should be returned for bad data');
+    test.equal(testGeigerData.report.length, 1,               'One reading should be found for data feeds');
+    test.deepEqual(testBadData,              { report : [] }, 'Nothing should be returned for bad data');
 
     test.done();
   }

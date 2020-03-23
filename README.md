@@ -48,6 +48,7 @@ Supported Devices/Services
 | Denon                | Stable      | New controller and still in testing                                               |
 | DLinkCamera          | Testing     | New controller and still in testing.  Controls DLink MJPEG pan/tilt cameras       |
 | Foscam               | Stable      | Works with MPEG versions such as FI8910W.  H.264 models are not supported.  Arm, Disarm, Go to presets, etc. *INSECURE* Exposes camera credentials to users |
+| Geiger               | Testing     | Uses [switchboard-phpServer](https://github.com/imbrianj/switchboard-phpServer) to track radition with a GQ brand geiger counter |
 | Gerty                | Stable      | A simple interface for all devices that reacts to natural inputs                  |
 | GitHub               | Testing     | Poll for commits to a given repository.  For Switchboard, can tell you if you should update |
 | have i been pwned?   | Testing     | Query haveibeenpwned.com to see if your username has been part of a data breach   |

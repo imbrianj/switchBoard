@@ -20,28 +20,24 @@
  * IN THE SOFTWARE.
  */
 
-(function (exports){
+/**
+ * @author brian@bevey.org
+ * @fileoverview Simple script to fire for each scheduled interval.
+ */
+
+module.exports = (function () {
   'use strict';
 
-  exports.octoprint = function (deviceId, markup, state, value, fragments) {
-    var video = fragments.video;
+  return {
+    version : 20200321,
 
-    if (state === 'ok' && value && value.imagePath) {
-      video = video.split('{{OCTOPRINT_DYNAMIC}}').join(value.imagePath);
-      video = video.split('{{OCTOPRINT_STYLE}}').join(value.styles || '');
-    } else {
-      video = '';
+    /**
+     * On poll, check the location data feed.
+     */
+    poll : function (deviceId) {
+      var runCommand  = require(__dirname + '/../../lib/runCommand');
+
+      runCommand.runCommand(deviceId, 'list');
     }
-
-    value  = value || {};
-
-    markup = markup.split('{{EXTRUDER_TEMP}}').join(value.extruderTemp);
-    markup = markup.split('{{EXTRUDER_TARGET}}').join(value.extruderTarget);
-    markup = markup.split('{{BED_TEMP}}').join(value.bedTemp);
-    markup = markup.split('{{BED_TARGET}}').join(value.bedTarget);
-    markup = markup.split('{{PERCENT_COMPLETE}}').join(value.percent);
-    markup = markup.split('{{OCTOPRINT_VIDEO}}').join(video);
-
-    return markup;
   };
-})(typeof exports === 'undefined' ? this.SB.spec.parsers : exports);
+}());

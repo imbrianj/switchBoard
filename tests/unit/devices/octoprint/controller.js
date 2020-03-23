@@ -26,6 +26,17 @@
  */
 
 exports.octoprintControllerTest = {
+  fragments : function (test) {
+    'use strict';
+
+    var octoprintController = require(__dirname + '/../../../../devices/octoprint/controller'),
+        fragments           = octoprintController.fragments();
+
+    test.strictEqual(typeof fragments.video,  'string', 'Fragment verified');
+
+    test.done();
+  },
+
   postPrepare : function (test) {
     'use strict';
 

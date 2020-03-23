@@ -10,4 +10,5 @@
             </progress>
           </li>
         </ul>
+        {{OCTOPRINT_VIDEO}}
       </section>

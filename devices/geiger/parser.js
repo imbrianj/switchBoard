@@ -23,25 +23,32 @@
 (function (exports){
   'use strict';
 
-  exports.octoprint = function (deviceId, markup, state, value, fragments) {
-    var video = fragments.video;
+  exports.geiger = function (deviceId, markup, state, value, fragments) {
+    var report      = fragments.report,
+        graph       = fragments.graph,
+        tempMarkup  = '',
+        graphMarkup = '',
+        reported,
+        i           = 0;
 
-    if (state === 'ok' && value && value.imagePath) {
-      video = video.split('{{OCTOPRINT_DYNAMIC}}').join(value.imagePath);
-      video = video.split('{{OCTOPRINT_STYLE}}').join(value.styles || '');
-    } else {
-      video = '';
+    if (value && value.report && value.report[0]) {
+      for (i; i < value.report[0].length; i += 1) {
+        reported = value.report[0][i];
+        graphMarkup = '';
+
+        if (reported.max) {
+          graphMarkup = graph.split('{{MAX_VALUE}}').join(reported.max);
+          graphMarkup = graphMarkup.split('{{PERCENT_QUALITY}}').join(Math.round((reported.value / reported.max) * 100));
+        }
+
+        tempMarkup = tempMarkup + report.split('{{GEIGER_GRAPH}}').join(graphMarkup);
+        tempMarkup = tempMarkup.split('{{GEIGER_TYPE}}').join(reported.type);
+        tempMarkup = tempMarkup.split('{{GEIGER_VALUE}}').join(reported.value);
+        tempMarkup = tempMarkup.split('{{GEIGER_UNITS}}').join(reported.units);
+        tempMarkup = tempMarkup.split('{{GEIGER_HIGH}}').join(reported.high);
+      }
     }
 
-    value  = value || {};
-
-    markup = markup.split('{{EXTRUDER_TEMP}}').join(value.extruderTemp);
-    markup = markup.split('{{EXTRUDER_TARGET}}').join(value.extruderTarget);
-    markup = markup.split('{{BED_TEMP}}').join(value.bedTemp);
-    markup = markup.split('{{BED_TARGET}}').join(value.bedTarget);
-    markup = markup.split('{{PERCENT_COMPLETE}}').join(value.percent);
-    markup = markup.split('{{OCTOPRINT_VIDEO}}').join(video);
-
-    return markup;
+    return markup.replace('{{GEIGER_DYNAMIC}}', tempMarkup);
   };
 })(typeof exports === 'undefined' ? this.SB.spec.parsers : exports);

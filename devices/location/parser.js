@@ -57,7 +57,7 @@
           return time;
         };
 
-    if ((state) && (value)) {
+    if (value) {
       for (i; i < value.length; i += 1) {
         tempMarkup = tempMarkup + template.split('{{LOCATION_NAME}}').join(value[i].name);
         tempMarkup = tempMarkup.split('{{LOCATION_URL}}').join(value[i].url);
