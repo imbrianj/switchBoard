@@ -293,6 +293,9 @@ module.exports = (function () {
           THUMBNAIL       : "Thumbnail",
           VIDEO           : "Video"
         },
+        geiger : {
+          GEIGER : "Geiger Counter"
+        },
         gerty : {
           GERTY        : "Gerty",
           AI_INTENT    : "Because of {{INPUT}}, I'm {{CONFIDENCE}}% sure you want the {{DEVICE}} to go from {{CURRENT}} to {{COMMAND}}",
