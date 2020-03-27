@@ -33,16 +33,16 @@ exports.geigerParserTest = {
         markup     = '<h1>Foo</h1> <ul>{{GEIGER_DYNAMIC}}</ul>',
         value      = { report : [
                        [
-                         { type : 'dogs',    value : 2.2,  units : 'dgs', max : 5,    high : 2 },
-                         { type : 'cats',    value : 1.2,  units : 'cts', max : 2.5,  high : 1 },
-                         { type : 'falcons', value : 500,  units : 'flk', max : 1000, high : 200 }
+                         { type : 'dogs',    value : 2.2,  units : 'dgs', max : 5,    high : 2,   time : 1283273077000 },
+                         { type : 'cats',    value : 1.2,  units : 'cts', max : 2.5,  high : 1,   time : 1283273077000 },
+                         { type : 'falcons', value : 500,  units : 'flk', max : 1000, high : 200, time : 1283273077000 }
                        ]
                      ]},
         fragments  = { report : '<li>{{GEIGER_TYPE}}: {{GEIGER_VALUE}}{{GEIGER_UNITS}}</li>',
                        graph  : '<span>{{MAX_VALUE}} : {{PERCENT_QUALITY}}</span>' },
         goodMarkup = geigerParser.geiger('dummy', markup, 'ok', value,        fragments),
         noValue    = geigerParser.geiger('dummy', markup, 'ok', 'API Choked', fragments);
-console.log(goodMarkup);
+
     test.strictEqual(goodMarkup.indexOf('{{'),                     -1, 'All values replaced');
     test.notStrictEqual(goodMarkup.indexOf('<li>dogs: 2.2dgs'),    -1, 'Passed markup validated 1');
     test.notStrictEqual(goodMarkup.indexOf('<li>cats: 1.2cts'),    -1, 'Passed markup validated 2');

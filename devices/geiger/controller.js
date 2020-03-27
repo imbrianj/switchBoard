@@ -31,7 +31,7 @@ module.exports = (function () {
    * @requires http, https
    */
   return {
-    version : 20200322,
+    version : 20200326,
 
     readOnly: true,
 
@@ -44,7 +44,7 @@ module.exports = (function () {
       var fs = require('fs');
 
       return { report : fs.readFileSync(__dirname + '/fragments/report.tpl', 'utf-8'),
-               graph  : fs.readFileSync(__dirname + '/fragments/graph.tpl', 'utf-8') };
+               graph  : fs.readFileSync(__dirname + '/fragments/graph.tpl',  'utf-8') };
     },
 
     /**
@@ -92,7 +92,7 @@ module.exports = (function () {
       runCommand.runCommand(controller.config.deviceId, 'list', controller.config.deviceId);
     },
 
-    maxQuality : { cpm : 50,    acpm : 3000,     usv : 0.30 },
+    maxQuality : { cpm : 50,    acpm : 3000,   usv : 0.30 },
     units      : { cpm : 'cpm', acpm : 'acpm', usv : 'μSv/h' },
 
     /**

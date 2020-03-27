@@ -23,13 +23,47 @@
 (function (exports){
   'use strict';
 
-  exports.geiger = function (deviceId, markup, state, value, fragments) {
+  exports.geiger = function (deviceId, markup, state, value, fragments, language) {
     var report      = fragments.report,
         graph       = fragments.graph,
         tempMarkup  = '',
         graphMarkup = '',
         reported,
-        i           = 0;
+        i           = 0,
+        translate   = function (message) {
+          var util;
+
+          if ((typeof SB === 'object') && (typeof SB.util === 'object')) {
+            message = SB.util.translate(message, 'geiger');
+          }
+
+          else {
+            util    = require(__dirname + '/../../lib/sharedUtil').util;
+            message = util.translate(message, 'geiger', language);
+          }
+
+          return message;
+        },
+        displayTime = function (unix) {
+          var util,
+              time;
+
+          if ((typeof SB === 'object') && (typeof SB.util === 'object')) {
+            time = SB.util.displayTime(unix, translate);
+          }
+
+          else {
+            util = require(__dirname + '/../../lib/sharedUtil').util;
+            time = util.displayTime(unix, translate);
+          }
+
+          return time;
+        },
+        machineTime = function (unix) {
+          var date = new Date(unix);
+
+          return date.toISOString ? date.toISOString() : unix;
+        };
 
     if (value && value.report && value.report[0]) {
       for (i; i < value.report[0].length; i += 1) {
@@ -40,6 +74,9 @@
           graphMarkup = graph.split('{{MAX_VALUE}}').join(reported.max);
           graphMarkup = graphMarkup.split('{{PERCENT_QUALITY}}').join(Math.round((reported.value / reported.max) * 100));
         }
+
+        markup = markup.split('{{GEIGER_TIME}}').join(displayTime(reported.time));
+        markup = markup.split('{{GEIGER_TIMESTAMP}}').join(machineTime(reported.time));
 
         tempMarkup = tempMarkup + report.split('{{GEIGER_GRAPH}}').join(graphMarkup);
         tempMarkup = tempMarkup.split('{{GEIGER_TYPE}}').join(reported.type);
