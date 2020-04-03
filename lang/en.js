@@ -279,6 +279,19 @@ module.exports = (function () {
           THUMBNAIL       : "Thumbnail",
           VIDEO           : "Video"
         },
+        enviro : {
+          ENVIRO      : "Enviro+",
+          TEMPERATURE : "Temperature",
+          PRESSURE    : "Pressure",
+          HUMIDITY    : "Humidity",
+          LIGHT       : "Light",
+          OXIDISED    : "Oxidised",
+          REDUCED     : "Reduced",
+          NH3         : "NH3",
+          PM1         : "PM 1",
+          PM25        : "PM 2.5",
+          PM10        : "PM 10"
+        },
         foscam : {
           FOSCAM          : "Foscam",
           ARM             : "Arm",
@@ -294,7 +307,8 @@ module.exports = (function () {
           VIDEO           : "Video"
         },
         geiger : {
-          GEIGER : "Geiger Counter"
+          GEIGER        : "Geiger Counter",
+          GEIGER_UNSAFE : 'Unsafe levels of {{TYPE}} reported at {{VALUE}}!'
         },
         gerty : {
           GERTY        : "Gerty",

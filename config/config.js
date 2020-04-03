@@ -276,12 +276,25 @@ exports.config = {
    * https://openaq.org/#/locations?countries=US
    */
   airQuality : {
-    typeClass       : 'airQuality',
-    title           : 'Air Quality',
-    location        : 'Seattle-10th %26 Welle',
-    apps            : { 'Air Quality Announce'   : { id            : 'announceAirQuality',
-                                                     macros        : { pm25 : 'smartthings=subdevice-Air Filter-on' },
-                                                     controllerIds : ['clientNotify', 'gerty'] } },
+    typeClass : 'airQuality',
+    title     : 'Air Quality',
+    location  : 'Seattle-10th %26 Welle',
+    apps      : { 'Air Quality Announce' : { id            : 'announceAirQuality',
+                                             macros        : { pm25 : 'smartthings=subdevice-Air Filter-on' },
+                                             controllerIds : ['clientNotify', 'gerty'] } },
+    disabled  : true
+  },
+
+  /*
+   * Hits a custom API hooked to a remote Raspberry Pi with the Pimoroni Enviro+
+   * hat to measure air quality.
+   * https://github.com/imbrianj/switchboard-enviroPythonServer/tree/master
+   */
+  enviro : {
+    typeClass : 'enviro',
+    title     : 'Office Air',
+    deviceIp  : '192.168.1.44',
+    port      : 8008,
     disabled  : true
   },
 
@@ -298,6 +311,8 @@ exports.config = {
     username  : 'geiger',
     password  : '1234567890',
     maxCount  : 10,
+    apps      : { 'Geiger Announce' : { id            : 'announceGeiger',
+                                        controllerIds : ['clientNotify', 'gerty'] } },
     disabled  : true
   },
 

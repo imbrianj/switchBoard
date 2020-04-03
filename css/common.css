@@ -436,12 +436,13 @@ meter[value]::-webkit-meter-bar {
 }
 
 progress[value]::-webkit-progress-value,
-meter[value]::-webkit-meter-optimum-value {
+meter[value]::-webkit-meter-optimum-value,
+meter[value]::-webkit-meter-suboptimum-value {
   background: #0078E7;
   color: #0078E7;
 }
 
-meter[value]::-webkit-meter-suboptimum-value {
+meter[value][optimum]::-webkit-meter-suboptimum-value {
   background: #E9322D;
   color: #E9322D;
 }
@@ -451,7 +452,7 @@ meter[value]::-moz-meter-bar {
   color: #0078E7;
 }
 
-meter[value]:-moz-meter-sub-optimum::-moz-meter-bar {
+meter[value][optimum]:-moz-meter-sub-optimum::-moz-meter-bar {
   background: #E9322D;
   color: #E9322D;
 }

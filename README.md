@@ -44,6 +44,7 @@ Supported Devices/Services
 | Client Screen Saver  | Development | For use with OLED display fixtures - blacks out screen when not in use            |
 | Client Speech        | Stable      | Sends text to be speech synthesized to all Websocket connected clients            |
 | Client Vibrate       | Stable      | Sends a command to vibrate all Websocket connected clients (phones, tablets, etc) |
+| Enviro+              | Development | Uses a remote Raspberry Pi with the Pimoroni Enviro+ HAT with [a python script](https://github.com/imbrianj/switchboard-enviroPythonServer/tree/master) to report air quality measurements |
 | Debug                | Stable      | Display basic system information (memory, cpu, uptime)                            |
 | Denon                | Stable      | New controller and still in testing                                               |
 | DLinkCamera          | Testing     | New controller and still in testing.  Controls DLink MJPEG pan/tilt cameras       |
@@ -72,7 +73,7 @@ Supported Devices/Services
 | SMS                  | Stable      | Uses Twilio. Requires ID and token                                                |
 | Speech               | Stable      | Uses espeak for *nix, say on OSX.  Win not supported                              |
 | Sports               | Stable      | Pull sports scores from ESPN (please don't hammer this endpoint)                  |
-| TCL SmartTV          | Testing     | Uses the Roku controller, but it's own template with additional controls          |
+| TCL SmartTV          | Stable      | Uses the Roku controller, but it's own template with additional controls          |
 | Traffic Cams         | Stable      | View multiple traffic webcams                                                     |
 | Travis CI            | Stable      |                                                                                   |
 | Twitter              | Stable      | Present mentions of your Twitter handle or subscribe to a user's feed             |

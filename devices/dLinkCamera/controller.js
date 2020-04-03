@@ -314,7 +314,7 @@ module.exports = (function () {
      */
     state : function (controller, config, callback) {
       var deviceState = require(__dirname + '/../../lib/deviceState'),
-          dLinkCamera      = { device : {}, config : {} };
+          dLinkCamera = { device : {}, config : {} };
 
       callback                        = callback || function () {};
       dLinkCamera.device.deviceId     = controller.config.deviceId;
