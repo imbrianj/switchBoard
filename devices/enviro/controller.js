@@ -29,7 +29,7 @@ module.exports = (function () {
    * @fileoverview Basic air quality information, courtesy of OpenAQ.
    */
   return {
-    version : 20200331,
+    version : 20200403,
 
     readOnly: true,
 
@@ -186,12 +186,12 @@ module.exports = (function () {
 
       enviro.deviceId = config.device.deviceId;
       enviro.deviceIp = config.device.deviceIp;
-      enviro.celsius  = config.config      || false;
-      enviro.language = config.language    || 'en';
-      enviro.path     = config.path        || '/';
-      enviro.port     = config.device.port || 8008;
-      enviro.method   = config.method      || 'GET';
-      enviro.callback = config.callback    || function () {};
+      enviro.celsius  = config.config.config || false;
+      enviro.language = config.language      || 'en';
+      enviro.path     = config.path          || '/';
+      enviro.port     = config.device.port   || 8008;
+      enviro.method   = config.method        || 'GET';
+      enviro.callback = config.callback      || function () {};
 
       if (enviro.deviceIp) {
         console.log('\x1b[35m' + config.device.title + '\x1b[0m: Fetching device info');
