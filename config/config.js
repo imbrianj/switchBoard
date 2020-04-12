@@ -317,6 +317,20 @@ exports.config = {
   },
 
   /*
+   * Controls Neato botvacs.
+   */
+  neato : {
+    typeClass : 'neato',
+    title     : 'Catbot',
+    username  : 'test@example.com',
+    password  : '1234567890',
+    eco       : false,
+    extraCare : true,
+    nogo      : true,
+    disabled  : true
+  },
+
+  /*
    * This is insecure.  Your Foscam username and password will be sent in
    * plain-text and can be viewable within the source of the rendered
    * controller template.

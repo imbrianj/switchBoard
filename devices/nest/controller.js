@@ -259,7 +259,7 @@ module.exports = (function () {
               matched      = findByName(response.device, i);
               matchedLabel = that.findLabel(response.device[i].where_id);
               currState    = { state  : response.shared[response.device[i].serial_number].hvac_heater_state ? 'heat' : response.shared[response.device[i].serial_number].hvac_ac_state ? 'cool' : 'off',
-                               target : celsius ? response.shared[response.device[i].serial_number].target_temperature  : util.cToF(response.shared[response.device[i].serial_number].target_temperature) };
+                               target : celsius ? response.shared[response.device[i].serial_number].target_temperature : util.cToF(response.shared[response.device[i].serial_number].target_temperature) };
 
               // If the stored state differs from the API, a change probably
               // happened on another device.  We should update that state and
@@ -269,20 +269,20 @@ module.exports = (function () {
               }
 
               thermostats.push({
-                serial        : response.device[i].serial_number,
-                state         : response.shared[response.device[i].serial_number].target_temperature_type,
-                active        : currState.state,
-                fanMode       : response.device[i].fan_mode,
-                humidity      : response.device[i].current_humidity,
-                temp          : celsius ? response.shared[response.device[i].serial_number].current_temperature : util.cToF(response.shared[response.device[i].serial_number].current_temperature),
-                target        : currState.target,
-                timeToTarget  : response.device[i].time_to_target,
-                leaf          : response.device[i].leaf,
+                serial        : util.sanitize(response.device[i].serial_number),
+                state         : util.sanitize(response.shared[response.device[i].serial_number].target_temperature_type),
+                active        : util.sanitize(currState.state),
+                fanMode       : util.sanitize(response.device[i].fan_mode),
+                humidity      : util.sanitize(response.device[i].current_humidity),
+                temp          : celsius ? util.sanitize(response.shared[response.device[i].serial_number].current_temperature) : util.cToF(util.sanitize(response.shared[response.device[i].serial_number].current_temperature)),
+                target        : util.sanitize(currState.target),
+                timeToTarget  : util.sanitize(response.device[i].time_to_target),
+                leaf          : util.sanitize(response.device[i].leaf),
                 label         : that.findLabel(response.device[i].where_id),
                 type          : 'thermostat',
                 lastReportOn  : deviceState.getSubdeviceUpdate(config.deviceId, matchedLabel, 'lastOn'),
                 lastReportOff : deviceState.getSubdeviceUpdate(config.deviceId, matchedLabel, 'lastOff'),
-                duration      : matched.duration,
+                duration      : util.sanitize(matched.duration),
                 celsius       : celsius,
                 lastOn        : deviceState.getSubdeviceUpdate(config.deviceId, that.findLabel(response.device[i].where_id), 'lastOn'),
                 lastOff       : deviceState.getSubdeviceUpdate(config.deviceId, that.findLabel(response.device[i].where_id), 'lastOff')
@@ -298,15 +298,15 @@ module.exports = (function () {
               matched = findByName(response.topaz, i);
 
               protects.push({
-                serial   : response.topaz[i].serial_number,
+                serial   : util.sanitize(response.topaz[i].serial_number),
                 smoke    : response.topaz[i].smoke_status         === 0 ? 'ok' : 'err',
                 co       : response.topaz[i].co_status            === 0 ? 'ok' : 'err',
                 battery  : response.topaz[i].battery_health_state === 0 ? 'ok' : 'err',
-                label    : that.findLabel(response.topaz[i].where_id, config.language),
+                label    : that.findLabel(util.sanitize(response.topaz[i].where_id), config.language),
                 type     : 'protect',
-                lastOn   : matched.lastOn,
-                lastOff  : matched.lastOff,
-                duration : matched.duration,
+                lastOn   : util.sanitize(matched.lastOn),
+                lastOff  : util.sanitize(matched.lastOff),
+                duration : util.sanitize(matched.duration),
                 readOnly : true
               });
             }

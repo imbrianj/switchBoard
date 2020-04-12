@@ -1570,6 +1570,10 @@ section .current {
   text-align: center;
 }
 
+section .sub-device-list {
+  padding: 0.5em 0;
+}
+
 section .sub-device-list .sub-device-group,
 section .text-list .text-group li {
   border: 1px solid #444;

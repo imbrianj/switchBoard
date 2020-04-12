@@ -44,23 +44,24 @@ Supported Devices/Services
 | Client Screen Saver  | Development | For use with OLED display fixtures - blacks out screen when not in use            |
 | Client Speech        | Stable      | Sends text to be speech synthesized to all Websocket connected clients            |
 | Client Vibrate       | Stable      | Sends a command to vibrate all Websocket connected clients (phones, tablets, etc) |
-| Enviro+              | Development | Uses a remote Raspberry Pi with the Pimoroni Enviro+ HAT with [a python script](https://github.com/imbrianj/switchboard-enviroPythonServer/tree/master) to report air quality measurements |
+| Enviro+              | Testing     | Uses a remote Raspberry Pi with the Pimoroni Enviro+ HAT with [a python script](https://github.com/imbrianj/switchboard-enviroPythonServer/tree/master) to report air quality measurements |
 | Debug                | Stable      | Display basic system information (memory, cpu, uptime)                            |
 | Denon                | Stable      | New controller and still in testing                                               |
-| DLinkCamera          | Testing     | New controller and still in testing.  Controls DLink MJPEG pan/tilt cameras       |
+| DLinkCamera          | Stable      | Controls DLink MJPEG pan/tilt cameras                                             |
 | Foscam               | Stable      | Works with MPEG versions such as FI8910W.  H.264 models are not supported.  Arm, Disarm, Go to presets, etc. *INSECURE* Exposes camera credentials to users |
-| Geiger               | Testing     | Uses [switchboard-phpServer](https://github.com/imbrianj/switchboard-phpServer) to track radition with a GQ brand geiger counter |
+| Geiger               | Stable      | Uses [switchboard-phpServer](https://github.com/imbrianj/switchboard-phpServer) to track radition with a GQ brand geiger counter |
 | Gerty                | Stable      | A simple interface for all devices that reacts to natural inputs                  |
 | GitHub               | Testing     | Poll for commits to a given repository.  For Switchboard, can tell you if you should update |
-| have i been pwned?   | Testing     | Query haveibeenpwned.com to see if your username has been part of a data breach   |
+| have i been pwned?   | Stable      | Query haveibeenpwned.com to see if your username has been part of a data breach   |
 | LG TVs               | Development | Still need work on authentication                                                 |
 | Location             | Stable      | Uses [switchboard-phpServer](https://github.com/imbrianj/switchboard-phpServer) and [Tasker](https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm) to track your GPS position
 | MonoPrice 3d Printer | Stable      | Probably works with other brands and models, but tested on Mini Select v2         |
 | MP3                  | Stable      | Works on *nix with mpg123 or OSX with afplay. Win not supported                   |
+| Neato                | Developing  | Control for Neato Botvac vacuum cleaner                                           |
 | Nest                 | Stable      | Works with Nest thermostat and Protect smoke / CO detectors                       |
 | Octoprint            | Testing     | Displays basic stats - completion percentage, temperatures                        |
 | Panasonic            | Stable      | Text input and basic controls                                                     |
-| Pi-Hole              | Testing     | Display stats from Pi-Hole dashboard                                              |
+| Pi-Hole              | Stable      | Display stats from Pi-Hole dashboard                                              |
 | PowerView            | Stable      | Hunter Douglas PowerView blinds control                                           |
 | Pioneer              | Testing     | Reportedly works, but unable to test                                              |
 | PS3                  | Stable      | Uses GIMX to emulate PS3 controller ([see below](https://github.com/imbrianj/switchBoard#faq)). OSX not supported  |

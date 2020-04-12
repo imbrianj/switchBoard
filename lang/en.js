@@ -86,12 +86,14 @@ module.exports = (function () {
           PRESENCE       : "Presence",
           RECORD         : "Record",
           RED            : "Red",
+          RESUME         : "Resume",
           RETURN         : "Return",
           REWIND         : "Rewind",
           RIGHT          : "Right",
           SAT            : "Sat",
           SELECT         : "Select",
           SOURCE         : "Source",
+          START          : "Start",
           STATE_CHANGE   : "{{DEVICE}} is now {{STATE}}",
           STOP           : "Stop",
           SUBMIT         : "Submit",
@@ -438,7 +440,10 @@ module.exports = (function () {
           MP3 : "MP3"
         },
         neato : {
-          NEATO : "Neato"
+          NEATO         : "Neato",
+          BATTERY_LEVEL : "Battery Level",
+          DOCKED        : "Docked",
+          UNDOCKED      : "Undocked"
         },
         nest : {
           NEST               : "Nest",
