@@ -915,7 +915,7 @@ exports.config = {
                                                      'Good Bye'      : 'smartthings=subdevice-mode-Away;nest=Away',
                                                      'I\'m Back'     : 'smartthings=subdevice-mode-Home;nest=Home',
                                                      'Welcome Home'  : 'smartthings=subdevice-mode-Home;nest=Home' },
-                                   controllerIds : ['samsung', 'roku', 'ps3', 'panasonic', 'lg', 'pioneer', 'denon', 'speech', 'weather', 'foscam', 'mp3', 'sms', 'pushover', 'smartthings', 'powerView', 'nest', 'switchBoardCI', 'xbmc', 'raspberryRemote', 'wemo', 'activeBuilding', 'clientMp3', 'clientNotify', 'clientSpeech'] } },
+                                   controllerIds : ['samsung', 'roku', 'ps3', 'panasonic', 'lg', 'pioneer', 'denon', 'speech', 'weather', 'foscam', 'mp3', 'sms', 'pushover', 'smartthings', 'powerView', 'neato', 'nest', 'switchBoardCI', 'xbmc', 'raspberryRemote', 'wemo', 'activeBuilding', 'clientMp3', 'clientNotify', 'clientSpeech'] } },
     disabled       : true
   },
 

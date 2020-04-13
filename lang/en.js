@@ -345,6 +345,7 @@ module.exports = (function () {
           TOGGLE       : "Toggle",
           TV           : "TV",
           UP           : "Up",
+          VACUUM       : "Vacuum",
           WEATHER      : "Weather",
           WHAT         : "What",
           WHEN         : "When",

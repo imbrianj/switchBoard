@@ -30,7 +30,7 @@ module.exports = (function () {
   'use strict';
 
   return {
-    version : 20190604,
+    version : 20200412,
 
     /**
      * Some devices can be assumed - if you say "TV" and only have one TV
@@ -44,6 +44,7 @@ module.exports = (function () {
                            ps3         : ['ps3'],
                            playstation : ['ps3'],
                            stocks      : ['stocks'],
+                           vacuum      : ['neato'],
                            weather     : ['weather'] },
           unique       = {},
           notUnique    = {},
@@ -128,7 +129,7 @@ module.exports = (function () {
      * Grab generic device names that have been translated.
      */
     getGenericTerms : function (language) {
-      var codes = ['TV', 'STEREO', 'CAMERA', 'PLAYSTATION', 'WEATHER', 'STOCKS'];
+      var codes = ['TV', 'STEREO', 'CAMERA', 'PLAYSTATION', 'STOCKS', 'VACUUM', 'WEATHER'];
 
       return this.getKeywords(codes, language);
     },
@@ -137,7 +138,7 @@ module.exports = (function () {
      * Grab each translated verb we're listening for.
      */
     getVerbs : function (language) {
-      var codes = ['ON', 'OFF', 'HALF', 'HALFWAY', 'HEAT', 'COOL', 'TOGGLE', 'OPEN', 'CLOSE', 'UP', 'DOWN', 'RAISE', 'LOWER', 'LEFT', 'RIGHT', 'ENTER', 'ARM', 'DISARM'];
+      var codes = ['ON', 'OFF', 'HALF', 'HALFWAY', 'HEAT', 'COOL', 'TOGGLE', 'OPEN', 'CLOSE', 'UP', 'DOWN', 'RAISE', 'LOWER', 'LEFT', 'RIGHT', 'ENTER', 'ARM', 'DISARM', 'START', 'DOCK', 'PAUSE', 'STOP'];
 
       return this.getKeywords(codes, language);
     },

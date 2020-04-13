@@ -349,6 +349,7 @@ module.exports = (function () {
           TOGGLE       : "Cambiar",
           TV           : "TV",
           UP           : "Arriba",
+          VACUUM       : "Aspiradora",
           WEATHER      : "Tiempo",
           WHAT         : "Que",
           WHEN         : "Cuando",

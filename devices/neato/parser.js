@@ -62,7 +62,7 @@
         batteryClass = 'three-quarters';
       }
 
-      if (batteryValue > 97) {
+      if (batteryValue >= 95) {
         batteryClass = 'full';
       }
     }

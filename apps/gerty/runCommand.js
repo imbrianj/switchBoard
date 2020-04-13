@@ -46,6 +46,10 @@ module.exports = (function () {
           deviceType = 'blinds';
         break;
 
+        case 'neato' :
+          deviceType = 'vacuum';
+        break;
+
         case 'nest' :
           deviceType = 'nest';
         break;
@@ -428,6 +432,23 @@ module.exports = (function () {
 
                     case 'DISARM' :
                       commands[i].action = 'Alarm_Off';
+                    break;
+                  }
+                break;
+
+                case 'vacuum' :
+                  switch (commands[i].action.toUpperCase()) {
+                    case 'START' :
+                      commands[i].action = 'Start';
+                    break;
+
+                    case 'STOP' :
+                      commands[i].action = 'Stop';
+                    break;
+
+                    case 'RETURN' :
+                    case 'DOCK'   :
+                      commands[i].action = 'Return';
                     break;
                   }
                 break;
