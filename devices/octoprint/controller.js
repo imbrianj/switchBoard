@@ -88,16 +88,18 @@ module.exports = (function () {
         return status;
       }
 
-      status.extruderTemp   = parseInt(util.sanitize(parsed.temperature.tool0.actual), 10);
-      status.extruderTarget = parseInt(util.sanitize(parsed.temperature.tool0.target), 10);
-      status.bedTemp        = parseInt(util.sanitize(parsed.temperature.bed.actual), 10);
-      status.bedTarget      = parseInt(util.sanitize(parsed.temperature.bed.target), 10);
+      if (parsed.temperature.tool0 && parsed.temperature.bed) {
+        status.extruderTemp   = parseInt(util.sanitize(parsed.temperature.tool0.actual), 10);
+        status.extruderTarget = parseInt(util.sanitize(parsed.temperature.tool0.target), 10);
+        status.bedTemp        = parseInt(util.sanitize(parsed.temperature.bed.actual), 10);
+        status.bedTarget      = parseInt(util.sanitize(parsed.temperature.bed.target), 10);
 
-      if (!celsius) {
-        status.extruderTemp   = status.extruderTemp   ? util.cToF(status.extruderTemp)   : 0;
-        status.extruderTarget = status.extruderTarget ? util.cToF(status.extruderTarget) : 0;
-        status.bedTemp        = status.bedTemp        ? util.cToF(status.bedTemp)        : 0;
-        status.bedTarget      = status.bedTarget      ? util.cToF(status.bedTarget)      : 0;
+        if (!celsius) {
+          status.extruderTemp   = status.extruderTemp   ? util.cToF(status.extruderTemp)   : 0;
+          status.extruderTarget = status.extruderTarget ? util.cToF(status.extruderTarget) : 0;
+          status.bedTemp        = status.bedTemp        ? util.cToF(status.bedTemp)        : 0;
+          status.bedTarget      = status.bedTarget      ? util.cToF(status.bedTarget)      : 0;
+        }
       }
 
       return status;

@@ -73,7 +73,7 @@ module.exports = (function () {
     },
 
     /**
-     * For each teamm, fetch it's image and save it locally for quicker and
+     * For each team, fetch it's image and save it locally for quicker and
      * offline recall.  If the image is already cached, it will be retained.
      */
     cacheImage : function (league, team, theme, imageUrl, title) {

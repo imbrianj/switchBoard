@@ -231,7 +231,7 @@ module.exports = (function () {
 
       fs.readdir(path, function(err, items) {
         var dLinkCameraData = deviceState.getDeviceState(dLinkCamera.deviceId) || { value : null },
-            i          = 0;
+            i               = 0;
 
         dLinkCameraData.value = dLinkCameraData.value || {};
 
@@ -280,7 +280,7 @@ module.exports = (function () {
 
       fs.readdir((__dirname + '/../..' + path), function(err, items) {
         var dLinkCameraData = deviceState.getDeviceState(dLinkCamera.deviceId) || { value : null },
-            i         = 0;
+            i               = 0;
 
         dLinkCameraData.value = dLinkCameraData.value || {};
 

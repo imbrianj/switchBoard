@@ -91,11 +91,11 @@
             gameMarkup = gameMarkup.split('{{GAME_AWAY_WINNER_CLASS}}').join(awayWinnerClass);
             gameMarkup = gameMarkup.split('{{GAME_AWAY_WINNER}}').join(awayWinner);
             gameMarkup = gameMarkup.split('{{GAME_AWAY_TEAM}}').join(game.away.title);
-            gameMarkup = gameMarkup.split('{{GAME_AWAY_SCORE}}').join(game.away.score);
+            gameMarkup = gameMarkup.split('{{GAME_AWAY_SCORE}}').join(game.away.score || '');
             gameMarkup = gameMarkup.split('{{GAME_HOME_WINNER_CLASS}}').join(homeWinnerClass);
             gameMarkup = gameMarkup.split('{{GAME_HOME_WINNER}}').join(homeWinner);
             gameMarkup = gameMarkup.split('{{GAME_HOME_TEAM}}').join(game.home.title);
-            gameMarkup = gameMarkup.split('{{GAME_HOME_SCORE}}').join(game.home.score);
+            gameMarkup = gameMarkup.split('{{GAME_HOME_SCORE}}').join(game.home.score || '');
             gameMarkup = gameMarkup.split('{{GAME_TIME}}').join(displayTime(game.time));
             gameMarkup = gameMarkup.split('{{GAME_STATUS}}').join((game.status || '').toLowerCase());
             gameMarkup = gameMarkup.split('{{GAME_STATE}}').join(translate(game.status));
