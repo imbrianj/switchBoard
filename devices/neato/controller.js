@@ -224,10 +224,135 @@ module.exports = (function () {
     },
 
     /**
+     * For each map, fetch it's image and save it locally for quicker and
+     * offline recall.  If the image is already cached, it will be retained.
+     */
+    cacheImage : function (map, config) {
+      var fs        = require('fs'),
+          fileName  = config.deviceId + '-' + new Date(map.id).getTime() + '.png',
+          filePath  = __dirname + '/../../images/neato/' + fileName,
+          https,
+          request,
+          dataReply = '',
+          image;
+
+      try {
+        image = fs.statSync(filePath);
+      }
+
+      catch (catchErr) {
+        https   = require('https');
+
+        request = https.request(map.url).on('response', function (response) {
+                    response.setEncoding('binary');
+
+                    response.on('data', function (response) {
+                      dataReply += response;
+                    });
+
+                    response.once('end', function () {
+                      console.log('\x1b[35m' + config.deviceId + '\x1b[0m: Saved image for ' + fileName);
+
+                      fs.writeFile(filePath, dataReply, 'binary', function(err) {
+                        if (err) {
+                          console.log('\x1b[31m' + config.deviceId + '\x1b[0m: Unable to save ' + fileName);
+                        }
+                      });
+                    });
+                  });
+
+        request.end();
+      }
+
+      return '/images/neato/' + fileName;
+    },
+
+    /**
+     * Grabs cleaning maps and caches them to disc for persistent and easy
+     * display.
+     */
+    getMaps : function (config) {
+      var that  = this,
+          neato = {
+            list   : true,
+            device : {
+              title    : config.title,
+              deviceId : config.deviceId,
+              host     : 'beehive.neatocloud.com',
+              path     : '/maps',
+              username : config.username,
+              password : config.password,
+              maxCount : config.maxCount,
+              method   : 'GET'
+            }
+          };
+
+      // This request is for your token.
+      neato.callback = function (error, response) {
+        var i = 0;
+
+        if (!error) {
+          if (response.error) {
+            console.log('\x1b[31m' + config.title + '\x1b[0m: ' + response.error_description);
+          }
+
+          else {
+            for (i; i < response.maps.length; i += 1) {
+              // Images are pretty small - let's just cache all of them, even if
+              // we only want to display our maxCount.
+              that.cacheImage(response.maps[i], config);
+            }
+          }
+        }
+      };
+// TODO - this doesn't work.  Think it needs some postPrepare love
+      this.send(neato);
+    },
+
+    /**
+     * Grab all map image paths.
+     */
+    getStoredImages : function (neato) {
+      var fs          = require('fs'),
+          deviceState = require(__dirname + '/../../lib/deviceState'),
+          neatoData   = deviceState.getDeviceState(neato.deviceId) || { value : null },
+          path        = '/images/neato/',
+          filenames   = fs.readdirSync(__dirname + '/../..' + path),
+          photos      = [],
+          i           = 0,
+          filename;
+
+      neatoData.value = neatoData.value || {};
+
+      for (i; i < filenames.length; i += 1) {
+        filename = filenames[i];
+
+        if (filename.split('.').pop() === 'png') {
+          filename = filename.slice(0, -4);
+
+          if (filename.indexOf(neato.deviceId + '-') === 0) {
+            photos.push({
+              name  : filename,
+              photo : path + filename + '.png'
+            });
+          }
+        }
+
+        // We want reverse chron for more natural display.
+        photos.reverse();
+
+        // But we want to chop off any beyond a decent threshold.
+        neatoData.value.photos = photos.slice(0, neato.maxCount);
+
+        return neatoData.value.photos;
+      }
+    },
+
+    /**
      * Accept a raw API resonse of the current robot state.  Returns an object
      * of filtered values to store in state.
      */
-    getRobotState : function (neatoData) {
+    getRobotState : function (neatoData, neato) {
       var util       = require(__dirname + '/../../lib/sharedUtil').util,
           neatoState = {};
 
@@ -236,6 +361,10 @@ module.exports = (function () {
         neatoState.docked   = !!util.sanitize(neatoData.details.isDocked);
         neatoState.battery  = util.sanitize(neatoData.details.charge);
       }
+
+      this.getMaps(neato);
+
+      neatoState.value = { photos : this.getStoredImages(neato) };
 
       return neatoState;
     },
@@ -314,18 +443,21 @@ module.exports = (function () {
     },
 
     send : function (config) {
-      var https     = require('https'),
-          that      = this,
-          neato     = {},
-          dataReply = '',
+      var https      = require('https'),
+          runCommand = require(__dirname + '/../../lib/runCommand'),
+          that       = this,
+          neato      = {},
+          dataReply  = '',
           request;
 
+      neato.title       = config.device.title;
       neato.deviceId    = config.device.deviceId;
       neato.list        = config.list              || '';
       neato.host        = config.device.host;
       neato.path        = config.device.path;
       neato.username    = config.device.username;
       neato.password    = config.device.password;
+      neato.maxCount    = config.device.maxCount   || 20;
       neato.eco         = config.device.eco        || false;
       neato.extraCare   = config.device.extraCare !== false;
       neato.nogo        = config.device.nogo      !== false;
@@ -358,7 +490,11 @@ module.exports = (function () {
             }
 
             if (neatoData) {
-              neato.callback(null, neatoData.details ? that.getRobotState(neatoData) : neatoData);
+              if (!neato.list) {
+                runCommand.runCommand(neato.deviceId, 'list', neato.deviceId);
+              }
+
+              neato.callback(null, neatoData.details ? that.getRobotState(neatoData, neato) : neatoData);
             }
           }
         });

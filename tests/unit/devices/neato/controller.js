@@ -88,34 +88,6 @@ exports.neatoControllerTest = {
     test.done();
   },
 
-  getRobotState : function (test) {
-    'use strict';
-
-    var neatoController   = require(__dirname + '/../../../../devices/neato/controller'),
-        neatoData         = { details : {
-                                charging : false,
-                                docked   : true,
-                                charge   : 22,
-                                garbage  : 'foo'
-                              }
-                            },
-        neatoTypeData     = { details : {
-                                charging : null,
-                                docked   : 0,
-                                charge   : '22'
-                              }
-                            },
-        testNeatoData     = neatoController.getRobotState(neatoData),
-        testNeatoTypeData = neatoController.getRobotState(neatoTypeData),
-        testBadData       = neatoController.getRobotState({});
-
-    test.deepEqual(testNeatoData,     { charging: false, docked: false, battery: 22 }, 'Returns expected values');
-    test.deepEqual(testNeatoTypeData, { charging: false, docked: false, battery: '22' }, 'Returns expected values with expected types');
-    test.deepEqual(testBadData,       {}, 'Nothing should be returned for bad data');
-
-    test.done();
-  },
-
   findRobot : function (test) {
     'use strict';
 

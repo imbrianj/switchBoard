@@ -324,6 +324,7 @@ exports.config = {
     title     : 'Catbot',
     username  : 'test@example.com',
     password  : '1234567890',
+    maxCount  : 20,
     eco       : false,
     extraCare : true,
     nogo      : true,
@@ -796,6 +797,24 @@ exports.config = {
     maxCount  : 10,
     apps      : { 'Announce Trending' : { id            : 'announceTrendingNews',
                                           blacklist     : ['New', 'News', 'A', 'An', 'The'],
+                                          threshold     : 12,
+                                          delay         : 480,
+                                          controllerIds : ['clientNotify', 'gerty'] } },
+    disabled  : true
+  },
+
+  /*
+   * Same reader can be used to pull in news.
+   */
+  localNews : {
+    typeClass : 'rss',
+    title     : 'Local News',
+    host      : 'alert.seattle.gov',
+    port      : 443,
+    path      : '/feed/',
+    maxCount  : 10,
+    apps      : { 'Announce Trending' : { id            : 'announceTrendingNews',
+                                          blacklist     : ['news', 'a', 'an', 'the'],
                                           threshold     : 12,
                                           delay         : 480,
                                           controllerIds : ['clientNotify', 'gerty'] } },
